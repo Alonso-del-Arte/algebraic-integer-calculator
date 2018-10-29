@@ -155,33 +155,50 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of hashCode method, of class ImaginaryQuadraticRing. The purpose 
-     * here isn't to test that any specific ring maps to any specific hash code,  
-     * but rather that two rings that are equal get the same hash code, and two 
-     * rings that are not equal get different hash codes.
+     * Test of hashCode method, of class ImaginaryQuadraticRing, inherited from 
+     * QuadraticRing. The purpose here isn't to test that any specific ring maps 
+     * to any specific hash code, but rather that two rings that are equal get 
+     * the same hash code, and two rings that are not equal get different hash 
+     * codes.
      */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        ImaginaryQuadraticRing someRing = new ImaginaryQuadraticRing(-1);
         int expResult = ringGaussian.hashCode();
         System.out.println("BeforeClass-initialized " + ringGaussian.toASCIIString() + " hashed as " + expResult);
+        ImaginaryQuadraticRing someRing = new ImaginaryQuadraticRing(-1);
         int result = someRing.hashCode();
         System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
         String assertionMessage = "BeforeClass-initialized and test-initialized Z[i] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
-        assertionMessage = ringGaussian.toASCIIString() + " and " + ringZi2.toASCIIString() + " should hash differently.";
-        assertNotEquals(assertionMessage, someRing.hashCode(), ringZi2.hashCode());
-        someRing = new ImaginaryQuadraticRing(-2);
         expResult = ringZi2.hashCode();
         System.out.println("BeforeClass-initialized " + ringZi2.toASCIIString() + " hashed as " + expResult);
-        assertEquals(ringZi2.hashCode(), someRing.hashCode());
+        someRing = new ImaginaryQuadraticRing(-2);
         result = someRing.hashCode();
         System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
-        assertionMessage = "BeforeClass-initialized and test-initialized Z[i] should hash the same.";
+        assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-2)] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
-        assertionMessage = ringGaussian.toASCIIString() + " and " + ringZi2.toASCIIString() + " should hash differently.";
-        assertNotEquals(assertionMessage, someRing.hashCode(), ringGaussian.hashCode());
+        expResult = ringEisenstein.hashCode();
+        System.out.println("BeforeClass-initialized " + ringEisenstein.toASCIIString() + " hashed as " + expResult);
+        someRing = new ImaginaryQuadraticRing(-3);
+        result = someRing.hashCode();
+        System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
+        assertionMessage = "BeforeClass-initialized and test-initialized Z[omega] should hash the same.";
+        assertEquals(assertionMessage, expResult, result);
+        expResult = ringOQi7.hashCode();
+        System.out.println("BeforeClass-initialized " + ringOQi7.toASCIIString() + " hashed as " + expResult);
+        someRing = new ImaginaryQuadraticRing(-7);
+        result = someRing.hashCode();
+        System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
+        assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-7)] should hash the same.";
+        assertEquals(assertionMessage, expResult, result);
+        expResult = ringRandom.hashCode();
+        System.out.println("BeforeClass-initialized " + ringRandom.toASCIIString() + " hashed as " + expResult);
+        someRing = new ImaginaryQuadraticRing(randomDiscr);
+        result = someRing.hashCode();
+        System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
+        assertionMessage = "BeforeClass-initialized and test-initialized " + ringRandom.toASCIIString() + " should hash the same.";
+        assertEquals(assertionMessage, expResult, result);
     }
     
     /**
