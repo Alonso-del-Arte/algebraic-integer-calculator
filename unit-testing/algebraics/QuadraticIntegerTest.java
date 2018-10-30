@@ -136,6 +136,58 @@ public class QuadraticIntegerTest {
         }
     }
     
+    @Test
+    public void testTimesCrossDomainResult() {
+        System.out.println("Testing that times can correctly go from real to imaginary domain and back when appropriate");
+        ImaginaryQuadraticRing multiplicandARing = new ImaginaryQuadraticRing(-2);
+        ImaginaryQuadraticInteger multiplicandA = new ImaginaryQuadraticInteger(0, 1, multiplicandARing);
+        ImaginaryQuadraticRing multiplicandBRing = new ImaginaryQuadraticRing(-5);
+        ImaginaryQuadraticInteger multiplicandB = new ImaginaryQuadraticInteger(0, 1, multiplicandBRing);
+        RealQuadraticRing expResultRing = new RealQuadraticRing(10);
+        RealQuadraticInteger expResult = new RealQuadraticInteger(0, 1, expResultRing);
+        QuadraticInteger result = null;
+        try {
+            result = multiplicandA.times(multiplicandB);
+            System.out.println(multiplicandA.toASCIIString() + " times " + multiplicandB.toASCIIString() + " is " + result.toASCIIString() + ".");
+        } catch (UnsupportedNumberDomainException unde) {
+            String failMessage = "Multiplying " + multiplicandA.toASCIIString() + " by " + multiplicandB.toASCIIString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
+            fail(failMessage);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "Multiplying " + multiplicandA.toASCIIString() + " by " + multiplicandB.toASCIIString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
+            fail(failMessage);
+        }
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testTimesCrossDomain() {
+        System.out.println("Testing that times can correctly go from real to imaginary domain and back when appropriate");
+        ImaginaryQuadraticRing multiplicandARing = new ImaginaryQuadraticRing(-2);
+        ImaginaryQuadraticInteger multiplicandA = new ImaginaryQuadraticInteger(0, 1, multiplicandARing);
+        RealQuadraticRing multiplicandBRing = new RealQuadraticRing(5);
+        RealQuadraticInteger multiplicandB = new RealQuadraticInteger(0, 1, multiplicandBRing);
+        ImaginaryQuadraticRing expResultRing = new ImaginaryQuadraticRing(-10);
+        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(0, 1, expResultRing);
+        QuadraticInteger result = null;
+        try {
+            result = multiplicandA.times(multiplicandB);
+            System.out.println(multiplicandA.toASCIIString() + " times " + multiplicandB.toASCIIString() + " is " + result.toASCIIString() + ".");
+        } catch (UnsupportedNumberDomainException unde) {
+            String failMessage = "Multiplying " + multiplicandA.toASCIIString() + " by " + multiplicandB.toASCIIString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
+            fail(failMessage);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "Multiplying " + multiplicandA.toASCIIString() + " by " + multiplicandB.toASCIIString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
+            fail(failMessage);
+        }
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of divides method of class QuadraticInteger. Testing that dividing 
      * one quadratic integers by another quadratic integer in an unsupported 
@@ -175,5 +227,32 @@ public class QuadraticIntegerTest {
             fail(failMessage);
         }
     }
+    
+    @Test
+    public void testDividesCrossDomain() {
+        System.out.println("Testing that divides can correctly go from real to imaginary domain and back when appropriate");
+        ImaginaryQuadraticRing dividendRing = new ImaginaryQuadraticRing(-10);
+        ImaginaryQuadraticInteger dividend = new ImaginaryQuadraticInteger(0, 1, dividendRing);
+        ImaginaryQuadraticRing divisorRing = new ImaginaryQuadraticRing(-5);
+        ImaginaryQuadraticInteger divisor = new ImaginaryQuadraticInteger(0, 1, divisorRing);
+        RealQuadraticRing expResultRing = new RealQuadraticRing(2);
+        RealQuadraticInteger expResult = new RealQuadraticInteger(0, 1, expResultRing);
+        QuadraticInteger result = null;
+        try {
+            result = dividend.times(divisor);
+            System.out.println(dividend.toASCIIString() + " times " + divisor.toASCIIString() + " is " + result.toASCIIString() + ".");
+        } catch (UnsupportedNumberDomainException unde) {
+            String failMessage = "Multiplying " + dividend.toASCIIString() + " by " + divisor.toASCIIString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
+            fail(failMessage);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "Multiplying " + dividend.toASCIIString() + " by " + divisor.toASCIIString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
+            fail(failMessage);
+        }
+        assertEquals(expResult, result);
+    }
+
     
 }

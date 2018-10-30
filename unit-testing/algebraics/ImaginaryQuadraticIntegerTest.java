@@ -18,6 +18,7 @@ package algebraics;
 
 import calculators.NumberTheoreticFunctionsCalculator;
 import static viewers.RingWindowDisplay.MINIMUM_RING_D;
+import java.text.DecimalFormatSymbols;
 
 //import java.text.DecimalFormatSymbols;
 import java.util.List;
@@ -1529,6 +1530,59 @@ public class ImaginaryQuadraticIntegerTest {
 //            fail(failMessage);
 //        }
 //    }
+    
+    /**
+     * Test of parseQuaterImaginary of class ImaginaryQuadraticInteger.
+     */
+    @Test
+    public void testParseQuaterImaginary() {
+        System.out.println("parseQuaterImaginary");
+        String numberString = "10";
+        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(0, 2, RING_GAUSSIAN);
+        QuadraticInteger result = ImaginaryQuadraticInteger.parseQuaterImaginary(numberString);
+        assertEquals(expResult, result);
+        numberString = " 3211 "; // Contains spaces to test these are indeed stripped out
+        expResult = new ImaginaryQuadraticInteger(-7, -22, RING_GAUSSIAN);
+        result = ImaginaryQuadraticInteger.parseQuaterImaginary(numberString);
+        assertEquals(expResult, result);
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        char decimalDot = dfs.getDecimalSeparator();
+        numberString = "10" + decimalDot + "200";
+        result = ImaginaryQuadraticInteger.parseQuaterImaginary(numberString);
+        assertEquals(NumberTheoreticFunctionsCalculator.IMAG_UNIT_I, result);
+        numberString = "10" + decimalDot + "3";
+        try {
+            result = ImaginaryQuadraticInteger.parseQuaterImaginary(numberString);
+            String failMessage = "\"" + numberString + "\" should have triggered NumberFormatException, not given result " + result.toASCIIString();
+            fail(failMessage);
+        } catch (NumberFormatException nfe) {
+            System.out.println("\"" + numberString + "\" correctly triggered NumberFormatException \"" + nfe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = "\"" + numberString + "\" should not have triggered " + e.getClass().getName() + " \"" + e.getMessage() + "\"";
+            fail(failMessage);
+        }
+        numberString = "not actually a number at all this time, sorry";
+        try {
+            result = ImaginaryQuadraticInteger.parseQuaterImaginary(numberString);
+            String failMessage = "\"" + numberString + "\" should have triggered NumberFormatException, not given result " + result.toASCIIString();
+            fail(failMessage);
+        } catch (NumberFormatException nfe) {
+            System.out.println("\"" + numberString + "\" correctly triggered NumberFormatException \"" + nfe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = "Empty String should not have caused " + e.getClass().getName() + " \"" + e.getMessage() + "\"";
+            fail(failMessage);
+        }
+        numberString = "";
+        try {
+            result = ImaginaryQuadraticInteger.parseQuaterImaginary(numberString);
+            assertEquals(zeroIQI, result);
+        } catch (NumberFormatException nfe) {
+            System.out.println("It is acceptable for an empty String to trigger NumberFormatException \"" + nfe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = "\"" + numberString + "\" should not have triggered " + e.getClass().getName() + " \"" + e.getMessage() + "\"";
+            fail(failMessage);
+        }
+    }
 
     /**
      * Test of plus method, of class ImaginaryQuadraticInteger.
@@ -1814,27 +1868,6 @@ public class ImaginaryQuadraticIntegerTest {
                 fail(failMessage);
             }
         }
-        /* And lastly, to test that multiplying two purely imaginary numbers 
-           from distinct domains causes UnsupportedNumberDomainException. */
-        testMultiplicandA = new ImaginaryQuadraticInteger(0, 5, RING_ZI2);
-        testMultiplicandB = new ImaginaryQuadraticInteger(0, 2, ringRandom);
-        failMessage = "Multiplying " + testMultiplicandA.toASCIIString() + " by " + testMultiplicandB.toASCIIString() + " should not have";
-        try {
-            result = testMultiplicandA.times(testMultiplicandB);
-            failMessage = failMessage + " resulted in " + result.toASCIIString() + " without triggering some sort of exception.";
-            fail(failMessage);
-        } catch (UnsupportedNumberDomainException unde) {
-            int realRadicand = testMultiplicandA.getRing().getRadicand() * testMultiplicandB.getRing().getRadicand();
-            double realNumericApprox = -10 * Math.sqrt(realRadicand);
-            System.out.println("Multiplying " + testMultiplicandA.toASCIIString() + " by " + testMultiplicandB.toASCIIString() + " correctly triggered UnsupportedNumberDomainException \"" + unde.getMessage() + "\"");
-            System.out.println("This is perhaps the best solution if the source package lacks a way to represent the real number -10sqrt(" + realRadicand + "), approximately " + realNumericApprox + "...");
-        } catch (AlgebraicDegreeOverflowException adoe) {
-            failMessage = failMessage + " caused AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
-            fail(failMessage);
-        } catch (Exception e) {
-            failMessage = failMessage + " caused" + e.getClass().getName() + "\"" + e.getMessage() + "\"";
-            fail(failMessage);
-        }
     }
 
     /**
@@ -1936,7 +1969,7 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getResReFractNumer() + " + " + nde.getResImFractNumer() + "sqrt(" + nde.getResFractNegRad() + "))/" + nde.getResFractDenom());
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
@@ -1948,7 +1981,7 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getResReFractNumer() + " + " + nde.getResImFractNumer() + "sqrt(" + nde.getResFractNegRad() + "))/" + nde.getResFractDenom());
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
