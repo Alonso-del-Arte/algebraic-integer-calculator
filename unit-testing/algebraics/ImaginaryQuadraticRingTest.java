@@ -75,8 +75,8 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of getNegRad method, of class ImaginaryQuadraticRing, inherited from 
-     * QuadraticRing.
+     * Test of getRadicand method, of class ImaginaryQuadraticRing, inherited 
+     * from QuadraticRing.
      */
     @Test
     public void testGetRadicand() {
@@ -86,6 +86,51 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(-3, ringEisenstein.getRadicand());
         assertEquals(-7, ringOQi7.getRadicand());
         assertEquals(randomDiscr, ringRandom.getRadicand());
+    }
+
+    /**
+     * Test of getRadicand method, of class ImaginaryQuadraticRing, inherited 
+     * from QuadraticRing.
+     */
+    @Test
+    public void testGetRadSqrt() {
+        System.out.println("getRadSqrt");
+        double result;
+        try {
+            result = ringGaussian.getRadSqrt();
+            String failMessage = "getRadSqrt() for " + ringGaussian.toASCIIString() + " should have triggered an exception, not given result " + result;
+            fail(failMessage);
+        } catch (UnsupportedOperationException uoe) {
+            System.out.println("UnsupportedOperationException correctly triggered for " + ringGaussian.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
+        }
+        try {
+            result = ringZi2.getRadSqrt();
+            String failMessage = "getRadSqrt() for " + ringGaussian.toASCIIString() + " should have triggered an exception, not given result " + result;
+            fail(failMessage);
+        } catch (UnsupportedOperationException uoe) {
+            System.out.println("UnsupportedOperationException correctly triggered for " + ringGaussian.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
+        }
+        try {
+            result = ringEisenstein.getRadSqrt();
+            String failMessage = "getRadSqrt() for " + ringGaussian.toASCIIString() + " should have triggered an exception, not given result " + result;
+            fail(failMessage);
+        } catch (UnsupportedOperationException uoe) {
+            System.out.println("UnsupportedOperationException correctly triggered for " + ringGaussian.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
+        }
+        try {
+            result = ringOQi7.getRadSqrt();
+            String failMessage = "getRadSqrt() for " + ringGaussian.toASCIIString() + " should have triggered an exception, not given result " + result;
+            fail(failMessage);
+        } catch (UnsupportedOperationException uoe) {
+            System.out.println("UnsupportedOperationException correctly triggered for " + ringGaussian.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
+        }
+        try {
+            result = ringRandom.getRadSqrt();
+            String failMessage = "getRadSqrt() for " + ringGaussian.toASCIIString() + " should have triggered an exception, not given result " + result;
+            fail(failMessage);
+        } catch (UnsupportedOperationException uoe) {
+            System.out.println("UnsupportedOperationException correctly triggered for " + ringGaussian.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
+        }
     }
 
     /**

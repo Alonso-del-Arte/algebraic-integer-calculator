@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -72,7 +73,7 @@ public class RealQuadraticIntegerTest {
     
     private static int randomRegPart, randomSurdPart, randomRegForHalfInts, randomSurdForHalfInts, totalTestIntegers;
     
-    private static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
+    // private static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
     
     @BeforeClass
     public static void setUpClass() {
@@ -94,7 +95,7 @@ public class RealQuadraticIntegerTest {
             System.out.println(ringRandomForAltTesting.toASCIIString() + " has been chosen for testing toStringAlt(), toASCIIStringAlt, toTeXStringAlt and toHTMLStringAlt.");
         }
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
-        maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/(4 * (randomDiscr + 1))));
+        maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/(16 * (randomDiscr + 1))));
         System.out.println("Maximum for regular and surd parts is " + maxAB);
         Random ranNumGen = new Random();
         randomRegPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
@@ -127,7 +128,7 @@ public class RealQuadraticIntegerTest {
         testAdditiveInverses.add(currRQI);
         currRQI = new RealQuadraticInteger(randomRegForHalfInts, -randomSurdForHalfInts, RING_ZPHI, 2);
         testConjugates.add(currRQI);
-        currNorm = (randomRegForHalfInts * randomRegForHalfInts + 3 * randomSurdForHalfInts * randomSurdForHalfInts)/4;
+        currNorm = (randomRegForHalfInts * randomRegForHalfInts - 5 * randomSurdForHalfInts * randomSurdForHalfInts)/4;
         currRQI = new RealQuadraticInteger(currNorm, 0, RING_ZPHI);
         testNorms.add(currRQI);
         testNormsRegParts.add(currNorm);
@@ -137,7 +138,7 @@ public class RealQuadraticIntegerTest {
         testAdditiveInverses.add(currRQI);
         currRQI = new RealQuadraticInteger(randomRegForHalfInts, -randomSurdForHalfInts, RING_OQ13, 2);
         testConjugates.add(currRQI);
-        currNorm = (randomRegForHalfInts * randomRegForHalfInts + 7 * randomSurdForHalfInts * randomSurdForHalfInts)/4;
+        currNorm = (randomRegForHalfInts * randomRegForHalfInts - 13 * randomSurdForHalfInts * randomSurdForHalfInts)/4;
         currRQI = new RealQuadraticInteger(currNorm, 0, RING_OQ13, 1);
         testNorms.add(currRQI);
         testNormsRegParts.add(currNorm);
@@ -148,7 +149,7 @@ public class RealQuadraticIntegerTest {
             testAdditiveInverses.add(currRQI);
             currRQI = new RealQuadraticInteger(randomRegForHalfInts, -randomSurdForHalfInts, ringRandom, 2);
             testConjugates.add(currRQI);
-            currNorm = (randomRegForHalfInts * randomRegForHalfInts + (-randomDiscr) * randomSurdForHalfInts * randomSurdForHalfInts)/4;
+            currNorm = (randomRegForHalfInts * randomRegForHalfInts - randomDiscr * randomSurdForHalfInts * randomSurdForHalfInts)/4;
             currRQI = new RealQuadraticInteger(currNorm, 0, ringRandom);
             testNorms.add(currRQI);
             testNormsRegParts.add(currNorm);
@@ -159,7 +160,7 @@ public class RealQuadraticIntegerTest {
             testAdditiveInverses.add(currRQI);
             currRQI = new RealQuadraticInteger(randomRegPart, -randomSurdPart, ringRandom);
             testConjugates.add(currRQI);
-            currNorm = randomRegPart * randomRegPart + (-randomDiscr) * randomSurdPart * randomSurdPart;
+            currNorm = randomRegPart * randomRegPart - randomDiscr * randomSurdPart * randomSurdPart;
             currRQI = new RealQuadraticInteger(currNorm, 0, ringRandom);
             testNorms.add(currRQI);
             testNormsRegParts.add(currNorm);
@@ -312,6 +313,7 @@ public class RealQuadraticIntegerTest {
             expResult = expResult.replace("-1x", "-x");
             expResult = expResult.replace("+0x", "");
             expResult = expResult.replace("-0x", "");
+            expResult = expResult.replace("+-", "-");
             result = testIntegers.get(i).minPolynomialString().replace(" ", ""); // Strip out spaces
             assertEquals(expResult, result);
         }
@@ -364,7 +366,18 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testAbs() {
         System.out.println("abs");
-        fail("Haven't written the test yet.");
+        double expResult, result;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = Math.abs(randomRegForHalfInts + testIntegers.get(i).getRing().getRadSqrt() * randomSurdForHalfInts);
+                expResult /= 2;
+            } else {
+                expResult = Math.abs(randomRegPart + testIntegers.get(i).getRing().getRadSqrt() * randomSurdPart);
+            }
+            result = testIntegers.get(i).abs();
+            System.out.println("|" + testIntegers.get(i).toASCIIString() + "| = " + result);
+            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        }
     }
 
     /**
@@ -373,15 +386,17 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testGetRealPartMultNumeric() {
         System.out.println("getRealPartMultNumeric");
-        double expResult = (double) randomRegForHalfInts/2;
-        double result;
+        double expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).getRealPartMultNumeric();
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+                expResult = testIntegers.get(i).getRing().getRadSqrt() * randomSurdForHalfInts + randomRegForHalfInts;
+                expResult /= 2;
             } else {
-                assertEquals(randomRegPart, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+                expResult = testIntegers.get(i).getRing().getRadSqrt() * randomSurdPart + randomRegPart;
             }
+            result = testIntegers.get(i).getRealPartMultNumeric();
+            System.out.println(testIntegers.get(i).toASCIIString() + " = " + result);
+            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
         }
     }
 
@@ -458,6 +473,7 @@ public class RealQuadraticIntegerTest {
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToStringAlt() {
         System.out.println("toStringAlt");
@@ -468,6 +484,7 @@ public class RealQuadraticIntegerTest {
      * Test of toASCIIString method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
@@ -478,6 +495,7 @@ public class RealQuadraticIntegerTest {
      * Test of toASCIIStringAlt method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToASCIIStringAlt() {
         System.out.println("toASCIIStringAlt");
@@ -488,6 +506,7 @@ public class RealQuadraticIntegerTest {
      * Test of toTeXString method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
@@ -498,6 +517,7 @@ public class RealQuadraticIntegerTest {
      * Test of toTeXStringSingleDenom method, of class RealQuadraticInteger, 
      * inherited from QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToTeXStringSingleDenom() {
         System.out.println("toTeXStringSingleDenom");
@@ -508,6 +528,7 @@ public class RealQuadraticIntegerTest {
      * Test of toTeXStringAlt method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToTeXStringAlt() {
         System.out.println("toTeXStringAlt");
@@ -518,6 +539,7 @@ public class RealQuadraticIntegerTest {
      * Test of toHTMLString method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
@@ -528,6 +550,7 @@ public class RealQuadraticIntegerTest {
      * Test of toHTMLStringAlt method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
+    @Ignore
     @Test
     public void testToHTMLStringAlt() {
         System.out.println("toHTMLStringAlt");
@@ -619,6 +642,7 @@ public class RealQuadraticIntegerTest {
      * should be understood to mean 1/2 + sqrt(5)/2, while &theta; means 1/2 
      * + sqrt(d)/2 with d = 1 mod 4, but d may be ambiguous.
      */
+    @Ignore
     @Test
     public void testParseQuadraticInteger() {
         System.out.println("parseQuadraticInteger");
@@ -683,6 +707,7 @@ public class RealQuadraticIntegerTest {
      * optional behaviors are required, change the print statements under catch 
      * {@link NumberFormatException} to fails.
      */
+    @Ignore
     @Test
     public void testParseQuadraticIntegerOptions() {
         System.out.println("parseQuadraticInteger, optional behaviors");
@@ -747,32 +772,287 @@ public class RealQuadraticIntegerTest {
 //            fail(failMessage);
 //        }
     }
-    
+        
     /**
      * Test of plus method, of class RealQuadraticInteger.
      */
     @Test
     public void testPlus() {
         System.out.println("plus");
-        fail("Haven't written the test yet.");
+        RealQuadraticRing currRing;
+        QuadraticInteger expResult, result, testAddendA, testAddendB;
+        int currDenom;
+        String failMessage;
+        for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+                currRing = new RealQuadraticRing(iterDiscr);
+                if (currRing.hasHalfIntegers()) {
+                    currDenom = 2;
+                } else {
+                    currDenom = 1;
+                }
+                for (int v = -3; v < 48; v += 2) {
+                    for (int w = -3; w < 48; w += 2) {
+                        testAddendA = new RealQuadraticInteger(v, w, currRing, currDenom);
+                        for (int x = -3; x < 48; x += 2) {
+                            for (int y = -3; y < 48; y += 2) {
+                                testAddendB = new RealQuadraticInteger(x, y, currRing, currDenom);
+                                expResult = new RealQuadraticInteger(v + x, w + y, currRing, currDenom);
+                                failMessage = "Adding two integers from the same ring should not have triggered AlgebraicDegreeOverflowException \"";
+                                try {
+                                    result = testAddendA.plus(testAddendB);
+                                    assertEquals(expResult, result);
+                                } catch (AlgebraicDegreeOverflowException adoe) {
+                                    failMessage = failMessage + adoe.getMessage() + "\"";
+                                    fail(failMessage);
+                                }
+                            }
+                            // Now to test plus(int)
+                            if (currRing.hasHalfIntegers()) {
+                                expResult = new RealQuadraticInteger(v + 2 * x, w, currRing, 2);
+                            } else {
+                                expResult = new RealQuadraticInteger(v + x, w, currRing);
+                            }
+                            result = testAddendA.plus(x);
+                            assertEquals(expResult, result);
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < totalTestIntegers; i++) {
+            // Testing that adding additive inverses give 0 each time
+            failMessage = "Adding test integer to its additive inverse should not have triggered AlgebraicDegreeOverflowException \"";
+            try {
+                result = testIntegers.get(i).plus(testAdditiveInverses.get(i));
+                assertEquals(zeroRQI, result);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = failMessage + adoe.getMessage() + "\"";
+                fail(failMessage);
+            }
+            // Now testing that adding 0 does not change the number
+            result = testIntegers.get(i).plus(0);
+            assertEquals(testIntegers.get(i), result);
+        }
+        /* And now to test that adding algebraic integers from two different 
+           quadratic integer rings triggers AlgebraicDegreeOverflowException */
+        for (int j = 0; j < totalTestIntegers - 1; j++) {
+            try {
+                result = testIntegers.get(j).plus(testIntegers.get(j + 1));
+                failMessage = "Adding " + testIntegers.get(j).toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " should not have resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
+                fail(failMessage);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                System.out.println("Adding " + testIntegers.get(j).toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
+            }
+            /* However, if one of them is purely real, there should be a result, 
+               even if it takes us to a different ring */
+            failMessage = "Adding " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " should not have caused";
+            try {
+                result = testNorms.get(j).plus(testIntegers.get(j + 1));
+                System.out.println("Adding " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " gives result " + result.toASCIIString());
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = failMessage + "AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (Exception e) {
+                failMessage = failMessage + "Exception \"" + e.getMessage() + "\"";
+                fail(failMessage);
+            }
+            failMessage = "Adding " + testNorms.get(j + 1).toASCIIString() + " from " + testNorms.get(j + 1).getRing().toASCIIString() + " to " + testIntegers.get(j).toASCIIString() + " should not have caused";
+            try {
+                result = testIntegers.get(j).plus(testNorms.get(j + 1));
+                System.out.println("Adding " + testNorms.get(j + 1).toASCIIString() + " from " + testNorms.get(j + 1).getRing().toASCIIString() + " to " + testIntegers.get(j).toASCIIString() + " gives result " + result.toASCIIString());
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = failMessage + "AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (Exception e) {
+                failMessage = failMessage + "Exception \"" + e.getMessage() + "\"";
+                fail(failMessage);
+            }
+        }
     }
-
+    
     /**
      * Test of minus method, of class RealQuadraticInteger.
      */
     @Test
     public void testMinus() {
         System.out.println("minus");
-        fail("Haven't written the test yet.");
+        RealQuadraticRing currRing;
+        QuadraticInteger expResult, result, testMinuend, testSubtrahend;
+        int currDenom;
+        String failMessage;
+        for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+                currRing = new RealQuadraticRing(iterDiscr);
+                if (currRing.hasHalfIntegers()) {
+                    currDenom = 2;
+                } else {
+                    currDenom = 1;
+                }
+                for (int v = -3; v < 48; v += 2) {
+                    for (int w = -3; w < 48; w += 2) {
+                        testMinuend = new RealQuadraticInteger(v, w, currRing, currDenom);
+                        for (int x = -3; x < 48; x += 2) {
+                            for (int y = -3; y < 48; y += 2) {
+                                testSubtrahend = new RealQuadraticInteger(x, y, currRing, currDenom);
+                                expResult = new RealQuadraticInteger(v - x, w - y, currRing, currDenom);
+                                try {
+                                    result = testMinuend.minus(testSubtrahend);
+                                    assertEquals(expResult, result);
+                                } catch (AlgebraicDegreeOverflowException adoe) {
+                                    failMessage = "Subtracting two integers from the same ring should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                                    fail(failMessage);
+                                }
+                            }
+                            // Now to test minus(int)
+                            if (currRing.hasHalfIntegers()) {
+                                expResult = new RealQuadraticInteger(v - 2 * x, w, currRing, 2);
+                            } else {
+                                expResult = new RealQuadraticInteger(v - x, w, currRing);
+                            }
+                            result = testMinuend.minus(x);
+                            assertEquals(expResult, result);
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < totalTestIntegers; i++) {
+            // Testing that subtracting itself gives 0 each time
+            expResult = new RealQuadraticInteger(0, 0, testIntegers.get(i).getRing());
+            try {
+                result = testIntegers.get(i).minus(testIntegers.get(i));
+                assertEquals(expResult, result);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = "Subtracting test integer from itself should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
+                fail(failMessage);
+            }
+            // Now testing that subtracting 0 does not change the number
+            result = testIntegers.get(i).minus(0);
+            assertEquals(testIntegers.get(i), result);
+        }
+        /* And now to test that subtracting algebraic integers from two 
+           different quadratic integer rings triggers 
+           AlgebraicDegreeOverflowException */
+        for (int j = 0; j < totalTestIntegers - 1; j++) {
+            try {
+                result = testIntegers.get(j).minus(testIntegers.get(j + 1));
+                failMessage = "Subtracting " + testIntegers.get(j + 1).toASCIIString() + " to " + testIntegers.get(j).toASCIIString() + " should not have resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
+                fail(failMessage);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                System.out.println("Subtracting " + testIntegers.get(j + 1).toASCIIString() + " from " + testIntegers.get(j).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
+            }
+            /* However, if one of them is purely real, there should be some kind 
+               of result */
+            failMessage = "Subtracting " + testIntegers.get(j + 1).toASCIIString() + " from " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " should not have triggered";
+            try {
+                result = testNorms.get(j).minus(testIntegers.get(j + 1));
+                System.out.println(testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " minus " + testIntegers.get(j + 1).toASCIIString() + " is " + result.toASCIIString());
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (Exception e) {
+                failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
+                fail(failMessage);
+            }
+        }
     }
-
+    
     /**
      * Test of times method, of class RealQuadraticInteger.
      */
     @Test
     public void testTimes() {
         System.out.println("times");
-        fail("Haven't written the test yet.");
+        RealQuadraticRing currRing;
+        QuadraticInteger expResult, result, testMultiplicandA, testMultiplicandB;
+        int currDenom;
+        String failMessage;
+        for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+                currRing = new RealQuadraticRing(iterDiscr);
+                if (currRing.hasHalfIntegers()) {
+                    currDenom = 2;
+                } else {
+                    currDenom = 1;
+                }
+                for (int v = -3; v < 48; v += 2) {
+                    for (int w = -3; w < 48; w += 2) {
+                        testMultiplicandA = new RealQuadraticInteger(v, w, currRing, currDenom);
+                        for (int x = -3; x < 48; x += 2) {
+                            for (int y = -3; y < 48; y += 2) {
+                                testMultiplicandB = new RealQuadraticInteger(x, y, currRing, currDenom);
+                                if (currRing.hasHalfIntegers()) {
+                                    expResult = new RealQuadraticInteger((v * x + w * y * iterDiscr)/2, (v * y + w * x)/2, currRing, currDenom);
+                                } else {
+                                    expResult = new RealQuadraticInteger(v * x + w * y * iterDiscr, v * y + w * x, currRing, currDenom);
+                                }
+                                try {
+                                    result = testMultiplicandA.times(testMultiplicandB);
+                                    assertEquals(expResult, result);
+                                } catch (AlgebraicDegreeOverflowException adoe) {
+                                    failMessage = "Multiplying two integers from the same ring should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                                    fail(failMessage);
+                                }
+                            }
+                            // Now to test times(int)
+                            expResult = new RealQuadraticInteger(v * x, w * x, currRing, currDenom);
+                            result = testMultiplicandA.times(x);
+                            assertEquals(expResult, result);
+                        }
+                    }
+                }
+            }
+        }
+        // Complex integer times its conjugate should match its norm
+        for (int i = 0; i < totalTestIntegers; i++) {
+            try {
+                result = testIntegers.get(i).times(testConjugates.get(i));
+                assertEquals(testNorms.get(i), result);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = "Multiplying an integer by its conjugate should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
+                fail(failMessage);
+            }
+        }
+        /* And now to test that multiplying algebraic integers from two 
+           different quadratic integer rings triggers 
+           AlgebraicDegreeOverflowException, provided they both have nonzero 
+           "regular" parts */
+        for (int j = 0; j < totalTestIntegers - 1; j++) {
+            try {
+                result = testIntegers.get(j).times(testIntegers.get(j + 1));
+                failMessage = "Multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
+                fail(failMessage);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = "Necessary degree should be 4, not " + adoe.getNecessaryAlgebraicDegree() + ", for multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + ".";
+                assertEquals(failMessage, 4, adoe.getNecessaryAlgebraicDegree());
+                System.out.println("Multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
+            }
+            /* However, if one of them is purely real, there should be a result, 
+               even if it takes us to a different ring */
+            failMessage = "Multiplying " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have caused";
+            try {
+                result = testNorms.get(j).times(testIntegers.get(j + 1));
+                System.out.println("Multiplying " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " gives result " + result.toASCIIString());
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (Exception e) {
+                failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
+                fail(failMessage);
+            }
+            failMessage = "Multiplying " + testNorms.get(j + 1).toASCIIString() + " from " + testNorms.get(j + 1).getRing().toASCIIString() + " by " + testIntegers.get(j).toASCIIString() + " should not have caused";
+            try {
+                result = testIntegers.get(j).times(testNorms.get(j + 1));
+                System.out.println("Multiplying " + testNorms.get(j + 1).toASCIIString() + " from " + testNorms.get(j + 1).getRing().toASCIIString() + " by " + testIntegers.get(j).toASCIIString() + " gives result " + result.toASCIIString());
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (Exception e) {
+                failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
+                fail(failMessage);
+            }
+        }
     }
 
     /**
@@ -780,8 +1060,264 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testDivides() {
-        System.out.println("divides");
-        fail("Haven't written the test yet.");
+        System.out.println("divides(RealQuadraticInteger)");
+        RealQuadraticRing currRing;
+        QuadraticInteger expResult, result, testQuotient, testDivisor, testDividend;
+        int currDenom;
+        String failMessage;
+        for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+                currRing = new RealQuadraticRing(iterDiscr);
+                if (currRing.hasHalfIntegers()) {
+                    currDenom = 2;
+                } else {
+                    currDenom = 1;
+                }
+                for (int v = -3; v < 48; v += 2) {
+                    for (int w = 3; w < 54; w += 2) {
+                        testQuotient = new RealQuadraticInteger(v, w, currRing, currDenom);
+                        for (int x = -3; x < 48; x += 2) {
+                            for (int y = 3; y < 54; y += 2) {
+                                testDivisor = new RealQuadraticInteger(x, y, currRing, currDenom);
+                                try {
+                                    testDividend = testQuotient.times(testDivisor);
+                                } catch (AlgebraicDegreeOverflowException adoe) {
+                                    testDividend = zeroRQI; // This is just to avoid "variable result might not have been initialized" error
+                                    failMessage = "Check results of times() test for incorrect triggering of AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                                    fail(failMessage);
+                                }
+                                try {
+                                    result = testDividend.divides(testDivisor);
+                                    assertEquals(testQuotient, result);
+                                } catch (AlgebraicDegreeOverflowException adoe) {
+                                    failMessage = "Dividing one integer by another from the same ring should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+                                    fail(failMessage);
+                                } catch (NotDivisibleException nde) {
+                                    failMessage = "Dividing " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " should not have triggered NotDivisibleException \"" + nde.getMessage() + "\"";
+                                    fail(failMessage);
+                                }
+                                
+                            }
+                            // Now to test divides(int)
+                            testDividend = new RealQuadraticInteger(v * x, w * x, currRing, currDenom);
+                            expResult = new RealQuadraticInteger(v, w, currRing, currDenom);
+                            try {
+                                result = testDividend.divides(x);
+                                assertEquals(expResult, result);
+                            } catch (NotDivisibleException nde) {
+                                failMessage = "Dividing " + testDividend.toASCIIString() + " by " + x + " should not have triggered NotDivisibleException\"" + nde.getMessage() + "\"";
+                                fail(failMessage);
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+        // TODO: Rethink following part of the test, consider split off or remove altogether
+        /* Now to test dividing a purely real integer held in an 
+           RealQuadraticInteger object divided by a purely real integer in 
+           an int */
+//        System.out.println("divides(int)");
+//        int testDivRealPartMult;
+//        for (int iterDiscrOQ = -11; iterDiscrOQ > -84; iterDiscrOQ -= 8) {
+//            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscrOQ)) {
+//                currRing = new RealQuadraticRing(iterDiscrOQ);
+//                testDivRealPartMult = (-iterDiscrOQ + 1)/4;
+//                testDividend = new RealQuadraticInteger(testDivRealPartMult, 0, currRing);
+//                try {
+//                    result = testDividend.divides(2);
+//                    failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " should have triggered NotDivisibleException, not given result " + result.toString();
+//                    fail(failMessage);
+//                } catch (NotDivisibleException nde) {
+//                    System.out.println("Trying to divide " + testDividend.toASCIIString() + " by 2 in " + currRing.toASCIIString() + " correctly triggered NotDivisibleException \"" + nde.getMessage() + "\"");
+//                } catch (Exception e) {
+//                    System.out.println("Encountered this exception: " + e.getClass().getName() + " \"" + e.getMessage() + "\"");
+//                    failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " triggered the wrong exception.";
+//                    fail(failMessage);
+//                }
+//            }
+//        }
+        for (int i = 0; i < totalTestIntegers; i++) {
+            try {
+                result = testNorms.get(i).divides(testConjugates.get(i));
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is " + result.toASCIIString());
+                assertEquals(testIntegers.get(i), result);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (NotDivisibleException nde) {
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
+                failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
+                fail(failMessage);
+            }
+            try {
+                result = testNorms.get(i).divides(testIntegers.get(i));
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is " + result.toASCIIString());
+                assertEquals(testConjugates.get(i), result);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (NotDivisibleException nde) {
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
+                failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
+                fail(failMessage);
+            }
+            // Check to make sure division by zero causes a suitable exception
+            try {
+                result = testIntegers.get(i).divides(zeroRQI);
+                failMessage = "Dividing " + testIntegers.get(i).toASCIIString() + " by 0 + 0i should have caused an exception, not given result " + result.toASCIIString();
+                fail(failMessage);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = "AlgebraicDegreeOverflowException is the wrong exception to throw for division by 0 + 0i \"" + adoe.getMessage() + "\"";
+                fail(failMessage);
+            } catch (NotDivisibleException nde) {
+                failMessage = "NotDivisibleException is the wrong exception to throw for division by 0 + 0i \"" + nde.getMessage() + "\"";
+                fail(failMessage);
+            } catch (IllegalArgumentException iae) {
+                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by 0 + 0i \"" + iae.getMessage() + "\"");
+            } catch (ArithmeticException ae) {
+                System.out.println("ArithmeticException correctly triggered upon attempt to divide by 0 + 0i \"" + ae.getMessage() + "\"");
+            } catch (Exception e) {
+                failMessage = "Wrong exception thrown for attempt to divide by 0 + 0i. " + e.getMessage();
+                fail(failMessage);
+            }
+            try {
+                result = testIntegers.get(i).divides(0);
+                failMessage = "Dividing " + testIntegers.get(i).toASCIIString() + " by 0 should have caused an exception, not given result " + result.toASCIIString();
+                fail(failMessage);
+            } catch (NotDivisibleException nde) {
+                failMessage = "NotDivisibleException is the wrong exception to throw for division by 0 \"" + nde.getMessage() + "\"";
+                fail(failMessage);
+            } catch (IllegalArgumentException iae) {
+                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by 0 \"" + iae.getMessage() + "\"");
+            } catch (ArithmeticException ae) {
+                System.out.println("ArithmeticException correctly triggered upon attempt to divide by 0. \"" + ae.getMessage() + "\"");
+            } catch (Exception e) {
+                failMessage = "Wrong exception thrown for attempt to divide by 0. " + e.getMessage();
+                fail(failMessage);
+            }
+        }
+        /* Check that dividing a real quadratic integer from one ring by a 
+           rational integer from another ring does give the same result as if 
+           the purely real integer was presented as being from the same ring. */
+        testDividend = new RealQuadraticInteger(3, 1, RING_ZPHI);
+        testDivisor = new RealQuadraticInteger(2, 0, RING_Z2);
+        expResult = new RealQuadraticInteger(3, 1, RING_ZPHI, 2);
+        failMessage = "Trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " from " + testDivisor.getRing().toASCIIString() + " should not have triggered";
+        try {
+            result = testDividend.divides(testDivisor);
+            assertEquals(expResult, result);
+        } catch (NotDivisibleException nde) {
+            failMessage = failMessage + " NotDivisibleException \"" + nde.getMessage() + "\"";
+            fail(failMessage);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+            fail(failMessage);
+        } catch (Exception e) {
+            failMessage = failMessage + e.getClass().getName() + "\"" + e.getMessage() + "\"";
+            fail(failMessage);
+        }
+        /* And now to test that dividing an algebraic integer from one real 
+           quadratic ring by an algebraic integer from another real quadratic 
+           ring triggers AlgebraicDegreeOverflowException */
+        QuadraticInteger temp;
+        for (int j = 0; j < totalTestIntegers - 1; j++) {
+            failMessage = "Dividing " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have";
+            try {
+                result = testIntegers.get(j).divides(testIntegers.get(j + 1));
+                failMessage = failMessage + " resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
+                fail(failMessage);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                failMessage = "Necessary degree should be 4, not " + adoe.getNecessaryAlgebraicDegree() + ", for multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + ".";
+                assertEquals(failMessage, 4, adoe.getNecessaryAlgebraicDegree());
+                System.out.println("Dividing " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
+            } catch (NotDivisibleException nde) {
+                failMessage = failMessage + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
+                fail(failMessage);
+            }
+            // TODO: Review following part of test, consider split off or remove altogether
+            /* However, if the divisor is rational, there should be a result, 
+               even if it takes us to a different ring */
+//            temp = testIntegers.get(j + 1).times(testNorms.get(j));
+//            failMessage = "Dividing " + temp.toASCIIString() + " from " + temp.getRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " should not have caused";
+//            try {
+//                result = temp.divides(testNorms.get(j));
+//                System.out.println("Dividing " + temp.toASCIIString() + " from " + temp.getRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " gives result " + result.toASCIIString());
+//            } catch (AlgebraicDegreeOverflowException adoe) {
+//                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+//                fail(failMessage);
+//            } catch (NotDivisibleException nde) {
+//                failMessage = failMessage + " NotDivisibleException \"" + nde.getMessage() + "\"";
+//                fail(failMessage);
+//            } catch (Exception e) {
+//                failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
+//                fail(failMessage);
+//            }
+        }
     }
+    
+    /**
+     * Test of the times, norm and abs methods, simultaneously, of class 
+     * RealQuadraticInteger. If the independent tests for any of those are 
+     * failing, the result of this test is meaningless.
+     */
+    @Test
+    public void testSimultTimesAndNormAndAbs() {
+        System.out.println("times and norm, simultaneous test");
+        RealQuadraticInteger baseUnit = new RealQuadraticInteger(-3, -1, RING_OQ13, 2);
+        QuadraticInteger currUnit = new RealQuadraticInteger(-1, 0, RING_OQ13);
+        double currAbs = 1.0;
+        long threshold = Integer.MAX_VALUE / 16;
+        long currNorm;
+        while (currAbs < threshold) {
+            currUnit = currUnit.times(baseUnit); // Should be a positive number with norm -1
+            System.out.println(currUnit.toASCIIString() + " = " + currUnit.getRealPartMultNumeric());
+            currNorm = currUnit.norm();
+            assertEquals(-1, currNorm);
+            currUnit = currUnit.times(baseUnit); // Should be a negative number with norm 1
+            System.out.println(currUnit.toASCIIString() + " = " + currUnit.getRealPartMultNumeric());
+            currNorm = currUnit.norm();
+            assertEquals(1, currNorm);
+            currAbs = currUnit.abs();
+        }
+    }
+
+    /**
+     * Test of RealQuadraticInteger class constructor. The main thing we're 
+     * testing here is that an invalid argument triggers an 
+     * {@link IllegalArgumentException}.
+     */
+    @Test
+    public void testConstructor() {
+        System.out.println("RealQuadraticInteger (constructor)");
+        RealQuadraticInteger quadrInt = new RealQuadraticInteger(1, 3, RING_Z2, 1); // This should work fine
+        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
+        quadrInt = new RealQuadraticInteger(7, 5, RING_ZPHI, 2); // This should also work fine
+        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
+        quadrInt = new RealQuadraticInteger(6, 4, RING_OQ13, -2); // This should also work, right?
+        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
+        // Test 3-parameter constructor
+        quadrInt = new RealQuadraticInteger(5, 3, RING_OQ13);
+        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
+        RealQuadraticInteger comparisonInt = new RealQuadraticInteger(5, 3, RING_OQ13, 1);
+        assertEquals(quadrInt, comparisonInt); // It should be the case that 5 + 3sqrt(-7) = 5 + 3sqrt(-7)
+        comparisonInt = new RealQuadraticInteger(5, 3, RING_OQ13, 2);
+        assertNotEquals(quadrInt, comparisonInt); // 5 + 3sqrt(-7) = 5/2 + 3sqrt(-7)/2 would be wrong
+        try {
+            quadrInt = new RealQuadraticInteger(3, 1, ringRandom, 4);
+            System.out.println("Somehow created " + quadrInt.toASCIIString() + " without problem.");
+            fail("Attempt to create RealQuadraticInteger with denominator 4 should have caused an IllegalArgumentException.");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Attempt to use denominator 4 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+        }
+        try {
+            quadrInt = new RealQuadraticInteger(3, 2, RING_ZPHI, 2);
+            System.out.println("Somehow created " + quadrInt.toASCIIString() + " without problem.");
+            fail("Attempt to create RealQuadraticInteger with mismatched parities of a and b should have caused an IllegalArgumentException.");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Attempt to use mismatched parities correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+        }
+    }    
 
 }

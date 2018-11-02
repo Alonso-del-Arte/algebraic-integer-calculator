@@ -24,6 +24,13 @@ package algebraics;
  * @author Alonso del Arte
  */
 public class IllDefinedQuadraticRing extends QuadraticRing {
+    
+    private final double radSqrt;
+    
+    @Override
+    public double getRadSqrt() {
+        return radSqrt;
+    }
 
     @Override
     public int getAbsNegRad() {
@@ -38,6 +45,7 @@ public class IllDefinedQuadraticRing extends QuadraticRing {
     public IllDefinedQuadraticRing(int d) {
         this.d1mod4 = false;
         this.radicand = 4 * d;
+        this.radSqrt = Math.sqrt(d);
     }
     
 }
