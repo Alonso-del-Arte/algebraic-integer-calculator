@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package algebraicintegercalculator;
+package algebraics;
 
 /**
  *
  * @author Alonso del Arte
  */
-public class NonNormEuclideanDomainException extends Exception {
+public class NonEuclideanDomainException extends Exception {
     
     private static final long serialVersionUID = 1;
     
-    public NonNormEuclideanDomainException(String message) {
+    public NonEuclideanDomainException(String message) {
         super(message);
     }
 
