@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package algebraics.quadratics;
+
+import algebraics.IntegerRing;
 
 /**
  *
@@ -26,6 +28,8 @@ public abstract class QuadraticRing implements IntegerRing {
      * Ought to be a squarefree integer
      */
     protected int radicand;
+    
+    protected double realRadSqrt;
 
     /**
      * Should be true only if radicand is congruent to 1 modulo 4
@@ -38,28 +42,54 @@ public abstract class QuadraticRing implements IntegerRing {
     
     /**
      * Query the setting of the preference for blackboard bold.
-     * @return true if blackboard bold is preferred, false if plain bold is preferred.
+     * @return True if blackboard bold is preferred, false if plain bold is 
+     * preferred.
      */
     public static boolean preferBlackboardBold() {
         return preferenceForBlackboardBold;
     }
     
     /**
-     * Set preference for blackboard bold or plain bold. This is only relevant for the functions toTeXString() and toHTMLString().
-     * @param preferenceForBB true if blackboard bold is preferred, false if plain bold is preferred.
+     * Set preference for blackboard bold or plain bold. This is only relevant 
+     * for the functions toTeXString() and toHTMLString().
+     * @param preferenceForBB True if blackboard bold is preferred, false if 
+     * plain bold is preferred.
      */
     public static void preferBlackboardBold(boolean preferenceForBB) {
         preferenceForBlackboardBold = preferenceForBB;
     }
     
+    /**
+     * Indicates whether the ring has what are imprecisely called 
+     * "half-integers," numbers like 3/2 + (&radic;&minus;19)/2.
+     * @return True if the ring does have such integers, false otherwise. For 
+     * example, true for <i>O</i><sub><b>Q</b>(&radic;13)</sub>, false for 
+     * <b>Z</b>[&radic;14].
+     */
     public boolean hasHalfIntegers() {
         return d1mod4;
     }
     
+    /**
+     * Gives the radicand, <i>d</i> for &radic;<i>d</i>, which depends on the 
+     * parameter d at construction time.
+     * @return The parameter d. For example, for <b>Z</b>[&radic;&minus;2], this 
+     * would be -2, for <b>Z</b>[&radic;2] this would be 2.
+     */
     public int getRadicand() {
         return radicand;
     }
     
+    public abstract double getRadSqrt();
+    
+    /**
+     * This function is included merely to simplify the inheritance structure of 
+     * {@link QuadraticRing} to {@link ImaginaryQuadraticRing}.
+     * @return The same number as {@link QuadraticRing#getRadicand()} in the 
+     * case of {@link RealQuadraticRing}. However, for ImaginaryQuadraticRing, 
+     * this is the absolute value. For example, for both 
+     * <b>Z</b>[&radic;&minus;2] and <b>Z</b>[&radic;2] this would be 2.
+     */
     public abstract int getAbsNegRad();
     
     public abstract double getAbsNegRadSqrt();
@@ -261,6 +291,14 @@ public abstract class QuadraticRing implements IntegerRing {
         return IQRString;
     }
     
+    /**
+     * Compares whether an object is equal to this quadratic ring. This is 
+     * another function which the NetBeans IDE wrote for me.
+     * @param obj The object to compare this to.
+     * @return True if the object is a quadratic ring with the same parameter d 
+     * passed to its constructor as this imaginary quadratic ring, false 
+     * otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -273,9 +311,19 @@ public abstract class QuadraticRing implements IntegerRing {
             return false;
         }
         final QuadraticRing other = (QuadraticRing) obj;
-        return (this.radicand != other.radicand);
+        return (this.radicand == other.radicand);
     }
     
+    /**
+     * Returns a hash code value for the quadratic ring. Overriding {@link 
+     * Object#hashCode} on account of needing to override {@link Object#equals}. 
+     * The hash code is based solely on <i>d</i> from &radic;<i>d</i>, which 
+     * this ring adjoins. The hash code is mathematically guaranteed to be 
+     * unique for distinct rings within any possible execution of the program 
+     * (unless overridden in a child class).
+     * @return The parameter <i>d</i> that was passed to the constructor, minus 
+     * 1 if <i>d</i> = 1 mod 4, multiplied by -1 otherwise.
+     */
     @Override
     public int hashCode() {
         int hash = this.radicand;
