@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package algebraics.quadratics;
 
 /**
  * This is strictly to define objects for use in {@link 
@@ -30,12 +30,12 @@ public class IllDefinedQuadraticInteger extends QuadraticInteger {
     }
 
     @Override
-    public double getRealPartMultNumeric() {
+    public double getRealPartNumeric() {
         return 0.0;
     }
 
     @Override
-    public double getImagPartwRadMultNumeric() {
+    public double getImagPartNumeric() {
         return 0.0;
     }
     

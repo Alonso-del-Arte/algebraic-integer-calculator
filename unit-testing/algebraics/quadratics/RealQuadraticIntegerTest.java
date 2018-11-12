@@ -14,12 +14,16 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package algebraics.quadratics;
 
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -73,16 +77,15 @@ public class RealQuadraticIntegerTest {
     
     private static int randomRegPart, randomSurdPart, randomRegForHalfInts, randomSurdForHalfInts, totalTestIntegers;
     
-    // private static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
+    private static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
     
     @BeforeClass
     public static void setUpClass() {
-        int maxAB;
         int randomDiscr = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(MAXIMUM_RING_D);
         if (randomDiscr == 2 || randomDiscr == 5 || randomDiscr == 13) {
             randomDiscr++; // This is just in case we get 2, 5 or 13.
         }
-        boolean ringRandomd1mod4 = (randomDiscr % 4 == -3);
+        boolean ringRandomd1mod4 = (randomDiscr % 4 == 1);
         ringRandom = new RealQuadraticRing(randomDiscr);
         if (ringRandom.hasHalfIntegers()) {
             ringRandomForAltTesting = ringRandom;
@@ -95,7 +98,7 @@ public class RealQuadraticIntegerTest {
             System.out.println(ringRandomForAltTesting.toASCIIString() + " has been chosen for testing toStringAlt(), toASCIIStringAlt, toTeXStringAlt and toHTMLStringAlt.");
         }
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
-        maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/(16 * (randomDiscr + 1))));
+        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/(32 * (randomDiscr + 1))));
         System.out.println("Maximum for regular and surd parts is " + maxAB);
         Random ranNumGen = new Random();
         randomRegPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
@@ -249,20 +252,21 @@ public class RealQuadraticIntegerTest {
         long[] result;
         RealQuadraticInteger baseSurdDist, rationalInt;
         for (int i = 0; i < totalTestIntegers; i++) {
+            System.out.println("Minimal polynomial for " + testIntegers.get(i).toASCIIString() + " is said to be " + testIntegers.get(i).minPolynomialString());
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 expResult[1] = -randomRegForHalfInts;
-                expResult[0] = (randomRegForHalfInts * randomRegForHalfInts + randomSurdForHalfInts * randomSurdForHalfInts * testIntegers.get(i).getRing().getRadicand())/4;
+                expResult[0] = (randomRegForHalfInts * randomRegForHalfInts - randomSurdForHalfInts * randomSurdForHalfInts * testIntegers.get(i).getRing().getRadicand())/4;
             } else {
                 expResult[1] = (-2) * randomRegPart;
-                expResult[0] = randomRegPart * randomRegPart + randomSurdPart * randomSurdPart * testIntegers.get(i).getRing().getAbsNegRad();
+                expResult[0] = randomRegPart * randomRegPart - randomSurdPart * randomSurdPart * testIntegers.get(i).getRing().getRadicand();
             }
             result = testIntegers.get(i).minPolynomial();
             assertArrayEquals(expResult, result);
-            /* Now to test the mimimal polymomial of the purely imaginary 
-               integer sqrt(d) */
+            /* Now to test the mimimal polymomial of the integer sqrt(d) */
             expResult[1] = 0;
-            expResult[0] = testIntegers.get(i).getRing().getAbsNegRad();
+            expResult[0] = -testIntegers.get(i).getRing().getRadicand();
             baseSurdDist = new RealQuadraticInteger(0, 1, testIntegers.get(i).getRing());
+            System.out.println("Minimal polynomial of " + baseSurdDist.toASCIIString() + " is said to be " + baseSurdDist.minPolynomialString());
             result = baseSurdDist.minPolynomial();
             assertArrayEquals(expResult, result);
         }
@@ -369,10 +373,10 @@ public class RealQuadraticIntegerTest {
         double expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = Math.abs(randomRegForHalfInts + testIntegers.get(i).getRing().getRadSqrt() * randomSurdForHalfInts);
+                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() * randomSurdForHalfInts + randomRegForHalfInts);
                 expResult /= 2;
             } else {
-                expResult = Math.abs(randomRegPart + testIntegers.get(i).getRing().getRadSqrt() * randomSurdPart);
+                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() * randomSurdPart + randomRegPart);
             }
             result = testIntegers.get(i).abs();
             System.out.println("|" + testIntegers.get(i).toASCIIString() + "| = " + result);
@@ -381,10 +385,10 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of getRealPartMultNumeric method, of class RealQuadraticInteger.
+     * Test of getRealPartNumeric method, of class RealQuadraticInteger.
      */
     @Test
-    public void testGetRealPartMultNumeric() {
+    public void testGetRealPartNumeric() {
         System.out.println("getRealPartMultNumeric");
         double expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
@@ -394,22 +398,22 @@ public class RealQuadraticIntegerTest {
             } else {
                 expResult = testIntegers.get(i).getRing().getRadSqrt() * randomSurdPart + randomRegPart;
             }
-            result = testIntegers.get(i).getRealPartMultNumeric();
+            result = testIntegers.get(i).getRealPartNumeric();
             System.out.println(testIntegers.get(i).toASCIIString() + " = " + result);
             assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
         }
     }
 
     /**
-     * Test of getImagPartwRadMultNumeric method, of class RealQuadraticInteger.
+     * Test of getImagPartNumeric method, of class RealQuadraticInteger.
      */
     @Test
-    public void testGetImagPartwRadMultNumeric() {
+    public void testGetImagPartNumeric() {
         System.out.println("getImagPartwRadMultNumeric");
         double expResult = 0.0;
         double result;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).getImagPartwRadMultNumeric();
+            result = testIntegers.get(i).getImagPartNumeric();
             assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
         }
     }
@@ -426,7 +430,42 @@ public class RealQuadraticIntegerTest {
         assertEquals(RING_OQ13, testIntegers.get(2).getRing());
         assertEquals(ringRandom, testIntegers.get(3).getRing());
     }
-
+    /**
+     * Test of getRegPartMult method, of class ImaginaryQuadraticInteger.
+     */
+    @Test
+    public void testGetRegPartMult() {
+        System.out.println("getRealPartMult");
+        int expResult, result;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = randomRegForHalfInts;
+            } else {
+                expResult = randomRegPart;
+            }
+            result = testIntegers.get(i).getRegPartMult();
+            assertEquals(expResult, result);
+        }
+    }
+    
+    /**
+     * Test of getSurdPartMult method, of class ImaginaryQuadraticInteger.
+     */
+    @Test
+    public void testGetSurdPartMult() {
+        System.out.println("getImagPartMult");
+        int expResult, result;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = randomSurdForHalfInts;
+            } else {
+                expResult = randomSurdPart;
+            }
+            result = testIntegers.get(i).getSurdPartMult();
+            assertEquals(expResult, result);
+        }
+    }
+    
     /**
      * Test of getDenominator method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
@@ -445,7 +484,9 @@ public class RealQuadraticIntegerTest {
 
     /**
      * Test of toString method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
+     * QuadraticInteger. For functions that return Strings, spaces are desirable 
+     * but not required. Therefore the tests should strip out spaces before 
+     * asserting equality.
      */
     @Test
     public void testToString() {
@@ -471,36 +512,97 @@ public class RealQuadraticIntegerTest {
 
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
+     * QuadraticInteger. For functions that return Strings, spaces are desirable 
+     * but not required. Therefore the tests should strip out spaces before 
+     * asserting equality. If the test of toString fails, the result of this 
+     * test is irrelevant.
      */
-    @Ignore
     @Test
     public void testToStringAlt() {
         System.out.println("toStringAlt");
-        fail("Haven't written the test yet.");
+        String expResult, result;
+        int nonThetaPart;
+        for (int i = 1; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                nonThetaPart = (randomRegForHalfInts - randomSurdForHalfInts)/2;
+                if (nonThetaPart == 0) {
+                    expResult = randomSurdForHalfInts + "\u03B8";
+                } else {
+                    expResult = nonThetaPart + "+" + randomSurdForHalfInts + "\u03B8";
+                }
+                if (testIntegers.get(i).getRing().getRadicand() == 5) {
+                    expResult = expResult.replace("\u03B8", "\u03C6");
+                }
+                expResult = expResult.replace("+-", "-");
+            } else {
+                expResult = testIntegers.get(i).toString();
+            }
+            result = testIntegers.get(i).toStringAlt().replace(" ", "");
+            assertEquals(expResult, result);
+        }
+        // Lastly the special case of the golden ratio
+        expResult = "\u03C6";
+        result = GOLDEN_RATIO.toStringAlt();
+        assertEquals(expResult, result);
     }
 
     /**
      * Test of toASCIIString method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
-    @Ignore
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        fail("Haven't written the test yet.");
+        String expResult, result;
+        for (int i = 1; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = randomRegForHalfInts + "/2+" + randomSurdForHalfInts + "sqrt(" + testIntegers.get(i).getRing().getRadicand() + ")/2";
+            } else {
+                if (randomRegPart == 0) {
+                    expResult = randomSurdPart + "sqrt(" + testIntegers.get(i).getRing().getRadicand() + ")";
+                } else {
+                    expResult = randomRegPart + "+" + randomSurdPart + "sqrt(" + testIntegers.get(i).getRing().getRadicand() + ")";
+                }
+            }
+            expResult = expResult.replace("+-", "-");
+            expResult = expResult.replace("+1sqrt", "+sqrt");
+            expResult = expResult.replace("-1sqrt", "-sqrt");
+            result = testIntegers.get(i).toASCIIString().replace(" ", "");
+            assertEquals(expResult, result);
+        }
     }
 
     /**
      * Test of toASCIIStringAlt method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
-    @Ignore
     @Test
     public void testToASCIIStringAlt() {
         System.out.println("toASCIIStringAlt");
-        fail("Haven't written the test yet.");
-    }
+        String expResult, result;
+        int nonThetaPart;
+        for (int i = 1; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                nonThetaPart = (randomRegForHalfInts - randomSurdForHalfInts)/2;
+                if (nonThetaPart == 0) {
+                    expResult = randomSurdForHalfInts + "theta";
+                } else {
+                    expResult = nonThetaPart + "+" + randomSurdForHalfInts + "theta";
+                }
+                if (testIntegers.get(i).getRing().getRadicand() == 5) {
+                    expResult = expResult.replace("theta", "phi");
+                }
+                expResult = expResult.replace("+-", "-");
+            } else {
+                expResult = testIntegers.get(i).toASCIIString();
+            }
+            result = testIntegers.get(i).toASCIIStringAlt().replace(" ", "");
+            assertEquals(expResult, result);
+        }
+        // Lastly the special case of the golden ratio
+        expResult = "phi";
+        result = GOLDEN_RATIO.toASCIIStringAlt();
+        assertEquals(expResult, result);    }
 
     /**
      * Test of toTeXString method, of class RealQuadraticInteger, inherited from 
@@ -528,12 +630,33 @@ public class RealQuadraticIntegerTest {
      * Test of toTeXStringAlt method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
-    @Ignore
     @Test
     public void testToTeXStringAlt() {
         System.out.println("toTeXStringAlt");
-        fail("Haven't written the test yet.");
-    }
+        String expResult, result;
+        int nonThetaPart;
+        for (int i = 1; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                nonThetaPart = (randomRegForHalfInts - randomSurdForHalfInts)/2;
+                if (nonThetaPart == 0) {
+                    expResult = randomSurdForHalfInts + "\\theta";
+                } else {
+                    expResult = nonThetaPart + "+" + randomSurdForHalfInts + "\\theta";
+                }
+                if (testIntegers.get(i).getRing().getRadicand() == 5) {
+                    expResult = expResult.replace("\\theta", "\\phi");
+                }
+                expResult = expResult.replace("+-", "-");
+            } else {
+                expResult = testIntegers.get(i).toTeXString();
+            }
+            result = testIntegers.get(i).toTeXStringAlt().replace(" ", "");
+            assertEquals(expResult, result);
+        }
+        // Lastly the special case of the golden ratio
+        expResult = "\\phi";
+        result = GOLDEN_RATIO.toTeXStringAlt();
+        assertEquals(expResult, result);    }
 
     /**
      * Test of toHTMLString method, of class RealQuadraticInteger, inherited 
@@ -1272,11 +1395,11 @@ public class RealQuadraticIntegerTest {
         long currNorm;
         while (currAbs < threshold) {
             currUnit = currUnit.times(baseUnit); // Should be a positive number with norm -1
-            System.out.println(currUnit.toASCIIString() + " = " + currUnit.getRealPartMultNumeric());
+            System.out.println(currUnit.toASCIIString() + " = " + currUnit.getRealPartNumeric());
             currNorm = currUnit.norm();
             assertEquals(-1, currNorm);
             currUnit = currUnit.times(baseUnit); // Should be a negative number with norm 1
-            System.out.println(currUnit.toASCIIString() + " = " + currUnit.getRealPartMultNumeric());
+            System.out.println(currUnit.toASCIIString() + " = " + currUnit.getRealPartNumeric());
             currNorm = currUnit.norm();
             assertEquals(1, currNorm);
             currAbs = currUnit.abs();

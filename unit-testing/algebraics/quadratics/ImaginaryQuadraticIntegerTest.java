@@ -14,10 +14,13 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package algebraics.quadratics;
 
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.NotDivisibleException;
+import algebraics.UnsupportedNumberDomainException;
 import calculators.NumberTheoreticFunctionsCalculator;
-import static viewers.RingWindowDisplay.MINIMUM_RING_D;
+import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 import java.text.DecimalFormatSymbols;
 
 //import java.text.DecimalFormatSymbols;
@@ -125,7 +128,6 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @BeforeClass
     public static void setUpClass() {
-        int maxAB;
         int randomDiscr = -NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(MINIMUM_RING_D);
         if (randomDiscr > -5) {
             randomDiscr = -5; // This is just in case we get -3 or -1, which we are already testing for and which require special treatment in some of the tests.
@@ -143,7 +145,7 @@ public class ImaginaryQuadraticIntegerTest {
             System.out.println(ringRandomForAltTesting.toASCIIString() + " has been chosen for testing toStringAlt(), toASCIIStringAlt, toTeXStringAlt and toHTMLStringAlt.");
         }
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
-        maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/((-4) * (randomDiscr + 1))));
+        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/((-4) * (randomDiscr + 1))));
         System.out.println("Maximum for real and imaginary parts is " + maxAB);
         Random ranNumGen = new Random();
         randomRealPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
@@ -464,8 +466,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of getRealPartMultNumeric method, of class 
-     * ImaginaryQuadraticInteger.
+     * Test of getRealPartNumeric method, of class ImaginaryQuadraticInteger.
      */
     @Test
     public void testGetRealPartMultNumeric() {
@@ -473,7 +474,7 @@ public class ImaginaryQuadraticIntegerTest {
         double expResult = (double) randomRealForHalfInts/2;
         double result;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).getRealPartMultNumeric();
+            result = testIntegers.get(i).getRealPartNumeric();
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
             } else {
@@ -483,15 +484,14 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     /**
-     * Test of getImagPartwRadMultNumeric method, of class 
-     * ImaginaryQuadraticInteger.
+     * Test of getImagPartNumeric method, of class ImaginaryQuadraticInteger.
      */
     @Test
     public void testGetImagPartwRadMultNumeric() {
         System.out.println("getImagPartwRadMultNumeric");
         double expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).getImagPartwRadMultNumeric();
+            result = testIntegers.get(i).getImagPartNumeric();
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 expResult = ((double) randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRadSqrt())/2;
             } else {
@@ -537,41 +537,41 @@ public class ImaginaryQuadraticIntegerTest {
 //        }
 //    }
     
-    /* (TEMPORARY JAVADOC DISABLE) *
-     * Test of getRealPartMult method, of class ImaginaryQuadraticInteger.
+    /**
+     * Test of getRegPartMult method, of class ImaginaryQuadraticInteger.
      */
-    //(AT)Test
-//    public void testGetRealPartMult() {
-//        System.out.println("getRealPartMult");
-//        int expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomRealForHalfInts;
-//            } else {
-//                expResult = randomRealPart;
-//            }
-//            result = testIntegers.get(i).getRealPartMult();
-//            assertEquals(expResult, result);
-//        }
-//    }
+    @Test
+    public void testGetRegPartMult() {
+        System.out.println("getRealPartMult");
+        int expResult, result;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = randomRealForHalfInts;
+            } else {
+                expResult = randomRealPart;
+            }
+            result = testIntegers.get(i).getRegPartMult();
+            assertEquals(expResult, result);
+        }
+    }
     
-    /* (TEMPORARY JAVADOC DISABLE) *
-     * Test of getImagPartMult method, of class ImaginaryQuadraticInteger.
+    /**
+     * Test of getSurdPartMult method, of class ImaginaryQuadraticInteger.
      */
-    //(AT)Test
-//    public void testGetImagPartMult() {
-//        System.out.println("getImagPartMult");
-//        int expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomImagForHalfInts;
-//            } else {
-//                expResult = randomImagPart;
-//            }
-//            result = testIntegers.get(i).getImagPartMult();
-//            assertEquals(expResult, result);
-//        }
-//    }
+    @Test
+    public void testGetSurdPartMult() {
+        System.out.println("getImagPartMult");
+        int expResult, result;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = randomImagForHalfInts;
+            } else {
+                expResult = randomImagPart;
+            }
+            result = testIntegers.get(i).getSurdPartMult();
+            assertEquals(expResult, result);
+        }
+    }
     
     /**
      * Test of getRing method, of class ImaginaryQuadraticInteger.
@@ -2074,9 +2074,9 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the times, norm and abs methods, simultaneously, of class 
      * ImaginaryQuadraticInteger. This test also does a little bit with 
-     * getRealPartMultNumeric and getImagPartwRadMultNumeric. So if the 
-     * independent tests for any of those are failing, the result of this test 
-     * is meaningless.
+ getRealPartNumeric and getImagPartNumeric. So if the 
+ independent tests for any of those are failing, the result of this test 
+ is meaningless.
      */
     @Test
     public void testSimultTimesAndNormAndAbs() {
@@ -2093,25 +2093,25 @@ public class ImaginaryQuadraticIntegerTest {
             assertEquals(currSquare, normResult);
             absResult = gauInt.abs();
             assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getRealPartMultNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
             gauInt = gauInt.times(IMAG_UNIT_I); // n * i
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             absResult = gauInt.abs();
             assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getImagPartwRadMultNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             gauInt = gauInt.times(IMAG_UNIT_I); // -n
             absResult = gauInt.abs();
             assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getRealPartMultNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             gauInt = gauInt.times(IMAG_UNIT_I); // -n * i
             absResult = gauInt.abs();
             assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getImagPartwRadMultNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             gauInt = gauInt.times(IMAG_UNIT_I); // Back to n

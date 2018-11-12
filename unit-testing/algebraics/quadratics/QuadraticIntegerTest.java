@@ -14,7 +14,11 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package algebraics.quadratics;
+
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.NotDivisibleException;
+import algebraics.UnsupportedNumberDomainException;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,10 +35,13 @@ public class QuadraticIntegerTest {
     private static final int R_D = 21;
     private static final int R_A = 5;
     private static final int R_B = 2;
+    private static final int R_C_REG = -830;
+    private static final int R_C_SURD = -21;
     
     private static final IllDefinedQuadraticRing ILL_DEF_RING = new IllDefinedQuadraticRing(R_D);
     private static final QuadraticInteger ILL_DEF_INT_A = new IllDefinedQuadraticInteger(R_A, R_B, ILL_DEF_RING);
     private static final QuadraticInteger ILL_DEF_INT_B = new IllDefinedQuadraticInteger(R_B, -R_A, ILL_DEF_RING);
+    private static final QuadraticInteger ILL_DEF_INT_C = new IllDefinedQuadraticInteger(R_C_REG, R_C_SURD, ILL_DEF_RING);
 
     /**
      * Test of conjugate method of class QuadraticInteger. Testing that trying 
@@ -275,8 +282,8 @@ public class QuadraticIntegerTest {
         System.out.println("Testing that divides on unsupported quadratic integers causes the appropriate exception");
         QuadraticInteger division;
         try {
-            division = ILL_DEF_INT_A.divides(ILL_DEF_INT_B);
-            System.out.println("Trying to divide " + ILL_DEF_INT_A.toASCIIString() + " by " + ILL_DEF_INT_B.toASCIIString() + " somehow resulted in " + division.toASCIIString() + ".");
+            division = ILL_DEF_INT_C.divides(ILL_DEF_INT_A);
+            System.out.println("Trying to divide " + ILL_DEF_INT_C.toASCIIString() + " by " + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " + division.toASCIIString() + ".");
             fail("Trying to divide one ill-defined quadratic integer by another should have caused UnsupportedNumberDomainException.");
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("UnsupportedNumberDomainException correctly triggered for attempted division.");
@@ -289,8 +296,8 @@ public class QuadraticIntegerTest {
             fail(failMessage);
         }
         try {
-            division = ILL_DEF_INT_B.divides(ILL_DEF_INT_A);
-            System.out.println("Trying to divide " + ILL_DEF_INT_B.toASCIIString() + " by " + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " + division.toASCIIString() + ".");
+            division = ILL_DEF_INT_C.divides(ILL_DEF_INT_B);
+            System.out.println("Trying to divide " + ILL_DEF_INT_C.toASCIIString() + " by " + ILL_DEF_INT_B.toASCIIString() + " somehow resulted in " + division.toASCIIString() + ".");
             fail("Trying to divide one ill-defined quadratic integer by another should have caused UnsupportedNumberDomainException.");
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("UnsupportedNumberDomainException correctly triggered for attempted division.");

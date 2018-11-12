@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package algebraics.quadratics;
 
 import calculators.NumberTheoreticFunctionsCalculator;
-import viewers.RingWindowDisplay;
+import viewers.ImagQuadRingDisplay;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,7 +58,7 @@ public class ImaginaryQuadraticRingTest {
      */
     @BeforeClass
     public static void setUpClass() {
-        randomDiscr = -NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(RingWindowDisplay.MINIMUM_RING_D);
+        randomDiscr = -NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(ImagQuadRingDisplay.MINIMUM_RING_D);
         if (randomDiscr > -5) {
             randomDiscr = -5; // This is just in case we get -3 or -1, which we are already testing for and which require special treatment in some of the tests.
         }
