@@ -16,6 +16,11 @@
  */
 package algebraics;
 
+import algebraics.quadratics.IllDefinedQuadraticInteger;
+import algebraics.quadratics.IllDefinedQuadraticRing;
+import algebraics.quadratics.RealQuadraticRing;
+import algebraics.quadratics.QuadraticRing;
+import algebraics.quadratics.QuadraticInteger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
