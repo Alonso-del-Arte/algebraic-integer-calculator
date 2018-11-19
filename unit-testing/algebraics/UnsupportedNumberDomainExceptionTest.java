@@ -18,9 +18,9 @@ package algebraics;
 
 import algebraics.quadratics.IllDefinedQuadraticInteger;
 import algebraics.quadratics.IllDefinedQuadraticRing;
-import algebraics.quadratics.RealQuadraticRing;
-import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
+import calculators.NumberTheoreticFunctionsCalculator;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -33,6 +33,7 @@ public class UnsupportedNumberDomainExceptionTest {
     
     private static UnsupportedNumberDomainException unsNumDomExcOneNum;
     private static UnsupportedNumberDomainException unsNumDomExcTwoNums;
+    private static UnsupportedNumberDomainException unsNumDomExcDomain;
     
     private static final int R_D = -55;
     private static final int R_A = 2;
@@ -43,21 +44,41 @@ public class UnsupportedNumberDomainExceptionTest {
         IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(R_D);
         QuadraticInteger a = new IllDefinedQuadraticInteger(R_A, R_B, r);
         QuadraticInteger b = new IllDefinedQuadraticInteger(R_B, R_A, r);
-        unsNumDomExcOneNum = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", a, a);
-        unsNumDomExcTwoNums = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", a, a);
+        unsNumDomExcOneNum = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", a);
+        unsNumDomExcTwoNums = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", b);
+        unsNumDomExcDomain = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", a, b);
         try {
-            QuadraticRing rZ = new RealQuadraticRing(1);
-            System.out.println("Somehow created real quadratic ring " + rZ.toASCIIString());
+            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isPrime(a);
+            String message = "Determined somehow that " + a.toASCIIString() + " is ";
+            if (compositeFlag) {
+                message = message + "not ";
+            }
+            message = message + "prime.";
+            System.out.println(message);
+            System.err.println("Problem in set up: UnsupportedNumberDomainException not moved beyond initialization state.");
         } catch (UnsupportedNumberDomainException unde) {
             unsNumDomExcOneNum = unde;
         }
+        System.out.println("UnsupportedNumberDomainException for the single number example has this message: \"" + unsNumDomExcOneNum.getMessage() + "\"");
         try {
             QuadraticInteger sum = a.plus(b);
             System.out.println("Trying to add " + a.toASCIIString() + " to " + b.toASCIIString() + " somehow resulted in " + sum.toASCIIString() + ".");
-            fail("Trying to add two ill-defined quadratic integers should have caused UnsupportedNumberDomainException.");
+            System.err.println("Problem in set up: UnsupportedNumberDomainException not moved beyond initialization state.");
         } catch (UnsupportedNumberDomainException unde) {
             unsNumDomExcTwoNums = unde;
         }
+        System.out.println("UnsupportedNumberDomainException for the 2-number example has this message: \"" + unsNumDomExcTwoNums.getMessage() + "\"");
+        long[] numers = {442L, 6L};
+        long[] denoms = {881L, 881L};
+        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", numers, denoms, r);
+        try {
+            AlgebraicInteger num = notDivExc.roundTowardsZero();
+            System.out.println("(442 + 6sqrt(-220))/881 rounded down to " + num.toASCIIString());
+            System.err.println("Problem in set up: UnsupportedNumberDomainException not moved beyond initialization state.");
+        } catch (UnsupportedNumberDomainException unde) {
+            unsNumDomExcDomain = unde;
+        }
+        System.out.println("UnsupportedNumberDomainException for the domain example has this message: \"" + unsNumDomExcDomain.getMessage() + "\"");
     }
     
     /**
@@ -80,6 +101,10 @@ public class UnsupportedNumberDomainExceptionTest {
         assertFalse(assertionMessage1, msg.isEmpty());
         msg = msg.replace(" ", "");
         assertFalse(assertionMessage2, msg.isEmpty());
+        msg = unsNumDomExcDomain.getMessage();
+        assertFalse(assertionMessage1, msg.isEmpty());
+        msg = msg.replace(" ", "");
+        assertFalse(assertionMessage2, msg.isEmpty());
     }
 
     /**
@@ -95,6 +120,29 @@ public class UnsupportedNumberDomainExceptionTest {
         AlgebraicInteger[] expResult = {a, b};
         AlgebraicInteger[] result = unsNumDomExcTwoNums.getCausingNumbers();
         assertArrayEquals(expResult, result);
+        expResult[1] = null;
+        result = unsNumDomExcOneNum.getCausingNumbers();
+        assertArrayEquals(expResult, result);
+        expResult[0] = null;
+        result = unsNumDomExcDomain.getCausingNumbers();
+        assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getCausingDomain method, of class 
+     * UnsupportedNumberDomainException.
+     */
+    @Test
+    public void testGetCausingDomain() {
+        System.out.println("getCausingDomain");
+        IllDefinedQuadraticRing expResult = new IllDefinedQuadraticRing(R_D);
+        IntegerRing result = unsNumDomExcDomain.getCausingDomain();
+        assertEquals(expResult, result);
+        expResult = null;
+        result = unsNumDomExcOneNum.getCausingDomain();
+        assertEquals(expResult, result);
+        result = unsNumDomExcTwoNums.getCausingDomain();
+        assertEquals(expResult, result);
     }
     
 }
