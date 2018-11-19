@@ -535,7 +535,7 @@ public class RealQuadraticIntegerTest {
                 }
                 expResult = expResult.replace("+-", "-");
             } else {
-                expResult = testIntegers.get(i).toString();
+                expResult = testIntegers.get(i).toString().replace(" ", "");
             }
             result = testIntegers.get(i).toStringAlt().replace(" ", "");
             assertEquals(expResult, result);
@@ -608,7 +608,6 @@ public class RealQuadraticIntegerTest {
      * Test of toTeXString method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger.
      */
-    @Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
@@ -619,7 +618,6 @@ public class RealQuadraticIntegerTest {
      * Test of toTeXStringSingleDenom method, of class RealQuadraticInteger, 
      * inherited from QuadraticInteger.
      */
-    @Ignore
     @Test
     public void testToTeXStringSingleDenom() {
         System.out.println("toTeXStringSingleDenom");
@@ -648,7 +646,7 @@ public class RealQuadraticIntegerTest {
                 }
                 expResult = expResult.replace("+-", "-");
             } else {
-                expResult = testIntegers.get(i).toTeXString();
+                expResult = testIntegers.get(i).toTeXString().replace(" ", "");
             }
             result = testIntegers.get(i).toTeXStringAlt().replace(" ", "");
             assertEquals(expResult, result);
@@ -662,7 +660,6 @@ public class RealQuadraticIntegerTest {
      * Test of toHTMLString method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
-    @Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
@@ -673,7 +670,6 @@ public class RealQuadraticIntegerTest {
      * Test of toHTMLStringAlt method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
      */
-    @Ignore
     @Test
     public void testToHTMLStringAlt() {
         System.out.println("toHTMLStringAlt");
@@ -1270,7 +1266,7 @@ public class RealQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
@@ -1282,7 +1278,7 @@ public class RealQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }

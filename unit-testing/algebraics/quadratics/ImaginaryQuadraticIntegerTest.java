@@ -1936,7 +1936,7 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
@@ -1948,7 +1948,7 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getResFractNumers()[0] + " + " + nde.getResFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getResFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
