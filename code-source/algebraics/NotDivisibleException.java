@@ -16,8 +16,12 @@
  */
 package algebraics;
 
-import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
+import algebraics.quadratics.ImaginaryQuadraticRing;
+import algebraics.quadratics.QuadraticInteger;
+import algebraics.quadratics.QuadraticRing;
+import algebraics.quadratics.RealQuadraticInteger;
+import algebraics.quadratics.RealQuadraticRing;
 
 /**
  * An exception to indicate when the division of one algebraic integer by 
@@ -37,32 +41,32 @@ import algebraics.quadratics.ImaginaryQuadraticInteger;
  */
 public class NotDivisibleException extends Exception {
     
-    
+    ////////////////////////////////////////////////////
     
     
     // UPDATE SERIAL VERSION UID
+    // AFTER ALL THE TESTS ARE PASSING
     
     
     ///////////////////////////////////////////
     
-    private static final long serialVersionUID = 1058274357;
+    private static final long serialVersionUID = 1058394389;
     
     private final long[] numers;
     private final long[] denoms;
     
-    private final IntegerRing workingRing;
+    private final IntegerRing initRing;
     
-//    private final double numericRealPart;
-//    private final double numericImagPartMult;
-//    private final double numericImagPart;
+    private final double numericRealPart;
+    private final double numericImagPart;
     
     /**
-     * Gives the numerator of the real part of the resulting fraction.
-     * @return The integer for the real part supplied at the time the exception 
-     * was constructed. For example, given 7/3 + 2 * sqrt(-5)/3, this would be 
-     * 7.
+     * Gives the numerators of the resulting fraction.
+     * @return The integers for the numerators that were supplied at the time 
+     * the exception was constructed. For example, given 7/3 + 2 * sqrt(-5)/3, 
+     * this might be {7, 2}.
      */
-    public long[] getResFractNumers() {
+    public long[] getFractNumers() {
         return numers;
     }
 
@@ -74,18 +78,17 @@ public class NotDivisibleException extends Exception {
      * "half-integers," it should not be -2 nor 2. For example, given 7/3 + 2 * 
      * sqrt(-5)/3, this would be 3.
      */
-    public long[] getResFractDenoms() {
+    public long[] getFractDenoms() {
         return denoms;
     }
     
     /**
-     * Gives the negative integer in the radical in the numerator of the 
-     * resulting fraction.
-     * @return The integer supplied at the time the exception was constructed. 
-     * It ought to be a negative, squarefree integer.
+     * Gives the object for the ring that caused this exception.
+     * @return The integer ring object supplied at the time the exception was 
+     * constructed. 
      */
     public IntegerRing getRing() {
-        return workingRing;
+        return initRing;
     }
     
     /**
@@ -95,20 +98,7 @@ public class NotDivisibleException extends Exception {
      * 0.75.
      */
     public double getNumericRealPart() {
-        return 0.0;
-    }
-    
-    /**
-     * Gives a numeric approximation of the imaginary part of the resulting 
-     * fraction divided by the square root of the parameter d of the relevant 
-     * ring.
-     * @return A double with a numeric approximation of the imaginary part of 
-     * the resulting fraction divided by the square root of the parameter d of 
-     * the relevant ring. For example, for 3/4 + 7sqrt(-2)/4, this would be 
-     * 1.75.
-     */
-    public double getNumericImagPartMult() {
-        return 0.0;
+        return this.numericRealPart;
     }
     
     /**
@@ -117,10 +107,11 @@ public class NotDivisibleException extends Exception {
      * @return A double with a numeric approximation of the imaginary part of 
      * the resulting fraction divided by the imaginary unit. For example, for 
      * 3/4 + 7sqrt(-2)/4, this would be about 2.4748737341, which is 
-     * approximately 7sqrt(2)/4.
+     * approximately 7sqrt(2)/4. In the case of a real integer ring (one without 
+     * complex numbers) this should always be 0.0.
      */
     public double getNumericImagPart() {
-        return 0.0;
+        return this.numericImagPart;
     }
     
     /**
@@ -128,7 +119,7 @@ public class NotDivisibleException extends Exception {
      * represented by ({@link #getResReFractNumer()} + 
      * {@link getResImFractNumer()} * sqrt({@link getResFractNegRad()})) / 
      * {@link getResFractDenom()}. WARNING: There is no overflow checking.
-     * @return An array of ImaginaryQuadraticInteger. Do not expect the integers 
+     * @return An array of algebraic integer objects Do not expect the integers 
      * to be in any particular order: I or anyone else working on this project 
      * in the future is free to change the implementation in the interest of 
      * efficiency. If you need the bounding integers in a specific order, sort 
@@ -138,50 +129,90 @@ public class NotDivisibleException extends Exception {
      * necessarily in that order.
      */
     public AlgebraicInteger[] getBoundingIntegers() {
-        ImaginaryQuadraticInteger zeroIQI = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
-        AlgebraicInteger[] algIntArray = {zeroIQI, zeroIQI, zeroIQI, zeroIQI};
-//        if (workingRing.hasHalfIntegers()) {
-//            int topPointA, topPointB;
-//            topPointA = (int) Math.ceil(numericRealPart * 2);
-//            topPointB = (int) Math.ceil(numericImagPartMult * 2);
-//            if ((topPointA % 2 == 0 && topPointB % 2 != 0) || (topPointA % 2 != 0 && topPointB % 2 == 0)) {
-//                topPointA--;
-//            }
-//            algIntArray[0] = new ImaginaryQuadraticInteger(topPointA, topPointB, workingRing, 2);
-//            algIntArray[1] = new ImaginaryQuadraticInteger(topPointA - 1, topPointB - 1, workingRing, 2);
-//            algIntArray[2] = new ImaginaryQuadraticInteger(topPointA + 1, topPointB - 1, workingRing, 2);
-//            algIntArray[3] = new ImaginaryQuadraticInteger(topPointA, topPointB - 2, workingRing, 2);
-//        } else {
-//            int floorA, floorB, ceilA, ceilB;
-//            floorA = (int) Math.floor(numericRealPart);
-//            floorB = (int) Math.floor(numericImagPartMult);
-//            ceilA = (int) Math.ceil(numericRealPart);
-//            ceilB = (int) Math.ceil(numericImagPartMult);
-//            algIntArray[0] = new ImaginaryQuadraticInteger(floorA, floorB, workingRing);
-//            algIntArray[1] = new ImaginaryQuadraticInteger(ceilA, floorB, workingRing);
-//            algIntArray[2] = new ImaginaryQuadraticInteger(floorA, ceilB, workingRing);
-//            algIntArray[3] = new ImaginaryQuadraticInteger(ceilA, ceilB, workingRing);
-//        }
-        return algIntArray;
+        if (this.initRing instanceof QuadraticRing) {
+            QuadraticRing workingRing = (QuadraticRing) initRing;
+            QuadraticInteger zeroQI = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
+            double numerReg = 0.0;
+            double numerSurd = 0.0;
+            if (workingRing instanceof ImaginaryQuadraticRing || workingRing instanceof RealQuadraticRing) {
+                int arrayLen = 0;
+                if (workingRing instanceof ImaginaryQuadraticRing) {
+                    arrayLen = 4;
+                    zeroQI = new ImaginaryQuadraticInteger(0, 0, workingRing);
+                    numerReg = this.numericRealPart;
+                    numerSurd = this.numericImagPart;
+                }
+                if (workingRing instanceof RealQuadraticRing) {
+                    arrayLen = 8;
+                    zeroQI = new RealQuadraticInteger(0, 0, workingRing);
+                    numerReg = (double) numers[0] / denoms[0];
+                    numerSurd = (double) numers[1] / denoms[1];
+                }
+                AlgebraicInteger[] algIntArray = new AlgebraicInteger[arrayLen];
+                for (int i = 0; i < arrayLen; i++) {
+                    algIntArray[i] = zeroQI;
+                }
+                if (workingRing.hasHalfIntegers()) {
+                    int topPointA, topPointB;
+                    topPointA = (int) Math.ceil(numerReg * 2);
+                    topPointB = (int) Math.ceil(numerSurd * 2);
+                    if ((topPointA % 2 == 0 && topPointB % 2 != 0) || (topPointA % 2 != 0 && topPointB % 2 == 0)) {
+                        topPointA--;
+                    }
+                    if (workingRing instanceof ImaginaryQuadraticRing) {
+                        algIntArray[0] = new ImaginaryQuadraticInteger(topPointA, topPointB, workingRing, 2);
+                        algIntArray[1] = new ImaginaryQuadraticInteger(topPointA - 1, topPointB - 1, workingRing, 2);
+                        algIntArray[2] = new ImaginaryQuadraticInteger(topPointA + 1, topPointB - 1, workingRing, 2);
+                        algIntArray[3] = new ImaginaryQuadraticInteger(topPointA, topPointB - 2, workingRing, 2);
+                    } else {
+                        algIntArray[0] = new RealQuadraticInteger(topPointA, topPointB, workingRing, 2);
+                        algIntArray[1] = new RealQuadraticInteger(topPointA - 1, topPointB - 1, workingRing, 2);
+                        algIntArray[2] = new RealQuadraticInteger(topPointA + 1, topPointB - 1, workingRing, 2);
+                        algIntArray[3] = new RealQuadraticInteger(topPointA, topPointB - 2, workingRing, 2);
+                    }
+                } else {
+                    int floorA, floorB, ceilA, ceilB;
+                    floorA = (int) Math.floor(numerReg);
+                    floorB = (int) Math.floor(numerSurd);
+                    ceilA = (int) Math.ceil(numerReg);
+                    ceilB = (int) Math.ceil(numerSurd);
+                    if (workingRing instanceof ImaginaryQuadraticRing) {
+                        algIntArray[0] = new ImaginaryQuadraticInteger(floorA, floorB, workingRing);
+                        algIntArray[1] = new ImaginaryQuadraticInteger(ceilA, floorB, workingRing);
+                        algIntArray[2] = new ImaginaryQuadraticInteger(floorA, ceilB, workingRing);
+                        algIntArray[3] = new ImaginaryQuadraticInteger(ceilA, ceilB, workingRing);
+                    } else {
+                        algIntArray[0] = new RealQuadraticInteger(floorA, floorB, workingRing);
+                        algIntArray[1] = new RealQuadraticInteger(ceilA, floorB, workingRing);
+                        algIntArray[2] = new RealQuadraticInteger(floorA, ceilB, workingRing);
+                        algIntArray[3] = new RealQuadraticInteger(ceilA, ceilB, workingRing);
+                    }
+                }
+                return algIntArray;
+            }
+        }
+        String exceptionMessage = "The domain " + this.initRing.toASCIIString() + " is not currently supported for this rounding operation.";
+        throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
     }
     
     /**
-     * Rounds the imaginary quadratic number to the imaginary quadratic integer 
-     * in the relevant ring that is closest to 0. However, no guarantee is made 
-     * as to which result will be returned if two potential results are the same 
-     * distance from 0.
-     * @return An ImaginaryQuadraticInteger object representing the imaginary 
-     * quadratic integer that is as close if not closer to 0 than the other 
-     * integers bounding the imaginary quadratic number. For example, for 7/3 + 
-     * 4 * sqrt(-5)/3 this would be 2 + sqrt(-5). Now, given, for example, 7/8 + 
-     * 7i/8, no guarantee is made as to whether this function would return i or 
-     * 1.
+     * Rounds the quadratic number to the quadratic integer in the relevant ring 
+     * that is closest to 0. However, no guarantee is made as to which result 
+     * will be returned if two potential results are the same distance from 0.
+     * @return An AlgebraicInteger object representing the algebraic integer 
+     * that is as close if not closer to 0 than the other integers bounding the 
+     * algebraic number. For example, for 7/3 + 4 * sqrt(-5)/3 this would be 2 + 
+     * sqrt(-5). Now, given, for example, 7/8 + 7i/8, no guarantee is made as to 
+     * whether this function would return i or 1.
      */
     public AlgebraicInteger roundTowardsZero() {
-        ImaginaryQuadraticInteger zeroIQI = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
-        return zeroIQI;
+        // STUB TO FAIL NEXT TEST // STUB TO FAIL NEXT TEST // STUB TO FAIL NEXT TEST
+        return new ImaginaryQuadraticInteger(1, 0, new ImaginaryQuadraticRing(-1));
+//        if (this.initRing instanceof ImaginaryQuadraticRing) {
+//            QuadraticRing workingRing = (QuadraticRing) initRing;
+//        
 //        if (workingRing.hasHalfIntegers()) {
-//            ImaginaryQuadraticInteger[] bounds = this.getBoundingIntegers();
+//            AlgebraicInteger[] bounds = this.getBoundingIntegers();
 //            double currAbs = bounds[0].abs();
 //            double closestSoFar = currAbs;
 //            int currIndex = 1;
@@ -213,20 +244,14 @@ public class NotDivisibleException extends Exception {
 //            if (overflowFlag) {
 //                throw new ArithmeticException("Real part " + intermediateRealPart + ", imaginary part " + intermediateImagPart + " times sqrt" + resultingFractionNegRad + " is outside the range of this implmentation of ImaginaryQuadraticInteger, which uses 32-bit signed integers.");
 //            }
-//            return new ImaginaryQuadraticInteger((int) intermediateRealPart, (int) intermediateImagPart, workingRing);
+//            return new ImaginaryQuadraticInteger((int) intermediateRealPart, (int) intermediateImagPart, initRing);
 //        }
+//        }
+//        String exceptionMessage = "The domain " + this.initRing.toASCIIString() + " is not currently supported for this rounding operation.";
+//        throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
     }
     
-    /**
-     * Rounds the imaginary quadratic number to the imaginary quadratic integer 
-     * in the relevant ring that is farthest from 0. However, no guarantee is 
-     * made as to which result will be returned if two potential results are the 
-     * same distance from 0.
-     * @return An ImaginaryQuadraticInteger object representing the imaginary 
-     * quadratic integer that is as far if not farther from 0 than the other 
-     * integers bounding the imaginary quadratic number. For example, for 7/3 + 
-     * 4 * sqrt(-5)/3 this would be 3 + 2 * sqrt(-5).
-     */
+    // TODO: Rewrite Javadoc
     public AlgebraicInteger roundAwayFromZero() {
         ImaginaryQuadraticInteger zeroIQI = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
         return zeroIQI;
@@ -274,14 +299,47 @@ public class NotDivisibleException extends Exception {
      * should be thrown instead. And if there is an attempt to divide by 0, the 
      * appropriate exception to throw would perhaps be IllegalArgumentException.
      * @param message A message to pass on to the Exception constructor.
-     * @param numerators
-     * @param denominators
-     * @param ring
+     * @param numerators An array of numerators.
+     * @param denominators An array of denominators. It should be the same 
+     * length as the array of numerators. May contain negative numbers but it 
+     * must not contain 0.
+     * @param ring The ring of algebraic integers into which to round the 
+     * algebraic number.
+     * @throws IllegalArgumentException If any of these is true of the 
+     * parameters: the array of numerators has more or fewer numbers than the 
+     * array of denominators; the two arrays are of the same length but they 
+     * have more numbers than the maximum algebraic degree of the ring (e.g., 
+     * passing two arrays with fourteen numbers each for a cubic ring); any of 
+     * the denominators is equal to 0.
      */
     public NotDivisibleException(String message, long[] numerators, long[] denominators, IntegerRing ring) {
         super(message);
-        numers = numerators;
-        denoms = denominators;
-        workingRing = ring;
+        if (numerators.length != denominators.length) {
+            String exceptionMessage = "Array of numerators has " + numerators.length + " numbers but array of denominators has " + denominators.length + " numbers.";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+        if (numerators.length != ring.getMaxAlgebraicDegree()) {
+            String exceptionMessage = "Numbers of class " + ring.getClass().getName() + " can have a maximum algebraic degree of " + ring.getMaxAlgebraicDegree() + " but an array of " + numerators.length + " was passed in.";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+        for (long denom : denominators) {
+            if (denom == 0) {
+                String exceptionMessage = "Zero is not a valid denominator.";
+                throw new IllegalArgumentException(exceptionMessage);
+            }
+        }
+        this.numers = numerators;
+        this.denoms = denominators;
+        double numRe = (double) this.numers[0] / this.denoms[0];
+        double numIm = 0.0;
+        if (ring instanceof ImaginaryQuadraticRing) {
+            numIm = ((ImaginaryQuadraticRing) ring).getAbsNegRadSqrt() * this.numers[1] / this.denoms[1];
+        }
+        if (ring instanceof RealQuadraticRing) {
+            numRe += ((RealQuadraticRing) ring).getRadSqrt() * this.numers[1] / this.denoms[1];
+        }
+        this.numericRealPart = numRe;
+        this.numericImagPart = numIm;
+        this.initRing = ring;
     }
 }
