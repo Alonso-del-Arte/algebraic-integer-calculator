@@ -16,15 +16,26 @@
  */
 package calculators;
 
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.AlgebraicInteger;
+import algebraics.NonEuclideanDomainException;
+import algebraics.NonUniqueFactorizationDomainException;
+import algebraics.NotDivisibleException;
+import algebraics.UnsupportedNumberDomainException;
+import algebraics.quadratics.IllDefinedQuadraticInteger;
+import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
+import algebraics.quadratics.QuadraticRing;
+import algebraics.quadratics.RealQuadraticInteger;
+import algebraics.quadratics.RealQuadraticRing;
 import static algebraics.quadratics.ImaginaryQuadraticRingTest.TEST_DELTA;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -50,37 +61,46 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * setUpClass() will generate a List of the first few consecutive primes. 
      * This constant determines how long that list will be. For example, if it's 
      * 1000, setUpClass() will generate a list of the primes between 1 and 1000.
-     * It should not be greater than Integer.MAX_VALUE.
+     * It should not be greater than {@link Integer#MAX_VALUE}.
      */
     public static final int PRIME_LIST_THRESHOLD = 1000;
     
     /**
-     * A List of the first few prime numbers, to be used in some of the tests.
+     * A List of the first few prime numbers, to be used in some of the tests. 
+     * It will be populated during setUpClass().
      */
     private static List<Integer> primesList;
     
     /**
-     * The size of primesList.
+     * The size of primesList, to be determined during setUpClass().
      */
     private static int primesListLength;
     
     /**
      * A List of composite numbers, which may or may not include 
-     * PRIME_LIST_THRESHOLD.
+     * {@link #PRIME_LIST_THRESHOLD PRIME_LIST_THRESHOLD}. It will be populated 
+     * during setUpClass().
      */
     private static List<Integer> compositesList;
     
     /**
-     * A List of Fibonacci numbers.
+     * A List of Fibonacci numbers. It will be populated during setUpClass().
      */
     private static List<Integer> fibonacciList;
     
+    /**
+     * An array of what I'm calling, for lack of a better term, "Heegner 
+     * companion primes." For each Heegner number <i>d</i>, the Heegner 
+     * companion prime <i>p</i> is a number that is prime in <b>Z</b> and is 
+     * also prime in the ring of integers of <i>O</i><sub>&radic;<i>d</i></sub>. 
+     * This array will be populated during setUpClass().
+     */
     private static final int[] HEEGNER_COMPANION_PRIMES = new int[9];
     
     /**
      * Sets up a List of the first few consecutive primes, the first few 
-     * composite numbers and the first few Fibonacci numbers. This provides most 
-     * of what is needed for the tests.
+     * composite numbers, the first few Fibonacci numbers and the Heegner 
+     * "companion primes." This provides most of what is needed for the tests.
      */
     @BeforeClass
     public static void setUpClass() {
@@ -185,10 +205,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
      * This test uses squares of primorials (4, 36, 900, 44100, etc.) and 
      * certain divisors of those numbers. This test also checks the 
-     * factorization of the additive inverses of those numbers (e.g., -44100).
-     * The expectation is that if -n is a negative number, its factorization 
-     * will be the same as that of n but with a single -1 at the beginning. This
-     * test does not set out any expectations for the factorization of 0.
+     * factorization of the additive inverses of those numbers (e.g., 
+     * &minus;44100). The expectation is that if &minus;<i>n</i> is a negative 
+     * number, its factorization will be the same as that of <i>n</i>, but with 
+     * a single &minus;1 at the beginning. This test does not set out any 
+     * expectations for the factorization of 0.
      */
     @Test
     public void testPrimeFactors() {
@@ -241,91 +262,116 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
         System.out.println(" ");
         // Now to test primeFactors() on imaginary quadratic integers
-//        System.out.println("primeFactors(ImaginaryQuadraticInteger)");
-//        ImaginaryQuadraticRing r;
-//        ImaginaryQuadraticInteger z = NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY.times(-1);
-//        /* The arbitrary initialization of z with -omega and factorsList with 
-//           omega is to avoid "variable might not have been initialized" 
-//           errors */
-//        List<ImaginaryQuadraticInteger> factorsList = new ArrayList<>();
-//        factorsList.add(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
-//        int facLen;
-//        String assertionMessage;
-//        for (Integer d : NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS) {
-//            r = new ImaginaryQuadraticRing(d);
-//            /* First to test purely real integers that are prime in Z in the 
-//               context of a particular ring r, e.g., 5 in Z[sqrt(-2)] */
-//            for (Integer p : primesList) {
-//                z = new ImaginaryQuadraticInteger(p, 0, r);
-//                try {
-//                    factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
-//                    facLen = factorsList.size();
-//                } catch (NonUniqueFactorizationDomainException nufde) {
-//                    facLen = 0;
-//                    fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
-//                }
-//                if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
-//                    assertionMessage = "Factor list of " + z.toString() + " in " + z.getRing().toString() + " should contain just one prime factor.";
-//                    assertEquals(assertionMessage, 1, facLen);
-//                } else {
-//                    assertionMessage = "Factor list of " + z.toString() + " in " + z.getRing().toString() + " should contain two or three factors.";
-//                    assertTrue(assertionMessage, facLen > 1);
-//                }
-//            }
-//            // Lastly, to look at some consecutive algebraic integers
-//            int expFacLen;
-//            for (int a = -4; a < 6; a++) {
-//                for (int b = 3; b > -2; b--) {
-//                    z = new ImaginaryQuadraticInteger(a, b, r);
-//                    try {
-//                        factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
-//                        facLen = factorsList.size();
-//                        expFacLen = 0;
-//                        if ((factorsList.get(0).norm() == 1) && (factorsList.size() > 1)) {
-//                            expFacLen = 1;
-//                        }
-//                        if (z.norm() > 1) {
-//                            expFacLen++;
-//                        }
-//                        if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
-//                            assertionMessage = z.toString() + " is expected to have " + expFacLen + " factor(s).";
-//                            assertEquals(assertionMessage, expFacLen, facLen);
-//                        } else {
-//                            expFacLen++;
-//                            assertionMessage = z.toString() + " is expected to have at least " + expFacLen + " factors.";
-//                            assertTrue(assertionMessage, facLen >= expFacLen);
-//                        }
-//                    } catch (NonUniqueFactorizationDomainException nufde) {
-//                        fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
-//                    }
-//                }
-//            }
-//            System.out.print("Last algebraic integer tested in " + r.toASCIIString() + " was " + z.toASCIIString() + ", which has this factorization: ");
-//            if (factorsList.get(0).getImagPartMult() == 0) {
-//                System.out.print(factorsList.get(0).toASCIIString());
-//            } else {
-//                System.out.print("(" + factorsList.get(0) + ")");
-//            }
-//            for (int currFactorIndex = 1; currFactorIndex < factorsList.size(); currFactorIndex++) {
-//                if (factorsList.get(currFactorIndex).getImagPartMult() == 0) {
-//                    System.out.print(" \u00D7 " + factorsList.get(currFactorIndex).toASCIIString());
-//                } else {
-//                    System.out.print(" \u00D7 (" + factorsList.get(currFactorIndex).toASCIIString() + ")");
-//                }
-//            }
-//            System.out.println();
-//        }
+        System.out.println("primeFactors(ImaginaryQuadraticInteger)");
+        QuadraticRing r;
+        QuadraticInteger z = NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY.times(-1);
+        /* The arbitrary initialization of z with -omega and factorsList with 
+           omega is to avoid "variable might not have been initialized" 
+           errors */
+        List<AlgebraicInteger> factorsList = new ArrayList<>();
+        factorsList.add(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
+        int facLen;
+        String assertionMessage;
+        for (int d : NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS) {
+            r = new ImaginaryQuadraticRing(d);
+            /* First to test purely real integers that are prime in Z in the 
+               context of a particular ring r, e.g., 5 in Z[sqrt(-2)] */
+            for (Integer p : primesList) {
+                z = new ImaginaryQuadraticInteger(p, 0, r);
+                try {
+                    factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+                    facLen = factorsList.size();
+                } catch (NonUniqueFactorizationDomainException nufde) {
+                    facLen = 0;
+                    fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+                }
+                if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
+                    assertionMessage = "Factor list of " + z.toString() + " in " + z.getRing().toString() + " should contain just one prime factor.";
+                    assertEquals(assertionMessage, 1, facLen);
+                } else {
+                    assertionMessage = "Factor list of " + z.toString() + " in " + z.getRing().toString() + " should contain two or three factors.";
+                    assertTrue(assertionMessage, facLen > 1);
+                }
+            }
+            // Lastly, to look at some consecutive algebraic integers
+            int expFacLen;
+            for (int a = -4; a < 6; a++) {
+                for (int b = 3; b > -2; b--) {
+                    z = new ImaginaryQuadraticInteger(a, b, r);
+                    try {
+                        factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+                        facLen = factorsList.size();
+                        expFacLen = 0;
+                        if ((factorsList.get(0).norm() == 1) && (factorsList.size() > 1)) {
+                            expFacLen = 1;
+                        }
+                        if (z.norm() > 1) {
+                            expFacLen++;
+                        }
+                        if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
+                            assertionMessage = z.toString() + " is expected to have " + expFacLen + " factor(s).";
+                            assertEquals(assertionMessage, expFacLen, facLen);
+                        } else {
+                            expFacLen++;
+                            assertionMessage = z.toString() + " is expected to have at least " + expFacLen + " factors.";
+                            assertTrue(assertionMessage, facLen >= expFacLen);
+                        }
+                    } catch (NonUniqueFactorizationDomainException nufde) {
+                        fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+                    }
+                }
+            }
+            System.out.print("Last algebraic integer tested in " + r.toASCIIString() + " was " + z.toASCIIString() + ", which has this factorization: ");
+            if (factorsList.get(0).getImagPartNumeric() == 0.0) {
+                System.out.print(factorsList.get(0).toASCIIString());
+            } else {
+                System.out.print("(" + factorsList.get(0) + ")");
+            }
+            for (int currFactorIndex = 1; currFactorIndex < factorsList.size(); currFactorIndex++) {
+                if (factorsList.get(currFactorIndex).getImagPartNumeric() == 0.0) {
+                    System.out.print(" \u00D7 " + factorsList.get(currFactorIndex).toASCIIString());
+                } else {
+                    System.out.print(" \u00D7 (" + factorsList.get(currFactorIndex).toASCIIString() + ")");
+                }
+            }
+            System.out.println();
+        }
+        // Lastly, to test primeFactors() on real quadratic integers
+        System.out.println("primeFactors(RealQuadraticInteger)");
+        RealQuadraticInteger ramifier;
+        List<AlgebraicInteger> expFactorsList;
+        for (int discrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+            r = new RealQuadraticRing(discrR);
+            ramifier = new RealQuadraticInteger(0, 1, r);
+            expFactorsList = new ArrayList<>();
+            expFactorsList.add(ramifier);
+            expFactorsList.add(ramifier); // Add the ramifier in there twice (on purpose)
+            try {
+                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(ramifier);
+                facLen = factorsList.size();
+                if (NumberTheoreticFunctionsCalculator.isPrime(discrR)) {
+                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have exactly two factors.";
+                    assertEquals(assertionMessage, 2, facLen);
+                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should be (" + ramifier.toASCIIString() + ")^2.";
+                    assertEquals(assertionMessage, expFactorsList, factorsList);
+                } else {
+                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have at least four factors.";
+                    assertTrue(assertionMessage, facLen > 3);
+                }
+            } catch (NonUniqueFactorizationDomainException nufde) {
+                fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+            }
+        }
     }
 
     /**
      * Test of isPrime method, of class NumberTheoreticFunctionsCalculator. The 
      * numbers listed in Sloane's A000040, as well as those same numbers 
-     * multiplied by -1, should all be identified as prime. Likewise, the 
+     * multiplied by &minus;1, should all be identified as prime. Likewise, the 
      * numbers listed in Sloane's A018252, as well as those same numbers 
-     * multiplied by -1, should all be identified as not prime. As for 0, I'm 
-     * not sure; if you like you can uncomment the line for it and perhaps 
+     * multiplied by &minus;1, should all be identified as not prime. As for 0, 
+     * I'm not sure; if you like you can uncomment the line for it and perhaps 
      * change assertFalse to assertTrue.
-     * TO DO: WRITE TESTS FOR isPrime(QuadraticInteger)
      */
     @Test
     public void testIsPrime() {
@@ -445,10 +491,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
         eisensteinInteger = new ImaginaryQuadraticInteger(-4, 4, NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
         assertionMessage = eisensteinInteger.toStringAlt() + " should not have been found to be prime.";
         assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
-        // Now to test some complex numbers in Z[sqrt(-5)] and O_Q(sqrt(-31))
+        /* Now to test some complex numbers in Z[sqrt(-5)] and O_Q(sqrt(-31)), 
+           and also some real numbers in Z[sqrt(10)] and O_Q(sqrt(65)). */
         ImaginaryQuadraticRing Zi5 = new ImaginaryQuadraticRing(-5);
         ImaginaryQuadraticRing OQi31 = new ImaginaryQuadraticRing(-31);
-        ImaginaryQuadraticInteger numberFromNonUFD;
+        RealQuadraticRing Z10 = new RealQuadraticRing(10);
+        RealQuadraticRing OQ65 = new RealQuadraticRing(65);
+        QuadraticInteger numberFromNonUFD;
         int norm;
         for (int a = -1; a > -10; a--) {
             for (int b = 1; b < 10; b++) {
@@ -463,6 +512,42 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 }
                 numberFromNonUFD = new ImaginaryQuadraticInteger(a, b, OQi31);
                 norm = a * a + 31 * b * b;
+                if ((a % 2) == (b % 2)) {
+                    try {
+                        numberFromNonUFD = numberFromNonUFD.divides(2);
+                        norm /= 4;
+                    } catch (NotDivisibleException nde) {
+                        String failMessage = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
+                        fail(failMessage);
+                    }
+                }
+                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
+                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
+                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+                } else {
+                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
+                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+                }
+                numberFromNonUFD = new RealQuadraticInteger(a, b, Z10);
+                norm = a * a - 10 * b * b;
+                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
+                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
+                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+                } else {
+                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
+                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+                }
+                numberFromNonUFD = new RealQuadraticInteger(a, b, OQ65);
+                norm = a * a - 65 * b * b;
+                if ((a % 2) == (b % 2)) {
+                    try {
+                        numberFromNonUFD = numberFromNonUFD.divides(2);
+                        norm /= 4;
+                    } catch (NotDivisibleException nde) {
+                        String failMessage = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
+                        fail(failMessage);
+                    }
+                }
                 if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
                     assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
                     assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
@@ -472,11 +557,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 }
             }
         }
-        /* And lastly, to check some purely real integers in the context of a 
-           few non-UFDs */
-        ImaginaryQuadraticRing r;
+        QuadraticRing r;
+        AlgebraicInteger z;
+        /* Now to check some purely real integers in the context of a few 
+           non-UFDs */
         int re;
-        ImaginaryQuadraticInteger z;
         for (int iterDiscr = -6; iterDiscr > -200; iterDiscr--) {
             if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
                 r = new ImaginaryQuadraticRing(iterDiscr);
@@ -484,94 +569,133 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 z = new ImaginaryQuadraticInteger(re, 0, r);
                 assertionMessage = re + " in " + r.toString() + " should not have been identified as prime.";
                 assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(z));
-//                re += 2;
-//                z = z.plus(2);
-//                if (primesList.contains(re)) {
-//                    assertionMessage = FIGURE IT OUT IN THE MORNING
-//                }
             }
+        }
+        RealQuadraticInteger ramifier;
+        for (int iterDiscrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+            r = new RealQuadraticRing(iterDiscrR);
+            ramifier = new RealQuadraticInteger(0, 1, r);
+            if (NumberTheoreticFunctionsCalculator.isPrime(iterDiscrR)) {
+                assertionMessage = ramifier.toASCIIString() + " should have been identified as prime in " + r.toASCIIString() + ".";
+                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(ramifier));
+            } else {
+                assertionMessage = ramifier.toASCIIString() + " should not have been identified as prime in " + r.toASCIIString() + ".";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(ramifier));
+            }
+        }
+        /* The very last thing, to check UnsupportedNumberDomainException is 
+           thrown when needed */
+        r = new IllDefinedQuadraticRing(22);
+        z = new IllDefinedQuadraticInteger(5, 4, r);
+        try {
+            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isPrime(z);
+            String failMessage = "Somehow determined that " + z.toASCIIString() + " is ";
+            if (compositeFlag) {
+                failMessage = failMessage + "not ";
+            }
+            failMessage = failMessage + " prime.";
+            System.out.println(failMessage);
+            fail(failMessage);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("isPrime on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("\"" + unde.getMessage() + "\"");
         }
     }
     
     /**
      * Test of isIrreducible method, of class 
-     * NumberTheoreticFunctionsCalculator. Test is temporarily disabled while 
-     * working out issues pertaining to the inheritance of QuadraticInteger and 
-     * QuadraticRing.
+     * NumberTheoreticFunctionsCalculator.
      */
-    @Ignore // TODO: Update Javadoc upon removing this annotation
     @Test
     public void testIsIrreducible() {
         System.out.println("isIrreducible");
-//        ImaginaryQuadraticRing currRing;
-//        ImaginaryQuadraticInteger currQuadrInt;
-//        String assertionMessage;
-//        /* The number 1 + sqrt(d) should be irreducible but not prime in each
-//           domain Z[sqrt(d)] for squarefree negative d = 3 mod 4. But (1 + 
-//           sqrt(d))^2 should not be, nor the conjugate of that number. */
-//        for (int iterDiscr = -5; iterDiscr > -200; iterDiscr -= 4) {
-//            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
-//                currRing = new ImaginaryQuadraticRing(iterDiscr);
-//                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing);
-//                assertionMessage = currQuadrInt.toASCIIString() + " should have been found to not be prime.";
-//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currQuadrInt));
-//                assertionMessage = assertionMessage + "\nBut it should have been found to be irreducible.";
-//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-//                try {
-//                    currQuadrInt = currQuadrInt.times(currQuadrInt); // Squaring currQuadrInt
-//                } catch (AlgebraicDegreeOverflowException adoe) {
-//                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
-//                }
-//                assertionMessage = currQuadrInt.toASCIIString() + " should not have been found to be irreducible.";
-//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-//                currQuadrInt = currQuadrInt.conjugate();
-//                assertionMessage = currQuadrInt.toASCIIString() + " should not have been found to be irreducible.";
-//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-//            }
-//        }
-//        for (int iterDiscrOQ = -7; iterDiscrOQ > -200; iterDiscrOQ -= 4) {
-//            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscrOQ)) {
-//                currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
-//                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing, 2);
-//                assertionMessage = currQuadrInt.toASCIIString() + " should have been found to be irreducible.";
-//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-//                try {
-//                    currQuadrInt = currQuadrInt.times(currQuadrInt);
-//                } catch (AlgebraicDegreeOverflowException adoe) {
-//                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
-//                }
-//                assertionMessage = currQuadrInt.toASCIIString() + " should not have been found to be irreducible.";
-//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-//                currQuadrInt = new ImaginaryQuadraticInteger(3, 1, currRing, 2);
-//                currQuadrInt = currQuadrInt.times(currQuadrInt);
-//                assertionMessage = currQuadrInt.toASCIIString() + " should not have been found to be irreducible.";
-//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-//            }
-//        }
+        QuadraticRing currRing;
+        QuadraticInteger currQuadrInt;
+        String assertionMessage;
+        /* The number 1 + sqrt(d) should be irreducible but not prime in each
+           domain Z[sqrt(d)] for squarefree negative d = 3 mod 4. But (1 + 
+           sqrt(d))^2 should not be, nor the conjugate of that number. */
+        for (int iterDiscr = -5; iterDiscr > -200; iterDiscr -= 4) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+                currRing = new ImaginaryQuadraticRing(iterDiscr);
+                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing);
+                assertionMessage = currQuadrInt.toString() + " should have been found to not be prime.";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currQuadrInt));
+                assertionMessage = assertionMessage + "\nBut it should have been found to be irreducible.";
+                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+                try {
+                    currQuadrInt = currQuadrInt.times(currQuadrInt); // Squaring currQuadrInt
+                } catch (AlgebraicDegreeOverflowException adoe) {
+                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
+                }
+                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+                currQuadrInt = currQuadrInt.conjugate();
+                assertionMessage = currQuadrInt.toASCIIString() + " should not have been found to be irreducible.";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+            }
+        }
+        for (int iterDiscrOQ = -7; iterDiscrOQ > -200; iterDiscrOQ -= 4) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscrOQ)) {
+                currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
+                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing, 2);
+                assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
+                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+                try {
+                    currQuadrInt = currQuadrInt.times(currQuadrInt);
+                } catch (AlgebraicDegreeOverflowException adoe) {
+                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
+                }
+                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+                currQuadrInt = new ImaginaryQuadraticInteger(3, 1, currRing, 2);
+                currQuadrInt = currQuadrInt.times(currQuadrInt);
+                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+            }
+        }
+        for (int discrR = 10; discrR < 200; discrR += 10) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrR)) {
+                currRing = new RealQuadraticRing(discrR);
+                currQuadrInt = new RealQuadraticInteger(0, 1, currRing);
+                assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
+                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+                try {
+                    currQuadrInt = currQuadrInt.times(currQuadrInt);
+                } catch (AlgebraicDegreeOverflowException adoe) {
+                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
+                }
+                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+            }
+        }
     }
     
     /**
      * Test of symbolLegendre method, of class 
      * NumberTheoreticFunctionsCalculator. Per quadratic reciprocity, 
-     * Legendre(p, q) = Legendre(q, p) if p and q are both primes and either one 
-     * or both of them are congruent to 1 mod 4. But if both are congruent to 3 
-     * mod 4, then Legendre(p, q) = -Legendre(q, p). And of course Legendre(p, 
-     * p) = 0. Some of this assumes that both p and q are positive. In the case 
-     * of Legendre(p, -q) with q being positive, reckon the congruence of q mod 
-     * 4 rather than -q.
-     * <p>Another property to test for is that Legendre(ab, p) = Legendre(a, p) 
-     * Legendre(b, p). That is to say that this is a multiplicative function. So 
-     * here this is tested with Legendre(2p, q) = Legendre(2, q) Legendre(p, q).
-     * </p>
+     * Legendre(<i>p</i>, <i>q</i>) = Legendre(<i>q</i>, <i>p</i>) if <i>p</i> 
+     * and <i>q</i> are both primes and either one or both of them are congruent 
+     * to 1 mod 4. But if both are congruent to 3 mod 4, then Legendre(<i>p</i>, 
+     * q) = &minus;Legendre(<i>q</i>, <i>p</i>). And of course 
+     * Legendre(<i>p</i>, <i>p</i>) = 0. Some of this assumes that both <i>p</i> 
+     * and <i>q</i> are positive. In the case of Legendre(<i>p</i>, 
+     * &minus;<i>q</i>) with <i>q</i> being positive, reckon the congruence of 
+     * <i>q</i> mod 4 rather than &minus;<i>q</i> mod 4.
+     * <p>Another property to test for is that Legendre(<i>ab</i>, <i>p</i>) = 
+     * Legendre(<i>a</i>, <i>p</i>) Legendre(<i>b</i>, <i>p</i>). That is to say 
+     * that this is a multiplicative function. So here this is tested with 
+     * Legendre(2<i>p</i>, <i>q</i>) = Legendre(2, <i>q</i>) Legendre(<i>p</i>, 
+     * <i>q</i>).</p>
      * <p>Of course it's entirely possible that in implementing symbolLegendre 
      * the programmer could get dyslexic and produce an implementation that 
-     * always gives the wrong result when gcd(a, p) = 1, meaning that it always 
-     * returns -1 when it should return 1, and vice-versa, and yet it passes the 
-     * tests.</p>
+     * always gives the wrong result when gcd(<i>a</i>, <i>p</i>) = 1, meaning 
+     * that it always returns &minus;1 when it should return 1, and vice-versa, 
+     * and yet it passes the tests.</p>
      * <p>For that reason one should not rely only on the identities pertaining 
      * to multiplicativity and quadratic reciprocity. Therefore these tests also 
-     * include some computations of actual squares modulo p to check some of the 
-     * answers.</p>
+     * include some computations of actual squares modulo <i>p</i> to check some 
+     * of the answers.</p>
      * <p>I chose to use the Fibonacci numbers for this purpose, since they are 
      * already being used in some of the other tests and they contain a good mix 
      * of prime numbers (including the even prime 2) and composite numbers.</p>
@@ -639,16 +763,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
             byte attempt = NumberTheoreticFunctionsCalculator.symbolLegendre(7, 2);
             fail("Calling Legendre(7, 2) should have triggered an exception, not given result " + attempt + ".");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Calling Legendre(7, 2) correctly triggered IllegalArgumentException. " + iae.getMessage());
+            System.out.println("Calling Legendre(7, 2) correctly triggered IllegalArgumentException. \"" + iae.getMessage() + "\"");
         }
     }
 
     /**
      * Test of symbolJacobi method, of class NumberTheoreticFunctionsCalculator. 
-     * First, it checks that Legendre(a, p) = Jacobi(a, p), where p is an odd 
-     * prime. Next, it checks that Jacobi(n, pq) = Legendre(n, p) Legendre(n,  
-     * q). If the Legendre symbol test fails, the result of this test is 
-     * meaningless. Then follows the actual business of checking Jacobi(n, m).
+     * First, it checks that Legendre(<i>a</i>, <i>p</i>) = Jacobi(<i>a</i>, 
+     * <i>p</i>), where <i>p</i> is an odd prime. Next, it checks that 
+     * Jacobi(<i>n</i>, <i>pq</i>) = Legendre(<i>n</i>, <i>p</i>) 
+     * Legendre(<i>n</i>, <i>q</i>). If the Legendre symbol test fails, the 
+     * result of this test is meaningless. Then follows the actual business of 
+     * checking Jacobi(<i>n</i>, <i>m</i>).
      */
     @Test
     public void testJacobiSymbol() {
@@ -682,19 +808,20 @@ public class NumberTheoreticFunctionsCalculatorTest {
             byte attempt = NumberTheoreticFunctionsCalculator.symbolJacobi(7, 2);
             fail("Calling Jacobi(7, 2) should have triggered an exception, not given result " + attempt + ".");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Calling Jacobi(7, 2) correctly triggered IllegalArgumentException. " + iae.getMessage());
+            System.out.println("Calling Jacobi(7, 2) correctly triggered IllegalArgumentException. \"" + iae.getMessage() + "\"");
         }
     }
 
     /**
      * Test of symbolKronecker method, of class 
-     * NumberTheoreticFunctionsCalculator. First, it checks that Legendre(a, p) 
-     * = Kronecker(a, p), where p is an odd prime. Next, it checks that 
-     * Jacobi(n, m) = Kronecker(n, m). If either the Legendre symbol test or the 
-     * Jacobi symbol test fails, the result of this test is meaningless. Then 
-     * follows the actual business of checking Kronecker(n, -2), Kronecker(n, 
-     * -1) and Kronecker(n, 2). On another occasion I might add a few 
-     * multiplicative tests.
+     * NumberTheoreticFunctionsCalculator. First, it checks that 
+     * Legendre(<i>a</i>, <i>p</i>) = Kronecker(<i>a</i>, <i>p</i>), where 
+     * <i>p</i> is an odd prime. Next, it checks that Jacobi(<i>n</i>, <i>m</i>) 
+     * = Kronecker(<i>n</i>, <i>m</i>). If either the Legendre symbol test or 
+     * the Jacobi symbol test fails, the result of this test is meaningless. 
+     * Then follows the actual business of checking Kronecker(<i>n</i>, 
+     * &minus;2), Kronecker(<i>n</i>, &minus;1) and Kronecker(<i>n</i>, 2). On 
+     * another occasion I might add a few multiplicative tests.
      */
     @Test
     public void testKroneckerSymbol() {
@@ -771,7 +898,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Test of isSquareFree method, of class NumberTheoreticFunctionsCalculator.
+     * Test of isSquareFree method, of class NumberTheoreticFunctionsCalculator. 
+     * Prime numbers should be found to be squarefree, squares of primes should 
+     * not.
      */
     @Test
     public void testIsSquareFree() {
@@ -792,10 +921,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
 
     /**
-     * Test of moebiusMu method, of class NumberTheoreticFunctionsCalculator.
-     * I expect that mu(-n) = mu(n), so this test checks for that. If you wish 
-     * to limit the test to positive integers, you can just remove some of the 
-     * assertions.
+     * Test of moebiusMu method, of class NumberTheoreticFunctionsCalculator. I 
+     * expect that &mu;(&minus;<i>n</i>) = &mu;(<i>n</i>), so this test checks 
+     * for that. If you wish to limit the test to positive integers, you can 
+     * just remove some of the assertions.
      */
     @Test
     public void testMoebiusMu() {
@@ -871,147 +1000,178 @@ public class NumberTheoreticFunctionsCalculatorTest {
             resultLong = NumberTheoreticFunctionsCalculator.euclideanGCD(k, k + 2);
             assertEquals(expResultLong, resultLong);
         }
-        /* TO DO: Write more tests for euclideanGCD(IQI, IQI). */
-        /* TO DO: Write tests for euclideanGCD(a, IQI). */
-        /* TO DO: Write tests for euclideanGCD(IQI, b). */
-        /* Last but not least, euclideanGCD(ImaginaryQuadraticInteger, 
-           ImaginaryQuadraticInteger). */
-//        ImaginaryQuadraticRing r;
-//        ImaginaryQuadraticInteger iqia, iqib, expResultIQI, resultIQI;
-//        // sqrt(d) and 1 + sqrt(d) should be coprime in any ring
-//        for (Integer iterDiscr : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D) {
-//            r = new ImaginaryQuadraticRing(iterDiscr);
-//            iqia = new ImaginaryQuadraticInteger(0, 1, r);
-//            iqib = new ImaginaryQuadraticInteger(1, 1, r);
-//            expResultIQI = new ImaginaryQuadraticInteger(1, 0, r);
-//            try {
-//                resultIQI = NumberTheoreticFunctionsCalculator.euclideanGCD(iqia, iqib);
-//            } catch (AlgebraicDegreeOverflowException adoe) {
-//                resultIQI = iqia; // Just to avoid "may not have been initialized" warning
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException" + adoe.getMessage());
-//            } catch (NonEuclideanDomainException nede) {
-//                resultIQI = iqib; // Same reason as previous
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
-//            } catch (NullPointerException npe) {
-//                resultIQI = iqia;
-//                System.out.println("NullPointerException encountered: " + npe.getMessage());
-//                System.out.println("This could indicate a problem with NotDivisibleException.getBoundingIntegers().");
-//            }
-//            assertEquals(expResultIQI, resultIQI);
-//        }
-//        // In most cases, gcd(sqrt(d), -d) = sqrt(d)
-//        for (int iterDiscrA = 0; iterDiscrA < NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D.length - 1; iterDiscrA++) {
-//            r = new ImaginaryQuadraticRing(NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D[iterDiscrA]);
-//            iqia = new ImaginaryQuadraticInteger(0, 1, r);
-//            iqib = new ImaginaryQuadraticInteger(NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D[iterDiscrA], 0, r);
-//            expResultIQI = iqia;
-//            try {
-//                resultIQI = NumberTheoreticFunctionsCalculator.euclideanGCD(iqia, iqib);
-//            } catch (AlgebraicDegreeOverflowException adoe) {
-//                resultIQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_I; // Just to avoid "may not have been initialized" warning
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException" + adoe.getMessage());
-//            } catch (NonEuclideanDomainException nede) {
-//                resultIQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_NEG_I; // Same reason as previous
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
-//            } catch (ArrayIndexOutOfBoundsException aioobe) {
-//                resultIQI = iqib;
-//                System.out.println("ArrayIndexOutOfBoundsException encountered: " + aioobe.getMessage());
-//                System.out.println("This could indicate either a flaw in the implementation of the Euclidean algorithm or a problem with NotDivisibleException.getBoundingIntegers().");
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered ArrayIndexOutOfBoundsException: " + aioobe.getMessage());
-//            }
-//            assertEquals(expResultIQI, resultIQI);
-//        }
-//        int b;
-//        for (int iterDiscrOQ = 0; iterDiscrOQ < NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D.length - 3; iterDiscrOQ++) {
-//            r = new ImaginaryQuadraticRing(NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D[iterDiscrOQ]);
-//            iqia = new ImaginaryQuadraticInteger(1, 1, r, 2);
-//            b = (int) iqia.norm() * HEEGNER_COMPANION_PRIMES[iterDiscrOQ + 4];
-//            expResultIQI = iqia;
-//            iqia = iqia.times(iqia);
-//            try {
-//                resultIQI = NumberTheoreticFunctionsCalculator.euclideanGCD(iqia, b);
-//            } catch (AlgebraicDegreeOverflowException adoe) {
-//                resultIQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_I; // Just to avoid "may not have been initialized" warning
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + b + ") should not have triggered AlgebraicDegreeOverflowException" + adoe.getMessage());
-//            } catch (NonEuclideanDomainException nede) {
-//                resultIQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_NEG_I; // Same reason as previous
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + b + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
-//            } catch (ArrayIndexOutOfBoundsException aioobe) {
-//                resultIQI = new ImaginaryQuadraticInteger(0, 0, r);
-//                System.out.println("ArrayIndexOutOfBoundsException encountered: " + aioobe.getMessage());
-//                System.out.println("This could indicate either a flaw in the implementation of the Euclidean algorithm or a problem with NotDivisibleException.getBoundingIntegers().");
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + b + ") should not have triggered ArrayIndexOutOfBoundsException: " + aioobe.getMessage());
-//            }
-//            assertEquals(expResultIQI, resultIQI);
-//            try {
-//                resultIQI = NumberTheoreticFunctionsCalculator.euclideanGCD(b, iqia);
-//            } catch (NonEuclideanDomainException nede) {
-//                resultIQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_NEG_I; // Same reason as previous
-//                fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + b + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
-//            }
-//            assertEquals(expResultIQI, resultIQI);
-//        }
-//        r = NumberTheoreticFunctionsCalculator.RING_GAUSSIAN;
-//        iqia = new ImaginaryQuadraticInteger(-2, 2, r);
-//        iqib = new ImaginaryQuadraticInteger(-2, 4, r);
-//        expResultIQI = new ImaginaryQuadraticInteger(2, 0, r);
-//        try {
-//            resultIQI = NumberTheoreticFunctionsCalculator.euclideanGCD(iqia, iqib);
-//        } catch (AlgebraicDegreeOverflowException adoe) {
-//            resultIQI = iqia;
-//            fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException" + adoe.getMessage());
-//        } catch (NonEuclideanDomainException nede) {
-//            resultIQI = iqib;
-//            fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
-//        }
-//        assertEquals(expResultIQI, resultIQI);
-//        // Now to check the appropriate exceptions are thrown
-//        r = new ImaginaryQuadraticRing(-2);
-//        iqib = new ImaginaryQuadraticInteger(-2, 4, r);
-//        try {
-//            resultIQI = NumberTheoreticFunctionsCalculator.euclideanGCD(iqia, iqib);
-//            fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should have triggered AlgebraicDegreeOverflowException, not given result " + resultIQI.toASCIIString());
-//        } catch (AlgebraicDegreeOverflowException adoe) {
-//            System.out.println("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") correctly triggered AlgebraicDegreeOverflowException " + adoe.getMessage());
-//        } catch (NonEuclideanDomainException nde) {
-//            fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered NonEuclideanDomainException " + nde.getMessage());
-//        }
-//        r = new ImaginaryQuadraticRing(-5);
-//        iqia = new ImaginaryQuadraticInteger(-2, 2, r);
-//        iqib = new ImaginaryQuadraticInteger(-2, 4, r);
-//        try {
-//            resultIQI = NumberTheoreticFunctionsCalculator.euclideanGCD(iqia, iqib);
-//            fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should have triggered NonEuclideanDomainException, not given result " + resultIQI.toASCIIString());
-//        } catch (AlgebraicDegreeOverflowException adoe) {
-//            fail("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException " + adoe.getMessage());
-//        } catch (NonEuclideanDomainException nde) {
-//            System.out.println("Attempting to calculate gcd(" + iqia.toASCIIString() + ", " + iqib.toASCIIString() + ") correctly triggered NonEuclideanDomainException " + nde.getMessage());
-//        }
+        // Last but not least, euclideanGCD(QuadraticInteger, QuadraticInteger).
+        QuadraticRing r;
+        QuadraticInteger qia, qib;
+        AlgebraicInteger expResultQI, resultQI;
+        // sqrt(d) and 1 + sqrt(d) should be coprime in any ring
+        for (Integer iterDiscr : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D) {
+            r = new ImaginaryQuadraticRing(iterDiscr);
+            qia = new ImaginaryQuadraticInteger(0, 1, r);
+            qib = new ImaginaryQuadraticInteger(1, 1, r);
+            expResultQI = new ImaginaryQuadraticInteger(1, 0, r);
+            try {
+                resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(qia, qib);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                resultQI = qia; // Just to avoid "may not have been initialized" warning
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"");
+            } catch (NonEuclideanDomainException nede) {
+                resultQI = qib; // Same reason as previous
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered NonEuclideanDomainException \"" + nede.getMessage() + "\"");
+            } catch (NullPointerException npe) {
+                resultQI = qia;
+                System.out.println("NullPointerException encountered: " + npe.getMessage());
+                System.out.println("This could indicate a problem with NotDivisibleException.getBoundingIntegers().");
+            }
+            assertEquals(expResultQI, resultQI);
+        }
+        // In most cases, gcd(sqrt(d), -d) = sqrt(d)
+        for (int iterDiscrA = 0; iterDiscrA < NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D.length - 1; iterDiscrA++) {
+            r = new ImaginaryQuadraticRing(NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D[iterDiscrA]);
+            qia = new ImaginaryQuadraticInteger(0, 1, r);
+            qib = new ImaginaryQuadraticInteger(NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D[iterDiscrA], 0, r);
+            expResultQI = qia;
+            try {
+                resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(qia, qib);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                resultQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_I; // Just to avoid "may not have been initialized" warning
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"");
+            } catch (NonEuclideanDomainException nede) {
+                resultQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_NEG_I; // Same reason as previous
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered NonEuclideanDomainException \"" + nede.getMessage() + "\"");
+            } catch (ArrayIndexOutOfBoundsException aioobe) {
+                resultQI = qib;
+                System.out.println("ArrayIndexOutOfBoundsException encountered: \"" + aioobe.getMessage() + "\"");
+                System.out.println("This could indicate either a flaw in the implementation of the Euclidean algorithm or a problem with NotDivisibleException.getBoundingIntegers().");
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered ArrayIndexOutOfBoundsException: \"" + aioobe.getMessage() + "\"");
+            }
+            assertEquals(expResultQI, resultQI);
+        }
+        int b;
+        for (int iterDiscrOQ = 0; iterDiscrOQ < NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D.length - 3; iterDiscrOQ++) {
+            r = new ImaginaryQuadraticRing(NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D[iterDiscrOQ]);
+            qia = new ImaginaryQuadraticInteger(1, 1, r, 2);
+            b = (int) qia.norm() * HEEGNER_COMPANION_PRIMES[iterDiscrOQ + 4];
+            expResultQI = qia;
+            qia = qia.times(qia);
+            try {
+                resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(qia, b);
+                assertEquals(expResultQI, resultQI);
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + b + ") should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"");
+            } catch (NonEuclideanDomainException nede) {
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + b + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
+            } catch (ArrayIndexOutOfBoundsException aioobe) {
+                System.out.println("ArrayIndexOutOfBoundsException encountered: " + aioobe.getMessage());
+                System.out.println("This could indicate either a flaw in the implementation of the Euclidean algorithm or a problem with NotDivisibleException.getBoundingIntegers().");
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + b + ") should not have triggered ArrayIndexOutOfBoundsException: \"" + aioobe.getMessage() + "\"");
+            }
+            try {
+                resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(b, qia);
+            } catch (NonEuclideanDomainException nede) {
+                resultQI = NumberTheoreticFunctionsCalculator.IMAG_UNIT_NEG_I; // Same reason as previous
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + b + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
+            }
+            assertEquals(expResultQI, resultQI);
+        }
+        r = NumberTheoreticFunctionsCalculator.RING_GAUSSIAN;
+        qia = new ImaginaryQuadraticInteger(-2, 2, r);
+        qib = new ImaginaryQuadraticInteger(-2, 4, r);
+        expResultQI = new ImaginaryQuadraticInteger(2, 0, r);
+        try {
+            resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(qia, qib);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            resultQI = qia;
+            fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"");
+        } catch (NonEuclideanDomainException nede) {
+            resultQI = qib;
+            fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered NonEuclideanDomainException" + nede.getMessage());
+        }
+        assertEquals(expResultQI, resultQI);
+        // Now to check the appropriate exceptions are thrown
+        r = new ImaginaryQuadraticRing(-2);
+        qib = new ImaginaryQuadraticInteger(-2, 4, r);
+        try {
+            resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(qia, qib);
+            fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should have triggered AlgebraicDegreeOverflowException, not given result " + resultQI.toASCIIString());
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") correctly triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"");
+        } catch (NonEuclideanDomainException nde) {
+            fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered NonEuclideanDomainException " + nde.getMessage());
+        }
+        r = new ImaginaryQuadraticRing(-5);
+        qia = new ImaginaryQuadraticInteger(-2, 2, r);
+        qib = new ImaginaryQuadraticInteger(-2, 4, r);
+        try {
+            resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(qia, qib);
+            fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should have triggered NonEuclideanDomainException, not given result " + resultQI.toASCIIString());
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"");
+        } catch (NonEuclideanDomainException nde) {
+            System.out.println("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") correctly triggered NonEuclideanDomainException " + nde.getMessage());
+        }
+        // Switching over to real quadratic integer rings
+        for (int discrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+            r = new RealQuadraticRing(discrR);
+            qia = new RealQuadraticInteger(2, 0, r);
+            qib = new RealQuadraticInteger(1, 1, r);
+            try {
+                resultQI = NumberTheoreticFunctionsCalculator.euclideanGCD(qia, qib);
+                System.out.println("gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") = " + resultQI.toASCIIString() + "?");
+                if (discrR % 2 == 1) {
+                    if (r.hasHalfIntegers()) {
+//                        assertEquals(qia, resultQI); // IS THIS RIGHT???
+                    } else {
+                        if (discrR != 3) {
+                            assertNotEquals(qib, resultQI);
+                        }
+                    }
+                }
+            } catch (AlgebraicDegreeOverflowException adoe) {
+                fail("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"");
+            } catch (NonEuclideanDomainException nde) {
+                System.out.println("Attempting to calculate gcd(" + qia.toASCIIString() + ", " + qib.toASCIIString() + ") correctly triggered NonEuclideanDomainException " + nde.getMessage());
+            } catch (ArrayIndexOutOfBoundsException aioobe) {
+                String failMessage = "ArrayIndexOutOfBoundsException encountered: \"" + aioobe.getMessage() + "\"";
+                System.out.println(failMessage);
+                System.out.println("This could indicate a problem with NotDivisibleException.getBoundingIntegers().");
+                fail(failMessage);
+            }
+        }
     }
     
     /**
      * Test of randomSquarefreeNumber method, of class 
-     * NumberTheoreticFunctionsCalculator.
+     * NumberTheoreticFunctionsCalculator. This test doesn't check whether the 
+     * distribution is random enough, only that the numbers produced are indeed 
+     * squarefree, that they don't have repeated prime factors. The test will 
+     * keep going until either an assertion fails or a number is produced with 7 
+     * for a least significant digit, whichever happens first.
      */
     @Test
     public void testRandomNegativeSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
         // Our test bound will be the square of the largest prime in our finite list
         int testBound = primesList.get(primesListLength - 1) * primesList.get(primesListLength - 1);
-        int potentialRanSqFreeNum = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(testBound);
-        System.out.println("Function came up with this pseudorandom squarefree number: " + potentialRanSqFreeNum);
-        // Check that the pseudorandom number is indeed squarefree
-        double squaredPrime, ranNumDiv, flooredRanNumDiv;
-        for (int i = 0; i < primesListLength; i++) {
-            squaredPrime = primesList.get(i) * primesList.get(i);
-            ranNumDiv = potentialRanSqFreeNum / squaredPrime;
-            flooredRanNumDiv = (int) Math.floor(ranNumDiv);
-            assertNotEquals(ranNumDiv, flooredRanNumDiv, TEST_DELTA);
-        }
-        /* And lastly, check that it is no more than the negated test bound but 
-           not less than or equal to 0. */
-        assertTrue(potentialRanSqFreeNum < testBound);
-        assertTrue(potentialRanSqFreeNum > 0);
+        int potentialRanSqFreeNum;
+        String assertionMessage;
+        do {
+            potentialRanSqFreeNum = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(testBound);
+            System.out.println("Function came up with this pseudorandom squarefree number: " + potentialRanSqFreeNum);
+            // Check that the pseudorandom number is indeed squarefree
+            double squaredPrime, ranNumDiv, flooredRanNumDiv;
+            for (int i = 0; i < primesListLength; i++) {
+                squaredPrime = primesList.get(i) * primesList.get(i);
+                ranNumDiv = potentialRanSqFreeNum / squaredPrime;
+                flooredRanNumDiv = (int) Math.floor(ranNumDiv);
+                assertionMessage = "Since " + potentialRanSqFreeNum + " is said to be squarefree, it should not be divisible by " + squaredPrime;
+                assertNotEquals(assertionMessage, ranNumDiv, flooredRanNumDiv, TEST_DELTA);
+            }
+            /* And lastly, check that it is no more than the negated test bound 
+               but not less than or equal to 0. */
+            assertTrue(potentialRanSqFreeNum < testBound);
+            assertTrue(potentialRanSqFreeNum > 0);
+        } while (potentialRanSqFreeNum % 10 != 7);
     }
     
 }
