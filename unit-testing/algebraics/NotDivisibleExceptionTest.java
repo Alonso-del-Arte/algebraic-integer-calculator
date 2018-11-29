@@ -23,6 +23,9 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+
+import java.util.Arrays;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -172,11 +175,17 @@ public class NotDivisibleExceptionTest {
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        ImaginaryQuadraticRing expResult = new ImaginaryQuadraticRing(-1);
+        QuadraticRing expResult = new ImaginaryQuadraticRing(-1);
         IntegerRing result = notDivGaussian.getRing();
         assertEquals(expResult, result);
         expResult = new ImaginaryQuadraticRing(-3);
         result = notDivEisenstein.getRing();
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticRing(2);
+        result = notDivZ2.getRing();
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticRing(5);
+        result = notDivZPhi.getRing();
         assertEquals(expResult, result);
     }
 
@@ -260,10 +269,29 @@ public class NotDivisibleExceptionTest {
         result = notDivEisenstein.getBoundingIntegers();
         sortAlgIntArray(result);
         assertArrayEquals(expResult, result);
+        currRing = new RealQuadraticRing(2);
+        RealQuadraticInteger currElem = new RealQuadraticInteger(1, 0, currRing);
+        String assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
+        result = notDivZ2.getBoundingIntegers();
+        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
+        currElem = new RealQuadraticInteger(2, 0, currRing);
+        assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
+        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
+        currElem = new RealQuadraticInteger(0, 1, currRing);
+        assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
+        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
+        currRing = new RealQuadraticRing(5);
+        currElem = new RealQuadraticInteger(1, 1, currRing, 2);
+        assertionMessage = "Array of bounding integers for the Z[phi] example should contain " + currElem.toASCIIString();
+        result = notDivZPhi.getBoundingIntegers();
+        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
     }
 
     /**
-     * Test of roundTowardsZero method, of class NotDivisibleException.
+     * Test of roundTowardsZero method, of class NotDivisibleException. In the 
+     * case of real quadratic integers, I've gone back and forth on what the 
+     * result of this function should be. For now, that part of the test is 
+     * inactive.
      */
     @Test
     public void testRoundTowardsZero() {
@@ -276,10 +304,21 @@ public class NotDivisibleExceptionTest {
         expResult = new ImaginaryQuadraticInteger(0, -2, currRing);
         result = notDivEisenstein.roundTowardsZero();
         assertEquals(expResult, result);
+//        currRing = new RealQuadraticRing(2);
+//        expResult = new ImaginaryQuadraticInteger(1, 0, currRing);
+//        result = notDivZ2.roundTowardsZero();
+//        assertEquals(expResult, result);
+//        currRing = new RealQuadraticRing(5);
+//        expResult = new ImaginaryQuadraticInteger(0, 0, currRing);
+//        result = notDivZPhi.roundTowardsZero();
+//        assertEquals(expResult, result);
     }
 
     /**
-     * Test of roundAwayFromZero method, of class NotDivisibleException.
+     * Test of roundAwayFromZero method, of class NotDivisibleException. In the 
+     * case of real quadratic integers, I've gone back and forth on what the 
+     * result of this function should be. For now, that part of the test is 
+     * inactive.
      */
     @Test
     public void testRoundAwayFromZero() {
@@ -292,6 +331,14 @@ public class NotDivisibleExceptionTest {
         expResult = new ImaginaryQuadraticInteger(0, -3, currRing);
         result = notDivEisenstein.roundAwayFromZero();
         assertEquals(expResult, result);
+//        currRing = new RealQuadraticRing(2);
+//        expResult = new ImaginaryQuadraticInteger(2, 0, currRing);
+//        result = notDivZ2.roundAwayFromZero();
+//        assertEquals(expResult, result);
+//        currRing = new RealQuadraticRing(5);
+//        expResult = new ImaginaryQuadraticInteger(1, 0, currRing);
+//        result = notDivZPhi.roundAwayFromZero();
+//        assertEquals(expResult, result);
     }
     
     @Test
