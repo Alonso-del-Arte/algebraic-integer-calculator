@@ -19,6 +19,7 @@ package algebraics;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
+import algebraics.quadratics.QuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
 
 import java.util.ArrayList;
@@ -229,10 +230,9 @@ public class NonUniqueFactorizationDomainExceptionTest {
     @Test
     public void testTryToFactorizeAnywayInSeveralRings() {
         System.out.println("tryToFactorizeAnyway in several different rings");
-        ImaginaryQuadraticRing ring;
-        ImaginaryQuadraticInteger number = new ImaginaryQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
-        ImaginaryQuadraticInteger zero, negOne;
-        QuadraticInteger facProd;
+        QuadraticRing ring;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+        QuadraticInteger zero, negOne, facProd;
         String assertionMessage;
         int negOneCount, irrNotPrCount;
         List<AlgebraicInteger> factorsList = new ArrayList<>();

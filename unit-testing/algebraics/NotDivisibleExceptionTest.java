@@ -170,22 +170,22 @@ public class NotDivisibleExceptionTest {
     }
 
     /**
-     * Test of getRing method, of class NotDivisibleException.
+     * Test of getCausingRing method, of class NotDivisibleException.
      */
     @Test
-    public void testGetRing() {
-        System.out.println("getRing");
+    public void testGetCausingRing() {
+        System.out.println("getCausingRing");
         QuadraticRing expResult = new ImaginaryQuadraticRing(-1);
-        IntegerRing result = notDivGaussian.getRing();
+        IntegerRing result = notDivGaussian.getCausingRing();
         assertEquals(expResult, result);
         expResult = new ImaginaryQuadraticRing(-3);
-        result = notDivEisenstein.getRing();
+        result = notDivEisenstein.getCausingRing();
         assertEquals(expResult, result);
         expResult = new RealQuadraticRing(2);
-        result = notDivZ2.getRing();
+        result = notDivZ2.getCausingRing();
         assertEquals(expResult, result);
         expResult = new RealQuadraticRing(5);
-        result = notDivZPhi.getRing();
+        result = notDivZPhi.getCausingRing();
         assertEquals(expResult, result);
     }
 
