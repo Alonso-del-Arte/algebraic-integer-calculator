@@ -419,8 +419,8 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of getRing method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
+     * Test of getCausingRing method, of class RealQuadraticInteger, inherited from 
+ QuadraticInteger.
      */
     @Test
     public void testGetRing() {
@@ -773,13 +773,13 @@ public class RealQuadraticIntegerTest {
 //            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //            numberString = testIntegers.get(i).toStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //            numberString = testIntegers.get(i).toASCIIString();
 //            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //            numberString = testIntegers.get(i).toASCIIStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //            numberString = testIntegers.get(i).toTeXString();
 //            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
@@ -788,13 +788,13 @@ public class RealQuadraticIntegerTest {
 //            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //            numberString = testIntegers.get(i).toTeXStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //            numberString = testIntegers.get(i).toHTMLString();
 //            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //            numberString = testIntegers.get(i).toHTMLStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
 //            assertEquals(testIntegers.get(i), numberIQI);
 //        }
 //        // A few special cases to check
@@ -1266,7 +1266,7 @@ public class RealQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getCausingRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
@@ -1278,7 +1278,7 @@ public class RealQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getCausingRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
@@ -1359,10 +1359,10 @@ public class RealQuadraticIntegerTest {
             /* However, if the divisor is rational, there should be a result, 
                even if it takes us to a different ring */
 //            temp = testIntegers.get(j + 1).times(testNorms.get(j));
-//            failMessage = "Dividing " + temp.toASCIIString() + " from " + temp.getRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " should not have caused";
+//            failMessage = "Dividing " + temp.toASCIIString() + " from " + temp.getCausingRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getCausingRing().toASCIIString() + " should not have caused";
 //            try {
 //                result = temp.divides(testNorms.get(j));
-//                System.out.println("Dividing " + temp.toASCIIString() + " from " + temp.getRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " gives result " + result.toASCIIString());
+//                System.out.println("Dividing " + temp.toASCIIString() + " from " + temp.getCausingRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getCausingRing().toASCIIString() + " gives result " + result.toASCIIString());
 //            } catch (AlgebraicDegreeOverflowException adoe) {
 //                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
 //                fail(failMessage);
@@ -1429,6 +1429,9 @@ public class RealQuadraticIntegerTest {
             fail("Attempt to create RealQuadraticInteger with denominator 4 should have caused an IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
             System.out.println("Attempt to use denominator 4 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " is the wrong exception for denominator 4. \"" + e.getMessage() + "\"";
+            fail(failMessage);
         }
         try {
             quadrInt = new RealQuadraticInteger(3, 2, RING_ZPHI, 2);
@@ -1436,6 +1439,9 @@ public class RealQuadraticIntegerTest {
             fail("Attempt to create RealQuadraticInteger with mismatched parities of a and b should have caused an IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
             System.out.println("Attempt to use mismatched parities correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " is the wrong exception for mismatched parities. \"" + e.getMessage() + "\"";
+            fail(failMessage);
         }
     }    
 

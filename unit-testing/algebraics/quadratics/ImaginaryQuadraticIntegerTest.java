@@ -510,7 +510,7 @@ public class ImaginaryQuadraticIntegerTest {
 //        long expResult, result;
 //        for (int i = 0; i < totalTestIntegers; i++) {
 //            result = testIntegers.get(i).getTwiceRealPartMult();
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+//            if (testIntegers.get(i).getCausingRing().hasHalfIntegers()) {
 //                expResult = randomRealForHalfInts;
 //            } else {
 //                expResult = 2 * randomRealPart;
@@ -528,7 +528,7 @@ public class ImaginaryQuadraticIntegerTest {
 //        long expResult, result;
 //        for (int i = 0; i < totalTestIntegers; i++) {
 //            result = testIntegers.get(i).getTwiceImagPartMult();
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+//            if (testIntegers.get(i).getCausingRing().hasHalfIntegers()) {
 //                expResult = randomImagForHalfInts;
 //            } else {
 //                expResult = 2 * randomImagPart;
@@ -574,7 +574,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of getRing method, of class ImaginaryQuadraticInteger.
+     * Test of getCausingRing method, of class ImaginaryQuadraticInteger.
      */
     @Test
     public void testGetRing() {
@@ -1936,7 +1936,7 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getCausingRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
@@ -1948,7 +1948,7 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getCausingRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
