@@ -338,22 +338,30 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
         // Lastly, to test primeFactors() on real quadratic integers
         System.out.println("primeFactors(RealQuadraticInteger)");
-        RealQuadraticInteger ramifier;
+        RealQuadraticInteger ramifier, ramified;
         List<AlgebraicInteger> expFactorsList;
         for (int discrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
             r = new RealQuadraticRing(discrR);
             ramifier = new RealQuadraticInteger(0, 1, r);
+            ramified = new RealQuadraticInteger(discrR, 0, r);
             expFactorsList = new ArrayList<>();
             expFactorsList.add(ramifier);
             expFactorsList.add(ramifier); // Add the ramifier in there twice (on purpose)
             try {
-                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(ramifier);
+                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(ramified);
                 facLen = factorsList.size();
+                System.out.print(discrR + " = (" + factorsList.get(0).toASCIIString() + ")");
+                for (int j = 1; j < facLen; j++) {
+                    System.out.print(" \u00D7 (" + factorsList.get(j).toASCIIString() + ")");
+                }
+                System.out.println();
                 if (NumberTheoreticFunctionsCalculator.isPrime(discrR)) {
                     assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have exactly two factors.";
                     assertEquals(assertionMessage, 2, facLen);
-                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should be (" + ramifier.toASCIIString() + ")^2.";
-                    assertEquals(assertionMessage, expFactorsList, factorsList);
+                    if (discrR != 5) {
+                        assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should be (" + ramifier.toASCIIString() + ")^2.";
+                        assertEquals(assertionMessage, expFactorsList, factorsList);
+                    }
                 } else {
                     assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have at least four factors.";
                     assertTrue(assertionMessage, facLen > 3);
@@ -1138,6 +1146,76 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 fail(failMessage);
             }
         }
+    }
+    
+    /**
+     * Test of fundamentalUnit method, of class 
+     * NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testFundamentalUnit() {
+        System.out.println("fundamentalUnit");
+        QuadraticRing ring = new RealQuadraticRing(2);
+        QuadraticInteger expResult = new RealQuadraticInteger(1, 1, ring);
+        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(3);
+        expResult = new RealQuadraticInteger(2, 1, ring);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(22);
+        expResult = new RealQuadraticInteger(197, 42, ring);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(29);
+        expResult = new RealQuadraticInteger(5, 1, ring, 2);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of fieldClassNumber method, of class 
+     * NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testFieldClassNumber() {
+        System.out.println("fieldClassNumber");
+        short expResult = 1;
+        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
+        String assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        short result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        ring = new RealQuadraticRing(2);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        expResult = 2;
+        ring = new ImaginaryQuadraticRing(-5);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        ring = new RealQuadraticRing(10);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        expResult = 3;
+        ring = new ImaginaryQuadraticRing(-23);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        ring = new RealQuadraticRing(79);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        expResult = 4;
+        ring = new ImaginaryQuadraticRing(-21);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        ring = new RealQuadraticRing(82);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
     }
     
     /**
