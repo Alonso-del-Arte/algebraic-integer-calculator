@@ -937,7 +937,7 @@ public class ImaginaryQuadraticIntegerTest {
             result = testIntegers.get(i).toTeXString().replace(" ", "");
             assertEquals(expResult, result);
         }
-        // Lastly to test on a couple of complex units
+        // Lastly to test on a couple of units
         expResult = "i";
         result = IMAG_UNIT_I.toTeXString();
         assertEquals(expResult, result);
@@ -946,6 +946,10 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "-\\frac{1}{2}+\\frac{\\sqrt{-3}}{2}";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "1";
+        ImaginaryQuadraticInteger one = new ImaginaryQuadraticInteger(1, 0, RING_EISENSTEIN);
+        result = one.toTeXString();
         assertEquals(expResult, result);
         /* This last one is to make sure that a least significant digit that is 
            1 but is not also the most significant digit does not get erroneously 
@@ -1213,7 +1217,7 @@ public class ImaginaryQuadraticIntegerTest {
             }
         }
         /* For integers in rings without "half-integers," we expect 
-        toHTMLString() and toHTMLStringAlt() to give the same result. */
+           toHTMLString() and toHTMLStringAlt() to give the same result. */
         for (int i = 0; i < totalTestIntegers; i++) {
             if (!testIntegers.get(i).getRing().hasHalfIntegers()) {
                 assertEquals(testIntegers.get(i).toHTMLString(), testIntegers.get(i).toHTMLStringAlt());
