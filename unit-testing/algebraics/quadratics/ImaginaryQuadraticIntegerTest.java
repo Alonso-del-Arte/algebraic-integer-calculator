@@ -21,12 +21,12 @@ import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
-import java.text.DecimalFormatSymbols;
 
-//import java.text.DecimalFormatSymbols;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -283,7 +283,30 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testNorm() {
         System.out.println("norm");
-        long expResult, result;
+        // Norm of 0 should be 0
+        long expResult = 0L;
+        long result = zeroIQI.norm();
+        assertEquals(expResult, result);
+        // Norm of a unit should be 1
+        expResult = 1L;
+        ImaginaryQuadraticInteger complexUnit = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
+        result = complexUnit.norm();
+        assertEquals(expResult, result);
+        complexUnit = new ImaginaryQuadraticInteger(0, -1, RING_GAUSSIAN);
+        result = complexUnit.norm();
+        assertEquals(expResult, result);
+        complexUnit = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
+        result = complexUnit.norm();
+        assertEquals(expResult, result);
+        complexUnit = new ImaginaryQuadraticInteger(1, 1, RING_EISENSTEIN, 2);
+        result = complexUnit.norm();
+        assertEquals(expResult, result);
+        complexUnit = new ImaginaryQuadraticInteger(1, -1, RING_EISENSTEIN, 2);
+        result = complexUnit.norm();
+        assertEquals(expResult, result);
+        complexUnit = new ImaginaryQuadraticInteger(-1, -1, RING_EISENSTEIN, 2);
+        result = complexUnit.norm();
+        assertEquals(expResult, result);
         for (int i = 0; i < totalTestIntegers; i++) {
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 expResult = (randomRealForHalfInts * randomRealForHalfInts - testIntegers.get(i).getRing().getRadicand() * randomImagForHalfInts * randomImagForHalfInts)/4;
@@ -574,7 +597,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of getCausingRing method, of class ImaginaryQuadraticInteger.
+     * Test of getRing method, of class ImaginaryQuadraticInteger.
      */
     @Test
     public void testGetRing() {
@@ -657,7 +680,6 @@ public class ImaginaryQuadraticIntegerTest {
      * the test of the toString method fails, the result of this test is 
      * irrelevant.
      */
-    @Ignore
     @Test
     public void testToStringAlt() {
         System.out.println("toStringAlt");
@@ -746,7 +768,6 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Ignore
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
@@ -796,7 +817,6 @@ public class ImaginaryQuadraticIntegerTest {
      * If the test of the toASCIIString method fails, the result of this test is 
      * irrelevant.
      */
-    @Ignore
     @Test
     public void testToASCIIStringAlt() {
         System.out.println("toASCIIStringAlt");
@@ -886,7 +906,6 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
@@ -942,7 +961,6 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Ignore
     @Test
     public void testToTeXStringSingleDenom() {
         System.out.println("toTeXStringSingleDenom");
@@ -983,7 +1001,6 @@ public class ImaginaryQuadraticIntegerTest {
      * If the test of the toTeXString method fails, the result of this test is 
      * irrelevant.
      */
-    @Ignore
     @Test
     public void testToTeXStringAlt() {
         System.out.println("toTeXStringAlt");
@@ -1072,7 +1089,6 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
@@ -1131,7 +1147,6 @@ public class ImaginaryQuadraticIntegerTest {
      * If the test of the toHTMLString method fails, the result of this test is 
      * irrelevant.
      */
-    @Ignore
     @Test
     public void testToHTMLStringAlt() {
         System.out.println("toHTMLStringAlt");

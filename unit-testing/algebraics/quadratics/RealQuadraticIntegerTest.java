@@ -419,8 +419,8 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of getCausingRing method, of class RealQuadraticInteger, inherited from 
- QuadraticInteger.
+     * Test of getRing method, of class RealQuadraticInteger, inherited from 
+     * QuadraticInteger.
      */
     @Test
     public void testGetRing() {
@@ -594,7 +594,7 @@ public class RealQuadraticIntegerTest {
                 }
                 expResult = expResult.replace("+-", "-");
             } else {
-                expResult = testIntegers.get(i).toASCIIString();
+                expResult = testIntegers.get(i).toASCIIString().replace(" ", "");
             }
             result = testIntegers.get(i).toASCIIStringAlt().replace(" ", "");
             assertEquals(expResult, result);
@@ -611,7 +611,23 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-        fail("Haven't written the test yet.");
+        String expResult, result;
+        for (int i = 1; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = "\\frac{" + randomRegForHalfInts + "}{2}+\\frac{" + randomSurdForHalfInts + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}}{2}";
+            } else {
+                if (randomRegPart == 0) {
+                    expResult = randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
+                } else {
+                    expResult = randomRegPart + "+" + randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
+                }
+            }
+            expResult = expResult.replace("+-", "-");
+            expResult = expResult.replace("+1\\sqrt", "+\\sqrt");
+            expResult = expResult.replace("-1\\sqrt", "-\\sqrt");
+            result = testIntegers.get(i).toTeXString().replace(" ", "");
+            assertEquals(expResult, result);
+        }
     }
 
     /**
@@ -621,7 +637,23 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testToTeXStringSingleDenom() {
         System.out.println("toTeXStringSingleDenom");
-        fail("Haven't written the test yet.");
+        String expResult, result;
+        for (int i = 1; i < totalTestIntegers; i++) {
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                expResult = "\\frac{" + randomRegForHalfInts + "+" + randomSurdForHalfInts + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}}{2}";
+            } else {
+                if (randomRegPart == 0) {
+                    expResult = randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
+                } else {
+                    expResult = randomRegPart + "+" + randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
+                }
+            }
+            expResult = expResult.replace("+-", "-");
+            expResult = expResult.replace("+1\\sqrt", "+\\sqrt");
+            expResult = expResult.replace("-1\\sqrt", "-\\sqrt");
+            result = testIntegers.get(i).toTeXString().replace(" ", "");
+            assertEquals(expResult, result);
+        }
     }
 
     /**
