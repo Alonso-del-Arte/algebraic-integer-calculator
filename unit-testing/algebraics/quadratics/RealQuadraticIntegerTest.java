@@ -75,6 +75,12 @@ public class RealQuadraticIntegerTest {
      */
     private static RealQuadraticInteger zeroRQI;
     
+    /**
+     * The value of 1 as a RealQuadraticInteger. Which RealQuadraticRing this 
+     * unit is in will depend on the needs of the tests.
+     */
+    private static RealQuadraticInteger oneRQI;
+    
     private static int randomRegPart, randomSurdPart, randomRegForHalfInts, randomSurdForHalfInts, totalTestIntegers;
     
     private static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
@@ -109,6 +115,7 @@ public class RealQuadraticIntegerTest {
         randomRegForHalfInts = 2 * randomRegPart + 1;
         randomSurdForHalfInts = 2 * randomSurdPart + 1;
         zeroRQI = new RealQuadraticInteger(0, 0, RING_Z2);
+        oneRQI = new RealQuadraticInteger(1, 0, RING_Z2);
         testIntegers = new ArrayList<>();
         testAdditiveInverses = new ArrayList<>();
         testConjugates = new ArrayList<>();
@@ -508,6 +515,15 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toString().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toString();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toString();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -540,6 +556,15 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toStringAlt().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // Gotta check on 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toStringAlt();
+        assertEquals(expResult, result);
         // Lastly the special case of the golden ratio
         expResult = "\u03C6";
         result = GOLDEN_RATIO.toStringAlt();
@@ -570,6 +595,15 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toASCIIString().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toASCIIString();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toASCIIString();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -599,10 +633,20 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toASCIIStringAlt().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // Gotta check on 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toASCIIStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toASCIIStringAlt();
+        assertEquals(expResult, result);
         // Lastly the special case of the golden ratio
         expResult = "phi";
         result = GOLDEN_RATIO.toASCIIStringAlt();
-        assertEquals(expResult, result);    }
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of toTeXString method, of class RealQuadraticInteger, inherited from 
@@ -629,6 +673,15 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toTeXString().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // Last but not least, 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toTeXString();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toTeXString();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -655,6 +708,15 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toTeXStringSingleDenom().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // Gotta check on 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toTeXStringSingleDenom();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toTeXStringSingleDenom();
+        assertEquals(expResult, result);
         /* This last one is to make sure that a least significant digit that is 
            1 but is not also the most significant digit does not get erroneously 
            chopped off */
@@ -691,6 +753,15 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toTeXStringAlt().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // Gotta check on 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toTeXStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toTeXStringAlt();
+        assertEquals(expResult, result);
         // Lastly the special case of the golden ratio
         expResult = "\\phi";
         result = GOLDEN_RATIO.toTeXStringAlt();
@@ -721,6 +792,15 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).toHTMLString().replace(" ", "");
             assertEquals(expResult, result);
         }
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toHTMLString();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toHTMLString();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -775,6 +855,19 @@ public class RealQuadraticIntegerTest {
                 assertEquals(testIntegers.get(i).toHTMLString(), testIntegers.get(i).toHTMLStringAlt());
             }
         }
+        // Gotta check on the special case of the golden ratio
+        expResult = "&phi;";
+        result = GOLDEN_RATIO.toHTMLStringAlt();
+        assertEquals(expResult, result);
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
+        result = zeroRQI.toHTMLStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
+        result = oneRQI.toHTMLStringAlt();
+        assertEquals(expResult, result);
     }
 
     /**

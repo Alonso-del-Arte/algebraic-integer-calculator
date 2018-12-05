@@ -95,6 +95,13 @@ public class ImaginaryQuadraticIntegerTest {
      */
     private static ImaginaryQuadraticInteger zeroIQI;
     
+    /**
+     * The value of 1 as an ImaginaryQuadraticInteger. Which 
+     * ImaginaryQuadraticRing this unit is in will depend on the needs of the 
+     * tests.
+     */
+    private static ImaginaryQuadraticInteger oneIQI;
+    
     private static int randomRealPart, randomImagPart, randomRealForHalfInts, randomImagForHalfInts, totalTestIntegers;
     
     /**
@@ -156,6 +163,7 @@ public class ImaginaryQuadraticIntegerTest {
         randomRealForHalfInts = 2 * randomRealPart + 1;
         randomImagForHalfInts = 2 * randomImagPart + 1;
         zeroIQI = new ImaginaryQuadraticInteger(0, 0, RING_GAUSSIAN);
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, RING_GAUSSIAN);
         testIntegers = new ArrayList<>();
         testAdditiveInverses = new ArrayList<>();
         testConjugates = new ArrayList<>();
@@ -661,7 +669,7 @@ public class ImaginaryQuadraticIntegerTest {
             result = testIntegers.get(i).toString().replace(" ", "");
             assertEquals(expResult, result);
         }
-        // Lastly to test on a couple of complex units
+        // Next, test on a couple of complex units
         expResult = "i";
         result = IMAG_UNIT_I.toString();
         assertEquals(expResult, result);
@@ -670,6 +678,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "-1/2+\u221A(-3)/2";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
+        result = zeroIQI.toString();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandom);
+        result = oneIQI.toString();
         assertEquals(expResult, result);
     }
 
@@ -751,7 +768,7 @@ public class ImaginaryQuadraticIntegerTest {
                 assertEquals(testIntegers.get(i).toString(), testIntegers.get(i).toStringAlt());
             }
         }
-        // Lastly to test on a couple of complex units
+        // Next, to test on a couple of complex units
         expResult = "i";
         result = IMAG_UNIT_I.toStringAlt();
         assertEquals(expResult, result);
@@ -760,6 +777,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "\u03C9";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toStringAlt();
+        assertEquals(expResult, result);
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandomForAltTesting);
+        result = zeroIQI.toStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandomForAltTesting);
+        result = oneIQI.toStringAlt();
         assertEquals(expResult, result);
     }
 
@@ -798,7 +824,7 @@ public class ImaginaryQuadraticIntegerTest {
             result = testIntegers.get(i).toASCIIString().replace(" ", "");
             assertEquals(expResult, result);
         }
-        // Lastly to test on a couple of complex units
+        // Next, to test on a couple of complex units
         expResult = "i";
         result = IMAG_UNIT_I.toASCIIString();
         assertEquals(expResult, result);
@@ -807,6 +833,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "-1/2+sqrt(-3)/2";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
+        result = zeroIQI.toASCIIString();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandom);
+        result = oneIQI.toASCIIString();
         assertEquals(expResult, result);
     }
 
@@ -889,7 +924,7 @@ public class ImaginaryQuadraticIntegerTest {
                 assertEquals(testIntegers.get(i).toASCIIString(), testIntegers.get(i).toASCIIStringAlt());
             }
         }
-        // Lastly to test on a couple of complex units
+        // Next, to test on a couple of complex units
         expResult = "i";
         result = IMAG_UNIT_I.toASCIIStringAlt();
         assertEquals(expResult, result);
@@ -898,6 +933,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "omega";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toASCIIStringAlt();
+        assertEquals(expResult, result);
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandomForAltTesting);
+        result = zeroIQI.toASCIIStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandomForAltTesting);
+        result = oneIQI.toASCIIStringAlt();
         assertEquals(expResult, result);
     }
     
@@ -937,7 +981,7 @@ public class ImaginaryQuadraticIntegerTest {
             result = testIntegers.get(i).toTeXString().replace(" ", "");
             assertEquals(expResult, result);
         }
-        // Lastly to test on a couple of units
+        // Next, to test on a couple of units
         expResult = "i";
         result = IMAG_UNIT_I.toTeXString();
         assertEquals(expResult, result);
@@ -948,8 +992,11 @@ public class ImaginaryQuadraticIntegerTest {
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = "1";
-        ImaginaryQuadraticInteger one = new ImaginaryQuadraticInteger(1, 0, RING_EISENSTEIN);
-        result = one.toTeXString();
+        result = oneIQI.toTeXString();
+        assertEquals(expResult, result);
+        // Almost last, to check on 0
+        expResult = "0";
+        result = zeroIQI.toTeXString();
         assertEquals(expResult, result);
         /* This last one is to make sure that a least significant digit that is 
            1 but is not also the most significant digit does not get erroneously 
@@ -979,7 +1026,7 @@ public class ImaginaryQuadraticIntegerTest {
                 assertEquals(testIntegers.get(i).toTeXString(), testIntegers.get(i).toTeXStringSingleDenom());
             }
         }
-        // Lastly to test on a couple of complex units
+        // Next, to test on a couple of complex units
         expResult = "i";
         result = IMAG_UNIT_I.toTeXStringSingleDenom();
         assertEquals(expResult, result);
@@ -988,6 +1035,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "\\frac{-1+\\sqrt{-3}}{2}";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toTeXStringSingleDenom().replace(" ", "");
+        assertEquals(expResult, result);
+        // Almost done now: 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
+        result = zeroIQI.toTeXStringSingleDenom();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandom);
+        result = oneIQI.toTeXStringSingleDenom();
         assertEquals(expResult, result);
         /* This last one is to make sure that a least significant digit that is 
            1 but is not also the most significant digit does not get erroneously 
@@ -1086,6 +1142,15 @@ public class ImaginaryQuadraticIntegerTest {
         expResult = "\\omega";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toTeXStringAlt();
         assertEquals(expResult, result);
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandomForAltTesting);
+        result = zeroIQI.toTeXStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandomForAltTesting);
+        result = oneIQI.toTeXStringAlt();
+        assertEquals(expResult, result);
     }
     
     /**
@@ -1125,7 +1190,7 @@ public class ImaginaryQuadraticIntegerTest {
             result = testIntegers.get(i).toHTMLString().replace(" ", "");
             assertEquals(expResult, result);
         }
-        // Lastly to test on a couple of complex units
+        // Next, to test on a couple of complex units
         expResult = "<i>i</i>";
         result = IMAG_UNIT_I.toHTMLString();
         assertEquals(expResult, result);
@@ -1134,6 +1199,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "&minus;1/2+&radic;(&minus;3)/2";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        // Almost done now: 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
+        result = zeroIQI.toHTMLString();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandom);
+        result = oneIQI.toHTMLString();
         assertEquals(expResult, result);
         /* This last one is to make sure that a least significant digit that is 
            1 but is not also the most significant digit does not get erroneously 
@@ -1223,7 +1297,7 @@ public class ImaginaryQuadraticIntegerTest {
                 assertEquals(testIntegers.get(i).toHTMLString(), testIntegers.get(i).toHTMLStringAlt());
             }
         }
-        // Lastly to test on a couple of complex units
+        // Next, to test on a couple of complex units
         expResult = "<i>i</i>";
         result = IMAG_UNIT_I.toHTMLStringAlt();
         assertEquals(expResult, result);
@@ -1232,6 +1306,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expResult, result);
         expResult = "&omega;";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toHTMLStringAlt();
+        assertEquals(expResult, result);
+        // And last but not least, 0 and 1
+        expResult = "0";
+        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandomForAltTesting);
+        result = zeroIQI.toHTMLStringAlt();
+        assertEquals(expResult, result);
+        expResult = "1";
+        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandomForAltTesting);
+        result = oneIQI.toHTMLStringAlt();
         assertEquals(expResult, result);
     }
     
