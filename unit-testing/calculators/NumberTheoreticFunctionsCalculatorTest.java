@@ -1174,6 +1174,23 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
+     * Test of getOneInRing method, of class NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testGetOneInRing() {
+        System.out.println("getOneInRing");
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.getOneInRing(NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+        assertEquals(expResult, result);
+        expResult = new ImaginaryQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
+        result = NumberTheoreticFunctionsCalculator.getOneInRing(NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_ZPHI);
+        result = NumberTheoreticFunctionsCalculator.getOneInRing(NumberTheoreticFunctionsCalculator.RING_ZPHI);
+        assertEquals(expResult, result);
+    }
+    
+    /**
      * Test of fieldClassNumber method, of class 
      * NumberTheoreticFunctionsCalculator.
      */
