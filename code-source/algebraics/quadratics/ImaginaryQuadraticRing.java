@@ -36,7 +36,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
      * @throws UnsupportedOperationException Always thrown, because the double 
      * primitive can't represent a purely imaginary number. If you need the 
      * square root of the radicand divided by <i>i</i>, use {@link 
-     * #getAbsNegRadSqrt()} instead.
+     * #getAbsNegRadSqrt() getAbsNegRadSqrt()} instead.
      */
     @Override
     public double getRadSqrt() {
@@ -62,6 +62,13 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         return this.realRadSqrt;
     }
    
+    /**
+     * Constructs a new object representing an imaginary quadratic ring.
+     * @param d A squarefree, negative integer. Examples: &minus;3, &minus;58, 
+     * &minus;163.
+     * @throws IllegalArgumentException If d is 0 or positive, or negative but 
+     * the multiple of a nontrivial square. Examples: &minus;12, 3583.
+     */
     public ImaginaryQuadraticRing(int d) {
         if (d > -1) {
             throw new IllegalArgumentException("Negative integer required for parameter d.");

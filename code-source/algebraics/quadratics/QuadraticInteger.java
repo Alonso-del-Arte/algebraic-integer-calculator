@@ -25,7 +25,10 @@ import calculators.NumberTheoreticFunctionsCalculator;
 import java.util.Objects;
 
 /**
- *
+ * Provides a template for defining objects to represent real or imaginary 
+ * quadratic integers. Also defines the four basic arithmetic operations 
+ * (addition, subtraction, multiplication and division), so the subclasses don't 
+ * have to define them, unless absolutely necessary.
  * @author Aonso del Arte
  */
 public abstract class QuadraticInteger implements AlgebraicInteger {
@@ -35,6 +38,12 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     protected QuadraticRing quadRing;
     protected int denominator;
     
+    /**
+     * Retrieves an object representing the ring this quadratic integer belongs 
+     * to.
+     * @return An object subclassed from {@link QuadraticRing}.
+     */
+    @Override
     public QuadraticRing getRing() {
         return this.quadRing;
     }
@@ -211,9 +220,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         }
         return conjug;
     }
-    
-    public abstract double abs();
-    
+        
     /**
      * A text representation of the quadratic integer, with the "regular" part  
      * first and the "surd" part second.
@@ -365,13 +372,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     public String toASCIIStringAlt() {
         if (this.quadRing.d1mod4) {
             String intermediateString = this.toStringAlt();
-            if (this.quadRing.radicand == -3) {
+            if (this.quadRing.radicand == -3 || this.quadRing.radicand == 5) {
                 intermediateString = intermediateString.replace("\u03C9", "omega");
+                intermediateString = intermediateString.replace("\u03C6", "phi");
             } else {
                 intermediateString = intermediateString.replace("\u03B8", "theta");
-            }
-            if (this.quadRing.radicand == 5) {
-                intermediateString = intermediateString.replace("theta", "phi");
             }
             return intermediateString;
         } else {
@@ -411,9 +416,13 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                         QIString = this.surdPartMult + " \\sqrt{" + this.quadRing.radicand + "}";
                 }
             } else {
-                QIString = this.regPartMult + " + " + this.surdPartMult + " \\sqrt{" + this.quadRing.radicand + "}";
-                QIString = QIString.replace("+ -", " - ");
-                QIString = QIString.replace(" 1 \\sqrt", " \\sqrt");
+                if (this.surdPartMult == 0) {
+                    return Integer.toString(this.regPartMult);
+                } else {
+                    QIString = this.regPartMult + " + " + this.surdPartMult + " \\sqrt{" + this.quadRing.radicand + "}";
+                    QIString = QIString.replace("+ -", " - ");
+                    QIString = QIString.replace(" 1 \\sqrt", " \\sqrt");
+                }
             }
         } else {
             QIString = "\\frac{" + this.regPartMult + "}{2} + \\frac{" + this.surdPartMult + " \\sqrt{" + this.quadRing.radicand + "}}{2}";
@@ -498,6 +507,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         if (this.quadRing.d1mod4) {
             String QIString = this.toStringAlt();
             QIString = QIString.replace("\u03C9", "&omega;");
+            QIString = QIString.replace("\u03C6", "&phi;");
             QIString = QIString.replace("\u03B8", "&theta;");
             QIString = QIString.replace("-", "&minus;");
             return QIString;

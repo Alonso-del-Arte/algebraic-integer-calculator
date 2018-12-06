@@ -16,7 +16,6 @@
  */
 package algebraics.quadratics;
 
-import algebraics.UnsupportedNumberDomainException;
 import calculators.NumberTheoreticFunctionsCalculator;
 
 /**
@@ -46,17 +45,29 @@ public class RealQuadraticRing extends QuadraticRing {
         return this.radicand;
     }
     
+    /**
+     * This function is included merely to simplify the inheritance structure of 
+     * {@link QuadraticRing} to {@link ImaginaryQuadraticRing}.
+     * @return The same number as {@link QuadraticRing#getRadSqrt()}.
+     */
     @Override
     public double getAbsNegRadSqrt() {
         return this.realRadSqrt;
     }
     
+    /**
+     * Constructs a new object representing a real quadratic ring.
+     * @param d A squarefree, positive integer greater than 1. Examples: 5, 21, 
+     * 1729.
+     * @throws IllegalArgumentException If d is negative, 0 or 1, or positive 
+     * but the multiple of a nontrivial square. Examples: &minus;7, 28.
+     */
     public RealQuadraticRing(int d) {
         if (d < 1) {
             throw new IllegalArgumentException("Positive integer required for parameter d.");
         }
         if (d == 1) {
-            throw new UnsupportedNumberDomainException("Sorry, O_(Q(sqrt(1))) is not supported. Did you mean Z[i]?", NumberTheoreticFunctionsCalculator.IMAG_UNIT_I);
+            throw new IllegalArgumentException("Sorry, O_(Q(sqrt(1))) is not supported. Did you mean Z[i]?");
         }
         if (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) {
             throw new IllegalArgumentException("Squarefree integer required for parameter d.");

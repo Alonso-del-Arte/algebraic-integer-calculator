@@ -19,16 +19,22 @@ package algebraics.quadratics;
 import algebraics.IntegerRing;
 
 /**
- *
+ * Provides a template for defining objects to represent real or imaginary 
+ * quadratic rings. Also provides functions for getting the radicand of the 
+ * generating algebraic integer and functions for representation as a String.
  * @author Alonso del Arte
  */
 public abstract class QuadraticRing implements IntegerRing {
     
     /**
-     * Ought to be a squarefree integer
+     * Ought to be a squarefree integer.
      */
     protected int radicand;
     
+    /**
+     * A rational approximation of either &radic;<i>d</i> or 
+     * &radic;<i>d</i>/<i>i</i>.
+     */
     protected double realRadSqrt;
 
     /**
@@ -36,8 +42,15 @@ public abstract class QuadraticRing implements IntegerRing {
      */
     protected boolean d1mod4;
     
+    /**
+     * The maximum algebraic degree of an algebraic integer in a quadratic 
+     * integer ring.
+     */
     public static final int MAX_ALGEBRAIC_DEGREE = 2;
     
+    /**
+     * Whether blackboard bold is preferred or not.
+     */
     private static boolean preferenceForBlackboardBold = true;
     
     /**
@@ -51,12 +64,14 @@ public abstract class QuadraticRing implements IntegerRing {
     
     /**
      * Set preference for blackboard bold or plain bold. This is only relevant 
-     * for the functions toTeXString() and toHTMLString().
-     * @param preferenceForBB True if blackboard bold is preferred, false if 
-     * plain bold is preferred.
+     * for the functions {@link #toTeXString() toTeXString()} and {@link 
+     * #toHTMLString() toHTMLString()}. The setting will be in effect until it 
+     * is changed or until the program ends.
+     * @param preference True if blackboard bold is preferred, false if plain 
+     * bold is preferred.
      */
-    public static void preferBlackboardBold(boolean preferenceForBB) {
-        preferenceForBlackboardBold = preferenceForBB;
+    public static void preferBlackboardBold(boolean preference) {
+        preferenceForBlackboardBold = preference;
     }
     
     /**
@@ -74,29 +89,51 @@ public abstract class QuadraticRing implements IntegerRing {
      * Gives the radicand, <i>d</i> for &radic;<i>d</i>, which depends on the 
      * parameter d at construction time.
      * @return The parameter d. For example, for <b>Z</b>[&radic;&minus;2], this 
-     * would be -2, for <b>Z</b>[&radic;2] this would be 2.
+     * would be &minus;2, for <b>Z</b>[&radic;2] this would be 2.
      */
     public int getRadicand() {
         return radicand;
     }
     
+    /**
+     * Gives the numeric value of the square root of the radicand as a double 
+     * precision floating point primitive, if possible.
+     * @return A rational approximation of the square root of the radicand, if 
+     * possible. For example, for <b>Z</b>[&radic;2] this would be roughly 
+     * 1.414.
+     * @throws UnsupportedOperationException If called upon an instance of 
+     * {@link ImaginaryQuadraticRing}.
+     */
     public abstract double getRadSqrt();
     
     /**
      * This function is included merely to simplify the inheritance structure of 
      * {@link QuadraticRing} to {@link ImaginaryQuadraticRing}.
-     * @return The same number as {@link QuadraticRing#getRadicand()} in the 
-     * case of {@link RealQuadraticRing}. However, for ImaginaryQuadraticRing, 
-     * this is the absolute value. For example, for both 
+     * @return The same number as {@link QuadraticRing#getRadicand() 
+     * getRadicand()} in the case of {@link RealQuadraticRing}. However, for 
+     * ImaginaryQuadraticRing, this is the absolute value. For example, for both 
      * <b>Z</b>[&radic;&minus;2] and <b>Z</b>[&radic;2] this would be 2.
      */
     public abstract int getAbsNegRad();
     
+    /**
+     * Gives a numeric approximation of the square root of the absolute value of 
+     * the radicand.
+     * @return The same number as {@link QuadraticRing#getRadSqrt() 
+     * getRadSqrt()} in the case of {@link RealQuadraticRing}. However, for 
+     * {@link ImaginaryQuadraticRing}, this is a rational approximation of the 
+     * square root of the absolute value of the radicand, or 
+     * &radic;<i>d</i>/<i>i</i>. For example, for both <b>Z</b>[&radic;&minus;2] 
+     * and <b>Z</b>[&radic;2] this would be roughly 1.414213562373. Only in one 
+     * case is this number ever an exact value: in the case of 
+     * <b>Z</b>[<i>i</i>].
+     */
     public abstract double getAbsNegRadSqrt();
     
     /**
-     * A text representation of the ring. In some contexts, toTeXString() or toHTMLString() may be preferable.
-     * @return A string representing the imaginary quadratic ring which can be output to the console.
+     * The ring's label, using mostly alphanumeric ASCII characters but also 
+     * often the "&radic;" character and occasionally Greek letters.
+     * @return A String representing the quadratic ring.
      */
     @Override
     public String toString() {
@@ -123,14 +160,16 @@ public abstract class QuadraticRing implements IntegerRing {
     
     /**
      * A text representation of the ring's label. The main difference between 
-     * this function and toString() is that this function does not use the 
-     * "\u221A" character, using "sqrt" instead.
+     * this function and {@link #toString() toString()} is that this function 
+     * does not use the "\u221A" character, using "sqrt" instead. Greek letters 
+     * are spelled out by their Roman letter names.
      * @return A String representing the imaginary quadratic ring which can be 
-     * output to the console. Examples: for d = -7, the result is 
-     * "O_(Q(sqrt(-7)))"; for d = -5, the result is "Z[sqrt(-5)]"; for d = -3, 
-     * the result is "Z[omega]"; for d = 2, the result is "Z[sqrt(2)]"; for d = 
-     * 5, the result is "Z[phi]". Then you don't have to worry about the ability 
-     * to display the "\u221A", "\u03C9" and "\u03C6" characters.
+     * output to the console. Examples: for <i>d</i> = &minus;7, the result is 
+     * "O_(Q(sqrt(-7)))"; for <i>d</i> = &minus;5, the result is "Z[sqrt(-5)]"; 
+     * for <i>d</i> = &minus;3, the result is "Z[omega]"; for <i>d</i> = 2, the 
+     * result is "Z[sqrt(2)]"; for <i>d</i> = 5, the result is "Z[phi]". Then 
+     * you don't have to worry about the ability to display the "&radic;", 
+     * "&omega;" and "&phi;" characters.
      */
     @Override
     public String toASCIIString() {
@@ -163,10 +202,11 @@ public abstract class QuadraticRing implements IntegerRing {
      * document.
      * @return A String suitable for use in a TeX document, if I haven't made 
      * any mistakes. Examples: assuming the default preference for blackboard 
-     * bold, for d = -7, the result is "\mathcal O_{\mathbb Q(\sqrt{-7})}"; for 
-     * d = -5, the result is "\mathbb Z[\sqrt{-5}]"; for d = -3, the result is 
-     * "\mathbb Z[\omega]"; for d = 2, the result is "\mathbb Z[\sqrt{2}]"; for 
-     * d = 5, the result is "\mathbb Z[\phi]".
+     * bold, for <i>d</i> = &minus;7, the result is "\mathcal 
+     * O_{\mathbb Q(\sqrt{-7})}"; for <i>d</i> = &minus;5, the result is 
+     * "\mathbb Z[\sqrt{-5}]"; for <i>d</i> = &minus;3, the result is "\mathbb 
+     * Z[\omega]"; for <i>d</i> = 2, the result is "\mathbb Z[\sqrt{2}]"; for 
+     * <i>d</i> = 5, the result is "\mathbb Z[\phi]".
      */
     @Override
     public String toTeXString() {
@@ -203,21 +243,23 @@ public abstract class QuadraticRing implements IntegerRing {
     /**
      * A text representation of the ring's label suitable for use in an HTML 
      * document. The representation uses blackboard bold unless 
-     * <code>preferBlackboardBold(false)</code> is in effect.
-     * I have not tested this function in the context of outputting to an HTML 
-     * document.
+     * <code>preferBlackboardBold(false)</code> is in effect. I have not tested 
+     * this function in the context of outputting to an HTML document.
      * @return A String suitable for use in an HTML document, if I haven't made 
      * any mistakes. If preferenceForBlackboardBold is true, this also assumes 
      * the font chosen by the browser has the relevant Unicode characters. 
      * Examples: with preference for blackboard bold on, we should get 
-     * "<i>O</i><sub>\u211A(&radic;-7)</sub>" for d = -7; for d = -5, the result 
-     * is "\u2124[&radic;-5]"; for d = -3, the result is "\u2124[&omega;]"; for 
-     * d = 2, the result should be "\u2124[&radic;2]"; for d = 5, the result 
-     * should be "\u2124[&phi;]". If instead preference for blackboard bold is 
-     * off, we should get "<i>O</i><sub><b>Q</b>(&radic;-7)</sub>" for d = -7; 
-     * for d = -5, the result is "<b>Z</b>[&radic;-5]"; for d = -3, the result 
-     * is "<b>Z</b>[&omega;]", for d = 2, result is "<b>Z</b>[&radic;2]"; for d 
-     * = 5, the result is "<b>Z</b>[&phi;]".
+     * "<i>O</i><sub>\u211A(&radic;-7)</sub>" for <i>d</i> = &minus;7; for 
+     * <i>d</i> = &minus;5, the result is "\u2124[&radic;-5]"; for <i>d</i> = 
+     * &minus;3, the result is "\u2124[&omega;]"; for <i>d</i> = 2, the result 
+     * should be "\u2124[&radic;2]"; for <i>d</i> = 5, the result should be 
+     * "\u2124[&phi;]". If instead preference for blackboard bold is off, we 
+     * should get "<i>O</i><sub><b>Q</b>(&radic;-7)</sub>" for <i>d</i> = 
+     * &minus;7; for <i>d</i> = &minus;5, the result is "<b>Z</b>[&radic;-5]"; 
+     * for <i>d</i> = &minus;3, the result is "<b>Z</b>[&omega;]", for <i>d</i> 
+     * = 2, result is "<b>Z</b>[&radic;2]"; for <i>d</i> = 5, the result is 
+     * "<b>Z</b>[&phi;]". In either case I have assumed that the "mathcal O" of 
+     * TeX is unavailable to an HTML browser.
      */
     @Override
     public String toHTMLString() {
@@ -254,14 +296,13 @@ public abstract class QuadraticRing implements IntegerRing {
     /**
      * A text representation of the ring's label suitable for use in a filename.
      * With our modern operating systems, it may be unnecessary to worry about 
-     * illegal characters in {@link #toString()}. But just in case, here is a 
-     * function whose output will hopefully help the calling program conform to 
-     * the old MS-DOS 8.3 standard. There is one context in which I have 
-     * definitely found this function useful, and that is in the output of the 
-     * test suite, for which the font seems to lack Greek letters.
-     * @return A string suitable for use in a filename. Examples: for d = -1, 
-     * returns "ZI"; for d = -2, returns "ZI2"; for d = -3, returns "ZW" (a 
-     * horrible kludge); for d = -7, returns "OQI7".
+     * illegal characters in {@link #toString() toString()}. But just in case, 
+     * here is a function whose output will hopefully help the calling program 
+     * conform to the old MS-DOS 8.3 standard.
+     * @return A string suitable for use in a filename. Examples: for <i>d</i> = 
+     * &minus;1, returns "ZI"; for <i>d</i> = &minus;2, returns "ZI2"; for 
+     * <i>d</i> = &minus;3, returns "ZW" (a horrible kludge); for <i>d</i> = 
+     * &minus;7, returns "OQI7".
      */
     public String toFilenameString() {
         String IQRString;
@@ -293,10 +334,11 @@ public abstract class QuadraticRing implements IntegerRing {
     
     /**
      * Compares whether an object is equal to this quadratic ring. This is 
-     * another function which the NetBeans IDE wrote for me.
+     * another function which the NetBeans IDE wrote for me, an then I tweaked 
+     * slightly.
      * @param obj The object to compare this to.
-     * @return True if the object is a quadratic ring with the same parameter d 
-     * passed to its constructor as this imaginary quadratic ring, false 
+     * @return True if the object is a quadratic ring with the same parameter 
+     * <i>d</i> passed to its constructor as this quadratic ring, false 
      * otherwise.
      */
     @Override
@@ -322,7 +364,7 @@ public abstract class QuadraticRing implements IntegerRing {
      * unique for distinct rings within any possible execution of the program 
      * (unless overridden in a child class).
      * @return The parameter <i>d</i> that was passed to the constructor, minus 
-     * 1 if <i>d</i> = 1 mod 4, multiplied by -1 otherwise.
+     * 1 if <i>d</i> = 1 mod 4, multiplied by &minus;1 otherwise.
      */
     @Override
     public int hashCode() {
@@ -335,6 +377,13 @@ public abstract class QuadraticRing implements IntegerRing {
         return hash;
     }
 
+    /**
+     * Gives the maximum algebraic degree an algebraic integer in this quadratic 
+     * ring can have.
+     * @return Always 2. It would be a mistake to override this in a derived 
+     * class. This value is also available as the constant {@link 
+     * #MAX_ALGEBRAIC_DEGREE}.
+     */
     @Override
     public int getMaxAlgebraicDegree() {
         return MAX_ALGEBRAIC_DEGREE;
