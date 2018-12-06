@@ -906,6 +906,46 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
+     * Test of isDivisibleBy method, of class 
+     * NumberTheoreticFunctionsCalculator. 
+     */
+    @Test
+    public void testIsDivisibleBy() {
+        System.out.println("isDivisibleBy");
+        QuadraticRing r = new RealQuadraticRing(14);
+        QuadraticInteger a = new RealQuadraticInteger(0, -1, r);
+        QuadraticInteger b = new RealQuadraticInteger(4, 1, r);
+        String assertionMessage = a.toString() + " should be found to be divisible by " + b.toString() + ".";
+        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
+        assertionMessage = b.toString() + " should not be found to be divisible by " + a.toString() + ".";
+        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
+        b = new RealQuadraticInteger(7, -2, r);
+        assertionMessage = a.toString() + " should be found to be divisible by " + b.toString() + ".";
+        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
+        assertionMessage = b.toString() + " should not be found to be divisible by " + a.toString() + ".";
+        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
+        r = new ImaginaryQuadraticRing(-7);
+        b = new ImaginaryQuadraticInteger(0, 1, r);
+        try {
+            boolean divisibleFlag = NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b);
+            String failMessage = "Trying to ascertain the divisibility of " + a.toString() + " by " + b.toString() + " should have caused an exception, not given the result that it is";
+            if (!divisibleFlag) {
+                failMessage = failMessage + " not";
+            }
+            failMessage = failMessage + " divisible.";
+            fail(failMessage);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println("Trying to ascertain the divisibility of " + a.toString() + " by " + b.toString() + " correctly triggered AlgebraicDegreeOverflowException.");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = "Trying to ascertain the divisibility of " + a.toString() + " by " + b.toString() + " should have caused AlgebraicDegreeOverflowException, not " + e.getClass().getName() + ".";
+            System.out.println(failMessage);
+            System.out.println("\"" + e.getMessage() + "\"");
+            fail(failMessage);
+        }
+    }
+    
+    /**
      * Test of isSquareFree method, of class NumberTheoreticFunctionsCalculator. 
      * Prime numbers should be found to be squarefree, squares of primes should 
      * not.
