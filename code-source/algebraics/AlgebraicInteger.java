@@ -64,6 +64,15 @@ public interface AlgebraicInteger {
     long norm();
     
     /**
+     * Gives the absolute value of the algebraic integer, essentially its 
+     * distance from 0.
+     * @return The absolute value in double precision, in many cases a rational 
+     * approximation. For example, for &minus;1 + <i>i</i>, this would be 
+     * roughly 1.4142. For 1 &minus; &#8731;5, this would be roughly &minus;0.7.
+     */
+    double abs();
+    
+    /**
      * Gives the coefficients for the minimal polynomial of the algebraic 
      * integer, in the reverse order of the normal expression of the minimal 
      * polynomial.
@@ -138,5 +147,15 @@ public interface AlgebraicInteger {
      * (&radic;&minus;19)/2, this would be roughly 2.17944947177.
      */
     double getImagPartNumeric();
+    
+    /**
+     * Retrieves an object representing the ring this algebraic integer belongs 
+     * to. This is mainly to enable verification that two algebraic integers 
+     * come from the same ring of algebraic integers.
+     * @return An object subclassed from {@link IntegerRing}. To check degree, 
+     * one may use {@link IntegerRing#getMaxAlgebraicDegree()} or one may check 
+     * if it's an instance of {@link QuadraticRing}, {@link CubicRing}, etc.
+     */
+    IntegerRing getRing();
         
 }

@@ -17,7 +17,11 @@
 package algebraics;
 
 /**
- *
+ * This interface sets the basic requirements for objects representing rings of 
+ * algebraic integers. The implementing classes should provide an algebraic 
+ * degree function that gives the maximum algebraic degree an integer in the 
+ * ring can have. The implementing classes should also provide ways to represent 
+ * the given ring in TeX, HTML and ASCII documents.
  * @author Alonso del Arte
  */
 public interface IntegerRing {
@@ -43,6 +47,12 @@ public interface IntegerRing {
      */
     String toTeXString();
     
+    /**
+     * Formats the ring's label as a String that can be used in an HTML 
+     * document.
+     * @return A String. For example, for <b>Z</b>[&#8731;2], this might be 
+     * "<b>Z</b>[&#8731;2]".
+     */
     String toHTMLString();
     
 }

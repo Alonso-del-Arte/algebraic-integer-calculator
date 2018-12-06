@@ -41,16 +41,7 @@ import algebraics.quadratics.RealQuadraticRing;
  */
 public class NotDivisibleException extends Exception {
     
-    ////////////////////////////////////////////////////
-    
-    
-    // UPDATE SERIAL VERSION UID
-    // AFTER ALL THE TESTS ARE PASSING
-    
-    
-    ///////////////////////////////////////////
-    
-    private static final long serialVersionUID = 1058394389;
+    private static final long serialVersionUID = 1058395247;
     
     private final long[] numers;
     private final long[] denoms;
@@ -87,7 +78,7 @@ public class NotDivisibleException extends Exception {
      * @return The integer ring object supplied at the time the exception was 
      * constructed. 
      */
-    public IntegerRing getRing() {
+    public IntegerRing getCausingRing() {
         return initRing;
     }
     
@@ -132,21 +123,17 @@ public class NotDivisibleException extends Exception {
         if (this.initRing instanceof QuadraticRing) {
             QuadraticRing workingRing = (QuadraticRing) initRing;
             QuadraticInteger zeroQI = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
-            double numerReg = 0.0;
-            double numerSurd = 0.0;
+            double numerReg = (double) numers[0] / denoms[0];
+            double numerSurd = (double) numers[1] / denoms[1];
             if (workingRing instanceof ImaginaryQuadraticRing || workingRing instanceof RealQuadraticRing) {
                 int arrayLen = 0;
                 if (workingRing instanceof ImaginaryQuadraticRing) {
                     arrayLen = 4;
                     zeroQI = new ImaginaryQuadraticInteger(0, 0, workingRing);
-                    numerReg = this.numericRealPart;
-                    numerSurd = this.numericImagPart;
                 }
                 if (workingRing instanceof RealQuadraticRing) {
                     arrayLen = 8;
                     zeroQI = new RealQuadraticInteger(0, 0, workingRing);
-                    numerReg = (double) numers[0] / denoms[0];
-                    numerSurd = (double) numers[1] / denoms[1];
                 }
                 AlgebraicInteger[] algIntArray = new AlgebraicInteger[arrayLen];
                 for (int i = 0; i < arrayLen; i++) {
@@ -188,6 +175,14 @@ public class NotDivisibleException extends Exception {
                         algIntArray[3] = new RealQuadraticInteger(ceilA, ceilB, workingRing);
                     }
                 }
+                if (workingRing instanceof RealQuadraticRing) {
+                    algIntArray[4] = new RealQuadraticInteger((int) Math.floor(this.numericRealPart), 0, workingRing);
+                    algIntArray[5] = new RealQuadraticInteger((int) Math.ceil(this.numericRealPart), 0, workingRing);
+                    int regForSurd = (int) Math.floor(workingRing.getRadSqrt() - this.numericRealPart);
+                    algIntArray[6] = new RealQuadraticInteger(regForSurd, 1, workingRing);
+                    regForSurd++;
+                    algIntArray[7] = new RealQuadraticInteger(regForSurd, 1, workingRing);
+                }
                 return algIntArray;
             }
         }
@@ -196,7 +191,7 @@ public class NotDivisibleException extends Exception {
     }
     
     /**
-     * Rounds the quadratic number to the quadratic integer in the relevant ring 
+     * Rounds the algebraic number to the algebraic integer in the relevant ring 
      * that is closest to 0. However, no guarantee is made as to which result 
      * will be returned if two potential results are the same distance from 0.
      * @return An AlgebraicInteger object representing the algebraic integer 
@@ -206,90 +201,98 @@ public class NotDivisibleException extends Exception {
      * whether this function would return i or 1.
      */
     public AlgebraicInteger roundTowardsZero() {
-        // STUB TO FAIL NEXT TEST // STUB TO FAIL NEXT TEST // STUB TO FAIL NEXT TEST
-        return new ImaginaryQuadraticInteger(1, 0, new ImaginaryQuadraticRing(-1));
-//        if (this.initRing instanceof ImaginaryQuadraticRing) {
-//            QuadraticRing workingRing = (QuadraticRing) initRing;
-//        
-//        if (workingRing.hasHalfIntegers()) {
-//            AlgebraicInteger[] bounds = this.getBoundingIntegers();
-//            double currAbs = bounds[0].abs();
-//            double closestSoFar = currAbs;
-//            int currIndex = 1;
-//            int bestIndex = 0;
-//            while (currIndex < bounds.length) {
-//                currAbs = bounds[currIndex].abs();
-//                if (currAbs < closestSoFar) {
-//                    closestSoFar = currAbs;
-//                    bestIndex = currIndex;
-//                }
-//                currIndex++;
-//            }
-//            return bounds[bestIndex];
-//        } else {
-//            double intermediateRealPart = (double) resultingFractionRealPartNumerator / (double) resultingFractionDenominator;
-//            double intermediateImagPart = (double) resultingFractionImagPartNumerator / (double) resultingFractionDenominator;
-//            if (intermediateRealPart < 0) {
-//                intermediateRealPart = Math.ceil(intermediateRealPart);
-//            } else {
-//                intermediateRealPart = Math.floor(intermediateRealPart);
-//            }
-//            if (intermediateImagPart < 0) {
-//                intermediateImagPart = Math.ceil(intermediateImagPart);
-//            } else {
-//                intermediateImagPart = Math.floor(intermediateImagPart);
-//            }
-//            boolean overflowFlag = (intermediateRealPart < Integer.MIN_VALUE) || (intermediateRealPart > Integer.MAX_VALUE);
-//            overflowFlag = overflowFlag || ((intermediateImagPart < Integer.MIN_VALUE) || (intermediateImagPart > Integer.MAX_VALUE));
-//            if (overflowFlag) {
-//                throw new ArithmeticException("Real part " + intermediateRealPart + ", imaginary part " + intermediateImagPart + " times sqrt" + resultingFractionNegRad + " is outside the range of this implmentation of ImaginaryQuadraticInteger, which uses 32-bit signed integers.");
-//            }
-//            return new ImaginaryQuadraticInteger((int) intermediateRealPart, (int) intermediateImagPart, initRing);
-//        }
-//        }
-//        String exceptionMessage = "The domain " + this.initRing.toASCIIString() + " is not currently supported for this rounding operation.";
-//        throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
+        if (this.initRing instanceof QuadraticRing) {
+            QuadraticRing workingRing = (QuadraticRing) initRing;
+            if (workingRing instanceof ImaginaryQuadraticRing && workingRing.hasHalfIntegers()) {
+                AlgebraicInteger[] bounds = this.getBoundingIntegers();
+                double currAbs = bounds[0].abs();
+                double closestSoFar = currAbs;
+                int currIndex = 1;
+                int bestIndex = 0;
+                while (currIndex < bounds.length) {
+                    currAbs = bounds[currIndex].abs();
+                    if (currAbs < closestSoFar) {
+                        closestSoFar = currAbs;
+                        bestIndex = currIndex;
+                    }
+                    currIndex++;
+                }
+                return bounds[bestIndex];
+            }
+            double intermediateRegPart = (double) numers[0] / (double) denoms[0];
+            double intermediateSurdPart = (double) numers[1] / (double) denoms[1];
+            if (intermediateRegPart < 0) {
+                intermediateRegPart = Math.ceil(intermediateRegPart);
+            } else {
+                intermediateRegPart = Math.floor(intermediateRegPart);
+            }
+            if (intermediateSurdPart < 0) {
+                intermediateSurdPart = Math.ceil(intermediateSurdPart);
+            } else {
+                intermediateSurdPart = Math.floor(intermediateSurdPart);
+            }
+            boolean overflowFlag = (intermediateRegPart < Integer.MIN_VALUE) || (intermediateRegPart > Integer.MAX_VALUE);
+            overflowFlag = overflowFlag || ((intermediateSurdPart < Integer.MIN_VALUE) || (intermediateSurdPart > Integer.MAX_VALUE));
+            if (overflowFlag) {
+                throw new ArithmeticException("Real part " + intermediateRegPart + ", imaginary part " + intermediateSurdPart + " times sqrt(" + workingRing.getRadicand() + ") is outside the range of this implementation of ImaginaryQuadraticInteger, which uses 32-bit signed integers.");
+            }
+            if (workingRing instanceof ImaginaryQuadraticRing) {
+                return new ImaginaryQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
+            }
+            if (workingRing instanceof RealQuadraticRing) {
+                return new RealQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
+            }
+        }
+        String exceptionMessage = "The domain " + this.initRing.toASCIIString() + " is not currently supported for this rounding operation.";
+        throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
     }
     
     // TODO: Rewrite Javadoc
     public AlgebraicInteger roundAwayFromZero() {
-        ImaginaryQuadraticInteger zeroIQI = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
-        return zeroIQI;
-//        if (workingRing.hasHalfIntegers()) {
-//            ImaginaryQuadraticInteger[] bounds = this.getBoundingIntegers();
-//            double currAbs = bounds[0].abs();
-//            double farthestSoFar = currAbs;
-//            int currIndex = 1;
-//            int bestIndex = 0;
-//            while (currIndex < bounds.length) {
-//                currAbs = bounds[currIndex].abs();
-//                if (currAbs > farthestSoFar) {
-//                    farthestSoFar = currAbs;
-//                    bestIndex = currIndex;
-//                }
-//                currIndex++;
-//            }
-//            return bounds[bestIndex];
-//        } else {
-//            double intermediateRealPart = (double) resultingFractionRealPartNumerator / (double) resultingFractionDenominator;
-//            double intermediateImagPart = (double) resultingFractionImagPartNumerator / (double) resultingFractionDenominator;
-//            if (intermediateRealPart < 0) {
-//                intermediateRealPart = Math.floor(intermediateRealPart);
-//            } else {
-//                intermediateRealPart = Math.ceil(intermediateRealPart);
-//            }
-//            if (intermediateImagPart < 0) {
-//                intermediateImagPart = Math.floor(intermediateImagPart);
-//            } else {
-//                intermediateImagPart = Math.ceil(intermediateImagPart);
-//            }
-//            boolean overflowFlag = (intermediateRealPart < Integer.MIN_VALUE) || (intermediateRealPart > Integer.MAX_VALUE);
-//            overflowFlag = overflowFlag || ((intermediateImagPart < Integer.MIN_VALUE) || (intermediateImagPart > Integer.MAX_VALUE));
-//            if (overflowFlag) {
-//                throw new ArithmeticException("Real part " + intermediateRealPart + ", imaginary part " + intermediateImagPart + " times sqrt" + resultingFractionNegRad + " is outside the range of this implmentation of ImaginaryQuadraticInteger, which uses 32-bit signed integers.");
-//            }
-//            return new ImaginaryQuadraticInteger((int) intermediateRealPart, (int) intermediateImagPart, workingRing);
-//        }
+        if (this.initRing instanceof QuadraticRing) {
+            QuadraticRing workingRing = (QuadraticRing) initRing;
+            if (workingRing instanceof ImaginaryQuadraticRing && workingRing.hasHalfIntegers()) {
+                AlgebraicInteger[] bounds = this.getBoundingIntegers();
+                double currAbs = bounds[0].abs();
+                double farthestSoFar = currAbs;
+                int currIndex = 1;
+                int bestIndex = 0;
+                while (currIndex < bounds.length) {
+                    currAbs = bounds[currIndex].abs();
+                    if (currAbs > farthestSoFar) {
+                        farthestSoFar = currAbs;
+                        bestIndex = currIndex;
+                    }
+                    currIndex++;
+                }
+                return bounds[bestIndex];
+            }
+            double intermediateRegPart = (double) numers[0] / (double) denoms[0];
+            double intermediateSurdPart = (double) numers[1] / (double) denoms[1];
+            if (intermediateRegPart < 0) {
+                intermediateRegPart = Math.floor(intermediateRegPart);
+            } else {
+                intermediateRegPart = Math.ceil(intermediateRegPart);
+            }
+            if (intermediateSurdPart < 0) {
+                intermediateSurdPart = Math.floor(intermediateSurdPart);
+            } else {
+                intermediateSurdPart = Math.ceil(intermediateSurdPart);
+            }
+            boolean overflowFlag = (intermediateRegPart < Integer.MIN_VALUE) || (intermediateRegPart > Integer.MAX_VALUE);
+            overflowFlag = overflowFlag || ((intermediateSurdPart < Integer.MIN_VALUE) || (intermediateSurdPart > Integer.MAX_VALUE));
+            if (overflowFlag) {
+                throw new ArithmeticException("Real part " + intermediateRegPart + ", imaginary part " + intermediateSurdPart + " times sqrt(" + workingRing.getRadicand() + ") is outside the range of this implementation of ImaginaryQuadraticInteger, which uses 32-bit signed integers.");
+            }
+            if (workingRing instanceof ImaginaryQuadraticRing) {
+                return new ImaginaryQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
+            }
+            if (workingRing instanceof RealQuadraticRing) {
+                return new RealQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
+            }
+        }
+        String exceptionMessage = "The domain " + this.initRing.toASCIIString() + " is not currently supported for this rounding operation.";
+        throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
     }
     
     /**

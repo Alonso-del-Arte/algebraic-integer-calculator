@@ -16,8 +16,11 @@
  */
 package algebraics;
 
-import algebraics.quadratics.ImaginaryQuadraticInteger;
-import algebraics.quadratics.ImaginaryQuadraticRing;
+import algebraics.quadratics.QuadraticInteger;
+import algebraics.quadratics.QuadraticRing;
+import calculators.NumberTheoreticFunctionsCalculator;
+
+import java.util.Objects;
 
 /**
  * Defines objects to represents ideals of algebraic integers in a particular 
@@ -27,14 +30,21 @@ import algebraics.quadratics.ImaginaryQuadraticRing;
  */
 public class Ideal {
     
+    private final boolean principalIdealFlag;
+    private final boolean wholeRingFlag;
+    
+    private final AlgebraicInteger idealGeneratorA;
+    private final AlgebraicInteger idealGeneratorB;
+    
+    private final IntegerRing workingRing;
+    
     // STUB TO FAIL FIRST TEST
     public long norm() {
         return 0L;
     }
     
-    // STUB TO FAIL FIRST TEST
     public boolean isPrincipal() {
-        return false;
+        return principalIdealFlag;
     }
     
     // STUB TO FAIL FIRST TEST
@@ -42,44 +52,157 @@ public class Ideal {
         return false;
     }
     
-    // STUB TO FAIL FIRST TEST
     public boolean contains(AlgebraicInteger number) {
+        if (!number.getRing().equals(this.workingRing)) {
+            return false;
+        }
+        if (this.wholeRingFlag) {
+            return true;
+        }
+        if (this.workingRing instanceof QuadraticRing) {
+            QuadraticInteger n = (QuadraticInteger) number;
+            QuadraticInteger a = (QuadraticInteger) this.idealGeneratorA;
+            if (this.principalIdealFlag) {
+                try {
+                    n.divides(a);
+                    return true;
+                } catch (NotDivisibleException nde) {
+                    return false;
+                }
+            } else {
+                QuadraticInteger b = (QuadraticInteger) this.idealGeneratorB;
+            }
+            return false; // *** REMOVE WHEN FOREGOING IS COMPLETE ****
+        }
+        String exceptionMessage = "Arithmetic operations are not yet supported for the domain of " + number.toASCIIString() + "; they're necessary to determine containment in this case.";
+        throw new UnsupportedNumberDomainException(exceptionMessage, number);
+    }
+    
+    // STUB TO FAIL FIRST TEST
+    public boolean contains(Ideal ideal) {
         return false;
     }
     
-    // STUB TO FAIL FIRST TEST
     public AlgebraicInteger[] getGenerators() {
-        ImaginaryQuadraticInteger gen = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
-        AlgebraicInteger[] arr = {gen, gen};
-        return arr;
+        if (this.principalIdealFlag) {
+            AlgebraicInteger[] gens = {this.idealGeneratorA};
+            return gens;
+        } else {
+            AlgebraicInteger[] gens = {this.idealGeneratorA, this.idealGeneratorB};
+            return gens;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = this.workingRing.hashCode();
+        if (!this.wholeRingFlag) {
+            hash *= this.idealGeneratorA.hashCode();
+            if (!this.principalIdealFlag) {
+                hash *= this.idealGeneratorB.hashCode();
+            }
+        }
+        return hash;
     }
     
-    @Override // STUB TO FAIL FIRST TEST
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Ideal other = (Ideal) obj;
+        if (!Objects.equals(this.idealGeneratorA, other.idealGeneratorA)) {
+            return false;
+        }
+        return (Objects.equals(this.idealGeneratorB, other.idealGeneratorB));
+    }
+    
+    @Override
     public String toString() {
-        return "Feature not implemented yet.";
+        if (this.wholeRingFlag) {
+            return this.workingRing.toString();
+        }
+        String idealString = "\u27E8" + this.idealGeneratorA.toString();
+        if (!this.principalIdealFlag) {
+            idealString = idealString + ", " + this.idealGeneratorB.toString();
+        }
+        idealString = idealString + "\u27E9";
+        return idealString;
     }
     
-    // STUB TO FAIL FIRST TEST
     public String toASCIIString() {
-        return "Feature not implemented yet.";
+        if (this.wholeRingFlag) {
+            return this.workingRing.toASCIIString();
+        }
+        String idealString = "(" + this.idealGeneratorA.toASCIIString();
+        if (!this.principalIdealFlag) {
+            idealString = idealString + ", " + this.idealGeneratorB.toASCIIString();
+        }
+        idealString = idealString + ")";
+        return idealString;
     }
     
-    // STUB TO FAIL FIRST TEST
     public String toTeXString() {
-        return "Feature not implemented yet.";
+        if (this.wholeRingFlag) {
+            return this.workingRing.toTeXString();
+        }
+        String idealString = "\\langle" + this.idealGeneratorA.toTeXString();
+        if (!this.principalIdealFlag) {
+            idealString = idealString + ", " + this.idealGeneratorB.toTeXString();
+        }
+        idealString = idealString + "\\rangle";
+        return idealString;
     }
     
-    // STUB TO FAIL FIRST TEST
     public String toHTMLString() {
-        return "Feature not implemented yet.";
+        if (this.wholeRingFlag) {
+            return this.workingRing.toHTMLString();
+        }
+        String idealString = "&#10216;" + this.idealGeneratorA.toHTMLString();
+        if (!this.principalIdealFlag) {
+            idealString = idealString + ", " + this.idealGeneratorB.toHTMLString();
+        }
+        idealString = idealString + "&#10217;";
+        return idealString;
+    }
+    
+    public Ideal(IntegerRing ring) {
+        this.wholeRingFlag = true;
+        this.workingRing = ring;
+        this.principalIdealFlag = true;
+        this.idealGeneratorA = NumberTheoreticFunctionsCalculator.getOneInRing(ring);
+        this.idealGeneratorB = null;
     }
     
     public Ideal(AlgebraicInteger generatorA) {
-        // TODO: Fill in setters of private fields
+        this.principalIdealFlag = true;
+        this.workingRing = generatorA.getRing();
+        if (Math.abs(generatorA.norm()) == 1) {
+            this.wholeRingFlag = true;
+            this.idealGeneratorA = NumberTheoreticFunctionsCalculator.getOneInRing(this.workingRing);
+        } else {
+            this.idealGeneratorA = generatorA;
+            this.wholeRingFlag = false;
+        }
+        this.idealGeneratorB = null;
     }
     
     public Ideal(AlgebraicInteger generatorA, AlgebraicInteger generatorB) {
-        // TODO: Fill in setters of private fields
+        if (!generatorA.getRing().equals(generatorB.getRing())) {
+            String exceptionMessage = generatorA.toASCIIString() + " is from " + generatorA.getRing().toASCIIString() + " but " + generatorB.toASCIIString() + " is from " + generatorB.getRing().toASCIIString() + ".";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+        this.principalIdealFlag = false;
+        this.idealGeneratorA = generatorA;
+        this.idealGeneratorB = generatorB;
+        this.workingRing = this.idealGeneratorA.getRing();
+        this.wholeRingFlag = ((Math.abs(this.idealGeneratorA.norm()) == 1) || (Math.abs(this.idealGeneratorB.norm()) == 1));
     }
     
 }
