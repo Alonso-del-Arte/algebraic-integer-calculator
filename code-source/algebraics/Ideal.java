@@ -16,8 +16,10 @@
  */
 package algebraics;
 
+import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
+import algebraics.quadratics.RealQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
 
 import java.util.Objects;
@@ -38,8 +40,11 @@ public class Ideal {
     
     private final IntegerRing workingRing;
     
-    // STUB TO FAIL FIRST TEST
+    // THIS SHOULD PASS FOR PRINCIPAL IDEALS BUT FAIL FOR SECONDARY IDEALS
     public long norm() {
+        if (this.principalIdealFlag) {
+            return Math.abs(this.idealGeneratorA.norm());
+        }
         return 0L;
     }
     
@@ -198,10 +203,46 @@ public class Ideal {
             String exceptionMessage = generatorA.toASCIIString() + " is from " + generatorA.getRing().toASCIIString() + " but " + generatorB.toASCIIString() + " is from " + generatorB.getRing().toASCIIString() + ".";
             throw new IllegalArgumentException(exceptionMessage);
         }
-        this.principalIdealFlag = false;
-        this.idealGeneratorA = generatorA;
-        this.idealGeneratorB = generatorB;
-        this.workingRing = this.idealGeneratorA.getRing();
+        boolean principalFlag = false;
+        AlgebraicInteger genA = generatorA;
+        AlgebraicInteger genB = generatorB;
+        this.workingRing = genA.getRing();
+        if (this.workingRing instanceof ImaginaryQuadraticRing || this.workingRing instanceof RealQuadraticRing) {
+            QuadraticInteger gA = (QuadraticInteger) genA;
+            QuadraticInteger gB = (QuadraticInteger) genB;
+            AlgebraicInteger gcd;
+            try {
+                gcd = NumberTheoreticFunctionsCalculator.euclideanGCD(gA, gB);
+                gA = (QuadraticInteger) gcd;
+                gB = gB.minus(gB); // Zero out
+                principalFlag = true;
+            } catch (NonEuclideanDomainException nede) {
+                gcd = nede.tryEuclideanGCDAnyway();
+                if (((QuadraticInteger) gcd).getRegPartMult() >= 0) {
+                    gA = (QuadraticInteger) gcd;
+                    gB = gB.minus(gB); // Zero out
+                    principalFlag = true;
+                }
+            }
+            if (!principalFlag) {
+                if ((gA.getSurdPartMult() != 0) && (gB.getSurdPartMult() == 0)) {
+                    QuadraticInteger swapper = gA;
+                    gA = gB;
+                    gB = swapper;
+                }
+            }
+            if (gA.getRegPartMult() < 0 || (gA.getRegPartMult() == 0 && gA.getSurdPartMult() < 0)) {
+                gA = gA.times(-1);
+            }
+            if (gB.getRegPartMult() < 0 || (gB.getRegPartMult() == 0 && gB.getSurdPartMult() < 0)) {
+                gB = gB.times(-1);
+            }
+            genA = gA;
+            genB = gB;
+        }
+        this.principalIdealFlag = principalFlag;
+        this.idealGeneratorA = genA;
+        this.idealGeneratorB = genB;
         this.wholeRingFlag = ((Math.abs(this.idealGeneratorA.norm()) == 1) || (Math.abs(this.idealGeneratorB.norm()) == 1));
     }
     

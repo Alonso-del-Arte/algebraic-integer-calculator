@@ -36,7 +36,8 @@ package algebraics;
 public interface AlgebraicInteger {
     
     /**
-     * Gives the algebraic degree of the algebraic integer.
+     * Gives the algebraic degree of the algebraic integer, the maximum exponent 
+     * in the algebraic integer's minimal polynomial.
      * @return 0 if the algebraic integer is 0, a positive integer for any other 
      * algebraic integer. For example, for 1 + &#8731;2, the result should be 
      * 3, as that is an algebraic integer of degree 3.
@@ -45,32 +46,23 @@ public interface AlgebraicInteger {
     
     /**
      * Gives the trace of the algebraic integer. In the original version, this 
-     * was an int, but due to many overflow problems, I'm changing this to a 
-     * long. Overflow problems can still occur, but they're hopefully less 
-     * frequent now.
-     * @return The trace. For example, given 5/2 + sqrt(-7)/2, the trace would 
-     * be 5.
+     * was an int, but due to many overflow problems, I changed it to a long. 
+     * Overflow problems can still occur, but they're hopefully less frequent 
+     * now.
+     * @return The trace. For example, given 5/2 + (&radic;&minus;7)/2, the 
+     * trace would be 5.
      */
     long trace();
     
     /**
      * Gives the norm of the algebraic integer, useful for comparing integers in 
      * the Euclidean GCD algorithm. In the original version, this was an int, 
-     * but due to many overflow problems, I'm changing this to a long. Overflow 
+     * but due to many overflow problems, I changed it to a long. Overflow 
      * problems can still occur, but they're hopefully less frequent now.
      * @return The norm. For example, given 5/2 + (&radic;&minus;7)/2, the norm 
      * would be 8.
      */
     long norm();
-    
-    /**
-     * Gives the absolute value of the algebraic integer, essentially its 
-     * distance from 0.
-     * @return The absolute value in double precision, in many cases a rational 
-     * approximation. For example, for &minus;1 + <i>i</i>, this would be 
-     * roughly 1.4142. For 1 &minus; &#8731;5, this would be roughly &minus;0.7.
-     */
-    double abs();
     
     /**
      * Gives the coefficients for the minimal polynomial of the algebraic 
@@ -79,7 +71,7 @@ public interface AlgebraicInteger {
      * @return An array of 64-bit integers, in total one more than the maximum 
      * possible algebraic degree in the applicable ring. If the algebraic degree 
      * of this integer is equal to that maximum possible algebraic degree, then 
-     * the element at position length - 1 in the array ought to be 1. For 
+     * the element at position length &minus; 1 in the array ought to be 1. For 
      * example, if the algebraic integer is 1 + &#8731;2, the result would be 
      * {3, 3, 3, 1}.
      */
@@ -90,12 +82,25 @@ public interface AlgebraicInteger {
      * polynomial String are desirable but not required. The multiplication 
      * operator is preferably tacit, for easy transfer to TeX.
      * @return A String in which the variable x appears as many times as 
-     * dictated by the algebraic degree. For example, if the algebraic integer 
-     * is 1 + \u221B2, the result should be preferably "x^3 - 3x^2 + 3x - 
-     * 3", but "x^3-3x^2+3x-3" and "x^3-3*x^2+3*x-3" are also acceptable.
+     * dictated by the algebraic degree and how many nonzero coefficients there 
+     * are. For example, if the algebraic integer is 1 + \u221B2, the result 
+     * should be preferably "x^3 - 3x^2 + 3x - 3", but "x^3-3x^2+3x-3" and 
+     * "x^3-3*x^2+3*x-3" are also acceptable. The ASCII dash should be used 
+     * instead of the Unicode minus sign, since TeX will properly understand the 
+     * former, and it can be converted to the latter if needed for HTML.
      */
     String minPolynomialString();
     
+    /**
+     * Retrieves an object representing the ring this algebraic integer belongs 
+     * to. This is mainly to enable verification that two algebraic integers 
+     * come from the same ring of algebraic integers.
+     * @return An object subclassed from {@link IntegerRing}. To check degree, 
+     * one may use {@link IntegerRing#getMaxAlgebraicDegree()} or one may check 
+     * if it's an instance of {@link QuadraticRing}, {@link CubicRing}, etc.
+     */
+    IntegerRing getRing();
+        
     /**
      * A text representation of the algebraic integer using only ASCII 
      * characters. It is strongly recommended that any implementations of 
@@ -129,7 +134,18 @@ public interface AlgebraicInteger {
     String toHTMLString();
     
     /**
-     * Retrieves the real part of this algebraic integer.
+     * Gives the absolute value of the algebraic integer, essentially its 
+     * distance from 0. Sometimes called "radius" in the context of polar 
+     * coordinates.
+     * @return The absolute value in double precision, in many cases a rational 
+     * approximation. For example, for &minus;1 + <i>i</i>, this would be 
+     * roughly 1.4142. For 1 &minus; &#8731;5, this would be roughly &minus;0.7.
+     */
+    double abs();
+    
+    /**
+     * Retrieves the real part of this algebraic integer according to machine 
+     * precision.
      * @return The real part, which may be a rational approximation in some 
      * cases. For example, for 1 + &#8731;2, this would be roughly 2.259921. For 
      * 3/2 + (&radic;&minus;19)/2, this should be exactly 1.5.
@@ -149,13 +165,22 @@ public interface AlgebraicInteger {
     double getImagPartNumeric();
     
     /**
-     * Retrieves an object representing the ring this algebraic integer belongs 
-     * to. This is mainly to enable verification that two algebraic integers 
-     * come from the same ring of algebraic integers.
-     * @return An object subclassed from {@link IntegerRing}. To check degree, 
-     * one may use {@link IntegerRing#getMaxAlgebraicDegree()} or one may check 
-     * if it's an instance of {@link QuadraticRing}, {@link CubicRing}, etc.
+     * Gives the angle on the complex plane formed by a line segment starting at 
+     * this algebraic integer and extending to 0, and another line segment going 
+     * along on the real axis from 0 to positive infinity. For numbers with 
+     * positive nonzero imaginary part, the angle should be positive, and for 
+     * numbers with negative nonzero imaginary part, the angle should be 
+     * negative. Other terms for this angle include "argument," "phase" and 
+     * "amplitude."
+     * @return The angle expressed in radians, ranging from &minus;&pi; radians 
+     * to &pi; radians. For example, the angle of <i>i</i> should be roughly 
+     * 1.57 radians (90 degrees) and the angle of &minus;<i>i</i> should be 
+     * roughly &minus;1.57 radians (&minus;90 degrees). The numerical precision 
+     * should be better than two decimal places, but should not be expected to 
+     * be the same on every instance of the Java Virtual Machine. If you need 
+     * this angle in degrees, you can use {@link Math#toDegrees(double)} to make 
+     * the conversion.
      */
-    IntegerRing getRing();
-        
+    double angle();
+    
 }
