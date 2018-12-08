@@ -26,6 +26,12 @@ public abstract class QuarticInteger implements AlgebraicInteger {
     
     protected QuarticRing quartRing;
     
+    /**
+     * Retrieves an object representing the ring this quartic integer belongs 
+     * to.
+     * @return An object subclassed from {@link QuarticRing}.
+     */
+    @Override
     public QuarticRing getRing() {
         return this.quartRing;
     }

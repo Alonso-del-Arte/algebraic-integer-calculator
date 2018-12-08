@@ -64,6 +64,12 @@ public final class Zeta8Integer extends QuarticInteger {
         Nb *= Nb;
         return Na + Nb;
     }
+    
+    // STUB TO FAIL FIRST TEST
+    @Override
+    public double abs() {
+        return 0.0;
+    }
 
     @Override
     public long[] minPolynomial() {
@@ -78,17 +84,32 @@ public final class Zeta8Integer extends QuarticInteger {
     
     @Override
     public String toString() {
-        String z8iStr = this.realIntPart + " + " + this.zeta8Part + "\u03B6\u2088 + " + this.imagIntPart + "i + " + this.zeta8CuPart + "(\u03B6\u2088)\u00B3";
+        String z8iStr = "removethislater";
+        if (this.realIntPart != 0) {
+            z8iStr = z8iStr + this.realIntPart;
+        }
+        if (this.zeta8Part != 0) {
+            z8iStr = z8iStr + " + " + this.zeta8Part + "\u03B6\u2088";
+        }
+        if (this.imagIntPart != 0) {
+            z8iStr = z8iStr + " + " + this.imagIntPart + "i";
+        }
+        if (this.zeta8CuPart != 0) {
+            z8iStr = z8iStr + " + " + this.zeta8CuPart + "(\u03B6\u2088)\u00B3";
+        }
         z8iStr = z8iStr.replace(" + -", " - ");
         z8iStr = z8iStr.replace(" 1\u03B6", " \u03B6");
         z8iStr = z8iStr.replace(" 1i", " i");
         z8iStr = z8iStr.replace(" 1(\u03B6", " (\u03B6");
         z8iStr = z8iStr.replace(" + 0\u03B6\u2088", "");
+        z8iStr = z8iStr.replace(" 0\u03B6\u2088", "");
         z8iStr = z8iStr.replace(" + 0i", "");
         z8iStr = z8iStr.replace(" + 0(\u03B6\u2088)\u00B3", "");
-        if (z8iStr.startsWith("0 + ")) {
-            z8iStr = z8iStr.substring(4, z8iStr.length() - 1);
-        }
+        z8iStr = z8iStr.replace("removethislater + \u03B6", "\u03B6");
+        z8iStr = z8iStr.replace("removethislater + i", "i");
+        z8iStr = z8iStr.replace("removethislater + (\u03B6", "(\u03B6");
+        z8iStr = z8iStr.replace("removethislater -", "-");
+        z8iStr = z8iStr.replace("removethislater ", "");
         if (z8iStr.isEmpty()) {
             z8iStr = "0";
         }
@@ -246,6 +267,12 @@ public final class Zeta8Integer extends QuarticInteger {
         im += this.imagIntPart;
         im += SQRT_ONE_HALF * this.zeta8Part;
         return im;
+    }
+    
+    // STUB TO FAIL FIRST TEST
+    @Override
+    public double angle() {
+        return 0.0;
     }
     
     public Zeta8Integer(int a, int b, int c, int d) {
