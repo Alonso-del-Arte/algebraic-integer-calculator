@@ -24,26 +24,9 @@ import java.text.DecimalFormatSymbols;
  * @author Alonso del Arte
  */
 public class ImaginaryQuadraticInteger extends QuadraticInteger {
-            
-    /**
-     * Gets the real part of the imaginary quadratic integer. May be half an integer.
-     * @return The real part of the imaginary quadratic integer.
-     */
-    public double getRealPartMult() {
-        double realPart = this.regPartMult;
-        if (this.denominator == 2) {
-            realPart /= 2;
-        }
-        return realPart;
-    }
     
-    public double getImagPartwRadMult() {
-        double imagPartwRad = this.surdPartMult * -this.quadRing.radicand;
-        if (this.denominator == 2) {
-            imagPartwRad /= 2;
-        }
-        return imagPartwRad;
-    }
+    private final double numValRe;
+    private final double numValIm;
     
     public long getTwiceRealPartMult() {
         long twiceRealPartMult = this.regPartMult;
@@ -102,11 +85,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public double getRealPartNumeric() {
-        double realPart = this.regPartMult;
-        if (this.denominator == 2) {
-            realPart /= 2;
-        }
-        return realPart;
+        return this.numValRe;
     }
     
     /**
@@ -119,11 +98,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public double getImagPartNumeric() {
-        double imagPartwRad = this.surdPartMult * this.quadRing.getAbsNegRadSqrt();
-        if (this.denominator == 2) {
-            imagPartwRad /= 2;
-        }
-        return imagPartwRad;
+        return this.numValIm;
+    }
+    
+    @Override
+    public double angle() {
+        return Math.atan2(this.numValIm, this.numValRe);
     }
       
     /**
@@ -272,6 +252,16 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             this.denominator = 1;
         }
         this.quadRing = ring;
+        double realPart = this.regPartMult;
+        if (this.denominator == 2) {
+            realPart /= 2;
+        }
+        this.numValRe = realPart;
+        double imagPartwRad = this.surdPartMult * this.quadRing.getAbsNegRadSqrt();
+        if (this.denominator == 2) {
+            imagPartwRad /= 2;
+        }
+        this.numValIm = imagPartwRad;
     }
     
 }

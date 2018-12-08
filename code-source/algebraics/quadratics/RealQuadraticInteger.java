@@ -61,6 +61,24 @@ public class RealQuadraticInteger extends QuadraticInteger {
     }
     
     /**
+     * This function, generally called "argument," sometimes "phase" or 
+     * "amplitude," is not so useful for purely real numbers like the ones 
+     * represented by this class. It is included because it is required by the 
+     * {@link AlgebraicInteger} interface, which has implementations that 
+     * represent numbers with nonzero imaginary parts.
+     * @return &pi; (approximately 3.14) radians if this real quadratic integer 
+     * is negative, 0 otherwise.
+     */
+    @Override
+    public double angle() {
+        if (this.numVal < 0) {
+            return Math.PI;
+        } else {
+            return 0.0;
+        }
+    }
+    
+    /**
      * Alternative object constructor, may be used when the denominator is known 
      * to be 1.
      * @param a The "regular" part of the real quadratic integer. For example, 
