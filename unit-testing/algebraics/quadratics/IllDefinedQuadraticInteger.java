@@ -18,15 +18,17 @@ package algebraics.quadratics;
 
 /**
  * This is strictly to define objects for use in {@link 
- * UnsupportedNumberDomainExceptionTest}. It should be in a test package, not in 
- * a source package, and it should not be compiled to any JARs.
+ * algebraics.UnsupportedNumberDomainExceptionTest}, and other cases where it's 
+ * necessary to test that {@link algebraics.UnsupportedNumberDomainException} 
+ * arises. It should be in a test package, not in a source package, and it 
+ * should not be compiled to any JARs.
  * @author Alonso del Arte
  */
 public class IllDefinedQuadraticInteger extends QuadraticInteger {
 
     @Override
     public double abs() {
-        return 0;
+        return 0.0;
     }
 
     @Override
@@ -39,7 +41,12 @@ public class IllDefinedQuadraticInteger extends QuadraticInteger {
         return 0.0;
     }
     
-    public IllDefinedQuadraticInteger(int a, int b, IllDefinedQuadraticRing ring) {
+    @Override
+    public double angle() {
+        return 0.0;
+    }
+    
+    public IllDefinedQuadraticInteger(int a, int b, QuadraticRing ring) {
         this.regPartMult = a;
         this.surdPartMult = b;
         this.denominator = -1;

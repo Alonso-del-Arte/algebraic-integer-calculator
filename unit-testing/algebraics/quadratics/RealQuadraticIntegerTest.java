@@ -426,6 +426,27 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
+     * Test of getImagPartNumeric method, of class RealQuadraticInteger.
+     */
+    @Test
+    public void testAngle() {
+        System.out.println("angle");
+        double expResult, result;
+        QuadraticInteger num = GOLDEN_RATIO;
+        for (int i = 0; i < 10; i++) {
+            num = num.plus(i);
+            expResult = 0.0;
+            result = num.angle();
+            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            num = num.times(-1); // Negate number
+            expResult = Math.PI;
+            result = num.angle();
+            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            num = num.times(-1); // Back to positive
+        }
+    }
+    
+    /**
      * Test of getRing method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger.
      */

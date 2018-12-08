@@ -518,8 +518,8 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of getImagPartNumeric method, of class ImaginaryQuadraticInteger.
      */
     @Test
-    public void testGetImagPartwRadMultNumeric() {
-        System.out.println("getImagPartwRadMultNumeric");
+    public void testGetImagPartNumeric() {
+        System.out.println("getImagPartNumeric");
         double expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
             result = testIntegers.get(i).getImagPartNumeric();
@@ -602,6 +602,27 @@ public class ImaginaryQuadraticIntegerTest {
             result = testIntegers.get(i).getSurdPartMult();
             assertEquals(expResult, result);
         }
+    }
+    
+    /**
+     * Test of angle method, of class ImaginaryQuadraticInteger.
+     */
+    @Test
+    public void testAngle() {
+        System.out.println("angle");
+        double expResult = 1.57079632679;
+        double result = IMAG_UNIT_I.angle();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        expResult *= -1.0;
+        result = IMAG_UNIT_NEG_I.angle();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        expResult = 2.0943951;
+        result = COMPLEX_CUBIC_ROOT_OF_UNITY.angle();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        expResult *= -1.0;
+        QuadraticInteger omegaSquared = COMPLEX_CUBIC_ROOT_OF_UNITY.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
+        result = omegaSquared.angle();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
     }
     
     /**
