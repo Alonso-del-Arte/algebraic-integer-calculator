@@ -30,7 +30,9 @@ import static org.junit.Assert.*;
 /**
  * Tests for the Ideal class. In setup, five ideals from quadratic integer rings 
  * are constructed. Perhaps a future version of this test class will also use 
- * ideals from rings of higher degree.
+ * ideals from rings of higher degree. As support for those is added, in their 
+ * respective classes, tests will need to be added to this test class, so as to 
+ * develop Ideal accordingly.
  * @author Alonso del Arte
  */
 public class IdealTest {
@@ -116,7 +118,7 @@ public class IdealTest {
         assertionMessage = testIdeal.toString() + " should be found to be a principal ideal.";
         assertTrue(assertionMessage, testIdeal.isPrincipal());
         ramified = new RealQuadraticInteger(10, 0, RING_Z10);
-        ramifier = new ImaginaryQuadraticInteger(0, 1, RING_Z10);
+        ramifier = new RealQuadraticInteger(0, 1, RING_Z10);
         testIdeal = new Ideal(ramified, ramifier);
         assertionMessage = testIdeal.toString() + " should be found to be a principal ideal.";
         assertTrue(assertionMessage, testIdeal.isPrincipal());
