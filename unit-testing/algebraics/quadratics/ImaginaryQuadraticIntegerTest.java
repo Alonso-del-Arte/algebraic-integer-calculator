@@ -153,7 +153,7 @@ public class ImaginaryQuadraticIntegerTest {
         }
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
         int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/((-4) * (randomDiscr + 1))));
-        System.out.println("Maximum for real and imaginary parts is " + maxAB);
+        System.out.println("Maximum for real and imaginary parts of test imaginary quadratic integers is " + maxAB + ".");
         Random ranNumGen = new Random();
         randomRealPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
         randomImagPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
@@ -324,6 +324,12 @@ public class ImaginaryQuadraticIntegerTest {
             result = testIntegers.get(i).norm();
             assertEquals(expResult, result);
         }
+        ImaginaryQuadraticRing r = new ImaginaryQuadraticRing(-Integer.MAX_VALUE);
+        ImaginaryQuadraticInteger z = new ImaginaryQuadraticInteger(1, 1, r);
+        expResult = -1L * Integer.MIN_VALUE;
+        result = z.norm();
+        String assertionMessage = "Norm computation for " + z.toString() + " should not overflow to " + Integer.MIN_VALUE + ".";
+        assertEquals(assertionMessage, expResult, result);
     }
 
     /**
@@ -610,7 +616,7 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testAngle() {
         System.out.println("angle");
-        double expResult = 1.57079632679;
+        double expResult = 1.57079633;
         double result = IMAG_UNIT_I.angle();
         assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
         expResult *= -1.0;

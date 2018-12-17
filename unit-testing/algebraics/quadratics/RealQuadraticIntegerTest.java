@@ -105,7 +105,7 @@ public class RealQuadraticIntegerTest {
         }
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
         int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/(32 * (randomDiscr + 1))));
-        System.out.println("Maximum for regular and surd parts is " + maxAB);
+        System.out.println("Maximum for regular and surd parts of test real quadratic integers is " + maxAB + ".");
         Random ranNumGen = new Random();
         randomRegPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
         randomSurdPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
@@ -246,6 +246,12 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).norm();
             assertEquals(expResult, result);
         }
+        RealQuadraticRing r = new RealQuadraticRing(Integer.MAX_VALUE);
+        RealQuadraticInteger x = new RealQuadraticInteger(0, 2, r);
+        expResult = -4L * Integer.MAX_VALUE;
+        result = x.norm();
+        String assertionMessage = "Norm computation for " + x.toString() + " should not overflow to 4.";
+        assertEquals(assertionMessage, expResult, result);
     }
 
     /**
