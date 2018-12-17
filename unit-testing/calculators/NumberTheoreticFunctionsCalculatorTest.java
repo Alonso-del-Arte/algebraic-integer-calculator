@@ -30,6 +30,8 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import algebraics.quartics.Zeta8Integer;
+import algebraics.quartics.Zeta8Ring;
 import static algebraics.quadratics.ImaginaryQuadraticRingTest.TEST_DELTA;
 
 import java.util.List;
@@ -1255,13 +1257,15 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * specific real quadratic integer rings. This also checks that {@link 
      * algebraics.UnsupportedNumberDomainException} is triggered for imaginary 
      * quadratic integer rings as well as for domains that don't yet have 
-     * fleshed out support.
+     * fleshed out support. However, it should be able to answer that the 
+     * fundamental unit of the ring of algebraic integers of 
+     * <b>Q</b>(&zeta;<sub>8</sub>) is &zeta;<sub>8</sub>.
      */
     @Test
     public void testFundamentalUnit() {
         System.out.println("fundamentalUnit");
         QuadraticRing ring = new RealQuadraticRing(2);
-        QuadraticInteger expResult = new RealQuadraticInteger(1, 1, ring);
+        AlgebraicInteger expResult = new RealQuadraticInteger(1, 1, ring);
         AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
         System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
         assertEquals(expResult, result);
@@ -1334,6 +1338,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
             fail(failMessage);
         }
+        expResult = new Zeta8Integer(0, 1, 0, 0);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(expResult.getRing());
+        assertEquals(expResult, result);
     }
     
     /**
