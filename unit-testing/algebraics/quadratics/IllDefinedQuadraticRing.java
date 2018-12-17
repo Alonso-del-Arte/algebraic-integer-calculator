@@ -16,13 +16,11 @@
  */
 package algebraics.quadratics;
 
-import algebraics.quadratics.QuadraticRing;
-
 /**
  * This is strictly to define instances of {@link IllDefinedQuadraticInteger}, 
  * which in turn are objects for use in {@link 
- * UnsupportedNumberDomainExceptionTest}. It should be in a test package, not in 
- * a source package, and it should not be compiled to any JARs.
+ * algebraics.UnsupportedNumberDomainExceptionTest}. It should be in a test 
+ * package, not in a source package, and it should not be compiled to any JARs.
  * @author Alonso del Arte
  */
 public class IllDefinedQuadraticRing extends QuadraticRing {
@@ -31,23 +29,23 @@ public class IllDefinedQuadraticRing extends QuadraticRing {
     
     @Override
     public double getRadSqrt() {
-        return radSqrt;
+        return this.radSqrt;
     }
 
     @Override
     public int getAbsNegRad() {
-        return 0;
+        return Math.abs(this.radicand);
     }
 
     @Override
     public double getAbsNegRadSqrt() {
-        return 0;
+        return this.radSqrt;
     }
     
     public IllDefinedQuadraticRing(int d) {
         this.d1mod4 = false;
         this.radicand = 4 * d;
-        this.radSqrt = Math.sqrt(d);
+        this.radSqrt = Math.sqrt(Math.abs(this.radicand));
     }
     
 }
