@@ -92,10 +92,20 @@ public class IdealTest {
     @Test
     public void testNorm() {
         System.out.println("norm");
-//        long expResult = 0L;
-//        long result = instance.norm();
-//        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        long expResult = 1L;
+        long result = idealWholeRing.norm();
+        assertEquals(expResult, result);
+        expResult = 2L;
+        result = idealSecondaryZi5.norm();
+        assertEquals(expResult, result);
+        result = idealSecondaryZ10.norm();
+        assertEquals(expResult, result);
+        expResult = 4L;
+        result = idealPrincipalZi5.norm();
+        assertEquals(expResult, result);
+        expResult = 10L;
+        result = idealPrincipalZ10.norm();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -257,10 +267,24 @@ public class IdealTest {
         assertNotEquals(idealSecondaryZ10, idealPrincipalZ10);
         assertNotEquals(idealSecondaryZi5, idealPrincipalZ10);
         assertNotEquals(idealSecondaryZ10, idealPrincipalZi5);
-        Ideal testIdeal = new Ideal(ALG_INT_1PLUSSQRTNEG5, ALG_INT_2_IN_ZI5);
-        assertEquals(idealSecondaryZi5, testIdeal);
-        testIdeal = new Ideal(ALG_INT_SQRT10, ALG_INT_2_IN_Z10);
-        assertEquals(idealSecondaryZ10, testIdeal);
+        Ideal testIdealP = new Ideal(ALG_INT_1PLUSSQRTNEG5, ALG_INT_2_IN_ZI5);
+        assertEquals(idealSecondaryZi5, testIdealP);
+        testIdealP = new Ideal(ALG_INT_SQRT10, ALG_INT_2_IN_Z10);
+        assertEquals(idealSecondaryZ10, testIdealP);
+        // TODO: Write tests like for <3omega> == <3 + 3omega>
+        QuadraticRing r = new ImaginaryQuadraticRing(-3);
+        QuadraticInteger norm7Int = new ImaginaryQuadraticInteger(5, 1, r, 2);
+        testIdealP = new Ideal(norm7Int);
+        norm7Int = new ImaginaryQuadraticInteger(-1, -3, r, 2);
+        Ideal testIdealQ = new Ideal(norm7Int);
+        assertEquals(testIdealP, testIdealQ);
+        r = new RealQuadraticRing(2);
+        norm7Int = new RealQuadraticInteger(3, 1, r);
+        testIdealP = new Ideal(norm7Int);
+        assertNotEquals(testIdealP, testIdealQ);
+        norm7Int = new RealQuadraticInteger(65, -46, r);
+        testIdealQ = new Ideal(norm7Int);
+        assertEquals(testIdealP, testIdealQ);
     }
 
     /**
