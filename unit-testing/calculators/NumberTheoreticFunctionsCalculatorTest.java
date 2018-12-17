@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -44,8 +45,8 @@ import static org.junit.Assert.*;
  * primality testing and the Euclidean GCD algorithm. Some of these tests use a 
  * finite list of small primes and another finite list of non-prime numbers, as 
  * well as a small list of Fibonacci numbers.
- * <p>The relevant entries in Sloane's On-Line Encyclopedia of Integer Sequences 
- * (OEIS) are:</p>
+ * <p>The most relevant entries in Sloane's On-Line Encyclopedia of Integer 
+ * Sequences (OEIS) are:</p>
  * <ul>
  * <li><a href="http://oeis.org/A000040">A000040</a>: The prime numbers</li>
  * <li><a href="http://oeis.org/A000045">A000040</a>: The Fibonacci numbers</li>
@@ -58,33 +59,37 @@ import static org.junit.Assert.*;
 public class NumberTheoreticFunctionsCalculatorTest {
     
     /**
-     * setUpClass() will generate a List of the first few consecutive primes. 
-     * This constant determines how long that list will be. For example, if it's 
-     * 1000, setUpClass() will generate a list of the primes between 1 and 1000.
-     * It should not be greater than {@link Integer#MAX_VALUE}.
+     * {@link #setUpClass() setUpClass()} will generate a List of the first few 
+     * consecutive primes. This constant determines how long that list will be. 
+     * For example, if it's 1000, setUpClass() will generate a list of the 
+     * primes between 1 and 1000. It should not be greater than {@link 
+     * Integer#MAX_VALUE}.
      */
     public static final int PRIME_LIST_THRESHOLD = 1000;
     
     /**
      * A List of the first few prime numbers, to be used in some of the tests. 
-     * It will be populated during setUpClass().
+     * It will be populated during {@link #setUpClass() setUpClass()}.
      */
     private static List<Integer> primesList;
     
     /**
-     * The size of primesList, to be determined during setUpClass().
+     * The size of primesList, to be determined during {@link #setUpClass() 
+     * setUpClass()}. This value will be reported on the console before the 
+     * tests begin.
      */
     private static int primesListLength;
     
     /**
      * A List of composite numbers, which may or may not include 
      * {@link #PRIME_LIST_THRESHOLD PRIME_LIST_THRESHOLD}. It will be populated 
-     * during setUpClass().
+     * during {@link #setUpClass() setUpClass()}.
      */
     private static List<Integer> compositesList;
     
     /**
-     * A List of Fibonacci numbers. It will be populated during setUpClass().
+     * A List of Fibonacci numbers. It will be populated during {@link 
+     * #setUpClass() setUpClass()}.
      */
     private static List<Integer> fibonacciList;
     
@@ -92,8 +97,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * An array of what I'm calling, for lack of a better term, "Heegner 
      * companion primes." For each Heegner number <i>d</i>, the Heegner 
      * companion prime <i>p</i> is a number that is prime in <b>Z</b> and is 
-     * also prime in the ring of integers of <i>O</i><sub>&radic;<i>d</i></sub>. 
-     * This array will be populated during setUpClass().
+     * also prime in the ring of integers of 
+     * <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub>. This array will be 
+     * populated during setUpClass().
      */
     private static final int[] HEEGNER_COMPANION_PRIMES = new int[9];
     
@@ -112,7 +118,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         } else {
             threshold = PRIME_LIST_THRESHOLD;
         }
-        halfThreshold = threshold/2;
+        halfThreshold = threshold / 2;
         primesList = new ArrayList<>();
         primesList.add(2); // Add 2 as a special case
         boolean[] primeFlags = new boolean[halfThreshold];
@@ -210,6 +216,14 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * number, its factorization will be the same as that of <i>n</i>, but with 
      * a single &minus;1 at the beginning. This test does not set out any 
      * expectations for the factorization of 0.
+     * <p>There is also testing of the prime factorizations of a few quadratic 
+     * integers. Calling the prime factorization function on quadratic integers 
+     * from domains that are not unique factorization domains should always 
+     * trigger {@link NonUniqueFactorizationDomainException} even when those 
+     * numbers are the products of primes in those domains. Testing of {@link 
+     * NonUniqueFactorizationDomainException#tryToFactorizeAnyway()} should of 
+     * course occur in {@link 
+     * algebraics.NonUniqueFactorizationDomainExceptionTest}, not here.</p>
      */
     @Test
     public void testPrimeFactors() {
@@ -675,6 +689,42 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 }
                 assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
                 assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+            }
+        }
+    }
+    
+    /**
+     * Test of isIrreducible and isPrime, of class 
+     * NumberTheoreticFunctionsCalculator, simultaneously. In unique 
+     * factorization domains, all numbers that are said to be prime should also 
+     * be said to be irreducible, and vice-versa, with the exception of 0 and 
+     * units.
+     */
+    @Test
+    public void testIsPrimeIsIrreducibleSimult() {
+        QuadraticRing currRing;
+        QuadraticInteger currInt;
+        String assertionMessage;
+        for (int discrUFDIm : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D) {
+            currRing = new ImaginaryQuadraticRing(discrUFDIm);
+            for (int v = -3; v < 8; v++) {
+                for (int w = 2; w < 12; w++) {
+                    currInt = new ImaginaryQuadraticInteger(v, w, currRing);
+                    assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
+                    assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                }
+            }
+        }
+        for (int discrUFDRe : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+            currRing = new RealQuadraticRing(discrUFDRe);
+            for (int x = -3; x < 8; x++) {
+                for (int y = 1; y < 12; y++) {
+                    currInt = new RealQuadraticInteger(x, y, currRing);
+                    if (Math.abs(currInt.norm()) != 1) {
+                        assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
+                        assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                    }
+                }
             }
         }
     }
@@ -1198,19 +1248,181 @@ public class NumberTheoreticFunctionsCalculatorTest {
         QuadraticRing ring = new RealQuadraticRing(2);
         QuadraticInteger expResult = new RealQuadraticInteger(1, 1, ring);
         AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
         assertEquals(expResult, result);
         ring = new RealQuadraticRing(3);
         expResult = new RealQuadraticInteger(2, 1, ring);
         result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(21);
+        expResult = new RealQuadraticInteger(5, 1, ring, 2);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
         assertEquals(expResult, result);
         ring = new RealQuadraticRing(22);
         expResult = new RealQuadraticInteger(197, 42, ring);
         result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
         assertEquals(expResult, result);
         ring = new RealQuadraticRing(29);
         expResult = new RealQuadraticInteger(5, 1, ring, 2);
         result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
         assertEquals(expResult, result);
+        ring = new RealQuadraticRing(41);
+        expResult = new RealQuadraticInteger(32, 5, ring);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(70);
+        expResult = new RealQuadraticInteger(251, 30, ring);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(74);
+        expResult = new RealQuadraticInteger(43, 5, ring);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(97);
+        expResult = new RealQuadraticInteger(5604, 569, ring);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(210);
+        expResult = new RealQuadraticInteger(29, 2, ring);
+        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+        ring = new ImaginaryQuadraticRing(-5);
+        try {
+            result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " should have caused IllegalArgumentException, not given result " + result.toASCIIString() + ".";
+            fail(failMessage);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to get fundamental unit of " + ring.toASCIIString() + " correctly triggered IllegalArgumentException.");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
+            fail(failMessage);
+        }
+        ring = new IllDefinedQuadraticRing(12);
+        try {
+            result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " should have caused IllegalArgumentException, not given result " + result.toASCIIString() + ".";
+            fail(failMessage);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to get fundamental unit of " + ring.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
+            fail(failMessage);
+        }
+    }
+    
+    /**
+     * Test of fundamentalUnit method, of class 
+     * NumberTheoreticFunctionsCalculator. This test is specifically for the 
+     * specific case of <b>Z</b>[&radic;103], the fundamental unit of which is  
+     * a number with a value of approximately 455055.9999978. An implementation 
+     * of a brute force algorithm is likely to fail this test if it takes too 
+     * long, even if it would eventually come up with the right result.
+     */
+    @Ignore
+    @Test(timeout = 30000)
+    public void testFundamentalUnitZSqrt103() {
+        System.out.println("fundamentalUnit(Z[sqrt(103)])");
+        RealQuadraticRing ring = new RealQuadraticRing(103);
+        RealQuadraticInteger expResult = new RealQuadraticInteger(227528, 22419, ring);
+        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of placeInPrimarySector method, of class 
+     * NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testPlaceInPrimarySector() {
+        System.out.println("placeInPrimarySector");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(10, 3, ring);
+        QuadraticInteger otherSectorNumber = new ImaginaryQuadraticInteger(3, -10, ring);
+        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        otherSectorNumber = new ImaginaryQuadraticInteger(-10, -3, ring);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        otherSectorNumber = new ImaginaryQuadraticInteger(-3, 10, ring);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        ring = new ImaginaryQuadraticRing(-3);
+        expResult = new ImaginaryQuadraticInteger(7, 1, ring, 2);
+        otherSectorNumber = new ImaginaryQuadraticInteger(5, -3, ring, 2);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        otherSectorNumber = new ImaginaryQuadraticInteger(-1, -2, ring);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        otherSectorNumber = new ImaginaryQuadraticInteger(-7, -1, ring, 2);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        otherSectorNumber = new ImaginaryQuadraticInteger(-5, 3, ring, 2);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        otherSectorNumber = new ImaginaryQuadraticInteger(1, 2, ring);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(2);
+        expResult = new RealQuadraticInteger(3, 1, ring);
+        otherSectorNumber = new RealQuadraticInteger(-3, -1, ring);
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(0, 0, ring); // Zero
+        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(expResult);
+        assertEquals(expResult, result);
+        ring = new IllDefinedQuadraticRing(-55);
+        otherSectorNumber = new IllDefinedQuadraticInteger(-3, -1, ring);
+        try {
+            result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+            String failMessage = "Attempting to place in primary sector the number " + otherSectorNumber.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
+            fail(failMessage);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Attempting to place in primary sector the number " + otherSectorNumber.toString() + " correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        }
+    }
+    
+    /**
+     * Test of divideOutUnits method, of class 
+     * NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testDivideOutUnits() {
+        System.out.println("divideOutUnits");
+        QuadraticRing ring = new RealQuadraticRing(7);
+        QuadraticInteger expResult = new RealQuadraticInteger(3, 1, ring);
+        QuadraticInteger numWUnitFactors = new RealQuadraticInteger(182115, 68833, ring);
+        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
+        assertEquals(expResult, result);
+        numWUnitFactors = new RealQuadraticInteger(-11427, 4319, ring);
+        result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(0, 0, ring); // Zero
+        result = NumberTheoreticFunctionsCalculator.divideOutUnits(expResult);
+        assertEquals(expResult, result);
+        ring = new IllDefinedQuadraticRing(-55);
+        numWUnitFactors = new IllDefinedQuadraticInteger(-3, -1, ring);
+        try {
+            result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
+            String failMessage = "Attempting to divide units out of " + numWUnitFactors.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
+            fail(failMessage);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Attempting to divide units out of " + numWUnitFactors.toString() + " correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        }
     }
     
     /**
@@ -1232,15 +1444,22 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     /**
      * Test of fieldClassNumber method, of class 
-     * NumberTheoreticFunctionsCalculator.
+     * NumberTheoreticFunctionsCalculator. Five specific imaginary quadratic 
+     * rings and five specific real quadratic rings are tested for their known 
+     * class numbers. Then one random imaginary and one random real are tested 
+     * to make sure the reported class number is greater than 1. If this test 
+     * fails or causes an error on one of the randomly chosen rings, check the 
+     * result of the test of {@link 
+     * NumberTheoreticFunctionsCalculator#randomSquarefreeNumber(int) 
+     * randomSquarefreeNumber(int)}.
      */
     @Test
     public void testFieldClassNumber() {
         System.out.println("fieldClassNumber");
-        short expResult = 1;
+        int expResult = 1;
         QuadraticRing ring = new ImaginaryQuadraticRing(-1);
         String assertionMessage = ring.toString() + " should be found to have class number " + expResult;
-        short result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        int result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
         assertEquals(assertionMessage, expResult, result);
         ring = new RealQuadraticRing(2);
         assertionMessage = ring.toString() + " should be found to have class number " + expResult;
@@ -1273,6 +1492,36 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertionMessage = ring.toString() + " should be found to have class number " + expResult;
         result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
         assertEquals(assertionMessage, expResult, result);
+        expResult = 5;
+        ring = new ImaginaryQuadraticRing(-47);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        ring = new RealQuadraticRing(401);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        int randomD = -NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(1000);
+        if (randomD > -164) {
+            randomD = -165;
+        }
+        ring = new ImaginaryQuadraticRing(randomD);
+        assertionMessage = ring.toString() + " should be found to have class number greater than 1.";
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        System.out.println(ring.toASCIIString() + " is said to have class number " + result + ".");
+        assertTrue(assertionMessage, result > 1);
+        randomD = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(1000);
+        if ((randomD % 5) != 0) {
+            randomD *= 5; // Make sure it's divisible by 5
+        }
+        if (randomD == 5) {
+            randomD = 15; // But also make sure it's not 5 itself
+        }
+        ring = new RealQuadraticRing(randomD);
+        assertionMessage = ring.toString() + " should be found to have class number greater than 1.";
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        System.out.println(ring.toASCIIString() + " is said to have class number " + result + ".");
+        assertTrue(assertionMessage, result > 1);
     }
     
     /**
