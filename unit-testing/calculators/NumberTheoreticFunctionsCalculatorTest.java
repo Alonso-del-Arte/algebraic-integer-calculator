@@ -702,13 +702,14 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testIsPrimeIsIrreducibleSimult() {
+        System.out.println("isPrime, isIrreducible");
         QuadraticRing currRing;
         QuadraticInteger currInt;
         String assertionMessage;
         for (int discrUFDIm : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D) {
             currRing = new ImaginaryQuadraticRing(discrUFDIm);
             for (int v = -3; v < 8; v++) {
-                for (int w = 2; w < 12; w++) {
+                for (int w = 9; w < 12; w++) {
                     currInt = new ImaginaryQuadraticInteger(v, w, currRing);
                     assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
                     assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
@@ -718,9 +719,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
         for (int discrUFDRe : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
             currRing = new RealQuadraticRing(discrUFDRe);
             for (int x = -3; x < 8; x++) {
-                for (int y = 1; y < 12; y++) {
+                for (int y = 1; y < 5; y++) {
                     currInt = new RealQuadraticInteger(x, y, currRing);
-                    if (Math.abs(currInt.norm()) != 1) {
+                    if (Math.abs(currInt.norm()) == 1) {
+                        System.out.println("Skipping " + currInt.toASCIIString() + " for this test.");
+                    } else {
                         assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
                         assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
                     }
@@ -1057,6 +1060,14 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of euclideanGCD method, of class NumberTheoreticFunctionsCalculator.
      * At this time, I choose not to test the case gcd(0, 0). The value of such 
      * a test would be philosophical rather than practical.
+     * <p>The Euclidean GCD algorithm is also tested on a few norm-Euclidean 
+     * domains. In the case of a domain that is not Euclidean, {@link 
+     * algebraics.NonEuclideanDomainException} should be thrown even if it's 
+     * possible for the Euclidean algorithm to produce a result for the given 
+     * pair of numbers. Testing of {@link 
+     * algebraics.NonEuclideanDomainException#tryEuclideanGCDAnyway()} should of 
+     * course happen in {@link algebraics.NonEuclideanDomainExceptionTest}, not 
+     * here.</p>
      */
     @Test
     public void testEuclideanGCD() {
@@ -1240,7 +1251,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     /**
      * Test of fundamentalUnit method, of class 
-     * NumberTheoreticFunctionsCalculator.
+     * NumberTheoreticFunctionsCalculator. This is tested with just a few 
+     * specific real quadratic integer rings. This also checks that {@link 
+     * algebraics.UnsupportedNumberDomainException} is triggered for imaginary 
+     * quadratic integer rings as well as for domains that don't yet have 
+     * fleshed out support.
      */
     @Test
     public void testFundamentalUnit() {
@@ -1510,12 +1525,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
         result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
         System.out.println(ring.toASCIIString() + " is said to have class number " + result + ".");
         assertTrue(assertionMessage, result > 1);
-        randomD = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(1000);
+        randomD = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(20);
         if ((randomD % 5) != 0) {
             randomD *= 5; // Make sure it's divisible by 5
         }
-        if (randomD == 5) {
-            randomD = 15; // But also make sure it's not 5 itself
+        if (randomD == 5 || randomD == 10) {
+            randomD = 15; // But also make sure it's not 5 itself, nor 10 which was already tested
         }
         ring = new RealQuadraticRing(randomD);
         assertionMessage = ring.toString() + " should be found to have class number greater than 1.";
