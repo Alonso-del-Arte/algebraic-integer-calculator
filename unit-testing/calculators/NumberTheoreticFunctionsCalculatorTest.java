@@ -18,6 +18,7 @@ package calculators;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
+import algebraics.IntegerRing;
 import algebraics.NonEuclideanDomainException;
 import algebraics.NonUniqueFactorizationDomainException;
 import algebraics.NotDivisibleException;
@@ -1462,6 +1463,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
         expResult = new RealQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_ZPHI);
         result = NumberTheoreticFunctionsCalculator.getOneInRing(NumberTheoreticFunctionsCalculator.RING_ZPHI);
         assertEquals(expResult, result);
+        Zeta8Ring z8r = new Zeta8Ring();
+        Zeta8Integer expResDeg4 = new Zeta8Integer(1, 0, 0, 0);
+        result = NumberTheoreticFunctionsCalculator.getOneInRing(z8r);
+        assertEquals(expResDeg4, result);
     }
     
     /**
@@ -1473,17 +1478,24 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * fails or causes an error on one of the randomly chosen rings, check the 
      * result of the test of {@link 
      * NumberTheoreticFunctionsCalculator#randomSquarefreeNumber(int) 
-     * randomSquarefreeNumber(int)}.
+     * randomSquarefreeNumber(int)}. Lastly, a check of 
+     * <b>Z</b>[&radic;&minus;589], which in one early run of the test was said 
+     * to have class number -12 even though it very clearly should have a class 
+     * number of at least 3.
      */
     @Test
     public void testFieldClassNumber() {
         System.out.println("fieldClassNumber");
         int expResult = 1;
-        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
+        IntegerRing ring = new ImaginaryQuadraticRing(-1);
         String assertionMessage = ring.toString() + " should be found to have class number " + expResult;
         int result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
         assertEquals(assertionMessage, expResult, result);
         ring = new RealQuadraticRing(2);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
+        ring = new Zeta8Ring();
         assertionMessage = ring.toString() + " should be found to have class number " + expResult;
         result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
         assertEquals(assertionMessage, expResult, result);
@@ -1530,7 +1542,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         ring = new ImaginaryQuadraticRing(randomD);
         assertionMessage = ring.toString() + " should be found to have class number greater than 1.";
         result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
-        System.out.println(ring.toASCIIString() + " is said to have class number " + result + ".");
+        System.out.println(ring.toASCIIString() + ", which was chosen randomly, is said to have class number " + result + ".");
         assertTrue(assertionMessage, result > 1);
         randomD = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(20);
         if ((randomD % 5) != 0) {
@@ -1542,8 +1554,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
         ring = new RealQuadraticRing(randomD);
         assertionMessage = ring.toString() + " should be found to have class number greater than 1.";
         result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
-        System.out.println(ring.toASCIIString() + " is said to have class number " + result + ".");
+        System.out.println(ring.toASCIIString() + ", which was chosen randomly, is said to have class number " + result + ".");
         assertTrue(assertionMessage, result > 1);
+        expResult = 16;
+        ring = new ImaginaryQuadraticRing(-589);
+        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
+        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
+        assertEquals(assertionMessage, expResult, result);
     }
     
     /**
