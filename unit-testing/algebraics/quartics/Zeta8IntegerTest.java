@@ -34,6 +34,10 @@ import static org.junit.Assert.*;
  */
 public class Zeta8IntegerTest {
     
+    private static final Zeta8Integer ONE = new Zeta8Integer(1, 0, 0, 0);
+    
+    private static final Zeta8Integer NEG_ONE = new Zeta8Integer(-1, 0, 0, 0);
+    
     /**
      * The number &zeta;<sub>8</sub> = (&radic;2)/2 + (&radic;&minus;2)/2.
      */
@@ -125,6 +129,28 @@ public class Zeta8IntegerTest {
         result = SQRT_NEG_2.norm();
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of norm method, of class Zeta8Integer.
+     */
+    @Test
+    public void testAbs() {
+        System.out.println("abs");
+        double expResult = 1.0;
+        double result = ZETA_8.abs();
+        assertEquals(expResult, result, TEST_DELTA);
+        result = ZETA_8_CUBED.abs();
+        assertEquals(expResult, result, TEST_DELTA);
+        result = IMAG_UNIT_I.abs();
+        assertEquals(expResult, result, TEST_DELTA);
+        result = NEG_IMAG_UNIT_I.abs();
+        assertEquals(expResult, result, TEST_DELTA);
+        expResult = Math.sqrt(2);
+        result = SQRT_2.abs();
+        assertEquals(expResult, result, TEST_DELTA);
+        result = SQRT_NEG_2.abs();
+        assertEquals(expResult, result, TEST_DELTA);
+    }
 
     /**
      * Test of minPolynomial method, of class Zeta8Integer.
@@ -187,11 +213,25 @@ public class Zeta8IntegerTest {
         expResult = "-i";
         result = NEG_IMAG_UNIT_I.toString().replace(" ", "");
         assertEquals(expResult, result);
+        expResult = "1";
+        result = ONE.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "-1";
+        result = NEG_ONE.toString().replace(" ", "");
+        assertEquals(expResult, result);
         expResult = "\u03B6\u2088-(\u03B6\u2088)\u00B3";
         result = SQRT_2.toString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = "\u03B6\u2088+(\u03B6\u2088)\u00B3";
         result = SQRT_NEG_2.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        Zeta8Integer num = new Zeta8Integer(4, -3, 2, -1);
+        expResult = "4-3\u03B6\u2088+2i-(\u03B6\u2088)\u00B3";
+        result = num.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(-5, 0, -21, 3);
+        expResult = "-5-21i+3(\u03B6\u2088)\u00B3";
+        result = num.toString().replace(" ", "");
         assertEquals(expResult, result);
     }
 
@@ -213,11 +253,25 @@ public class Zeta8IntegerTest {
         expResult = "-i";
         result = NEG_IMAG_UNIT_I.toASCIIString().replace(" ", "");
         assertEquals(expResult, result);
+        expResult = "1";
+        result = ONE.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "-1";
+        result = NEG_ONE.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
         expResult = "zeta_8-(zeta_8)^3";
         result = SQRT_2.toASCIIString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = "zeta_8+(zeta_8)^3";
         result = SQRT_NEG_2.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
+        Zeta8Integer num = new Zeta8Integer(4, -3, 2, -1);
+        expResult = "4-3zeta_8+2i-(zeta_8)^3";
+        result = num.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(-5, 0, -21, 3);
+        expResult = "-5-21i+3(zeta_8)^3";
+        result = num.toASCIIString().replace(" ", "");
         assertEquals(expResult, result);
     }
 
@@ -239,11 +293,25 @@ public class Zeta8IntegerTest {
         expResult = "-i";
         result = NEG_IMAG_UNIT_I.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
+        expResult = "1";
+        result = ONE.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "-1";
+        result = NEG_ONE.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
         expResult = "\\zeta_8-(\\zeta_8)^3";
         result = SQRT_2.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = "\\zeta_8+(\\zeta_8)^3";
         result = SQRT_NEG_2.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
+        Zeta8Integer num = new Zeta8Integer(4, -3, 2, -1);
+        expResult = "4-3\\zeta_8+2i-(\\zeta_8)^3";
+        result = num.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(-5, 0, -21, 3);
+        expResult = "-5-21i+3(\\zeta_8)^3";
+        result = num.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
     }
 
@@ -253,16 +321,86 @@ public class Zeta8IntegerTest {
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        fail("The test case is a prototype.");
+        String expResult = "&zeta;<sub>8</sub>";
+        String result = ZETA_8.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "(&zeta;<sub>8</sub>)<sup>3</sup>";
+        result = ZETA_8_CUBED.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "<i>i</i>";
+        result = IMAG_UNIT_I.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "&minus;<i>i</i>";
+        result = NEG_IMAG_UNIT_I.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "1";
+        result = ONE.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "&minus;1";
+        result = NEG_ONE.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "&zeta;<sub>8</sub>&minus;(&zeta;<sub>8</sub>)<sup>3</sup>";
+        result = SQRT_2.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "&zeta;<sub>8</sub>+(&zeta;<sub>8</sub>)<sup>3</sup>";
+        result = SQRT_NEG_2.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        Zeta8Integer num = new Zeta8Integer(4, -3, 2, -1);
+        expResult = "4&minus;3&zeta;<sub>8</sub>+2<i>i</i>&minus;(&zeta;<sub>8</sub>)<sup>3</sup>";
+        result = num.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(-5, 0, -21, 3);
+        expResult = "&minus;5&minus;21<i>i</i>+3(&zeta;<sub>8</sub>)<sup>3</sup>";
+        result = num.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
     }
 
     /**
-     * Test of hashCode method, of class Zeta8Integer.
+     * Test of hashCode method, of class Zeta8Integer. This checks that 
+     * different numbers hash differently. It is not guaranteed that distinct 
+     * numbers will always get distinct hash codes, but it is expected that 
+     * distinct numbers with equal or close to equal norms will get distinct 
+     * hash codes.
      */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        fail("The test case is a prototype.");
+        System.out.println(ZETA_8.toASCIIString() + " hashed as " + ZETA_8.hashCode());
+        System.out.println(ZETA_8_CUBED.toASCIIString() + " hashed as " + ZETA_8_CUBED.hashCode());
+        System.out.println(IMAG_UNIT_I.toASCIIString() + " hashed as " + IMAG_UNIT_I.hashCode());
+        System.out.println(NEG_IMAG_UNIT_I.toASCIIString() + " hashed as " + NEG_IMAG_UNIT_I.hashCode());
+        System.out.println(ONE.toASCIIString() + " hashed as " + ONE.hashCode());
+        System.out.println(NEG_ONE.toASCIIString() + " hashed as " + NEG_ONE.hashCode());
+        System.out.println(SQRT_2.toASCIIString() + " hashed as " + SQRT_2.hashCode());
+        System.out.println(SQRT_NEG_2.toASCIIString() + " hashed as " + SQRT_NEG_2.hashCode());
+        assertNotEquals(ONE.hashCode(), NEG_ONE.hashCode());
+        assertNotEquals(ONE.hashCode(), ZETA_8.hashCode());
+        assertNotEquals(ONE.hashCode(), ZETA_8_CUBED.hashCode());
+        assertNotEquals(ONE.hashCode(), IMAG_UNIT_I.hashCode());
+        assertNotEquals(ONE.hashCode(), NEG_IMAG_UNIT_I.hashCode());
+        assertNotEquals(ONE.hashCode(), SQRT_2.hashCode());
+        assertNotEquals(ONE.hashCode(), SQRT_NEG_2.hashCode());
+        assertNotEquals(NEG_ONE.hashCode(), ZETA_8.hashCode());
+        assertNotEquals(NEG_ONE.hashCode(), ZETA_8_CUBED.hashCode());
+        assertNotEquals(NEG_ONE.hashCode(), IMAG_UNIT_I.hashCode());
+        assertNotEquals(NEG_ONE.hashCode(), NEG_IMAG_UNIT_I.hashCode());
+        assertNotEquals(NEG_ONE.hashCode(), SQRT_2.hashCode());
+        assertNotEquals(NEG_ONE.hashCode(), SQRT_NEG_2.hashCode());
+        assertNotEquals(ZETA_8.hashCode(), ZETA_8_CUBED.hashCode());
+        assertNotEquals(ZETA_8.hashCode(), IMAG_UNIT_I.hashCode());
+        assertNotEquals(ZETA_8.hashCode(), NEG_IMAG_UNIT_I.hashCode());
+        assertNotEquals(ZETA_8.hashCode(), SQRT_2.hashCode());
+        assertNotEquals(ZETA_8.hashCode(), SQRT_NEG_2.hashCode());
+        assertNotEquals(ZETA_8_CUBED.hashCode(), IMAG_UNIT_I.hashCode());
+        assertNotEquals(ZETA_8_CUBED.hashCode(), NEG_IMAG_UNIT_I.hashCode());
+        assertNotEquals(ZETA_8_CUBED.hashCode(), SQRT_2.hashCode());
+        assertNotEquals(ZETA_8_CUBED.hashCode(), SQRT_NEG_2.hashCode());
+        assertNotEquals(IMAG_UNIT_I.hashCode(), NEG_IMAG_UNIT_I.hashCode());
+        assertNotEquals(IMAG_UNIT_I.hashCode(), SQRT_2.hashCode());
+        assertNotEquals(IMAG_UNIT_I.hashCode(), SQRT_NEG_2.hashCode());
+        assertNotEquals(NEG_IMAG_UNIT_I.hashCode(), SQRT_2.hashCode());
+        assertNotEquals(NEG_IMAG_UNIT_I.hashCode(), SQRT_NEG_2.hashCode());
+        assertNotEquals(SQRT_2.hashCode(), SQRT_NEG_2.hashCode());
     }
 
     /**
@@ -271,7 +409,48 @@ public class Zeta8IntegerTest {
     @Test
     public void testEquals() {
         System.out.println("equals");
-        fail("The test case is a prototype.");
+        Zeta8Integer sameNum = new Zeta8Integer(0, 1, 0, 0);
+        Zeta8Integer diffNum = new Zeta8Integer(1, 0, 0, 0);
+        assertEquals(sameNum, sameNum);
+        assertNotEquals(sameNum, diffNum);
+        assertEquals(ZETA_8, ZETA_8);
+        assertEquals(ZETA_8, sameNum);
+        assertNotEquals(ZETA_8, diffNum);
+        sameNum = new Zeta8Integer(0, 0, 0, 1);
+        diffNum = new Zeta8Integer(0, 0, 7, -4);
+        assertEquals(sameNum, sameNum);
+        assertNotEquals(sameNum, diffNum);
+        assertEquals(ZETA_8_CUBED, ZETA_8_CUBED);
+        assertEquals(ZETA_8_CUBED, sameNum);
+        assertNotEquals(ZETA_8_CUBED, diffNum);
+        sameNum = new Zeta8Integer(0, 0, 1, 0);
+        diffNum = new Zeta8Integer(0, 2, 0, 0);
+        assertEquals(sameNum, sameNum);
+        assertNotEquals(sameNum, diffNum);
+        assertEquals(IMAG_UNIT_I, IMAG_UNIT_I);
+        assertEquals(IMAG_UNIT_I, sameNum);
+        assertNotEquals(IMAG_UNIT_I, diffNum);
+        sameNum = new Zeta8Integer(0, 0, -1, 0);
+        diffNum = new Zeta8Integer(0, -2, 0, 0);
+        assertEquals(sameNum, sameNum);
+        assertNotEquals(sameNum, diffNum);
+        assertEquals(NEG_IMAG_UNIT_I, NEG_IMAG_UNIT_I);
+        assertEquals(NEG_IMAG_UNIT_I, sameNum);
+        assertNotEquals(NEG_IMAG_UNIT_I, diffNum);
+        sameNum = new Zeta8Integer(0, 1, 0, -1);
+        diffNum = new Zeta8Integer(0, 0, 3, 0);
+        assertEquals(sameNum, sameNum);
+        assertNotEquals(sameNum, diffNum);
+        assertEquals(SQRT_2, SQRT_2);
+        assertEquals(SQRT_2, sameNum);
+        assertNotEquals(SQRT_2, diffNum);
+        sameNum = new Zeta8Integer(0, 1, 0, 1);
+        diffNum = new Zeta8Integer(0, 0, -3, 0);
+        assertEquals(sameNum, sameNum);
+        assertNotEquals(sameNum, diffNum);
+        assertEquals(SQRT_NEG_2, SQRT_NEG_2);
+        assertEquals(SQRT_NEG_2, sameNum);
+        assertNotEquals(SQRT_NEG_2, diffNum);
     }
 
     /**
@@ -315,7 +494,16 @@ public class Zeta8IntegerTest {
     @Test
     public void testDivides() {
         System.out.println("divides");
-        fail("The test case is a prototype.");
+        Zeta8Integer result = SQRT_NEG_2.divides(SQRT_2);
+        assertEquals(IMAG_UNIT_I, result);
+        result = SQRT_NEG_2.divides(IMAG_UNIT_I);
+        assertEquals(SQRT_2, result);
+        Zeta8Integer dividend = new Zeta8Integer(1, 0, 1, 0); // 1 + i
+        result = dividend.divides(SQRT_2);
+        assertEquals(ZETA_8, result);
+        dividend = new Zeta8Integer(-1, 0, 1, 0); // -1 + i
+        result = dividend.divides(SQRT_NEG_2);
+        assertEquals(ZETA_8, result);
     }
 
     /**
@@ -435,6 +623,15 @@ public class Zeta8IntegerTest {
         expResult *= -1;
         result = NEG_IMAG_UNIT_I.getImagPartNumeric();
         assertEquals(expResult, result, TEST_DELTA);
+    }
+    
+    /**
+     * Test of getImagPartNumeric method, of class Zeta8Integer.
+     */
+    @Test
+    public void testAngle() {
+        System.out.println("angle");
+        fail("Haven't written test yet.");
     }
     
 }
