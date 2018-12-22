@@ -66,9 +66,11 @@ public class NotDivisibleExceptionTest {
     public static void setUpClass() {
         QuadraticRing currRing = new ImaginaryQuadraticRing(-1);
         String initMsg = "Initialization state, not the result of an actually thrown exception.";
+        ImaginaryQuadraticInteger initDividend = new ImaginaryQuadraticInteger(0, 0, currRing);
+        ImaginaryQuadraticInteger initDivisor = new ImaginaryQuadraticInteger(1, 0, currRing);
         long[] initNumers = {0L, 0L};
         long[] initDenoms = {1L, 1L};
-        notDivGaussian = new NotDivisibleException(initMsg, initNumers, initDenoms, currRing);
+        notDivGaussian = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
         QuadraticInteger dividend = new ImaginaryQuadraticInteger(5, 1, currRing);
         QuadraticInteger divisor = new ImaginaryQuadraticInteger(3, 1, currRing);
         QuadraticInteger division;
@@ -83,7 +85,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Gaussian integers example has this message: \"" + notDivGaussian.getMessage() + "\"");
         currRing = new ImaginaryQuadraticRing(-3);
-        notDivEisenstein = new NotDivisibleException(initMsg, initNumers, initDenoms, currRing);
+        notDivEisenstein = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
         dividend = new ImaginaryQuadraticInteger(61, 0, currRing);
         divisor = new ImaginaryQuadraticInteger(1, 9, currRing);
         try {
@@ -96,7 +98,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Eisenstein integers example has this message: \"" + notDivEisenstein.getMessage() + "\"");
         currRing = new RealQuadraticRing(2);
-        notDivZ2 = new NotDivisibleException(initMsg, initNumers, initDenoms, currRing);
+        notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
         dividend = new RealQuadraticInteger(-3, 8, currRing);
         divisor = new RealQuadraticInteger(7, 0, currRing);
         try {
@@ -109,7 +111,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Z[sqrt(2)] example has this message: \"" + notDivZ2.getMessage() + "\"");
         currRing = new RealQuadraticRing(5);
-        notDivZPhi = new NotDivisibleException(initMsg, initNumers, initDenoms, currRing);
+        notDivZPhi = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
         dividend = new RealQuadraticInteger(0, 1, currRing);
         divisor = new RealQuadraticInteger(15, -3, currRing, 2);
         try {
@@ -348,8 +350,10 @@ public class NotDivisibleExceptionTest {
         long[] mismatchLenNumers = {0L, 1L, 2L, 3L};
         long[] mismatchLenDenoms = {1L, 2L, 3L, 4L, 5L};
         QuadraticRing ring = new RealQuadraticRing(19);
+        RealQuadraticInteger initDividend = new RealQuadraticInteger(0, 0, ring);
+        RealQuadraticInteger initDivisor = new RealQuadraticInteger(1, 0, ring);
         try {
-            throw new NotDivisibleException(exceptionMessage, mismatchLenNumers, mismatchLenDenoms, ring);
+            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, mismatchLenNumers, mismatchLenDenoms, ring);
         } catch (NotDivisibleException nde) {
             String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
             fail(failMessage);
@@ -364,7 +368,7 @@ public class NotDivisibleExceptionTest {
         long[] wrongLenNumers = {0L, 1L, 3L};
         long[] wrongLenDenoms = {2L, 2L, 2L};
         try {
-            throw new NotDivisibleException(exceptionMessage, wrongLenNumers, wrongLenDenoms, ring);
+            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongLenNumers, wrongLenDenoms, ring);
         } catch (NotDivisibleException nde) {
             String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
             fail(failMessage);
@@ -379,7 +383,7 @@ public class NotDivisibleExceptionTest {
         long[] wrongElemNumers = {1L, 3L};
         long[] wrongElemDenoms = {0L, 2L};
         try {
-            throw new NotDivisibleException(exceptionMessage, wrongElemNumers, wrongElemDenoms, ring);
+            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongElemNumers, wrongElemDenoms, ring);
         } catch (NotDivisibleException nde) {
             String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
             fail(failMessage);

@@ -70,7 +70,7 @@ public class UnsupportedNumberDomainExceptionTest {
         System.out.println("UnsupportedNumberDomainException for the 2-number example has this message: \"" + unsNumDomExcTwoNums.getMessage() + "\"");
         long[] numers = {442L, 6L};
         long[] denoms = {881L, 881L};
-        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", numers, denoms, r);
+        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", a, b, numers, denoms, r);
         try {
             AlgebraicInteger num = notDivExc.roundTowardsZero();
             System.out.println("(442 + 6sqrt(-220))/881 rounded down to " + num.toASCIIString());
