@@ -41,10 +41,13 @@ import algebraics.quadratics.RealQuadraticRing;
  */
 public class NotDivisibleException extends Exception {
     
-    private static final long serialVersionUID = 1058395247;
+    private static final long serialVersionUID = 1058430235;
     
     private final long[] numers;
     private final long[] denoms;
+    
+    private final AlgebraicInteger dividend;
+    private final AlgebraicInteger divisor;
     
     private final IntegerRing initRing;
     
@@ -301,7 +304,13 @@ public class NotDivisibleException extends Exception {
      * an algebraic number of degree 4, perhaps AlgebraicDegreeOverflowException 
      * should be thrown instead. And if there is an attempt to divide by 0, the 
      * appropriate exception to throw would perhaps be IllegalArgumentException.
-     * @param message A message to pass on to the Exception constructor.
+     * @param message A message to pass on to the {@link Exception} constructor.
+     * @param dividend The algebraic integer that is not divisible by the 
+     * divisor. This one must be given first because the constructor has no 
+     * other way to know that this is the dividend.
+     * @param divisor The algebraic integer by which the dividend is not 
+     * divisible. This one must be given second for the same reason the dividend 
+     * must be given first.
      * @param numerators An array of numerators.
      * @param denominators An array of denominators. It should be the same 
      * length as the array of numerators. May contain negative numbers but it 
@@ -315,7 +324,7 @@ public class NotDivisibleException extends Exception {
      * passing two arrays with fourteen numbers each for a cubic ring); any of 
      * the denominators is equal to 0.
      */
-    public NotDivisibleException(String message, long[] numerators, long[] denominators, IntegerRing ring) {
+    public NotDivisibleException(String message, AlgebraicInteger dividend, AlgebraicInteger divisor, long[] numerators, long[] denominators, IntegerRing ring) {
         super(message);
         if (numerators.length != denominators.length) {
             String exceptionMessage = "Array of numerators has " + numerators.length + " numbers but array of denominators has " + denominators.length + " numbers.";
@@ -343,6 +352,8 @@ public class NotDivisibleException extends Exception {
         }
         this.numericRealPart = numRe;
         this.numericImagPart = numIm;
+        this.dividend = dividend;
+        this.divisor = divisor;
         this.initRing = ring;
     }
 }
