@@ -1023,6 +1023,35 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isSquareFree(number));
         }
     }
+    
+    @Test
+    public void testKernel() {
+        System.out.println("kernel");
+        int currPrime, currNum, expResult, result;
+        String assertionMessage;
+        for (int i = 1; i < primesListLength; i++) {
+            currPrime = primesList.get(i); // Get p
+            currNum = currPrime;
+            expResult = currPrime;
+            result = NumberTheoreticFunctionsCalculator.kernel(currNum);
+            assertionMessage = "Kernel of " + currNum + " should be found to be " + currNum + " itself.";
+            assertEquals(assertionMessage, expResult, result);
+            currNum *= currPrime; // p^2, expResult stays the same
+            result = NumberTheoreticFunctionsCalculator.kernel(currNum);
+            assertionMessage = "Kernel of " + currNum + " should be found to be " + currPrime + ".";
+            assertEquals(assertionMessage, expResult, result);
+            currPrime = -primesList.get(i - 1); // Get q, a negative prime
+            currNum *= currPrime; // p^2 q
+            expResult *= currPrime; // pq
+            result = NumberTheoreticFunctionsCalculator.kernel(currNum);
+            assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
+            assertEquals(assertionMessage, expResult, result);
+            currNum *= currPrime; // p^2 q^2, expResult stays the same
+            result = NumberTheoreticFunctionsCalculator.kernel(currNum);
+            assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
+            assertEquals(assertionMessage, expResult, result);
+        }
+    }
 
     /**
      * Test of moebiusMu method, of class NumberTheoreticFunctionsCalculator. I 
