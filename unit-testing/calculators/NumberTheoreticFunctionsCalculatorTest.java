@@ -1064,7 +1064,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
             assertEquals(assertionMessage, expResult, result);
             currIndex++;
-        } while (currIndex < primesListLength && currPrime < 73);
+        } while (currIndex < primesListLength && currPrime > -71);
     }
 
     /**
