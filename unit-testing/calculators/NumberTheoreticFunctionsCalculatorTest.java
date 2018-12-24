@@ -1025,15 +1025,19 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Test of kernel method, of class NumberTheoreticFunctionsCalculator.
+     * Test of kernel method, of class NumberTheoreticFunctionsCalculator. This 
+     * checks the kernel function with numbers that are the product of two 
+     * distinct primes as well as with numbers that are the product of powers of 
+     * primes.
      */
     @Test
     public void testKernel() {
         System.out.println("kernel");
         int currPrime, currNum, expResult, result;
         String assertionMessage;
-        for (int i = 1; i < primesListLength; i++) {
-            currPrime = primesList.get(i); // Get p
+        int currIndex = 1;
+        do {
+            currPrime = primesList.get(currIndex); // Get p
             currNum = currPrime;
             expResult = currPrime;
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
@@ -1043,7 +1047,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
             assertionMessage = "Kernel of " + currNum + " should be found to be " + currPrime + ".";
             assertEquals(assertionMessage, expResult, result);
-            currPrime = -primesList.get(i - 1); // Get q, a negative prime
+            currPrime = -primesList.get(currIndex - 1); // Get q, a negative prime
             currNum *= currPrime; // p^2 q, which is negative
             expResult *= currPrime; // pq, which is also negative
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
@@ -1059,7 +1063,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
             assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
             assertEquals(assertionMessage, expResult, result);
-        }
+            currIndex++;
+        } while (currIndex < primesListLength && currPrime < 73);
     }
 
     /**
