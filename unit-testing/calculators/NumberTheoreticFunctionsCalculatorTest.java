@@ -1024,6 +1024,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    /**
+     * Test of kernel method, of class NumberTheoreticFunctionsCalculator.
+     */
     @Test
     public void testKernel() {
         System.out.println("kernel");
@@ -1041,12 +1044,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertionMessage = "Kernel of " + currNum + " should be found to be " + currPrime + ".";
             assertEquals(assertionMessage, expResult, result);
             currPrime = -primesList.get(i - 1); // Get q, a negative prime
-            currNum *= currPrime; // p^2 q
-            expResult *= currPrime; // pq
+            currNum *= currPrime; // p^2 q, which is negative
+            expResult *= currPrime; // pq, which is also negative
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
             assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
             assertEquals(assertionMessage, expResult, result);
-            currNum *= currPrime; // p^2 q^2, expResult stays the same
+            currNum *= currPrime; // p^2 q^2, which is positive
+            expResult *= -1; // -pq, which is also positive
+            result = NumberTheoreticFunctionsCalculator.kernel(currNum);
+            assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
+            assertEquals(assertionMessage, expResult, result);
+            currNum *= currPrime; // p^2 q^3, which is negative
+            expResult *= -1; // Back to pq, which is negative
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
             assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
             assertEquals(assertionMessage, expResult, result);
