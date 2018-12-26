@@ -211,6 +211,43 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
+     * Test of sortListAlgebraicIntegersByNorm method, of class 
+     * NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testSortListAlgebraicIntegersByNorm() {
+        System.out.println("sortListAlgebraicIntegersByNorm");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-7);
+        QuadraticInteger numberA = new ImaginaryQuadraticInteger(1, 0, ring); // Unit
+        QuadraticInteger numberB = new ImaginaryQuadraticInteger(-1, 1, ring, 2); // -1/2 + sqrt(-7)/2, norm 2
+        QuadraticInteger numberC = new ImaginaryQuadraticInteger(1, 2, ring); // 1 + 2sqrt(-7), norm 29
+        List<AlgebraicInteger> expResult = new ArrayList<>();
+        expResult.add(numberA);
+        expResult.add(numberB);
+        expResult.add(numberC);
+        List<AlgebraicInteger> unsortedList = new ArrayList<>();
+        unsortedList.add(numberC);
+        unsortedList.add(numberA);
+        unsortedList.add(numberB);
+        List<AlgebraicInteger> result = NumberTheoreticFunctionsCalculator.sortListAlgebraicIntegersByNorm(unsortedList);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(7);
+        numberA = new RealQuadraticInteger(8, 3, ring); // Unit
+        numberB = new RealQuadraticInteger(3, -1, ring); // 3 - sqrt(-7), norm 2
+        numberC = new RealQuadraticInteger(18, 7, ring); // 18 + 7sqrt(7), norm -19
+        expResult.clear();
+        expResult.add(numberA);
+        expResult.add(numberB);
+        expResult.add(numberC);
+        unsortedList.clear();
+        unsortedList.add(numberC);
+        unsortedList.add(numberA);
+        unsortedList.add(numberB);
+        result = NumberTheoreticFunctionsCalculator.sortListAlgebraicIntegersByNorm(unsortedList);
+        assertEquals(expResult, result);
+    }
+    
+    /**
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
      * This test uses squares of primorials (4, 36, 900, 44100, etc.) and 
      * certain divisors of those numbers. This test also checks the 
@@ -980,7 +1017,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
         assertionMessage = b.toString() + " should not be found to be divisible by " + a.toString() + ".";
         assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
-        r = new ImaginaryQuadraticRing(-7);
+        a = new RealQuadraticInteger(7, 1, r);
+        r = new ImaginaryQuadraticRing(-7); // Making sure a and b are from different rings now
         b = new ImaginaryQuadraticInteger(0, 1, r);
         try {
             boolean divisibleFlag = NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b);
@@ -991,7 +1029,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             failMessage = failMessage + " divisible.";
             fail(failMessage);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            System.out.println("Trying to ascertain the divisibility of " + a.toString() + " by " + b.toString() + " correctly triggered AlgebraicDegreeOverflowException.");
+            System.out.println("Trying to ascertain the divisibility of " + a.toASCIIString() + " by " + b.toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException.");
             System.out.println("\"" + adoe.getMessage() + "\"");
         } catch (Exception e) {
             String failMessage = "Trying to ascertain the divisibility of " + a.toString() + " by " + b.toString() + " should have caused AlgebraicDegreeOverflowException, not " + e.getClass().getName() + ".";
@@ -1028,7 +1066,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of kernel method, of class NumberTheoreticFunctionsCalculator. This 
      * checks the kernel function with numbers that are the product of two 
      * distinct primes as well as with numbers that are the product of powers of 
-     * primes.
+     * primes. For now there is no testing of 0 as an input.
      */
     @Test
     public void testKernel() {
@@ -1066,7 +1104,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             currIndex++;
         } while (currIndex < primesListLength && currPrime > -71);
     }
-
+    
     /**
      * Test of moebiusMu method, of class NumberTheoreticFunctionsCalculator. I 
      * expect that &mu;(&minus;<i>n</i>) = &mu;(<i>n</i>), so this test checks 
@@ -1486,7 +1524,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMessage = "Attempting to divide units out of " + numWUnitFactors.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
             fail(failMessage);
         } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Attempting to divide units out of " + numWUnitFactors.toString() + " correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("Attempting to divide units out of " + numWUnitFactors.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
             System.out.println("\"" + unde.getMessage() + "\"");
         }
     }
