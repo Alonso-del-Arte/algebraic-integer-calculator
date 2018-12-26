@@ -229,7 +229,8 @@ public class QuadraticIntegerTest {
      * Test of times method of class QuadraticInteger. Testing that multiplying 
      * quadratic integers from different domains gives the correct result, when 
      * the radicands of the generating square roots have nontrivial factors in 
-     * common. For example, &radic;&minus;2 &times; &radic;&minus;10 = &minus;2&radic;
+     * common. For example, &radic;&minus;2 &times; &radic;&minus;10 = 
+     * &minus;2&radic;5.
      */
     @Test
     public void testTimesCrossDomainRamification() {
@@ -286,7 +287,7 @@ public class QuadraticIntegerTest {
      * Test of times method of class QuadraticInteger. Testing that multiplying 
      * two purely imaginary quadratic integers results in the appropriate real 
      * quadratic integer with no rational part. For example, &radic;&minus;2 
-     * &times; &radic;&minus;5 = &radic;10.
+     * &times; &radic;&minus;5 = &minus;&radic;10.
      */
     @Test
     public void testTimesCrossDomainResult() {
@@ -296,7 +297,7 @@ public class QuadraticIntegerTest {
         ImaginaryQuadraticRing multiplicandBRing = new ImaginaryQuadraticRing(-5);
         ImaginaryQuadraticInteger multiplicandB = new ImaginaryQuadraticInteger(0, 1, multiplicandBRing);
         RealQuadraticRing expResultRing = new RealQuadraticRing(10);
-        RealQuadraticInteger expResult = new RealQuadraticInteger(0, 1, expResultRing);
+        RealQuadraticInteger expResult = new RealQuadraticInteger(0, -1, expResultRing);
         QuadraticInteger result;
         try {
             result = multiplicandA.times(multiplicandB);
