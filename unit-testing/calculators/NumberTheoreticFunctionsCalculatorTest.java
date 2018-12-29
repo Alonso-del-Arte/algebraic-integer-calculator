@@ -35,8 +35,10 @@ import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
 import static algebraics.quadratics.ImaginaryQuadraticRingTest.TEST_DELTA;
 
-import java.util.List;
+
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -264,6 +266,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * NonUniqueFactorizationDomainException#tryToFactorizeAnyway()} should of 
      * course occur in {@link 
      * algebraics.NonUniqueFactorizationDomainExceptionTest}, not here.</p>
+     * <p>Generally factors of numbers in quadratic integer rings should be 
+     * given in order by norm. However, this is not required by these tests, 
+     * which in some cases use sets rather than lists to make sure the returned 
+     * factors are the expected factors, without regard for ordering.</p>
+     * <p>For factorization in <b>Z</b>, it is a reasonable expectation that the 
+     * factors be in ascending order, so the expected result is constructed as a 
+     * list, not a set.</p>
      */
     @Test
     public void testPrimeFactors() {
@@ -347,7 +356,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     assertTrue(assertionMessage, facLen > 1);
                 }
             }
-            // Lastly, to look at some consecutive algebraic integers
+            // Next, to look at some consecutive algebraic integers
             int expFacLen;
             for (int a = -4; a < 6; a++) {
                 for (int b = 3; b > -2; b--) {
@@ -394,6 +403,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
         System.out.println("primeFactors(RealQuadraticInteger)");
         RealQuadraticInteger ramifier, ramified;
         List<AlgebraicInteger> expFactorsList;
+        int splitter, splitPrimeNorm;
+        RealQuadraticInteger splitPrime;
+        HashSet<AlgebraicInteger> expFactorsSet, factorsSet;
         for (int discrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
             r = new RealQuadraticRing(discrR);
             ramifier = new RealQuadraticInteger(0, 1, r);
@@ -420,6 +432,50 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have at least four factors.";
                     assertTrue(assertionMessage, facLen > 3);
                 }
+            } catch (NonUniqueFactorizationDomainException nufde) {
+                fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+            }
+            /* For this next test, we need a prime that splits, not ramifies, in 
+               each of the real quadratic rings that are norm-Euclidean */
+            if (r.hasHalfIntegers()) {
+                if (discrR == 5) {
+                    splitPrimeNorm = 11;
+                    splitPrime = new RealQuadraticInteger(7, 1, r, 2);
+                    expFactorsSet = new HashSet<>();
+                    expFactorsSet.add(splitPrime.conjugate());
+                    expFactorsSet.add(splitPrime);
+                } else {
+                    splitter = -1;
+                    do {
+                        splitter += 2;
+                        splitPrimeNorm = (splitter * splitter - discrR)/4;
+                    } while (!NumberTheoreticFunctionsCalculator.isPrime(splitPrimeNorm));
+                    splitPrime = new RealQuadraticInteger(splitter, 1, r, 2);
+                    expFactorsSet = new HashSet<>();
+                    expFactorsSet.add(splitPrime.conjugate());
+                    expFactorsSet.add(splitPrime);
+                }
+            } else {
+                splitter = -1;
+                if (discrR % 2 == 1) {
+                    splitter++;
+                }
+                do {
+                    splitter += 2;
+                    splitPrimeNorm = splitter * splitter - discrR;
+                } while (!NumberTheoreticFunctionsCalculator.isPrime(splitPrimeNorm));
+                splitPrime = new RealQuadraticInteger(splitter, 1, r);
+                expFactorsSet = new HashSet<>();
+                expFactorsSet.add(splitPrime.conjugate());
+                expFactorsSet.add(splitPrime);
+            }
+            System.out.println(splitPrimeNorm + " = (" + splitPrime.conjugate().toASCIIString() + ") \u00D7 (" + splitPrime.toASCIIString() + ")");
+            z = new RealQuadraticInteger(splitPrimeNorm, 0, r);
+            try {
+                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+                factorsSet = new HashSet(factorsList);
+                assertionMessage = "Factorization of " + splitPrimeNorm + " in " + r.toString() + " should be " + splitPrime.toString() + " times its conjugate";
+                assertEquals(assertionMessage, expFactorsSet, factorsSet);
             } catch (NonUniqueFactorizationDomainException nufde) {
                 fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
             }
