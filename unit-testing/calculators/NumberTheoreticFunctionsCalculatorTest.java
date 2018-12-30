@@ -437,6 +437,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
             /* For this next test, we need a prime that splits, not ramifies, in 
                each of the real quadratic rings that are norm-Euclidean */
+            splitter = -1;
             if (r.hasHalfIntegers()) {
                 if (discrR == 5) {
                     splitPrimeNorm = 11;
@@ -445,7 +446,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     expFactorsSet.add(splitPrime.conjugate());
                     expFactorsSet.add(splitPrime);
                 } else {
-                    splitter = -1;
                     do {
                         splitter += 2;
                         splitPrimeNorm = (splitter * splitter - discrR)/4;
@@ -456,7 +456,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     expFactorsSet.add(splitPrime);
                 }
             } else {
-                splitter = -1;
                 if (discrR % 2 == 1) {
                     splitter++;
                 }
@@ -548,7 +547,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertionMessage = "-(2^31) + 11 should not be found to be prime.";
         assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(castNum));
         // That does it for testing isPrime in the context of Z.
-        System.out.println("isPrime(ImaginaryQuadraticInteger)");
+        System.out.println("isPrime(QuadraticInteger)");
         ImaginaryQuadraticRing ufdRing;
         ImaginaryQuadraticInteger numberFromUFD;
         for (int d = 0; d < NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS.length; d++) {
@@ -822,6 +821,20 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     } else {
                         assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
                         assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                    }
+                }
+            }
+        }
+        for (int discrR = 10; discrR < 200; discrR += 5) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrR)) {
+                currRing = new RealQuadraticRing(discrR);
+                for (int p = 3; p < 20; p += 2) {
+                    if (NumberTheoreticFunctionsCalculator.isPrime(p)) {
+                        currInt = new RealQuadraticInteger(p, 0, currRing);
+                        if (NumberTheoreticFunctionsCalculator.isPrime(currInt)) {
+                            assertionMessage = "Since " + p + " is said to be prime in " + currRing.toString() + ", it should also be said to be irreducible.";
+                            assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                        }
                     }
                 }
             }
@@ -1550,7 +1563,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMessage = "Attempting to place in primary sector the number " + otherSectorNumber.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
             fail(failMessage);
         } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Attempting to place in primary sector the number " + otherSectorNumber.toString() + " correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("Attempting to place in primary sector the number " + otherSectorNumber.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
             System.out.println("\"" + unde.getMessage() + "\"");
         }
     }
