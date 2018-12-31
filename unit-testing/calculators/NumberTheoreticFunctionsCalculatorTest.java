@@ -399,7 +399,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
             System.out.println();
         }
-        // Lastly, to test primeFactors() on real quadratic integers
+        // Now to test primeFactors() on real quadratic integers
         System.out.println("primeFactors(RealQuadraticInteger)");
         RealQuadraticInteger ramifier, ramified;
         List<AlgebraicInteger> expFactorsList;
@@ -472,12 +472,29 @@ public class NumberTheoreticFunctionsCalculatorTest {
             z = new RealQuadraticInteger(splitPrimeNorm, 0, r);
             try {
                 factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+                assertionMessage = "Factorization of " + splitPrimeNorm + " in " + r.toString() + " should consist of two exactly prime factors";
+                assertEquals(assertionMessage, 2, factorsList.size());
                 factorsSet = new HashSet(factorsList);
                 assertionMessage = "Factorization of " + splitPrimeNorm + " in " + r.toString() + " should be " + splitPrime.toString() + " times its conjugate";
                 assertEquals(assertionMessage, expFactorsSet, factorsSet);
             } catch (NonUniqueFactorizationDomainException nufde) {
                 fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
             }
+        }
+        /* And lastly to make sure calling prime factorization on a number from 
+           an unsupported domain triggers UnsupportedNumberDomainException */
+        r = new IllDefinedQuadraticRing(50);
+        z = new IllDefinedQuadraticInteger(7, 8, r);
+        try {
+            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+            System.out.print("Calling primeFactors(" + z.toASCIIString() + " should have triggered UnsupportedNumberDomainException, ");
+            System.out.println("not given the result in which " + factorsList.get(0).toASCIIString() + " is a factor.");
+            fail("Calling primeFactors(" + z.toString() + ") should have triggered UnsupportedNumberDomainException.");
+        } catch (NonUniqueFactorizationDomainException nufde) {
+            fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Calling primeFactors(" + z.toASCIIString() + ") correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("\"" + unde.getMessage() + "\"");
         }
     }
 
@@ -524,8 +541,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
             primeIndex = 1; // Reset for next k
             possiblyPrime = true; // Reset for next k
         }
-        /* And lastly, we're going to test indices of Fibonacci primes greater 
-           than 4, which corresponds to 3 */
+        /* Next, we're going to test indices of Fibonacci primes greater than 4, 
+           which corresponds to 3 */
         for  (int m = 5; m < fibonacciList.size(); m++) {
             if (NumberTheoreticFunctionsCalculator.isPrime(fibonacciList.get(m))) {
                 assertTrue(NumberTheoreticFunctionsCalculator.isPrime(m));
@@ -786,6 +803,23 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
             }
         }
+        /* The very last thing, to check UnsupportedNumberDomainException is 
+           thrown when needed */
+        IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(22);
+        IllDefinedQuadraticInteger z = new IllDefinedQuadraticInteger(5, 4, r);
+        try {
+            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isIrreducible(z);
+            String failMessage = "Somehow determined that " + z.toASCIIString() + " is ";
+            if (compositeFlag) {
+                failMessage = failMessage + "not ";
+            }
+            failMessage = failMessage + " irrreducible.";
+            System.out.println(failMessage);
+            fail(failMessage);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("isIrreducible on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        }
     }
     
     /**
@@ -825,9 +859,19 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 }
             }
         }
-        for (int discrR = 10; discrR < 200; discrR += 5) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrR)) {
-                currRing = new RealQuadraticRing(discrR);
+        for (int discrNonUFDIm = -5; discrNonUFDIm > -200; discrNonUFDIm -= 4) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrNonUFDIm)) {
+                currRing = new ImaginaryQuadraticRing(discrNonUFDIm);
+                currInt = new ImaginaryQuadraticInteger(2, 0, currRing);
+                assertionMessage = "2 in " + currRing.toString() + " should be found to be irreducible";
+                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                assertionMessage = assertionMessage + " but not prime";
+                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt));
+            }
+        }
+        for (int discrNonUFDRe = 10; discrNonUFDRe < 200; discrNonUFDRe += 5) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrNonUFDRe)) {
+                currRing = new RealQuadraticRing(discrNonUFDRe);
                 for (int p = 3; p < 20; p += 2) {
                     if (NumberTheoreticFunctionsCalculator.isPrime(p)) {
                         currInt = new RealQuadraticInteger(p, 0, currRing);
@@ -1724,7 +1768,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testRandomNegativeSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
-        // Our test bound will be the square of the largest prime in our finite list
+        /* Our test bound will be the square of the largest prime in our finite 
+           list */
         int testBound = primesList.get(primesListLength - 1) * primesList.get(primesListLength - 1);
         int potentialRanSqFreeNum;
         String assertionMessage;
@@ -1732,18 +1777,21 @@ public class NumberTheoreticFunctionsCalculatorTest {
             potentialRanSqFreeNum = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(testBound);
             System.out.println("Function came up with this pseudorandom squarefree number: " + potentialRanSqFreeNum);
             // Check that the pseudorandom number is indeed squarefree
-            double squaredPrime, ranNumDiv, flooredRanNumDiv;
+            double squaredPrime, ranNumDiv, flooredRanNumDiv, sqFrHolder;
             for (int i = 0; i < primesListLength; i++) {
                 squaredPrime = primesList.get(i) * primesList.get(i);
-                ranNumDiv = potentialRanSqFreeNum / squaredPrime;
+                sqFrHolder = potentialRanSqFreeNum; // Ensure we're dividing a double by another double
+                ranNumDiv = sqFrHolder / squaredPrime;
                 flooredRanNumDiv = (int) Math.floor(ranNumDiv);
                 assertionMessage = "Since " + potentialRanSqFreeNum + " is said to be squarefree, it should not be divisible by " + squaredPrime;
                 assertNotEquals(assertionMessage, ranNumDiv, flooredRanNumDiv, TEST_DELTA);
             }
-            /* And lastly, check that it is no more than the negated test bound 
-               but not less than or equal to 0. */
-            assertTrue(potentialRanSqFreeNum < testBound);
-            assertTrue(potentialRanSqFreeNum > 0);
+            /* And lastly, check that it is no more than the test bound but not 
+               less than or equal to 0. */
+            assertionMessage = "The number " + potentialRanSqFreeNum + " is not greater than the bound " + testBound;
+            assertTrue(assertionMessage, potentialRanSqFreeNum < testBound);
+            assertionMessage = "The number " + potentialRanSqFreeNum + " is greater than 0";
+            assertTrue(assertionMessage, potentialRanSqFreeNum > 0);
         } while (potentialRanSqFreeNum % 10 != 7);
     }
     
