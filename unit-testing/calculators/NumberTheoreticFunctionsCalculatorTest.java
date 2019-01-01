@@ -35,7 +35,6 @@ import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
 import static algebraics.quadratics.ImaginaryQuadraticRingTest.TEST_DELTA;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -1130,6 +1129,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
         assertionMessage = b.toString() + " should not be found to be divisible by " + a.toString() + ".";
         assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
+        b = new RealQuadraticInteger(0, 0, r); // Zero
+        assertionMessage = a.toString() + " should not be found to be divisible by " + b.toString() + ".";
+        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
+        assertionMessage = b.toString() + " should be found to be divisible by " + a.toString() + ".";
+        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
         a = new RealQuadraticInteger(7, 1, r);
         r = new ImaginaryQuadraticRing(-7); // Making sure a and b are from different rings now
         b = new ImaginaryQuadraticInteger(0, 1, r);
