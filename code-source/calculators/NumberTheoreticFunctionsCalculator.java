@@ -29,6 +29,8 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import algebraics.quartics.Zeta8Integer;
+import algebraics.quartics.Zeta8Ring;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,9 +124,22 @@ public class NumberTheoreticFunctionsCalculator {
      */
     public static final ImaginaryQuadraticInteger COMPLEX_CUBIC_ROOT_OF_UNITY = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
     
+    /**
+     * <b>Z</b>[&phi;], the ring of algebraic integers of <b>Q</b>(&radic;5).
+     */
     public static final RealQuadraticRing RING_ZPHI = new RealQuadraticRing(5);
     
+    /**
+     * The number 1/2 + (&radic;5)/2 &asymp; 1.618, the fundamental unit of 
+     * <b>Z</b>[&phi;].
+     */
     public static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
+    
+    /**
+     * The number &zeta;<sub>8</sub> = (&radic;2)/2 + (&radic;&minus;2)/2, 
+     * principal square root of the imaginary unit <i>i</i>.
+     */
+    public static final Zeta8Integer ZETA_8 = new Zeta8Integer(0, 1, 0, 0);
 
     /**
      * Determines the prime factors of a given number. Uses simple trial 
@@ -163,15 +178,17 @@ public class NumberTheoreticFunctionsCalculator {
     
     /**
      * Determines whether a given purely real number is prime or not. The 
-     * numbers 0, -1, 1, -2, 2 are treated as special cases. For all others, the 
-     * function searches only for the least prime factor. If the least prime 
-     * factor is found to be unequal to the absolute value of the number, the 
-     * function reports the number as composite and returns to the caller. 
-     * Still, the function is open to optimization.
-     * @param num The number to be tested for primality.
-     * @return true if the number is prime (even if negative), false otherwise.
-     * For example, -2 and 47 should each return true, -25, 0 and 91 should each 
-     * return false.
+     * numbers 0, &minus;1, 1, &minus;2, 2 are treated as special cases (the 
+     * first three are not prime, the last two are). For all others, the 
+     * function searches only for the least positive prime factor. If the least 
+     * positive prime factor is found to be unequal to the absolute value of the 
+     * number, the function returns false. This function is open to 
+     * optimization.
+     * @param num The number to be tested for primality. Examples: &minus;29, 
+     * 30, &minus;42, 43.
+     * @return True if the number is prime (even if negative), false otherwise.
+     * For example, &minus;2 and 47 should both return true, &minus;25, 0 and 91 
+     * should all return false.
      */
     public static boolean isPrime(int num) {
         switch (num) {
@@ -224,6 +241,26 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
+    /**
+     * Determines whether a given algebraic integer is prime or not. It is not 
+     * enough for the number to be irreducible, it must be prime and not a unit, 
+     * meaning that if <i>p</i> divides <i>ab</i> for any combination of 
+     * <i>a</i> and <i>b</i> from the same ring as <i>p</i>, then either 
+     * <i>p</i> divides <i>a</i> or it divides <i>b</i>, maybe both.
+     * @param num The number to be tested for primality. Examples: 1 + 
+     * &radic;&minus;2, 2 + &radic;10.
+     * @return True if the number is prime, false if a unit or composite. For 
+     * example, 1 + &radic;&minus;2 is prime, while 2 + &radic;10 is irreducible 
+     * but not prime.
+     * @throws ArithmeticException If a norm computation error occurs (this is a 
+     * runtime exception), such as, for example, if the norm of an imaginary 
+     * quadratic integer is erroneously said to be negative.
+     * @throws UnsupportedNumberDomainException Thrown when called upon a number
+     * from a type of ring that is not fully supported yet. For example, as of 
+     * 2018, this program does not really have support for cubic integers, so 
+     * asking if 3 &minus; &#8731;2 is prime would probably trigger this 
+     * exception.
+     */
     public static boolean isPrime(AlgebraicInteger num) {
         if (isPrime(num.norm())) {
             return true;
@@ -264,7 +301,11 @@ public class NumberTheoreticFunctionsCalculator {
             if (surdPart == 0) {
                 int absRegPartMult = Math.abs(n.getRegPartMult());
                 if (absRegPartMult == 2) {
-                    return (symbolKronecker(radic, 2) == -1);
+                    byte symbol = symbolKronecker(radic, 2);
+                    if (radic % 4 == -1 || radic % 4 == 3) {
+                        symbol = 0;
+                    }
+                    return (symbol == -1);
                 }
                 if (isPrime(absRegPartMult)) {
                     switch (radic) {
@@ -307,11 +348,11 @@ public class NumberTheoreticFunctionsCalculator {
      * For example, 7. This parameter may be negative; the function will quietly 
      * change it to a positive number; this behavior is not guaranteed for 
      * future versions of this program.
-     * @return -1 if a is quadratic residue modulo p, 0 if gcd(a, p) > 1, 1 if a 
-     * is a quadratic residue modulo p. An example of each: Legendre(10, 7) = -1 
-     * since there are no solutions to x^2 = 10 mod 7; Legendre(10, 5) = 0 since 
-     * 10 is a multiple of 5; and Legendre(10, 3) = 1 since x^2 = 10 mod 3 does 
-     * have solutions, such as x = 4.
+     * @return &minus;1 if a is quadratic residue modulo p, 0 if gcd(a, p) > 1, 1 if a 
+     * is a quadratic residue modulo p. An example of each: Legendre(10, 7) = &minus;1 
+     * since there are no solutions to <i>x</i><sup>2</sup> = 10 mod 7; Legendre(10, 5) = 0 since 
+     * 10 is a multiple of 5; and Legendre(10, 3) = 1 since <i>x</i><sup>2</sup> = 10 mod 3 does 
+     * have solutions, such as <i>x</i> = 4.
      * @throws IllegalArgumentException If p is not an odd prime. Note that this 
      * is a runtime exception.
      */
@@ -412,7 +453,7 @@ public class NumberTheoreticFunctionsCalculator {
      * symbol.
      * @param n Parameter n, for example, 3.
      * @param m Parameter m, for example, 2.
-     * @return The result, for example, -1.
+     * @return The result, for example, &minus;1.
      */
     public static byte symbolKronecker(int n, int m) {
         if (euclideanGCD(n, m) > 1) {
@@ -466,10 +507,10 @@ public class NumberTheoreticFunctionsCalculator {
      * from the same ring and there is no checking here of whether or not that 
      * is the case.
      * @return A list of the algebraic integers sorted by norm. For example: 
-     * &minus;i, &minus;1 + <i>i</i>, 1 &minus; <i>i</i>, 4 + <i>i</i>. Note 
-     * that there is no checking of norm overflows, so, for example, imaginary 
-     * quadratic integer objects with erroneously negative norms would be 
-     * erroneously sorted before units.
+     * &minus;<i>i</i>, &minus;1 + <i>i</i>, 1 &minus; <i>i</i>, 4 + <i>i</i>. 
+     * Note that there is no checking of norm overflows, so, for example, 
+     * imaginary quadratic integer objects with erroneously negative norms would 
+     * be erroneously sorted before units.
      */
     public static List<AlgebraicInteger> sortListAlgebraicIntegersByNorm(List<AlgebraicInteger> listAlgInt) {
         boolean swapFlag;
@@ -517,7 +558,15 @@ public class NumberTheoreticFunctionsCalculator {
      * be thrown if this function is called upon to compute the prime factors of 
      * a number from a non-UFD, even if a complete factorization into primes is 
      * possible in the given domain, e.g., 5 and 41 in 
-     * <b>Z</b>[&radic;(&minus;5)].
+     * <b>Z</b>[(&radic;&minus;5)]. However, as of 2018, this exception will be 
+     * erroneously thrown for numbers from real quadratic integer rings that are 
+     * UFDs but not norm-Euclidean. This is a compromise while I work on getting 
+     * the timed <b>Z</b>[(&radic;103)] fundamental unit test to pass.
+     * @throws UnsupportedNumberDomainException Thrown when called upon a number
+     * from a type of ring that is not fully supported yet. For example, as of 
+     * 2018, this program hardly has any support for cubic integers, so asking 
+     * for the prime factorization of &minus;15 + 2&#8731;2 + 
+     * (&#8731;2)<sup>2</sup> would probably trigger this exception.
      */
     public static List<AlgebraicInteger> primeFactors(AlgebraicInteger num) throws NonUniqueFactorizationDomainException {
         if (num instanceof QuadraticInteger) {
@@ -658,17 +707,24 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException("At this time only ImaginaryQuadraticInteger and RealQuadraticInteger are supported for this factorization operation.", num);
     }
     
-    /* (TEMP JAVADOC DISABLE) *
+    /**
      * Determines whether a given number is irreducible, not necessarily prime.
-     * @param num The number for which to make the determination.
-     * @return true if num is irreducible, false if not. For example, 1 + 
-     * sqrt(-5) is famously irreducible but not prime. Also, units are 
+     * @param num The number for which to make the determination. For example, 1 
+     * + &radic;&minus;5.
+     * @return True if num is irreducible, false if not. For example, 1 + 
+     * &radic;&minus;5 is famously irreducible but not prime. Also, units are 
      * considered irreducible by this function.
      * @throws ArithmeticException If a norm computation error occurs (this is a 
-     * runtime exception).
+     * runtime exception), such as, for example, if the norm of an imaginary 
+     * quadratic integer is erroneously said to be negative.
+     * @throws UnsupportedNumberDomainException Thrown when called upon a number
+     * from a type of ring that is not fully supported yet. For example, as of 
+     * 2018, this program does not really have support for cubic integers, so 
+     * asking if 3 &minus; &#8731;2 is irreducible would probably trigger this 
+     * exception.
      */
     public static boolean isIrreducible(AlgebraicInteger num) {
-        if (num instanceof QuadraticInteger) {
+        if (num instanceof ImaginaryQuadraticInteger || num instanceof RealQuadraticInteger) {
             if (num instanceof ImaginaryQuadraticInteger && num.norm() < 0) {
                 String exceptionMessage = "Overflow has occurred for the computation of the norm of " + num.toASCIIString();
                 throw new ArithmeticException(exceptionMessage);
@@ -680,13 +736,19 @@ public class NumberTheoreticFunctionsCalculator {
                     return true;
                 } else {
                     QuadraticInteger number = (QuadraticInteger) num;
-                    if (fieldClassNumber(number.getRing()) == 1) {
+                    QuadraticRing r = number.getRing();
+                    int d = r.getRadicand();
+                    boolean normEuclD = false;
+                    for (int euclD : NORM_EUCLIDEAN_QUADRATIC_RINGS_D) {
+                        if (d == euclD) {
+                            normEuclD = true;
+                        }
+                    }
+                    if (normEuclD) {
                         return isPrime(number);
                     } else {
                         boolean withinRange = true;
                         boolean presumedIrreducible = true;
-                        QuadraticRing r = number.getRing();
-                        int d = r.getRadicand();
                         QuadraticInteger testDivisor, currDivision;
                         int testDivRegPartMult = 4;
                         int testDivSurdPartMult = 0;
@@ -700,22 +762,26 @@ public class NumberTheoreticFunctionsCalculator {
                             testDivisorChanged = false;
                             withinRange = (Math.abs(testDivisor.norm()) < Math.abs(number.norm()));
                             while (withinRange && presumedIrreducible) {
-                                try {
-                                    currDivision = number.divides(testDivisor);
-                                    if (Math.abs(currDivision.norm()) > 1) {
-                                        presumedIrreducible = false;
-                                    } else {
-                                        withinRange = false;
+                                if (Math.abs(testDivisor.norm()) == 1) {
+                                    withinRange = false;
+                                } else {
+                                    try {
+                                        currDivision = number.divides(testDivisor);
+                                        if (Math.abs(currDivision.norm()) > 1) {
+                                            presumedIrreducible = false;
+                                        } else {
+                                            withinRange = false;
+                                        }
+                                    } catch (NotDivisibleException nde) {
+                                        withinRange = (Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1);
+                                        testDivRegPartMult += 2;
+                                        if (d < 0) {
+                                            testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+                                        } else {
+                                            testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+                                        }
+                                        testDivisorChanged = true;
                                     }
-                                } catch (NotDivisibleException nde) {
-                                    withinRange = (Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1);
-                                    testDivRegPartMult += 2;
-                                    if (d < 0) {
-                                        testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
-                                    } else {
-                                        testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
-                                    }
-                                    testDivisorChanged = true;
                                 }
                             }
                             if (!r.hasHalfIntegers()) {
@@ -742,6 +808,31 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(exceptionMessage, num);
     }
     
+    /**
+     * Tests whether one algebraic integer is divisible by another.
+     * @param a The number to test for divisibility by another. For example, 
+     * &radic;14.
+     * @param b The number to test as a potential divisor of the first number. 
+     * For example, 4 + &radic;14.
+     * @return True if a is divisible by b, false otherwise. For example, it 
+     * should return true that &radic;14 is indeed divisible by 4 + &radic;14, 
+     * false for &radic;14 being divisible by 3 + &radic;14 (it's not 
+     * divisible). Sure to be false if b is 0 regardless of what a is, sure to 
+     * be true is a is 0 and b is any nonzero number.
+     * @throws AlgebraicDegreeOverflowException If the two numbers are from 
+     * different rings, even if one or both have zero "surd" parts, this runtime 
+     * exception will be thrown. For example, is 1 + &radic;&minus;2 divisible 
+     * by &radic;3? Or how about is 9 from <b>Z</b>[&radic;15] divisible by 3 
+     * from <b>Z</b>[&radic;&minus;10]? The former can't be resolved in a 
+     * quadratic ring, the latter can, though the choice of ring could have 
+     * unexpected consequences for subsequent calculations, so this exception is 
+     * thrown just the same.
+     * @throws UnsupportedNumberDomainException Thrown when called upon numbers 
+     * from a type of ring that is not fully supported yet. For example, as of 
+     * 2018, this program does not really have support for cubic integers, so 
+     * asking if 35 + 5&#8731;2 is divisible by 3 &minus; &#8731;2 would 
+     * probably trigger this exception.
+     */
     public static boolean isDivisibleBy(AlgebraicInteger a, AlgebraicInteger b) {
         if (!a.getRing().equals(b.getRing())) {
             String exceptionMessage = "Ring mismatch: " + a.toASCIIString() + " is from " + a.getRing().toASCIIString() + " but " + b.toASCIIString() + " is from " + b.getRing().toASCIIString() + ".";
@@ -752,6 +843,12 @@ public class NumberTheoreticFunctionsCalculator {
                 deg = b.algebraicDegree();
             }
             throw new AlgebraicDegreeOverflowException(exceptionMessage, deg, a, b);
+        }
+        if (b.norm() == 0) {
+            return false;
+        }
+        if (a.norm() == 0) {
+            return true;
         }
         if (a instanceof QuadraticInteger) {
             QuadraticInteger divA = (QuadraticInteger) a;
@@ -769,17 +866,16 @@ public class NumberTheoreticFunctionsCalculator {
         
     /**
      * Determines whether a given number is squarefree or not. The original 
-     * implementation depended on {@link #primeFactors(int)}. For version 0.95, 
-     * this was optimized to try the number modulo 4, and if it's not divisible 
-     * by 4, to try dividing it by odd squares. Although this includes odd 
-     * squares like 9 and 81, it still makes for a performance improvement over 
-     * relying on primeFactors(int).
+     * implementation depended on {@link #primeFactors(int) primeFactors(int)}. 
+     * For version 0.95, this was optimized to try the number modulo 4, and if 
+     * it's not divisible by 4, to try dividing it by odd squares. Although this 
+     * includes odd squares like 9 and 81, it still makes for a performance 
+     * improvement over relying on primeFactors(int).
      * @param num The number to be tested for being squarefree.
-     * @return true if the number is squarefree, false otherwise.
-     * For example, -3 and 7 should each return true, -4, 0 and 25 should each 
-     * return false.
-     * Note that 1 is considered squarefree. Therefore, for num = 1, this 
-     * function should return true.
+     * @return True if the number is squarefree, false otherwise. For example, 
+     * &minus;3 and 7 should each return true, &minus;4, 0 and 25 should each 
+     * return false. Note that 1 is considered to be squarefree. Therefore, for 
+     * num = 1, this function should return true.
      */
     public static boolean isSquareFree(int num) {
         switch (num) {
@@ -805,12 +901,38 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     /**
-     * Computes the M\u00F6bius function \u03BC for a given integer.
-     * @param num The integer for which to compute the M\u00F6bius function.
-     * @return 1 if num is squarefree with an even number of prime factors, -1 
-     * if num is squarefree with an odd number of prime factors, 0 if num is not 
-     * squarefree. Since -1 is a unit, not a prime, \u03BC(-n) = \u03BC(n). For 
-     * example, \u03BC(31) = -1, \u03BC(32) = 0 and \u03BC(33) = 1.
+     * Gives the squarefree kernel of an integer. The current implementation 
+     * works by obtaining the prime factorization of the number, deleting 
+     * duplicate factors and then multiplying the factors that remain.
+     * @param num The number for which to find the squarefree kernel of. May be 
+     * negative. For example, &minus;392.
+     * @return The squarefree kernel of the given number. Should be positive for 
+     * positive inputs and negative for negative inputs. For example, the kernel 
+     * of &minus;392 is &minus;14. The current implementation returns 0 for an 
+     * input of 0, but this is not guaranteed for future implementations.
+     */
+    public static int kernel(int num) {
+        List<Integer> factors = primeFactors(num);
+        for (int i = factors.size() - 1; i > 0; i--) {
+            if (factors.get(i).equals(factors.get(i - 1))) {
+                factors.remove(i);
+            }
+        }
+        int product = 1;
+        for (int factor : factors) {
+            product *= factor;
+        }
+        return product;
+    }
+    
+    /**
+     * Computes the M&ouml;bius function &mu; for a given integer.
+     * @param num The integer for which to compute the M&ouml;bius function.
+     * @return 1 if num is squarefree with an even number of prime factors, 
+     * &minus;1 if num is squarefree with an odd number of prime factors, 0 if 
+     * num is not squarefree. Since &minus;1 is a unit, not a prime, 
+     * &mu;(&minus;<i>n</i>) = &mu;(<i>n</i>). For example, &mu;(31) = &minus;1, 
+     * &mu;(32) = 0 and &mu;(33) = 1.
      */
     public static byte moebiusMu(int num) {
         switch (num) {
@@ -1082,13 +1204,210 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException("Not supported yet, sorry", b);
     }
     
-    // THIS SHOULDN'T PASS ITS CORRESPONDING TEST, BUT IT SHOULDN'T HOLD UP OTHER TESTS EITHER
+    /**
+     * Gives the fundamental unit of a ring that has infinitely many units. In a  
+     * domain of purely real numbers, the fundamental unit is the smallest unit 
+     * greater than 1. It may have norm &minus;1 or 1. At least for now, this 
+     * uses a brute force algorithm that may in some cases be unacceptably slow.
+     * @param ring The ring of algebraic integers for which to find the 
+     * fundamental unit.
+     * @return The fundamental unit. For example, for <b>Z</b>[&radic;2], this 
+     * would be 1 + &radic;2; for <b>Z</b>[&radic;3] this would be 2 + &radic;3.
+     * @throws ArithmeticException Since computations are performed using 32-bit 
+     * and 64-bit integers, an overflow could occur, especially if the 
+     * fundamental unit is much larger than 2<sup>31</sup>.
+     * @throws IllegalArgumentException If called upon with a supported domain 
+     * known to not have infinitely many units, such as an imaginary quadratic 
+     * integer ring, this runtime exception will be thrown.
+     * @throws UnsupportedNumberDomainException If called upon with a number 
+     * domain for which support has not been fully fleshed out yet, such as a 
+     * simple cubic integer ring.
+     */
     public static AlgebraicInteger fundamentalUnit(IntegerRing ring) {
-        return IMAG_UNIT_I;
-//        String exceptionMessage = "Fundamental unit function not yet supported for " + ring.toASCIIString();
-//        throw new UnsupportedNumberDomainException(exceptionMessage, ring);
+        if (ring instanceof ImaginaryQuadraticRing) {
+            String exceptionMessage = "Since " + ring.toASCIIString() + " has a finite unit group, there is no fundamental unit.";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+        if (ring instanceof RealQuadraticRing) {
+            RealQuadraticRing r = (RealQuadraticRing) ring;
+            QuadraticInteger potentialUnit;
+            int d = r.getRadicand();
+            long xd;
+            long trialRegNeg;
+            int trialSurd = 1;
+            boolean notFoundYet = true;
+            do {
+                xd = trialSurd * trialSurd * d;
+                trialRegNeg = (long) Math.floor(Math.sqrt(xd));
+                potentialUnit = new RealQuadraticInteger((int) trialRegNeg, trialSurd, r);
+                if (potentialUnit.norm() == -1) {
+                    notFoundYet = false;
+                }
+                if (notFoundYet) {
+                    potentialUnit = potentialUnit.plus(1);
+                    if (potentialUnit.norm() == 1) {
+                        notFoundYet = false;
+                    }
+                }
+                trialSurd++;
+            } while ((trialRegNeg < Integer.MAX_VALUE) && notFoundYet);
+            if (r.hasHalfIntegers()) {
+                double threshold = potentialUnit.abs();
+                double currAbs;
+                QuadraticInteger potentialHalfUnit;
+                trialSurd = 1;
+                do {
+                    xd = trialSurd * trialSurd * d;
+                    trialRegNeg = (long) Math.floor(Math.sqrt(xd - 4));
+                    trialRegNeg += ((trialRegNeg % 2) - 1); // Make sure it's odd
+                    potentialHalfUnit = new RealQuadraticInteger((int) trialRegNeg, trialSurd, r, 2);
+                    if (potentialHalfUnit.norm() == -1) {
+                        return potentialHalfUnit;
+                    } else {
+                        currAbs = potentialHalfUnit.abs();
+                    }
+                    potentialHalfUnit = potentialHalfUnit.plus(1); // Add 2/2 to "regular" part
+                    if (potentialHalfUnit.norm() == 1) {
+                        return potentialHalfUnit;
+                    }
+                    trialSurd += 2;
+                } while (currAbs < threshold);
+            }
+            if (notFoundYet) {
+                String exceptionMessage = "Overflow occurred, fundamental unit is greater than " + potentialUnit.toASCIIString() + ".";
+                throw new ArithmeticException(exceptionMessage);
+            } else {
+                return potentialUnit;
+            }
+        }
+        if (ring instanceof Zeta8Ring) {
+            return ZETA_8;
+        }
+        String exceptionMessage = "Fundamental unit function not yet supported for " + ring.toASCIIString();
+        throw new UnsupportedNumberDomainException(exceptionMessage, ring);
+    }
+    
+    /**
+     * Places an algebraic integer in a sector of the complex plane considered 
+     * preferable for the canonical form of a prime factorization. This is done 
+     * by multiplying the number by a suitable unit, so that its norm remains 
+     * the same.
+     * @param num The number which may or may not be in the primary sector and 
+     * needs to be placed there. For example, 1 &minus; 10<i>i</i>, which has a 
+     * norm of 101 and an angle of approximately &minus;1.47 radians (roughly 
+     * &minus;84 degrees).
+     * @return An algebraic integer placed in the primary sector, having the 
+     * same norm as num but a different angle (unless num was already in the 
+     * primary sector to begin with). For example, for 1 &minus; 10<i>i</i>, 
+     * this would be 10 + <i>i</i>, which also has a norm of 101 but an angle of 
+     * approximately 0.09966865249 (roughly 5.71 degrees).
+     * @throws UnsupportedNumberDomainException Thrown when called upon a number
+     * from a type of ring that is not fully supported yet. For example, as of 
+     * 2018, this program has limited support for quartic integers such as those 
+     * of the ring of algebraic integers of <b>Q</b>(&zeta;<sub>8</sub>), so 
+     * asking to place &minus;1 + (&zeta;<sub>8</sub>)<sup>3</sup> would 
+     * probably trigger this exception.
+     */
+    public static AlgebraicInteger placeInPrimarySector(AlgebraicInteger num) {
+        if (num.abs() == 0) {
+            return num;
+        }
+        if (num instanceof QuadraticInteger) {
+            QuadraticInteger n = (QuadraticInteger) num;
+            QuadraticRing r = n.getRing();
+            int d = r.getRadicand();
+            double minAngle, maxAngle;
+            QuadraticInteger turnUnit;
+            switch (d) {
+                case -1:
+                    minAngle = -0.7853981633974483; // -45 degrees
+                    maxAngle = 0.7853981633974483; // 45 degrees
+                    turnUnit = IMAG_UNIT_NEG_I;
+                    break;
+                case -3:
+                    minAngle = -0.5235987755982988730771; // -30 degrees
+                    maxAngle = 0.5235987755982988730771; // 30 degrees
+                    turnUnit = new ImaginaryQuadraticInteger(1, -1, r, 2); // -omega
+                    break;
+                default:
+                    if ((n.getRegPartMult() < 0) || ((n.getRegPartMult() == 0) && (n.getSurdPartMult() < 0))) {
+                        return n.times(-1);
+                    } else {
+                        return n;
+                    }
+            }
+            while ((n.angle() <= minAngle) || (n.angle() > maxAngle)) {
+                n = n.times(turnUnit);
+            }
+            return n;
+        }
+        String exceptionMessage = "Place in primary sector function not yet supported for " + num.getRing().toASCIIString();
+        throw new UnsupportedNumberDomainException(exceptionMessage, num);
     }
 
+    /**
+     * Divides the non-trivial units out of an algebraic integer, so as to place 
+     * a number close to 0 but to the right and/or above 1 on the complex plane. 
+     * This enables the determination of whether two numbers with the same norm 
+     * belong to the same principal ideal. The number returned by this function 
+     * can still be divided by units, but that should place the number to the 
+     * left and/or below 1.
+     * @param num The number out of which to divide units. For example, 2 + 
+     * &radic;2, which has norm 2.
+     * @return A number which can be factorized into primes without need for 
+     * nontrivial units. For example, for 2 + &radic;2, this would be &radic;2, 
+     * which has norm &minus;2 (since &radic;2 times the fundamental unit 1 + 
+     * &radic;2, which has norm &minus;1, is 2 + &radic;2).
+     * @throws UnsupportedNumberDomainException If called upon to divide the 
+     * units out of an algebraic integer from a type of ring not yet supported 
+     * by this function. As of 2018, real and imaginary quadratic rings are 
+     * supported, but none of higher algebraic degree.
+     */
+    public static AlgebraicInteger divideOutUnits(AlgebraicInteger num) {
+        if (num.abs() == 0.0) {
+            return num;
+        }
+        if (num instanceof ImaginaryQuadraticInteger) {
+            return placeInPrimarySector(num);
+        }
+        if (num instanceof RealQuadraticInteger) {
+            QuadraticInteger unit = (QuadraticInteger) fundamentalUnit(num.getRing());
+            QuadraticInteger n;
+            if (num.getRealPartNumeric() < 0.0) {
+                n = ((QuadraticInteger) num).times(-1);
+            } else {
+                n = (QuadraticInteger) num;
+            }
+            while (n.getRealPartNumeric() < 1.0) {
+                n = n.times(unit);
+            }
+            QuadraticInteger nextN;
+            do {
+                try {
+                    nextN = n.divides(unit);
+                    if (nextN.getRealPartNumeric() > 1.0) {
+                        n = nextN;
+                    }
+                } catch (NotDivisibleException nde) {
+                    System.err.println("NotDivisibleException should not have happened dividing by a unit: \"" + nde.getMessage() + "\"");
+                    throw new RuntimeException(nde); // Rethrow wrapped in RuntimeException
+                }
+            } while (n.equals(nextN));
+            return n;
+        }
+        String exceptionMessage = "Place in primary section function not yet supported for " + num.getRing().toASCIIString() + ".";
+        throw new UnsupportedNumberDomainException(exceptionMessage, num);
+    }
+
+    /**
+     * Wraps the purely real, rational unit 1 into an implementation of {@link 
+     * AlgebraicInteger}.
+     * @param ring The ring of algebraic integers from which to get 1.
+     * @return An object implementing AlgebraicInteger representing the number 
+     * with real part 1 and imaginary part 0 in the given ring.
+     * @throws UnsupportedNumberDomainException If called upon with a type of 
+     * ring for which support has not been fleshed out yet.
+     */
     public static AlgebraicInteger getOneInRing(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
             QuadraticRing r = (QuadraticRing) ring;
@@ -1099,24 +1418,76 @@ public class NumberTheoreticFunctionsCalculator {
                 return new RealQuadraticInteger(1, 0, r);
             }
         }
+        if (ring instanceof Zeta8Ring) {
+            return new Zeta8Integer(1, 0, 0, 0);
+        }
         String exceptionMessage = "1 from given ring function not yet supported for " + ring.toASCIIString() + ".";
         throw new UnsupportedNumberDomainException(exceptionMessage, ring);
     }
     
-    // THIS SHOULDN'T PASS ITS CORRESPONDING TEST, BUT IT SHOULDN'T HOLD UP OTHER TESTS EITHER
-    public static short fieldClassNumber(IntegerRing ring) {
+    private static short w(int d) {
+        switch (d) {
+            case -3:
+                return 6;
+            case -1:
+                return 4;
+            default:
+                return 2;
+        }
+    }
+    
+    /**
+     * Gives the class number of a ring of algebraic integers.
+     * @param ring The ring for which for which to compute the class number. For 
+     * example, <b>Z</b>[&radic;2], <b>Z</b>[&radic;&minus;5].
+     * @return A positive integer with the class number, should be 1 for unique 
+     * factorization domains, 2 or greater for non-unique factorization domains. 
+     * For example, the class number of <b>Z</b>[&radic;2] is 1, the class 
+     * number of <b>Z</b>[&radic;&minus;5] is 2. A return of 0 or a negative 
+     * integer could indicate either an arithmetic overflow problem or a mistake 
+     * on the programmer's part.
+     * @throws UnsupportedNumberDomainException If called upon for a type of 
+     * ring which is not yet supported by this function. For example, as of 
+     * 2018, this function supports real and imaginary quadratic rings but no 
+     * kind of cubic ring, so asking this function to compute the class number 
+     * of <b>Z</b>[&#8731;2] should trigger this exception.
+     */
+    public static int fieldClassNumber(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
-            short classNum = 2;
-            int d = ((QuadraticRing) ring).getRadicand();
-            if (d < -163) {
-                return classNum;
+            QuadraticRing r = (QuadraticRing) ring;
+            int d = r.getRadicand();
+            if (!r.hasHalfIntegers()) {
+                d *= 4;
             }
-            for (int ufdD : NORM_EUCLIDEAN_QUADRATIC_RINGS_D) {
-                if (d == ufdD) {
-                    classNum = 1;
+            double sumMult, interNum;
+            if (d < 0) {
+                sumMult = (double) w(d) / (2.0 * d);
+                short kronSum = 0;
+                if (d == -4) {
+                    kronSum = -2;
                 }
+                for (short i = 1; i < Math.abs(d); i++) {
+                    kronSum += symbolKronecker(d, i) * i;
+                }
+                interNum = sumMult * kronSum;
+                return (int) Math.round(interNum);
+            } else {
+                sumMult = fundamentalUnit(r).getRealPartNumeric();
+                sumMult = 2 * Math.log(sumMult);
+                sumMult = -1.0 / sumMult;
+                double indKron;
+                double kronSum = 0.0;
+                for (int i = 1; i < d; i++) {
+                    indKron = Math.log(Math.sin((Math.PI * i)/d));
+                    indKron *= symbolKronecker(d, i);
+                    kronSum += indKron;
+                }
+                interNum = sumMult * kronSum;
+                return (int) Math.round(interNum);
             }
-            return classNum;
+        }
+        if (ring instanceof Zeta8Ring) {
+            return 1;
         }
         String exceptionMessage = "Class number function not yet supported for " + ring.toASCIIString();
         throw new UnsupportedNumberDomainException(exceptionMessage, ring);
@@ -1127,7 +1498,8 @@ public class NumberTheoreticFunctionsCalculator {
      * @param bound The lowest number desired (but may use a negative integer). 
      * For example, for a pseudorandom squarefree number between 1 and 97, you 
      * can pass -100 or 100.
-     * @return A pseudorandom positive squarefree integer.
+     * @return A pseudorandom positive squarefree integer. For example, given a 
+     * bound of 100, this might return 91.
      */
     public static int randomSquarefreeNumber(int bound) {
         if (bound < 0) {
