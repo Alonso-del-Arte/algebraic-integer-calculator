@@ -360,7 +360,7 @@ public class RealQuadraticRingTest {
      */
     @Test
     public void testConstructor() {
-        System.out.println("ImaginaryQuadraticRing (constructor)");
+        System.out.println("RealQuadraticRing (constructor)");
         RealQuadraticRing ringZ10 = new RealQuadraticRing(10); // This should work fine
         System.out.println("Created " + ringZ10.toASCIIString() + " without problem.");
         RealQuadraticRing ringZ11 = new RealQuadraticRing(13); // This should also work fine
