@@ -774,9 +774,19 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         crossDomainFlag = crossDomainFlag && (this.surdPartMult != 0 && multiplicand.surdPartMult != 0);
         crossDomainFlag = crossDomainFlag && (this instanceof ImaginaryQuadraticInteger || this instanceof RealQuadraticInteger);
         crossDomainFlag = crossDomainFlag && (multiplicand instanceof ImaginaryQuadraticInteger || multiplicand instanceof RealQuadraticInteger);
+        crossDomainFlag = crossDomainFlag && (this.quadRing.radicand != multiplicand.quadRing.radicand);
         if (crossDomainFlag) {
             int prodSurd = this.surdPartMult * multiplicand.surdPartMult;
+            if (this instanceof ImaginaryQuadraticInteger && multiplicand instanceof ImaginaryQuadraticInteger) {
+                prodSurd *= -1;
+            }
             int prodRad = this.quadRing.radicand * multiplicand.quadRing.radicand;
+            if (!NumberTheoreticFunctionsCalculator.isSquareFree(prodRad)) {
+                int kernel = NumberTheoreticFunctionsCalculator.kernel(prodRad);
+                int coat = prodRad / kernel;
+                prodSurd *= coat;
+                prodRad = prodRad / (coat * coat);
+            }
             QuadraticRing prodRing;
             QuadraticInteger product;
             if (prodRad < 0) {
@@ -880,6 +890,51 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * the int data type.
      */
     public QuadraticInteger divides(QuadraticInteger divisor) throws NotDivisibleException {
+        if (divisor.surdPartMult == 0) {
+            return this.divides(divisor.regPartMult);
+        }
+        boolean crossDomainFlag = (this.regPartMult == 0 && divisor.regPartMult == 0);
+        crossDomainFlag = crossDomainFlag && (this.surdPartMult != 0 && divisor.surdPartMult != 0);
+        crossDomainFlag = crossDomainFlag && (this instanceof ImaginaryQuadraticInteger || this instanceof RealQuadraticInteger);
+        crossDomainFlag = crossDomainFlag && (divisor instanceof ImaginaryQuadraticInteger || divisor instanceof RealQuadraticInteger);
+        crossDomainFlag = crossDomainFlag && (this.quadRing.radicand != divisor.quadRing.radicand);
+        if (crossDomainFlag) {
+            if ((this.surdPartMult % divisor.surdPartMult != 0) || (this.quadRing.radicand % divisor.quadRing.radicand != 0)) {
+                if (this.surdPartMult % divisor.quadRing.radicand == 0) {
+                    int divSurd = this.surdPartMult / divisor.quadRing.radicand;
+                    int divRad = this.quadRing.radicand * divisor.quadRing.radicand;
+                    QuadraticRing ring;
+                    QuadraticInteger div;
+                    if (divRad < 0) {
+                        ring = new ImaginaryQuadraticRing(divRad);
+                        div = new ImaginaryQuadraticInteger(0, divSurd, ring);
+                    } else {
+                        ring = new RealQuadraticRing(divRad);
+                        div = new RealQuadraticInteger(0, divSurd, ring);
+                    }
+                    return div;
+                }
+                if (this.quadRing.radicand % divisor.surdPartMult == 0) {
+                    //
+                }
+                String exceptionMessage = this.toASCIIString() + " is not divisible by " + divisor.toASCIIString() + ".";
+                long[] numerators = {0, this.surdPartMult};
+                long[] denominators = {1, divisor.surdPartMult};
+                throw new NotDivisibleException(exceptionMessage, this, divisor, numerators, denominators, this.quadRing);
+            }
+            int divSurd = this.surdPartMult / divisor.surdPartMult;
+            int divRad = this.quadRing.radicand / divisor.quadRing.radicand;
+            QuadraticRing divRing;
+            QuadraticInteger division;
+            if (divRad < 0) {
+                divRing = new ImaginaryQuadraticRing(divRad);
+                division = new ImaginaryQuadraticInteger(0, divSurd, divRing);
+            } else {
+                divRing = new RealQuadraticRing(divRad);
+                division = new RealQuadraticInteger(0, divSurd, divRing);
+            }
+            return division;
+        }
         if (((this.surdPartMult != 0) && (divisor.surdPartMult != 0)) && (this.quadRing.radicand != divisor.quadRing.radicand)) {
             if ((this.regPartMult == 0) && (divisor.regPartMult == 0)) {
                 throw new UnsupportedNumberDomainException("This operation could result in an algebraic integer in a real quadratic integer ring, which is not currently supported by this package.", this, divisor);
@@ -887,33 +942,6 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                 throw new AlgebraicDegreeOverflowException("This operation could result in an algebraic integer of degree 4.", 2, this, divisor);
             }
         }
-        if (divisor.surdPartMult == 0) {
-            return this.divides(divisor.regPartMult);
-        }
-//        boolean crossDomainFlag = (this.regPartMult == 0 && divisor.regPartMult == 0);
-//        crossDomainFlag = crossDomainFlag && (this.surdPartMult != 0 && divisor.surdPartMult != 0);
-//        crossDomainFlag = crossDomainFlag && (this instanceof ImaginaryQuadraticInteger || this instanceof RealQuadraticInteger);
-//        crossDomainFlag = crossDomainFlag && (divisor instanceof ImaginaryQuadraticInteger || divisor instanceof RealQuadraticInteger);
-//        if (crossDomainFlag) {
-//            if (this.surdPartMult % divisor.surdPartMult != 0) {
-//                String exceptionMessage = this.toASCIIString() + " is not divisible by " + divisor.toASCIIString() + ".";
-//                long[] numerators = {0, this.surdPartMult};
-//                long[] denominators = {1, divisor.surdPartMult};
-//                throw new NotDivisibleException(exceptionMessage, this, divisor, numerators, denominators)
-//            }
-//            int divSurd = this.surdPartMult * divisor.surdPartMult;
-//            int divRad = this.quadRing.radicand * divisor.quadRing.radicand;
-//            QuadraticRing divRing;
-//            QuadraticInteger division;
-//            if (divRad < 0) {
-//                divRing = new ImaginaryQuadraticRing(divRad);
-//                division = new ImaginaryQuadraticInteger(0, divSurd, divRing);
-//            } else {
-//                divRing = new RealQuadraticRing(divRad);
-//                division = new RealQuadraticInteger(0, divSurd, divRing);
-//            }
-//            return division;
-//        }
         long intermediateRegPart = (long) this.regPartMult * (long) divisor.regPartMult - (long) this.surdPartMult * (long) divisor.surdPartMult * (long) this.quadRing.radicand;
         long intermediateSurdPart = (long) this.surdPartMult * (long) divisor.regPartMult - (long) this.regPartMult * (long) divisor.surdPartMult;
         long intermediateDenom = (long) (divisor.norm() * (long) this.denominator * (long) divisor.denominator);

@@ -38,13 +38,13 @@ public abstract class QuadraticRing implements IntegerRing {
     protected double realRadSqrt;
 
     /**
-     * Should be true only if radicand is congruent to 1 modulo 4
+     * Should be true only if radicand is congruent to 1 modulo 4.
      */
     protected boolean d1mod4;
     
     /**
-     * The maximum algebraic degree of an algebraic integer in a quadratic 
-     * integer ring.
+     * The maximum possible algebraic degree of an algebraic integer in a 
+     * quadratic integer ring.
      */
     public static final int MAX_ALGEBRAIC_DEGREE = 2;
     
@@ -304,6 +304,7 @@ public abstract class QuadraticRing implements IntegerRing {
      * <i>d</i> = &minus;3, returns "ZW" (a horrible kludge); for <i>d</i> = 
      * &minus;7, returns "OQI7".
      */
+    @Override
     public String toFilenameString() {
         String IQRString;
         int radNum = this.radicand;
@@ -334,7 +335,7 @@ public abstract class QuadraticRing implements IntegerRing {
     
     /**
      * Compares whether an object is equal to this quadratic ring. This is 
-     * another function which the NetBeans IDE wrote for me, an then I tweaked 
+     * another function which the NetBeans IDE wrote for me, and then I tweaked 
      * slightly.
      * @param obj The object to compare this to.
      * @return True if the object is a quadratic ring with the same parameter 
@@ -380,12 +381,11 @@ public abstract class QuadraticRing implements IntegerRing {
     /**
      * Gives the maximum algebraic degree an algebraic integer in this quadratic 
      * ring can have.
-     * @return Always 2. It would be a mistake to override this in a derived 
-     * class. This value is also available as the constant {@link 
-     * #MAX_ALGEBRAIC_DEGREE}.
+     * @return Always 2 in the case of a quadratic ring. This value is also 
+     * available as the constant {@link #MAX_ALGEBRAIC_DEGREE}.
      */
     @Override
-    public int getMaxAlgebraicDegree() {
+    public final int getMaxAlgebraicDegree() {
         return MAX_ALGEBRAIC_DEGREE;
     }
     
