@@ -152,7 +152,7 @@ public class ImaginaryQuadraticIntegerTest {
             System.out.println(ringRandomForAltTesting.toASCIIString() + " has been chosen for testing toStringAlt(), toASCIIStringAlt, toTeXStringAlt and toHTMLStringAlt.");
         }
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
-        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/((-4) * (randomDiscr + 1))));
+        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/((-16) * (randomDiscr + 1))));
         System.out.println("Maximum for real and imaginary parts of test imaginary quadratic integers is " + maxAB + ".");
         Random ranNumGen = new Random();
         randomRealPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
@@ -2173,20 +2173,23 @@ public class ImaginaryQuadraticIntegerTest {
             }
         }
         /* And lastly, to test that dividing a purely imaginary number from one 
-           domain is divided by a purely imaginary number from another domain 
-           triggers UnsupportedNumberDomainException. It will be enough to check 
-           sqrt(-10)/sqrt(-2), which would give sqrt(5) only if there was a way 
+           domain by a purely imaginary number from another domain either gives 
+           the proper real quadratic result or triggers 
+           UnsupportedNumberDomainException. It will be enough to check 
+           sqrt(-10)/sqrt(-2), which should give sqrt(5) only if there is a way 
            for this to give a real quadratic integer. */
         testDividend = new ImaginaryQuadraticInteger(0, 1, new ImaginaryQuadraticRing(-10));
         testDivisor = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
-        failMessage = "Dividing " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " should not have";
+        RealQuadraticRing expResultRingRe = new RealQuadraticRing(5);
+        expResult = new RealQuadraticInteger(0, 1, expResultRingRe);
+        failMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should not have";
         try {
             result = testDividend.divides(testDivisor);
-            failMessage = failMessage + " resulted in " + result.toASCIIString() + " without triggering some sort of exception.";
-            fail(failMessage);
+            String assertionMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should result in " + expResult.toString() + ".";
+            assertEquals(assertionMessage, expResult, result);
         } catch (UnsupportedNumberDomainException unde) {
             double realNumericApprox = Math.sqrt(5);
-            System.out.println("Dividing " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " correctly triggered UnsupportedNumberDomainException \"" + unde.getMessage() + "\"");
+            System.out.println("Dividing " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " triggered UnsupportedNumberDomainException \"" + unde.getMessage() + "\"");
             System.out.println("This is perhaps the best solution if the source package lacks a way to represent the real number sqrt(5), approximately " + realNumericApprox + "...");
         } catch (AlgebraicDegreeOverflowException adoe) {
             failMessage = failMessage + " triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
