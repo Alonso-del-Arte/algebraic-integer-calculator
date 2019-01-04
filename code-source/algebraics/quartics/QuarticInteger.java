@@ -19,7 +19,8 @@ package algebraics.quartics;
 import algebraics.AlgebraicInteger;
 
 /**
- *
+ * Provides a template for defining objects to represent quartic integers. Does 
+ * not provide any arithmetic operations.
  * @author Alonso del Arte
  */
 public abstract class QuarticInteger implements AlgebraicInteger {

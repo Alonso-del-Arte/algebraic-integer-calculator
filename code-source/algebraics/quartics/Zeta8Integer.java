@@ -26,7 +26,12 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 
 /**
- *
+ * Defines objects to represent numbers in the ring of algebraic integers of 
+ * <b>Q</b>(&zeta;<sub>8</sub>), where &zeta;<sub>8</sub> = (&radic;2)/2 + 
+ * (&radic;&minus;2)/2. The numbers in this ring are of the form <i>a</i> + 
+ * <i>b</i>&zeta;<sub>8</sub> + <i>ci</i> + 
+ * <i>d</i>(&zeta;<sub>8</sub>)<sup>3</sup>, where <i>i</i> is the imaginary 
+ * unit, the principal square root of &minus;1.
  * @author Alonso del Arte
  */
 public final class Zeta8Integer extends QuarticInteger {
@@ -39,17 +44,24 @@ public final class Zeta8Integer extends QuarticInteger {
     
     private final int zeta8CuPart;
     
+    public static final Zeta8Ring ZETA8RING = new Zeta8Ring();
+    
     private static final int HASH_SEP = 256;
     private static final int HASH_SEP_SQ = HASH_SEP * HASH_SEP;
     private static final int HASH_SEP_CU = HASH_SEP_SQ * HASH_SEP;
     
+    /**
+     * The irrational number &radic;(1/2), roughly 0.7071.
+     */
     private static final double SQRT_ONE_HALF = Math.sqrt(2)/2;
 
+    // STUB TO FAIL FIRST OR SECOND TEST
     @Override
     public int algebraicDegree() {
-        return 0;
+        return 4;
     }
 
+    // STUB TO FAIL FIRST TEST
     @Override
     public long trace() {
         return 0;
@@ -71,12 +83,14 @@ public final class Zeta8Integer extends QuarticInteger {
         return 0.0;
     }
 
+    // STUB TO FAIL FIRST TEST
     @Override
     public long[] minPolynomial() {
         long[] polCoeffs = {0, 0, 0, 0, 0};
         return polCoeffs;
     }
 
+    // STUB TO FAIL FIRST TEST
     @Override
     public String minPolynomialString() {
         return "Not implemented yet.";
@@ -109,7 +123,8 @@ public final class Zeta8Integer extends QuarticInteger {
         z8iStr = z8iStr.replace("removethislater + i", "i");
         z8iStr = z8iStr.replace("removethislater + (\u03B6", "(\u03B6");
         z8iStr = z8iStr.replace("removethislater -", "-");
-        z8iStr = z8iStr.replace("removethislater ", "");
+        z8iStr = z8iStr.replace("  ", " ");
+        z8iStr = z8iStr.replace("removethislater", "");
         if (z8iStr.isEmpty()) {
             z8iStr = "0";
         }
@@ -118,17 +133,28 @@ public final class Zeta8Integer extends QuarticInteger {
 
     @Override
     public String toASCIIString() {
-        return "Not implemented yet.";
+        String z8iStr = this.toString();
+        z8iStr = z8iStr.replace("\u03B6\u2088", "zeta_8");
+        z8iStr = z8iStr.replace("\u00B3", "^3");
+        return z8iStr;
     }
 
     @Override
     public String toTeXString() {
-        return "Not implemented yet.";
+        String z8iStr = this.toString();
+        z8iStr = z8iStr.replace("\u03B6\u2088", "\\zeta_8");
+        z8iStr = z8iStr.replace("\u00B3", "^3");
+        return z8iStr;
     }
 
     @Override
     public String toHTMLString() {
-        return "Not implemented yet.";
+        String z8iStr = this.toString();
+        z8iStr = z8iStr.replace("\u03B6\u2088", "&zeta;<sub>8</sub>");
+        z8iStr = z8iStr.replace("\u00B3", "<sup>3</sup>");
+        z8iStr = z8iStr.replace("i", "<i>i</i>");
+        z8iStr = z8iStr.replace("-", "&minus;");
+        return z8iStr;
     }
     
     @Override
@@ -148,7 +174,7 @@ public final class Zeta8Integer extends QuarticInteger {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         final Zeta8Integer other = (Zeta8Integer) obj;
@@ -186,17 +212,43 @@ public final class Zeta8Integer extends QuarticInteger {
     }
     
     public Zeta8Integer minus(int subtrahend) {
-        return this;
+        int newRe = this.realIntPart - subtrahend;
+        return new Zeta8Integer(newRe, this.zeta8Part, this.imagIntPart, this.zeta8CuPart);
     }
     
-    // STUB FOR FAILING FIRST TEST
     public Zeta8Integer times(Zeta8Integer multiplicand) {
-        return this;
+        // Given x = zeta_8, this = a + bx + cx^2 + dx^3 and ...
+        // ... multiplicand = p + qx + rx^2 + sx^3, then ...
+        // (a + bx + cx^2 + dx^3)(p + qx + rx^2 + sx^3) = ...
+        // ... ap + aqx + arx^2 + asx^3 + ...
+        int newRe = this.realIntPart * multiplicand.realIntPart;
+        int newZ8 = this.realIntPart * multiplicand.zeta8Part;
+        int newIm = this.realIntPart * multiplicand.imagIntPart;
+        int newZ83 = this.realIntPart * multiplicand.zeta8CuPart;
+        // ... bpx + bqx^2 + brx^3 - bs +  ...
+        newZ8 += (this.zeta8Part * multiplicand.realIntPart);
+        newIm += (this.zeta8Part * multiplicand.zeta8Part);
+        newZ83 += (this.zeta8Part * multiplicand.imagIntPart);
+        newRe -= (this.zeta8Part * multiplicand.zeta8CuPart);
+        // ... cpx^2 + cqx^3 - cr - csx + ...
+        newIm += (this.imagIntPart * multiplicand.realIntPart);
+        newZ83 += (this.imagIntPart * multiplicand.zeta8Part);
+        newRe -= (this.imagIntPart * multiplicand.imagIntPart);
+        newZ8 -= (this.imagIntPart * multiplicand.zeta8CuPart);
+        // ... dpx^3 - dq - drx - dsx^2.
+        newZ83 += (this.zeta8CuPart * multiplicand.realIntPart);
+        newRe -= (this.zeta8CuPart * multiplicand.zeta8Part);
+        newZ8 -= (this.zeta8CuPart * multiplicand.imagIntPart);
+        newIm -= (this.zeta8CuPart * multiplicand.zeta8CuPart);
+        return new Zeta8Integer(newRe, newZ8, newIm, newZ83);
     }
     
-    // STUB FOR FAILING FIRST TEST
     public Zeta8Integer times(int multiplicand) {
-        return this;
+        int newRe = this.realIntPart * multiplicand;
+        int newZ8 = this.zeta8Part * multiplicand;
+        int newIm = this.imagIntPart * multiplicand;
+        int newZ83 = this.zeta8CuPart * multiplicand;
+        return new Zeta8Integer(newRe, newZ8, newIm, newZ83);
     }
     
     // STUB FOR FAILING FIRST TEST
@@ -276,7 +328,7 @@ public final class Zeta8Integer extends QuarticInteger {
     }
     
     public Zeta8Integer(int a, int b, int c, int d) {
-        this.quartRing = new Zeta8Ring();
+        this.quartRing = ZETA8RING;
         this.realIntPart = a;
         this.zeta8Part = b;
         this.imagIntPart = c;

@@ -19,13 +19,20 @@ package algebraics.quartics;
 import algebraics.IntegerRing;
 
 /**
- *
+ * Provides a template for defining objects to represent quartic rings.
  * @author Alonso del Arte
  */
 public abstract class QuarticRing implements IntegerRing {
 
+    /**
+     * The maximum possible algebraic degree of an algebraic integer in a 
+     * quartic integer ring.
+     */
     public static final int MAX_ALGEBRAIC_DEGREE = 4;
     
+    /**
+     * Whether blackboard bold is preferred or not.
+     */
     protected static boolean preferenceForBlackboardBold = true;
     
     /**
@@ -39,16 +46,23 @@ public abstract class QuarticRing implements IntegerRing {
     
     /**
      * Set preference for blackboard bold or plain bold. This is only relevant 
-     * for the functions toTeXString() and toHTMLString().
-     * @param preferenceForBB true if blackboard bold is preferred, false if 
+     * for the functions {@link #toTeXString() toTeXString()} and {@link 
+     * #toHTMLString() toHTMLString()}.
+     * @param preferenceForBB True if blackboard bold is preferred, false if 
      * plain bold is preferred.
      */
     public static void preferBlackboardBold(boolean preferenceForBB) {
         preferenceForBlackboardBold = preferenceForBB;
     }
     
+    /**
+     * Gives the maximum algebraic degree an algebraic integer in a quartic ring 
+     * can have.
+     * @return Always 4 in the case of a quartic ring. This value is also 
+     * available as the constant {@link #MAX_ALGEBRAIC_DEGREE}.
+     */
     @Override
-    public int getMaxAlgebraicDegree() {
+    public final int getMaxAlgebraicDegree() {
         return MAX_ALGEBRAIC_DEGREE;
     }
     
