@@ -17,6 +17,7 @@
 package algebraics.quartics;
 
 import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
@@ -88,6 +89,9 @@ public class Zeta8IntegerTest {
         assertEquals(expResult, result);
         result = ZETA_8_CUBED.algebraicDegree();
         assertEquals(expResult, result);
+        Zeta8Integer num = new Zeta8Integer(0, 1, 1, 0);
+        result = num.algebraicDegree();
+        assertEquals(expResult, result);
         expResult = 2;
         result = IMAG_UNIT_I.algebraicDegree();
         assertEquals(expResult, result);
@@ -96,6 +100,24 @@ public class Zeta8IntegerTest {
         result = SQRT_2.algebraicDegree();
         assertEquals(expResult, result);
         result = SQRT_NEG_2.algebraicDegree();
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(0, 8, 0, 8);
+        result = num.algebraicDegree();
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(0, 8, 0, -8);
+        result = num.algebraicDegree();
+        assertEquals(expResult, result);
+        expResult = 1;
+        result = ONE.algebraicDegree();
+        assertEquals(expResult, result);
+        result = NEG_ONE.algebraicDegree();
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(7, 0, 0, 0);
+        result = num.algebraicDegree();
+        assertEquals(expResult, result);
+        expResult = 0;
+        num = new Zeta8Integer(0, 0, 0, 0);
+        result = num.algebraicDegree();
         assertEquals(expResult, result);
     }
 
@@ -131,7 +153,7 @@ public class Zeta8IntegerTest {
     }
     
     /**
-     * Test of norm method, of class Zeta8Integer.
+     * Test of abs method, of class Zeta8Integer.
      */
     @Test
     public void testAbs() {
@@ -486,6 +508,15 @@ public class Zeta8IntegerTest {
         Zeta8Integer expResult = SQRT_2.times(-1);
         result = result.times(IMAG_UNIT_I);
         assertEquals(expResult, result);
+        expResult = new Zeta8Integer(-2, 0, 0, 0);
+        result = SQRT_NEG_2.times(SQRT_NEG_2);
+        assertEquals(expResult, result);
+        expResult = new Zeta8Integer(2, 0, 0, 0);
+        result = SQRT_2.times(SQRT_2);
+        assertEquals(expResult, result);
+        expResult = new Zeta8Integer(0, 0, 2, 0);
+        result = SQRT_2.times(SQRT_NEG_2);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -494,16 +525,78 @@ public class Zeta8IntegerTest {
     @Test
     public void testDivides() {
         System.out.println("divides");
-        Zeta8Integer result = SQRT_NEG_2.divides(SQRT_2);
-        assertEquals(IMAG_UNIT_I, result);
-        result = SQRT_NEG_2.divides(IMAG_UNIT_I);
-        assertEquals(SQRT_2, result);
-        Zeta8Integer dividend = new Zeta8Integer(1, 0, 1, 0); // 1 + i
-        result = dividend.divides(SQRT_2);
-        assertEquals(ZETA_8, result);
-        dividend = new Zeta8Integer(-1, 0, 1, 0); // -1 + i
-        result = dividend.divides(SQRT_NEG_2);
-        assertEquals(ZETA_8, result);
+        Zeta8Integer dividend = new Zeta8Integer(2, 4, 10, 8);
+        Zeta8Integer expResult = new Zeta8Integer(1, 2, 5, 4);
+        Zeta8Integer result;
+        try {
+            result = dividend.divides(2);
+            assertEquals(expResult, result);
+            result = SQRT_NEG_2.divides(SQRT_2);
+            assertEquals(IMAG_UNIT_I, result);
+            result = SQRT_NEG_2.divides(IMAG_UNIT_I);
+            assertEquals(SQRT_2, result);
+            dividend = new Zeta8Integer(1, 0, 1, 0); // 1 + i
+            result = dividend.divides(SQRT_2);
+            assertEquals(ZETA_8, result);
+            dividend = new Zeta8Integer(-1, 0, 1, 0); // -1 + i
+            result = dividend.divides(SQRT_NEG_2);
+            assertEquals(ZETA_8, result);
+            dividend = new Zeta8Integer(-2, 0, 0, 0);
+            result = dividend.divides(SQRT_NEG_2);
+            assertEquals(SQRT_NEG_2, result);
+            dividend = new Zeta8Integer(2, 0, 0, 0);
+            result = dividend.divides(SQRT_2);
+            assertEquals(SQRT_2, result);
+            dividend = new Zeta8Integer(0, 0, 2, 0);
+            result = dividend.divides(SQRT_2);
+            assertEquals(SQRT_NEG_2, result);
+            result = dividend.divides(SQRT_NEG_2);
+            assertEquals(SQRT_2, result);
+        } catch (NotDivisibleException nde) {
+            String failMessage = "NotDivisibleException should not have occurred: \"" + nde.getMessage() + "\"";
+            fail(failMessage);
+        }
+        dividend = new Zeta8Integer(1, 1, 1, 1);
+        Zeta8Integer divisor = new Zeta8Integer(0, 43, 0, 0);
+        try {
+            result = dividend.divides(divisor);
+            String failMessage = "Trying to divide " + dividend.toString() + " by " + divisor.toString() + " should have triggered NotDivisibleException, not given result " + result.toString();
+            fail(failMessage);
+        } catch (NotDivisibleException nde) {
+            System.out.println("Trying to divide " + dividend.toASCIIString() + " by " + divisor.toASCIIString() + " correctly triggered NotDivisibleException.");
+            System.out.println("\"" + nde.getMessage() + "\"");
+        }
+        // And lastly, to test division by 0
+        dividend = new Zeta8Integer(1, 2, 3, 4);
+        divisor = new Zeta8Integer(0, 0, 0, 0);
+        try {
+            result = dividend.divides(divisor);
+            String failMessage = "Attempted division by zero should have triggered an exception, not given result " + result.toString() + ".";
+            fail(failMessage);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Attempted division by zero correctly triggered IllegalArgumentException.");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (ArithmeticException ae) {
+            System.out.println("Attempted division by zero correctly triggered ArithmeticException.");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (NotDivisibleException nde) {
+            String failMessage = "NotDivisibleException should not have occurred for division by 0: \"" + nde.getMessage() + "\"";
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " is wrong exception to throw for division by 0.";
+            fail(failMessage);
+        }
+        try {
+            result = dividend.divides(0);
+            String failMessage = "Attempted division by zero should have triggered an exception, not given result " + result.toString() + ".";
+            fail(failMessage);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Attempted division by zero correctly triggered IllegalArgumentException.");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (NotDivisibleException nde) {
+            String failMessage = "NotDivisibleException should not have occurred for division by 0: \"" + nde.getMessage() + "\"";
+            fail(failMessage);
+        }
     }
 
     /**
@@ -626,12 +719,41 @@ public class Zeta8IntegerTest {
     }
     
     /**
-     * Test of getImagPartNumeric method, of class Zeta8Integer.
+     * Test of angle method, of class Zeta8Integer.
      */
     @Test
     public void testAngle() {
         System.out.println("angle");
-        fail("Haven't written test yet.");
+        double expResult = 0.0;
+        double result = ONE.angle();
+        String assertionMessage = "Angle of " + ONE.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
+        result = SQRT_2.angle();
+        assertionMessage = "Angle of " + SQRT_2.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
+        expResult = 0.78539816;
+        result = ZETA_8.angle();
+        assertionMessage = "Angle of " + ZETA_8.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
+        expResult = 1.57079633;
+        result = IMAG_UNIT_I.angle();
+        assertionMessage = "Angle of " + IMAG_UNIT_I.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
+        result = SQRT_NEG_2.angle();
+        assertionMessage = "Angle of " + SQRT_NEG_2.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
+        expResult = -1.57079633;
+        result = NEG_IMAG_UNIT_I.angle();
+        assertionMessage = "Angle of " + NEG_IMAG_UNIT_I.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
+        expResult = 2.35619449;
+        result = ZETA_8_CUBED.angle();
+        assertionMessage = "Angle of " + ZETA_8_CUBED.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
+        expResult = 3.14159265;
+        result = NEG_ONE.angle();
+        assertionMessage = "Angle of " + NEG_ONE.toString() + " should be " + expResult + " radians";
+        assertEquals(assertionMessage, expResult, result, TEST_DELTA);
     }
     
 }
