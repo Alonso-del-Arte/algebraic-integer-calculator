@@ -71,7 +71,7 @@ public class AlgebraicDegreeOverflowExceptionTest {
             System.out.println("\"" + e.getMessage() + "\"");
             System.out.println("Probably all the tests will fail now.");
         }
-        System.out.println("AlgebraicDegreeOverflowException for the imaginary quadratic example has this message: \"" + algDegOvflExcReal.getMessage() + "\"");
+        System.out.println("AlgebraicDegreeOverflowException for the real quadratic example has this message: \"" + algDegOvflExcReal.getMessage() + "\"");
     }
     
     /**

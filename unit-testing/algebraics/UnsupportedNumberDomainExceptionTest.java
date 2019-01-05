@@ -138,7 +138,6 @@ public class UnsupportedNumberDomainExceptionTest {
         IllDefinedQuadraticRing expResult = new IllDefinedQuadraticRing(R_D);
         IntegerRing result = unsNumDomExcDomain.getCausingDomain();
         assertEquals(expResult, result);
-        expResult = null;
         result = unsNumDomExcOneNum.getCausingDomain();
         assertEquals(expResult, result);
         result = unsNumDomExcTwoNums.getCausingDomain();
