@@ -76,11 +76,11 @@ public final class Zeta8Ring extends QuarticRing {
     /**
      * Formats the ring's label as a String that could theoretically be used in 
      * an old MS-DOS file save dialog.
-     * @return The String "ZETA_8".
+     * @return The String "O_QZETA8".
      */
     @Override
     public String toFilenameString() {
-        return "ZETA_8";
+        return "OQ_ZETA8";
     }
     
 }

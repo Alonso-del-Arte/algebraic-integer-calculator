@@ -17,6 +17,7 @@
 package algebraics.quartics;
 
 import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
@@ -46,6 +47,9 @@ public final class Zeta8Integer extends QuarticInteger {
     
     public static final Zeta8Ring ZETA8RING = new Zeta8Ring();
     
+    private final double numValRe;
+    private final double numValIm;
+    
     private static final int HASH_SEP = 256;
     private static final int HASH_SEP_SQ = HASH_SEP * HASH_SEP;
     private static final int HASH_SEP_CU = HASH_SEP_SQ * HASH_SEP;
@@ -55,10 +59,25 @@ public final class Zeta8Integer extends QuarticInteger {
      */
     private static final double SQRT_ONE_HALF = Math.sqrt(2)/2;
 
-    // STUB TO FAIL FIRST OR SECOND TEST
     @Override
     public int algebraicDegree() {
-        return 4;
+        if (this.zeta8Part == 0 && this.zeta8CuPart == 0) {
+            if (this.imagIntPart == 0) {
+                if (this.realIntPart == 0) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else {
+                return 2;
+            }
+        } else {
+            if (Math.abs(this.zeta8Part) == Math.abs(this.zeta8CuPart)) {
+                return 2;
+            } else {
+                return 4;
+            }
+        }
     }
 
     // STUB TO FAIL FIRST TEST
@@ -251,14 +270,38 @@ public final class Zeta8Integer extends QuarticInteger {
         return new Zeta8Integer(newRe, newZ8, newIm, newZ83);
     }
     
-    // STUB FOR FAILING FIRST TEST
-    public Zeta8Integer divides(Zeta8Integer divisor) {
-        return this;
+    // STUB FOR FAILING SECOND TEST
+    public Zeta8Integer divides(Zeta8Integer divisor) throws NotDivisibleException {
+        if (divisor.norm() < 40) {
+            return this;
+        } else {
+            long[] numers = {0, 0, 0, 0};
+            long[] denoms = {1, 1, 1, 1};
+            throw new NotDivisibleException("Oops, sorry", this, divisor, numers, denoms, ZETA8RING);
+        }
     }
     
-    // STUB FOR FAILING FIRST TEST
-    public Zeta8Integer divides(int divisor) {
-        return this;
+    public Zeta8Integer divides(int divisor) throws NotDivisibleException {
+//        if (divisor == 0) {
+//            String exceptionMessage = "Can't divide " + this.toASCIIString() + " by 0.";
+//            throw new ArithmeticException(exceptionMessage);
+//        }
+        boolean divisibilityFlag = (this.realIntPart % divisor == 0);
+        divisibilityFlag = (divisibilityFlag && (this.zeta8Part % divisor == 0));
+        divisibilityFlag = (divisibilityFlag && (this.imagIntPart % divisor == 0));
+        divisibilityFlag = (divisibilityFlag && (this.zeta8CuPart % divisor == 0));
+        if (divisibilityFlag) {
+            int newRe = this.realIntPart / divisor;
+            int newZ8 = this.zeta8Part / divisor;
+            int newIm = this.imagIntPart / divisor;
+            int newZ83 = this.zeta8CuPart / divisor;
+            return new Zeta8Integer(newRe, newZ8, newIm, newZ83);
+        } else {
+            long[] numers = {this.realIntPart, this.zeta8Part, this.imagIntPart, this.zeta8CuPart};
+            long[] denoms = {divisor, divisor, divisor, divisor};
+            Zeta8Integer wrappedDivisor = new Zeta8Integer(divisor, 0, 0 ,0);
+            throw new NotDivisibleException("Oops, sorry", this, wrappedDivisor, numers, denoms, ZETA8RING);
+        }
     }
     
     public QuadraticInteger convertToQuadraticInteger() {
@@ -307,24 +350,17 @@ public final class Zeta8Integer extends QuarticInteger {
     
     @Override
     public double getRealPartNumeric() {
-        double re = -SQRT_ONE_HALF * this.zeta8CuPart;
-        re += SQRT_ONE_HALF * this.zeta8Part;
-        re += this.realIntPart;
-        return re;
+        return this.numValRe;
     }
     
     @Override
     public double getImagPartNumeric() {
-        double im = SQRT_ONE_HALF * this.zeta8CuPart;
-        im += this.imagIntPart;
-        im += SQRT_ONE_HALF * this.zeta8Part;
-        return im;
+        return this.numValIm;
     }
     
-    // STUB TO FAIL FIRST TEST
     @Override
     public double angle() {
-        return 0.0;
+        return Math.atan2(this.numValIm, this.numValRe);
     }
     
     public Zeta8Integer(int a, int b, int c, int d) {
@@ -333,6 +369,14 @@ public final class Zeta8Integer extends QuarticInteger {
         this.zeta8Part = b;
         this.imagIntPart = c;
         this.zeta8CuPart = d;
+        double re = -SQRT_ONE_HALF * this.zeta8CuPart;
+        re += SQRT_ONE_HALF * this.zeta8Part;
+        re += this.realIntPart;
+        this.numValRe = re;
+        double im = SQRT_ONE_HALF * this.zeta8CuPart;
+        im += this.imagIntPart;
+        im += SQRT_ONE_HALF * this.zeta8Part;
+        this.numValIm = im;
     }
 
 }
