@@ -19,15 +19,16 @@ package algebraics;
 /**
  * A runtime exception to indicate when the result of an arithmetic operation 
  * results in an algebraic integer which no currently available implementation 
- * of {@link AlgebraicInteger} can properly represent. However, if the result of 
- * the arithmetic operation is an algebraic integer of higher degree than any of 
- * the available implementations support, {@link 
+ * of {@link AlgebraicInteger} can properly represent. Or that some other 
+ * operation is not yet supported for a particular kind of ring of integers. 
+ * However, if the result of the arithmetic operation is an algebraic integer of 
+ * higher degree than the pertinent implementations supports, {@link 
  * AlgebraicDegreeOverflowException} should be used instead.
  * @author Alonso del Arte
  */
 public class UnsupportedNumberDomainException extends RuntimeException {
     
-    private static final long serialVersionUID = 1058394388;
+    private static final long serialVersionUID = 1058433824;
     
     private final AlgebraicInteger diffRingNumberA;
     private final AlgebraicInteger diffRingNumberB;
@@ -37,12 +38,12 @@ public class UnsupportedNumberDomainException extends RuntimeException {
     /**
      * Retrieves the number or the two numbers that triggered this exception.
      * @return An array of two objects implementing the {@link AlgebraicInteger} 
-     * interface. They could very well both be instances of the same class 
-     * (e.g., both {@link ImaginaryQuadraticInteger}), but they should come from 
-     * different rings. These are just the numbers that were supplied to the 
-     * constructor. There is the possibility that the second array element could 
-     * be null, or they could both be null, depending on how the exception was 
-     * constructed.
+     * interface. They should both be instances of the same class (e.g., both 
+     * {@link algebraics.quadratics.ImaginaryQuadraticInteger}), and they should 
+     * come from the same unsupported ring. These are just the numbers that were 
+     * supplied to the constructor. There is the possibility that the second 
+     * array element could be null, or they could both be null, depending on how 
+     * the exception was constructed.
      */
     public AlgebraicInteger[] getCausingNumbers() {
         return (new AlgebraicInteger[]{this.diffRingNumberA, this.diffRingNumberB});
@@ -51,8 +52,10 @@ public class UnsupportedNumberDomainException extends RuntimeException {
     /**
      * Retrieves the ring that triggered this exception.
      * @return The algebraic integer ring object that this exception was 
-     * constructed with, or null if the exception was constructed with one or 
-     * two numbers instead.
+     * constructed with, if it was constructed with the single {@link 
+     * IntegerRing} parameter constructor, or the ring of the first algebraic 
+     * integer parameter if the exception was constructed with either the 1- or 
+     * 2-number constructor.
      */
     public IntegerRing getCausingDomain() {
         return this.unsupDomain;
@@ -91,7 +94,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
         super(message);
         this.diffRingNumberA = numberA;
         this.diffRingNumberB = null;
-        this.unsupDomain = null;
+        this.unsupDomain = this.diffRingNumberA.getRing();
     }
     
     /**
@@ -102,20 +105,20 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      * @param message A message to pass on to the {@link Exception} constructor.
      * @param numberA One of the two numbers that caused the exception. It need 
      * not be smaller or larger than numberB in any sense (norm, absolute value, 
-     * etc.) but it is expected to come from a different ring of algebraic 
-     * integers. For example, sqrt(-2).
+     * etc.) but it is expected to come from the same ring of algebraic 
+     * integers. For example, 1 + &#8731;2.
      * @param numberB One of the two numbers that caused the exception. It need 
      * not be larger or smaller than numberA in any sense (norm, absolute value, 
-     * etc.) but it is expected to come from a different ring of algebraic 
-     * integers. For example, sqrt(-7). If the exception is caused by a single 
-     * number (such as, for example, in a prime factorization function) use the 
-     * single number constructor instead.
+     * etc.) but it is expected to come from the same ring of algebraic 
+     * integers. For example, 7 + 5&#8731;2. If the exception is caused by a 
+     * single number (such as, for example, in a prime factorization function) 
+     * use the single-number constructor instead.
      */
     public UnsupportedNumberDomainException(String message, AlgebraicInteger numberA, AlgebraicInteger numberB) {
         super(message);
         this.diffRingNumberA = numberA;
         this.diffRingNumberB = numberB;
-        this.unsupDomain = null;
+        this.unsupDomain = this.diffRingNumberA.getRing();
     }
     
 }

@@ -21,11 +21,12 @@ package algebraics;
  * integers. The implementing classes should provide an algebraic degree 
  * function, trace and norm functions, and the minimal polynomial formatted 
  * both as an integer array of coefficients and as a String.
- * <p>Almost from the beginning, {@link ImaginaryQuadraticInteger}, an 
- * implementation of AlgebraicInteger, had some variants of {@link 
- * Object#toString()} specifically for ASCII plaintext, TeX documents and HTML 
- * pages, but it wasn't until July 2018 that I decided that some of those should 
- * be required by this interface.</p>
+ * <p>Almost from the beginning, {@link 
+ * algebraics.quadratics.ImaginaryQuadraticInteger}, an implementation of 
+ * AlgebraicInteger, had some variants of {@link Object#toString()} specifically 
+ * for ASCII plaintext, TeX documents and HTML pages, but it wasn't until July 
+ * 2018 that I decided that some of those should be required by this 
+ * interface.</p>
  * <p>Basic arithmetic functions (addition, subtraction, multiplication and 
  * division) would be nice but are not explicitly required by this interface. It 
  * is then up to the implementer to define basic arithmetic methods as static or 
@@ -70,10 +71,10 @@ public interface AlgebraicInteger {
      * polynomial.
      * @return An array of 64-bit integers, in total one more than the maximum 
      * possible algebraic degree in the applicable ring. If the algebraic degree 
-     * of this integer is equal to that maximum possible algebraic degree, then 
-     * the element at position length &minus; 1 in the array ought to be 1. For 
-     * example, if the algebraic integer is 1 + &#8731;2, the result would be 
-     * {3, 3, 3, 1}.
+     * of this integer is equal to that maximum possible algebraic degree in the 
+     * given ring, then the element at position length &minus; 1 in the array 
+     * ought to be 1. For example, if the algebraic integer is 1 + &#8731;2, the 
+     * result would be {3, 3, 3, 1}.
      */
     long[] minPolynomial();
     

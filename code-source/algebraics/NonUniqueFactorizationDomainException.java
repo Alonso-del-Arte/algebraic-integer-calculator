@@ -17,8 +17,11 @@
 package algebraics;
 
 import algebraics.quadratics.ImaginaryQuadraticInteger;
+import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
-//import algebraics.quadratics.RealQuadraticInteger;
+import algebraics.quadratics.QuadraticRing;
+import algebraics.quadratics.RealQuadraticInteger;
+import algebraics.quadratics.RealQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
 
 import java.util.ArrayList;
@@ -33,17 +36,14 @@ import java.util.List;
  */
 public class NonUniqueFactorizationDomainException extends Exception {
     
-    private static final long serialVersionUID = 1058267088;
+    private static final long serialVersionUID = 1058571365;
     
     private final AlgebraicInteger unfactorizedNumber;
     
     /**
      * Just a getter for the algebraic integer that triggered this exception.
-     * @return An imaginary quadratic integer object. Calling 
-     * {@link ImaginaryQuadraticInteger#getRing()} should return a ring 
-     * adjoining &radic;<i>d</i> with <i>d</i> being a negative, squarefree 
-     * number other than those listed in 
-     * {@link NumberTheoreticFunctionsCalculator#HEEGNER_NUMBERS}.
+     * @return An algebraic integer object, the one that this exception was 
+     * constructed with in the first place.
      */
     public AlgebraicInteger getUnfactorizedNumber() {
         return this.unfactorizedNumber;
@@ -57,19 +57,24 @@ public class NonUniqueFactorizationDomainException extends Exception {
      * twice if the algorithm encountered factors that are irreducible but not 
      * prime. This suggests that at least one other distinct factorization may 
      * be possible. For example, the factorization of 6 in 
-     * <b>Z</b>[&radic;&minus;5] might be given as &minus;1 &times; &minus;1 
-     * &times; 2 &times; 3, on account of the famous alternate factorization (1 
-     * &minus; &radic;&minus;5)(1 + &radic;&minus;5).
+     * <b>Z</b>[&radic;&minus;5] might be given as &minus;1 &times; &minus;1  
+     * &times; &minus;1 &times; &minus;1 &times; 2 &times; 3, on account of the 
+     * famous alternate factorization (1 &minus; &radic;&minus;5)(1 + 
+     * &radic;&minus;5).
      * @throws UnsupportedNumberDomainException If the algebraic integer is from 
      * a ring not yet supported for this function, this runtime exception will 
      * be thrown. For example, if this function currently only supports real and 
-     * imaginary quadratic integers but it is called on a real cubic integer.
+     * imaginary quadratic integers but it is called on a real cubic integer, 
+     * then this exception will be thrown, with a detail message to that effect.
      */
     public List<AlgebraicInteger> tryToFactorizeAnyway() {
         if (this.unfactorizedNumber instanceof QuadraticInteger) {
             QuadraticInteger n = (QuadraticInteger) this.unfactorizedNumber;
-            QuadraticInteger unity = n.minus(n).plus(1);
+            boolean realFlag = this.unfactorizedNumber instanceof RealQuadraticInteger;
+            QuadraticRing r = n.getRing();
+            QuadraticInteger unity = (QuadraticInteger) NumberTheoreticFunctionsCalculator.getOneInRing(r);
             QuadraticInteger negOne = unity.times(-1);
+            QuadraticInteger currFirstUnit = unity;
             List<AlgebraicInteger> factors = new ArrayList<>();
             if (Math.abs(n.norm()) < 2) {
                 factors.add(n);
@@ -118,17 +123,22 @@ public class NonUniqueFactorizationDomainException extends Exception {
                     }
                     testDivisor = testDivisor.plus(2);
                 }
-                int testDivRealPartMult = 0;
-                int testDivImagPartMult = 2;
+                int testDivRegPartMult = 0;
+                int testDivSurdPartMult = 2;
                 if (n.getRing().hasHalfIntegers()) {
-                    testDivRealPartMult = 1;
-                    testDivImagPartMult = 1;
+                    testDivRegPartMult = 1;
+                    testDivSurdPartMult = 1;
                 }
                 boolean withinRange;
-                while (n.norm() > 1) {
-                    testDivisor = new ImaginaryQuadraticInteger(testDivRealPartMult, testDivImagPartMult, n.getRing(), 2);
+                while (Math.abs(n.norm()) > 1) {
+                    if (r instanceof ImaginaryQuadraticRing) {
+                        testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+                    }
+                    if (r instanceof RealQuadraticRing) {
+                        testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+                    }
                     withinRange = (testDivisor.norm() <= n.norm());
-                    if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor)) {
+                    if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor) && Math.abs(testDivisor.norm()) != 1) {
                         keepGoing = true;
                         while (n.norm() % testDivisor.norm() == 0 && keepGoing) {
                             try {
@@ -150,41 +160,45 @@ public class NonUniqueFactorizationDomainException extends Exception {
                                     factors.add(negOne);
                                 }
                             } catch (NotDivisibleException nde) {
-                                withinRange = ((Math.abs(nde.getNumericRealPart()) >= 1) || (Math.abs(nde.getNumericImagPart()) >= 1));
+                                if (realFlag) {
+                                    withinRange = Math.abs(testDivisor.getRealPartNumeric()) <= Math.abs(n.getRealPartNumeric());
+                                } else {
+                                    withinRange = ((Math.abs(nde.getNumericRealPart()) >= 1) || (Math.abs(nde.getNumericImagPart()) >= 1));
+                                }
                                 keepGoing = false;
                             }
                         }
                     }
                     if (withinRange) {
-                        testDivRealPartMult += 2;
+                        testDivRegPartMult += 2;
                     } else {
-                        if (!n.getRing().hasHalfIntegers()) {
-                            testDivRealPartMult = 0;
-                            testDivImagPartMult += 2;
+                        if (!r.hasHalfIntegers()) {
+                            testDivRegPartMult = 0;
+                            testDivSurdPartMult += 2;
                         } else {
-                            if (testDivImagPartMult % 2 == 0) {
-                                testDivRealPartMult = 1;
+                            if (testDivSurdPartMult % 2 == 0) {
+                                testDivRegPartMult = 1;
                             } else {
-                                testDivRealPartMult = 0;
+                                testDivRegPartMult = 0;
                             }
-                            testDivImagPartMult++;
+                            testDivSurdPartMult++;
                         }
                     }
                 }
                 factors.add(n); // This should be a unit, most likely -1 or 1
+                currFirstUnit = n;
             }
             factors = NumberTheoreticFunctionsCalculator.sortListAlgebraicIntegersByNorm(factors);
             int quadrantAdjustStart = 1;
             keepGoing = true;
             while (quadrantAdjustStart < factors.size() && keepGoing) {
-                if (factors.get(quadrantAdjustStart).norm() == 1) {
+                if (Math.abs(factors.get(quadrantAdjustStart).norm()) == 1) {
                     quadrantAdjustStart++;
                 } else {
                     keepGoing = false;
                 }
             }
             QuadraticInteger currFac;
-            QuadraticInteger currFirstUnit = unity;
             for (int i = quadrantAdjustStart; i < factors.size(); i++) {
                 currFac = (QuadraticInteger) factors.get(i);
                 if (currFac.getRegPartMult() < 0 || ((currFac.getRegPartMult() == 0 && currFac.getSurdPartMult() < 0))) {
@@ -202,22 +216,23 @@ public class NonUniqueFactorizationDomainException extends Exception {
             }
             return factors;
         }
-        throw new UnsupportedNumberDomainException("Only real and imaginary quadratic supported at this time.", this.unfactorizedNumber);
+        String exceptionMessage = "Only real and imaginary quadratic integers are supported at this time, not numbers from " + this.unfactorizedNumber.getRing().toASCIIString();
+        throw new UnsupportedNumberDomainException(exceptionMessage, this.unfactorizedNumber);
     }
     
     /**
      * This is an exception to be potentially thrown by a prime factorization 
      * function if called upon to operate on a number from a domain that is not 
      * a unique factorization domain (UFD), such as those adjoining the square 
-     * root of a negative number other than those listed in {@link 
+     * root of a negative integer other than those listed in {@link 
      * NumberTheoreticFunctionsCalculator#HEEGNER_NUMBERS}. There are many more 
      * real quadratic integer rings that are UFDs, but that's outside the scope 
      * of this documentation.
-     * @param message Should probably just be something like 
- number.getCausingRing().toString() + " is not a unique factorizaton domain." 
- This message is just passed on to the superclass.
+     * @param message Should probably just be something like "The number is from 
+     * a ring that is not a unique factorization domain." This message is just 
+     * passed on to the superclass.
      * @param number The number sent to the prime factorization function, like, 
-     * for example, 1 + sqrt(-30).
+     * for example, 2 + &radic;&minus;30.
      */
     public NonUniqueFactorizationDomainException(String message, AlgebraicInteger number) {
         super(message);

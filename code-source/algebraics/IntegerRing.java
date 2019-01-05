@@ -34,14 +34,18 @@ public interface IntegerRing {
     int getMaxAlgebraicDegree();
     
     /**
-     * Formats the ring's label as a String using ASCII characters only.
+     * Formats the ring's label as a String using ASCII characters only. It is 
+     * strongly recommended that any implementations of IntegerRing also 
+     * override {@link Object#toString}.
      * @return A String. For example, for <b>Z</b>[&radic;2], this would be 
      * "Z[sqrt(2)]".
      */
     String toASCIIString();
     
     /**
-     * Formats the ring's label as a String that can be used in a TeX document.
+     * Formats the ring's label as a String that can be used in a TeX document. 
+     * It is strongly recommended that any implementations of IntegerRing also 
+     * override {@link Object#toString}.
      * @return A String. For example, for <b>Z</b>[&#8731;2], this might be 
      * "\mathbb Z[\root 3 \of 2]".
      */
@@ -49,10 +53,20 @@ public interface IntegerRing {
     
     /**
      * Formats the ring's label as a String that can be used in an HTML 
-     * document.
+     * document. It is strongly recommended that any implementations of 
+     * IntegerRing also override {@link Object#toString}.
      * @return A String. For example, for <b>Z</b>[&#8731;2], this might be 
      * "<b>Z</b>[&#8731;2]".
      */
     String toHTMLString();
+    
+    /**
+     * Formats the ring's label as a String that could theoretically be used in 
+     * an old MS-DOS file save dialog. It is strongly recommended that any 
+     * implementations of IntegerRing also override {@link Object#toString}.
+     * @return A String. For example, for <b>Z</b>[&#8731;2], this might be 
+     * "ZCBRT2".
+     */
+    String toFilenameString();
     
 }

@@ -41,8 +41,10 @@ package algebraics;
 public class AlgebraicDegreeOverflowException extends RuntimeException {
     
     private static final long serialVersionUID = 1058267018;
+    
     private final int maxExpectedAlgebraicDegree;
     private final int necessaryAlgebraicDegree;
+    
     private final AlgebraicInteger diffRingNumberA;
     private final AlgebraicInteger diffRingNumberB;
     
@@ -64,8 +66,8 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * the operation. This is essentially a getter for a property calculated at 
      * the time the exception was constructed.
      * @return An integer greater than the expected algebraic degree. For 
-     * example, this could be 4 if thrown by 
-     * {@link ImaginaryQuadraticInteger#plus}.
+     * example, this could be 4 if thrown by {@link 
+     * algebraics.quadratics.ImaginaryQuadraticInteger#plus}.
      */
     public int getNecessaryAlgebraicDegree() {
         return this.necessaryAlgebraicDegree;
@@ -75,9 +77,9 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * Retrieves the two numbers that triggered this exception.
      * @return An array of two objects implementing the {@link AlgebraicInteger} 
      * interface. They could very well both be instances of the same class 
-     * (e.g., both {@link ImaginaryQuadraticInteger}), but they should come from 
-     * different rings. These are just the numbers that were supplied to the 
-     * constructor.
+     * (e.g., both {@link algebraics.quadratics.ImaginaryQuadraticInteger}), but 
+     * they should come from different rings. These are just the numbers that 
+     * were supplied to the constructor.
      */
     public AlgebraicInteger[] getCausingNumbers() {
         return (new AlgebraicInteger[]{this.diffRingNumberA, this.diffRingNumberB});
@@ -97,11 +99,11 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * @param numberA One of the two numbers that caused the exception. It need 
      * not be smaller or larger than numberB in any sense (norm, absolute value, 
      * etc.) but it is expected to come from a different ring of algebraic 
-     * integers. For example, 1 + sqrt(2).
+     * integers. For example, 1 + &radic;2.
      * @param numberB One of the two numbers that caused the exception. It need 
      * not be larger or smaller than numberA in any sense (norm, absolute value, 
      * etc.) but it is expected to come from a different ring of algebraic 
-     * integers. For example, 1 - cuberoot(2).
+     * integers. For example, 1 &minus; &radic;3.
      */
     public AlgebraicDegreeOverflowException(String message, int maxDegree, AlgebraicInteger numberA, AlgebraicInteger numberB) {
         super(message);
