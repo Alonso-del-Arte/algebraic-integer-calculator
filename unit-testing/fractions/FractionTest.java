@@ -235,6 +235,10 @@ public class FractionTest {
         expResult = "<sup>1</sup>&frasl;<sub>3</sub>";
         result = operandB.toHTMLString().replace(" ", "");
         assertEquals(expResult, result);
+        Fraction negOneHalf = new Fraction(-1, 2);
+        expResult = "<sup>&minus;1</sup>&frasl;<sub>2</sub>";
+        result = negOneHalf.toHTMLString();
+        assertEquals(expResult, result);
     }
 
     /**
