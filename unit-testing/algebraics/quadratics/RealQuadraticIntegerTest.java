@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,6 +19,7 @@ package algebraics.quadratics;
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
+import fractions.Fraction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +38,27 @@ import static org.junit.Assert.*;
 public class RealQuadraticIntegerTest {
     
     /**
-     * The ring <b>Z</b>[&radic;2], numbers of the form  <i>a</i> + 
-     * <i>b</i>&radic;2. This is one of the rings in which RealQuadraticInteger 
-     * will be tested.
+     * The ring <b>Z</b>[&radic;2], consisting of all numbers of the form 
+     * <i>a</i> + <i>b</i>&radic;2. This is one of the rings in which 
+     * RealQuadraticInteger will be tested.
      */
     private static final RealQuadraticRing RING_Z2 = new RealQuadraticRing(2);
 
+    /**
+     * The ring <b>Z</b>[&phi;], consisting of all numbers of the form numbers 
+     * of the form  <i>a</i>/2 + (<i>b</i>/2)&radic;2, where <i>a</i> and 
+     * <i>b</i> are both odd or both even. This is one of the rings in which 
+     * RealQuadraticInteger will be tested.
+     */
     private static final RealQuadraticRing RING_ZPHI = new RealQuadraticRing(5);
 
+    /**
+     * The ring <i>O</i><sub><b>Q</b>(&radic;13)</sub>, consisting of all 
+     * numbers of the form numbers of the form  <i>a</i>/2 + 
+     * (<i>b</i>/2)&radic;13, where <i>a</i> and <i>b</i> are both odd or both 
+     * even. This is one of the rings in which RealQuadraticInteger will be 
+     * tested.
+     */
     private static final RealQuadraticRing RING_OQ13 = new RealQuadraticRing(13);
     
     /**
@@ -1487,19 +1501,8 @@ public class RealQuadraticIntegerTest {
                 failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getCausingRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
-                failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
-                fail(failMessage);
-            }
-            try {
-                result = testNorms.get(i).divides(testIntegers.get(i));
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is " + result.toASCIIString());
-                assertEquals(testConjugates.get(i), result);
-            } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "AlgebraicDegreeOverflowException should not have occurred \"" + adoe.getMessage() + "\"";
-                fail(failMessage);
-            } catch (NotDivisibleException nde) {
-                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testIntegers.get(i).toASCIIString() + " is (" + nde.getFractNumers()[0] + " + " + nde.getFractDenoms()[1] + "sqrt(" + ((QuadraticRing) nde.getCausingRing()).getRadicand() + "))/" + nde.getFractDenoms()[0]);
+                Fraction[] fracts = nde.getFractions();
+                System.out.println(testNorms.get(i).toASCIIString() + " divided by " + testConjugates.get(i).toASCIIString() + " is (" + fracts[0].toString() + " + " + fracts[1].getNumerator() + "sqrt(" + ((QuadraticRing) nde.getCausingRing()).getRadicand() + "))/" + fracts[1].getDenominator() + ".");
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
