@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -21,6 +21,7 @@ import algebraics.AlgebraicInteger;
 import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import calculators.NumberTheoreticFunctionsCalculator;
+import fractions.Fraction;
 
 import java.util.Objects;
 
@@ -82,11 +83,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * @return 2 only in the case of so-called "half-integers," always 1 
      * otherwise. So, if {@link #getRing()}{@link 
      * ImaginaryQuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is false, 
-     * this getter should always return 1. For example, for 3/2 + sqrt(-7)/2, 
-     * this would be 2, for 3 + sqrt(-7) this would be 1. In the ring of the 
-     * Gaussian integers, this getter should always return 1. Even if -1 or -2 
-     * was successfully used as a denominator in the constructor, this getter 
-     * will still return 1 or 2.
+     * this getter should always return 1. For example, for 3/2 + 
+     * (&radic;&minus;7)/2, this would be 2, for 3 + &radic;&minus;7 this would 
+     * be 1. In the ring of the Gaussian integers, this getter should always 
+     * return 1. Even if &minus;1 or &minus;2 was successfully used as a 
+     * denominator in the constructor, this getter will still return 1 or 2.
      */
     public int getDenominator() {
         return this.denominator;
@@ -918,9 +919,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                     //
                 }
                 String exceptionMessage = this.toASCIIString() + " is not divisible by " + divisor.toASCIIString() + ".";
-                long[] numerators = {0, this.surdPartMult};
-                long[] denominators = {1, divisor.surdPartMult};
-                throw new NotDivisibleException(exceptionMessage, this, divisor, numerators, denominators, this.quadRing);
+                Fraction regPartFract = new Fraction(0);
+                Fraction surdPartFract = new Fraction(this.surdPartMult, divisor.surdPartMult);
+                Fraction[] fracts = {regPartFract, surdPartFract};
+                throw new NotDivisibleException(exceptionMessage, this, divisor, fracts, this.quadRing);
             }
             int divSurd = this.surdPartMult / divisor.surdPartMult;
             int divRad = this.quadRing.radicand / divisor.quadRing.radicand;
@@ -972,9 +974,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         }
         if (!divisibleFlag) {
             String exceptionMessage = this.toASCIIString() + " is not divisible by " + divisor.toASCIIString() + ".";
-            long[] numers = {intermediateRegPart, intermediateSurdPart};
-            long[] denoms = {intermediateDenom, intermediateDenom};
-            throw new NotDivisibleException(exceptionMessage, this, divisor, numers, denoms, this.quadRing);
+            Fraction regPartFract = new Fraction(intermediateRegPart, intermediateDenom);
+            Fraction surdPartFract = new Fraction(intermediateSurdPart, intermediateDenom);
+            Fraction[] fracts = {regPartFract, surdPartFract};
+            throw new NotDivisibleException(exceptionMessage, this, divisor, fracts, this.quadRing);
         }
         if (intermediateRegPart < Integer.MIN_VALUE || intermediateRegPart > Integer.MAX_VALUE) {
             throw new ArithmeticException("Real part of division exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
@@ -1050,9 +1053,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             if (this instanceof RealQuadraticInteger) {
                 wrappedDivisor = new RealQuadraticInteger(divisor, 0, this.quadRing);
             }
-            long[] numers = {intermediateRegPart, intermediateSurdPart};
-            long[] denoms = {intermediateDenom, intermediateDenom};
-            throw new NotDivisibleException(exceptionMessage, this, wrappedDivisor, numers, denoms, this.quadRing);
+            Fraction regPartFract = new Fraction(intermediateRegPart, intermediateDenom);
+            Fraction surdPartFract = new Fraction(intermediateSurdPart, intermediateDenom);
+            Fraction[] fracts = {regPartFract, surdPartFract};
+            throw new NotDivisibleException(exceptionMessage, this, wrappedDivisor, fracts, this.quadRing);
         }
         if (intermediateRegPart < Integer.MIN_VALUE || intermediateRegPart > Integer.MAX_VALUE) {
             throw new ArithmeticException("Real part of division exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
