@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -23,6 +23,7 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import fractions.Fraction;
 
 import java.util.Arrays;
 
@@ -62,15 +63,21 @@ public class NotDivisibleExceptionTest {
      */
     private static NotDivisibleException notDivZPhi;
 
+    /**
+     * Sets up the NotDivisibleException objects to use in the tests. If any of 
+     * these objects fail to initialize properly, it will have the exception 
+     * detail message "Initialization state, not the result of an actually 
+     * thrown exception."
+     */
     @BeforeClass
     public static void setUpClass() {
         QuadraticRing currRing = new ImaginaryQuadraticRing(-1);
         String initMsg = "Initialization state, not the result of an actually thrown exception.";
         ImaginaryQuadraticInteger initDividend = new ImaginaryQuadraticInteger(0, 0, currRing);
         ImaginaryQuadraticInteger initDivisor = new ImaginaryQuadraticInteger(1, 0, currRing);
-        long[] initNumers = {0L, 0L};
-        long[] initDenoms = {1L, 1L};
-        notDivGaussian = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
+        Fraction zero = new Fraction(0);
+        Fraction[] initFracts = {zero, zero};
+        notDivGaussian = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
         QuadraticInteger dividend = new ImaginaryQuadraticInteger(5, 1, currRing);
         QuadraticInteger divisor = new ImaginaryQuadraticInteger(3, 1, currRing);
         QuadraticInteger division;
@@ -85,7 +92,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Gaussian integers example has this message: \"" + notDivGaussian.getMessage() + "\"");
         currRing = new ImaginaryQuadraticRing(-3);
-        notDivEisenstein = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
+        notDivEisenstein = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
         dividend = new ImaginaryQuadraticInteger(61, 0, currRing);
         divisor = new ImaginaryQuadraticInteger(1, 9, currRing);
         try {
@@ -98,7 +105,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Eisenstein integers example has this message: \"" + notDivEisenstein.getMessage() + "\"");
         currRing = new RealQuadraticRing(2);
-        notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
+        notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
         dividend = new RealQuadraticInteger(-3, 8, currRing);
         divisor = new RealQuadraticInteger(7, 0, currRing);
         try {
@@ -111,7 +118,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Z[sqrt(2)] example has this message: \"" + notDivZ2.getMessage() + "\"");
         currRing = new RealQuadraticRing(5);
-        notDivZPhi = new NotDivisibleException(initMsg, initDividend, initDivisor, initNumers, initDenoms, currRing);
+        notDivZPhi = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
         dividend = new RealQuadraticInteger(0, 1, currRing);
         divisor = new RealQuadraticInteger(15, -3, currRing, 2);
         try {
@@ -126,48 +133,52 @@ public class NotDivisibleExceptionTest {
     }
     
     /**
-     * Test of getFractNumers method, of class NotDivisibleException.
+     * Test of getFractions method, of class NotDivisibleException.
      */
     @Test
-    public void testGetFractNumers() {
-        System.out.println("getFractNumers");
-        long[] expResult = {8L, -1L};
-        long[] result = notDivGaussian.getFractNumers();
+    public void testGetFractions() {
+        System.out.println("getFractions");
+        Fraction fractRe = new Fraction(8, 5);
+        Fraction fractImMult = new Fraction(-1, 5);
+        Fraction[] expResult = {fractRe, fractImMult};
+        Fraction[] result = notDivGaussian.getFractions();
         assertArrayEquals(expResult, result);
-        expResult[0] = 1L;
-        expResult[1] = -9L;
-        result = notDivEisenstein.getFractNumers();
+        fractRe = new Fraction(1, 4);
+        fractImMult = new Fraction(-9, 4);
+        expResult[0] = fractRe;
+        expResult[1] = fractImMult;
+        result = notDivEisenstein.getFractions();
         assertArrayEquals(expResult, result);
-        expResult[0] = -3L;
-        expResult[1] = 8L;
-        result = notDivZ2.getFractNumers();
+        fractRe = new Fraction(-3, 7);
+        fractImMult = new Fraction(8, 7);
+        expResult[0] = fractRe;
+        expResult[1] = fractImMult;
+        result = notDivZ2.getFractions();
         assertArrayEquals(expResult, result);
-        expResult[0] = 1L;
-        expResult[1] = 1L;
-        result = notDivZPhi.getFractNumers();
+        fractRe = new Fraction(1, 6);
+        expResult[0] = fractRe;
+        expResult[1] = fractRe;
+        result = notDivZPhi.getFractions();
         assertArrayEquals(expResult, result);
     }
-
+        
     /**
-     * Test of getFractDenoms method, of class NotDivisibleException.
+     * Test of getCausingNumbers method, of class NotDivisibleException.
      */
     @Test
-    public void testGetFractDenoms() {
-        System.out.println("getFractDenoms");
-        long[] expResult = {5L, 5L};
-        long[] result = notDivGaussian.getFractDenoms();
+    public void testGetCausingNumbers() {
+        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
+        QuadraticInteger dividend = new ImaginaryQuadraticInteger(5, 1, ring);
+        QuadraticInteger divisor = new ImaginaryQuadraticInteger(3, 1, ring);
+        AlgebraicInteger[] expResult = {dividend, divisor};
+        AlgebraicInteger[] result = notDivGaussian.getCausingNumbers();
         assertArrayEquals(expResult, result);
-        expResult[0] = 4L;
-        expResult[1] = 4L;
-        result = notDivEisenstein.getFractDenoms();
-        assertArrayEquals(expResult, result);
-        expResult[0] = 7L;
-        expResult[1] = 7L;
-        result = notDivZ2.getFractDenoms();
-        assertArrayEquals(expResult, result);
-        expResult[0] = 6L;
-        expResult[1] = 6L;
-        result = notDivZPhi.getFractDenoms();
+        ring = new ImaginaryQuadraticRing(-3);
+        dividend = new ImaginaryQuadraticInteger(61, 0, ring);
+        divisor = new ImaginaryQuadraticInteger(1, 9, ring);
+        expResult[0] = dividend;
+        expResult[1] = divisor;
+        result = notDivEisenstein.getCausingNumbers();
         assertArrayEquals(expResult, result);
     }
 
@@ -343,32 +354,25 @@ public class NotDivisibleExceptionTest {
 //        assertEquals(expResult, result);
     }
     
+    /**
+     * Test of the NotDivisibleException constructor. The only thing we're 
+     * testing here is that the constructor throws {@link 
+     * IllegalArgumentException} if passed an array of fractions with a length 
+     * that doesn't match the algebraic degree of the pertinent ring.
+     */
     @Test
     public void testConstructor() {
         System.out.println("Constructor");
         String exceptionMessage = "This is an exception message for an invalidly constructed NotDivisibleException";
-        long[] mismatchLenNumers = {0L, 1L, 2L, 3L};
-        long[] mismatchLenDenoms = {1L, 2L, 3L, 4L, 5L};
         QuadraticRing ring = new RealQuadraticRing(19);
         RealQuadraticInteger initDividend = new RealQuadraticInteger(0, 0, ring);
         RealQuadraticInteger initDivisor = new RealQuadraticInteger(1, 0, ring);
+        Fraction fractA = new Fraction(7);
+        Fraction fractB = new Fraction(1, 2);
+        Fraction fractC = new Fraction(3, 2);
+        Fraction[] wrongLenFractArray = {fractA, fractB, fractC};
         try {
-            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, mismatchLenNumers, mismatchLenDenoms, ring);
-        } catch (NotDivisibleException nde) {
-            String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
-            fail(failMessage);
-        } catch(IllegalArgumentException iae) {
-            System.out.println("Attempt to create NotDivisibleException with arrays of mismatched length correctly triggered IllegalArgumentException.");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch(Exception e) {
-            String failMessage = e.getClass().getName() + " is the wrong exception in this situation of arrays of mismatched length.";
-            System.out.println(failMessage);
-            System.out.println("\"" + e.getMessage() + "\"");
-        }
-        long[] wrongLenNumers = {0L, 1L, 3L};
-        long[] wrongLenDenoms = {2L, 2L, 2L};
-        try {
-            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongLenNumers, wrongLenDenoms, ring);
+            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongLenFractArray, ring);
         } catch (NotDivisibleException nde) {
             String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
             fail(failMessage);
@@ -377,21 +381,6 @@ public class NotDivisibleExceptionTest {
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch(Exception e) {
             String failMessage = e.getClass().getName() + " is the wrong exception in this situation of arrays of excessive length.";
-            System.out.println(failMessage);
-            System.out.println("\"" + e.getMessage() + "\"");
-        }
-        long[] wrongElemNumers = {1L, 3L};
-        long[] wrongElemDenoms = {0L, 2L};
-        try {
-            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongElemNumers, wrongElemDenoms, ring);
-        } catch (NotDivisibleException nde) {
-            String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
-            fail(failMessage);
-        } catch(IllegalArgumentException iae) {
-            System.out.println("Attempt to create NotDivisibleException with one instance of 0 as a denominator correctly triggered IllegalArgumentException.");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch(Exception e) {
-            String failMessage = e.getClass().getName() + " is the wrong exception in this situation involving a 0 as a denominator.";
             System.out.println(failMessage);
             System.out.println("\"" + e.getMessage() + "\"");
         }

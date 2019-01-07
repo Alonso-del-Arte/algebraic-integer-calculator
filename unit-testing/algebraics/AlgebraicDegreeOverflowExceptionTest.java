@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -37,6 +37,12 @@ public class AlgebraicDegreeOverflowExceptionTest {
     private static AlgebraicDegreeOverflowException algDegOvflExcImag;
     private static AlgebraicDegreeOverflowException algDegOvflExcReal;
     
+    /**
+     * Sets up the AlgebraicDegreeOverflowException objects to use in the tests. 
+     * If any of these objects fail to initialize properly, it will have the 
+     * exception detail message "Initialization state, not the result of an 
+     * actually thrown exception."
+     */
     @BeforeClass
     public static void setUpClass() {
         algDegOvflExcImag = new AlgebraicDegreeOverflowException("Initialization state, not the result of an actually thrown exception.", 2, NumberTheoreticFunctionsCalculator.IMAG_UNIT_I, NumberTheoreticFunctionsCalculator.IMAG_UNIT_NEG_I);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,6 +20,7 @@ import algebraics.quadratics.IllDefinedQuadraticInteger;
 import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
 import calculators.NumberTheoreticFunctionsCalculator;
+import fractions.Fraction;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,6 +40,12 @@ public class UnsupportedNumberDomainExceptionTest {
     private static final int R_A = 2;
     private static final int R_B = 1;
     
+    /**
+     * Sets up the UnsupportedNumberDomainException objects to use in the tests. 
+     * If any of these objects fail to initialize properly, it will have the 
+     * exception detail message "Initialization state, not the result of an 
+     * actually thrown exception."
+     */
     @BeforeClass
     public static void setUpClass() {
         IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(R_D);
@@ -68,9 +75,10 @@ public class UnsupportedNumberDomainExceptionTest {
             unsNumDomExcTwoNums = unde;
         }
         System.out.println("UnsupportedNumberDomainException for the 2-number example has this message: \"" + unsNumDomExcTwoNums.getMessage() + "\"");
-        long[] numers = {442L, 6L};
-        long[] denoms = {881L, 881L};
-        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", a, b, numers, denoms, r);
+        Fraction fractRe = new Fraction(442, 881);
+        Fraction fractIm = new Fraction(6, 881);
+        Fraction[] fracts = {fractRe, fractIm};
+        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", a, b, fracts, r);
         try {
             AlgebraicInteger num = notDivExc.roundTowardsZero();
             System.out.println("(442 + 6sqrt(-220))/881 rounded down to " + num.toASCIIString());
