@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -22,12 +22,13 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import fractions.Fraction;
 
 /**
  * An exception to indicate when the division of one algebraic integer by 
  * another algebraic integer results in an algebraic number that is in the 
- * relevant field but not the relevant ring. For example, sqrt(-2)/3 is in 
- * Q(sqrt(-2)) but not Z[sqrt(-2)].
+ * relevant field but not the relevant ring. For example, (&radic;&minus;2)/3 is 
+ * in <b>Q</b>(&radic;&minus;2) but not <b>Z</b>[&radic;&minus;2].
  * <p>This is the wrong exception to throw for division by 0. Throwing this 
  * exception implies the result of a division is an algebraic number but not an 
  * algebraic integer. Whatever we think an algebraic integer divided by 0 is, it 
@@ -36,15 +37,14 @@ import algebraics.quadratics.RealQuadraticRing;
  * integer nearby in the relevant ring.</p>
  * <p>At some point in the future I want to make this exception usable for any 
  * implementation of {@link AlgebraicInteger}, not just {@link 
- * ImaginaryQuadraticInteger}.</p>
+ * algebraics.quadratics.QuadraticInteger}.</p>
  * @author Alonso del Arte
  */
 public class NotDivisibleException extends Exception {
     
-    private static final long serialVersionUID = 1058430235;
+    private static final long serialVersionUID = 1058578553;
     
-    private final long[] numers;
-    private final long[] denoms;
+    private final Fraction[] fractions;
     
     private final AlgebraicInteger dividend;
     private final AlgebraicInteger divisor;
@@ -55,25 +55,27 @@ public class NotDivisibleException extends Exception {
     private final double numericImagPart;
     
     /**
-     * Gives the numerators of the resulting fraction.
-     * @return The integers for the numerators that were supplied at the time 
-     * the exception was constructed. For example, given 7/3 + 2 * sqrt(-5)/3, 
-     * this might be {7, 2}.
+     * Gives the fractions with which this exception was constructed.
+     * @return The array of Fraction objects that was supplied to the exception 
+     * constructor.
      */
-    public long[] getFractNumers() {
-        return numers;
+    public Fraction[] getFractions() {
+        return this.fractions;
     }
-
+    
     /**
-     * Gives the denominator of the resulting fraction.
-     * @return The integer supplied at the time the exception was constructed. 
-     * It may be almost any integer, but most certainly it should not be 0. 
-     * Actually, it should not be -1 nor 1 either, and if the ring has 
-     * "half-integers," it should not be -2 nor 2. For example, given 7/3 + 2 * 
-     * sqrt(-5)/3, this would be 3.
+     * Gives the numbers that caused this exception. In the original version of 
+     * this exception, the exception constructor just took the detail message 
+     * and fractions. In 2018 this was changed so that the constructor takes in 
+     * two AlgebraicInteger objects and an {@link IntegerRing} object in 
+     * addition to an array of fractions.
+     * @return An array of two AlgebraicInteger objects. It is assumed that the 
+     * first is the dividend and the second is the divisor, and that they are 
+     * both from the same ring passed to the exception constructor.
      */
-    public long[] getFractDenoms() {
-        return denoms;
+    public AlgebraicInteger[] getCausingNumbers() {
+        AlgebraicInteger[] numbers = {this.dividend, this.divisor};
+        return numbers;
     }
     
     /**
@@ -82,14 +84,14 @@ public class NotDivisibleException extends Exception {
      * constructed. 
      */
     public IntegerRing getCausingRing() {
-        return initRing;
+        return this.initRing;
     }
     
     /**
      * Gives a numeric approximation of the real part of the resulting fraction.
      * @return A double with a numeric approximation of the real part of the 
-     * resulting fraction. For example, for 3/4 + 7sqrt(-2)/4, this would be 
-     * 0.75.
+     * resulting fraction. For example, for 3/4 + 7(&radic;&minus;2)/4, this 
+     * would be 0.75.
      */
     public double getNumericRealPart() {
         return this.numericRealPart;
@@ -100,9 +102,9 @@ public class NotDivisibleException extends Exception {
      * fraction divided by the imaginary unit.
      * @return A double with a numeric approximation of the imaginary part of 
      * the resulting fraction divided by the imaginary unit. For example, for 
-     * 3/4 + 7sqrt(-2)/4, this would be about 2.4748737341, which is 
-     * approximately 7sqrt(2)/4. In the case of a real integer ring (one without 
-     * complex numbers) this should always be 0.0.
+     * 3/4 + 7(&radic;&minus;2)/4, this would be about 2.4748737341, which is 
+     * approximately 7(&radic;&minus;2)/4. In the case of a real integer ring 
+     * (one without complex numbers) this should always be 0.0.
      */
     public double getNumericImagPart() {
         return this.numericImagPart;
@@ -110,10 +112,9 @@ public class NotDivisibleException extends Exception {
     
     /**
      * Gets the algebraic integers which surround the algebraic number 
-     * represented by ({@link #getResReFractNumer()} + 
-     * {@link getResImFractNumer()} * sqrt({@link getResFractNegRad()})) / 
-     * {@link getResFractDenom()}. WARNING: There is no overflow checking.
-     * @return An array of algebraic integer objects Do not expect the integers 
+     * represented by the fractions that were passed to the constructor. 
+     * WARNING: There is no overflow checking.
+     * @return An array of algebraic integer objects. Do not expect the integers 
      * to be in any particular order: I or anyone else working on this project 
      * in the future is free to change the implementation in the interest of 
      * efficiency. If you need the bounding integers in a specific order, sort 
@@ -126,8 +127,8 @@ public class NotDivisibleException extends Exception {
         if (this.initRing instanceof QuadraticRing) {
             QuadraticRing workingRing = (QuadraticRing) initRing;
             QuadraticInteger zeroQI = new ImaginaryQuadraticInteger(0, 0, new ImaginaryQuadraticRing(-1));
-            double numerReg = (double) numers[0] / denoms[0];
-            double numerSurd = (double) numers[1] / denoms[1];
+            double numerReg = this.fractions[0].getNumericApproximation();
+            double numerSurd = this.fractions[1].getNumericApproximation();
             if (workingRing instanceof ImaginaryQuadraticRing || workingRing instanceof RealQuadraticRing) {
                 int arrayLen = 0;
                 if (workingRing instanceof ImaginaryQuadraticRing) {
@@ -135,12 +136,16 @@ public class NotDivisibleException extends Exception {
                     zeroQI = new ImaginaryQuadraticInteger(0, 0, workingRing);
                 }
                 if (workingRing instanceof RealQuadraticRing) {
-                    arrayLen = 8;
+                    if (workingRing.hasHalfIntegers()) {
+                        arrayLen = 12;
+                    } else {
+                        arrayLen = 8;
+                    }
                     zeroQI = new RealQuadraticInteger(0, 0, workingRing);
                 }
                 AlgebraicInteger[] algIntArray = new AlgebraicInteger[arrayLen];
                 for (int i = 0; i < arrayLen; i++) {
-                    algIntArray[i] = zeroQI;
+                    algIntArray[i] = zeroQI; // Fill array with zeroes for now
                 }
                 if (workingRing.hasHalfIntegers()) {
                     int topPointA, topPointB;
@@ -195,13 +200,14 @@ public class NotDivisibleException extends Exception {
     
     /**
      * Rounds the algebraic number to the algebraic integer in the relevant ring 
-     * that is closest to 0. However, no guarantee is made as to which result 
-     * will be returned if two potential results are the same distance from 0.
+     * that is closest to 0 from among the bounding integers. However, no 
+     * guarantee is made as to which result will be returned if two or more 
+     * potential results are the same distance from 0.
      * @return An AlgebraicInteger object representing the algebraic integer 
      * that is as close if not closer to 0 than the other integers bounding the 
-     * algebraic number. For example, for 7/3 + 4 * sqrt(-5)/3 this would be 2 + 
-     * sqrt(-5). Now, given, for example, 7/8 + 7i/8, no guarantee is made as to 
-     * whether this function would return i or 1.
+     * algebraic number. For example, for 7/3 + 4(&radic;&minus;5)/3 this would 
+     * be 2 + &radic;&minus;5. Now, given, for example, 7/8 + 7<i>i</i>/8, no 
+     * guarantee is made as to whether this function would return <i>i</i> or 1.
      */
     public AlgebraicInteger roundTowardsZero() {
         if (this.initRing instanceof QuadraticRing) {
@@ -222,8 +228,8 @@ public class NotDivisibleException extends Exception {
                 }
                 return bounds[bestIndex];
             }
-            double intermediateRegPart = (double) numers[0] / (double) denoms[0];
-            double intermediateSurdPart = (double) numers[1] / (double) denoms[1];
+            double intermediateRegPart = this.fractions[0].getNumericApproximation();
+            double intermediateSurdPart = this.fractions[1].getNumericApproximation();
             if (intermediateRegPart < 0) {
                 intermediateRegPart = Math.ceil(intermediateRegPart);
             } else {
@@ -250,7 +256,16 @@ public class NotDivisibleException extends Exception {
         throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
     }
     
-    // TODO: Rewrite Javadoc
+    /**
+     * Rounds the algebraic number to the algebraic integer in the relevant ring 
+     * that is farthest away from 0 from among the bounding integers. However, no guarantee is made as to which result 
+     * will be returned if two or more potential results are the same distance 
+     * from 0.
+     * @return An AlgebraicInteger object representing the algebraic integer 
+     * that is as far from 0 than the other integers bounding the 
+     * algebraic number. For example, for 7/3 + 4(&radic;&minus;5)/3 this would 
+     * be 3 + 2&radic;&minus;5.
+     */
     public AlgebraicInteger roundAwayFromZero() {
         if (this.initRing instanceof QuadraticRing) {
             QuadraticRing workingRing = (QuadraticRing) initRing;
@@ -270,8 +285,8 @@ public class NotDivisibleException extends Exception {
                 }
                 return bounds[bestIndex];
             }
-            double intermediateRegPart = (double) numers[0] / (double) denoms[0];
-            double intermediateSurdPart = (double) numers[1] / (double) denoms[1];
+            double intermediateRegPart = this.fractions[0].getNumericApproximation();
+            double intermediateSurdPart = this.fractions[1].getNumericApproximation();
             if (intermediateRegPart < 0) {
                 intermediateRegPart = Math.floor(intermediateRegPart);
             } else {
@@ -301,9 +316,11 @@ public class NotDivisibleException extends Exception {
     /**
      * This exception should be thrown when a division operation takes the 
      * resulting number out of the ring, to the larger field. If the result is 
-     * an algebraic number of degree 4, perhaps AlgebraicDegreeOverflowException 
-     * should be thrown instead. And if there is an attempt to divide by 0, the 
-     * appropriate exception to throw would perhaps be IllegalArgumentException.
+     * an algebraic number of higher algebraic degree than the AlgebraicInteger 
+     * implementation can handle, perhaps {@link 
+     * AlgebraicDegreeOverflowException} should be thrown instead. And if there 
+     * is an attempt to divide by 0, the appropriate exception to throw would 
+     * perhaps be {@link IllegalArgumentException}.
      * @param message A message to pass on to the {@link Exception} constructor.
      * @param dividend The algebraic integer that is not divisible by the 
      * divisor. This one must be given first because the constructor has no 
@@ -311,44 +328,28 @@ public class NotDivisibleException extends Exception {
      * @param divisor The algebraic integer by which the dividend is not 
      * divisible. This one must be given second for the same reason the dividend 
      * must be given first.
-     * @param numerators An array of numerators.
-     * @param denominators An array of denominators. It should be the same 
-     * length as the array of numerators. May contain negative numbers but it 
-     * must not contain 0.
+     * @param fractions An array of Fraction objects. The length of the array 
+     * should equal the algebraic degree of the given ring. For example, in the 
+     * case of cubic integers, the array should have three fractions.
      * @param ring The ring of algebraic integers into which to round the 
      * algebraic number.
-     * @throws IllegalArgumentException If any of these is true of the 
-     * parameters: the array of numerators has more or fewer numbers than the 
-     * array of denominators; the two arrays are of the same length but they 
-     * have more numbers than the maximum algebraic degree of the ring (e.g., 
-     * passing two arrays with fourteen numbers each for a cubic ring); any of 
-     * the denominators is equal to 0.
+     * @throws IllegalArgumentException If the length of the array of fractions 
+     * does not match the algebraic degree of the ring.
      */
-    public NotDivisibleException(String message, AlgebraicInteger dividend, AlgebraicInteger divisor, long[] numerators, long[] denominators, IntegerRing ring) {
+    public NotDivisibleException(String message, AlgebraicInteger dividend, AlgebraicInteger divisor, Fraction[] fractions, IntegerRing ring) {
         super(message);
-        if (numerators.length != denominators.length) {
-            String exceptionMessage = "Array of numerators has " + numerators.length + " numbers but array of denominators has " + denominators.length + " numbers.";
+        if (fractions.length != ring.getMaxAlgebraicDegree()) {
+            String exceptionMessage = "Numbers of class " + ring.getClass().getName() + " can have a maximum algebraic degree of " + ring.getMaxAlgebraicDegree() + " but an array of " + fractions.length + " was passed in.";
             throw new IllegalArgumentException(exceptionMessage);
         }
-        if (numerators.length != ring.getMaxAlgebraicDegree()) {
-            String exceptionMessage = "Numbers of class " + ring.getClass().getName() + " can have a maximum algebraic degree of " + ring.getMaxAlgebraicDegree() + " but an array of " + numerators.length + " was passed in.";
-            throw new IllegalArgumentException(exceptionMessage);
-        }
-        for (long denom : denominators) {
-            if (denom == 0) {
-                String exceptionMessage = "Zero is not a valid denominator.";
-                throw new IllegalArgumentException(exceptionMessage);
-            }
-        }
-        this.numers = numerators;
-        this.denoms = denominators;
-        double numRe = (double) this.numers[0] / this.denoms[0];
+        this.fractions = fractions;
+        double numRe = this.fractions[0].getNumericApproximation();
         double numIm = 0.0;
         if (ring instanceof ImaginaryQuadraticRing) {
-            numIm = ((ImaginaryQuadraticRing) ring).getAbsNegRadSqrt() * this.numers[1] / this.denoms[1];
+            numIm = ((ImaginaryQuadraticRing) ring).getAbsNegRadSqrt() * this.fractions[1].getNumericApproximation();
         }
         if (ring instanceof RealQuadraticRing) {
-            numRe += ((RealQuadraticRing) ring).getRadSqrt() * this.numers[1] / this.denoms[1];
+            numRe += ((RealQuadraticRing) ring).getRadSqrt() * this.fractions[1].getNumericApproximation();
         }
         this.numericRealPart = numRe;
         this.numericImagPart = numIm;
