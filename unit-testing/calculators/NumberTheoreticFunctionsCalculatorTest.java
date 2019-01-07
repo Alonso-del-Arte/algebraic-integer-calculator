@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -213,7 +213,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     /**
      * Test of sortListAlgebraicIntegersByNorm method, of class 
-     * NumberTheoreticFunctionsCalculator.
+     * NumberTheoreticFunctionsCalculator. If norms may be negative, the 
+     * algebraic integers should be sorted by the absolute value of the norm. No 
+     * expectation is laid out for what should happen if the algebraic integers 
+     * to be sorted come from different rings.
      */
     @Test
     public void testSortListAlgebraicIntegersByNorm() {
