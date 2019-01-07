@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -25,6 +25,7 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import fractions.Fraction;
 
 /**
  * Defines objects to represent numbers in the ring of algebraic integers of 
@@ -236,25 +237,18 @@ public final class Zeta8Integer extends QuarticInteger {
     }
     
     public Zeta8Integer times(Zeta8Integer multiplicand) {
-        // Given x = zeta_8, this = a + bx + cx^2 + dx^3 and ...
-        // ... multiplicand = p + qx + rx^2 + sx^3, then ...
-        // (a + bx + cx^2 + dx^3)(p + qx + rx^2 + sx^3) = ...
-        // ... ap + aqx + arx^2 + asx^3 + ...
         int newRe = this.realIntPart * multiplicand.realIntPart;
         int newZ8 = this.realIntPart * multiplicand.zeta8Part;
         int newIm = this.realIntPart * multiplicand.imagIntPart;
         int newZ83 = this.realIntPart * multiplicand.zeta8CuPart;
-        // ... bpx + bqx^2 + brx^3 - bs +  ...
         newZ8 += (this.zeta8Part * multiplicand.realIntPart);
         newIm += (this.zeta8Part * multiplicand.zeta8Part);
         newZ83 += (this.zeta8Part * multiplicand.imagIntPart);
         newRe -= (this.zeta8Part * multiplicand.zeta8CuPart);
-        // ... cpx^2 + cqx^3 - cr - csx + ...
         newIm += (this.imagIntPart * multiplicand.realIntPart);
         newZ83 += (this.imagIntPart * multiplicand.zeta8Part);
         newRe -= (this.imagIntPart * multiplicand.imagIntPart);
         newZ8 -= (this.imagIntPart * multiplicand.zeta8CuPart);
-        // ... dpx^3 - dq - drx - dsx^2.
         newZ83 += (this.zeta8CuPart * multiplicand.realIntPart);
         newRe -= (this.zeta8CuPart * multiplicand.zeta8Part);
         newZ8 -= (this.zeta8CuPart * multiplicand.imagIntPart);
@@ -275,9 +269,9 @@ public final class Zeta8Integer extends QuarticInteger {
         if (divisor.norm() < 40) {
             return this;
         } else {
-            long[] numers = {0, 0, 0, 0};
-            long[] denoms = {1, 1, 1, 1};
-            throw new NotDivisibleException("Oops, sorry", this, divisor, numers, denoms, ZETA8RING);
+            Fraction zero = new Fraction(0);
+            Fraction[] fracts = {zero, zero, zero, zero};
+            throw new NotDivisibleException("Oops, sorry", this, divisor, fracts, ZETA8RING);
         }
     }
     
@@ -297,10 +291,14 @@ public final class Zeta8Integer extends QuarticInteger {
             int newZ83 = this.zeta8CuPart / divisor;
             return new Zeta8Integer(newRe, newZ8, newIm, newZ83);
         } else {
-            long[] numers = {this.realIntPart, this.zeta8Part, this.imagIntPart, this.zeta8CuPart};
-            long[] denoms = {divisor, divisor, divisor, divisor};
+            String exceptionMessage = this.toASCIIString() + " is not divisible by " + divisor;
             Zeta8Integer wrappedDivisor = new Zeta8Integer(divisor, 0, 0 ,0);
-            throw new NotDivisibleException("Oops, sorry", this, wrappedDivisor, numers, denoms, ZETA8RING);
+            Fraction reFract = new Fraction(this.realIntPart, divisor);
+            Fraction z8Fract = new Fraction(this.zeta8Part, divisor);
+            Fraction imFract = new Fraction(this.imagIntPart, divisor);
+            Fraction z83Fract = new Fraction(this.zeta8CuPart, divisor);
+            Fraction[] fracts = {reFract, z8Fract, imFract, z83Fract};
+            throw new NotDivisibleException(exceptionMessage, this, wrappedDivisor, fracts, ZETA8RING);
         }
     }
     
