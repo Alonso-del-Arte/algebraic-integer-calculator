@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,24 +16,48 @@
  */
 package viewers;
 
-import clipboardops.ImageSelection;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
+import clipboardops.ImageSelection;
+import fileops.FileChooserWithOverwriteGuard;
+import fileops.PNGFileFilter;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.*;
-import javax.imageio.ImageIO;
-import javax.swing.filechooser.FileFilter;
-import java.util.List;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import fileops.FileChooserWithOverwriteGuard;
-import fileops.PNGFileFilter;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * A Swing component in which to display diagrams of prime numbers in various 
@@ -1293,12 +1317,40 @@ public final class ImagQuadRingDisplay extends JPanel implements ActionListener,
     }
     
     /**
-     * Show the About box, a simple MessageDialog from JOptionPage.
+     * Uses the default Web browser to show the user manual. If the default 
+     * browser is not available for whatever reason, a message to that effect is 
+     * shown in a dialog box and/or on the console.
      */
-    public void showAboutBox() {
-        JOptionPane.showMessageDialog(ringFrame, "Imaginary Quadratic Integer Ring Viewer\nVersion 0.97\n\u00A9 2018 Alonso del Arte");
+    public void showUserManual() {
+        String urlStr = "https://github.com/Alonso-del-Arte/visualization-quadratic-imaginary-rings/blob/master/dist-jar/README.md";
+        if (Desktop.isDesktopSupported()) {
+            try {
+                URI url = new URI(urlStr);
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(url);
+            } catch (URISyntaxException | IOException e) {
+                String problemMessage = "Sorry, unable to open URL\n<" + urlStr + ">\n\"" + e.getMessage() + "\"";
+                JOptionPane.showMessageDialog(this.ringFrame, problemMessage);
+                System.err.println(problemMessage);
+            }
+        } else {
+            String noDesktopMessage = "Sorry, unable to open URL\n<" + urlStr + ">\nDefault Web browser is not available from this program.";
+            JOptionPane.showMessageDialog(this.ringFrame, noDesktopMessage);
+            System.err.println(noDesktopMessage);
+        }
     }
     
+    /**
+     * Shows the About box, a simple MessageDialog from JOptionPage. If 
+     * available, writes the same information to the console.
+     */
+    public void showAboutBox() {
+        String aboutBoxTitle = "About";
+        String aboutMessage = "Imaginary Quadratic Integer Ring Viewer\nVersion 0.98\n\u00A9 2019 Alonso del Arte";
+        JOptionPane.showMessageDialog(this.ringFrame, aboutMessage, aboutBoxTitle, JOptionPane.PLAIN_MESSAGE);
+        System.out.println(aboutMessage);
+    }
+
     /**
      * Function to handle menu events. Unrecognized commands will be printed to 
      * the console with a message to that effect.
@@ -1367,6 +1419,9 @@ public final class ImagQuadRingDisplay extends JPanel implements ActionListener,
             case "toggleReadOuts":
                 toggleReadOutsEnabled();
                 break;
+            case "showUserManual":
+                showUserManual();
+                break;
             case "about":
                 showAboutBox();
                 break;
@@ -1399,7 +1454,9 @@ public final class ImagQuadRingDisplay extends JPanel implements ActionListener,
         JMenuBar ringWindowMenuBar;
         JMenu ringWindowMenu;
         JMenuItem ringWindowMenuItem, saveFileMenuItem, quitMenuItem;
-        JMenuItem chooseDMenuItem, copyReadOutsToClipboardMenuItem, copyDiagramToClipboardMenuItem, resetViewDefaultsMenuItem, aboutMenuItem;
+        JMenuItem chooseDMenuItem, copyReadOutsToClipboardMenuItem, copyDiagramToClipboardMenuItem;
+        JMenuItem resetViewDefaultsMenuItem;
+        JMenuItem showManualMenuItem, aboutMenuItem;
         // Determine if this is a Mac OS X system, needing different keyboard shortcuts
         boolean macOSFlag;
         int maskCtrlCommand;
@@ -1598,6 +1655,11 @@ public final class ImagQuadRingDisplay extends JPanel implements ActionListener,
         ringWindowMenu.setMnemonic(KeyEvent.VK_H);
         ringWindowMenu.getAccessibleContext().setAccessibleDescription("Menu to provide help and documentation");
         ringWindowMenuBar.add(ringWindowMenu);
+        ringWindowMenuItem = new JMenuItem("User Manual...");
+        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Use default Web browser to show user manual");
+        showManualMenuItem = ringWindowMenu.add(ringWindowMenuItem);
+        showManualMenuItem.setActionCommand("showUserManual");
+        showManualMenuItem.addActionListener(this);
         ringWindowMenuItem = new JMenuItem("About...");
         ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Information about this program");
         aboutMenuItem = ringWindowMenu.add(ringWindowMenuItem);
