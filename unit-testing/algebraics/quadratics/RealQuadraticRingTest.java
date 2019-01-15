@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -38,7 +38,7 @@ public class RealQuadraticRingTest {
     private static boolean ringRandomd1mod4;
     
     /**
-     * Sets up three RealQuadraticRing objects, corresponding to 
+     * Sets up four RealQuadraticRing objects, corresponding to 
      * <b>Z</b>[&radic;2], <b>Z</b>[&phi;], 
      * <i>O</i><sub><b>Q</b>(&radic;13)</sub> and a randomly chosen ring. The 
      * randomly chosen ring <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> is 
@@ -58,6 +58,24 @@ public class RealQuadraticRingTest {
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
     }
     
+    /**
+     * Test of isPurelyReal, of class RealQuadraticRing. Asserting true for all 
+     * the test rings in this test class.
+     */
+    @Test
+    public void testIsPurelyReal() {
+        System.out.println("isPurelyReal");
+        String msgPart = " should be said to be a purely real ring.";
+        String assertionMessage = ringZ2.toString() + msgPart;
+        assertTrue(assertionMessage, ringZ2.isPurelyReal());
+        assertionMessage = ringZPhi.toString() + msgPart;
+        assertTrue(assertionMessage, ringZPhi.isPurelyReal());
+        assertionMessage = ringOQ13.toString() + msgPart;
+        assertTrue(assertionMessage, ringOQ13.isPurelyReal());
+        assertionMessage = ringRandom.toString() + msgPart;
+        assertTrue(assertionMessage, ringRandom.isPurelyReal());
+    }
+
     /**
      * Test of getRadicand method, of class RealQuadraticRing, inherited from 
      * QuadraticRing.
@@ -87,7 +105,7 @@ public class RealQuadraticRingTest {
      * Test of getRadicand and getAbsNegRad methods, of class RealQuadraticRing.
      */
     @Test
-    public void testRadAbsNegRadCorr() {
+    public void testRadAbsNegRadCorrelate() {
         System.out.println("getRadicand and getAbsNegRad should be the same for an instance of RealQuadraticRing.");
         assertEquals(ringZ2.getRadicand(), ringZ2.getAbsNegRad());
         assertEquals(ringZPhi.getRadicand(), ringZPhi.getAbsNegRad());
@@ -363,7 +381,7 @@ public class RealQuadraticRingTest {
         System.out.println("RealQuadraticRing (constructor)");
         RealQuadraticRing ringZ10 = new RealQuadraticRing(10); // This should work fine
         System.out.println("Created " + ringZ10.toASCIIString() + " without problem.");
-        RealQuadraticRing ringZ11 = new RealQuadraticRing(13); // This should also work fine
+        RealQuadraticRing ringZ11 = new RealQuadraticRing(53); // This should also work fine
         System.out.println("Created " + ringZ11.toASCIIString() + " without problem.");
         try {
             RealQuadraticRing ringZ1 = new RealQuadraticRing(1);
@@ -384,7 +402,7 @@ public class RealQuadraticRingTest {
         try {
             RealQuadraticRing ringZi7 = new RealQuadraticRing(-7);
             System.out.println("Somehow created " + ringZi7.toASCIIString() + " without problem.");
-            fail("Attempt to use -7 should have caused an IllegalArgumentException.");
+            fail("Attempt to use \u22127 should have caused an IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
             System.out.println("Attempt to use -7 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
         }

@@ -17,7 +17,7 @@
 package algebraics.quadratics;
 
 /**
- * This is strictly to define instances of {@link IllDefinedQuadraticInteger}, 
+ * This is mostly to define instances of {@link IllDefinedQuadraticInteger}, 
  * which in turn are objects for use in {@link 
  * algebraics.UnsupportedNumberDomainExceptionTest}. It should be in a test 
  * package, not in a source package, and it should not be compiled to any JARs.
@@ -26,6 +26,11 @@ package algebraics.quadratics;
 public class IllDefinedQuadraticRing extends QuadraticRing {
     
     private final double radSqrt;
+    
+    @Override
+    public boolean isPurelyReal() {
+        return (this.radicand > -1);
+    }
     
     @Override
     public double getRadSqrt() {

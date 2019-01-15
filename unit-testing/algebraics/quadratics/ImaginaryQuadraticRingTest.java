@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -46,13 +46,13 @@ public class ImaginaryQuadraticRingTest {
     
     /**
      * Sets up five ImaginaryQuadraticRing objects, corresponding to 
-     * <b>Z</b>[<i>i</i>], <b>Z</b>[&radic;-2], <b>Z</b>[&omega;], 
-     * <i>O</i><sub><b>Q</b>(&radic;-7)</sub> and a randomly chosen ring.
+     * <b>Z</b>[<i>i</i>], <b>Z</b>[&radic;&minus;2], <b>Z</b>[&omega;], 
+     * <i>O</i><sub><b>Q</b>(&radic;&minus;7)</sub> and a randomly chosen ring.
      * The randomly chosen ring <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> is 
-     * determined by <i>d</i> being at most -5. It is unlikely but not 
+     * determined by <i>d</i> being at most &minus;5. It is unlikely but not 
      * impossible that this could turn out to be 
-     * <i>O</i><sub><b>Q</b>(&radic;-7)</sub>, which would be just fine if it 
-     * just made some of the tests redundant, but since it could make {@link 
+     * <i>O</i><sub><b>Q</b>(&radic;&minus;7)</sub>, which would be just fine if 
+     * it just made some of the tests redundant. But since it could make {@link 
      * #testEquals()} fail, it is necessary to guard against this unlikely 
      * eventuality.
      */
@@ -72,6 +72,26 @@ public class ImaginaryQuadraticRingTest {
         ringOQi7 = new ImaginaryQuadraticRing(-7);
         ringRandom = new ImaginaryQuadraticRing(randomDiscr);
         System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
+    }
+    
+    /**
+     * Test of isPurelyReal, of class ImaginaryQuadraticRing. Asserting false 
+     * for all the test rings in this test class.
+     */
+    @Test
+    public void testIsPurelyReal() {
+        System.out.println("isPurelyReal");
+        String msgPart = " should not be said to be a purely real ring.";
+        String assertionMessage = ringGaussian.toString() + msgPart;
+        assertFalse(assertionMessage, ringGaussian.isPurelyReal());
+        assertionMessage = ringZi2.toString() + msgPart;
+        assertFalse(assertionMessage, ringZi2.isPurelyReal());
+        assertionMessage = ringEisenstein.toString() + msgPart;
+        assertFalse(assertionMessage, ringEisenstein.isPurelyReal());
+        assertionMessage = ringOQi7.toString() + msgPart;
+        assertFalse(assertionMessage, ringOQi7.isPurelyReal());
+        assertionMessage = ringRandom.toString() + msgPart;
+        assertFalse(assertionMessage, ringRandom.isPurelyReal());
     }
     
     /**
