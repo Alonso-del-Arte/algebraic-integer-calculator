@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -40,8 +39,8 @@ import static org.junit.Assert.*;
  * NumberTheoreticFunctionsCalculator#primeFactors(imaginaryquadraticinteger.ImaginaryQuadraticInteger)}
  * throws this exception when called upon numbers from imaginary quadratic rings 
  * that are not unique factorization domains (UFDs). With one exception, all the 
- * tests in this test class use the famous domain <b>Z</b>[&radic;-5], which is 
- * a non-UFD.
+ * tests in this test class use the famous domain <b>Z</b>[&radic;&minus;5], 
+ * which is a non-UFD.
  * @author Alonso del Arte
  */
 public class NonUniqueFactorizationDomainExceptionTest {
@@ -92,6 +91,16 @@ public class NonUniqueFactorizationDomainExceptionTest {
     private static NonUniqueFactorizationDomainException nufde41ZI5;
     
     /**
+     * This is for the example 25 + &radic;&minus;5, which is the product of the 
+     * following numbers: &minus;&radic;&minus;5 (which is irreducible and 
+     * prime) and 1 + &radic;&minus;5 and 4 + &radic;&minus;5 (both of which are 
+     * irreducible but neither is prime). For this one, we won't be testing that 
+     * we get this specific factorization, only that the factors given do indeed 
+     * multiply to 25 + &radic;&minus;5.
+     */
+    private static NonUniqueFactorizationDomainException nufdeNorm630;
+    
+    /**
      * This is for the example of 10, which has two distinct factorizations in 
      * <b>Z</b>[&radic;10].
      */
@@ -109,6 +118,15 @@ public class NonUniqueFactorizationDomainExceptionTest {
      */
     private static NonUniqueFactorizationDomainException nufde41Z10;
     
+    /**
+     * This is for the example &minus;40 &minus; 11&radic;10, which is the 
+     * product of the following numbers: &minus;1, 5 + &radic;10, 6 + &radic;10 
+     * (none of which are prime). For this one, we won't be testing that we get 
+     * this specific factorization, only that the factors given do indeed 
+     * multiply to &minus;40 &minus; 11&radic;10.
+     */
+    private static NonUniqueFactorizationDomainException nufdeNorm390;
+
     /**
      * Sets up five NonUniqueFactorizationDomainException objects. First they 
      * are initialized with 1, then exceptions are tried to be caught for the 
@@ -169,6 +187,14 @@ public class NonUniqueFactorizationDomainExceptionTest {
             nufde41ZI5 = nufde;
         }
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde41ZI5.getMessage() + "\"");
+        init = new ImaginaryQuadraticInteger(25, 1, RING_ZI5);
+        try {
+            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
+        } catch (NonUniqueFactorizationDomainException nufde) {
+            nufdeNorm630 = nufde;
+        }
+        System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufdeNorm630.getMessage() + "\"");
         init = new RealQuadraticInteger(10, 0, RING_Z10);
         try {
             factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
@@ -193,6 +219,14 @@ public class NonUniqueFactorizationDomainExceptionTest {
             nufde41Z10 = nufde;
         }
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde41Z10.getMessage() + "\"");
+        init = new RealQuadraticInteger(-40, -11, RING_Z10);
+        try {
+            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
+        } catch (NonUniqueFactorizationDomainException nufde) {
+            nufdeNorm390 = nufde;
+        }
+        System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufdeNorm390.getMessage() + "\"");
     }
     
     /**
@@ -221,6 +255,9 @@ public class NonUniqueFactorizationDomainExceptionTest {
         expResult = new ImaginaryQuadraticInteger(41, 0, RING_ZI5);
         result = nufde41ZI5.getUnfactorizedNumber();
         assertEquals(expResult, result);
+        expResult = new ImaginaryQuadraticInteger(25, 1, RING_ZI5);
+        result = nufdeNorm630.getUnfactorizedNumber();
+        assertEquals(expResult, result);
         expResult = new RealQuadraticInteger(10, 0, RING_Z10);
         result = nufde10.getUnfactorizedNumber();
         assertEquals(expResult, result);
@@ -229,6 +266,9 @@ public class NonUniqueFactorizationDomainExceptionTest {
         assertEquals(expResult, result);
         expResult = new RealQuadraticInteger(41, 0, RING_Z10);
         result = nufde41Z10.getUnfactorizedNumber();
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(-40, -11, RING_Z10);
+        result = nufdeNorm390.getUnfactorizedNumber();
         assertEquals(expResult, result);
     }
     
@@ -308,7 +348,38 @@ public class NonUniqueFactorizationDomainExceptionTest {
     
     /**
      * Another test of tryToFactorizeAnyway method, of class 
-     * NonUniqueFactorizationDomainException. The previous test (in source code 
+     * NonUniqueFactorizationDomainException. In the previous test (in source 
+     * code order, not necessarily running order), we expected specific 
+     * factorizations into irreducible numbers. For the numbers in this test, a 
+     * few more distinct factorizations are possible, so we only check that the 
+     * given factors do indeed multiply to the original number and that they are 
+     * all irreducible numbers.
+     */
+    @Test
+    public void testTryToFactorizeAnywayProductCheck() {
+        AlgebraicInteger num = nufdeNorm630.getUnfactorizedNumber();
+        System.out.println("Try to factorize " + num.toASCIIString());
+        QuadraticInteger product = new ImaginaryQuadraticInteger(1, 0, RING_ZI5);
+        List<AlgebraicInteger> factors = nufdeNorm630.tryToFactorizeAnyway();
+        for (AlgebraicInteger factor : factors) {
+            product = product.times((QuadraticInteger) factor);
+            assertTrue(NumberTheoreticFunctionsCalculator.isIrreducible(factor));
+        }
+        assertEquals(num, product);
+        num = nufdeNorm390.getUnfactorizedNumber();
+        System.out.println("Try to factorize " + num.toASCIIString());
+        product = new ImaginaryQuadraticInteger(1, 0, RING_Z10);
+        factors = nufdeNorm390.tryToFactorizeAnyway();
+        for (AlgebraicInteger factor : factors) {
+            product = product.times((QuadraticInteger) factor);
+            assertTrue(NumberTheoreticFunctionsCalculator.isIrreducible(factor));
+        }
+        assertEquals(num, product);
+    }
+    
+    /**
+     * Another test of tryToFactorizeAnyway method, of class 
+     * NonUniqueFactorizationDomainException. A previous test (in source code 
      * order, not necessarily running order) operated on just five numbers in 
      * <b>Z</b>[&radic;&minus;5]. This test operates on several numbers in 
      * several rings, from <b>Z</b>[&radic;&minus;5] to 
