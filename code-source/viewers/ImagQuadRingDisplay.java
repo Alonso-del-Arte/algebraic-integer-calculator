@@ -147,7 +147,6 @@ public final class ImagQuadRingDisplay extends RingDisplay {
     private void drawPoints(Graphics graphicsForPoints) {
         int currPointX, currPointY;
         int currNegPointX, currNegPointY;
-        int dotDiameter = 2 * this.dotRadius;
         int maxX = (int) Math.floor((this.ringCanvasHorizMax - this.zeroCoordX)/this.pixelsPerUnitInterval);
         int maxY;
         int verticalGridDistance = this.pixelsPerBasicImaginaryInterval;
@@ -163,13 +162,13 @@ public final class ImagQuadRingDisplay extends RingDisplay {
         currPointX = this.zeroCoordX;
         currPointY = this.zeroCoordY;
         graphicsForPoints.setColor(this.zeroColor);
-        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
+        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
         // The purely real unit points, -1 and 1
         currNegPointX = currPointX - this.pixelsPerUnitInterval;
         currPointX += this.pixelsPerUnitInterval;
         graphicsForPoints.setColor(this.unitColor);
-        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
+        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
         // The even primes, -2 and 2
         currNegPointX -= this.pixelsPerUnitInterval;
         currPointX += this.pixelsPerUnitInterval;
@@ -186,18 +185,18 @@ public final class ImagQuadRingDisplay extends RingDisplay {
         switch (symbol) {
             case -1:
                 graphicsForPoints.setColor(this.inertPrimeColor);
-                graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
+                graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                 break;
             case 0:
                 graphicsForPoints.setColor(this.ramifiedPrimeColor);
-                graphicsForPoints.drawOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.drawOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
+                graphicsForPoints.drawOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.drawOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                 break;
             case 1:
                 graphicsForPoints.setColor(this.splitPrimeColor);
-                graphicsForPoints.drawOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.drawOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
+                graphicsForPoints.drawOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.drawOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                 break;
             default:
                 throw new RuntimeException("Unexpected problem computing symbolKronecker(" + ring.getRadicand() + ", " + 2 + ") = " + symbol);
@@ -214,18 +213,18 @@ public final class ImagQuadRingDisplay extends RingDisplay {
                 switch (symbol) {
                     case -1:
                         graphicsForPoints.setColor(this.inertPrimeColor);
-                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
+                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                         break;
                     case 0:
                         graphicsForPoints.setColor(this.ramifiedPrimeColor);
-                        graphicsForPoints.drawOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.drawOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
+                        graphicsForPoints.drawOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.drawOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                         break;
                     case 1:
                         graphicsForPoints.setColor(this.splitPrimeColor);
-                        graphicsForPoints.drawOval(currPointX - this.dotRadius + 1, currPointY - this.dotRadius + 1, dotDiameter, dotDiameter);
-                        graphicsForPoints.drawOval(currNegPointX - this.dotRadius + 1, currPointY - this.dotRadius + 1, dotDiameter, dotDiameter);
+                        graphicsForPoints.drawOval(currPointX - this.dotRadius + 1, currPointY - this.dotRadius + 1, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.drawOval(currNegPointX - this.dotRadius + 1, currPointY - this.dotRadius + 1, this.dotDiameter, this.dotDiameter);
                         break;
                     default:
                         throw new RuntimeException("Unexpected problem computing symbolLegendre(" + ring.getRadicand() + ", " + x + ") = " + symbol);
@@ -240,15 +239,15 @@ public final class ImagQuadRingDisplay extends RingDisplay {
             currPointY = this.zeroCoordY + verticalGridDistance;
             currNegPointY = this.zeroCoordY - verticalGridDistance;
             graphicsForPoints.setColor(this.unitColor);
-            graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-            graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+            graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+            graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
             graphicsForPoints.setColor(this.inertPrimeColor);
             for (int y = 2; y <= maxY; y++) {
                 currPointY += verticalGridDistance;
                 currNegPointY -= verticalGridDistance;
                 if (NumberTheoreticFunctionsCalculator.isPrime(y)) {
-                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                 }
             }
         } else {
@@ -264,13 +263,13 @@ public final class ImagQuadRingDisplay extends RingDisplay {
                         int ramifyPoint = this.zeroCoordX + (int) currIQI.norm() * this.pixelsPerUnitInterval;
                         int negRamifyPoint = this.zeroCoordX - (int) currIQI.norm() * this.pixelsPerUnitInterval;
                         graphicsForPoints.setColor(this.ramifiedPrimeColor);
-                        graphicsForPoints.fillOval(ramifyPoint - this.dotRadius, this.zeroCoordY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(negRamifyPoint - this.dotRadius, this.zeroCoordY - this.dotRadius, dotDiameter, dotDiameter);
+                        graphicsForPoints.fillOval(ramifyPoint - this.dotRadius, this.zeroCoordY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(negRamifyPoint - this.dotRadius, this.zeroCoordY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                     } else {
                         graphicsForPoints.setColor(this.inertPrimeColor);
                     }
-                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                 }
             }
         }
@@ -286,23 +285,23 @@ public final class ImagQuadRingDisplay extends RingDisplay {
                 currIQI = new ImaginaryQuadraticInteger(x, y, ring);
                 if (NumberTheoreticFunctionsCalculator.isPrime(currIQI.norm())) {
                     graphicsForPoints.setColor(this.inertPrimeColor);
-                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
-                    graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                    graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                    graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                    graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                    graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                     currSplitPrime = currIQI.norm();
                     if (currSplitPrime <= maxX) {
                         currSplitPrimePointX = this.zeroCoordX + ((int) currSplitPrime * this.pixelsPerUnitInterval);
                         currNegSplitPrimePointX = this.zeroCoordX - ((int) currSplitPrime * this.pixelsPerUnitInterval);
                         graphicsForPoints.setColor(this.splitPrimeColor);
-                        graphicsForPoints.fillOval(currSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currNegSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, dotDiameter, dotDiameter);
+                        graphicsForPoints.fillOval(currSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currNegSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                     }
                     if (currSplitPrime <= maxY && ring.getRadicand() == -1) {
                         currSplitPrimePointX = this.zeroCoordY + ((int) currSplitPrime * this.pixelsPerUnitInterval);
                         currNegSplitPrimePointX = this.zeroCoordY - ((int) currSplitPrime * this.pixelsPerUnitInterval);
-                        graphicsForPoints.fillOval(this.zeroCoordX - this.dotRadius, currSplitPrimePointX - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(this.zeroCoordX - this.dotRadius, currNegSplitPrimePointX - this.dotRadius, dotDiameter, dotDiameter);
+                        graphicsForPoints.fillOval(this.zeroCoordX - this.dotRadius, currSplitPrimePointX - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(this.zeroCoordX - this.dotRadius, currNegSplitPrimePointX - this.dotRadius, this.dotDiameter, this.dotDiameter);
                     }
                     
                 }
@@ -327,20 +326,20 @@ public final class ImagQuadRingDisplay extends RingDisplay {
             if (ring.getRadicand() == -3) {
                 // The complex units, like omega
                 graphicsForPoints.setColor(this.unitColor);
-                graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+                graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                 // Then 2 * omega, and complex associates
                 graphicsForPoints.setColor(this.inertPrimeColor);
                 currPointX += halfUnitInterval;
                 currNegPointX -= halfUnitInterval;
                 currPointY += this.pixelsPerBasicImaginaryInterval;
                 currNegPointY -= this.pixelsPerBasicImaginaryInterval;
-                graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+                graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                 // And then p * omega from p = 5 on, and complex associates 
                 for (int auxX = 5; auxX < halfMaxX; auxX += 6) {
                     currPointX = this.zeroCoordX + (auxX * halfUnitInterval);
@@ -348,10 +347,10 @@ public final class ImagQuadRingDisplay extends RingDisplay {
                     currPointY = this.zeroCoordY + (auxX * this.pixelsPerBasicImaginaryInterval);
                     currNegPointY = this.zeroCoordY - (auxX * this.pixelsPerBasicImaginaryInterval);
                     if (NumberTheoreticFunctionsCalculator.isPrime(auxX)) {
-                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                     }
                 }
             }
@@ -365,17 +364,17 @@ public final class ImagQuadRingDisplay extends RingDisplay {
                     currIQI = new ImaginaryQuadraticInteger(x, y, ring, 2);
                     if (NumberTheoreticFunctionsCalculator.isPrime(currIQI.norm())) {
                         graphicsForPoints.setColor(this.inertPrimeColor);
-                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, dotDiameter, dotDiameter);
-                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, dotDiameter, dotDiameter);
+                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                        graphicsForPoints.fillOval(currNegPointX - this.dotRadius, currNegPointY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                         currSplitPrime = currIQI.norm();
                         if (currSplitPrime <= maxX) {
                             currSplitPrimePointX = this.zeroCoordX + ((int) currSplitPrime * this.pixelsPerUnitInterval);
                             currNegSplitPrimePointX = this.zeroCoordX - ((int) currSplitPrime * this.pixelsPerUnitInterval);
                             graphicsForPoints.setColor(this.splitPrimeColor);
-                            graphicsForPoints.fillOval(currSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, dotDiameter, dotDiameter);
-                            graphicsForPoints.fillOval(currNegSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, dotDiameter, dotDiameter);
+                            graphicsForPoints.fillOval(currSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+                            graphicsForPoints.fillOval(currNegSplitPrimePointX - this.dotRadius, this.zeroCoordY - this.dotRadius, this.dotDiameter, this.dotDiameter);
                         }
                     }
                 }

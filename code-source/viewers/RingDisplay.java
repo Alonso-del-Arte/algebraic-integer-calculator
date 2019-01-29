@@ -65,6 +65,11 @@ import javax.swing.filechooser.FileFilter;
 public abstract class RingDisplay extends JPanel implements ActionListener, MouseMotionListener {
     
     /**
+     * How many RingDisplay windows are open during the current JVM session.
+     */
+    private static int windowCount = 0;
+    
+    /**
      * The default number of pixels per unit interval. The protected variable 
      * pixelsPerUnitInterval is initialized to this value.
      */
@@ -204,14 +209,22 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * The default color for primes confirmed split. If a prime's splitting 
      * factors are in the current diagram view, the program uses this color for 
      * the split prime. For example, if the program is displaying a diagram of 
-     * <b>Z</b>[&omega;] and -7/2 + (&radic;-3)/2 (which has norm 13) is in 
-     * view, then 13 is confirmed split and colored accordingly if it's in view. 
-     * Note, however, that, given a prime <i>p</i> &equiv; 2 mod 3, the number 
-     * -<i>p</i>/2 + (<i>p</i>&radic;-3)/2 is not a splitting factor of 
-     * <i>p</i>, since it is <i>p</i>&omega; and &omega; is a unit. Therefore 
-     * <i>p</i> should be colored with the inert prime color.
+     * <b>Z</b>[&omega;] and &minus;7/2 + (&radic;&minus;3)/2 (which has norm 
+     * 13) is in view, then 13 is confirmed split and colored accordingly if 
+     * it's in view. Note, however, that, given a prime <i>p</i> &equiv; 2 mod 
+     * 3, the number &minus;<i>p</i>/2 + (<i>p</i>&radic;&minus;3)/2 is not a 
+     * splitting factor of <i>p</i>, since it is <i>p</i>&omega; and &omega; is 
+     * a unit. Therefore <i>p</i> should be colored with the inert prime color.
      */
     public static final Color DEFAULT_SPLIT_PRIME_COLOR = Color.BLUE;
+    
+    /**
+     * The default color for numbers that would be prime in a ring of algebraic 
+     * degree greater than 2 but less than the degree of the ring of the current 
+     * diagram. This color will probably not be used in diagrams of quadratic 
+     * rings, but should be used in diagrams of quartic rings.
+     */
+    public static final Color DEFAULT_SPLIT_MID_DEGREE_PRIME_COLOR = new Color(24831);
     
     /**
      * The default color for primes that are ramified. Regardless of the current 
@@ -234,10 +247,27 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     
     protected boolean alreadySetUp = false;
     
+    /**
+     * If the subclass can only display one ring, the subclass constructor 
+     * should set this protected flag to false. Otherwise the subclass can 
+     * simply rely on the default setting of true.
+     */
     protected boolean includeRingChoice = true;
     
+    /**
+     * If the subclass does not include updateable readouts, the subclass 
+     * constructor should set this protected flag to false. Otherwise the 
+     * subclass can simply rely on the default setting of true.
+     */
     protected boolean includeReadoutsUpdate = true;
     
+    /**
+     * If the subclass gives the user the ability to change whether the readouts 
+     * use an alternate notation or not, the subclass constructor should set 
+     * this protected flag to false. Otherwise the subclass can simply rely on 
+     * the default setting of true. However, if {@link #includeReadoutsUpdate 
+     * includeReadoutsUpdate} is false, then this setting does not matter.
+     */
     protected boolean includeThetaToggle = true;
     
     /**
@@ -279,12 +309,27 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      */
     protected int dotRadius;
     
+    /**
+     * The thickness of the lines or the diameter of the dots.
+     */
+    protected int dotDiameter;
+    
     protected int zoomInterval;
     
     protected Color backgroundColor, halfIntegerGridColor, integerGridColor;
-    protected Color zeroColor, unitColor, inertPrimeColor, splitPrimeColor, ramifiedPrimeColor;
+    protected Color zeroColor, unitColor, inertPrimeColor, splitPrimeColor, splitPrimeMidDegreeColor, ramifiedPrimeColor;
     
-    protected int zeroCoordX, zeroCoordY;
+    /**
+     * The x of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
+     * diagram.
+     */
+    protected int zeroCoordX;
+    
+    /**
+     * The y of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
+     * diagram.
+     */
+    protected int zeroCoordY;
     
     /* For when the program has the ability to display diagrams that don't 
        necessarily have 0 in the center. */
@@ -430,6 +475,15 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         this.splitPrimeColor = newSplitPrimeColor;
         this.ramifiedPrimeColor = newRamifiedPrimeColor;
     }
+    
+    /**
+     * Changes the dot diameter according to the dot radius. This may be inlined 
+     * upon compilation, but in the source it is necessary as a separate call so 
+     * as to simplify adjusting the formula.
+     */
+    private void changeDotDiameter() {
+        this.dotDiameter = 2 * this.dotRadius;
+    }
    
     /**
      * Function to change the dot radius.
@@ -460,6 +514,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
             throw new IllegalArgumentException(exceptionMessage);
         }
         this.dotRadius = newDotRadius;
+        this.changeDotDiameter();
     }
     
     /**
@@ -692,8 +747,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     public void zoomIn() {
         int newPixelsPerUnitInterval = this.pixelsPerUnitInterval + this.zoomInterval;
         if (newPixelsPerUnitInterval <= MAXIMUM_PIXELS_PER_UNIT_INTERVAL) {
-            setPixelsPerUnitInterval(newPixelsPerUnitInterval);
-            repaint();
+            this.setPixelsPerUnitInterval(newPixelsPerUnitInterval);
+            this.repaint();
             if ((newPixelsPerUnitInterval + this.zoomInterval) > MAXIMUM_PIXELS_PER_UNIT_INTERVAL) {
                 this.zoomInMenuItem.setEnabled(false);
             }
@@ -710,8 +765,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     public void zoomOut() {
         int newPixelsPerUnitInterval = this.pixelsPerUnitInterval - this.zoomInterval;
         if (newPixelsPerUnitInterval >= MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
-            setPixelsPerUnitInterval(newPixelsPerUnitInterval);
-            repaint();
+            this.setPixelsPerUnitInterval(newPixelsPerUnitInterval);
+            this.repaint();
             if ((newPixelsPerUnitInterval - zoomInterval) < MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
                 this.zoomOutMenuItem.setEnabled(false);
             }
@@ -739,19 +794,19 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         int newZoomInterval = this.zoomInterval - 1;
         boolean newZoomIntervalFlag = false;
         if (newZoomInterval >= MINIMUM_ZOOM_INTERVAL) {
-            changeZoomInterval(newZoomInterval);
+            this.changeZoomInterval(newZoomInterval);
             newZoomIntervalFlag = true;
             if (this.zoomInterval == MINIMUM_ZOOM_INTERVAL) {
                 this.decreaseZoomIntervalMenuItem.setEnabled(false);
             }
         }
         if (newZoomIntervalFlag) {
-            informZoomIntervalChange();
+            this.informZoomIntervalChange();
         }
         if (!this.increaseZoomIntervalMenuItem.isEnabled() && (newZoomInterval < MAXIMUM_ZOOM_INTERVAL)) {
             this.increaseZoomIntervalMenuItem.setEnabled(true);
         }
-        checkViewMenuEnablements();
+        this.checkViewMenuEnablements();
     }
 
     /**
@@ -763,19 +818,19 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         int newZoomInterval = this.zoomInterval + 1;
         boolean newZoomIntervalFlag = false;
         if (newZoomInterval <= MAXIMUM_ZOOM_INTERVAL) {
-            changeZoomInterval(newZoomInterval);
+            this.changeZoomInterval(newZoomInterval);
             newZoomIntervalFlag = true;
             if (this.zoomInterval == MAXIMUM_ZOOM_INTERVAL) {
                 this.increaseZoomIntervalMenuItem.setEnabled(false);
             }
         }
         if (newZoomIntervalFlag) {
-            informZoomIntervalChange();
+            this.informZoomIntervalChange();
         }
         if (!this.decreaseZoomIntervalMenuItem.isEnabled() && (newZoomInterval > MINIMUM_ZOOM_INTERVAL)) {
             this.decreaseZoomIntervalMenuItem.setEnabled(true);
         }
-        checkViewMenuEnablements();
+        this.checkViewMenuEnablements();
     }
 
     /**
@@ -786,8 +841,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     public void decreaseDotRadius() {
         int newDotRadius = this.dotRadius - 1;
         if (newDotRadius >= MINIMUM_DOT_RADIUS) {
-            changeDotRadius(newDotRadius);
-            repaint();
+            this.changeDotRadius(newDotRadius);
+            this.repaint();
             if (this.dotRadius == MINIMUM_DOT_RADIUS) {
                 this.decreaseDotRadiusMenuItem.setEnabled(false);
             }
@@ -805,8 +860,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     public void increaseDotRadius() {
         int newDotRadius = this.dotRadius + 1;
         if (newDotRadius <= MAXIMUM_DOT_RADIUS) {
-            changeDotRadius(newDotRadius);
-            repaint();
+            this.changeDotRadius(newDotRadius);
+            this.repaint();
             if (this.dotRadius == MAXIMUM_DOT_RADIUS) {
                 this.increaseDotRadiusMenuItem.setEnabled(false);
             }
@@ -927,49 +982,52 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         String cmd = ae.getActionCommand();
         switch (cmd) {
             case "saveDiagramAs":
-                saveDiagramAs();
+                this.saveDiagramAs();
+                break;
+            case "close":
+                this.ringFrame.dispose();
                 break;
             case "quit":
                 System.exit(0);
                 break;
             case "chooseD":
-                chooseDiscriminant();
+                this.chooseDiscriminant();
                 break;
             case "incrD":
-                incrementDiscriminant();
+                this.incrementDiscriminant();
                 break;
             case "decrD":
-                decrementDiscriminant();
+                this.decrementDiscriminant();
                 break;
             case "prevD":
-                previousDiscriminant();
+                this.previousDiscriminant();
                 break;
             case "nextD":
-                nextDiscriminant();
+                this.nextDiscriminant();
                 break;
             case "copyReadouts":
-                copyReadoutsToClipboard();
+                this.copyReadoutsToClipboard();
                 break;
             case "copyDiagram":
-                copyDiagramToClipboard();
+                this.copyDiagramToClipboard();
                 break;
             case "zoomIn":
-                zoomIn();
+                this.zoomIn();
                 break;
             case "zoomOut":
-                zoomOut();
+                this.zoomOut();
                 break;
             case "decrZoomInterval":
-                decreaseZoomInterval();
+                this.decreaseZoomInterval();
                 break;
             case "incrZoomInterval":
-                increaseZoomInterval();
+                this.increaseZoomInterval();
                 break;
             case "decrDotRadius":
-                decreaseDotRadius();
+                this.decreaseDotRadius();
                 break;
             case "incrDotRadius":
-                increaseDotRadius();
+                this.increaseDotRadius();
                 break;
             case "defaultView":
                 String messageForOKCancel = "This will reset pixels per unit interval, dot radius and zoom interval,\nbut not discriminant nor whether readouts are updated.";
@@ -980,16 +1038,16 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
                 }
                 break;
             case "toggleTheta":
-                toggleThetaNotation();
+                this.toggleThetaNotation();
                 break;
             case "toggleReadOuts":
-                toggleReadOutsEnabled();
+                this.toggleReadOutsEnabled();
                 break;
             case "showUserManual":
-                showUserManual();
+                this.showUserManual();
                 break;
             case "about":
-                showAboutBox();
+                this.showAboutBox();
                 break;
             default:
                 System.out.println("Command " + cmd + " not recognized.");
@@ -1037,6 +1095,12 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         saveFileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, maskCtrlCommand + Event.SHIFT_MASK));
         saveFileMenuItem.addActionListener(this);
         ringWindowMenu.addSeparator();
+        ringWindowMenuItem = new JMenuItem("Close");
+        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Close the window");
+        ringWindowMenuItem.setActionCommand("close");
+        ringWindowMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, maskCtrlCommand));
+        ringWindowMenuItem.addActionListener(this);
+        ringWindowMenu.add(ringWindowMenuItem);
         ringWindowMenuItem = new JMenuItem("Quit");
         ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Exit the program");
         quitMenuItem = ringWindowMenu.add(ringWindowMenuItem);
@@ -1214,8 +1278,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
                 this.toggleReadOutsEnabledMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0)); // Decided Ctrl-F2 is too uncomfortable, so changed it to just F2.
             }
             this.toggleReadOutsEnabledMenuItem.addActionListener(this);
+            ringWindowMenu.add(this.toggleReadOutsEnabledMenuItem);
         }
-        ringWindowMenu.add(this.toggleReadOutsEnabledMenuItem);
         ringWindowMenu = new JMenu("Help");
         ringWindowMenu.setMnemonic(KeyEvent.VK_H);
         ringWindowMenu.getAccessibleContext().setAccessibleDescription("Menu to provide help and documentation");
@@ -1284,6 +1348,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     public void startRingDisplay() {
         this.setPixelsPerBasicImaginaryInterval(); // Just in case
         this.setUpRingFrame();
+        RingDisplay.windowCount++;
     }
     
     /**
@@ -1305,12 +1370,14 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         this.unitColor = DEFAULT_UNIT_COLOR;
         this.inertPrimeColor = DEFAULT_INERT_PRIME_COLOR;
         this.splitPrimeColor = DEFAULT_SPLIT_PRIME_COLOR;
+        this.splitPrimeMidDegreeColor = DEFAULT_SPLIT_MID_DEGREE_PRIME_COLOR;
         this.ramifiedPrimeColor = DEFAULT_RAMIFIED_PRIME_COLOR;
         this.zeroCoordX = (int) Math.floor(this.ringCanvasHorizMax/2);
         this.zeroCoordY = (int) Math.floor(this.ringCanvasVerticMax/2);
         // this.zeroCentered = true;
         // this.zeroInView = true;
         this.dotRadius = DEFAULT_DOT_RADIUS;
+        this.dotDiameter = 2 * this.dotRadius;
         this.zoomInterval = DEFAULT_ZOOM_INTERVAL;
         this.preferenceForThetaNotation = false;
         this.diagramRing = ring;
