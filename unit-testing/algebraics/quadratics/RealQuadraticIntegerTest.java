@@ -553,6 +553,7 @@ public class RealQuadraticIntegerTest {
             expResult = expResult.replace("+-", "-");
             expResult = expResult.replace("+1\u221A", "+\u221A");
             expResult = expResult.replace("-1\u221A", "-\u221A");
+            expResult = expResult.replace("-", "\u2212");
             result = testIntegers.get(i).toString().replace(" ", "");
             assertEquals(expResult, result);
         }
@@ -594,6 +595,7 @@ public class RealQuadraticIntegerTest {
             } else {
                 expResult = testIntegers.get(i).toString().replace(" ", "");
             }
+            expResult = expResult.replace("-", "\u2212");
             result = testIntegers.get(i).toStringAlt().replace(" ", "");
             assertEquals(expResult, result);
         }

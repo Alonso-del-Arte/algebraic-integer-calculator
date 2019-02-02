@@ -679,6 +679,7 @@ public class ImaginaryQuadraticIntegerTest {
         expResult = expResult.replace("+-", "-");
         expResult = expResult.replace("+1i", "+i");
         expResult = expResult.replace("-1i", "-i");
+        expResult = expResult.replace("-", "\u2212");
         String result = testIntegers.get(0).toString().replace(" ", "");
         assertEquals(expResult, result);
         for (int i = 1; i < totalTestIntegers; i++) {
@@ -694,6 +695,7 @@ public class ImaginaryQuadraticIntegerTest {
             expResult = expResult.replace("+-", "-");
             expResult = expResult.replace("+1\u221A", "+\u221A");
             expResult = expResult.replace("-1\u221A", "-\u221A");
+            expResult = expResult.replace("-", "\u2212");
             result = testIntegers.get(i).toString().replace(" ", "");
             assertEquals(expResult, result);
         }
@@ -701,10 +703,10 @@ public class ImaginaryQuadraticIntegerTest {
         expResult = "i";
         result = IMAG_UNIT_I.toString();
         assertEquals(expResult, result);
-        expResult = "-i";
+        expResult = "\u2212i";
         result = IMAG_UNIT_NEG_I.toString();
         assertEquals(expResult, result);
-        expResult = "-1/2+\u221A(-3)/2";
+        expResult = "\u22121/2+\u221A(\u22123)/2";
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.toString().replace(" ", "");
         assertEquals(expResult, result);
         // And last but not least, 0 and 1
@@ -751,7 +753,7 @@ public class ImaginaryQuadraticIntegerTest {
                         expResult = "\u03C9";
                     }
                     expResult = expResult.replace("+0\u03C9", "");
-                    // expResult = expResult.replace("-0\u03C9", ""); This one's unnecessary, right?
+                    expResult = expResult.replace("-", "\u2212");
                     currIQI = new ImaginaryQuadraticInteger(a, b, RING_EISENSTEIN, 2);
                     result = currIQI.toStringAlt().replace(" ", "");
                     assertEquals(expResult, result);
@@ -779,7 +781,7 @@ public class ImaginaryQuadraticIntegerTest {
                         expResult = "\u03B8";
                     }
                     expResult = expResult.replace("+0\u03B8", "");
-                    // expResult = expResult.replace("-0\u03C9", ""); This one's unnecessary, right?
+                    expResult = expResult.replace("-", "\u2212");
                     currIQI = new ImaginaryQuadraticInteger(m, n, RING_OQI7, 2);
                     result = currIQI.toStringAlt().replace(" ", "");
                     assertEquals(expResult, result);
@@ -800,7 +802,7 @@ public class ImaginaryQuadraticIntegerTest {
         expResult = "i";
         result = IMAG_UNIT_I.toStringAlt();
         assertEquals(expResult, result);
-        expResult = "-i";
+        expResult = "\u2212i";
         result = IMAG_UNIT_NEG_I.toStringAlt();
         assertEquals(expResult, result);
         expResult = "\u03C9";

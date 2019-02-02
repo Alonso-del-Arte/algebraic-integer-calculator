@@ -299,19 +299,19 @@ public class ImaginaryQuadraticRingTest {
         String expResult = "Z[i]";
         String result = ringGaussian.toString();
         assertEquals(expResult, result);
-        expResult = "Z[\u221A-2]";
+        expResult = "Z[\u221A\u22122]";
         result = ringZi2.toString();
         assertEquals(expResult, result);
         expResult = "Z[\u03C9]";
         result = ringEisenstein.toString();
         assertEquals(expResult, result);
-        expResult = "O_(Q(\u221A-7))";
+        expResult = "O_(Q(\u221A\u22127))";
         result = ringOQi7.toString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
-            expResult = "O_(Q(\u221A" + randomDiscr + "))";
+            expResult = "O_(Q(\u221A\u2212" + Math.abs(randomDiscr) + "))";
         } else {
-            expResult = "Z[\u221A" + randomDiscr + "]";
+            expResult = "Z[\u221A\u2212" + Math.abs(randomDiscr) + "]";
         }
         result = ringRandom.toString();
         assertEquals(expResult, result);
