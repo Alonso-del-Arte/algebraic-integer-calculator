@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -35,7 +35,7 @@ public class RealQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public double abs() {
-        return absNumVal;
+        return this.absNumVal;
     }
     
     /**
@@ -46,7 +46,7 @@ public class RealQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public double getRealPartNumeric() {
-        return numVal;
+        return this.numVal;
     }
     
     /**
@@ -79,27 +79,64 @@ public class RealQuadraticInteger extends QuadraticInteger {
     }
     
     /**
-     * Alternative object constructor, may be used when the denominator is known 
-     * to be 1.
+     * Alternative constructor, may be used when the denominator is known to be 
+     * 1. For example, this constructor may be used for 1 + &radic;5. For 1/2 + 
+     * (&radic;5)/2, it will be necessary to use the primary constructor. One 
+     * could always construct 1 + &radic;5 and then use {@link 
+     * QuadraticInteger#divides(int)} with a divisor of 2, but that would 
+     * probably be too circuitous in most cases.
      * @param a The "regular" part of the real quadratic integer. For example, 
-     * for 5 + &radic;3, this parameter would be 5.
+     * for 5 + 4&radic;3, this parameter would be 5.
      * @param b The part to be multiplied by &radic;<i>d</i>. For example, for 5 
-     * + &radic;3, this parameter would be 1.
+     * + 4&radic;3, this parameter would be 4.
      * @param R The ring to which this algebraic integer belongs to. For 
      * example, for 5 + &radic;3, this parameter could be <code>new 
      * RealQuadraticRing(3)</code>.
+     * @throws IllegalArgumentException If R is not of the type {@link 
+     * RealQuadraticRing}. However, if R is of type {@link 
+     * ImaginaryQuadraticRing} and b = 0, a real ring will be quietly 
+     * substituted.
      */
     public RealQuadraticInteger(int a, int b, QuadraticRing R) {
         this(a, b, R, 1);
     }
         
+    /**
+     * Primary constructor. If the denominator is known to be 1, the alternative 
+     * constructor may be used.
+     * @param a The "regular" part of the real quadratic integer, multiplied by 
+     * 2 when applicable. For example, for 7/2 + (31&radic;5)/2, this parameter 
+     * would be 7.
+     * @param b The part to be multiplied by &radic;<i>d</i>, though multiplied 
+     * by 2 when applicable. For example, for 7/2 + (31&radic;5)/2, this 
+     * parameter would be 31.
+     * @param R The ring to which this algebraic integer belongs to. For 
+     * example, for 7/2 + (31&radic;5)/2, this parameter could be <code>new 
+     * RealQuadraticRing(5)</code>.
+     * @param denom In most cases 1, but may be 2 if a and b have the same 
+     * parity and R{@link QuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is 
+     * true. If that is the case, &minus;2 may also be used, and &minus;1 can 
+     * always be used; the constructor will quietly substitute 1 or 2 and 
+     * multiply a and b by &minus;1.
+     * @throws IllegalArgumentException If denom = 2 but there is a parity 
+     * mismatch between a and b (that is, one is odd and the other is even), or 
+     * if denom = 2 but R{@link QuadraticRing#hasHalfIntegers() 
+     * .hasHalfIntegers()} is false. This exception may also arise if R is not 
+     * of the type {@link RealQuadraticRing}. However, if R is of type {@link 
+     * ImaginaryQuadraticRing} and b = 0, a real ring will be quietly 
+     * substituted.
+     */
     public RealQuadraticInteger(int a, int b, QuadraticRing R, int denom) {
         RealQuadraticRing ring;
         if (R instanceof RealQuadraticRing) {
             ring = (RealQuadraticRing) R;
         } else {
             if ((R instanceof ImaginaryQuadraticRing) && (b == 0)) {
-                ring = new RealQuadraticRing(-R.radicand);
+                int rad = -R.radicand;
+                if (rad == 1) {
+                    rad = 2;
+                }
+                ring = new RealQuadraticRing(rad);
             } else {
                 String exceptionMessage = R.toASCIIString() + " is not a real quadratic ring as needed.";
                 throw new IllegalArgumentException(exceptionMessage);
@@ -139,8 +176,8 @@ public class RealQuadraticInteger extends QuadraticInteger {
         }
         this.quadRing = ring;
         double preNumVal = this.quadRing.realRadSqrt * this.surdPartMult + this.regPartMult;
-        numVal = preNumVal / this.denominator;
-        absNumVal = Math.abs(numVal);
+        this.numVal = preNumVal / this.denominator;
+        this.absNumVal = Math.abs(this.numVal);
     }
     
 }

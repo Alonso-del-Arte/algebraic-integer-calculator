@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -32,13 +32,14 @@ public abstract class QuadraticRing implements IntegerRing {
     protected int radicand;
     
     /**
-     * A rational approximation of either &radic;<i>d</i> or 
-     * &radic;<i>d</i>/<i>i</i>.
+     * A rational approximation of either &radic;<i>d</i> for <i>d</i> positive 
+     * or (&radic;<i>d</i>)/<i>i</i> for <i>d</i> negative.
      */
     protected double realRadSqrt;
 
     /**
-     * Should be true only if radicand is congruent to 1 modulo 4.
+     * Should be true only if radicand is congruent to 1 modulo 4. Remember that 
+     * &minus;3 &equiv; 1 mod 4; Java needs a little nudge on this.
      */
     protected boolean d1mod4;
     
@@ -100,7 +101,7 @@ public abstract class QuadraticRing implements IntegerRing {
      * precision floating point primitive, if possible.
      * @return A rational approximation of the square root of the radicand, if 
      * possible. For example, for <b>Z</b>[&radic;2] this would be roughly 
-     * 1.414.
+     * 1.414213562373.
      * @throws UnsupportedOperationException If called upon an instance of 
      * {@link ImaginaryQuadraticRing}.
      */
@@ -154,6 +155,9 @@ public abstract class QuadraticRing implements IntegerRing {
                 } else {
                     IQRString = "Z[\u221A" + this.radicand + "]";
                 }
+        }
+        if (this.radicand < 0) {
+            IQRString = IQRString.replace("-", "\u2212");
         }
         return IQRString;
     }
