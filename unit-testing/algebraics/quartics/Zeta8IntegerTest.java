@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -232,27 +232,35 @@ public class Zeta8IntegerTest {
         expResult = "i";
         result = IMAG_UNIT_I.toString().replace(" ", "");
         assertEquals(expResult, result);
-        expResult = "-i";
+        expResult = "\u2212i";
         result = NEG_IMAG_UNIT_I.toString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = "1";
         result = ONE.toString().replace(" ", "");
         assertEquals(expResult, result);
-        expResult = "-1";
+        expResult = "\u22121";
         result = NEG_ONE.toString().replace(" ", "");
         assertEquals(expResult, result);
-        expResult = "\u03B6\u2088-(\u03B6\u2088)\u00B3";
+        expResult = "\u03B6\u2088\u2212(\u03B6\u2088)\u00B3";
         result = SQRT_2.toString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = "\u03B6\u2088+(\u03B6\u2088)\u00B3";
         result = SQRT_NEG_2.toString().replace(" ", "");
         assertEquals(expResult, result);
         Zeta8Integer num = new Zeta8Integer(4, -3, 2, -1);
-        expResult = "4-3\u03B6\u2088+2i-(\u03B6\u2088)\u00B3";
+        expResult = "4\u22123\u03B6\u2088+2i\u2212(\u03B6\u2088)\u00B3";
         result = num.toString().replace(" ", "");
         assertEquals(expResult, result);
         num = new Zeta8Integer(-5, 0, -21, 3);
-        expResult = "-5-21i+3(\u03B6\u2088)\u00B3";
+        expResult = "\u22125\u221221i+3(\u03B6\u2088)\u00B3";
+        result = num.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(0, 2, 0, 0);
+        expResult = "2\u03B6\u2088";
+        result = num.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(0, -2, 0, 0);
+        expResult = "\u22122\u03B6\u2088";
         result = num.toString().replace(" ", "");
         assertEquals(expResult, result);
     }
@@ -295,6 +303,10 @@ public class Zeta8IntegerTest {
         expResult = "-5-21i+3(zeta_8)^3";
         result = num.toASCIIString().replace(" ", "");
         assertEquals(expResult, result);
+        num = new Zeta8Integer(0, 2, 0, 0);
+        expResult = "2zeta_8";
+        result = num.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
     }
 
     /**
@@ -335,6 +347,10 @@ public class Zeta8IntegerTest {
         expResult = "-5-21i+3(\\zeta_8)^3";
         result = num.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
+        num = new Zeta8Integer(0, 2, 0, 0);
+        expResult = "2\\zeta_8";
+        result = num.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
     }
 
     /**
@@ -373,6 +389,10 @@ public class Zeta8IntegerTest {
         assertEquals(expResult, result);
         num = new Zeta8Integer(-5, 0, -21, 3);
         expResult = "&minus;5&minus;21<i>i</i>+3(&zeta;<sub>8</sub>)<sup>3</sup>";
+        result = num.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        num = new Zeta8Integer(0, 2, 0, 0);
+        expResult = "2&zeta;<sub>8</sub>";
         result = num.toHTMLString().replace(" ", "");
         assertEquals(expResult, result);
     }
@@ -516,6 +536,21 @@ public class Zeta8IntegerTest {
         assertEquals(expResult, result);
         expResult = new Zeta8Integer(0, 0, 2, 0);
         result = SQRT_2.times(SQRT_NEG_2);
+        assertEquals(expResult, result);
+        expResult = new Zeta8Integer(1, 0, -1, 0);
+        Zeta8Integer multiplicandA = new Zeta8Integer(1, -1, 0, 0); // 1 - zeta_8 times...
+        Zeta8Integer multiplicandB = new Zeta8Integer(1, 1, 0, 0); // ... 1 + zeta_8 should...
+        result = multiplicandA.times(multiplicandB); // ...equal 1 - i
+        assertEquals(expResult, result);
+        expResult = new Zeta8Integer(1, 0, 1, 0);
+        multiplicandA = new Zeta8Integer(0, 1, -1, 0); // zeta_8 - i times...
+        multiplicandB = new Zeta8Integer(0, 1, 1, 0); // ... zeta_8 + i should...
+        result = multiplicandA.times(multiplicandB); // ...equal 1 + i
+        assertEquals(expResult, result);
+        expResult = new Zeta8Integer(2, 0, 0, 0);
+        multiplicandA = new Zeta8Integer(1, 0, -1, 0); // 1 - i times...
+        multiplicandB = new Zeta8Integer(1, 0, 1, 0); // ... 1 + i should...
+        result = multiplicandA.times(multiplicandB); // ...equal 2
         assertEquals(expResult, result);
     }
 
