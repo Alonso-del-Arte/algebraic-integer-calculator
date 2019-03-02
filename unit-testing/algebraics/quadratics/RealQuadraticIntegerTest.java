@@ -22,6 +22,7 @@ import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -97,6 +98,9 @@ public class RealQuadraticIntegerTest {
     
     private static int randomRegPart, randomSurdPart, randomRegForHalfInts, randomSurdForHalfInts, totalTestIntegers;
     
+    /**
+     * The golden ratio, &phi; = 1/2 + (&radic;5)/2. Approximately 1.618.
+     */
     private static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
     
     @BeforeClass
@@ -945,8 +949,8 @@ public class RealQuadraticIntegerTest {
             temporaryHold = new RealQuadraticInteger(testNormsRegParts.get(j), 0, testNorms.get(totalTestIntegers - 1).getRing());
             tempHash = temporaryHold.hashCode();
             testHash = testNorms.get(j).hashCode();
-            System.out.println(temporaryHold.toString() + " from " + temporaryHold.getRing().toASCIIString() + " hashed as " + tempHash);
-            System.out.println(testNorms.get(j).toString() + " from " + testNorms.get(j).getRing().toASCIIString() + " hashed as " + testHash);
+            System.out.println(temporaryHold.toASCIIString() + " from " + temporaryHold.getRing().toASCIIString() + " hashed as " + tempHash);
+            System.out.println(testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " hashed as " + testHash);
             assertEquals(tempHash, testHash);
         }
     }
@@ -985,8 +989,104 @@ public class RealQuadraticIntegerTest {
             kindaDiffZero = new RealQuadraticInteger(0, 0, testIntegers.get(j + 1).getRing());
             assertEquals(zeroRQI, kindaDiffZero); // Making sure purely real integers can register as equal
         }
+        // An algebraic integer should not be equal to an unrelated object
+        RuntimeException obj = new RuntimeException("This exception will not actually be thrown.");
+        assertNotEquals(GOLDEN_RATIO, obj);
+    }
+    
+    /**
+     * Test of compareTo method, of class RealQuadraticInteger, implementing 
+     * Comparable.
+     */
+    @Test
+    public void testCompareTo() {
+        System.out.println("compareTo");
+        RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
+        RealQuadraticInteger negSeven = new RealQuadraticInteger(-7, 0, ringZ10);
+        RealQuadraticInteger numNeg136plus44Sqrt10 = new RealQuadraticInteger(-136, 44, ringZ10);
+        RealQuadraticInteger num117minus36Sqrt10 = new RealQuadraticInteger(117, -36, ringZ10);
+        RealQuadraticInteger numSqrt10 = new RealQuadraticInteger(0, 1, ringZ10);
+        int comparison = negSeven.compareTo(numNeg136plus44Sqrt10);
+        String assertionMessage = negSeven.toString() + " should be found to be less than " + numNeg136plus44Sqrt10;
+        assertTrue(assertionMessage, comparison < 0);
+        comparison = numNeg136plus44Sqrt10.compareTo(num117minus36Sqrt10);
+        assertionMessage = numNeg136plus44Sqrt10.toString() + " should be found to be less than " + num117minus36Sqrt10;
+        assertTrue(assertionMessage, comparison < 0);
+        comparison = num117minus36Sqrt10.compareTo(numSqrt10);
+        assertionMessage = num117minus36Sqrt10.toString() + " should be found to be less than " + numSqrt10;
+        assertTrue(assertionMessage, comparison < 0);
+        comparison = negSeven.compareTo(negSeven);
+        assertEquals(0, comparison);
+        comparison = numNeg136plus44Sqrt10.compareTo(numNeg136plus44Sqrt10);
+        assertEquals(0, comparison);
+        comparison = num117minus36Sqrt10.compareTo(num117minus36Sqrt10);
+        assertEquals(0, comparison);
+        comparison = numSqrt10.compareTo(numSqrt10);
+        assertEquals(0, comparison);
+        comparison = numSqrt10.compareTo(num117minus36Sqrt10);
+        assertionMessage = numSqrt10.toString() + " should be found to be greater than " + num117minus36Sqrt10.toString();
+        assertTrue(assertionMessage, comparison > 0);
+        comparison = num117minus36Sqrt10.compareTo(numNeg136plus44Sqrt10);
+        assertionMessage = num117minus36Sqrt10.toString() + " should be found to be greater than " + numNeg136plus44Sqrt10.toString();
+        assertTrue(assertionMessage, comparison > 0);
+        comparison = numNeg136plus44Sqrt10.compareTo(negSeven);
+        assertionMessage = numNeg136plus44Sqrt10.toString() + " should be found to be greater than " + negSeven.toString();
+        assertTrue(assertionMessage, comparison > 0);
+        try {
+            comparison = numSqrt10.compareTo(null);
+            String failMsg = "Comparing " + numSqrt10.toString() + " to null should have caused an exception, not given result " + comparison + ".";
+            fail(failMsg);
+        } catch (NullPointerException npe) {
+            System.out.println("Comparing " + numSqrt10.toASCIIString() + " to null correctly triggered NullPointerException.");
+            System.out.println("NullPointerException had this message: \"" + npe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMsg = e.getClass().getName() + " is the wrong exception to throw for comparing " + numSqrt10.toString() + " to null.";
+            fail(failMsg);
+        }
     }
 
+    /**
+     * Another test of compareTo method, of class RealQuadraticInteger, 
+     * implementing Comparable. This one checks that {@link 
+     * Collections#sort(java.util.List)} can use compareTo to sort a list of 
+     * real quadratic integers in ascending order.
+     */
+    @Test
+    public void testCompareToThroughCollectionSort() {
+        RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
+        RealQuadraticInteger negSeven = new RealQuadraticInteger(-7, 0, ringZ10);
+        RealQuadraticInteger numNeg136plus44Sqrt10 = new RealQuadraticInteger(-136, 44, ringZ10);
+        RealQuadraticInteger num117minus36Sqrt10 = new RealQuadraticInteger(117, -36, ringZ10);
+        RealQuadraticInteger numSqrt10 = new RealQuadraticInteger(0, 1, ringZ10);
+        List<RealQuadraticInteger> expectedList = new ArrayList<>();
+        expectedList.add(negSeven);
+        expectedList.add(numNeg136plus44Sqrt10);
+        expectedList.add(num117minus36Sqrt10);
+        expectedList.add(numSqrt10);
+        List<RealQuadraticInteger> unsortedList = new ArrayList<>();
+        unsortedList.add(num117minus36Sqrt10);
+        unsortedList.add(negSeven);
+        unsortedList.add(numSqrt10);
+        unsortedList.add(numNeg136plus44Sqrt10);
+        Collections.sort(unsortedList);
+        assertEquals(expectedList, unsortedList);
+        RealQuadraticInteger surd = new RealQuadraticInteger(0, 1, RING_OQ13);
+        expectedList.add(surd);
+        unsortedList.add(surd);
+        surd = new RealQuadraticInteger(0, 1, RING_ZPHI);
+        expectedList.add(1, surd);
+        unsortedList.add(surd);
+        expectedList.add(1, GOLDEN_RATIO);
+        unsortedList.add(GOLDEN_RATIO);
+        surd = new RealQuadraticInteger(0, 1, RING_Z2);
+        expectedList.add(1, surd);
+        unsortedList.add(surd);
+        expectedList.add(1, oneRQI);
+        unsortedList.add(oneRQI);
+        Collections.sort(unsortedList);
+        assertEquals(expectedList, unsortedList);
+    }
+    
     /**
      * Test of parseQuadraticInteger, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger. Whatever is output by toString, toStringAlt, 
@@ -1002,58 +1102,52 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testParseQuadraticInteger() {
         System.out.println("parseQuadraticInteger");
-        fail("Haven't written the test yet.");
-//        String numberString;
-//        QuadraticInteger numberIQI;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            numberString = testIntegers.get(i).toString();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toASCIIString();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toASCIIStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toTeXString();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toTeXStringSingleDenom();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toTeXStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toHTMLString();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//            numberString = testIntegers.get(i).toHTMLStringAlt();
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getCausingRing(), numberString);
-//            assertEquals(testIntegers.get(i), numberIQI);
-//        }
-//        // A few special cases to check
-//        numberString = "i";
-//        numberIQI = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
-//        assertEquals(numberIQI, QuadraticInteger.parseQuadraticInteger(numberString));
-//        numberString = "0 + i";
-//        assertEquals(numberIQI, QuadraticInteger.parseQuadraticInteger(numberString));
-//        numberString = "-sqrt(-2)";
-//        numberIQI = new ImaginaryQuadraticInteger(0, -1, RING_ZI2);
-//        assertEquals(numberIQI, QuadraticInteger.parseQuadraticInteger(numberString));
-//        numberString = "0 - sqrt(-2)";
-//        assertEquals(numberIQI, QuadraticInteger.parseQuadraticInteger(numberString));
-//        /* Lastly, to check the appropriate exception is thrown for non-numeric 
-//           strings */
-//        numberString = "one plus imaginary unit";
-//        try {
-//            numberIQI = QuadraticInteger.parseQuadraticInteger(numberString);
-//            fail("Attempting to call parseImaginaryQuadraticInteger on \"" + numberString + "\" should have triggered NumberFormatException, not given " + numberIQI.toASCIIString() + ".");
-//        } catch (NumberFormatException nfe) {
-//            System.out.println("Attempting to call parseImaginaryQuadraticInteger on \"" + numberString + "\" correctly triggered NumberFormatException: " + nfe.getMessage());
-//        }
+        String numberString;
+        QuadraticInteger numberRQI;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            numberString = testIntegers.get(i).toString();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toStringAlt();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toASCIIString();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toASCIIStringAlt();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toTeXString();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toTeXStringSingleDenom();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toTeXStringAlt();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toHTMLString();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+            numberString = testIntegers.get(i).toHTMLStringAlt();
+            numberRQI = QuadraticInteger.parseQuadraticInteger(testIntegers.get(i).getRing(), numberString);
+            assertEquals(testIntegers.get(i), numberRQI);
+        }
+        // A few special cases to check
+        numberString = "-sqrt(2)";
+        numberRQI = new RealQuadraticInteger(0, -1, RING_Z2);
+        assertEquals(numberRQI, QuadraticInteger.parseQuadraticInteger(numberString));
+        numberString = "0 - sqrt(-2)";
+        assertEquals(numberRQI, QuadraticInteger.parseQuadraticInteger(numberString));
+        /* Lastly, to check the appropriate exception is thrown for non-numeric 
+           strings */
+        numberString = "one plus imaginary unit";
+        try {
+            numberRQI = QuadraticInteger.parseQuadraticInteger(numberString);
+            fail("Attempting to call parseImaginaryQuadraticInteger on \"" + numberString + "\" should have triggered NumberFormatException, not given " + numberRQI.toASCIIString() + ".");
+        } catch (NumberFormatException nfe) {
+            System.out.println("Attempting to call parseImaginaryQuadraticInteger on \"" + numberString + "\" correctly triggered NumberFormatException: " + nfe.getMessage());
+        }
     }
     
     /**
@@ -1470,30 +1564,6 @@ public class RealQuadraticIntegerTest {
                 }
             }
         }
-        // TODO: Rethink following part of the test, consider split off or remove altogether
-        /* Now to test dividing a purely real integer held in an 
-           RealQuadraticInteger object divided by a purely real integer in 
-           an int */
-//        System.out.println("divides(int)");
-//        int testDivRealPartMult;
-//        for (int iterDiscrOQ = -11; iterDiscrOQ > -84; iterDiscrOQ -= 8) {
-//            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscrOQ)) {
-//                currRing = new RealQuadraticRing(iterDiscrOQ);
-//                testDivRealPartMult = (-iterDiscrOQ + 1)/4;
-//                testDividend = new RealQuadraticInteger(testDivRealPartMult, 0, currRing);
-//                try {
-//                    result = testDividend.divides(2);
-//                    failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " should have triggered NotDivisibleException, not given result " + result.toString();
-//                    fail(failMessage);
-//                } catch (NotDivisibleException nde) {
-//                    System.out.println("Trying to divide " + testDividend.toASCIIString() + " by 2 in " + currRing.toASCIIString() + " correctly triggered NotDivisibleException \"" + nde.getMessage() + "\"");
-//                } catch (Exception e) {
-//                    System.out.println("Encountered this exception: " + e.getClass().getName() + " \"" + e.getMessage() + "\"");
-//                    failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " triggered the wrong exception.";
-//                    fail(failMessage);
-//                }
-//            }
-//        }
         for (int i = 0; i < totalTestIntegers; i++) {
             try {
                 result = testNorms.get(i).divides(testConjugates.get(i));
@@ -1509,22 +1579,24 @@ public class RealQuadraticIntegerTest {
                 fail(failMessage);
             }
             // Check to make sure division by zero causes a suitable exception
+            RealQuadraticInteger zeroSurd = new RealQuadraticInteger(0, 1, zeroRQI.getRing());
+            String zeroStr = "0 + 0" + zeroSurd.toASCIIString();
             try {
                 result = testIntegers.get(i).divides(zeroRQI);
-                failMessage = "Dividing " + testIntegers.get(i).toASCIIString() + " by 0 + 0i should have caused an exception, not given result " + result.toASCIIString();
+                failMessage = "Dividing " + testIntegers.get(i).toASCIIString() + " by " + zeroStr + " should have caused an exception, not given result " + result.toASCIIString();
                 fail(failMessage);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "AlgebraicDegreeOverflowException is the wrong exception to throw for division by 0 + 0i \"" + adoe.getMessage() + "\"";
+                failMessage = "AlgebraicDegreeOverflowException is the wrong exception to throw for division by " + zeroStr + " \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                failMessage = "NotDivisibleException is the wrong exception to throw for division by 0 + 0i \"" + nde.getMessage() + "\"";
+                failMessage = "NotDivisibleException is the wrong exception to throw for division by " + zeroStr + " \"" + nde.getMessage() + "\"";
                 fail(failMessage);
             } catch (IllegalArgumentException iae) {
-                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by 0 + 0i \"" + iae.getMessage() + "\"");
+                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by " + zeroStr + " \"" + iae.getMessage() + "\"");
             } catch (ArithmeticException ae) {
-                System.out.println("ArithmeticException correctly triggered upon attempt to divide by 0 + 0i \"" + ae.getMessage() + "\"");
+                System.out.println("ArithmeticException correctly triggered upon attempt to divide by " + zeroStr + " \"" + ae.getMessage() + "\"");
             } catch (Exception e) {
-                failMessage = "Wrong exception thrown for attempt to divide by 0 + 0i. " + e.getMessage();
+                failMessage = e.getClass().getName() + " is the wrong exception thrown for attempt to divide by " + zeroStr + ".";
                 fail(failMessage);
             }
             try {

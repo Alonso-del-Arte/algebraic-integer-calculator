@@ -24,8 +24,8 @@ import fractions.Fraction;
 import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 
 import java.text.DecimalFormatSymbols;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.BeforeClass;
@@ -1422,6 +1422,9 @@ public class ImaginaryQuadraticIntegerTest {
             kindaDiffZero = new ImaginaryQuadraticInteger(0, 0, testIntegers.get(j + 1).getRing());
             assertEquals(zeroIQI, kindaDiffZero); // Making sure purely real integers can register as equal
         }
+        // An algebraic integer should not be equal to an unrelated object
+        String obj = "This should not be found to be equal to a complex cubic root of 1.";
+        assertNotEquals(COMPLEX_CUBIC_ROOT_OF_UNITY, obj);
     }
     
     /* (TEMP JAVADOC DISABLE) *

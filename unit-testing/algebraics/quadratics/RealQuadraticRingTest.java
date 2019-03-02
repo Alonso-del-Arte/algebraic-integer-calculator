@@ -18,6 +18,7 @@ package algebraics.quadratics;
 
 import algebraics.UnsupportedNumberDomainException;
 import calculators.NumberTheoreticFunctionsCalculator;
+import fileops.FileChooserWithOverwriteGuard;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -189,6 +190,31 @@ public class RealQuadraticRingTest {
     }
     
     /**
+     * Test of equals method, of class ImaginaryQuadraticRing. The reflexive, 
+     * symmetric and transitive properties are tested for rings that should 
+     * register as equal. Then five different rings are tested to check that 
+     * they're not registering as equal.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        RealQuadraticRing someRing = new RealQuadraticRing(2);
+        RealQuadraticRing transitiveHold = new RealQuadraticRing(2);
+        assertTrue(ringZ2.equals(ringZ2)); // Reflexive test
+        assertEquals(ringZ2, someRing);
+        assertEquals(someRing, ringZ2); // Symmetric test
+        assertEquals(someRing, transitiveHold);
+        assertEquals(transitiveHold, ringZ2); // Transitive test
+        // Now to test that rings that are not equal are reported as not equal
+        assertNotEquals(ringZ2, ringZPhi);
+        assertNotEquals(ringZPhi, ringOQ13);
+        assertNotEquals(ringOQ13, ringRandom);
+        // Lastly, a ring should not be equal to an unrelated object
+        FileChooserWithOverwriteGuard obj = new FileChooserWithOverwriteGuard();
+        assertNotEquals(ringRandom, obj);
+    }
+
+/**
      * Test of hashCode method, of class ImaginaryQuadraticRing, inherited from 
      * QuadraticRing. The purpose here isn't to test that any specific ring maps 
      * to any specific hash code, but rather that two rings that are equal get 

@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import calculators.NumberTheoreticFunctionsCalculator;
+import fileops.PNGFileFilter;
 import viewers.ImagQuadRingDisplay;
 
 import org.junit.BeforeClass;
@@ -287,6 +288,9 @@ public class ImaginaryQuadraticRingTest {
         assertNotEquals(ringZi2, ringEisenstein);
         assertNotEquals(ringEisenstein, ringOQi7);
         assertNotEquals(ringOQi7, ringRandom);
+        // Lastly, a ring should not be equal to an unrelated object
+        PNGFileFilter obj = new PNGFileFilter();
+        assertNotEquals(ringRandom, obj);
     }
 
     /**
