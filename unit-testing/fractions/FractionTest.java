@@ -16,8 +16,12 @@
  */
 package fractions;
 
+import calculators.NumberTheoreticFunctionsCalculator;
+import clipboardops.TestImagePanel;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -32,7 +36,7 @@ import static org.junit.Assert.*;
 public class FractionTest {
     
     /**
-     * The test delta, 10^(-8).
+     * The test delta, 10<sup>&minus;8</sup>.
      */
     public static final double TEST_DELTA = 0.00000001;
     
@@ -46,6 +50,9 @@ public class FractionTest {
      */
     private Fraction operandB;
     
+    /**
+     * Initializes two Fraction objects that will be used in a lot of the tests.
+     */
     @Before
     public void setUp() {
         operandA = new Fraction(7, 8);
@@ -125,7 +132,7 @@ public class FractionTest {
         Fraction expResult = new Fraction(7, 24);
         Fraction result = operandA.times(operandB);
         assertEquals(expResult, result);
-        result = operandB.times(operandA);
+        result = operandB.times(operandA); // Commutative test
         assertEquals(expResult, result);
         expResult = new Fraction(21, 2);
         result = operandA.times(12);
@@ -297,6 +304,68 @@ public class FractionTest {
     }
     
     /**
+     * Test of hashCode method, of class Fraction. More than 400 instances of 
+     * Fraction are created, representing distinct fractions with denominators 
+     * ranging from 2 to 103. They should all get distinct hash codes.
+     */
+    @Test
+    public void testHashCodeOnManyFractions() {
+        System.out.println("hashCode on several instances of Fraction");
+        HashSet<Integer> fractHashes = new HashSet<>(435);
+        Fraction currUnitFract, currFract;
+        int currHash, currSize, prevSize;
+        currUnitFract = new Fraction(1, 102);
+        currHash = currUnitFract.hashCode();
+        fractHashes.add(currHash);
+        currUnitFract = new Fraction(1, 103);
+        currHash = currUnitFract.hashCode();
+        fractHashes.add(currHash);
+        String assertionMessage = "Set of Fraction hash codes should have two hash codes";
+        assertEquals(assertionMessage, 2, fractHashes.size());
+        prevSize = 2;
+        for (int n = 2; n < 102; n++) {
+            if (NumberTheoreticFunctionsCalculator.euclideanGCD(n, 102) == 1) {
+                currUnitFract = new Fraction(1, n);
+                currHash = currUnitFract.hashCode();
+                fractHashes.add(currHash);
+                currSize = fractHashes.size();
+                assertionMessage = "Hash code " + currHash + " for " + currUnitFract.toString() + " should be distinct.";
+                assertTrue(assertionMessage, currSize > prevSize);
+                prevSize++;
+            }
+            currFract = new Fraction(n, 102);
+            currHash = currFract.hashCode();
+            fractHashes.add(currHash);
+            currSize = fractHashes.size();
+            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
+            assertTrue(assertionMessage, currSize > prevSize);
+            prevSize++;
+            currFract = new Fraction(-n, 102);
+            currHash = currFract.hashCode();
+            fractHashes.add(currHash);
+            currSize = fractHashes.size();
+            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
+            assertTrue(assertionMessage, currSize > prevSize);
+            prevSize++;
+            currFract = new Fraction(n, 103);
+            currHash = currFract.hashCode();
+            fractHashes.add(currHash);
+            currSize = fractHashes.size();
+            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
+            assertTrue(assertionMessage, currSize > prevSize);
+            prevSize++;
+            currFract = new Fraction(-n, 103);
+            currHash = currFract.hashCode();
+            fractHashes.add(currHash);
+            currSize = fractHashes.size();
+            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
+            assertTrue(assertionMessage, currSize > prevSize);
+            prevSize++;
+        }
+        System.out.println("Successfully created " + prevSize + " instances of Fraction with " + prevSize + " distinct hash codes.");
+    }
+    
+    /**
      * Test of equals method, of class Fraction.
      */
     @Test
@@ -315,7 +384,107 @@ public class FractionTest {
         assertTrue(tempHold.equals(operandB)); 
         transitiveHold = new Fraction(1, 3);
         assertTrue(tempHold.equals(transitiveHold));
-        assertTrue(transitiveHold.equals(tempHold)); 
+        assertTrue(transitiveHold.equals(tempHold));
+        TestImagePanel obj = new TestImagePanel();
+        assertNotEquals(operandA, obj);
+    }
+    
+    /**
+     * Test of compareTo method, of class Fraction, implementing 
+     * Comparable.
+     */
+    @Test
+    public void testCompareTo() {
+        System.out.println("compareTo");
+        Fraction negThreeHalves = new Fraction(-3, 2);
+        Fraction approxPiFiftieths = new Fraction(157, 50);
+        Fraction approxPi113ths = new Fraction(355, 113);
+        Fraction approxPiSevenths = new Fraction(22, 7);
+        int comparison = negThreeHalves.compareTo(approxPiFiftieths);
+        String assertionMessage = negThreeHalves.toString() + " should be found to be less than " + approxPiFiftieths.toString();
+        assertTrue(assertionMessage, comparison < 0);
+        comparison = operandB.compareTo(operandA);
+        assertionMessage = operandB.toString() + " should be found to be less than " + operandA.toString();
+        assertTrue(assertionMessage, comparison < 0);
+        comparison = approxPiFiftieths.compareTo(approxPi113ths);
+        assertionMessage = approxPiFiftieths.toString() + " should be found to be less than " + approxPi113ths.toString();
+        assertTrue(assertionMessage, comparison < 0);
+        comparison = approxPi113ths.compareTo(approxPiSevenths);
+        assertionMessage = approxPi113ths.toString() + " should be found to be less than " + approxPiSevenths.toString();
+        assertTrue(assertionMessage, comparison < 0);
+        comparison = approxPiFiftieths.compareTo(approxPiFiftieths);
+        assertEquals(0, comparison);
+        comparison = approxPi113ths.compareTo(approxPi113ths);
+        assertEquals(0, comparison);
+        comparison = approxPiSevenths.compareTo(approxPiSevenths);
+        assertEquals(0, comparison);
+        comparison = operandA.compareTo(operandB);
+        assertionMessage = operandA.toString() + " should be found to be greater than " + operandB.toString();
+        assertTrue(assertionMessage, comparison > 0);
+        comparison = approxPiFiftieths.compareTo(negThreeHalves);
+        assertionMessage = approxPiFiftieths.toString() + " should be found to be greater than " + negThreeHalves.toString();
+        assertTrue(assertionMessage, comparison > 0);
+        comparison = approxPi113ths.compareTo(approxPiFiftieths);
+        assertionMessage = approxPi113ths.toString() + " should be found to be greater than " + approxPiFiftieths.toString();
+        assertTrue(assertionMessage, comparison > 0);
+        comparison = approxPiSevenths.compareTo(approxPi113ths);
+        assertionMessage = approxPiSevenths.toString() + " should be found to be greater than " + approxPi113ths.toString();
+        assertTrue(assertionMessage, comparison > 0);
+        try {
+            comparison = approxPiSevenths.compareTo(null);
+            String failMsg = "Comparing " + approxPiSevenths.toString() + " to null should have caused an exception, not given result " + comparison + ".";
+            fail(failMsg);
+        } catch (NullPointerException npe) {
+            System.out.println("Comparing " + approxPiSevenths.toString() + " to null correctly triggered NullPointerException.");
+            System.out.println("NullPointerException had this message: \"" + npe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMsg = e.getClass().getName() + " is the wrong exception to throw for comparing " + approxPiSevenths.toString() + " to null.";
+            fail(failMsg);
+        }
+    }
+    
+    /**
+     * Another test of compareTo method, of class Fraction. This one tests 
+     * whether Fraction can distinguish between 1/9223372036854775807 and 
+     * 1/9223372036854775806.
+     */
+    @Test
+    public void testCompareToCloseFraction() {
+        Fraction numberA = new Fraction(1, Long.MAX_VALUE);
+        Fraction numberB = new Fraction(1, Long.MAX_VALUE - 1);
+        String assertionMessage = numberA.toString() + " should be found to be less than " + numberB.toString();
+        assertTrue(assertionMessage, numberA.compareTo(numberB) < 0);
+        assertionMessage = numberB.toString() + " should be found to be greater than " + numberA.toString();
+        assertTrue(assertionMessage, numberB.compareTo(numberA) > 0);
+    }
+    
+    /**
+     * Yet another test of compareTo method, of class Fraction. This one checks 
+     * that {@link Collections#sort(java.util.List)} can use compareTo to sort a 
+     * list of fractions in ascending order.
+     */
+    @Test
+    public void testCompareToThroughCollectionSort() {
+        Fraction negThreeHalves = new Fraction(-3, 2);
+        Fraction approxPiFiftieths = new Fraction(157, 50);
+        Fraction approxPi113ths = new Fraction(355, 113);
+        Fraction approxPiSevenths = new Fraction(22, 7);
+        List<Fraction> expectedList = new ArrayList<>();
+        expectedList.add(negThreeHalves);
+        expectedList.add(operandB);
+        expectedList.add(operandA);
+        expectedList.add(approxPiFiftieths);
+        expectedList.add(approxPi113ths);
+        expectedList.add(approxPiSevenths);
+        List<Fraction> unsortedList = new ArrayList<>();
+        unsortedList.add(approxPi113ths);
+        unsortedList.add(negThreeHalves);
+        unsortedList.add(approxPiSevenths);
+        unsortedList.add(operandA);
+        unsortedList.add(approxPiFiftieths);
+        unsortedList.add(operandB);
+        Collections.sort(unsortedList);
+        assertEquals(expectedList, unsortedList);
     }
 
     /**
@@ -341,7 +510,7 @@ public class FractionTest {
         Fraction expResult = new Fraction(8, 7);
         Fraction result = operandA.reciprocal();
         assertEquals(expResult, result);
-        expResult = new Fraction(3, 1);
+        expResult = new Fraction(3);
         result = operandB.reciprocal();
         assertEquals(expResult, result);
     }
@@ -351,7 +520,7 @@ public class FractionTest {
      */
     @Test
     public void testGetEgyptianFractions() {
-        System.out.println("getEgyptianFractions: 7/8");
+        System.out.println("getEgyptianFractions(7/8)");
         Fraction oneHalf = new Fraction(1, 2);
         Fraction oneThird = new Fraction(1, 3);
         Fraction one24th = new Fraction(1, 24);
@@ -366,7 +535,7 @@ public class FractionTest {
      */
     @Test
     public void testGetEgyptianFractionsFiveQuarters() {
-        System.out.println("getEgyptianFractions: 5/4");
+        System.out.println("getEgyptianFractions(5/4)");
         Fraction one = new Fraction(1);
         Fraction oneQuarter = new Fraction(1, 4);
         Fraction fiveQuarters = new Fraction(5, 4);
@@ -374,38 +543,82 @@ public class FractionTest {
         Fraction[] result = fiveQuarters.getEgyptianFractions();
         assertArrayEquals(expResult, result);
     }
-        
+    
     /**
      * Test of getEgyptianFractions method, of class Fraction, specifically for 
-     * the cases of sums of reciprocals of odd-indexed factorials.
+     * the case of 1.
      */
-    @Ignore
     @Test
-    public void testGetEgyptianFractionsAccumOddFactRecips() {
-        long currFact = 6L;
-        long currN = 4L;
-        Fraction currUnitFract = new Fraction(1, currFact);
-        Fraction currFract = new Fraction(0);
-        List<Fraction> expResult = new ArrayList<>();
-        List<Fraction> result;
-        while (currFact < Integer.MAX_VALUE) {
-            expResult.add(currUnitFract);
-            currFract = currFract.plus(currUnitFract);
-            result = new ArrayList<>(Arrays.asList(currFract.getEgyptianFractions()));
-            System.out.print(currFract.toString() + " = " + result.get(0).toString());
-            for (int i = 1; i < result.size(); i++) {
-                System.out.print(" + " + result.get(i).toString());
-            }
-            System.out.println(".");
-            assertEquals(expResult, result);
-            currFact *= currN;
-            currN++;
-            currFact *= currN;
-            currUnitFract = new Fraction(1, currFact);
-            currN++;
-        }
+    public void testGetEgyptianFractionsOne() {
+        System.out.println("getEgyptianFractions(1)");
+        Fraction one = new Fraction(1);
+        Fraction[] expResult = {one};
+        Fraction[] result = one.getEgyptianFractions();
+        assertArrayEquals(expResult, result);
     }
     
+    /**
+     * Test of getEgyptianFractions method, of class Fraction, specifically for 
+     * the case of 1/15.
+     */
+    @Test
+    public void testGetEgyptianFractionsOneFifteenth() {
+        System.out.println("getEgyptianFractions(1/15)");
+        Fraction oneFifteenth = new Fraction(1, 15);
+        Fraction[] expResult = {oneFifteenth};
+        Fraction[] result = oneFifteenth.getEgyptianFractions();
+        assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getEgyptianFractions method, of class Fraction, specifically for 
+     * the case of 0.
+     */
+    @Test
+    public void testGetEgyptianFractionsZero() {
+        System.out.println("getEgyptianFractions(0)");
+        Fraction zero = new Fraction(0);
+        Fraction[] expResult = {zero};
+        Fraction[] result = zero.getEgyptianFractions();
+        assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getEgyptianFractions method, of class Fraction, specifically for 
+     * the case of &minus;3/2.
+     */
+    @Test
+    public void testGetEgyptianFractionsNegThreeHalves() {
+        System.out.println("getEgyptianFractions(-3/2)");
+        Fraction negTwo = new Fraction(-2);
+        Fraction oneHalf = new Fraction(1, 2);
+        Fraction negThreeHalves = new Fraction(-3, 2);
+        Fraction[] expResult = {negTwo, oneHalf};
+        Fraction[] result = negThreeHalves.getEgyptianFractions();
+        assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getEgyptianFractions method, of class Fraction, specifically for 
+     * the case of 99/100. It is expected that that this will deliver the 
+     * correct result of 99/100 = 1/2 + 1/3 + 1/7 + 1/73 + 1/9018 + 1/230409900 
+     * in no more than 30 seconds, or else the test fails even if the correct 
+     * answer would have eventually been found.
+     */
+    @Ignore
+    @Test(timeout = 30000)
+    public void testGetEgyptianFractionsNinetyNineHundredths() {
+        System.out.println("getEgyptianFractions(99/100)");
+        Fraction ninetyNineHundredths = new Fraction(99, 100);
+        Fraction[] expResult = {new Fraction(1, 2), new Fraction(1, 3), new Fraction(1, 7), new Fraction(1, 73), new Fraction(1, 9018), new Fraction(1, 230409900)};
+        Fraction[] result = ninetyNineHundredths.getEgyptianFractions();
+        assertArrayEquals(expResult, result);
+    }
+    
+    /**
+     * Test of Fraction constructor. Even if the constructor parameters are not 
+     * in lowest terms, the constructor should change them to lowest terms.
+     */
     @Test
     public void testFractionsAreInLowestTerms() {
         System.out.println("Fractions should be in lowest terms");
@@ -421,6 +634,11 @@ public class FractionTest {
         assertEquals("1/3", fraction.toString().replace(" ", ""));
     }
     
+    /**
+     * Test of Fraction constructor. Even if the denominator passed to the 
+     * constructor is negative, the constructor should change it to a positive 
+     * integer.
+     */
     @Test
     public void testNegativeDenomsQuietlyChanged() {
         System.out.println("Negative denominators should be quietly changed to positive");
@@ -428,5 +646,5 @@ public class FractionTest {
         assertEquals(-12L, fraction.getNumerator());
         assertEquals(29L, fraction.getDenominator());
     }
-    
+        
 }
