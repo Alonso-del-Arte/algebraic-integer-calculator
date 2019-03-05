@@ -176,24 +176,24 @@ public class FractionTest {
             fail(failMessage);
         } catch (IllegalArgumentException iae) {
             System.out.println("IllegalArgumentException is considered preferable for division by zero.");
-            System.out.println(iae.getMessage());
+            System.out.println("\"" + iae.getMessage() + "\"");
         } catch (ArithmeticException ae) {
             System.out.println("ArithmeticException is deemed acceptable for division by zero.");
-            System.out.println(ae.getMessage());
+            System.out.println("\"" + ae.getMessage() + "\"");
         } catch (Exception e) {
             String failMessage = e.getClass().getName() + " is not an appropriate exception for division by zero.";
             fail(failMessage);
         }
         try {
-            result = operandB.dividedBy(zero);
-            String failMessage = operandA.toString() + " divided by 0 should have caused an Exception, not given result " + result.toString();
+            result = operandB.dividedBy(0);
+            String failMessage = operandB.toString() + " divided by 0 should have caused an Exception, not given result " + result.toString();
             fail(failMessage);
         } catch (IllegalArgumentException iae) {
             System.out.println("IllegalArgumentException is considered preferable for division by zero.");
-            System.out.println(iae.getMessage());
+            System.out.println("\"" + iae.getMessage() + "\"");
         } catch (ArithmeticException ae) {
             System.out.println("ArithmeticException is deemed acceptable for division by zero.");
-            System.out.println(ae.getMessage());
+            System.out.println("\"" + ae.getMessage() + "\"");
         } catch (Exception e) {
             String failMessage = e.getClass().getName() + " is not an appropriate exception for division by zero.";
             fail(failMessage);
@@ -201,7 +201,8 @@ public class FractionTest {
     }
 
     /**
-     * Test of negate method, of class Fraction.
+     * Test of negate method, of class Fraction. Applying negate twice should 
+     * return the original number.
      */
     @Test
     public void testNegate() {
@@ -209,9 +210,13 @@ public class FractionTest {
         Fraction expResult = new Fraction(-7, 8);
         Fraction result = operandA.negate();
         assertEquals(expResult, result);
+        result = expResult.negate();
+        assertEquals(operandA, result);
         expResult = new Fraction(-1, 3);
         result = operandB.negate();
         assertEquals(expResult, result);
+        result = expResult.negate();
+        assertEquals(operandB, result);
     }
 
     /**
@@ -450,8 +455,8 @@ public class FractionTest {
      */
     @Test
     public void testCompareToCloseFraction() {
-        Fraction numberA = new Fraction(1, Long.MAX_VALUE);
-        Fraction numberB = new Fraction(1, Long.MAX_VALUE - 1);
+        Fraction numberA = new Fraction(1, Integer.MAX_VALUE);
+        Fraction numberB = new Fraction(1, Integer.MAX_VALUE - 1);
         String assertionMessage = numberA.toString() + " should be found to be less than " + numberB.toString();
         assertTrue(assertionMessage, numberA.compareTo(numberB) < 0);
         assertionMessage = numberB.toString() + " should be found to be greater than " + numberA.toString();
@@ -502,7 +507,8 @@ public class FractionTest {
     }
 
     /**
-     * Test of reciprocal method, of class Fraction.
+     * Test of reciprocal method, of class Fraction. Checks that applying the 
+     * reciprocal function to a reciprocal returns the original number.
      */
     @Test
     public void testReciprocal() {
@@ -510,9 +516,37 @@ public class FractionTest {
         Fraction expResult = new Fraction(8, 7);
         Fraction result = operandA.reciprocal();
         assertEquals(expResult, result);
+        result = expResult.reciprocal();
+        assertEquals(operandA, result);
         expResult = new Fraction(3);
         result = operandB.reciprocal();
         assertEquals(expResult, result);
+        result = expResult.reciprocal();
+        assertEquals(operandB, result);
+    }
+
+    /**
+     * Another test of reciprocal method, of class Fraction. Checks that trying 
+     * to take the reciprocal of zero triggers the appropriate exception.
+     */
+    @Test
+    public void testReciprocalOfZero() {
+        System.out.println("reciprocal(0)");
+        Fraction zero = new Fraction(0, 1);
+        try {
+            Fraction result = zero.reciprocal();
+            String failMessage = "Trying to get reciprocal of 0 should have caused an exception, not given result " + result.toString();
+            fail(failMessage);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("IllegalArgumentException is appropriate for trying to take the reciprocal of 0.");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (ArithmeticException ae) {
+            System.out.println("ArithmeticException is deemed acceptable for trying to take the reciprocal of 0.");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " is not an appropriate exception for trying to take the reciprocal of 0.";
+            fail(failMessage);
+        }
     }
 
     /**
