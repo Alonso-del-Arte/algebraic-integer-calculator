@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * For example, to represent one half as 1/2 rather than 0.5.
  * @author Alonso del Arte
  */
-public class Fraction {
+public class Fraction implements Comparable<Fraction> {
     
     private final long fractNumer;
     private final long fractDenom;
@@ -40,7 +40,7 @@ public class Fraction {
      * @return The numerator of the fraction in lowest terms, regardless of how 
      * the fraction was constructed. For example, if the fraction was 
      * constructed as 2/&minus;4, the fraction will be expressed as &minus;1/2 
-     * and this will return &minus;1.
+     * and this function will return &minus;1, not 2.
      */
     public long getNumerator() {
         return this.fractNumer;
@@ -52,7 +52,7 @@ public class Fraction {
      * @return The denominator of the fraction in lowest terms and as a positive 
      * number, regardless of how the fraction was constructed. For example, if 
      * the fraction was constructed as 2/&minus;4, the fraction will be 
-     * expressed as &minus;1/2 and this will return 2.
+     * expressed as &minus;1/2 and this will return 2, not &minus;4.
      */
     public long getDenominator() {
         return this.fractDenom;
@@ -76,7 +76,7 @@ public class Fraction {
      * Adds an integer to this fraction.
      * @param addend The integer to add. For example, 3.
      * @return A new Fraction object with the sum. For example, if this fraction 
-     * is 1/2 and the addend is 3, the result will be 7/2.
+     * is 1/2 and the integer addend is 3, the result will be 7/2.
      */
     public Fraction plus(int addend) {
         long newNumer = this.fractNumer + addend * this.fractDenom;
@@ -90,14 +90,15 @@ public class Fraction {
      * fraction is 1/2 and the subtrahend is 1/7, the result will be 5/14.
      */
     public Fraction minus(Fraction subtrahend) {
-        return this.plus(new Fraction(-subtrahend.fractNumer, subtrahend.fractDenom));
+        return this.plus(subtrahend.negate());
     }
     
     /**
      * Subtracts an integer from this fraction.
      * @param subtrahend The integer to subtract. For example, 3.
      * @return A new Fraction object with the subtraction. For example, if this 
-     * fraction is 1/2 and the subtrahend is 3, the result will be &minus;5/2.
+     * fraction is 1/2 and the integer subtrahend is 3, the result will be 
+     * &minus;5/2.
      */
     public Fraction minus(int subtrahend) {
         return this.plus(-subtrahend);
@@ -138,9 +139,7 @@ public class Fraction {
             String exceptionMessage = "Dividing " + this.toString() + " by 0 results in an indeterminate number.";
             throw new IllegalArgumentException(exceptionMessage);
         }
-        long newNumer = this.fractNumer * divisor.fractDenom;
-        long newDenom = this.fractDenom * divisor.fractNumer;
-        return new Fraction(newNumer, newDenom);
+        return this.times(divisor.reciprocal());
     }
     
     /**
@@ -152,6 +151,10 @@ public class Fraction {
      * exception will be thrown.
      */
     public Fraction dividedBy(int divisor) {
+        if (divisor == 0) {
+            String exceptionMessage = "Dividing " + this.toString() + " by 0 results in an indeterminate number.";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
         return new Fraction(this.fractNumer, this.fractDenom * divisor);
     }
     
@@ -197,7 +200,9 @@ public class Fraction {
     
     /**
      * Gives a representation of this fraction as a String suitable for use in 
-     * an HTML document.
+     * an HTML document. The output placed in the context of an HTML document 
+     * viewed in a Web browser should render with the numerator towards the top 
+     * left and the denominator towards the bottom right.
      * @return A String with the numerator set as an HTML superscript, followed 
      * by the fraction slash character entity and then the denominator set as an 
      * HTML subscript. However, if this fraction is an integer, the 
@@ -227,7 +232,9 @@ public class Fraction {
      * TeX document.
      * @return A String starting with "\frac{", followed by the numerator, then 
      * "}{", then the denominator and lastly "}". For example, if this fraction 
-     * is &minus;1/2, the result will be "\frac{-1}{2}".
+     * is &minus;1/2, the result will be "\frac{-1}{2}". However, if this 
+     * fraction is an integer, the output will be the same as {@link 
+     * #toString()}.
      */
     public String toTeXString() {
         if (this.fractDenom == 1) {
@@ -248,8 +255,8 @@ public class Fraction {
      */
     @Override
     public int hashCode() {
-        long numerHash = fractNumer % HASH_SEP;
-        long denomHash = fractDenom % HASH_SEP;
+        long numerHash = this.fractNumer % HASH_SEP;
+        long denomHash = this.fractDenom % HASH_SEP;
         return (int) (numerHash * HASH_SEP + denomHash);
     }
 
@@ -261,7 +268,8 @@ public class Fraction {
      * denominators were used at the time of construction), false otherwise. For 
      * example, 3/4 and 9/12 should be found to be equal. 3/4 and 3/5 should not 
      * be found to be equal. A Fraction object should not be found to be equal 
-     * to an Integer object even if their values are arithmetically equal.
+     * to an {@link Integer} object even if their values are arithmetically 
+     * equal.
      */
     @Override
     public boolean equals(Object obj) {
@@ -280,18 +288,53 @@ public class Fraction {
         }
         return (this.fractDenom == other.fractDenom);
     }
+
+    /**
+     * Compares the number represented by this Fraction object with 
+     * the number represented by the specified Fraction object for 
+     * order. Returns a negative integer, zero, or a positive integer as this 
+     * fraction is less than, equal to, or greater than the 
+     * specified fraction. This enables sorting with {@link 
+     * java.util.Collections#sort(java.util.List)} without need for a 
+     * comparator.
+     * @param other The Fraction to compare to. Examples: &minus;1/2, 5/3, 22/7.
+     * @return &minus;1 or any other negative integer if the compared Fraction 
+     * is greater than this Fraction, 0 if they are equal, 1 or any other 
+     * positive integer if the compared Fraction is less than this Fraction. For 
+     * example, if this Fraction is 5/3, compared to 22/7 the result would most 
+     * likely be &minus;1; compared to 5/3 the result would certainly be 0, and 
+     * compared to &minus;1/2 the result would most likely be 1.
+     */
+    @Override
+    public int compareTo(Fraction other) {
+        Fraction diff = this.minus(other);
+        if (diff.fractNumer < 0) {
+            return -1;
+        }
+        if (diff.fractNumer > 0) {
+            return 1;
+        }
+        return 0;
+    }
     
+    /**
+     * Gives a numeric approximation of the value of this fraction. This is 
+     * likely to be precise if the denominator is a small power of 2.
+     * @return A numeric approximation of the value of this fraction. For 
+     * example, if this fraction is 1/7, the result might be something like 
+     * 0.14285714285714285714285714285714. If this fraction is 6/13, the result 
+     * might be something like 0.46153846153846153846153846153846.
+     */
     public double getNumericApproximation() {
         return this.numericVal;
     }
     
-    // TODO: Write tests for the following cases: 5/4, 1, 1/15, 0, -3/2.
     public Fraction[] getEgyptianFractions() {
         ArrayList<Fraction> fractList = new ArrayList<>();
         long currDenom = 2;
         Fraction currPortion = this;
         Fraction currUnitFract, resetPortion;
-        if (numericVal <= 0.0 || numericVal >= 1.0) {
+        if (this.numericVal <= 0.0 || this.numericVal >= 1.0) {
             Fraction intPart = new Fraction((long) Math.floor(numericVal));
             fractList.add(intPart);
             currPortion = this.minus(intPart);
@@ -305,7 +348,7 @@ public class Fraction {
             }
             currDenom++;
         }
-        Fraction[] fractArray = fractList.toArray(new Fraction[0]); // https://shipilev.net/blog/2016/arrays-wisdom-ancients/
+        Fraction[] fractArray = fractList.toArray(new Fraction[0]);
         return fractArray;
     }
     
@@ -317,7 +360,7 @@ public class Fraction {
      */
     public Fraction(long numerator) {
         this.fractNumer = numerator;
-        numericVal = numerator;
+        this.numericVal = numerator;
         this.fractDenom = 1;
     }
     
@@ -329,7 +372,8 @@ public class Fraction {
      * @param denominator The denominator of the fraction. It must not be 0. 
      * Other than that, there are no requirements for the denominator. It need 
      * not be coprime to the numerator, and it may be negative. The constructor 
-     * will take care of these details. For example, &minus;4.
+     * will make sure the fraction is in lowest terms, and that it has a 
+     * positive denominator. For example, &minus;4.
      */
     public Fraction(long numerator, long denominator) {
         if (denominator == 0) {
@@ -344,5 +388,5 @@ public class Fraction {
         this.fractDenom = denominator / gcdNumDen;
         this.numericVal = ((double) this.fractNumer / (double) this.fractDenom);
     }
-    
+
 }
