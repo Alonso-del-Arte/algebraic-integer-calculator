@@ -1427,19 +1427,152 @@ public class ImaginaryQuadraticIntegerTest {
         assertNotEquals(COMPLEX_CUBIC_ROOT_OF_UNITY, obj);
     }
     
-    /* (TEMP JAVADOC DISABLE) *
-     * Test of equalsInt, of class ImaginaryQuadraticInteger.
+    /**
+     * Test of to, of class ImaginaryQuadraticInteger. This test is about 
+     * imaginary quadratic integers such that lines connecting them on the 
+     * complex plane are diagonals going in different directions.
      */
-    //(AT)Test
-//    public void testEqualsInt() {
-//        System.out.println("equalsInt");
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            assertTrue(testNorms.get(i).equalsInt(testNormsRealParts.get(i)));
-//            assertFalse(testIntegers.get(i).equalsInt(randomRealPart));
-//            assertFalse(testIntegers.get(i).equalsInt(randomRealForHalfInts));
-//        }
-//        assertTrue(zeroIQI.equalsInt(0));
-//    }
+    @Test
+    public void testTo() {
+        System.out.println("to");
+        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(1, 1, RING_GAUSSIAN);
+        expResult.add(startPoint);
+        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(2, 2, RING_GAUSSIAN);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(3, 3, RING_GAUSSIAN);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(4, 4, RING_GAUSSIAN);
+        expResult.add(betweenPoint);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(5, 5, RING_GAUSSIAN);
+        expResult.add(endPoint);
+        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+        expResult.clear();
+        startPoint = new ImaginaryQuadraticInteger(-2, 0, RING_ZI2);
+        expResult.add(startPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-5, 1, RING_ZI2);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-8, 2, RING_ZI2);
+        expResult.add(betweenPoint);
+        endPoint = new ImaginaryQuadraticInteger(-11, 3, RING_ZI2);
+        expResult.add(endPoint);
+        result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+        expResult.clear();
+        startPoint = new ImaginaryQuadraticInteger(-7, 0, RING_EISENSTEIN);
+        expResult.add(startPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-13, -1, RING_EISENSTEIN, 2);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-6, -1, RING_EISENSTEIN);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-11, -3, RING_EISENSTEIN, 2);
+        expResult.add(betweenPoint);
+        endPoint = new ImaginaryQuadraticInteger(-5, -2, RING_EISENSTEIN);
+        expResult.add(endPoint);
+        result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+        expResult.clear();
+        startPoint = new ImaginaryQuadraticInteger(-1, -3, RING_OQI7, 2);
+        expResult.add(startPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-4, -2, RING_OQI7);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-15, -5, RING_OQI7, 2);
+        expResult.add(betweenPoint);
+        endPoint = new ImaginaryQuadraticInteger(-11, -3, RING_OQI7);
+        expResult.add(endPoint);
+        result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of to, of class ImaginaryQuadraticInteger. A ring that contains 
+     * algebraic integers from two different imaginary quadratic rings must 
+     * necessarily have an algebraic degree of at least 4, hence calling this 
+     * function on two such imaginary quadratic integers should trigger {@link 
+     * algebraics.AlgebraicDegreeOverflowException}. However, such a ring would 
+     * also contain real numbers, so the requested range would be infinite.
+     */
+    @Test
+    public void testToCrossDomain() {
+        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(5, 3, RING_OQI7, 2);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-7, 2, ringRandom);
+        try {
+            List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+            String failMessage = "Trying to get range from " + startPoint.toString() + " to " + endPoint.toString() + " should have caused an exception, not given result " + result.toString() + ".";
+            fail(failMessage);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println("Trying to get range from " + startPoint.toASCIIString() + " to " + endPoint.toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException.");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " is the wrong exception for trying to get range from " + startPoint.toString() + " to " + endPoint.toString() + ".";
+            fail(failMessage);
+        }
+    }
+    
+    /**
+     * Test of to, of class ImaginaryQuadraticInteger. This test is about 
+     * imaginary quadratic integers such that lines connecting them on the 
+     * complex plane are vertical lines, going up or down.
+     */
+    @Test
+    public void testToOnSameRealLine() {
+        System.out.println("to on same real line");
+        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(1, 1, RING_ZI2);
+        expResult.add(startPoint);
+        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(1, 2, RING_ZI2);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(1, 3, RING_ZI2);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(1, 4, RING_ZI2);
+        expResult.add(betweenPoint);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(1, 5, RING_ZI2);
+        expResult.add(endPoint);
+        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+        expResult.clear();
+        startPoint = new ImaginaryQuadraticInteger(-7, 5, RING_EISENSTEIN, 2);
+        expResult.add(startPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-7, 3, RING_EISENSTEIN, 2);
+        expResult.add(betweenPoint);
+        endPoint = new ImaginaryQuadraticInteger(-7, 1, RING_EISENSTEIN, 2);
+        expResult.add(endPoint);
+        result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of to, of class ImaginaryQuadraticInteger. This test is about 
+     * imaginary quadratic integers such that lines connecting them on the 
+     * complex plane are horizontal lines, going left or right.
+     */
+    @Test
+    public void testToOnSameImagLine() {
+        System.out.println("to on same imaginary line");
+        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(-1, 1, RING_ZI2);
+        expResult.add(startPoint);
+        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(1, 1, RING_ZI2);
+        expResult.add(betweenPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(2, 1, RING_ZI2);
+        expResult.add(betweenPoint);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(3, 1, RING_ZI2);
+        expResult.add(endPoint);
+        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+        expResult.clear();
+        startPoint = new ImaginaryQuadraticInteger(-29, -5, RING_OQI7, 2);
+        expResult.add(startPoint);
+        betweenPoint = new ImaginaryQuadraticInteger(-31, -5, RING_OQI7, 2);
+        expResult.add(betweenPoint);
+        endPoint = new ImaginaryQuadraticInteger(-33, -5, RING_OQI7, 2);
+        expResult.add(endPoint);
+        result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+    }
     
     /**
      * Test of parseQuadraticInteger, of class ImaginaryQuadraticInteger, 
