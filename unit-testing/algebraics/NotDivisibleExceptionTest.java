@@ -53,7 +53,7 @@ public class NotDivisibleExceptionTest {
     private static NotDivisibleException notDivEisenstein;
     
     /**
-     * An exception to correspond to (-3 + 8sqrt(2))/7 after setUpClass().
+     * An exception to correspond to (3 - 8sqrt(2))/7 after setUpClass().
      */
     private static NotDivisibleException notDivZ2;
     
@@ -106,7 +106,7 @@ public class NotDivisibleExceptionTest {
         System.out.println("NotDivisibleException for the Eisenstein integers example has this message: \"" + notDivEisenstein.getMessage() + "\"");
         currRing = new RealQuadraticRing(2);
         notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
-        dividend = new RealQuadraticInteger(-3, 8, currRing);
+        dividend = new RealQuadraticInteger(3, -8, currRing);
         divisor = new RealQuadraticInteger(7, 0, currRing);
         try {
             division = dividend.divides(divisor);
@@ -149,8 +149,8 @@ public class NotDivisibleExceptionTest {
         expResult[1] = fractImMult;
         result = notDivEisenstein.getFractions();
         assertArrayEquals(expResult, result);
-        fractRe = new Fraction(-3, 7);
-        fractImMult = new Fraction(8, 7);
+        fractRe = new Fraction(3, 7);
+        fractImMult = new Fraction(-8, 7);
         expResult[0] = fractRe;
         expResult[1] = fractImMult;
         result = notDivZ2.getFractions();
@@ -215,7 +215,7 @@ public class NotDivisibleExceptionTest {
         expResult = 8.0 / 5.0;
         result = notDivGaussian.getNumericRealPart();
         assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
-        expResult = 1.18767;
+        expResult = -1.18767;
         result = notDivZ2.getNumericRealPart();
         assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
         expResult = 0.53934;
@@ -240,6 +240,27 @@ public class NotDivisibleExceptionTest {
         result = notDivZ2.getNumericImagPart();
         assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
         result = notDivZPhi.getNumericImagPart();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+    }
+
+    /**
+     * Test of getAbs method, of class NotDivisibleException.
+     */
+    @Test
+    public void testGetAbs() {
+        System.out.println("getNumericRealPart");
+        double expResult, result;
+        expResult = 1.61245;
+        result = notDivGaussian.getAbs();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        expResult = 3.90512;
+        result = notDivEisenstein.getAbs();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        expResult = 1.18767;
+        result = notDivZ2.getAbs();
+        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        expResult = 0.53934;
+        result = notDivZPhi.getAbs();
         assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
     }
 
@@ -283,14 +304,14 @@ public class NotDivisibleExceptionTest {
         sortAlgIntArray(result);
         assertArrayEquals(expResult, result);
         currRing = new RealQuadraticRing(2);
-        RealQuadraticInteger currElem = new RealQuadraticInteger(1, 0, currRing);
+        RealQuadraticInteger currElem = new RealQuadraticInteger(-1, 0, currRing);
         String assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
         result = notDivZ2.getBoundingIntegers();
         assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
-        currElem = new RealQuadraticInteger(2, 0, currRing);
+        currElem = new RealQuadraticInteger(-2, 0, currRing);
         assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
         assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
-        currElem = new RealQuadraticInteger(0, 1, currRing);
+        currElem = new RealQuadraticInteger(0, -1, currRing);
         assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
         assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
         currRing = new RealQuadraticRing(5);
