@@ -380,15 +380,67 @@ public class ImaginaryQuadraticIntegerTest {
 
     /**
      * Test of minPolynomialString method, of class ImaginaryQuadraticInteger.
-     * For methods that return Strings, spaces are desirable but not required.
-     * Therefore the tests should strip out spaces before asserting equality. It
-     * is understood that "0x" is implied in the minimal polynomial of purely 
-     * imaginary integers and therefore "+0x" and "-0x" should both be excluded 
-     * from the output.
+     * Spaces in the rsults are desirable but not required. Therefore the tests 
+     * should strip out spaces before asserting equality. It is understood that 
+     * "0x" is implied in the minimal polynomial of purely imaginary integers 
+     * and therefore "+0x" and "&minus;0x" should both be excluded from the 
+     * output.
      */
     @Test
     public void testMinPolynomialString() {
         System.out.println("minPolynomialString");
+        String expResult, result;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            expResult = "x\u00B2";
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                if (randomRealForHalfInts < 0) {
+                    expResult = expResult + "+" + ((-1) * randomRealForHalfInts);
+                } else {
+                    expResult = expResult + "\u2212" + randomRealForHalfInts;
+                }
+                expResult = expResult + "x+" + ((randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4);
+            } else {
+                if (randomRealPart < 0) {
+                    expResult = expResult + "+" + ((-2) * randomRealPart);
+                } else {
+                    expResult = expResult + "\u2212" + (2 * randomRealPart);
+                }
+                expResult = expResult + "x+" + (randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad());
+            }
+            expResult = expResult.replace("+1x", "+x");
+            expResult = expResult.replace("\u22121x", "\u2212x");
+            expResult = expResult.replace("+0x", "");
+            expResult = expResult.replace("\u22120x", "");
+            result = testIntegers.get(i).minPolynomialString().replace(" ", ""); // Strip out spaces
+            assertEquals(expResult, result);
+        }
+        // Now to test the polynomial strings of a few purely real integers
+        ImaginaryQuadraticInteger degreeOneInt;
+        for (int j = 1; j < 8; j++) {
+            degreeOneInt = new ImaginaryQuadraticInteger(j, 0, ringRandom);
+            expResult = "x\u2212" + j;
+            result = degreeOneInt.minPolynomialString().replace(" ", "");
+            assertEquals(expResult, result);
+            degreeOneInt = new ImaginaryQuadraticInteger(-j, 0, ringRandom);
+            expResult = "x+" + j;
+            result = degreeOneInt.minPolynomialString().replace(" ", "");
+            assertEquals(expResult, result);
+        }
+        /* I'm not terribly concerned about this one, so it's here more for the 
+           sake of completeness than anything else. Feel free to delete if 
+           inconvenient. */
+        assertEquals("x", zeroIQI.minPolynomialString());
+    }
+    
+    /**
+     * Test of minPolynomialStringTeX method, of class 
+     * ImaginaryQuadraticInteger. Spaces in the results are desirable but not 
+     * required. Therefore the tests should strip out spaces before asserting 
+     * equality.
+     */
+    @Test
+    public void testMinPolynomialStringTeX() {
+        System.out.println("minPolynomialStringTeX");
         String expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
             expResult = "x^2";
@@ -411,7 +463,7 @@ public class ImaginaryQuadraticIntegerTest {
             expResult = expResult.replace("-1x", "-x");
             expResult = expResult.replace("+0x", "");
             expResult = expResult.replace("-0x", "");
-            result = testIntegers.get(i).minPolynomialString().replace(" ", ""); // Strip out spaces
+            result = testIntegers.get(i).minPolynomialStringTeX().replace(" ", ""); // Strip out spaces
             assertEquals(expResult, result);
         }
         // Now to test the polynomial strings of a few purely real integers
@@ -419,17 +471,65 @@ public class ImaginaryQuadraticIntegerTest {
         for (int j = 1; j < 8; j++) {
             degreeOneInt = new ImaginaryQuadraticInteger(j, 0, ringRandom);
             expResult = "x-" + j;
-            result = degreeOneInt.minPolynomialString().replace(" ", "");
+            result = degreeOneInt.minPolynomialStringTeX().replace(" ", "");
             assertEquals(expResult, result);
             degreeOneInt = new ImaginaryQuadraticInteger(-j, 0, ringRandom);
             expResult = "x+" + j;
-            result = degreeOneInt.minPolynomialString().replace(" ", "");
+            result = degreeOneInt.minPolynomialStringTeX().replace(" ", "");
             assertEquals(expResult, result);
         }
-        /* I'm not terribly concerned about this one, so it's here more for the 
-           sake of completeness than anything else. Feel free to delete if 
-           inconvenient. */
-        assertEquals("x", zeroIQI.minPolynomialString());
+        // For the sake of completeness
+        assertEquals("x", zeroIQI.minPolynomialStringTeX());
+    }
+    
+    /**
+     * Test of minPolynomialStringHTML method, of class 
+     * ImaginaryQuadraticInteger. Spaces in the results are desirable but not 
+     * required. Therefore the tests should strip out spaces before asserting 
+     * equality.
+     */
+    @Test
+    public void testMinPolynomialStringHTML() {
+        System.out.println("minPolynomialStringHTML");
+        String expResult, result;
+        for (int i = 0; i < totalTestIntegers; i++) {
+            expResult = "<i>x</i><sup>2</sup>";
+            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+                if (randomRealForHalfInts < 0) {
+                    expResult = expResult + "+" + ((-1) * randomRealForHalfInts);
+                } else {
+                    expResult = expResult + "&minus;" + randomRealForHalfInts;
+                }
+                expResult = expResult + "<i>x</i>+" + ((randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4);
+            } else {
+                if (randomRealPart < 0) {
+                    expResult = expResult + "+" + ((-2) * randomRealPart);
+                } else {
+                    expResult = expResult + "&minus;" + (2 * randomRealPart);
+                }
+                expResult = expResult + "<i>x</i>+" + (randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad());
+            }
+            expResult = expResult.replace("+1<i>x</i>", "+<i>x</i>");
+            expResult = expResult.replace("&minus;1<i>x</i>", "&minus;<i>x</i>");
+            expResult = expResult.replace("+0<i>x</i>", "");
+            expResult = expResult.replace("&minus;0<i>x</i>", "");
+            result = testIntegers.get(i).minPolynomialStringHTML().replace(" ", ""); // Strip out spaces
+            assertEquals(expResult, result);
+        }
+        // Now to test the polynomial strings of a few purely real integers
+        ImaginaryQuadraticInteger degreeOneInt;
+        for (int j = 1; j < 8; j++) {
+            degreeOneInt = new ImaginaryQuadraticInteger(j, 0, ringRandom);
+            expResult = "<i>x</i>&minus;" + j;
+            result = degreeOneInt.minPolynomialStringHTML().replace(" ", "");
+            assertEquals(expResult, result);
+            degreeOneInt = new ImaginaryQuadraticInteger(-j, 0, ringRandom);
+            expResult = "<i>x</i>+" + j;
+            result = degreeOneInt.minPolynomialStringHTML().replace(" ", "");
+            assertEquals(expResult, result);
+        }
+        // For the sake of completeness
+        assertEquals("<i>x</i>", zeroIQI.minPolynomialStringHTML());
     }
     
     /**
@@ -1482,6 +1582,20 @@ public class ImaginaryQuadraticIntegerTest {
         endPoint = new ImaginaryQuadraticInteger(-11, -3, RING_OQI7);
         expResult.add(endPoint);
         result = startPoint.to(endPoint);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of to, of class ImaginaryQuadraticInteger. If the end point 
+     * parameter is the same as the starting point, to() should return a list 
+     * with a single imaginary quadratic integer in it.
+     */
+    @Test
+    public void testToSinglePoint() {
+        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(10, 43, ringRandom);
+        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+        expResult.add(startPoint);
+        List<ImaginaryQuadraticInteger> result = startPoint.to(startPoint);
         assertEquals(expResult, result);
     }
     
