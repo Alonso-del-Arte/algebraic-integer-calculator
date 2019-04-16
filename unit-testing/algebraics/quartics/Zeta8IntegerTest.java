@@ -199,21 +199,69 @@ public class Zeta8IntegerTest {
     @Test
     public void testMinPolynomialString() {
         System.out.println("minPolynomialString");
-        String expResult = "x^4+1";
+        String expResult = "x\u2074+1";
         String result = ZETA_8.minPolynomialString().replace(" ", "");
         assertEquals(expResult, result);
         result = ZETA_8_CUBED.minPolynomialString().replace(" ", "");
         assertEquals(expResult, result);
-        expResult = "x^2+1";
+        expResult = "x\u00B2+1";
         result = IMAG_UNIT_I.minPolynomialString();
         assertEquals(expResult, result);
         result = NEG_IMAG_UNIT_I.minPolynomialString().replace(" ", "");
         assertEquals(expResult, result);
-        expResult = "x^2-2";
+        expResult = "x\u00B2\u22122";
         result = SQRT_2.minPolynomialString().replace(" ", "");
         assertEquals(expResult, result);
-        expResult = "x^2+2";
+        expResult = "x\u00B2+2";
         result = SQRT_NEG_2.minPolynomialString().replace(" ", "");
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of minPolynomialStringTeX method, of class Zeta8Integer.
+     */
+    @Test
+    public void testMinPolynomialStringTeX() {
+        System.out.println("minPolynomialStringTeX");
+        String expResult = "x^4+1";
+        String result = ZETA_8.minPolynomialStringTeX().replace(" ", "");
+        assertEquals(expResult, result);
+        result = ZETA_8_CUBED.minPolynomialStringTeX().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "x^2+1";
+        result = IMAG_UNIT_I.minPolynomialStringTeX();
+        assertEquals(expResult, result);
+        result = NEG_IMAG_UNIT_I.minPolynomialStringTeX().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "x^2-2";
+        result = SQRT_2.minPolynomialStringTeX().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "x^2+2";
+        result = SQRT_NEG_2.minPolynomialStringTeX().replace(" ", "");
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of minPolynomialStringHTML method, of class Zeta8Integer.
+     */
+    @Test
+    public void testMinPolynomialStringHTML() {
+        System.out.println("minPolynomialStringHTML");
+        String expResult = "<i>x</i><sup>4</sup>+1";
+        String result = ZETA_8.minPolynomialStringHTML().replace(" ", "");
+        assertEquals(expResult, result);
+        result = ZETA_8_CUBED.minPolynomialStringHTML().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "<i>x</i><sup>2</sup>+1";
+        result = IMAG_UNIT_I.minPolynomialStringHTML();
+        assertEquals(expResult, result);
+        result = NEG_IMAG_UNIT_I.minPolynomialStringHTML().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "<i>x</i><sup>2</sup>&minus;2";
+        result = SQRT_2.minPolynomialStringHTML().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "<i>x</i><sup>2</sup>+2";
+        result = SQRT_NEG_2.minPolynomialStringHTML().replace(" ", "");
         assertEquals(expResult, result);
     }
 
@@ -568,6 +616,8 @@ public class Zeta8IntegerTest {
             assertEquals(expResult, result);
             result = SQRT_NEG_2.divides(SQRT_2);
             assertEquals(IMAG_UNIT_I, result);
+            result = SQRT_2.divides(SQRT_NEG_2);
+            assertEquals(NEG_IMAG_UNIT_I, result);
             result = SQRT_NEG_2.divides(IMAG_UNIT_I);
             assertEquals(SQRT_2, result);
             dividend = new Zeta8Integer(1, 0, 1, 0); // 1 + i
