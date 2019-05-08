@@ -83,6 +83,9 @@ public final class TestImagePanel extends JPanel {
         frame.dispose();
     }
     
+    /**
+     * Constructor. No arguments needed.
+     */
     public TestImagePanel() {
         this.setBackground(BACKGROUND_COLOR);
         Dimension prefDim = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
