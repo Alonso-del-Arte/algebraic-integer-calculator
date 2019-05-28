@@ -137,15 +137,16 @@ public class NonUniqueFactorizationDomainExceptionTest {
      */
     @BeforeClass
     public static void setUpClass() {
+        String initExcMsg = "Initialization state, not the result of an actually thrown exception";
         QuadraticInteger init = new ImaginaryQuadraticInteger(1, 0, RING_ZI5);
-        nufdeSqrti5 = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
-        nufde05 = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
-        nufde06 = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
-        nufde41ZI5PF = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
-        nufde41ZI5 = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
-        nufde10 = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
-        nufde77 = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
-        nufde41Z10 = new NonUniqueFactorizationDomainException("Initialization state, not the result of an actually thrown exception.", init);
+        nufdeSqrti5 = new NonUniqueFactorizationDomainException(initExcMsg, init);
+        nufde05 = new NonUniqueFactorizationDomainException(initExcMsg, init);
+        nufde06 = new NonUniqueFactorizationDomainException(initExcMsg, init);
+        nufde41ZI5PF = new NonUniqueFactorizationDomainException(initExcMsg, init);
+        nufde41ZI5 = new NonUniqueFactorizationDomainException(initExcMsg, init);
+        nufde10 = new NonUniqueFactorizationDomainException(initExcMsg, init);
+        nufde77 = new NonUniqueFactorizationDomainException(initExcMsg, init);
+        nufde41Z10 = new NonUniqueFactorizationDomainException(initExcMsg, init);
         List<AlgebraicInteger> factorsList;
         init = new ImaginaryQuadraticInteger(0, 1, RING_ZI5);
         try {
@@ -396,6 +397,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         int negOneCount, irrNotPrCount;
         List<AlgebraicInteger> factorsList = new ArrayList<>();
         factorsList.add(number); // This and previous line just to avoid might not have been initialized errors
+        boolean notUFDFlag;
         for (int r = -5; r > -100; r--) {
             if (NumberTheoreticFunctionsCalculator.isSquareFree(r)) {
                 ring = new ImaginaryQuadraticRing(r);
@@ -404,8 +406,10 @@ public class NonUniqueFactorizationDomainExceptionTest {
                 if (ring.hasHalfIntegers()) {
                     for (int a = -9; a < 10; a += 2) {
                         number = new ImaginaryQuadraticInteger(a, 3, ring, 2);
+                        notUFDFlag = true;
                         try {
                             factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                            notUFDFlag = false;
                         } catch (NonUniqueFactorizationDomainException nufde) {
                             factorsList = nufde.tryToFactorizeAnyway();
                         }
@@ -413,7 +417,9 @@ public class NonUniqueFactorizationDomainExceptionTest {
                         for (int i = 1; i < factorsList.size(); i++) {
                             System.out.print(" * (" + factorsList.get(i).toASCIIString() + ")");
                         }
-                        System.out.print("?????");
+                        if (notUFDFlag) {
+                            System.out.print("?????");
+                        }
                         negOneCount = 0;
                         irrNotPrCount = 0;
                         facProd = zero.plus(1); // Reset facProd to 1
@@ -437,8 +443,10 @@ public class NonUniqueFactorizationDomainExceptionTest {
                 }
                 for (int m = -5; m < 5; m++) {
                     number = new ImaginaryQuadraticInteger(m, 1, ring);
+                    notUFDFlag = true;
                     try {
                         factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                        notUFDFlag = false;
                     } catch (NonUniqueFactorizationDomainException nufde) {
                         factorsList = nufde.tryToFactorizeAnyway();
                     }
@@ -446,7 +454,9 @@ public class NonUniqueFactorizationDomainExceptionTest {
                     for (int i = 1; i < factorsList.size(); i++) {
                         System.out.print(" * (" + factorsList.get(i).toASCIIString() + ")");
                     }
-                    System.out.print("?????");
+                    if (notUFDFlag) {
+                        System.out.print("?????");
+                    }
                     negOneCount = 0;
                     irrNotPrCount = 0;
                     facProd = zero.plus(1); // Reset facProd to 1
@@ -487,6 +497,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         String assertionMessage;
         int negOneCount, irrNotPrCount;
         List<AlgebraicInteger> factorsList;
+        boolean notUFDFlag;
         for (int r = 10; r < 75; r += 5) {
             if (NumberTheoreticFunctionsCalculator.isSquareFree(r)) {
                 ring = new RealQuadraticRing(r);
@@ -496,8 +507,10 @@ public class NonUniqueFactorizationDomainExceptionTest {
                     for (int a = -9; a < 10; a += 2) {
                         number = new RealQuadraticInteger(a, 3, ring, 2);
                         System.out.print(number.toASCIIString());
+                        notUFDFlag = true;
                         try {
                             factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                            notUFDFlag = false;
                         } catch (NonUniqueFactorizationDomainException nufde) {
                             factorsList = nufde.tryToFactorizeAnyway();
                         }
@@ -505,7 +518,9 @@ public class NonUniqueFactorizationDomainExceptionTest {
                         for (int i = 1; i < factorsList.size(); i++) {
                             System.out.print(" * (" + factorsList.get(i).toASCIIString() + ")");
                         }
-                        System.out.print("?????");
+                        if (notUFDFlag) {
+                            System.out.print("?????");
+                        }
                         negOneCount = 0;
                         irrNotPrCount = 0;
                         facProd = zero.plus(1); // Reset facProd to 1
@@ -530,8 +545,10 @@ public class NonUniqueFactorizationDomainExceptionTest {
                 for (int m = -5; m < 5; m++) {
                     number = new RealQuadraticInteger(m, 1, ring);
                     System.out.print(number.toASCIIString());
+                    notUFDFlag = true;
                     try {
                         factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                        notUFDFlag = false;
                     } catch (NonUniqueFactorizationDomainException nufde) {
                         factorsList = nufde.tryToFactorizeAnyway();
                     }
@@ -539,7 +556,9 @@ public class NonUniqueFactorizationDomainExceptionTest {
                     for (int i = 1; i < factorsList.size(); i++) {
                         System.out.print(" * (" + factorsList.get(i).toASCIIString() + ")");
                     }
-                    System.out.print("?????");
+                    if (notUFDFlag) {
+                        System.out.print("?????");
+                    }
                     negOneCount = 0;
                     irrNotPrCount = 0;
                     facProd = zero.plus(1); // Reset facProd to 1
