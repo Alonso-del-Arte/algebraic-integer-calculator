@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
@@ -120,6 +120,13 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * ratio) display.
      */
     public static final int RING_CANVAS_DEFAULT_VERTIC_MAX = 720;
+    
+    /**
+     * The default vertical pixel dimension for the canvas in which to draw the 
+     * diagram when the given ring does not contain imaginary or complex 
+     * numbers.
+     */
+    public static final int PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX = 180;
         
     /**
      * The default pixel radius for the dots in the diagram.
@@ -148,14 +155,14 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * interval. Once this step is reached, the relevant menu item is disabled 
      * and the corresponding keyboard shortcut is ignored.
      */
-    public static final int MINIMUM_ZOOM_INTERVAL = 1;
+    public static final int MINIMUM_ZOOM_STEP = 1;
     
     /**
      * The largest step by which to increment or decrement pixels by unit 
      * interval. Once this step is reached, the relevant menu item is disabled 
      * and the corresponding keyboard shortcut is ignored.
      */
-    public static final int MAXIMUM_ZOOM_INTERVAL = 48;
+    public static final int MAXIMUM_ZOOM_STEP = 48;
     
     /**
      * The default background color when the program starts. In a future 
@@ -233,6 +240,14 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * then 5 will be shown in this color if it's in view.
      */
     public static final Color DEFAULT_RAMIFIED_PRIME_COLOR = Color.GREEN;
+    
+    /**
+     * The default color for numbers that are ramified in a ring of algebraic 
+     * degree greater than 2 but also at less than the degree of the ring of the 
+     * current diagram. This color will probably not be used in diagrams of 
+     * quadratic rings, but should be used in diagrams of quartic rings.
+     */
+    public static final Color DEFAULT_RAMIFIED_MID_DEGREE_PRIME_COLOR = new Color(65376);
     
     /**
      * How wide to make the readouts.
@@ -314,10 +329,10 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      */
     protected int dotDiameter;
     
-    protected int zoomInterval;
+    protected int zoomStep;
     
     protected Color backgroundColor, halfIntegerGridColor, integerGridColor;
-    protected Color zeroColor, unitColor, inertPrimeColor, splitPrimeColor, splitPrimeMidDegreeColor, ramifiedPrimeColor;
+    protected Color zeroColor, unitColor, inertPrimeColor, splitPrimeColor, splitPrimeMidDegreeColor, ramifiedPrimeColor, ramifiedPrimeMidDegreeColor;
     
     /**
      * The x of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
@@ -340,7 +355,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     protected JMenuItem increaseDMenuItem, decreaseDMenuItem;
     protected JMenuItem prevDMenuItem, nextDMenuItem;
     protected JMenuItem zoomInMenuItem, zoomOutMenuItem;
-    protected JMenuItem decreaseZoomIntervalMenuItem, increaseZoomIntervalMenuItem;
+    protected JMenuItem decreaseZoomStepMenuItem, increaseZoomStepMenuItem;
     protected JMenuItem decreaseDotRadiusMenuItem, increaseDotRadiusMenuItem;
     protected JCheckBoxMenuItem preferThetaNotationMenuItem, toggleReadOutsEnabledMenuItem;
     
@@ -518,33 +533,33 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     }
     
     /**
-     * Function to change the zoom interval.
-     * @param newZoomInterval Needs to be at least {@link #MINIMUM_ZOOM_INTERVAL 
-     * MINIMUM_ZOOM_INTERVAL} pixels. 
-     * @throws IllegalArgumentException If newZoomInterval is less than 
-     * MINIMUM_ZOOM_INTERVAL.
+     * Function to change the zoom step.
+     * @param newZoomStep Needs to be at least {@link #MINIMUM_ZOOM_STEP 
+     * MINIMUM_ZOOM_STEP} pixels. 
+     * @throws IllegalArgumentException If newZoomStep is less than 
+     * MINIMUM_ZOOM_STEP.
      */
-    public void changeZoomInterval(int newZoomInterval) {
-        boolean zoomIntervalOutOfBounds = false;
+    public void changeZoomStep(int newZoomStep) {
+        boolean zoomStepOutOfBounds = false;
         String exceptionMessage = "Zoom interval must be ";
-        if (newZoomInterval < MINIMUM_ZOOM_INTERVAL) {
-            zoomIntervalOutOfBounds = true;
-            exceptionMessage = exceptionMessage + "at least " + MINIMUM_ZOOM_INTERVAL + " pixel";
-            if (MINIMUM_ZOOM_INTERVAL > 1) {
+        if (newZoomStep < MINIMUM_ZOOM_STEP) {
+            zoomStepOutOfBounds = true;
+            exceptionMessage = exceptionMessage + "at least " + MINIMUM_ZOOM_STEP + " pixel";
+            if (MINIMUM_ZOOM_STEP > 1) {
                 exceptionMessage += "s.";
             } else {
                 exceptionMessage += ".";
             }
         } else {
-            if (newZoomInterval > MAXIMUM_ZOOM_INTERVAL) {
-                zoomIntervalOutOfBounds = true;
-                exceptionMessage = exceptionMessage + "no more than " + MAXIMUM_ZOOM_INTERVAL + " pixels.";
+            if (newZoomStep > MAXIMUM_ZOOM_STEP) {
+                zoomStepOutOfBounds = true;
+                exceptionMessage = exceptionMessage + "no more than " + MAXIMUM_ZOOM_STEP + " pixels.";
             }
         }
-        if (zoomIntervalOutOfBounds) {
+        if (zoomStepOutOfBounds) {
             throw new IllegalArgumentException(exceptionMessage);
         }
-        this.zoomInterval = newZoomInterval;
+        this.zoomStep = newZoomStep;
     }
     
     /**
@@ -613,9 +628,9 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     }
     
     /**
-     * Switches to a different ring. It is perhaps best not to override this 
-     * procedure, and instead rely on callers to provide a ring of the 
-     * appropriate implementation of IntegerRing.
+     * Switches to a different ring. This procedure should not be overridden 
+     * unless strictly necessary. Generally it will be best to rely on callers 
+     * to provide a ring of the appropriate implementation of IntegerRing.
      * @param ring An IntegerRing object, preferably of the same class as the 
      * one used to construct the RingDisplay subclass. If it's not, something 
      * like a {@link ClassCastException} could arise at some point down the 
@@ -726,52 +741,52 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * and whether they should be, enabling them or disabling them as needed.
      */
     protected void checkViewMenuEnablements() {
-        if (this.zoomInMenuItem.isEnabled() && (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomInterval))) {
+        if (this.zoomInMenuItem.isEnabled() && (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomStep))) {
             this.zoomInMenuItem.setEnabled(false);
         }
-        if (!this.zoomInMenuItem.isEnabled() && (this.pixelsPerUnitInterval <= (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomInterval))) {
+        if (!this.zoomInMenuItem.isEnabled() && (this.pixelsPerUnitInterval <= (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomStep))) {
             this.zoomInMenuItem.setEnabled(true);
         }
-        if (this.zoomOutMenuItem.isEnabled() && (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomInterval))) {
+        if (this.zoomOutMenuItem.isEnabled() && (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomStep))) {
             this.zoomOutMenuItem.setEnabled(false);
         }
-        if (!this.zoomOutMenuItem.isEnabled() && (this.pixelsPerUnitInterval >= (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomInterval))) {
+        if (!this.zoomOutMenuItem.isEnabled() && (this.pixelsPerUnitInterval >= (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomStep))) {
             this.zoomOutMenuItem.setEnabled(true);
         }
     }
     
     /**
      * Zooms in on the diagram. This is done by reducing pixelsPerUnitInterval 
-     * by zoomInterval and calling repaint().
+ by zoomStep and calling repaint().
      */
     public void zoomIn() {
-        int newPixelsPerUnitInterval = this.pixelsPerUnitInterval + this.zoomInterval;
+        int newPixelsPerUnitInterval = this.pixelsPerUnitInterval + this.zoomStep;
         if (newPixelsPerUnitInterval <= MAXIMUM_PIXELS_PER_UNIT_INTERVAL) {
             this.setPixelsPerUnitInterval(newPixelsPerUnitInterval);
             this.repaint();
-            if ((newPixelsPerUnitInterval + this.zoomInterval) > MAXIMUM_PIXELS_PER_UNIT_INTERVAL) {
+            if ((newPixelsPerUnitInterval + this.zoomStep) > MAXIMUM_PIXELS_PER_UNIT_INTERVAL) {
                 this.zoomInMenuItem.setEnabled(false);
             }
         }
-        if (!this.zoomOutMenuItem.isEnabled() && (newPixelsPerUnitInterval >= (MINIMUM_PIXELS_PER_UNIT_INTERVAL + this.zoomInterval))) {
+        if (!this.zoomOutMenuItem.isEnabled() && (newPixelsPerUnitInterval >= (MINIMUM_PIXELS_PER_UNIT_INTERVAL + this.zoomStep))) {
             this.zoomOutMenuItem.setEnabled(true);
         }
     }
     
     /**
      * Zooms out on the diagram. This is done by increasing 
-     * pixelsPerUnitInterval by zoomInterval and calling repaint().
+ pixelsPerUnitInterval by zoomStep and calling repaint().
      */
     public void zoomOut() {
-        int newPixelsPerUnitInterval = this.pixelsPerUnitInterval - this.zoomInterval;
+        int newPixelsPerUnitInterval = this.pixelsPerUnitInterval - this.zoomStep;
         if (newPixelsPerUnitInterval >= MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
             this.setPixelsPerUnitInterval(newPixelsPerUnitInterval);
             this.repaint();
-            if ((newPixelsPerUnitInterval - zoomInterval) < MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
+            if ((newPixelsPerUnitInterval - zoomStep) < MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
                 this.zoomOutMenuItem.setEnabled(false);
             }
         }
-        if (!this.zoomInMenuItem.isEnabled() && (newPixelsPerUnitInterval <= (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - this.zoomInterval))) {
+        if (!this.zoomInMenuItem.isEnabled() && (newPixelsPerUnitInterval <= (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - this.zoomStep))) {
             this.zoomInMenuItem.setEnabled(true);
         }
     }
@@ -780,31 +795,31 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * Just a little message dialog to let the user know what the zoom interval 
      * is now.
      */
-    protected void informZoomIntervalChange() {
-        String notificationString = "Zoom interval is now " + this.zoomInterval + ".\nThere are " + this.pixelsPerUnitInterval + " pixels per unit interval.";
+    protected void informZoomStepChange() {
+        String notificationString = "Zoom step is now " + this.zoomStep + ".\nThere are " + this.pixelsPerUnitInterval + " pixels per unit interval.";
         JOptionPane.showMessageDialog(ringFrame, notificationString);
     }
     
     /**
      * Decreases the zoom interval. The zoom interval is decremented by 1, 
      * taking care that it does not become less than {@link 
-     * #MINIMUM_ZOOM_INTERVAL MINIMUM_ZOOM_INTERVAL}.
+     * #MINIMUM_ZOOM_STEP MINIMUM_ZOOM_STEP}.
      */
-    public void decreaseZoomInterval() {
-        int newZoomInterval = this.zoomInterval - 1;
-        boolean newZoomIntervalFlag = false;
-        if (newZoomInterval >= MINIMUM_ZOOM_INTERVAL) {
-            this.changeZoomInterval(newZoomInterval);
-            newZoomIntervalFlag = true;
-            if (this.zoomInterval == MINIMUM_ZOOM_INTERVAL) {
-                this.decreaseZoomIntervalMenuItem.setEnabled(false);
+    public void decreaseZoomStep() {
+        int newZoomStep = this.zoomStep - 1;
+        boolean newZoomStepFlag = false;
+        if (newZoomStep >= MINIMUM_ZOOM_STEP) {
+            this.changeZoomStep(newZoomStep);
+            newZoomStepFlag = true;
+            if (this.zoomStep == MINIMUM_ZOOM_STEP) {
+                this.decreaseZoomStepMenuItem.setEnabled(false);
             }
         }
-        if (newZoomIntervalFlag) {
-            this.informZoomIntervalChange();
+        if (newZoomStepFlag) {
+            this.informZoomStepChange();
         }
-        if (!this.increaseZoomIntervalMenuItem.isEnabled() && (newZoomInterval < MAXIMUM_ZOOM_INTERVAL)) {
-            this.increaseZoomIntervalMenuItem.setEnabled(true);
+        if (!this.increaseZoomStepMenuItem.isEnabled() && (newZoomStep < MAXIMUM_ZOOM_STEP)) {
+            this.increaseZoomStepMenuItem.setEnabled(true);
         }
         this.checkViewMenuEnablements();
     }
@@ -812,23 +827,23 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     /**
      * Increases the zoom interval. The zoom interval is incremented by 1, 
      * taking care that it does not become more than {@link 
-     * #MAXIMUM_ZOOM_INTERVAL MAXIMUM_ZOOM_INTERVAL}.
+     * #MAXIMUM_ZOOM_STEP MAXIMUM_ZOOM_STEP}.
      */
-    public void increaseZoomInterval() {
-        int newZoomInterval = this.zoomInterval + 1;
-        boolean newZoomIntervalFlag = false;
-        if (newZoomInterval <= MAXIMUM_ZOOM_INTERVAL) {
-            this.changeZoomInterval(newZoomInterval);
-            newZoomIntervalFlag = true;
-            if (this.zoomInterval == MAXIMUM_ZOOM_INTERVAL) {
-                this.increaseZoomIntervalMenuItem.setEnabled(false);
+    public void increaseZoomStep() {
+        int newZoomStep = this.zoomStep + 1;
+        boolean newZoomStepFlag = false;
+        if (newZoomStep <= MAXIMUM_ZOOM_STEP) {
+            this.changeZoomStep(newZoomStep);
+            newZoomStepFlag = true;
+            if (this.zoomStep == MAXIMUM_ZOOM_STEP) {
+                this.increaseZoomStepMenuItem.setEnabled(false);
             }
         }
-        if (newZoomIntervalFlag) {
-            this.informZoomIntervalChange();
+        if (newZoomStepFlag) {
+            this.informZoomStepChange();
         }
-        if (!this.decreaseZoomIntervalMenuItem.isEnabled() && (newZoomInterval > MINIMUM_ZOOM_INTERVAL)) {
-            this.decreaseZoomIntervalMenuItem.setEnabled(true);
+        if (!this.decreaseZoomStepMenuItem.isEnabled() && (newZoomStep > MINIMUM_ZOOM_STEP)) {
+            this.decreaseZoomStepMenuItem.setEnabled(true);
         }
         this.checkViewMenuEnablements();
     }
@@ -884,16 +899,16 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         changePointColors(DEFAULT_ZERO_COLOR, DEFAULT_UNIT_COLOR, DEFAULT_INERT_PRIME_COLOR, DEFAULT_SPLIT_PRIME_COLOR, DEFAULT_RAMIFIED_PRIME_COLOR);
         */
         this.setPixelsPerUnitInterval(DEFAULT_PIXELS_PER_UNIT_INTERVAL);
-        this.changeZoomInterval(DEFAULT_ZOOM_INTERVAL);
+        this.changeZoomStep(DEFAULT_ZOOM_INTERVAL);
         this.changeDotRadius(DEFAULT_DOT_RADIUS);
         this.repaint();
         // Now to check if any menu items need to be enabled or disabled
         this.checkViewMenuEnablements(); // This takes care of the Zoom in and Zoom out menu items
-        if (!this.increaseZoomIntervalMenuItem.isEnabled() && (this.zoomInterval < MAXIMUM_ZOOM_INTERVAL)) {
-            this.increaseZoomIntervalMenuItem.setEnabled(true);
+        if (!this.increaseZoomStepMenuItem.isEnabled() && (this.zoomStep < MAXIMUM_ZOOM_STEP)) {
+            this.increaseZoomStepMenuItem.setEnabled(true);
         }
-        if (!this.decreaseZoomIntervalMenuItem.isEnabled() && (this.zoomInterval > MINIMUM_ZOOM_INTERVAL)) {
-            this.decreaseZoomIntervalMenuItem.setEnabled(true);
+        if (!this.decreaseZoomStepMenuItem.isEnabled() && (this.zoomStep > MINIMUM_ZOOM_STEP)) {
+            this.decreaseZoomStepMenuItem.setEnabled(true);
         }
         if (!this.increaseDotRadiusMenuItem.isEnabled() && (this.dotRadius < MAXIMUM_DOT_RADIUS)) {
             this.increaseDotRadiusMenuItem.setEnabled(true);
@@ -985,6 +1000,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
                 this.saveDiagramAs();
                 break;
             case "close":
+                RingDisplay.windowCount--;
                 this.ringFrame.dispose();
                 break;
             case "quit":
@@ -1018,10 +1034,10 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
                 this.zoomOut();
                 break;
             case "decrZoomInterval":
-                this.decreaseZoomInterval();
+                this.decreaseZoomStep();
                 break;
             case "incrZoomInterval":
-                this.increaseZoomInterval();
+                this.increaseZoomStep();
                 break;
             case "decrDotRadius":
                 this.decreaseDotRadius();
@@ -1052,6 +1068,14 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
             default:
                 System.out.println("Command " + cmd + " not recognized.");
         }
+    }
+    
+    /**
+     * Retrieves the ring currently displayed. This is mainly for testability purposes.
+     * @return The ring currently displayed
+     */
+    public IntegerRing getRing() {
+        return this.diagramRing;
     }
 
     /**
@@ -1190,7 +1214,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
             this.zoomInMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, Event.CTRL_MASK));
         }
         this.zoomInMenuItem.addActionListener(this);
-        if (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomInterval)) {
+        if (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomStep)) {
             this.zoomInMenuItem.setEnabled(false);
         }
         ringWindowMenuItem = new JMenuItem("Zoom out");
@@ -1203,27 +1227,27 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
             this.zoomOutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, Event.CTRL_MASK));
         }
         this.zoomOutMenuItem.addActionListener(this);
-        if (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomInterval)) {
+        if (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomStep)) {
             this.zoomInMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
-        ringWindowMenuItem = new JMenuItem("Decrease zoom interval");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Decrease the zoom interval used by the zoom in and zoom out functions");
-        this.decreaseZoomIntervalMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.decreaseZoomIntervalMenuItem.setActionCommand("decrZoomInterval");
-        this.decreaseZoomIntervalMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand + Event.SHIFT_MASK));
-        this.decreaseZoomIntervalMenuItem.addActionListener(this);
-        if (this.zoomInterval == MINIMUM_ZOOM_INTERVAL) {
-            this.decreaseZoomIntervalMenuItem.setEnabled(false);
+        ringWindowMenuItem = new JMenuItem("Decrease zoom step");
+        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Decrease the zoom step used by the zoom in and zoom out functions");
+        this.decreaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
+        this.decreaseZoomStepMenuItem.setActionCommand("decrZoomInterval");
+        this.decreaseZoomStepMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand + Event.SHIFT_MASK));
+        this.decreaseZoomStepMenuItem.addActionListener(this);
+        if (this.zoomStep == MINIMUM_ZOOM_STEP) {
+            this.decreaseZoomStepMenuItem.setEnabled(false);
         }
-        ringWindowMenuItem = new JMenuItem("Increase zoom interval");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Increase the zoom interval used by the zoom in and zoom out functions");
-        this.increaseZoomIntervalMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.increaseZoomIntervalMenuItem.setActionCommand("incrZoomInterval");
-        this.increaseZoomIntervalMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand + Event.SHIFT_MASK));
-        this.increaseZoomIntervalMenuItem.addActionListener(this);
-        if (this.zoomInterval == MAXIMUM_ZOOM_INTERVAL) {
-            increaseZoomIntervalMenuItem.setEnabled(false);
+        ringWindowMenuItem = new JMenuItem("Increase zoom step");
+        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Increase the zoom step used by the zoom in and zoom out functions");
+        this.increaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
+        this.increaseZoomStepMenuItem.setActionCommand("incrZoomInterval");
+        this.increaseZoomStepMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand + Event.SHIFT_MASK));
+        this.increaseZoomStepMenuItem.addActionListener(this);
+        if (this.zoomStep == MAXIMUM_ZOOM_STEP) {
+            increaseZoomStepMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
         String dotsOrLinesText;
@@ -1372,13 +1396,14 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         this.splitPrimeColor = DEFAULT_SPLIT_PRIME_COLOR;
         this.splitPrimeMidDegreeColor = DEFAULT_SPLIT_MID_DEGREE_PRIME_COLOR;
         this.ramifiedPrimeColor = DEFAULT_RAMIFIED_PRIME_COLOR;
+        this.ramifiedPrimeMidDegreeColor = DEFAULT_RAMIFIED_MID_DEGREE_PRIME_COLOR;
         this.zeroCoordX = (int) Math.floor(this.ringCanvasHorizMax/2);
         this.zeroCoordY = (int) Math.floor(this.ringCanvasVerticMax/2);
         // this.zeroCentered = true;
         // this.zeroInView = true;
         this.dotRadius = DEFAULT_DOT_RADIUS;
         this.dotDiameter = 2 * this.dotRadius;
-        this.zoomInterval = DEFAULT_ZOOM_INTERVAL;
+        this.zoomStep = DEFAULT_ZOOM_INTERVAL;
         this.preferenceForThetaNotation = false;
         this.diagramRing = ring;
         this.discrHistory = new ArrayList<>();

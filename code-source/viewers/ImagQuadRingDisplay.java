@@ -511,7 +511,6 @@ public final class ImagQuadRingDisplay extends RingDisplay {
             this.switchToRing(ring);
             this.updateRingHistory(ring);
         }
-
     }
 
     /**
@@ -564,11 +563,11 @@ public final class ImagQuadRingDisplay extends RingDisplay {
      */
     @Override
     public void copyReadoutsToClipboard() {
-        String agregReadouts = this.mouseAlgInt.toString();
+        String agregReadouts = this.mouseAlgInt.toASCIIString();
         if (((QuadraticRing) this.diagramRing).hasHalfIntegers()) {
-            agregReadouts = agregReadouts + " = " + ((QuadraticInteger) this.mouseAlgInt).toStringAlt();
+            agregReadouts = agregReadouts + " = " + ((QuadraticInteger) this.mouseAlgInt).toASCIIStringAlt();
         }
-        agregReadouts = agregReadouts + ", Trace: " + this.mouseAlgInt.trace() + ", Norm: " + this.mouseAlgInt.norm() + ", Polynomial: " + this.mouseAlgInt.minPolynomialString();
+        agregReadouts = agregReadouts + ", Trace: " + this.mouseAlgInt.trace() + ", Norm: " + this.mouseAlgInt.norm() + ", Polynomial: " + this.mouseAlgInt.minPolynomialStringTeX();
         StringSelection ss = new StringSelection(agregReadouts);
         this.getToolkit().getSystemClipboard().setContents(ss, ss);
     }
