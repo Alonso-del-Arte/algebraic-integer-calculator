@@ -334,11 +334,11 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     /**
-     * Test of minPolynomial method, of class ImaginaryQuadraticInteger.
+     * Test of minPolynomialCoeffs method, of class ImaginaryQuadraticInteger.
      */
     @Test
-    public void testMinPolynomial() {
-        System.out.println("minPolynomial");
+    public void testMinPolynomialCoeffs() {
+        System.out.println("minPolynomialCoeffs");
         long[] expResult = {0, 0, 1};
         long[] result;
         ImaginaryQuadraticInteger baseImagDist, purelyRealInt;
@@ -350,14 +350,14 @@ public class ImaginaryQuadraticIntegerTest {
                 expResult[1] = (-2) * randomRealPart;
                 expResult[0] = randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad();
             }
-            result = testIntegers.get(i).minPolynomial();
+            result = testIntegers.get(i).minPolynomialCoeffs();
             assertArrayEquals(expResult, result);
             /* Now to test the mimimal polymomial of the purely imaginary 
                integer sqrt(d) */
             expResult[1] = 0;
             expResult[0] = testIntegers.get(i).getRing().getAbsNegRad();
             baseImagDist = new ImaginaryQuadraticInteger(0, 1, testIntegers.get(i).getRing());
-            result = baseImagDist.minPolynomial();
+            result = baseImagDist.minPolynomialCoeffs();
             assertArrayEquals(expResult, result);
         }
         // Next, some purely real integers
@@ -366,15 +366,15 @@ public class ImaginaryQuadraticIntegerTest {
         for (int i = 1; i < 10; i++) {
             expResult[0] = -i;
             purelyRealInt = new ImaginaryQuadraticInteger(i, 0, ringRandom);
-            result = purelyRealInt.minPolynomial();
+            result = purelyRealInt.minPolynomialCoeffs();
             assertArrayEquals(expResult, result);
         }
         // And last but not least, 0
         expResult[0] = 0;
-        result = zeroIQI.minPolynomial();
+        result = zeroIQI.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
         zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
-        result = zeroIQI.minPolynomial();
+        result = zeroIQI.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
     }
 
@@ -1698,7 +1698,6 @@ public class ImaginaryQuadraticIntegerTest {
      * should be understood to mean 1/2 + sqrt(5)/2, while &theta; means 1/2 
      * + sqrt(d)/2 with d = 1 mod 4, but d may be ambiguous.
      */
-    @Ignore
     @Test
     public void testParseQuadraticInteger() {
         System.out.println("parseQuadraticInteger");
@@ -2218,21 +2217,48 @@ public class ImaginaryQuadraticIntegerTest {
             }
         }
     }
-
+    
     /**
-     * Test of divides method, of class ImaginaryQuadraticInteger. This test 
-     * multiplies several algebraic integers in the rings <b>Z</b>[<i>i</i>] to 
-     * <b>Z</b>[&radic;-199], then divides to get back the first number. So if 
-     * the test of the times method fails, the result of this test is 
-     * meaningless. In regards to division by zero, this test will pass if 
-     * either {@link IllegalArgumentException} or {@link ArithmeticException} is 
-     * thrown. Any other exception will fail the test, and that includes the 
-     * {@link NotDivisibleException}. Not throwing any exception at all for 
-     * division by zero will also fail the test.
+     * Test of divides method, of class ImaginaryQuadraticInteger.
      */
     @Test
     public void testDivides() {
         System.out.println("divides(ImaginaryQuadraticInteger)");
+        ImaginaryQuadraticRing currRing;
+        ImaginaryQuadraticInteger testDividend, testDivisor, expResult;
+        QuadraticInteger result;
+        String failMessage;
+        for (int iterDiscr = -1; iterDiscr > -100; iterDiscr--) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+                currRing = new ImaginaryQuadraticRing(iterDiscr);
+                testDividend = new ImaginaryQuadraticInteger(-iterDiscr + 1, 0, currRing);
+                testDivisor = new ImaginaryQuadraticInteger(1, 1, currRing);
+                expResult = new ImaginaryQuadraticInteger(1, -1, currRing);
+                try {
+                    result = testDividend.divides(testDivisor);
+                    assertEquals(expResult, result);
+                } catch (NotDivisibleException nde) {
+                    failMessage = "NotDivisibleException should not have occurred for trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString();
+                    System.out.println(failMessage);
+                    System.out.println("\"" + nde.getMessage() + "\"");
+                    fail(failMessage);
+                } catch (Exception e) {
+                    failMessage = e.getClass().getName() + " should not have occurred for trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString();
+                    fail(failMessage);
+                }
+            }
+        }
+    }
+
+    /**
+     * Simultaneous test the times and divides methods, of class 
+     * ImaginaryQuadraticInteger. This test multiplies several algebraic 
+     * integers in the rings <b>Z</b>[<i>i</i>] to <b>Z</b>[&radic;-199], then 
+     * divides to get back the first number. So if the test of the times method 
+     * fails, the result of this test is meaningless. 
+     */
+    @Test
+    public void testTimesDivides() {
         ImaginaryQuadraticRing currRing;
         QuadraticInteger expResult, result, testQuotient, testDivisor, testDividend;
         int currDenom;
@@ -2280,17 +2306,30 @@ public class ImaginaryQuadraticIntegerTest {
                                 failMessage = "Dividing " + testDividend.toString() + " by " + x + " should not have triggered NotDivisibleException\"" + nde.getMessage() + "\"";
                                 fail(failMessage);
                             }
-                            
                         }
                     }
                 }
             }
         }
-        /* Now to test dividing a purely real integer held in an 
-           ImaginaryQuadraticInteger object divided by a purely real integer in 
-           an int */
+    }
+    
+    // TODO: Break testDividesMisc() up some more.
+    /**
+     * Miscellaneous tests of the divides method of ImaginaryQuadraticInteger. 
+     * In regards to division by zero, these test will pass if either {@link 
+     * IllegalArgumentException} or {@link ArithmeticException} is thrown. Any 
+     * other exception will fail the test, and that includes the {@link 
+     * NotDivisibleException}. Not throwing any exception at all for division by 
+     * zero will also fail the test.
+     */
+    @Test
+    public void testDividesMisc() {
         System.out.println("divides(int)");
+        ImaginaryQuadraticRing currRing;
+        ImaginaryQuadraticInteger testDividend;
+        QuadraticInteger result;
         int testDivRealPartMult;
+        String failMessage;
         for (int iterDiscrOQ = -11; iterDiscrOQ > -84; iterDiscrOQ -= 8) {
             if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscrOQ)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
@@ -2361,6 +2400,8 @@ public class ImaginaryQuadraticIntegerTest {
         /* Check that dividing an imaginary quadratic integer from one ring by a 
            purely real integer from another ring does give the same result as if 
            the purely real integer was presented as being from the same ring. */
+        ImaginaryQuadraticInteger testDivisor;
+        QuadraticInteger expResult;
         testDividend = new ImaginaryQuadraticInteger(3, 1, RING_EISENSTEIN);
         testDivisor = new ImaginaryQuadraticInteger(2, 0, RING_GAUSSIAN);
         expResult = new ImaginaryQuadraticInteger(3, 1, RING_EISENSTEIN, 2);

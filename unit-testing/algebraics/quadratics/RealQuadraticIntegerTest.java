@@ -106,6 +106,9 @@ public class RealQuadraticIntegerTest {
     @BeforeClass
     public static void setUpClass() {
         int randomDiscr = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(MAXIMUM_RING_D);
+        if (randomDiscr == 1) {
+            randomDiscr = 7;
+        }
         if (randomDiscr == 2 || randomDiscr == 5 || randomDiscr == 13) {
             randomDiscr++; // This is just in case we get 2, 5 or 13.
         }
@@ -273,17 +276,17 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of minPolynomial method, of class RealQuadraticInteger, inherited 
-     * from QuadraticInteger.
+     * Test of minPolynomialCoeffs method, of class RealQuadraticInteger, 
+     * inherited from QuadraticInteger.
      */
     @Test
-    public void testMinPolynomial() {
-        System.out.println("minPolynomial");
+    public void testMinPolynomialCoeffs() {
+        System.out.println("minPolynomialCoeffs");
         long[] expResult = {0, 0, 1};
         long[] result;
         RealQuadraticInteger baseSurdDist, rationalInt;
         for (int i = 0; i < totalTestIntegers; i++) {
-            System.out.println("Minimal polynomial for " + testIntegers.get(i).toASCIIString() + " is said to be " + testIntegers.get(i).minPolynomialString());
+            System.out.println("Minimal polynomial for " + testIntegers.get(i).toASCIIString() + " is said to be " + testIntegers.get(i).minPolynomialStringTeX());
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 expResult[1] = -randomRegForHalfInts;
                 expResult[0] = (randomRegForHalfInts * randomRegForHalfInts - randomSurdForHalfInts * randomSurdForHalfInts * testIntegers.get(i).getRing().getRadicand())/4;
@@ -291,14 +294,14 @@ public class RealQuadraticIntegerTest {
                 expResult[1] = (-2) * randomRegPart;
                 expResult[0] = randomRegPart * randomRegPart - randomSurdPart * randomSurdPart * testIntegers.get(i).getRing().getRadicand();
             }
-            result = testIntegers.get(i).minPolynomial();
+            result = testIntegers.get(i).minPolynomialCoeffs();
             assertArrayEquals(expResult, result);
             /* Now to test the mimimal polymomial of the integer sqrt(d) */
             expResult[1] = 0;
             expResult[0] = -testIntegers.get(i).getRing().getRadicand();
             baseSurdDist = new RealQuadraticInteger(0, 1, testIntegers.get(i).getRing());
-            System.out.println("Minimal polynomial of " + baseSurdDist.toASCIIString() + " is said to be " + baseSurdDist.minPolynomialString());
-            result = baseSurdDist.minPolynomial();
+            System.out.println("Minimal polynomial of " + baseSurdDist.toASCIIString() + " is said to be " + baseSurdDist.minPolynomialStringTeX());
+            result = baseSurdDist.minPolynomialCoeffs();
             assertArrayEquals(expResult, result);
         }
         // Next, some rational integers
@@ -307,15 +310,15 @@ public class RealQuadraticIntegerTest {
         for (int i = 1; i < 10; i++) {
             expResult[0] = -i;
             rationalInt = new RealQuadraticInteger(i, 0, ringRandom);
-            result = rationalInt.minPolynomial();
+            result = rationalInt.minPolynomialCoeffs();
             assertArrayEquals(expResult, result);
         }
         // And last but not least, 0
         expResult[0] = 0;
-        result = zeroRQI.minPolynomial();
+        result = zeroRQI.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
         zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-        result = zeroRQI.minPolynomial();
+        result = zeroRQI.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
     }
 
@@ -1206,7 +1209,6 @@ public class RealQuadraticIntegerTest {
      * should be understood to mean 1/2 + sqrt(5)/2, while &theta; means 1/2 
      * + sqrt(d)/2 with d = 1 mod 4, but d may be ambiguous.
      */
-    @Ignore
     @Test
     public void testParseQuadraticInteger() {
         System.out.println("parseQuadraticInteger");
@@ -1620,6 +1622,38 @@ public class RealQuadraticIntegerTest {
     public void testDivides() {
         System.out.println("divides(RealQuadraticInteger)");
         RealQuadraticRing currRing;
+        RealQuadraticInteger testDividend, testDivisor, expResult;
+        QuadraticInteger result;
+        String failMessage;
+        for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+                currRing = new RealQuadraticRing(iterDiscr);
+                testDividend = new RealQuadraticInteger(-iterDiscr + 1, 0, currRing);
+                testDivisor = new RealQuadraticInteger(1, 1, currRing);
+                expResult = new RealQuadraticInteger(1, -1, currRing);
+                try {
+                    result = testDividend.divides(testDivisor);
+                    assertEquals(expResult, result);
+                } catch (NotDivisibleException nde) {
+                    failMessage = "NotDivisibleException should not have occurred for trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString();
+                    System.out.println(failMessage);
+                    System.out.println("\"" + nde.getMessage() + "\"");
+                    fail(failMessage);
+                } catch (Exception e) {
+                    failMessage = e.getClass().getName() + " should not have occurred for trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString();
+                    fail(failMessage);
+                }
+            }
+        }
+    }
+
+    /**
+     * Simultaneous test of the times and divides methods, of class 
+     * RealQuadraticInteger.
+     */
+    @Test
+    public void testTimesDivides() {
+        RealQuadraticRing currRing;
         QuadraticInteger expResult, result, testQuotient, testDivisor, testDividend;
         int currDenom;
         String failMessage;
@@ -1672,6 +1706,21 @@ public class RealQuadraticIntegerTest {
                 }
             }
         }
+    }
+    
+    // TODO: Break testDividesMisc() up some more.
+    /**
+     * Miscellaneous tests of the divides method of RealQuadraticInteger. In 
+     * regards to division by zero, these test will pass if either {@link 
+     * IllegalArgumentException} or {@link ArithmeticException} is thrown. Any 
+     * other exception will fail the test, and that includes the {@link 
+     * NotDivisibleException}. Not throwing any exception at all for division by 
+     * zero will also fail the test.
+     */
+    @Test
+    public void testDividesMisc() {
+        QuadraticInteger result;
+        String failMessage;
         for (int i = 0; i < totalTestIntegers; i++) {
             try {
                 result = testNorms.get(i).divides(testConjugates.get(i));
@@ -1726,9 +1775,9 @@ public class RealQuadraticIntegerTest {
         /* Check that dividing a real quadratic integer from one ring by a 
            rational integer from another ring does give the same result as if 
            the purely real integer was presented as being from the same ring. */
-        testDividend = new RealQuadraticInteger(3, 1, RING_ZPHI);
-        testDivisor = new RealQuadraticInteger(2, 0, RING_Z2);
-        expResult = new RealQuadraticInteger(3, 1, RING_ZPHI, 2);
+        RealQuadraticInteger testDividend = new RealQuadraticInteger(3, 1, RING_ZPHI);
+        RealQuadraticInteger testDivisor = new RealQuadraticInteger(2, 0, RING_Z2);
+        RealQuadraticInteger expResult = new RealQuadraticInteger(3, 1, RING_ZPHI, 2);
         failMessage = "Trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " from " + testDivisor.getRing().toASCIIString() + " should not have triggered";
         try {
             result = testDividend.divides(testDivisor);
@@ -1761,24 +1810,6 @@ public class RealQuadraticIntegerTest {
                 failMessage = failMessage + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
                 fail(failMessage);
             }
-            // TODO: Review following part of test, consider split off or remove altogether
-            /* However, if the divisor is rational, there should be a result, 
-               even if it takes us to a different ring */
-//            temp = testIntegers.get(j + 1).times(testNorms.get(j));
-//            failMessage = "Dividing " + temp.toASCIIString() + " from " + temp.getCausingRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getCausingRing().toASCIIString() + " should not have caused";
-//            try {
-//                result = temp.divides(testNorms.get(j));
-//                System.out.println("Dividing " + temp.toASCIIString() + " from " + temp.getCausingRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getCausingRing().toASCIIString() + " gives result " + result.toASCIIString());
-//            } catch (AlgebraicDegreeOverflowException adoe) {
-//                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
-//                fail(failMessage);
-//            } catch (NotDivisibleException nde) {
-//                failMessage = failMessage + " NotDivisibleException \"" + nde.getMessage() + "\"";
-//                fail(failMessage);
-//            } catch (Exception e) {
-//                failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
-//                fail(failMessage);
-//            }
         }
     }
     
