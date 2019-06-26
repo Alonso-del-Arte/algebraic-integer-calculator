@@ -77,7 +77,7 @@ public class NotDivisibleExceptionTest {
         ImaginaryQuadraticInteger initDivisor = new ImaginaryQuadraticInteger(1, 0, currRing);
         Fraction zero = new Fraction(0);
         Fraction[] initFracts = {zero, zero};
-        notDivGaussian = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
+        notDivGaussian = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
         QuadraticInteger dividend = new ImaginaryQuadraticInteger(5, 1, currRing);
         QuadraticInteger divisor = new ImaginaryQuadraticInteger(3, 1, currRing);
         QuadraticInteger division;
@@ -92,7 +92,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Gaussian integers example has this message: \"" + notDivGaussian.getMessage() + "\"");
         currRing = new ImaginaryQuadraticRing(-3);
-        notDivEisenstein = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
+        notDivEisenstein = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
         dividend = new ImaginaryQuadraticInteger(61, 0, currRing);
         divisor = new ImaginaryQuadraticInteger(1, 9, currRing);
         try {
@@ -105,7 +105,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Eisenstein integers example has this message: \"" + notDivEisenstein.getMessage() + "\"");
         currRing = new RealQuadraticRing(2);
-        notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
+        notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
         dividend = new RealQuadraticInteger(3, -8, currRing);
         divisor = new RealQuadraticInteger(7, 0, currRing);
         try {
@@ -118,7 +118,7 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Z[sqrt(2)] example has this message: \"" + notDivZ2.getMessage() + "\"");
         currRing = new RealQuadraticRing(5);
-        notDivZPhi = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts, currRing);
+        notDivZPhi = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
         dividend = new RealQuadraticInteger(0, 1, currRing);
         divisor = new RealQuadraticInteger(15, -3, currRing, 2);
         try {
@@ -163,23 +163,33 @@ public class NotDivisibleExceptionTest {
     }
         
     /**
-     * Test of getCausingNumbers method, of class NotDivisibleException.
+     * Test of getCausingDividend method, of class NotDivisibleException.
      */
     @Test
-    public void testGetCausingNumbers() {
+    public void testGetCausingDividend() {
         QuadraticRing ring = new ImaginaryQuadraticRing(-1);
-        QuadraticInteger dividend = new ImaginaryQuadraticInteger(5, 1, ring);
-        QuadraticInteger divisor = new ImaginaryQuadraticInteger(3, 1, ring);
-        AlgebraicInteger[] expResult = {dividend, divisor};
-        AlgebraicInteger[] result = notDivGaussian.getCausingNumbers();
-        assertArrayEquals(expResult, result);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(5, 1, ring);
+        AlgebraicInteger result = notDivGaussian.getCausingDividend();
+        assertEquals(expResult, result);
         ring = new ImaginaryQuadraticRing(-3);
-        dividend = new ImaginaryQuadraticInteger(61, 0, ring);
-        divisor = new ImaginaryQuadraticInteger(1, 9, ring);
-        expResult[0] = dividend;
-        expResult[1] = divisor;
-        result = notDivEisenstein.getCausingNumbers();
-        assertArrayEquals(expResult, result);
+        expResult = new ImaginaryQuadraticInteger(61, 0, ring);
+        result = notDivEisenstein.getCausingDividend();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getCausingDividend method, of class NotDivisibleException.
+     */
+    @Test
+    public void testGetCausingDivisor() {
+        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(3, 1, ring);
+        AlgebraicInteger result = notDivGaussian.getCausingDivisor();
+        assertEquals(expResult, result);
+        ring = new ImaginaryQuadraticRing(-3);
+        expResult = new ImaginaryQuadraticInteger(1, 9, ring);
+        result = notDivEisenstein.getCausingDivisor();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -199,6 +209,49 @@ public class NotDivisibleExceptionTest {
         assertEquals(expResult, result);
         expResult = new RealQuadraticRing(5);
         result = notDivZPhi.getCausingRing();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of getCausingRing method, of class NotDivisibleException. 
+     * This one checks that the correct ring can be inferred if the dividend and 
+     * divisor are of different rings, and the applicable radicands are coprime.
+     */
+    @Test
+    public void testGetCausingRingInferredCoprime() {
+        String message = "Example with dividend and divisor from different rings";
+        RealQuadraticRing dividendRing = new RealQuadraticRing(21);
+        RealQuadraticInteger dividend = new RealQuadraticInteger(0, 1, dividendRing);
+        RealQuadraticRing divisorRing = new RealQuadraticRing(5);
+        RealQuadraticInteger divisor = new RealQuadraticInteger(0, 1, divisorRing);
+        Fraction regPartFract = new Fraction(0);
+        Fraction surdPartFract = new Fraction(1, 5);
+        Fraction[] fracts = {regPartFract, surdPartFract};
+        RealQuadraticRing expResult = new RealQuadraticRing(105);
+        NotDivisibleException notDivExcForInference = new NotDivisibleException(message, dividend, divisor, fracts);
+        IntegerRing result = notDivExcForInference.getCausingRing();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Another test of getCausingRing method, of class NotDivisibleException. 
+     * This one checks that the correct ring can be inferred if the dividend and 
+     * divisor are of different rings, and the applicable radicands have a 
+     * common divisor greater than 1.
+     */
+    @Test
+    public void testGetCausingRingInferredCommonDivisor() {
+        String message = "Example with dividend and divisor from different rings";
+        RealQuadraticRing dividendRing = new RealQuadraticRing(21);
+        RealQuadraticInteger dividend = new RealQuadraticInteger(0, 4, dividendRing);
+        RealQuadraticRing divisorRing = new RealQuadraticRing(3);
+        RealQuadraticInteger divisor = new RealQuadraticInteger(0, 3, divisorRing);
+        Fraction regPartFract = new Fraction(0);
+        Fraction surdPartFract = new Fraction(4, 3);
+        Fraction[] fracts = {regPartFract, surdPartFract};
+        RealQuadraticRing expResult = new RealQuadraticRing(7);
+        NotDivisibleException notDivExcForInference = new NotDivisibleException(message, dividend, divisor, fracts);
+        IntegerRing result = notDivExcForInference.getCausingRing();
         assertEquals(expResult, result);
     }
 
@@ -393,7 +446,7 @@ public class NotDivisibleExceptionTest {
         Fraction fractC = new Fraction(3, 2);
         Fraction[] wrongLenFractArray = {fractA, fractB, fractC};
         try {
-            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongLenFractArray, ring);
+            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongLenFractArray);
         } catch (NotDivisibleException nde) {
             String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
             fail(failMessage);

@@ -78,7 +78,7 @@ public class UnsupportedNumberDomainExceptionTest {
         Fraction fractRe = new Fraction(442, 881);
         Fraction fractIm = new Fraction(6, 881);
         Fraction[] fracts = {fractRe, fractIm};
-        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", a, b, fracts, r);
+        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", a, b, fracts);
         try {
             AlgebraicInteger num = notDivExc.roundTowardsZero();
             System.out.println("(442 + 6sqrt(-220))/881 rounded down to " + num.toASCIIString());
