@@ -561,7 +561,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     @Override
     public int hashCode() {
         if (this.surdPartMult == 0) {
-            return Objects.hash(this.regPartMult, this.surdPartMult, -1);
+            return Objects.hash(this.regPartMult, 0, -1);
         } else {
             return Objects.hash(this.regPartMult, this.surdPartMult, this.quadRing.radicand, this.denominator);
         }
