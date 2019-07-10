@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -111,6 +111,53 @@ public class QuadraticIntegerTest {
     }
     
     /**
+     * Test of plus method of class QuadraticInteger. Testing that adding an 
+     * ordinary purely real, rational integer (algebraic degree 1) presented as 
+     * a quadratic integer, regardless of which quadratic ring is used, to a 
+     * genuine quadratic integer gives the correct result, without tripping up 
+     * any exceptions.
+     */
+    @Test
+    public void testPlusUnaryAsQuadGivesResult() {
+        System.out.println("Testing that adding to an unary integer presented as a quadratic integer gives correct result even if invoked ring is different");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-15);
+        ImaginaryQuadraticInteger unaryAddend = new ImaginaryQuadraticInteger(3, 0, ring);
+        ring = new RealQuadraticRing(97);
+        QuadraticInteger quadraticAddend = new RealQuadraticInteger(5, 1, ring, 2);
+        QuadraticInteger expResult = new RealQuadraticInteger(11, 1, ring, 2);
+        QuadraticInteger result;
+        try {
+            result = unaryAddend.plus(quadraticAddend);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to add 3 to " + quadraticAddend.toASCIIString();
+            System.out.println(failMessage);
+            System.out.println("3 is of algebraic degree " + unaryAddend.algebraicDegree() + " and " + quadraticAddend.toASCIIString() + " is of algebraic degree " + quadraticAddend.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to add 3 to " + quadraticAddend.toASCIIString();
+            fail(failMessage);
+        }
+        ring = new ImaginaryQuadraticRing(-2);
+        quadraticAddend = new ImaginaryQuadraticInteger(5, 2, ring);
+        expResult = new ImaginaryQuadraticInteger(8, 2, ring);
+        try {
+            result = unaryAddend.plus(quadraticAddend);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to add 3 to " + quadraticAddend.toASCIIString();
+            System.out.println(failMessage);
+            System.out.println("3 is of algebraic degree " + unaryAddend.algebraicDegree() + " and " + quadraticAddend.toASCIIString() + " is of algebraic degree " + quadraticAddend.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to add 3 to " + quadraticAddend.toASCIIString();
+            fail(failMessage);
+        }
+    }
+    
+    /**
      * Test of minus method of class QuadraticInteger. Testing that subtracting 
      * one quadratic integers from another quadratic integer in an unsupported 
      * quadratic ring correctly triggers {@link 
@@ -143,7 +190,54 @@ public class QuadraticIntegerTest {
             fail(failMessage);
         }
     }
-    
+
+    /**
+     * Test of minus method of class QuadraticInteger. Testing that subtracting 
+     * an ordinary purely real, rational integer (algebraic degree 1) presented 
+     * as a quadratic integer, regardless of which quadratic ring is used, from 
+     * a genuine quadratic integer gives the correct result, without tripping up 
+     * any exceptions.
+     */
+    @Test
+    public void testMinusUnaryAsQuadGivesResult() {
+        System.out.println("Testing that subtracting an unary integer presented as a quadratic integer gives correct result even if invoked ring is different");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-15);
+        ImaginaryQuadraticInteger unaryMinuend = new ImaginaryQuadraticInteger(3, 0, ring);
+        ring = new RealQuadraticRing(97);
+        QuadraticInteger quadraticSubtrahend = new RealQuadraticInteger(5, 1, ring, 2);
+        QuadraticInteger expResult = new RealQuadraticInteger(1, -1, ring, 2);
+        QuadraticInteger result;
+        try {
+            result = unaryMinuend.minus(quadraticSubtrahend);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to subtract " + quadraticSubtrahend.toASCIIString() + " from 3";
+            System.out.println(failMessage);
+            System.out.println("3 is of algebraic degree " + unaryMinuend.algebraicDegree() + " and " + quadraticSubtrahend.toASCIIString() + " is of algebraic degree " + quadraticSubtrahend.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to subtract " + quadraticSubtrahend.toASCIIString() + " from 3";
+            fail(failMessage);
+        }
+        ring = new ImaginaryQuadraticRing(-2);
+        quadraticSubtrahend = new ImaginaryQuadraticInteger(5, 2, ring);
+        expResult = new ImaginaryQuadraticInteger(-2, -2, ring);
+        try {
+            result = unaryMinuend.minus(quadraticSubtrahend);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to subtract " + quadraticSubtrahend.toASCIIString() + " from 3";
+            System.out.println(failMessage);
+            System.out.println("3 is of algebraic degree " + unaryMinuend.algebraicDegree() + " and " + quadraticSubtrahend.toASCIIString() + " is of algebraic degree " + quadraticSubtrahend.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to subtract " + quadraticSubtrahend.toASCIIString() + " from 3";
+            fail(failMessage);
+        }
+    }
+        
     /**
      * Test of times method of class QuadraticInteger. Testing that multiplying 
      * two quadratic integers from an unsupported quadratic ring correctly 
@@ -326,6 +420,53 @@ public class QuadraticIntegerTest {
             fail(failMessage);
         } catch (Exception e) {
             String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
+            fail(failMessage);
+        }
+    }
+    
+    /**
+     * Test of times method of class QuadraticInteger. Testing that multiplying 
+     * an ordinary purely real, rational integer (algebraic degree 1) presented 
+     * as a quadratic integer, regardless of which quadratic ring is used, by a 
+     * genuine quadratic integer gives the correct result, without tripping up 
+     * any exceptions.
+     */
+    @Test
+    public void testTimesUnaryAsQuadGivesResult() {
+        System.out.println("Testing that multiplying an unary integer presented as a quadratic integer gives correct result even if invoked ring is different");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-15);
+        ImaginaryQuadraticInteger unaryMultiplicand = new ImaginaryQuadraticInteger(3, 0, ring);
+        ring = new RealQuadraticRing(97);
+        QuadraticInteger quadraticMultiplicand = new RealQuadraticInteger(5, 1, ring, 2);
+        QuadraticInteger expResult = new RealQuadraticInteger(15, 3, ring, 2);
+        QuadraticInteger result;
+        try {
+            result = unaryMultiplicand.times(quadraticMultiplicand);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to multiply 3 by " + quadraticMultiplicand.toASCIIString();
+            System.out.println(failMessage);
+            System.out.println("3 is of algebraic degree " + unaryMultiplicand.algebraicDegree() + " and " + quadraticMultiplicand.toASCIIString() + " is of algebraic degree " + quadraticMultiplicand.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to multiply 3 by " + quadraticMultiplicand.toASCIIString();
+            fail(failMessage);
+        }
+        ring = new ImaginaryQuadraticRing(-2);
+        quadraticMultiplicand = new ImaginaryQuadraticInteger(5, 2, ring);
+        expResult = new ImaginaryQuadraticInteger(15, 6, ring);
+        try {
+            result = unaryMultiplicand.times(quadraticMultiplicand);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to multiply 3 by " + quadraticMultiplicand.toASCIIString();
+            System.out.println(failMessage);
+            System.out.println("3 is of algebraic degree " + unaryMultiplicand.algebraicDegree() + " and " + quadraticMultiplicand.toASCIIString() + " is of algebraic degree " + quadraticMultiplicand.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to multiply 3 by " + quadraticMultiplicand.toASCIIString();
             fail(failMessage);
         }
     }
@@ -532,6 +673,90 @@ public class QuadraticIntegerTest {
             fail(failMessage);
         } catch (Exception e) {
             String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
+            fail(failMessage);
+        }
+    }
+    
+    /**
+     * Test of divides method of class QuadraticInteger. Testing that dividing 
+     * an ordinary purely real, rational integer (algebraic degree 1) presented 
+     * as a quadratic integer, regardless of which quadratic ring is used, by a 
+     * genuine quadratic integer gives the correct result, without tripping up 
+     * any exceptions.
+     */
+    @Test
+    public void testDividesUnaryAsQuadGivesResult() {
+        System.out.println("Testing that dividing an unary integer presented as a quadratic integer by a genuine quadratic integer gives correct result even if invoked ring is different");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
+        ImaginaryQuadraticInteger unaryDividend = new ImaginaryQuadraticInteger(2, 0, ring);
+        ring = new RealQuadraticRing(79);
+        QuadraticInteger quadraticDivisor = new RealQuadraticInteger(9, 1, ring);
+        QuadraticInteger expResult = new RealQuadraticInteger(9, -1, ring);
+        QuadraticInteger result;
+        try {
+            result = unaryDividend.divides(quadraticDivisor);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            System.out.println(failMessage);
+            System.out.println("2 is of algebraic degree " + unaryDividend.algebraicDegree() + " and " + quadraticDivisor.toASCIIString() + " is of algebraic degree " + quadraticDivisor.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (NotDivisibleException nde) {
+            String failMessage = "Since 2 is divisible by " + quadraticDivisor.toASCIIString() + ", NotDivisibleException should not have occurred";
+            System.out.println(failMessage);
+            System.out.println("\"" + nde.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            fail(failMessage);
+        }
+        ring = new ImaginaryQuadraticRing(-7);
+        quadraticDivisor = new ImaginaryQuadraticInteger(1, 1, ring, 2);
+        expResult = new ImaginaryQuadraticInteger(1, -1, ring, 2);
+        try {
+            result = unaryDividend.divides(quadraticDivisor);
+            assertEquals(expResult, result);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            System.out.println(failMessage);
+            System.out.println("2 is of algebraic degree " + unaryDividend.algebraicDegree() + " and " + quadraticDivisor.toASCIIString() + " is of algebraic degree " + quadraticDivisor.algebraicDegree());
+            System.out.println("\"" + adoe.getMessage() + "\"");
+            fail(failMessage);
+        } catch (NotDivisibleException nde) {
+            String failMessage = "Since 2 is divisible by " + quadraticDivisor.toASCIIString() + ", NotDivisibleException should not have occurred";
+            System.out.println(failMessage);
+            System.out.println("\"" + nde.getMessage() + "\"");
+            fail(failMessage);
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            fail(failMessage);
+        }
+    }
+    
+    /**
+     * Test of apply method of class QuadraticInteger.
+     */
+    @Test
+    public void testApply() {
+        System.out.println("apply");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-35);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(7, 3, ring, 2);
+        QuadraticInteger result = QuadraticInteger.apply(7, 3, ring, 2);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(42);
+        expResult = new RealQuadraticInteger(19, 10, ring);
+        result = QuadraticInteger.apply(19, 10, ring);
+        assertEquals(expResult, result);
+        try {
+            result = QuadraticInteger.apply(R_A, R_B, ILL_DEF_RING);
+            String failMessage = "Trying to use apply with " + ILL_DEF_RING.toASCIIString() + " should have caused an exception, not given result " + result.toASCIIString();
+            fail(failMessage);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to use apply with " + ILL_DEF_RING.toASCIIString() + " correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " should not have occurred for trying to use apply with " + ILL_DEF_RING.toASCIIString();
             fail(failMessage);
         }
     }
