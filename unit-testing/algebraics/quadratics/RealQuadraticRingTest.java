@@ -79,7 +79,7 @@ public class RealQuadraticRingTest {
 
     /**
      * Test of getRadicand method, of class RealQuadraticRing, inherited from 
-     * QuadraticRing.
+     * {@link QuadraticRing}.
      */
     @Test
     public void testGetRadicand() {
@@ -140,7 +140,8 @@ public class RealQuadraticRingTest {
     
     /**
      * Test of getRadSqrt and getAbsNegRadSqrt methods, of class 
-     * RealQuadraticRing.
+     * RealQuadraticRing. Since these rings adjoin numbers that are real and 
+     * positive, getRadSqrt and getAbsNegRadSqrt should give the same result.
      */
     @Test
     public void testGetRadSqrtGetAbsNegRadSqrtCorr() {
@@ -152,8 +153,8 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of hasHalfIntegers method, of class ImaginaryQuadraticRing, 
-     * inherited from QuadraticInteger.
+     * Test of hasHalfIntegers method, of class RealQuadraticRing, inherited 
+     * from {@link QuadraticInteger}.
      */
     @Test
     public void testHasHalfIntegers() {
@@ -175,9 +176,9 @@ public class RealQuadraticRingTest {
     
     /**
      * Test of preferBlackboardBold method, of class RealQuadraticRing, 
-     * inherited from QuadraticRing. Without arguments, preferBlackboardBold is 
-     * the getter method. With arguments, preferBlackboardBold is the setter 
-     * method. This is perhaps an unnecessary test. The results of {@link 
+     * inherited from {@link QuadraticRing}. Without arguments, 
+     * preferBlackboardBold is the getter. With arguments, preferBlackboardBold 
+     * is the setter. This is perhaps an unnecessary test. The results of {@link 
      * #testToString()} and {@link #testToHTMLString()} are far more important.
      */
     @Test
@@ -190,10 +191,10 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of equals method, of class ImaginaryQuadraticRing. The reflexive, 
-     * symmetric and transitive properties are tested for rings that should 
-     * register as equal. Then five different rings are tested to check that 
-     * they're not registering as equal.
+     * Test of equals method, of class RealQuadraticRing, inherited from {@link 
+     * QuadraticRing}. The reflexive, symmetric and transitive properties are 
+     * tested for rings that should register as equal. Then five different rings 
+     * are tested to check that they're not registering as equal.
      */
     @Test
     public void testEquals() {
@@ -216,10 +217,10 @@ public class RealQuadraticRingTest {
 
 /**
      * Test of hashCode method, of class ImaginaryQuadraticRing, inherited from 
-     * QuadraticRing. The purpose here isn't to test that any specific ring maps 
-     * to any specific hash code, but rather that two rings that are equal get 
-     * the same hash code, and two rings that are not equal get different hash 
-     * codes.
+     * {@link QuadraticRing}. The purpose here isn't to test that any specific 
+     * ring maps to any specific hash code, but rather that two rings that are 
+     * equal get the same hash code, and two rings that are not equal get 
+     * different hash codes.
      */
     @Test
     public void testHashCode() {
@@ -255,7 +256,8 @@ public class RealQuadraticRingTest {
     }
 
     /**
-     * Test of toString method, of class RealQuadraticRing.
+     * Test of toString method, of class RealQuadraticRing, inherited from 
+     * {@link QuadraticRing}.
      */
     @Test
     public void testToString() {
@@ -277,7 +279,7 @@ public class RealQuadraticRingTest {
 
     /**
      * Test of toASCIIString method, of class RealQuadraticRing, inherited from 
-     * QuadraticRing.
+     * {@link QuadraticRing}.
      */
     @Test
     public void testToASCIIString() {
@@ -299,8 +301,8 @@ public class RealQuadraticRingTest {
     
     /**
      * Test of toTeXString method, of class RealQuadraticRing, inherited from 
-     * QuadraticRing. Note that the blackboard preference has an effect on the 
-     * output.
+     * {@link QuadraticRing}. Note that the blackboard preference has an effect 
+     * on the output.
      */
     @Test
     public void testToTeXString() {
@@ -337,8 +339,8 @@ public class RealQuadraticRingTest {
 
     /**
      * Test of toHTMLString method, of class RealQuadraticRing, inherited from 
-     * QuadraticRing. Note that the blackboard preference has an effect on the 
-     * output.
+     * {@link QuadraticRing}. Note that the blackboard preference has an effect 
+     * on the output.
      */
     @Test
     public void testToHTMLString() {
@@ -351,7 +353,7 @@ public class RealQuadraticRingTest {
         result = ringZPhi.toHTMLString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
-            expResult = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr + ")</sub>";
+            expResult = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr + "))</sub>";
         } else {
             expResult = "\u2124[&radic;" + randomDiscr + "]";
         }
@@ -365,7 +367,7 @@ public class RealQuadraticRingTest {
         result = ringZPhi.toHTMLString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
-            expResult = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr + ")</sub>";
+            expResult = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr + "))</sub>";
         } else {
             expResult = "<b>Z</b>[&radic;" + randomDiscr + "]";
         }
@@ -375,7 +377,7 @@ public class RealQuadraticRingTest {
 
     /**
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
-     * from QuadraticRing.
+     * from {@link QuadraticRing}.
      */
     @Test
     public void testToFilenameString() {
@@ -399,8 +401,8 @@ public class RealQuadraticRingTest {
     /**
      * Test of RealQuadraticRing class constructor. The main thing we're 
      * testing here is that an invalid argument triggers an 
-     * {@link IllegalArgumentException}. That the other tests pass makes us 
-     * plenty confident that the constructor works correctly on valid arguments.
+     * IllegalArgumentException. That the other tests pass makes us plenty 
+     * confident that the constructor works correctly on valid arguments.
      */
     @Test
     public void testConstructor() {
