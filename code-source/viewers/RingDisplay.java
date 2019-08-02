@@ -39,7 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
@@ -324,6 +323,10 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      */
     protected int dotRadius;
     
+    private final String dotRadiusOrLineThicknessText;
+    
+    private final String pointsOrLinesText;
+    
     /**
      * The thickness of the lines or the diameter of the dots.
      */
@@ -365,24 +368,28 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * Keeps track of whether or not the user has saved a diagram before. 
      * Applies only during the current session.
      */
-    protected boolean haveSavedBefore = false;
+    protected static boolean haveSavedBefore = false;
     
     /**
      * Points to the directory where the user has previously saved a diagram to 
      * in the current session. Probably empty or null if haveSavedBefore is 
      * false.
      */
-    private String prevSavePathname;
+    private static String prevSavePathname;
 
     /**
      * The history list, with which to enable to user to view previous diagrams.
      */
-    protected final List<IntegerRing> discrHistory;
+    protected final ArrayList<IntegerRing> discrHistory;
     
     /**
      * Where we are at in the history list.
      */
     protected short currHistoryIndex;
+    
+    private static final boolean MAC_OS_FLAG = System.getProperty("os.name").equals("Mac OS X");
+    
+    private static int maskCtrlCommand;
     
     /**
      * Changes how many pixels there are per basic imaginary interval. This 
@@ -434,9 +441,9 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * drawn. I have not completely thought this one through, and I certainly 
      * haven't tested it.
      * @param newHorizMax The new width of the ring window. This needs to be at 
-     * least equal to RING_CANVAS_HORIZ_MIN.
+     * least equal to {@link #RING_CANVAS_HORIZ_MIN}.
      * @param newVerticMax The new height of the ring window. This needs to be 
-     * at least equal to RING_CANVAS_VERTIC_MIN.
+     * at least equal to {@link #RING_CANVAS_VERTIC_MIN}.
      * @throws IllegalArgumentException If either newHorizMax is less than 
      * RING_CANVAS_HORIZ_MIN or newVerticMax is less than 
      * RING_CANVAS_VERTIC_MIN.
@@ -501,65 +508,43 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     }
    
     /**
-     * Function to change the dot radius.
-     * @param newDotRadius Needs to be at least {@link #MINIMUM_DOT_RADIUS 
-     * MINIMUM_DOT_RADIUS} pixels.
+     * Changes the dot radius or line thickness to a new specified value.
+     * @param radius Needs to be at least {@link #MINIMUM_DOT_RADIUS 
+     * MINIMUM_DOT_RADIUS} pixels, but no more than {@link #MAXIMUM_DOT_RADIUS 
+     * MAXIMUM_DOT_RADIUS}.
      * @throws IllegalArgumentException If newDotRadius is less than 
-     * MINIMUM_DOT_RADIUS.
+     * MINIMUM_DOT_RADIUS or more than MAXIMUM_DOT_RADIUS.
      */
-    public void changeDotRadius(int newDotRadius) {
-        boolean dotRadiusOutOfBounds = false;
-        String exceptionMessage = "Dot radius must be ";
-        if (newDotRadius < MINIMUM_DOT_RADIUS) {
-            dotRadiusOutOfBounds = true;
-            exceptionMessage = exceptionMessage + "at least " + MINIMUM_DOT_RADIUS + " pixel";
-            if (MINIMUM_DOT_RADIUS > 1) {
-                exceptionMessage += "s.";
-            } else {
-                exceptionMessage += ".";
-            }
-            throw new IllegalArgumentException(exceptionMessage);
-        } else {
-            if (newDotRadius > MAXIMUM_DOT_RADIUS) {
-                dotRadiusOutOfBounds = true;
-                exceptionMessage = exceptionMessage + "no more than " + MAXIMUM_DOT_RADIUS + " pixels.";
-            }
+    public void changeDotRadius(int radius) {
+        if (radius < MINIMUM_DOT_RADIUS) {
+            String excMsg = this.dotRadiusOrLineThicknessText + " should be at least " + MINIMUM_DOT_RADIUS + " pixel(s)";
+            throw new IllegalArgumentException(excMsg);
         }
-        if (dotRadiusOutOfBounds) {
-            throw new IllegalArgumentException(exceptionMessage);
+        if (radius > MAXIMUM_DOT_RADIUS) {
+            String excMsg = this.dotRadiusOrLineThicknessText + " should be no more than " + MAXIMUM_DOT_RADIUS + " pixels.";
+            throw new IllegalArgumentException(excMsg);
         }
-        this.dotRadius = newDotRadius;
+        this.dotRadius = radius;
         this.changeDotDiameter();
     }
     
     /**
      * Function to change the zoom step.
-     * @param newZoomStep Needs to be at least {@link #MINIMUM_ZOOM_STEP 
+     * @param step Needs to be at least {@link #MINIMUM_ZOOM_STEP 
      * MINIMUM_ZOOM_STEP} pixels. 
      * @throws IllegalArgumentException If newZoomStep is less than 
      * MINIMUM_ZOOM_STEP.
      */
-    public void changeZoomStep(int newZoomStep) {
-        boolean zoomStepOutOfBounds = false;
-        String exceptionMessage = "Zoom interval must be ";
-        if (newZoomStep < MINIMUM_ZOOM_STEP) {
-            zoomStepOutOfBounds = true;
-            exceptionMessage = exceptionMessage + "at least " + MINIMUM_ZOOM_STEP + " pixel";
-            if (MINIMUM_ZOOM_STEP > 1) {
-                exceptionMessage += "s.";
-            } else {
-                exceptionMessage += ".";
-            }
-        } else {
-            if (newZoomStep > MAXIMUM_ZOOM_STEP) {
-                zoomStepOutOfBounds = true;
-                exceptionMessage = exceptionMessage + "no more than " + MAXIMUM_ZOOM_STEP + " pixels.";
-            }
+    public void changeZoomStep(int step) {
+        if (step < MINIMUM_ZOOM_STEP) {
+            String excMsg = "Zoom step should be at least " + MINIMUM_ZOOM_STEP + " pixel(s)";
+            throw new IllegalArgumentException(excMsg);
         }
-        if (zoomStepOutOfBounds) {
-            throw new IllegalArgumentException(exceptionMessage);
+        if (step > MAXIMUM_ZOOM_STEP) {
+            String excMsg = "Zoom step should be no more than " + MAXIMUM_ZOOM_STEP + " pixels";
+            throw new IllegalArgumentException(excMsg);
         }
-        this.zoomStep = newZoomStep;
+        this.zoomStep = step;
     }
     
     /**
@@ -647,22 +632,20 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * @param ring The ring to add to the history.
      */
     protected void updateRingHistory(IntegerRing ring) {
-        if (currHistoryIndex == discrHistory.size() - 1) {
-            discrHistory.add(ring);
-            currHistoryIndex++;
-            if (!prevDMenuItem.isEnabled()) {
-                prevDMenuItem.setEnabled(true);
+        if (this.currHistoryIndex == this.discrHistory.size() - 1) {
+            this.discrHistory.add(ring);
+            this.currHistoryIndex++;
+            if (!this.prevDMenuItem.isEnabled()) {
+                this.prevDMenuItem.setEnabled(true);
             }
         } else {
-            currHistoryIndex++;
-            discrHistory.add(currHistoryIndex, ring);
-            while (currHistoryIndex < discrHistory.size() - 1) {
-                discrHistory.remove(currHistoryIndex + 1); // Remove the "forward arrow" history
-            }
-            nextDMenuItem.setEnabled(false);
+            this.currHistoryIndex++;
+            this.discrHistory.add(this.currHistoryIndex, ring);
+            this.discrHistory.subList(this.currHistoryIndex + 1, this.discrHistory.size()).clear();
+            this.nextDMenuItem.setEnabled(false);
         }
-        if (currHistoryIndex > MAXIMUM_HISTORY_ITEMS) {
-            discrHistory.remove(0); // Forget the first item
+        if (this.currHistoryIndex > MAXIMUM_HISTORY_ITEMS) {
+            this.discrHistory.remove(0); // Forget the first item
         }
     }
     
@@ -718,8 +701,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * to the clipboard.
      */
     public void copyReadoutsToClipboard() {
-        String agregReadouts = mouseAlgInt.toString();
-        agregReadouts = agregReadouts + ", Trace: " + mouseAlgInt.trace() + ", Norm: " + mouseAlgInt.norm() + ", Polynomial: " + mouseAlgInt.minPolynomialString();
+        String agregReadouts = this.mouseAlgInt.toString();
+        agregReadouts = agregReadouts + ", Trace: " + this.mouseAlgInt.trace() + ", Norm: " + this.mouseAlgInt.norm() + ", Polynomial: " + this.mouseAlgInt.minPolynomialString();
         StringSelection ss = new StringSelection(agregReadouts);
         this.getToolkit().getSystemClipboard().setContents(ss, ss);
     }
@@ -740,54 +723,67 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * Checks whether the Zoom in and Zoom out menu items are enabled or not, 
      * and whether they should be, enabling them or disabling them as needed.
      */
-    protected void checkViewMenuEnablements() {
-        if (this.zoomInMenuItem.isEnabled() && (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomStep))) {
-            this.zoomInMenuItem.setEnabled(false);
-        }
-        if (!this.zoomInMenuItem.isEnabled() && (this.pixelsPerUnitInterval <= (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomStep))) {
-            this.zoomInMenuItem.setEnabled(true);
-        }
-        if (this.zoomOutMenuItem.isEnabled() && (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomStep))) {
-            this.zoomOutMenuItem.setEnabled(false);
-        }
-        if (!this.zoomOutMenuItem.isEnabled() && (this.pixelsPerUnitInterval >= (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomStep))) {
-            this.zoomOutMenuItem.setEnabled(true);
-        }
-    }
-    
-    /**
-     * Zooms in on the diagram. This is done by reducing pixelsPerUnitInterval 
- by zoomStep and calling repaint().
-     */
-    public void zoomIn() {
-        int newPixelsPerUnitInterval = this.pixelsPerUnitInterval + this.zoomStep;
-        if (newPixelsPerUnitInterval <= MAXIMUM_PIXELS_PER_UNIT_INTERVAL) {
-            this.setPixelsPerUnitInterval(newPixelsPerUnitInterval);
-            this.repaint();
-            if ((newPixelsPerUnitInterval + this.zoomStep) > MAXIMUM_PIXELS_PER_UNIT_INTERVAL) {
+    protected void checkZoomInOutEnablements() {
+        if (this.zoomInMenuItem.isEnabled()) {
+            if (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - this.zoomStep)) {
                 this.zoomInMenuItem.setEnabled(false);
             }
+        } else {
+            if (this.pixelsPerUnitInterval <= (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - this.zoomStep)) {
+                this.zoomInMenuItem.setEnabled(true);
+            }
         }
-        if (!this.zoomOutMenuItem.isEnabled() && (newPixelsPerUnitInterval >= (MINIMUM_PIXELS_PER_UNIT_INTERVAL + this.zoomStep))) {
-            this.zoomOutMenuItem.setEnabled(true);
+        if (this.zoomOutMenuItem.isEnabled()) {
+            if (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL + this.zoomStep)) {
+                this.zoomOutMenuItem.setEnabled(false);
+            }
+        } else {
+            if (this.pixelsPerUnitInterval >= (MINIMUM_PIXELS_PER_UNIT_INTERVAL + this.zoomStep)) {
+                this.zoomOutMenuItem.setEnabled(true);
+            }
         }
     }
     
     /**
-     * Zooms out on the diagram. This is done by increasing 
- pixelsPerUnitInterval by zoomStep and calling repaint().
+     * Zooms in on the diagram. This is done by reducing how many pixels there 
+     * are per unit interval and repainting.
+     */
+    public void zoomIn() {
+        int pixels = this.pixelsPerUnitInterval + this.zoomStep;
+        this.setPixelsPerUnitInterval(pixels);
+        this.repaint();
+        this.checkZoomInOutEnablements();
+    }
+    
+    /**
+     * Zooms out on the diagram. This is done by increasing how many pixels 
+     * there are per unit interval and repainting.
      */
     public void zoomOut() {
-        int newPixelsPerUnitInterval = this.pixelsPerUnitInterval - this.zoomStep;
-        if (newPixelsPerUnitInterval >= MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
-            this.setPixelsPerUnitInterval(newPixelsPerUnitInterval);
-            this.repaint();
-            if ((newPixelsPerUnitInterval - zoomStep) < MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
-                this.zoomOutMenuItem.setEnabled(false);
+        int pixels = this.pixelsPerUnitInterval - this.zoomStep;
+        this.setPixelsPerUnitInterval(pixels);
+        this.repaint();
+        this.checkZoomInOutEnablements();
+    }
+    
+    protected void checkZoomStepEnablements() {
+        if (this.decreaseZoomStepMenuItem.isEnabled()) {
+            if (this.zoomStep == MINIMUM_ZOOM_STEP) {
+                this.decreaseZoomStepMenuItem.setEnabled(false);
+            }
+        } else {
+            if (this.zoomStep > MINIMUM_ZOOM_STEP) {
+                this.decreaseZoomStepMenuItem.setEnabled(true);
             }
         }
-        if (!this.zoomInMenuItem.isEnabled() && (newPixelsPerUnitInterval <= (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - this.zoomStep))) {
-            this.zoomInMenuItem.setEnabled(true);
+        if (this.increaseZoomStepMenuItem.isEnabled()) {
+            if (this.zoomStep == MAXIMUM_ZOOM_STEP) {
+                this.increaseZoomStepMenuItem.setEnabled(false);
+            }
+        } else {
+            if (this.zoomStep < MAXIMUM_ZOOM_STEP) {
+                this.increaseZoomStepMenuItem.setEnabled(true);
+            }
         }
     }
     
@@ -806,22 +802,10 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * #MINIMUM_ZOOM_STEP MINIMUM_ZOOM_STEP}.
      */
     public void decreaseZoomStep() {
-        int newZoomStep = this.zoomStep - 1;
-        boolean newZoomStepFlag = false;
-        if (newZoomStep >= MINIMUM_ZOOM_STEP) {
-            this.changeZoomStep(newZoomStep);
-            newZoomStepFlag = true;
-            if (this.zoomStep == MINIMUM_ZOOM_STEP) {
-                this.decreaseZoomStepMenuItem.setEnabled(false);
-            }
-        }
-        if (newZoomStepFlag) {
-            this.informZoomStepChange();
-        }
-        if (!this.increaseZoomStepMenuItem.isEnabled() && (newZoomStep < MAXIMUM_ZOOM_STEP)) {
-            this.increaseZoomStepMenuItem.setEnabled(true);
-        }
-        this.checkViewMenuEnablements();
+        this.changeZoomStep(this.zoomStep - 1);
+        this.checkZoomInOutEnablements();
+        this.checkZoomStepEnablements();
+        this.informZoomStepChange();
     }
 
     /**
@@ -830,22 +814,10 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * #MAXIMUM_ZOOM_STEP MAXIMUM_ZOOM_STEP}.
      */
     public void increaseZoomStep() {
-        int newZoomStep = this.zoomStep + 1;
-        boolean newZoomStepFlag = false;
-        if (newZoomStep <= MAXIMUM_ZOOM_STEP) {
-            this.changeZoomStep(newZoomStep);
-            newZoomStepFlag = true;
-            if (this.zoomStep == MAXIMUM_ZOOM_STEP) {
-                this.increaseZoomStepMenuItem.setEnabled(false);
-            }
-        }
-        if (newZoomStepFlag) {
-            this.informZoomStepChange();
-        }
-        if (!this.decreaseZoomStepMenuItem.isEnabled() && (newZoomStep > MINIMUM_ZOOM_STEP)) {
-            this.decreaseZoomStepMenuItem.setEnabled(true);
-        }
-        this.checkViewMenuEnablements();
+        this.changeZoomStep(this.zoomStep + 1);
+        this.checkZoomInOutEnablements();
+        this.checkZoomStepEnablements();
+        this.informZoomStepChange();
     }
 
     /**
@@ -903,7 +875,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         this.changeDotRadius(DEFAULT_DOT_RADIUS);
         this.repaint();
         // Now to check if any menu items need to be enabled or disabled
-        this.checkViewMenuEnablements(); // This takes care of the Zoom in and Zoom out menu items
+        this.checkZoomInOutEnablements(); // This takes care of the Zoom in and Zoom out menu items
         if (!this.increaseZoomStepMenuItem.isEnabled() && (this.zoomStep < MAXIMUM_ZOOM_STEP)) {
             this.increaseZoomStepMenuItem.setEnabled(true);
         }
@@ -1003,7 +975,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
                 RingDisplay.windowCount--;
                 this.ringFrame.dispose();
                 break;
-            case "quit":
+            case "exit":
                 System.exit(0);
                 break;
             case "chooseD":
@@ -1033,10 +1005,10 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
             case "zoomOut":
                 this.zoomOut();
                 break;
-            case "decrZoomInterval":
+            case "decrZoomStep":
                 this.decreaseZoomStep();
                 break;
-            case "incrZoomInterval":
+            case "incrZoomStep":
                 this.increaseZoomStep();
                 break;
             case "decrDotRadius":
@@ -1089,200 +1061,163 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         this.setPixelsPerBasicImaginaryInterval();
     }
     
-    private JMenuBar setUpMenuBar() {
-        JMenuBar ringWindowMenuBar;
-        JMenu ringWindowMenu;
-        JMenuItem ringWindowMenuItem, saveFileMenuItem, quitMenuItem;
-        JMenuItem chooseDMenuItem, copyReadOutsToClipboardMenuItem, copyDiagramToClipboardMenuItem;
-        JMenuItem resetViewDefaultsMenuItem;
-        JMenuItem showManualMenuItem, aboutMenuItem;
-        // Determine if this is a Mac OS X system, needing different keyboard shortcuts
-        boolean macOSFlag;
-        int maskCtrlCommand;
-        String operSysName = System.getProperty("os.name");
-        macOSFlag = operSysName.equals("Mac OS X");
-        if (macOSFlag) {
-            maskCtrlCommand = Event.META_MASK;
-        } else {
-            maskCtrlCommand = Event.CTRL_MASK;
+    private JMenuItem makeMenuItem(String menuItemText, String accessibleDescription, String actionCommand, KeyStroke accelerator) {
+        JMenuItem menuItem = new JMenuItem(menuItemText);
+        menuItem.getAccessibleContext().setAccessibleDescription(accessibleDescription);
+        menuItem.setActionCommand(actionCommand);
+        menuItem.setAccelerator(accelerator);
+        menuItem.addActionListener(this);
+        return menuItem;
+    }
+    
+    private JMenu makeFileMenu() {
+        JMenu menu = new JMenu("File");
+        menu.setMnemonic(KeyEvent.VK_F);
+        menu.getAccessibleContext().setAccessibleDescription("Menu for file operations");
+        String accDescr = "Save currently displayed diagram to a PNG file";
+        KeyStroke accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, maskCtrlCommand + Event.SHIFT_MASK);
+        JMenuItem menuItem = this.makeMenuItem("Save diagram as...", accDescr, "saveDiagramAs", accelerator);
+        menu.add(menuItem);
+        menu.addSeparator();
+        accDescr = "Close the window";
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_W, maskCtrlCommand);
+        menuItem = this.makeMenuItem("Close", accDescr, "close", accelerator);
+        menu.add(menuItem);
+        if (!MAC_OS_FLAG) {
+            accDescr = "Exit the program";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, maskCtrlCommand);
+            menuItem = this.makeMenuItem("Exit", accDescr, "exit", accelerator);
+            menu.add(menuItem);
         }
-        // Set up the menu bar, menus and menu items
-        ringWindowMenuBar = new JMenuBar();
-        ringWindowMenu = new JMenu("File");
-        ringWindowMenu.setMnemonic(KeyEvent.VK_F);
-        ringWindowMenu.getAccessibleContext().setAccessibleDescription("Menu for file operations");
-        ringWindowMenuBar.add(ringWindowMenu);
-        ringWindowMenuItem = new JMenuItem("Save diagram as...");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Save currently displayed diagram to a PNG file");
-        saveFileMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        saveFileMenuItem.setActionCommand("saveDiagramAs");
-        saveFileMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, maskCtrlCommand + Event.SHIFT_MASK));
-        saveFileMenuItem.addActionListener(this);
-        ringWindowMenu.addSeparator();
-        ringWindowMenuItem = new JMenuItem("Close");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Close the window");
-        ringWindowMenuItem.setActionCommand("close");
-        ringWindowMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, maskCtrlCommand));
-        ringWindowMenuItem.addActionListener(this);
-        ringWindowMenu.add(ringWindowMenuItem);
-        ringWindowMenuItem = new JMenuItem("Quit");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Exit the program");
-        quitMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        quitMenuItem.setActionCommand("quit");
-        quitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, maskCtrlCommand));
-        quitMenuItem.addActionListener(this);
-        ringWindowMenu = new JMenu("Edit");
-        ringWindowMenu.setMnemonic(KeyEvent.VK_E);
-        ringWindowMenu.getAccessibleContext().setAccessibleDescription("Menu to change certain parameters");
-        ringWindowMenuBar.add(ringWindowMenu);
+        return menu;
+    }
+    
+    private JMenu makeEditMenu() {
+        JMenu menu = new JMenu("Edit");
+        menu.setMnemonic(KeyEvent.VK_E);
+        menu.getAccessibleContext().setAccessibleDescription("Menu to change certain parameters");
+        JMenuItem menuItem;
+        String accDescr;
+        KeyStroke accelerator;
         if (this.includeRingChoice) {
-            ringWindowMenuItem = new JMenuItem("Choose parameter d...");
-            ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Let user enter new choice for ring discriminant");
-            chooseDMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-            chooseDMenuItem.setActionCommand("chooseD");
-            chooseDMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, maskCtrlCommand));
-            chooseDMenuItem.addActionListener(this);
-            ringWindowMenu.addSeparator();
-            ringWindowMenuItem = new JMenuItem("Increment parameter d");
-            ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Increment the discriminant to choose another ring");
-            this.increaseDMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-            this.increaseDMenuItem.setActionCommand("incrD");
-            if (macOSFlag) {
-                this.increaseDMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, maskCtrlCommand));
+            accDescr = "Let user enter new choice for ring discriminant";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_D, maskCtrlCommand);
+            menuItem = this.makeMenuItem("Choose parameter d...", accDescr, "chooseD", accelerator);
+            menu.add(menuItem);
+            menu.addSeparator();
+            accDescr = "Increment the discriminant to choose another ring";
+            if (MAC_OS_FLAG) {
+                accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, maskCtrlCommand);
             } else {
-                this.increaseDMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_UP, maskCtrlCommand));
+                accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_UP, maskCtrlCommand);
             }
-            this.increaseDMenuItem.addActionListener(this);
-            ringWindowMenuItem = new JMenuItem("Decrement parameter d");
-            ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Decrement the discriminant to choose another ring");
-            this.decreaseDMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-            this.decreaseDMenuItem.setActionCommand("decrD");
-            if (macOSFlag) {
-                this.decreaseDMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, maskCtrlCommand));
+            this.increaseDMenuItem = menu.add(this.makeMenuItem("Increment parameter d", accDescr, "incrD", accelerator));
+            accDescr = "Decrement the discriminant to choose another ring";
+            if (MAC_OS_FLAG) {
+                accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, maskCtrlCommand);
             } else {
-                this.decreaseDMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, maskCtrlCommand));
+                accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, maskCtrlCommand);
             }
-            this.decreaseDMenuItem.addActionListener(this);
-            ringWindowMenu.addSeparator();
+            this.decreaseDMenuItem = menu.add(this.makeMenuItem("Decrement parameter d", accDescr, "decrD", accelerator));
+            menu.addSeparator();
         }
-        ringWindowMenuItem = new JMenuItem("Copy readouts to clipboard");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Copy the readouts (integer, trace, norm, polynomial) to the clipboard");
-        copyReadOutsToClipboardMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        copyReadOutsToClipboardMenuItem.setActionCommand("copyReadouts");
-        copyReadOutsToClipboardMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand + Event.SHIFT_MASK));
-        copyReadOutsToClipboardMenuItem.addActionListener(this);
-        ringWindowMenuItem = new JMenuItem("Copy diagram to clipboard");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Copy the currently displayed diagram to the clipboard so that it's accessible to other applications");
-        copyDiagramToClipboardMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        copyDiagramToClipboardMenuItem.setActionCommand("copyDiagram");
-        copyDiagramToClipboardMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand + Event.ALT_MASK));
-        copyDiagramToClipboardMenuItem.addActionListener(this);
-    /*    ringWindowMenu.addSeparator();
-        THIS IS FOR WHEN I GET AROUND TO ADDING THE CAPABILITY TO CHANGE GRID, POINT COLORS
-        ringWindowMenuItem = new JMenuItem("Preferences...");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Bring up a dialogue to adjust preferences");
-        ringWindowMenu.add(ringWindowMenuItem); 
-    */
-        ringWindowMenu = new JMenu("View");
+        accDescr = "Copy the readouts (integer, trace, norm, polynomial) to the clipboard";
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand + Event.SHIFT_MASK);
+        menuItem = this.makeMenuItem("Copy readouts to clipboard", accDescr, "copyReadouts", accelerator);
+        menu.add(menuItem);
+        accDescr = "Copy the currently displayed diagram to the clipboard so that it's accessible to other applications";
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand + Event.ALT_MASK);
+        menuItem = this.makeMenuItem("Copy diagram to clipboard", accDescr, "copyDiagram", accelerator);
+        menu.add(menuItem);
+//        menu.addSeparator();
+//        // THIS IS FOR WHEN I GET AROUND TO ADDING THE CAPABILITY TO CHANGE GRID, POINT COLORS
+//        if (!MAC_OS_FLAG) {
+//            accDescr = "Bring up a dialogue to adjust preferences";
+//            menuItem = this.makeMenuItem("Preferences...", accDescr, "prefs", null);
+//            menu.add(menuItem);
+//        }
+        return menu;
+    }
+    
+    private JMenu makeViewMenu() {
+        JMenu ringWindowMenu = new JMenu("View");
         ringWindowMenu.setMnemonic(KeyEvent.VK_V);
         ringWindowMenu.getAccessibleContext().setAccessibleDescription("Menu to zoom in or zoom out");
-        ringWindowMenuBar.add(ringWindowMenu);
+        JMenuItem ringWindowMenuItem;
+        String accDescr;
+        KeyStroke accelerator;
         if (this.includeRingChoice) {
-            ringWindowMenuItem = new JMenuItem("Previous parameter d");
-            ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("View the diagram for the previous discriminant");
+            accDescr = "View the diagram for the previous parameter d";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_G, maskCtrlCommand); // Originally VK_LEFT for Windows, that keyboard shortcut did not work
+            ringWindowMenuItem = this.makeMenuItem("Previous parameter d", accDescr, "prevD", accelerator);
             this.prevDMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-            this.prevDMenuItem.setActionCommand("prevD");
-            this.prevDMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, maskCtrlCommand)); // Originally VK_LEFT for Windows, that keyboard shortcut did not work
-            this.prevDMenuItem.addActionListener(this);
             this.prevDMenuItem.setEnabled(false);
-            ringWindowMenuItem = new JMenuItem("Next parameter d");
-            ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("View the diagram for the next discriminant");
+            accDescr = "View the diagram for the next discriminant";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_J, maskCtrlCommand); // Originally VK_RIGHT for Windows, that keyboard shortcut did not work
+            ringWindowMenuItem = this.makeMenuItem("Next parameter d", accDescr, "nextD", accelerator);
             this.nextDMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-            this.nextDMenuItem.setActionCommand("nextD");
-            this.nextDMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, maskCtrlCommand)); // Originally VK_RIGHT for Windows, that keyboard shortcut did not work
-            this.nextDMenuItem.addActionListener(this);
             this.nextDMenuItem.setEnabled(false);
             ringWindowMenu.addSeparator();
         }
-        ringWindowMenuItem = new JMenuItem("Zoom in");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Zoom in, by increasing pixels per unit interval");
-        this.zoomInMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.zoomInMenuItem.setActionCommand("zoomIn");
-        if (macOSFlag) {
-            this.zoomInMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Event.SHIFT_MASK));
+        accDescr = "Zoom in, by increasing pixels per unit interval";
+        if (MAC_OS_FLAG) {
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Event.SHIFT_MASK);
         } else {
-            this.zoomInMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, Event.CTRL_MASK));
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_ADD, Event.CTRL_MASK);
         }
-        this.zoomInMenuItem.addActionListener(this);
+        ringWindowMenuItem = this.makeMenuItem("Zoom in", accDescr, "zoomIn", accelerator);
+        this.zoomInMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL - zoomStep)) {
             this.zoomInMenuItem.setEnabled(false);
         }
-        ringWindowMenuItem = new JMenuItem("Zoom out");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Zoom out, by decreasing pixels per unit interval");
-        this.zoomOutMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.zoomOutMenuItem.setActionCommand("zoomOut");
-        if (macOSFlag) {
-            this.zoomOutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0));
+        accDescr = "Zoom out, by decreasing pixels per unit interval";
+        if (MAC_OS_FLAG) {
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0);
         } else {
-            this.zoomOutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, Event.CTRL_MASK));
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, Event.CTRL_MASK);
         }
-        this.zoomOutMenuItem.addActionListener(this);
+        ringWindowMenuItem = this.makeMenuItem("Zoom out", accDescr, "zoomOut", accelerator);
+        this.zoomOutMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL + zoomStep)) {
             this.zoomInMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
-        ringWindowMenuItem = new JMenuItem("Decrease zoom step");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Decrease the zoom step used by the zoom in and zoom out functions");
+        accDescr = "Decrease the zoom step used by the zoom in and zoom out functions";
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand + Event.SHIFT_MASK);
+        ringWindowMenuItem = this.makeMenuItem("Decrease zoom step", accDescr, "decrZoomStep", accelerator);
         this.decreaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.decreaseZoomStepMenuItem.setActionCommand("decrZoomInterval");
-        this.decreaseZoomStepMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand + Event.SHIFT_MASK));
-        this.decreaseZoomStepMenuItem.addActionListener(this);
         if (this.zoomStep == MINIMUM_ZOOM_STEP) {
             this.decreaseZoomStepMenuItem.setEnabled(false);
         }
-        ringWindowMenuItem = new JMenuItem("Increase zoom step");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Increase the zoom step used by the zoom in and zoom out functions");
+        accDescr = "Increase the zoom step used by the zoom in and zoom out functions";
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand + Event.SHIFT_MASK);
+        ringWindowMenuItem = this.makeMenuItem("Increase zoom step", accDescr, "incrZoomStep", accelerator);
         this.increaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.increaseZoomStepMenuItem.setActionCommand("incrZoomInterval");
-        this.increaseZoomStepMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand + Event.SHIFT_MASK));
-        this.increaseZoomStepMenuItem.addActionListener(this);
         if (this.zoomStep == MAXIMUM_ZOOM_STEP) {
             increaseZoomStepMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
-        String dotsOrLinesText;
-        if (this.diagramRing.isPurelyReal()) {
-            dotsOrLinesText = "line thickness";
-        } else {
-            dotsOrLinesText = "dot radius";
-        }
-        String menuItemText = "Decrease " + dotsOrLinesText;
-        ringWindowMenuItem = new JMenuItem(menuItemText);
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Decrease the dot radius used to draw the points on the grids");
+        String menuItemText = "Decrease " + this.dotRadiusOrLineThicknessText;
+        accDescr = "Decrease the " + this.dotRadiusOrLineThicknessText + " used to draw the " + this.pointsOrLinesText;
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand);
+        ringWindowMenuItem = this.makeMenuItem(menuItemText, accDescr, "decrDotRadius", accelerator);
         this.decreaseDotRadiusMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.decreaseDotRadiusMenuItem.setActionCommand("decrDotRadius");
-        this.decreaseDotRadiusMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand));
-        this.decreaseDotRadiusMenuItem.addActionListener(this);
         if (this.dotRadius == MINIMUM_DOT_RADIUS) {
             this.decreaseDotRadiusMenuItem.setEnabled(false);
         }
-        menuItemText = "Increase " + dotsOrLinesText;
-        ringWindowMenuItem = new JMenuItem(menuItemText);
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Increase the dot radius used to draw the points on the grids");
+        menuItemText = "Increase " + this.dotRadiusOrLineThicknessText;
+        accDescr = "Increase the dot radius used to draw the " + this.pointsOrLinesText;
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand);
+        ringWindowMenuItem = this.makeMenuItem(menuItemText, accDescr, "incrDotRadius", accelerator);
         this.increaseDotRadiusMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        this.increaseDotRadiusMenuItem.setActionCommand("incrDotRadius");
-        this.increaseDotRadiusMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand));
-        this.increaseDotRadiusMenuItem.addActionListener(this);
         if (this.dotRadius == MAXIMUM_DOT_RADIUS) {
             this.increaseDotRadiusMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
-        ringWindowMenuItem = new JMenuItem("Reset view defaults");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Reset defaults for zoom level, zoom interval and dot radius");
-        resetViewDefaultsMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        resetViewDefaultsMenuItem.setActionCommand("defaultView");
-        resetViewDefaultsMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
-        resetViewDefaultsMenuItem.addActionListener(this);
+        accDescr = "Reset defaults for zoom level, zoom interval and dot radius";
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
+        ringWindowMenuItem = this.makeMenuItem("Reset view defaults", accDescr, "defaultView", accelerator);
+        ringWindowMenu.add(ringWindowMenuItem);
         ringWindowMenu.addSeparator();
         if (this.includeThetaToggle) {
             this.preferThetaNotationMenuItem = new JCheckBoxMenuItem("Use theta notation in readouts", false);
@@ -1296,7 +1231,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
             this.toggleReadOutsEnabledMenuItem = new JCheckBoxMenuItem("Update readouts", false);
             this.toggleReadOutsEnabledMenuItem.getAccessibleContext().setAccessibleDescription("Toggle whether the trace, norm and polynomial readouts are updated.");
             this.toggleReadOutsEnabledMenuItem.setActionCommand("toggleReadOuts");
-            if (macOSFlag) {
+            if (MAC_OS_FLAG) {
                 this.toggleReadOutsEnabledMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0)); // On the Mac, fn-F2 is too much of a hassle, in my opinion.
             } else {
                 this.toggleReadOutsEnabledMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0)); // Decided Ctrl-F2 is too uncomfortable, so changed it to just F2.
@@ -1304,21 +1239,29 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
             this.toggleReadOutsEnabledMenuItem.addActionListener(this);
             ringWindowMenu.add(this.toggleReadOutsEnabledMenuItem);
         }
-        ringWindowMenu = new JMenu("Help");
-        ringWindowMenu.setMnemonic(KeyEvent.VK_H);
-        ringWindowMenu.getAccessibleContext().setAccessibleDescription("Menu to provide help and documentation");
-        ringWindowMenuBar.add(ringWindowMenu);
-        ringWindowMenuItem = new JMenuItem("User Manual...");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Use default Web browser to show user manual");
-        showManualMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        showManualMenuItem.setActionCommand("showUserManual");
-        showManualMenuItem.addActionListener(this);
-        ringWindowMenuItem = new JMenuItem("About...");
-        ringWindowMenuItem.getAccessibleContext().setAccessibleDescription("Information about this program");
-        aboutMenuItem = ringWindowMenu.add(ringWindowMenuItem);
-        aboutMenuItem.setActionCommand("about");
-        aboutMenuItem.addActionListener(this);
-        return ringWindowMenuBar;
+        return ringWindowMenu;
+    }
+    
+    private JMenu makeHelpMenu() {
+        JMenu menu = new JMenu("Help");
+        menu.setMnemonic(KeyEvent.VK_H);
+        menu.getAccessibleContext().setAccessibleDescription("Menu to provide help and documentation");
+        String accDescr = "Use default Web browser to show user manual";
+        JMenuItem menuItem = this.makeMenuItem("User Manual...", accDescr, "showUserManual", null);
+        menu.add(menuItem);
+        accDescr = "Display information about this program";
+        menuItem = this.makeMenuItem("About...", accDescr, "about", null);
+        menu.add(menuItem);
+        return menu;
+    }
+    
+    private JMenuBar setUpMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(this.makeFileMenu());
+        menuBar.add(this.makeEditMenu());
+        menuBar.add(this.makeViewMenu());
+        menuBar.add(this.makeHelpMenu());
+        return menuBar;
     }
     
     private JPanel setUpReadOuts() {
@@ -1351,6 +1294,11 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     protected void setUpRingFrame() {
         if (this.alreadySetUp) {
             throw new RuntimeException("setUpRingFrame was already called, don't need to call it again.");
+        }
+        if (MAC_OS_FLAG) {
+            maskCtrlCommand = Event.META_MASK;
+        } else {
+            maskCtrlCommand = Event.CTRL_MASK;
         }
         this.ringFrame = new JFrame("Ring Diagram for " + this.diagramRing.toString());
         this.ringFrame.setJMenuBar(this.setUpMenuBar());
@@ -1406,6 +1354,13 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         this.zoomStep = DEFAULT_ZOOM_INTERVAL;
         this.preferenceForThetaNotation = false;
         this.diagramRing = ring;
+        if (this.diagramRing.isPurelyReal()) {
+            this.dotRadiusOrLineThicknessText = "line thickness";
+            this.pointsOrLinesText = "lines";
+        } else {
+            this.dotRadiusOrLineThicknessText = "dot radius";
+            this.pointsOrLinesText = "points on the grids";
+        }
         this.discrHistory = new ArrayList<>();
         this.discrHistory.add(this.diagramRing);
         this.currHistoryIndex = 0;
