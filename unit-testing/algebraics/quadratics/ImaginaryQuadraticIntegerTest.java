@@ -218,7 +218,9 @@ public class ImaginaryQuadraticIntegerTest {
             testAdditiveInverses.add(currIQI);
             currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, -randomImagForHalfInts, ringRandom, 2);
             testConjugates.add(currIQI);
-            currNorm = (randomRealForHalfInts * randomRealForHalfInts + (-randomDiscr) * randomImagForHalfInts * randomImagForHalfInts)/4;
+            currNorm = randomRealForHalfInts * randomRealForHalfInts;
+            currNorm -= randomDiscr * randomImagForHalfInts * randomImagForHalfInts;
+            currNorm /= 4;
             currIQI = new ImaginaryQuadraticInteger(currNorm, 0, ringRandom);
             testNorms.add(currIQI);
             testNormsRealParts.add(currNorm);
@@ -1979,9 +1981,18 @@ public class ImaginaryQuadraticIntegerTest {
                 }
             }
         }
+    }
+    
+    /**
+     * Test of plus method, of class ImaginaryQuadraticInteger. Adding additive 
+     * inverse should give 0.
+     */
+    @Test
+    public void testPlusAdditiveInverses() {
+        String failMessage;
+        QuadraticInteger result;
         for (int i = 0; i < totalTestIntegers; i++) {
-            // Testing that adding additive inverses give 0 each time
-            failMessage = "Adding test integer to its additive inverse should not have triggered AlgebraicDegreeOverflowException \"";
+            failMessage = "Adding " + testIntegers.get(i).toASCIIString() + " to " + testAdditiveInverses.get(i).toASCIIString() + " should not have triggered AlgebraicDegreeOverflowException \"";
             try {
                 result = testIntegers.get(i).plus(testAdditiveInverses.get(i));
                 assertEquals(zeroIQI, result);
@@ -1989,12 +2000,21 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = failMessage + adoe.getMessage() + "\"";
                 fail(failMessage);
             }
-            // Now testing that adding 0 does not change the number
             result = testIntegers.get(i).plus(0);
             assertEquals(testIntegers.get(i), result);
         }
-        /* And now to test that adding algebraic integers from two different 
-           quadratic integer rings triggers AlgebraicDegreeOverflowException */
+    }
+    
+    /**
+     * Test of plus method, of class ImaginaryQuadraticInteger. Adding imaginary 
+     * quadratic integers from different rings should cause {@link 
+     * algebraics.AlgebraicDegreeOverflowException} unless the summand is purely 
+     * real.
+     */
+    @Test
+    public void testPlusAlgebraicDegreeOverflow() {
+        QuadraticInteger result;
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             try {
                 result = testIntegers.get(j).plus(testIntegers.get(j + 1));
@@ -2003,8 +2023,6 @@ public class ImaginaryQuadraticIntegerTest {
             } catch (AlgebraicDegreeOverflowException adoe) {
                 System.out.println("Adding " + testIntegers.get(j).toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
             }
-            /* However, if one of them is purely real, there should be a result, 
-               even if it takes us to a different ring */
             failMessage = "Adding " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " should not have caused";
             try {
                 result = testNorms.get(j).plus(testIntegers.get(j + 1));
@@ -2076,6 +2094,17 @@ public class ImaginaryQuadraticIntegerTest {
                 }
             }
         }
+    }
+    
+    /**
+     * Test of minus method, of class ImaginaryQuadraticInteger. Subtracting a 
+     * number from itself should give 0 as a result, regardless of what the 
+     * number is.
+     */
+    @Test
+    public void testMinusNumberItself() {
+        ImaginaryQuadraticInteger expResult;
+        QuadraticInteger result;
         for (int i = 0; i < totalTestIntegers; i++) {
             // Testing that subtracting itself gives 0 each time
             expResult = new ImaginaryQuadraticInteger(0, 0, testIntegers.get(i).getRing());
@@ -2083,16 +2112,25 @@ public class ImaginaryQuadraticIntegerTest {
                 result = testIntegers.get(i).minus(testIntegers.get(i));
                 assertEquals(expResult, result);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "Subtracting test integer from itself should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
+                String failMessage = "Subtracting test integer from itself should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
                 fail(failMessage);
             }
             // Now testing that subtracting 0 does not change the number
             result = testIntegers.get(i).minus(0);
             assertEquals(testIntegers.get(i), result);
         }
-        /* And now to test that subtracting algebraic integers from two 
-           different quadratic integer rings triggers 
-           AlgebraicDegreeOverflowException */
+    }
+    
+    /**
+     * Test of minus method, of class ImaginaryQuadraticInteger. Subtracting a 
+     * number from a different ring should be an algebraic integer of degree 4. 
+     * Hence the operation should cause an {@link 
+     * algebraics.AlgebraicDegreeOverflowException}.
+     */
+    @Test
+    public void testMinusAlgebraicDegreeOverflow() {
+        QuadraticInteger result;
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             try {
                 result = testIntegers.get(j).minus(testIntegers.get(j + 1));

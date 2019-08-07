@@ -1380,9 +1380,19 @@ public class RealQuadraticIntegerTest {
                 }
             }
         }
+    }
+    
+    /**
+     * Test of plus method, of class RealQuadraticInteger. Adding additive 
+     * inverse should give 0.
+     */
+    @Test
+    public void testPlusAdditiveInverses() {
+        String failMessage;
+        QuadraticInteger result;
         for (int i = 0; i < totalTestIntegers; i++) {
             // Testing that adding additive inverses give 0 each time
-            failMessage = "Adding test integer to its additive inverse should not have triggered AlgebraicDegreeOverflowException \"";
+            failMessage = "Adding " + testIntegers.get(i).toASCIIString() + " to " + testAdditiveInverses.get(i).toASCIIString() + " should not have triggered AlgebraicDegreeOverflowException \"";
             try {
                 result = testIntegers.get(i).plus(testAdditiveInverses.get(i));
                 assertEquals(zeroRQI, result);
@@ -1394,8 +1404,18 @@ public class RealQuadraticIntegerTest {
             result = testIntegers.get(i).plus(0);
             assertEquals(testIntegers.get(i), result);
         }
-        /* And now to test that adding algebraic integers from two different 
-           quadratic integer rings triggers AlgebraicDegreeOverflowException */
+    }
+    
+    /**
+     * Test of plus method, of class RealQuadraticInteger. Adding real quadratic 
+     * integers from different rings should cause {@link 
+     * algebraics.AlgebraicDegreeOverflowException} unless the summand is a 
+     * rational integer.
+     */
+    @Test
+    public void testPlusAlgebraicDegreeOverflow() {
+        QuadraticInteger result;
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             try {
                 result = testIntegers.get(j).plus(testIntegers.get(j + 1));
@@ -1404,8 +1424,6 @@ public class RealQuadraticIntegerTest {
             } catch (AlgebraicDegreeOverflowException adoe) {
                 System.out.println("Adding " + testIntegers.get(j).toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
             }
-            /* However, if one of them is purely real, there should be a result, 
-               even if it takes us to a different ring */
             failMessage = "Adding " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " to " + testIntegers.get(j + 1).toASCIIString() + " should not have caused";
             try {
                 result = testNorms.get(j).plus(testIntegers.get(j + 1));
@@ -1429,6 +1447,63 @@ public class RealQuadraticIntegerTest {
                 fail(failMessage);
             }
         }
+    }
+    
+    /**
+     * Test of plus method, of class RealQuadraticInteger. Adding real quadratic 
+     * integers at the edges of what the QuadraticInteger type can represent 
+     * should cause arithmetic overflows indicated by ArithmeticException being 
+     * thrown.
+     */
+    @Test
+    public void testPlusArithmeticOverflow() {
+        RealQuadraticInteger testSummandA = new RealQuadraticInteger(1, Integer.MAX_VALUE, ringRandom);
+        RealQuadraticInteger testSummandB = new RealQuadraticInteger(3, 7, ringRandom);
+        QuadraticInteger result;
+        try {
+            result = testSummandA.plus(testSummandB);
+            String failMsg = "Trying to add " + testSummandA.toString() + " to " + testSummandB.toString() + " should have caused arithmetic overflow, not given result " + result.toString();
+            fail(failMsg);
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to add " + testSummandA.toASCIIString() + " to " + testSummandB.toASCIIString() + " correctly triggered ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to add "+ testSummandA.toString() + " to " + testSummandB.toString();
+            fail(failMsg);
+        }
+        testSummandA = new RealQuadraticInteger(Integer.MIN_VALUE + 1, 13, RING_ZPHI, 2);
+        int rationalTestSummand = -8;
+        try {
+            result = testSummandA.plus(rationalTestSummand);
+            String failMsg = "Trying to add " + testSummandA.toString() + " to " + rationalTestSummand + " should have caused arithmetic overflow, not given result " + result.toString();
+            fail(failMsg);
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to add " + testSummandA.toASCIIString() + " to " + rationalTestSummand + " correctly triggered ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to add "+ testSummandA.toString() + " to " + rationalTestSummand;
+            fail(failMsg);
+        }
+    }
+    
+    @Test
+    public void testPlusInRingZ10() {
+        RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
+        RealQuadraticInteger negSeven = new RealQuadraticInteger(-7, 0, ringZ10);
+        RealQuadraticInteger numNeg136plus44Sqrt10 = new RealQuadraticInteger(-136, 44, ringZ10);
+        RealQuadraticInteger num117minus36Sqrt10 = new RealQuadraticInteger(117, -36, ringZ10);
+        RealQuadraticInteger numSqrt10 = new RealQuadraticInteger(0, 1, ringZ10);
+        RealQuadraticInteger expResult = new RealQuadraticInteger(-143, 44, ringZ10);
+        QuadraticInteger result = negSeven.plus(numNeg136plus44Sqrt10);
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(117, -35, ringZ10);
+        result = num117minus36Sqrt10.plus(numSqrt10);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testPlusInRingOQ13() {
+        RealQuadraticInteger testSummand = new RealQuadraticInteger(1, 1, RING_OQ13);
     }
     
     /**
@@ -1477,23 +1552,40 @@ public class RealQuadraticIntegerTest {
                 }
             }
         }
+    }
+    
+    /**
+     * Test of minus method, of class RealQuadraticInteger. Subtracting a number 
+     * from itself should give 0 as a result, regardless of what the number is.
+     */
+    @Test
+    public void testMinusNumberItself() {
+        RealQuadraticInteger expResult;
+        QuadraticInteger result;
         for (int i = 0; i < totalTestIntegers; i++) {
-            // Testing that subtracting itself gives 0 each time
             expResult = new RealQuadraticInteger(0, 0, testIntegers.get(i).getRing());
             try {
                 result = testIntegers.get(i).minus(testIntegers.get(i));
                 assertEquals(expResult, result);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "Subtracting test integer from itself should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
+                String failMessage = "Subtracting test integer from itself should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
                 fail(failMessage);
             }
-            // Now testing that subtracting 0 does not change the number
             result = testIntegers.get(i).minus(0);
             assertEquals(testIntegers.get(i), result);
         }
-        /* And now to test that subtracting algebraic integers from two 
-           different quadratic integer rings triggers 
-           AlgebraicDegreeOverflowException */
+    }
+    
+    /**
+     * Test of minus method, of class RealQuadraticInteger. Subtracting a number 
+     * from a different ring should be an algebraic integer of degree 4. Hence 
+     * the operation should cause an {@link 
+     * algebraics.AlgebraicDegreeOverflowException}.
+     */
+    @Test
+    public void testMinusAlgebraicDegreeOverflow() {
+        QuadraticInteger result;
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             try {
                 result = testIntegers.get(j).minus(testIntegers.get(j + 1));
@@ -1502,8 +1594,6 @@ public class RealQuadraticIntegerTest {
             } catch (AlgebraicDegreeOverflowException adoe) {
                 System.out.println("Subtracting " + testIntegers.get(j + 1).toASCIIString() + " from " + testIntegers.get(j).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
             }
-            /* However, if one of them is purely real, there should be some kind 
-               of result */
             failMessage = "Subtracting " + testIntegers.get(j + 1).toASCIIString() + " from " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " should not have triggered";
             try {
                 result = testNorms.get(j).minus(testIntegers.get(j + 1));

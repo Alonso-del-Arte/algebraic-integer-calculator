@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -30,19 +30,30 @@ public class IllDefinedQuadraticInteger extends QuadraticInteger {
 
     /**
      * Possibly the absolute value of the ill-defined quadratic integer.
-     * @return A value guaranteed to be correct only if the ill-defined 
-     * quadratic integer is 0.
+     * @return A value not guaranteed to be correct.
      */
     @Override
     public double abs() {
         return Math.abs(this.numValRe + this.numValIm);
     }
 
+    /**
+     * This function is implemented only because it is required by the {@link 
+     * algebraics.AlgebraicInteger} interface.
+     * @return A value not guaranteed to be correct, even allowing for loss of 
+     * machine precision.
+     */
     @Override
     public double getRealPartNumeric() {
         return this.numValRe;
     }
 
+    /**
+     * This function is implemented only because it is required by the {@link 
+     * algebraics.AlgebraicInteger} interface.
+     * @return A value not guaranteed to be correct, even allowing for loss of 
+     * machine precision.
+     */
     @Override
     public double getImagPartNumeric() {
         return this.numValIm;
@@ -72,10 +83,7 @@ public class IllDefinedQuadraticInteger extends QuadraticInteger {
      * checking for the class of this parameter.
      */
     public IllDefinedQuadraticInteger(int a, int b, QuadraticRing ring) {
-        this.regPartMult = a;
-        this.surdPartMult = b;
-        this.denominator = 1;
-        this.quadRing = ring;
+        super(a, b, ring, 1);
         double re = this.regPartMult;
         double im = 0.0;
         double y = this.quadRing.realRadSqrt * this.surdPartMult;

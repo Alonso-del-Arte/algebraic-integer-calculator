@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,7 +20,8 @@ package algebraics.quadratics;
  * This is mostly to define instances of {@link IllDefinedQuadraticInteger}, 
  * which in turn are objects for use in {@link 
  * algebraics.UnsupportedNumberDomainExceptionTest}. It should be in a test 
- * package, not in a source package, and it should not be compiled to any JARs.
+ * package, not in a source package, and it should not be compiled to any JARs 
+ * meant for public distribution.
  * @author Alonso del Arte
  */
 public class IllDefinedQuadraticRing extends QuadraticRing {
@@ -47,6 +48,13 @@ public class IllDefinedQuadraticRing extends QuadraticRing {
         return this.radSqrt;
     }
     
+    /**
+     * Constructor. Performs no validation whatsoever on the input parameter, 
+     * hence the integer ring described by this object is ill-defined.
+     * @param d Any integer whatsoever between {@link Integer#MIN_VALUE} and 
+     * {@link Integer#MAX_VALUE}. If a perfect square, the resulting ring is not 
+     * a quadratic ring at all, but merely just good old <b>Z</b>.
+     */
     public IllDefinedQuadraticRing(int d) {
         this.d1mod4 = false;
         this.radicand = 4 * d;

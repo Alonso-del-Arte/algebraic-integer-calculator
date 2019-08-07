@@ -229,28 +229,24 @@ public class RealQuadraticRingTest {
         System.out.println("BeforeClass-initialized " + ringZ2.toASCIIString() + " hashed as " + expResult);
         RealQuadraticRing someRing = new RealQuadraticRing(2);
         int result = someRing.hashCode();
-        System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
         String assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(2)] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
         expResult = ringZPhi.hashCode();
         System.out.println("BeforeClass-initialized " + ringZPhi.toASCIIString() + " hashed as " + expResult);
         someRing = new RealQuadraticRing(5);
         result = someRing.hashCode();
-        System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
         assertionMessage = "BeforeClass-initialized and test-initialized Z[omega] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
         expResult = ringOQ13.hashCode();
         System.out.println("BeforeClass-initialized " + ringOQ13.toASCIIString() + " hashed as " + expResult);
         someRing = new RealQuadraticRing(13);
         result = someRing.hashCode();
-        System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
         assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-7)] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
         expResult = ringRandom.hashCode();
         System.out.println("BeforeClass-initialized " + ringRandom.toASCIIString() + " hashed as " + expResult);
         someRing = new RealQuadraticRing(randomDiscr);
         result = someRing.hashCode();
-        System.out.println("Test-initialized " + someRing.toASCIIString() + " hashed as " + expResult);
         assertionMessage = "BeforeClass-initialized and test-initialized " + ringRandom.toASCIIString() + " should hash the same.";
         assertEquals(assertionMessage, expResult, result);
     }
