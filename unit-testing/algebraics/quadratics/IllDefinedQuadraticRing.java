@@ -19,9 +19,10 @@ package algebraics.quadratics;
 /**
  * This is mostly to define instances of {@link IllDefinedQuadraticInteger}, 
  * which in turn are objects for use in {@link 
- * algebraics.UnsupportedNumberDomainExceptionTest}. It should be in a test 
- * package, not in a source package, and it should not be compiled to any JARs 
- * meant for public distribution.
+ * algebraics.UnsupportedNumberDomainExceptionTest}. The results of the 
+ * associated functions are <em>not</em> guaranteed to be mathematically 
+ * correct. Therefore, it should be in a test package, not in a source package, 
+ * and it should not be compiled to any JARs meant for public distribution.
  * @author Alonso del Arte
  */
 public class IllDefinedQuadraticRing extends QuadraticRing {
@@ -49,13 +50,13 @@ public class IllDefinedQuadraticRing extends QuadraticRing {
     }
     
     /**
-     * Constructor. Performs no validation whatsoever on the input parameter, 
-     * hence the integer ring described by this object is ill-defined.
-     * @param d Any integer whatsoever between {@link Integer#MIN_VALUE} and 
-     * {@link Integer#MAX_VALUE}. If a perfect square, the resulting ring is not 
-     * a quadratic ring at all, but merely just good old <b>Z</b>.
+     * Constructor. Performs no validation whatsoever on the input parameter 
+     * (other than what the superclass does), hence the integer ring described 
+     * by this object is ill-defined.
+     * @param d Any squarefree integer in the range of int.
      */
     public IllDefinedQuadraticRing(int d) {
+        super(d);
         this.d1mod4 = false;
         this.radicand = 4 * d;
         this.radSqrt = Math.sqrt(Math.abs(this.radicand));

@@ -1334,7 +1334,8 @@ public class RealQuadraticIntegerTest {
     }
         
     /**
-     * Test of plus method, of class RealQuadraticInteger.
+     * Test of plus method, of class RealQuadraticInteger, inherited from {@link 
+     * QuadraticInteger}.
      */
     @Test
     public void testPlus() {
@@ -1383,15 +1384,16 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of plus method, of class RealQuadraticInteger. Adding additive 
-     * inverse should give 0.
+     * Test of plus method, of class RealQuadraticInteger, inherited from {@link 
+     * QuadraticInteger}. Adding an additive inverse to a real quadratic integer 
+     * should give 0. Also, adding 0 to a real quadratic integer should give 
+     * that real quadratic integer as a result.
      */
     @Test
     public void testPlusAdditiveInverses() {
         String failMessage;
         QuadraticInteger result;
         for (int i = 0; i < totalTestIntegers; i++) {
-            // Testing that adding additive inverses give 0 each time
             failMessage = "Adding " + testIntegers.get(i).toASCIIString() + " to " + testAdditiveInverses.get(i).toASCIIString() + " should not have triggered AlgebraicDegreeOverflowException \"";
             try {
                 result = testIntegers.get(i).plus(testAdditiveInverses.get(i));
@@ -1400,17 +1402,16 @@ public class RealQuadraticIntegerTest {
                 failMessage = failMessage + adoe.getMessage() + "\"";
                 fail(failMessage);
             }
-            // Now testing that adding 0 does not change the number
             result = testIntegers.get(i).plus(0);
             assertEquals(testIntegers.get(i), result);
         }
     }
     
     /**
-     * Test of plus method, of class RealQuadraticInteger. Adding real quadratic 
-     * integers from different rings should cause {@link 
-     * algebraics.AlgebraicDegreeOverflowException} unless the summand is a 
-     * rational integer.
+     * Test of plus method, of class RealQuadraticInteger, inherited from {@link 
+     * QuadraticInteger}. Adding real quadratic integers from different rings 
+     * should cause {@link algebraics.AlgebraicDegreeOverflowException} unless 
+     * either summand is a rational integer.
      */
     @Test
     public void testPlusAlgebraicDegreeOverflow() {
@@ -1450,10 +1451,10 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of plus method, of class RealQuadraticInteger. Adding real quadratic 
-     * integers at the edges of what the QuadraticInteger type can represent 
-     * should cause arithmetic overflows indicated by ArithmeticException being 
-     * thrown.
+     * Test of plus method, of class RealQuadraticInteger, inherited from {@link 
+     * QuadraticInteger}. Adding real quadratic integers at the edges of what 
+     * the QuadraticInteger type can represent should cause arithmetic overflows 
+     * indicated by ArithmeticException being thrown.
      */
     @Test
     public void testPlusArithmeticOverflow() {
@@ -1486,6 +1487,10 @@ public class RealQuadraticIntegerTest {
         }
     }
     
+    /**
+     * Test of plus method, of class RealQuadraticInteger, inherited from {@link 
+     * QuadraticInteger}. Specifically in <b>Z</b>[&radic;10].
+     */
     @Test
     public void testPlusInRingZ10() {
         RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
@@ -1501,13 +1506,27 @@ public class RealQuadraticIntegerTest {
         assertEquals(expResult, result);
     }
     
+    /**
+     * Test of plus method, of class RealQuadraticInteger, inherited from {@link 
+     * QuadraticInteger}. Specifically in 
+     * <i>O</i><sub><b>Q</b>(&radic;13)</sub>.
+     */
     @Test
     public void testPlusInRingOQ13() {
-        RealQuadraticInteger testSummand = new RealQuadraticInteger(1, 1, RING_OQ13);
+        RealQuadraticInteger testSummandA = new RealQuadraticInteger(10, 3, RING_OQ13);
+        RealQuadraticInteger testSummandB = new RealQuadraticInteger(7, 1, RING_OQ13, 2);
+        QuadraticInteger expResult = new RealQuadraticInteger(27, 7, RING_OQ13, 2);
+        QuadraticInteger result = testSummandA.plus(testSummandB);
+        assertEquals(expResult, result);
+        testSummandA = new RealQuadraticInteger(3, 5, RING_OQ13, 2);
+        expResult = new RealQuadraticInteger(5, 3, RING_OQ13);
+        result = testSummandA.plus(testSummandB);
+        assertEquals(expResult, result);
     }
     
     /**
-     * Test of minus method, of class RealQuadraticInteger.
+     * Test of minus method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}.
      */
     @Test
     public void testMinus() {
@@ -1555,8 +1574,9 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of minus method, of class RealQuadraticInteger. Subtracting a number 
-     * from itself should give 0 as a result, regardless of what the number is.
+     * Test of minus method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Subtracting a number from itself should give 0 
+     * as a result, regardless of what the number is.
      */
     @Test
     public void testMinusNumberItself() {
@@ -1577,10 +1597,10 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of minus method, of class RealQuadraticInteger. Subtracting a number 
-     * from a different ring should be an algebraic integer of degree 4. Hence 
-     * the operation should cause an {@link 
-     * algebraics.AlgebraicDegreeOverflowException}.
+     * Test of minus method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Subtracting a number from a different ring 
+     * should be an algebraic integer of degree 4. Hence the operation should 
+     * cause an {@link algebraics.AlgebraicDegreeOverflowException}.
      */
     @Test
     public void testMinusAlgebraicDegreeOverflow() {
@@ -1609,7 +1629,8 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of times method, of class RealQuadraticInteger.
+     * Test of times method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}.
      */
     @Test
     public void testTimes() {
@@ -1654,23 +1675,39 @@ public class RealQuadraticIntegerTest {
                 }
             }
         }
-        // Complex integer times its conjugate should match its norm
+    }
+    
+    /**
+     * Test of times method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. A real quadratic integer times its conjugate 
+     * should give its norm.
+     */
+    @Test
+    public void testTimesConjugate() {
+        QuadraticInteger result;
         for (int i = 0; i < totalTestIntegers; i++) {
             try {
                 result = testIntegers.get(i).times(testConjugates.get(i));
                 assertEquals(testNorms.get(i), result);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "Multiplying an integer by its conjugate should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
+                String failMessage = "Multiplying an integer by its conjugate should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
                 fail(failMessage);
             }
         }
-        /* And now to test that multiplying algebraic integers from two 
-           different quadratic integer rings triggers 
-           AlgebraicDegreeOverflowException, provided they both have nonzero 
-           "regular" parts */
+    }
+    
+    /**
+     * Test of times method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. If the product of two real quadratic integers 
+     * is an algebraic integer of degree 4, {@link 
+     * algebraics.AlgebraicDegreeOverflowException} should occur.
+     */
+    @Test
+    public void testTimesAlgebraicDegreeOverflow() {
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             try {
-                result = testIntegers.get(j).times(testIntegers.get(j + 1));
+                QuadraticInteger result = testIntegers.get(j).times(testIntegers.get(j + 1));
                 failMessage = "Multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
                 fail(failMessage);
             } catch (AlgebraicDegreeOverflowException adoe) {
@@ -1678,12 +1715,23 @@ public class RealQuadraticIntegerTest {
                 assertEquals(failMessage, 4, adoe.getNecessaryAlgebraicDegree());
                 System.out.println("Multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
             }
-            /* However, if one of them is purely real, there should be a result, 
-               even if it takes us to a different ring */
-            failMessage = "Multiplying " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have caused";
+        }
+    }
+    
+    /**
+     * Test of times method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Multiplying a real quadratic integer by a 
+     * rational real integer, even if presented as being from another ring, 
+     * should give the proper result.
+     */
+    @Test
+    public void testTimesIntAsRQI() {
+        String failMessage;
+        for (int i = 0; i < totalTestIntegers - 1; i++) {
+            failMessage = "Multiplying " + testNorms.get(i).toASCIIString() + " from " + testNorms.get(i).getRing().toASCIIString() + " by " + testIntegers.get(i + 1).toASCIIString() + " should not have caused";
             try {
-                result = testNorms.get(j).times(testIntegers.get(j + 1));
-                System.out.println("Multiplying " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " gives result " + result.toASCIIString());
+                QuadraticInteger result = testNorms.get(i).times(testIntegers.get(i + 1));
+                System.out.println("Multiplying " + testNorms.get(i).toASCIIString() + " from " + testNorms.get(i).getRing().toASCIIString() + " by " + testIntegers.get(i + 1).toASCIIString() + " gives result " + result.toASCIIString());
             } catch (AlgebraicDegreeOverflowException adoe) {
                 failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
@@ -1691,9 +1739,11 @@ public class RealQuadraticIntegerTest {
                 failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
                 fail(failMessage);
             }
+        }
+        for (int j = 0; j < totalTestIntegers - 1; j++) {
             failMessage = "Multiplying " + testNorms.get(j + 1).toASCIIString() + " from " + testNorms.get(j + 1).getRing().toASCIIString() + " by " + testIntegers.get(j).toASCIIString() + " should not have caused";
             try {
-                result = testIntegers.get(j).times(testNorms.get(j + 1));
+                QuadraticInteger result = testIntegers.get(j).times(testNorms.get(j + 1));
                 System.out.println("Multiplying " + testNorms.get(j + 1).toASCIIString() + " from " + testNorms.get(j + 1).getRing().toASCIIString() + " by " + testIntegers.get(j).toASCIIString() + " gives result " + result.toASCIIString());
             } catch (AlgebraicDegreeOverflowException adoe) {
                 failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
@@ -1706,7 +1756,8 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of divides method, of class RealQuadraticInteger.
+     * Test of divides method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}.
      */
     @Test
     public void testDivides() {
@@ -1797,18 +1848,15 @@ public class RealQuadraticIntegerTest {
             }
         }
     }
-    
-    // TODO: Break testDividesMisc() up some more.
+
     /**
-     * Miscellaneous tests of the divides method of RealQuadraticInteger. In 
-     * regards to division by zero, these test will pass if either {@link 
-     * IllegalArgumentException} or {@link ArithmeticException} is thrown. Any 
-     * other exception will fail the test, and that includes the {@link 
-     * NotDivisibleException}. Not throwing any exception at all for division by 
-     * zero will also fail the test.
+     * Test of divides method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Dividing the norm of a real quadratic integer 
+     * by the conjugate of that real quadratic integer should give that real 
+     * quadratic integer as a result.
      */
     @Test
-    public void testDividesMisc() {
+    public void testDividesConjugate() {
         QuadraticInteger result;
         String failMessage;
         for (int i = 0; i < totalTestIntegers; i++) {
@@ -1825,11 +1873,25 @@ public class RealQuadraticIntegerTest {
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
-            // Check to make sure division by zero causes a suitable exception
+        }
+    }
+    
+    /**
+     * Test of divides method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Division by zero, regardless of what ring it is 
+     * presented as being from, should cause either IllegalArgumentException or 
+     * ArithmeticException to be thrown. Any other exception will fail the test, 
+     * and that includes {@link algebraics.NotDivisibleException}. Not throwing 
+     * any exception at all for division by zero will also fail the test.
+     */
+    @Test
+    public void testDivisionByZeroRQI() {
+        String failMessage;
+        for (int i = 0; i < totalTestIntegers; i++) {
             RealQuadraticInteger zeroSurd = new RealQuadraticInteger(0, 1, zeroRQI.getRing());
             String zeroStr = "0 + 0" + zeroSurd.toASCIIString();
             try {
-                result = testIntegers.get(i).divides(zeroRQI);
+                QuadraticInteger result = testIntegers.get(i).divides(zeroRQI);
                 failMessage = "Dividing " + testIntegers.get(i).toASCIIString() + " by " + zeroStr + " should have caused an exception, not given result " + result.toASCIIString();
                 fail(failMessage);
             } catch (AlgebraicDegreeOverflowException adoe) {
@@ -1839,38 +1901,64 @@ public class RealQuadraticIntegerTest {
                 failMessage = "NotDivisibleException is the wrong exception to throw for division by " + zeroStr + " \"" + nde.getMessage() + "\"";
                 fail(failMessage);
             } catch (IllegalArgumentException iae) {
-                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by " + zeroStr + " \"" + iae.getMessage() + "\"");
+                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by " + zeroStr);
+                System.out.println("\"" + iae.getMessage() + "\"");
             } catch (ArithmeticException ae) {
-                System.out.println("ArithmeticException correctly triggered upon attempt to divide by " + zeroStr + " \"" + ae.getMessage() + "\"");
+                System.out.println("ArithmeticException correctly triggered upon attempt to divide by " + zeroStr);
+                System.out.println("\"" + ae.getMessage() + "\"");
             } catch (Exception e) {
                 failMessage = e.getClass().getName() + " is the wrong exception thrown for attempt to divide by " + zeroStr + ".";
                 fail(failMessage);
             }
+        }
+    }
+    
+    /**
+     * Test of divides method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Division by zero should cause either 
+     * IllegalArgumentException or ArithmeticException to be thrown. Any other 
+     * exception will fail the test, and that includes the {@link 
+     * algebraics.NotDivisibleException}. Not throwing any exception at all for 
+     * division by zero will also fail the test.
+     */
+    @Test
+    public void testDivisionByZeroInt() {
+        String failMessage;
+        for (int i = 0; i < totalTestIntegers; i++) {
             try {
-                result = testIntegers.get(i).divides(0);
+                QuadraticInteger result = testIntegers.get(i).divides(0);
                 failMessage = "Dividing " + testIntegers.get(i).toASCIIString() + " by 0 should have caused an exception, not given result " + result.toASCIIString();
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
                 failMessage = "NotDivisibleException is the wrong exception to throw for division by 0 \"" + nde.getMessage() + "\"";
                 fail(failMessage);
             } catch (IllegalArgumentException iae) {
-                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by 0 \"" + iae.getMessage() + "\"");
+                System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by 0");
+                System.out.println("\"" + iae.getMessage() + "\"");
             } catch (ArithmeticException ae) {
-                System.out.println("ArithmeticException correctly triggered upon attempt to divide by 0. \"" + ae.getMessage() + "\"");
+                System.out.println("ArithmeticException correctly triggered upon attempt to divide by 0.");
+                System.out.println("\"" + ae.getMessage() + "\"");
             } catch (Exception e) {
                 failMessage = "Wrong exception thrown for attempt to divide by 0. " + e.getMessage();
                 fail(failMessage);
             }
         }
-        /* Check that dividing a real quadratic integer from one ring by a 
-           rational integer from another ring does give the same result as if 
-           the purely real integer was presented as being from the same ring. */
+    }
+    
+    /**
+     * Test of divides method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Dividing a real quadratic integer by a rational 
+     * integer, even if presented as coming from another ring, should give the 
+     * proper result.
+     */
+    @Test
+    public void testDividesApparentCrossDomain() {
         RealQuadraticInteger testDividend = new RealQuadraticInteger(3, 1, RING_ZPHI);
         RealQuadraticInteger testDivisor = new RealQuadraticInteger(2, 0, RING_Z2);
         RealQuadraticInteger expResult = new RealQuadraticInteger(3, 1, RING_ZPHI, 2);
-        failMessage = "Trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " from " + testDivisor.getRing().toASCIIString() + " should not have triggered";
+        String failMessage = "Trying to divide " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " from " + testDivisor.getRing().toASCIIString() + " should not have triggered";
         try {
-            result = testDividend.divides(testDivisor);
+            QuadraticInteger result = testDividend.divides(testDivisor);
             assertEquals(expResult, result);
         } catch (NotDivisibleException nde) {
             failMessage = failMessage + " NotDivisibleException \"" + nde.getMessage() + "\"";
@@ -1882,14 +1970,22 @@ public class RealQuadraticIntegerTest {
             failMessage = failMessage + e.getClass().getName() + "\"" + e.getMessage() + "\"";
             fail(failMessage);
         }
-        /* And now to test that dividing an algebraic integer from one real 
-           quadratic ring by an algebraic integer from another real quadratic 
-           ring triggers AlgebraicDegreeOverflowException */
-        QuadraticInteger temp;
+    }
+    
+    /**
+     * Test of divides method, of class RealQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. The division of an irrational real quadratic 
+     * integer by an irrational real quadratic integer from another ring is an 
+     * algebraic integer of degree 4, hence {@link 
+     * algebraics.AlgebraicDegreeOverflowException} should occur.
+     */
+    @Test
+    public void testDividesAlgebraicDegreeOverflow() {
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             failMessage = "Dividing " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have";
             try {
-                result = testIntegers.get(j).divides(testIntegers.get(j + 1));
+                QuadraticInteger result = testIntegers.get(j).divides(testIntegers.get(j + 1));
                 failMessage = failMessage + " resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
                 fail(failMessage);
             } catch (AlgebraicDegreeOverflowException adoe) {

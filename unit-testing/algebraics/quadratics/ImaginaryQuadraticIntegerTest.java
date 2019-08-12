@@ -1530,6 +1530,56 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
+     * Test of inferStep method, of class ImaginaryQuadraticInteger.
+     */
+    @Test
+    public void testInferStep() {
+        System.out.println("inferStep");
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, -5, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(5, 5, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 1, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expResult, result);
+        beginPoint = new ImaginaryQuadraticInteger(-2, 0, RING_ZI2);
+        endPoint = new ImaginaryQuadraticInteger(-11, 3, RING_ZI2);
+        expResult = new ImaginaryQuadraticInteger(-3, 1, RING_ZI2);
+        result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expResult, result);
+        beginPoint = new ImaginaryQuadraticInteger(-7, 0, RING_EISENSTEIN);
+        endPoint = new ImaginaryQuadraticInteger(-5, -2, RING_EISENSTEIN);
+        expResult = new ImaginaryQuadraticInteger(1, -1, RING_EISENSTEIN, 2);
+        result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expResult, result);
+        beginPoint = new ImaginaryQuadraticInteger(-1, -3, RING_OQI7, 2);
+        endPoint = new ImaginaryQuadraticInteger(-11, -3, RING_OQI7);
+        expResult = new ImaginaryQuadraticInteger(-7, -1, RING_OQI7, 2);
+        result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of inferStep method, of class ImaginaryQuadraticInteger. Trying to 
+     * infer a step between imaginary quadratic integers from different rings 
+     * should cause {@link algebraics.AlgebraicDegreeOverflowException}.
+     */
+    @Test
+    public void testInferStepAlgebraicDegreeOverflow() {
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, -5, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-1, -3, RING_OQI7, 2);
+        try {
+            ImaginaryQuadraticInteger result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+            String failMessage = "Trying to infer step between " + beginPoint.toString() + " and " + endPoint.toString() + " should have caused an exception, not given result " + result.toString();
+            fail(failMessage);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println("Trying to infer step between " + beginPoint.toASCIIString() + " and " + endPoint.toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMessage = e.getClass().getName() + " is the wrong exception to throw for Trying to infer step between " + beginPoint.toString() + " and " + endPoint.toString();
+            fail(failMessage);
+        }
+    }
+    
+    /**
      * Test of to, of class ImaginaryQuadraticInteger. This test is about 
      * imaginary quadratic integers such that lines connecting them on the 
      * complex plane are diagonals going in different directions.
@@ -1537,54 +1587,55 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testTo() {
         System.out.println("to");
-        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
-        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(1, 1, RING_GAUSSIAN);
-        expResult.add(startPoint);
-        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(2, 2, RING_GAUSSIAN);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(3, 3, RING_GAUSSIAN);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(4, 4, RING_GAUSSIAN);
-        expResult.add(betweenPoint);
-        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(5, 5, RING_GAUSSIAN);
-        expResult.add(endPoint);
-        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
-        expResult.clear();
-        startPoint = new ImaginaryQuadraticInteger(-2, 0, RING_ZI2);
-        expResult.add(startPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-5, 1, RING_ZI2);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-8, 2, RING_ZI2);
-        expResult.add(betweenPoint);
-        endPoint = new ImaginaryQuadraticInteger(-11, 3, RING_ZI2);
-        expResult.add(endPoint);
-        result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
-        expResult.clear();
-        startPoint = new ImaginaryQuadraticInteger(-7, 0, RING_EISENSTEIN);
-        expResult.add(startPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-13, -1, RING_EISENSTEIN, 2);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-6, -1, RING_EISENSTEIN);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-11, -3, RING_EISENSTEIN, 2);
-        expResult.add(betweenPoint);
-        endPoint = new ImaginaryQuadraticInteger(-5, -2, RING_EISENSTEIN);
-        expResult.add(endPoint);
-        result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
-        expResult.clear();
-        startPoint = new ImaginaryQuadraticInteger(-1, -3, RING_OQI7, 2);
-        expResult.add(startPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-4, -2, RING_OQI7);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-15, -5, RING_OQI7, 2);
-        expResult.add(betweenPoint);
-        endPoint = new ImaginaryQuadraticInteger(-11, -3, RING_OQI7);
-        expResult.add(endPoint);
-        result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
+        fail("Haven't rewritten test yet");
+//        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+//        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(1, 1, RING_GAUSSIAN);
+//        expResult.add(startPoint);
+//        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(2, 2, RING_GAUSSIAN);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(3, 3, RING_GAUSSIAN);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(4, 4, RING_GAUSSIAN);
+//        expResult.add(betweenPoint);
+//        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(5, 5, RING_GAUSSIAN);
+//        expResult.add(endPoint);
+//        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
+//        expResult.clear();
+//        startPoint = new ImaginaryQuadraticInteger(-2, 0, RING_ZI2);
+//        expResult.add(startPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-5, 1, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-8, 2, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        endPoint = new ImaginaryQuadraticInteger(-11, 3, RING_ZI2);
+//        expResult.add(endPoint);
+//        result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
+//        expResult.clear();
+//        startPoint = new ImaginaryQuadraticInteger(-7, 0, RING_EISENSTEIN);
+//        expResult.add(startPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-13, -1, RING_EISENSTEIN, 2);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-6, -1, RING_EISENSTEIN);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-11, -3, RING_EISENSTEIN, 2);
+//        expResult.add(betweenPoint);
+//        endPoint = new ImaginaryQuadraticInteger(-5, -2, RING_EISENSTEIN);
+//        expResult.add(endPoint);
+//        result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
+//        expResult.clear();
+//        startPoint = new ImaginaryQuadraticInteger(-1, -3, RING_OQI7, 2);
+//        expResult.add(startPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-4, -2, RING_OQI7);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-15, -5, RING_OQI7, 2);
+//        expResult.add(betweenPoint);
+//        endPoint = new ImaginaryQuadraticInteger(-11, -3, RING_OQI7);
+//        expResult.add(endPoint);
+//        result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
     }
     
     /**
@@ -1594,11 +1645,12 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testToSinglePoint() {
-        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(10, 43, ringRandom);
-        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
-        expResult.add(startPoint);
-        List<ImaginaryQuadraticInteger> result = startPoint.to(startPoint);
-        assertEquals(expResult, result);
+        fail("Haven't rewritten test yet");
+//        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(10, 43, ringRandom);
+//        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+//        expResult.add(startPoint);
+//        List<ImaginaryQuadraticInteger> result = startPoint.to(startPoint);
+//        assertEquals(expResult, result);
     }
     
     /**
@@ -1611,19 +1663,20 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testToCrossDomain() {
-        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(5, 3, RING_OQI7, 2);
-        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-7, 2, ringRandom);
-        try {
-            List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
-            String failMessage = "Trying to get range from " + startPoint.toString() + " to " + endPoint.toString() + " should have caused an exception, not given result " + result.toString() + ".";
-            fail(failMessage);
-        } catch (AlgebraicDegreeOverflowException adoe) {
-            System.out.println("Trying to get range from " + startPoint.toASCIIString() + " to " + endPoint.toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException.");
-            System.out.println("\"" + adoe.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " is the wrong exception for trying to get range from " + startPoint.toString() + " to " + endPoint.toString() + ".";
-            fail(failMessage);
-        }
+        fail("Haven't rewritten test yet");
+//        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(5, 3, RING_OQI7, 2);
+//        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-7, 2, ringRandom);
+//        try {
+//            List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+//            String failMessage = "Trying to get range from " + startPoint.toString() + " to " + endPoint.toString() + " should have caused an exception, not given result " + result.toString() + ".";
+//            fail(failMessage);
+//        } catch (AlgebraicDegreeOverflowException adoe) {
+//            System.out.println("Trying to get range from " + startPoint.toASCIIString() + " to " + endPoint.toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException.");
+//            System.out.println("\"" + adoe.getMessage() + "\"");
+//        } catch (Exception e) {
+//            String failMessage = e.getClass().getName() + " is the wrong exception for trying to get range from " + startPoint.toString() + " to " + endPoint.toString() + ".";
+//            fail(failMessage);
+//        }
     }
     
     /**
@@ -1634,28 +1687,29 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testToOnSameRealLine() {
         System.out.println("to on same real line");
-        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
-        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(1, 1, RING_ZI2);
-        expResult.add(startPoint);
-        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(1, 2, RING_ZI2);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(1, 3, RING_ZI2);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(1, 4, RING_ZI2);
-        expResult.add(betweenPoint);
-        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(1, 5, RING_ZI2);
-        expResult.add(endPoint);
-        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
-        expResult.clear();
-        startPoint = new ImaginaryQuadraticInteger(-7, 5, RING_EISENSTEIN, 2);
-        expResult.add(startPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-7, 3, RING_EISENSTEIN, 2);
-        expResult.add(betweenPoint);
-        endPoint = new ImaginaryQuadraticInteger(-7, 1, RING_EISENSTEIN, 2);
-        expResult.add(endPoint);
-        result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
+        fail("Haven't rewritten test yet");
+//        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+//        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(1, 1, RING_ZI2);
+//        expResult.add(startPoint);
+//        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(1, 2, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(1, 3, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(1, 4, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(1, 5, RING_ZI2);
+//        expResult.add(endPoint);
+//        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
+//        expResult.clear();
+//        startPoint = new ImaginaryQuadraticInteger(-7, 5, RING_EISENSTEIN, 2);
+//        expResult.add(startPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-7, 3, RING_EISENSTEIN, 2);
+//        expResult.add(betweenPoint);
+//        endPoint = new ImaginaryQuadraticInteger(-7, 1, RING_EISENSTEIN, 2);
+//        expResult.add(endPoint);
+//        result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
     }
     
     /**
@@ -1666,28 +1720,29 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testToOnSameImagLine() {
         System.out.println("to on same imaginary line");
-        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
-        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(-1, 1, RING_ZI2);
-        expResult.add(startPoint);
-        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(1, 1, RING_ZI2);
-        expResult.add(betweenPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(2, 1, RING_ZI2);
-        expResult.add(betweenPoint);
-        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(3, 1, RING_ZI2);
-        expResult.add(endPoint);
-        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
-        expResult.clear();
-        startPoint = new ImaginaryQuadraticInteger(-29, -5, RING_OQI7, 2);
-        expResult.add(startPoint);
-        betweenPoint = new ImaginaryQuadraticInteger(-31, -5, RING_OQI7, 2);
-        expResult.add(betweenPoint);
-        endPoint = new ImaginaryQuadraticInteger(-33, -5, RING_OQI7, 2);
-        expResult.add(endPoint);
-        result = startPoint.to(endPoint);
-        assertEquals(expResult, result);
+        fail("Haven't rewritten test yet");
+//        List<ImaginaryQuadraticInteger> expResult = new ArrayList<>();
+//        ImaginaryQuadraticInteger startPoint = new ImaginaryQuadraticInteger(-1, 1, RING_ZI2);
+//        expResult.add(startPoint);
+//        ImaginaryQuadraticInteger betweenPoint = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(1, 1, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(2, 1, RING_ZI2);
+//        expResult.add(betweenPoint);
+//        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(3, 1, RING_ZI2);
+//        expResult.add(endPoint);
+//        List<ImaginaryQuadraticInteger> result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
+//        expResult.clear();
+//        startPoint = new ImaginaryQuadraticInteger(-29, -5, RING_OQI7, 2);
+//        expResult.add(startPoint);
+//        betweenPoint = new ImaginaryQuadraticInteger(-31, -5, RING_OQI7, 2);
+//        expResult.add(betweenPoint);
+//        endPoint = new ImaginaryQuadraticInteger(-33, -5, RING_OQI7, 2);
+//        expResult.add(endPoint);
+//        result = startPoint.to(endPoint);
+//        assertEquals(expResult, result);
     }
     
     /**
@@ -1935,7 +1990,8 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     /**
-     * Test of plus method, of class ImaginaryQuadraticInteger.
+     * Test of plus method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}.
      */
     @Test
     public void testPlus() {
@@ -1984,8 +2040,8 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of plus method, of class ImaginaryQuadraticInteger. Adding additive 
-     * inverse should give 0.
+     * Test of plus method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Adding additive inverse should give 0.
      */
     @Test
     public void testPlusAdditiveInverses() {
@@ -2006,10 +2062,11 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of plus method, of class ImaginaryQuadraticInteger. Adding imaginary 
-     * quadratic integers from different rings should cause {@link 
-     * algebraics.AlgebraicDegreeOverflowException} unless the summand is purely 
-     * real.
+     * Test of plus method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Adding imaginary quadratic integers from 
+     * different rings should cause {@link 
+     * algebraics.AlgebraicDegreeOverflowException} unless either summand is 
+     * purely real.
      */
     @Test
     public void testPlusAlgebraicDegreeOverflow() {
@@ -2049,7 +2106,8 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     /**
-     * Test of minus method, of class ImaginaryQuadraticInteger.
+     * Test of minus method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}.
      */
     @Test
     public void testMinus() {
@@ -2097,9 +2155,9 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of minus method, of class ImaginaryQuadraticInteger. Subtracting a 
-     * number from itself should give 0 as a result, regardless of what the 
-     * number is.
+     * Test of minus method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Subtracting a number from itself should give 0 
+     * as a result, regardless of what that number is.
      */
     @Test
     public void testMinusNumberItself() {
@@ -2122,9 +2180,11 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of minus method, of class ImaginaryQuadraticInteger. Subtracting a 
-     * number from a different ring should be an algebraic integer of degree 4. 
-     * Hence the operation should cause an {@link 
+     * Test of minus method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Subtracting from an imaginary quadratic integer 
+     * with nonzero imaginary part another imaginary quadratic integer that also 
+     * has nonzero imaginary part but comes from a different ring should be an 
+     * algebraic integer of degree 4. Hence the operation should cause an {@link 
      * algebraics.AlgebraicDegreeOverflowException}.
      */
     @Test
@@ -2156,12 +2216,8 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     /**
-     * Test of times method, of class ImaginaryQuadraticInteger. This test 
-     * includes multiplication of numbers from several imaginary quadratic 
-     * rings, including tests of numbers from different rings to make sure 
-     * {@link AlgebraicDegreeOverflowException} is thrown correctly. Of course 
-     * testing that that exception itself works correctly falls to {@link 
-     * AlgebraicDegreeOverflowExceptionTest}.
+     * Test of times method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}.
      */
     @Test
     public void testTimes() {
@@ -2206,19 +2262,38 @@ public class ImaginaryQuadraticIntegerTest {
                 }
             }
         }
-        // Complex integer times its conjugate should match its norm
+    }
+    
+    /**
+     * Test of times method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. Multiplying an imaginary quadratic integer by 
+     * its conjugate should give its norm.
+     */
+    @Test
+    public void testTimesConjugate() {
         for (int i = 0; i < totalTestIntegers; i++) {
             try {
-                result = testIntegers.get(i).times(testConjugates.get(i));
+                QuadraticInteger result = testIntegers.get(i).times(testConjugates.get(i));
                 assertEquals(testNorms.get(i), result);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "Multiplying an integer by its conjugate should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
+                String failMessage = "Multiplying an integer by its conjugate should not have triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage();
                 fail(failMessage);
             }
         }
-        /* And now to test that multiplying algebraic integers from two 
-           different quadratic integer rings triggers 
-           AlgebraicDegreeOverflowException */
+    }
+    
+    /**
+     * Test of times method, of class ImaginaryQuadraticInteger, inherited from 
+     * {@link QuadraticInteger}. This test multiplies numbers that come from 
+     * different rings to make sure {@link 
+     * algebraics.AlgebraicDegreeOverflowException} is thrown correctly. Of 
+     * course testing that that exception itself works correctly falls to {@link 
+     * algebraics.AlgebraicDegreeOverflowExceptionTest}.
+     */
+    @Test
+    public void testTimesAlgebraicDegreeOverflow() {
+        QuadraticInteger result;
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             try {
                 result = testIntegers.get(j).times(testIntegers.get(j + 1));
@@ -2229,8 +2304,6 @@ public class ImaginaryQuadraticIntegerTest {
                 assertEquals(failMessage, 4, adoe.getNecessaryAlgebraicDegree());
                 System.out.println("Multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
             }
-            /* However, if one of them is purely real, there should be a result, 
-               even if it takes us to a different ring */
             failMessage = "Multiplying " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have caused";
             try {
                 result = testNorms.get(j).times(testIntegers.get(j + 1));
@@ -2257,7 +2330,8 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of divides method, of class ImaginaryQuadraticInteger.
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}.
      */
     @Test
     public void testDivides() {
@@ -2351,17 +2425,12 @@ public class ImaginaryQuadraticIntegerTest {
         }
     }
     
-    // TODO: Break testDividesMisc() up some more.
     /**
-     * Miscellaneous tests of the divides method of ImaginaryQuadraticInteger. 
-     * In regards to division by zero, these test will pass if either {@link 
-     * IllegalArgumentException} or {@link ArithmeticException} is thrown. Any 
-     * other exception will fail the test, and that includes the {@link 
-     * NotDivisibleException}. Not throwing any exception at all for division by 
-     * zero will also fail the test.
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}. Specifically with integer divisors.
      */
     @Test
-    public void testDividesMisc() {
+    public void testDividesInt() {
         System.out.println("divides(int)");
         ImaginaryQuadraticRing currRing;
         ImaginaryQuadraticInteger testDividend;
@@ -2378,7 +2447,8 @@ public class ImaginaryQuadraticIntegerTest {
                     failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " should have triggered NotDivisibleException, not given result " + result.toString();
                     fail(failMessage);
                 } catch (NotDivisibleException nde) {
-                    System.out.println("Trying to divide " + testDividend.toASCIIString() + " by 2 in " + currRing.toASCIIString() + " correctly triggered NotDivisibleException \"" + nde.getMessage() + "\"");
+                    System.out.println("Trying to divide " + testDividend.toASCIIString() + " by 2 in " + currRing.toASCIIString() + " correctly triggered NotDivisibleException");
+                    System.out.println("\"" + nde.getMessage() + "\"");
                 } catch (Exception e) {
                     System.out.println("Encountered this exception: " + e.getClass().getName() + " \"" + e.getMessage() + "\"");
                     failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " triggered the wrong exception.";
@@ -2386,6 +2456,16 @@ public class ImaginaryQuadraticIntegerTest {
                 }
             }
         }
+    }
+    
+    /**
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}. A conjugate should divide its norm.
+     */
+    @Test
+    public void testDividesConjugate() {
+        QuadraticInteger result;
+        String failMessage;
         for (int i = 0; i < totalTestIntegers; i++) {
             try {
                 result = testNorms.get(i).divides(testConjugates.get(i));
@@ -2400,27 +2480,56 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = "NotDivisibleException should not have occurred in dividing a norm by a conjugate.";
                 fail(failMessage);
             }
-            // Check to make sure division by zero causes a suitable exception
+        }
+    }
+    
+    /**
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}. Division by zero presented as an imaginary 
+     * quadratic integer (0 + 0<i>i</i>) should cause either 
+     * IllegalArgumentException or ArithmeticException to be thrown. Any other 
+     * exception will fail the test, and that includes {@link 
+     * algebraics.NotDivisibleException}. Not throwing any exception at all will 
+     * also fail the test.
+     */
+    @Test
+    public void testDivisionByZeroIQI() {
+        for (int i = 0; i < totalTestIntegers; i++) {
             try {
-                result = testIntegers.get(i).divides(zeroIQI);
-                failMessage = "Dividing " + testIntegers.get(i).toString() + " by 0 + 0i should have caused an exception, not given result " + result.toString();
+                QuadraticInteger result = testIntegers.get(i).divides(zeroIQI);
+                String failMessage = "Dividing " + testIntegers.get(i).toString() + " by 0 + 0i should have caused an exception, not given result " + result.toString();
                 fail(failMessage);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "AlgebraicDegreeOverflowException is the wrong exception to throw for division by 0 + 0i \"" + adoe.getMessage() + "\"";
+                String failMessage = "AlgebraicDegreeOverflowException is the wrong exception to throw for division by 0 + 0i \"" + adoe.getMessage() + "\"";
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
-                failMessage = "NotDivisibleException is the wrong exception to throw for division by 0 + 0i \"" + nde.getMessage() + "\"";
+                String failMessage = "NotDivisibleException is the wrong exception to throw for division by 0 + 0i \"" + nde.getMessage() + "\"";
                 fail(failMessage);
             } catch (IllegalArgumentException iae) {
                 System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by 0 + 0i \"" + iae.getMessage() + "\"");
             } catch (ArithmeticException ae) {
                 System.out.println("ArithmeticException correctly triggered upon attempt to divide by 0 + 0i \"" + ae.getMessage() + "\"");
             } catch (Exception e) {
-                failMessage = "Wrong exception thrown for attempt to divide by 0 + 0i. " + e.getMessage();
+                String failMessage = "Wrong exception thrown for attempt to divide by 0 + 0i. " + e.getMessage();
                 fail(failMessage);
             }
+        }
+    }
+    
+    /**
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}. Division by zero should cause either 
+     * IllegalArgumentException or ArithmeticException to be thrown. Any other 
+     * exception will fail the test, and that includes {@link 
+     * algebraics.NotDivisibleException}. Not throwing any exception at all will 
+     * also fail the test.
+     */
+    @Test
+    public void testDivisionByZeroInt() {
+        String failMessage;
+        for (int i = 0; i < totalTestIntegers; i++) {
             try {
-                result = testIntegers.get(i).divides(0);
+                QuadraticInteger result = testIntegers.get(i).divides(0);
                 failMessage = "Dividing " + testIntegers.get(i).toString() + " by 0 should have caused an exception, not given result " + result.toString();
                 fail(failMessage);
             } catch (NotDivisibleException nde) {
@@ -2435,15 +2544,23 @@ public class ImaginaryQuadraticIntegerTest {
                 fail(failMessage);
             }
         }
-        /* Check that dividing an imaginary quadratic integer from one ring by a 
-           purely real integer from another ring does give the same result as if 
-           the purely real integer was presented as being from the same ring. */
+    }
+    
+    /**
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}. Dividing an imaginary quadratic integer by 
+     * a purely real integer, even if the purely real integer is presented as 
+     * being from another ring, should still give a result if it is indeed 
+     * divisible.
+     */
+    @Test
+    public void testDividesIntAsIQI() {
         ImaginaryQuadraticInteger testDivisor;
-        QuadraticInteger expResult;
-        testDividend = new ImaginaryQuadraticInteger(3, 1, RING_EISENSTEIN);
+        QuadraticInteger expResult, result;
+        QuadraticInteger testDividend = new ImaginaryQuadraticInteger(3, 1, RING_EISENSTEIN);
         testDivisor = new ImaginaryQuadraticInteger(2, 0, RING_GAUSSIAN);
         expResult = new ImaginaryQuadraticInteger(3, 1, RING_EISENSTEIN, 2);
-        failMessage = "Trying to divide " + testDividend.toString() + " by " + testDivisor.toString() + " from " + testDivisor.getRing().toString() + " should not have triggered";
+        String failMessage = "Trying to divide " + testDividend.toString() + " by " + testDivisor.toString() + " from " + testDivisor.getRing().toString() + " should not have triggered";
         try {
             result = testDividend.divides(testDivisor);
             assertEquals(expResult, result);
@@ -2457,10 +2574,19 @@ public class ImaginaryQuadraticIntegerTest {
             failMessage = failMessage + e.getClass().getName() + "\"" + e.getMessage() + "\"";
             fail(failMessage);
         }
-        /* And now to test that dividing an algebraic integer from one imaginary 
-           quadratic ring by an algebraic integer from another imaginary 
-           quadratic ring triggers AlgebraicDegreeOverflowException */
-        QuadraticInteger temp;
+    }
+    
+    /**
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}. Trying to divide an imaginary quadratic 
+     * integer by an imaginary quadratic integer from another ring, with both of 
+     * them having nonzero real part and nonzero imaginary part, should cause 
+     * {@link algebraics.AlgebraicDegreeOverflowException}.
+     */
+    @Test
+    public void testDividesAlgebraicDegreeOverflow() {
+        QuadraticInteger result, temp;
+        String failMessage;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
             failMessage = "Dividing " + testIntegers.get(j).toString() + " by " + testIntegers.get(j + 1).toString() + " should not have";
             try {
@@ -2475,8 +2601,6 @@ public class ImaginaryQuadraticIntegerTest {
                 failMessage = failMessage + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
                 fail(failMessage);
             }
-            /* However, if the divisor is purely real, there should be a result, 
-               even if it takes us to a different ring */
             temp = testIntegers.get(j + 1).times(testNorms.get(j));
             failMessage = "Dividing " + temp.toString() + " from " + temp.getRing().toString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toString() + " should not have caused";
             try {
@@ -2493,19 +2617,26 @@ public class ImaginaryQuadraticIntegerTest {
                 fail(failMessage);
             }
         }
-        /* And lastly, to test that dividing a purely imaginary number from one 
-           domain by a purely imaginary number from another domain either gives 
-           the proper real quadratic result or triggers 
-           UnsupportedNumberDomainException. It will be enough to check 
-           sqrt(-10)/sqrt(-2), which should give sqrt(5) only if there is a way 
-           for this to give a real quadratic integer. */
-        testDividend = new ImaginaryQuadraticInteger(0, 1, new ImaginaryQuadraticRing(-10));
-        testDivisor = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
+    }
+    
+    /**
+     * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
+     * from {@link QuadraticInteger}. Dividing a purely imaginary number from 
+     * one domain by a purely imaginary number from another domain either gives 
+     * the proper real quadratic result or triggers {@link 
+     * algebraics.UnsupportedNumberDomainException}. It will be enough to check 
+     * &radic;(&minus;10)/&radic;(&minus;2), which should give &radic;5 only if 
+     * there is a way for this to give a real quadratic integer as a result.
+     */
+    @Test
+    public void testDividesCrossDomainResult() {
+        QuadraticInteger testDividend = new ImaginaryQuadraticInteger(0, 1, new ImaginaryQuadraticRing(-10));
+        QuadraticInteger testDivisor = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
         RealQuadraticRing expResultRingRe = new RealQuadraticRing(5);
-        expResult = new RealQuadraticInteger(0, 1, expResultRingRe);
-        failMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should not have";
+        QuadraticInteger expResult = new RealQuadraticInteger(0, 1, expResultRingRe);
+        String failMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should not have";
         try {
-            result = testDividend.divides(testDivisor);
+            QuadraticInteger result = testDividend.divides(testDivisor);
             String assertionMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should result in " + expResult.toString() + ".";
             assertEquals(assertionMessage, expResult, result);
         } catch (UnsupportedNumberDomainException unde) {
