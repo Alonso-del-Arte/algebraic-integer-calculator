@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -28,10 +28,35 @@ public interface IntegerRing {
     
     /**
      * Gives the maximum algebraic degree an algebraic integer in the ring can 
-     * have.
+     * have. It is recommended that this function be marked final at the highest 
+     * level of the inheritance hierarchy that it is possible to do so.
      * @return A positive integer, e.g., 3 in the case of a cubic integer ring.
      */
     int getMaxAlgebraicDegree();
+    
+    /**
+     * Indicates whether the ring is purely real or not. This is useful in 
+     * contexts where the program has to distinguish in some way between real 
+     * and imaginary rings.
+     * @return True if all the nonzero numbers in the ring are purely real, 
+     * false otherwise. For example, <b>Z</b>[<i>i</i>], the ring of Gaussian 
+     * integers, contains purely imaginary numbers like <i>i</i> and complex 
+     * numbers like 1 + <i>i</i>, so it's false that the ring is purely real. 
+     * <b>Z</b>[&#8731;2], on the other hand, is purely real: 0 is the only 
+     * purely imaginary number, and the ring has no numbers with nonzero 
+     * imaginary part.
+     */
+    boolean isPurelyReal();
+    
+    /**
+     * Gives the discriminant of the ring. This number pertains to the prime 
+     * numbers ramifying in the ring.
+     * @return A nonzero integer, may be negative. For example, for 
+     * <b>Z</b>[<i>i</i>], this would be &minus;4; for <b>Z</b>[&#8731;2] this 
+     * would be &minus;108; and for the ring of integers of <b>Q</b>(&radic;2 + 
+     * &radic;7), this would be 12544.
+     */
+    int discriminant();
     
     /**
      * Formats the ring's label as a String using ASCII characters only. It is 
