@@ -240,7 +240,8 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of algebraicDegree method, of class ImaginaryQuadraticInteger.
+     * Test of algebraicDegree method, of class ImaginaryQuadraticInteger, 
+     * inherited from {@link QuadraticInteger}.
      */
     @Test
     public void testAlgebraicDegree() {
@@ -2739,6 +2740,43 @@ public class ImaginaryQuadraticIntegerTest {
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
             assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+        }
+    }
+    
+    /**
+     * Test of applyOmega method, of class ImaginaryQuadraticInteger.
+     */
+    @Test
+    public void testApplyOmega() {
+        System.out.println("applyOmega");
+        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
+        ImaginaryQuadraticInteger result = ImaginaryQuadraticInteger.applyOmega(0, 1);
+        assertEquals(expResult, result);
+        expResult = new ImaginaryQuadraticInteger(1, 1, RING_EISENSTEIN, 2);
+        result = ImaginaryQuadraticInteger.applyOmega(1, 1);
+        assertEquals(expResult, result);
+        expResult = new ImaginaryQuadraticInteger(0, -1, RING_EISENSTEIN);
+        result = ImaginaryQuadraticInteger.applyOmega(-1, -2);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Simultaneous test of applyOmega method, of class 
+     * ImaginaryQuadraticInteger, and applyTheta method, of class {@link 
+     * QuadraticInteger}. Since &omega; = &minus;1/2 + &radic;&minus;3/2 and 
+     * &theta; = 1/2 + &radic;&minus;3/2 for <b>Z</b>[&omega;], the results of 
+     * applyOmega and applyTheta should differ.
+     */
+    @Test
+    public void testApplyOmegaThetaDiffer() {
+        ImaginaryQuadraticInteger thruOmega;
+        QuadraticInteger thruTheta;
+        for (int a = -1; a < 9; a++) {
+            for (int b = 1; b < 9; b++) {
+                thruOmega = ImaginaryQuadraticInteger.applyOmega(a, b);
+                thruTheta = QuadraticInteger.applyTheta(a, b, RING_EISENSTEIN);
+                assertNotEquals(thruOmega, thruTheta);
+            }
         }
     }
 

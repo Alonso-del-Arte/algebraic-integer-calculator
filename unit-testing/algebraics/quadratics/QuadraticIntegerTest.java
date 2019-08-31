@@ -902,4 +902,42 @@ public class QuadraticIntegerTest {
         }
     }
     
+    /**
+     * Test of applyTheta method of class QuadraticInteger.
+     */
+    @Test
+    public void testApplyTheta() {
+        System.out.println("applyTheta");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-7);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 1, ring, 2);
+        QuadraticInteger result = QuadraticInteger.applyTheta(0, 1, ring);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(13);
+        expResult = new RealQuadraticInteger(-3, 1, ring, 2);
+        result = QuadraticInteger.applyTheta(-2, 1, ring);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Another test of applyTheta method of class QuadraticInteger. Trying to 
+     * use a ring that does not have so-called "half-integers" should cause an 
+     * exception.
+     */
+    @Test
+    public void testApplyThetaWithUnsuitableRing() {
+        RealQuadraticRing ring = new RealQuadraticRing(2);
+        try {
+            QuadraticInteger result = QuadraticInteger.applyTheta(R_A, R_B, ring);
+            String failMsg = "Trying to use " + ring.toASCIIString() + " for applyTheta should have caused an exception, not given result " + result.toString();
+            fail(failMsg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to use " + ring.toASCIIString() + " for applyTheta correctly triggered IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to use " + ring.toASCIIString() + " for applyTheta";
+            fail(failMsg);
+        }
+    }
+
+
 }

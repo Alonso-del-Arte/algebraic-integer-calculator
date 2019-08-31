@@ -76,8 +76,8 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of isPurelyReal, of class ImaginaryQuadraticRing. Asserting false 
-     * for all the test rings in this test class.
+     * Test of isPurelyReal method, of class ImaginaryQuadraticRing. Asserting 
+     * false for all the test rings in this test class.
      */
     @Test
     public void testIsPurelyReal() {
@@ -93,6 +93,36 @@ public class ImaginaryQuadraticRingTest {
         assertFalse(assertionMessage, ringOQi7.isPurelyReal());
         assertionMessage = ringRandom.toString() + msgPart;
         assertFalse(assertionMessage, ringRandom.isPurelyReal());
+    }
+    
+    /**
+     * Test of discriminant method of class ImaginaryQuadraticRing, inherited 
+     * from {@link QuadraticRing}. For <b>Z</b>[&radic;<i>d</i>] with <i>d</i> 
+     * &equiv; 2 or 3 (mod 4), the discriminant should be 4<i>d</i>. And for 
+     * <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> with <i>d</i> &equiv; 1 (mod 
+     * 4), the discriminant should just be <i>d</i>.
+     */
+    @Test
+    public void testDiscriminant() {
+        System.out.println("discriminant");
+        int expResult = -4;
+        int result = ringGaussian.discriminant();
+        assertEquals(expResult, result);
+        expResult = -8;
+        result = ringZi2.discriminant();
+        assertEquals(expResult, result);
+        expResult = -3;
+        result = ringEisenstein.discriminant();
+        assertEquals(expResult, result);
+        expResult = -7;
+        result = ringOQi7.discriminant();
+        assertEquals(expResult, result);
+        expResult = randomDiscr;
+        if (randomDiscr % 4 != -3) { // Remember that -3 = 1 mod 4
+            expResult *= 4;
+        }
+        result = ringRandom.discriminant();
+        assertEquals(expResult, result);
     }
     
     /**
@@ -490,14 +520,16 @@ public class ImaginaryQuadraticRingTest {
             System.out.println("Somehow created " + ringZi12.toASCIIString() + " without problem.");
             fail("Attempt to use -12 should have caused an IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use -12 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+            System.out.println("Attempt to use -12 correctly triggered IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
         }
         try {
             ImaginaryQuadraticRing ringZ7 = new ImaginaryQuadraticRing(7);
             System.out.println("Somehow created " + ringZ7.toASCIIString() + " without problem.");
             fail("Attempt to use 7 should have caused an IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use 7 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+            System.out.println("Attempt to use 7 correctly triggered IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
         }
     }
     

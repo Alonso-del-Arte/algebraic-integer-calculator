@@ -76,6 +76,26 @@ public class RealQuadraticRingTest {
         assertionMessage = ringRandom.toString() + msgPart;
         assertTrue(assertionMessage, ringRandom.isPurelyReal());
     }
+    
+    /**
+     * Test of discriminant method of class RealQuadraticRing, inherited from 
+     * {@link QuadraticRing}. For <b>Z</b>[&radic;<i>d</i>] with <i>d</i> 
+     * &equiv; 2 or 3 (mod 4), the discriminant should be 4<i>d</i>. And for 
+     * <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> with <i>d</i> &equiv; 1 (mod 
+     * 4), the discriminant should just be <i>d</i>.
+     */
+    @Test
+    public void testDiscriminant() {
+        System.out.println("discriminant");
+        assertEquals(8, ringZ2.discriminant());
+        assertEquals(5, ringZPhi.discriminant());
+        assertEquals(13, ringOQ13.discriminant());
+        int expResult = randomDiscr;
+        if (randomDiscr % 4 != 1) {
+            expResult *= 4;
+        }
+        assertEquals(expResult, ringRandom.discriminant());
+    }
 
     /**
      * Test of getRadicand method, of class RealQuadraticRing, inherited from 
@@ -414,21 +434,24 @@ public class RealQuadraticRingTest {
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("Attempt to use 1 correctly triggered UnsupportedNumberDomainException \"" + unde.getMessage() + "\"");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use 1 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+            System.out.println("Attempt to use 1 correctly triggered IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
         }
         try {
             RealQuadraticRing ringZ12 = new RealQuadraticRing(12);
             System.out.println("Somehow created " + ringZ12.toASCIIString() + " without problem.");
             fail("Attempt to use 12 should have caused an IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use 12 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+            System.out.println("Attempt to use 12 correctly triggered IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
         }
         try {
             RealQuadraticRing ringZi7 = new RealQuadraticRing(-7);
             System.out.println("Somehow created " + ringZi7.toASCIIString() + " without problem.");
             fail("Attempt to use \u22127 should have caused an IllegalArgumentException.");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use -7 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
+            System.out.println("Attempt to use -7 correctly triggered IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
         }
     }    
 }

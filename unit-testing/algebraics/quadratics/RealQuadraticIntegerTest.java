@@ -2024,6 +2024,39 @@ public class RealQuadraticIntegerTest {
             currAbs = currUnit.abs();
         }
     }
+    
+    /**
+     * Test of applyPhi method, of class RealQuadraticInteger.
+     */
+    @Test
+    public void testApplyPhi() {
+        System.out.println("applyPhi");
+        RealQuadraticInteger expResult = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
+        RealQuadraticInteger result = RealQuadraticInteger.applyPhi(0, 1);
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(3, 1, RING_ZPHI, 2);
+        result = RealQuadraticInteger.applyPhi(1, 1);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Simultaneous test of applyPhi method, of class RealQuadraticInteger, and 
+     * applyTheta method, of class {@link QuadraticInteger}. Since &phi; = 1/2 + 
+     * &radic;5/2 and &theta; = 1/2 + &radic;5/2 for <b>Z</b>[&phi;], the 
+     * results of applyPhi and applyTheta should be the same.
+     */
+    @Test
+    public void testApplyPhiThetaConcur() {
+        RealQuadraticInteger thruPhi;
+        QuadraticInteger thruTheta;
+        for (int a = 1; a < 8; a++) {
+            for (int b = 1; b < 8; b++) {
+                thruPhi = RealQuadraticInteger.applyPhi(a, b);
+                thruTheta = QuadraticInteger.applyTheta(a, b, RING_ZPHI);
+                assertEquals(thruPhi, thruTheta);
+            }
+        }
+    }
 
     /**
      * Test of RealQuadraticInteger class constructor. The main thing we're 
