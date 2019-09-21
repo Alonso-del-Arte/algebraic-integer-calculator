@@ -17,6 +17,8 @@
 package algebraics.quartics;
 
 import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.AlgebraicInteger;
+import algebraics.IntegerRing;
 import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
@@ -77,6 +79,15 @@ public class Zeta8IntegerTest {
     private static final Zeta8Integer SQRT_NEG_2 = new Zeta8Integer(0, 1, 0, 1);
     
     public static final double TEST_DELTA = 0.00000001;
+    
+    @Test
+    public void testGetRing() {
+        System.out.println("getRing");
+        Zeta8Ring expRing = new Zeta8Ring();
+        String assertionMessage = "Ring of " + ZETA_8.toString() + " should be " + expRing.toString();
+        IntegerRing ring = ZETA_8.getRing();
+        assertEquals(assertionMessage, expRing, ring);
+    }
     
     /**
      * Test of algebraicDegree method, of class Zeta8Integer.
@@ -175,21 +186,21 @@ public class Zeta8IntegerTest {
     }
 
     /**
-     * Test of minPolynomial method, of class Zeta8Integer.
+     * Test of minPolynomialCoeffs method, of class Zeta8Integer.
      */
     @Test
-    public void testMinPolynomial() {
-        System.out.println("minPolynomial");
+    public void testMinPolynomialCoeffs() {
+        System.out.println("minPolynomialCoeffs");
         long[] expResult = {1, 0, 0, 0, 1};
-        long[] result = ZETA_8.minPolynomial();
+        long[] result = ZETA_8.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
-        result = ZETA_8_CUBED.minPolynomial();
+        result = ZETA_8_CUBED.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
         expResult[2] = 1;
         expResult[4] = 0;
-        result = IMAG_UNIT_I.minPolynomial();
+        result = IMAG_UNIT_I.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
-        result = NEG_IMAG_UNIT_I.minPolynomial();
+        result = NEG_IMAG_UNIT_I.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
     }
 
@@ -263,6 +274,28 @@ public class Zeta8IntegerTest {
         expResult = "<i>x</i><sup>2</sup>+2";
         result = SQRT_NEG_2.minPolynomialStringHTML().replace(" ", "");
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of complexConjugate method, of class Zeta8Integer.
+     */
+    @Test
+    public void testComplexConjugate() {
+        System.out.println("complexConjugate");
+        assertEquals(SQRT_2, SQRT_2.complexConjugate());
+        Zeta8Integer actual = IMAG_UNIT_I.complexConjugate();
+        assertEquals(NEG_IMAG_UNIT_I, actual);
+        actual = NEG_IMAG_UNIT_I.complexConjugate();
+        assertEquals(IMAG_UNIT_I, actual);
+        Zeta8Integer expResult = new Zeta8Integer(0, -1, 0, -1);
+        actual = SQRT_NEG_2.complexConjugate();
+        assertEquals(expResult, actual);
+        expResult = new Zeta8Integer(0, 0, 0, -1);
+        actual = ZETA_8.complexConjugate();
+        assertEquals(expResult, actual);
+        expResult = new Zeta8Integer(0, -1, 0, 0);
+        actual = ZETA_8_CUBED.complexConjugate();
+        assertEquals(expResult, actual);
     }
 
     /**
@@ -638,7 +671,10 @@ public class Zeta8IntegerTest {
             result = dividend.divides(SQRT_NEG_2);
             assertEquals(SQRT_2, result);
         } catch (NotDivisibleException nde) {
-            String failMessage = "NotDivisibleException should not have occurred: \"" + nde.getMessage() + "\"";
+            AlgebraicInteger[] failedOpers = {nde.getCausingDividend(), nde.getCausingDivisor()};
+            String failMessage = "NotDivisibleException should not have occurred for trying to divide " + failedOpers[0].toASCIIString() + " by " + failedOpers[1].toASCIIString();
+            System.out.println(failMessage);
+            System.out.println("\"" + nde.getMessage() + "\"");
             fail(failMessage);
         }
         dividend = new Zeta8Integer(1, 1, 1, 1);
@@ -665,7 +701,10 @@ public class Zeta8IntegerTest {
             System.out.println("Attempted division by zero correctly triggered ArithmeticException.");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (NotDivisibleException nde) {
-            String failMessage = "NotDivisibleException should not have occurred for division by 0: \"" + nde.getMessage() + "\"";
+            String failMessage = "NotDivisibleException should not have occurred for division by 0";
+            System.out.println(failMessage);
+            System.out.println("NotDivisibleException implies division by 0 can be rounded to an algebraic integer");
+            System.out.println("\"" + nde.getMessage() + "\"");
             fail(failMessage);
         } catch (Exception e) {
             String failMessage = e.getClass().getName() + " is wrong exception to throw for division by 0.";

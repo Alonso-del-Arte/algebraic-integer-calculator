@@ -91,14 +91,14 @@ public class Zeta12IntegerTest {
     }
 
     /**
-     * Test of minPolynomial method, of class Zeta12Integer.
+     * Test of minPolynomialCoeffs method, of class Zeta12Integer.
      */
     @Test
-    public void testMinPolynomial() {
-        System.out.println("minPolynomial");
+    public void testMinPolynomialCoeffs() {
+        System.out.println("minPolynomialCoeffs");
         Zeta12Integer instance = new Zeta12Integer();
         long[] expResult = null;
-        long[] result = instance.minPolynomial();
+        long[] result = instance.minPolynomialCoeffs();
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
