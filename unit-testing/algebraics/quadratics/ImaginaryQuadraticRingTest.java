@@ -16,8 +16,10 @@
  */
 package algebraics.quadratics;
 
+import algebraics.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fileops.PNGFileFilter;
+import fractions.Fraction;
 import viewers.ImagQuadRingDisplay;
 
 import org.junit.BeforeClass;
@@ -122,6 +124,31 @@ public class ImaginaryQuadraticRingTest {
             expResult *= 4;
         }
         result = ringRandom.discriminant();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of getPowerBasis method of class ImaginaryQuadraticRing, inherited 
+     * from {@link QuadraticRing}. The power basis of any quadratic ring should 
+     * be 1, <i>a</i>, where <i>a</i> may be either &radic;<i>d</i> or 
+     * <sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;<i>d</i></sup>&frasl;<sub>2</sub>.
+     */
+    @Test
+    public void testGetPowerBasis() {
+        System.out.println("getPowerBasis");
+        Fraction one = new Fraction(1);
+        Fraction[] powMults = {one, one};
+        PowerBasis expResult = new PowerBasis(powMults);
+        PowerBasis result = ringGaussian.getPowerBasis();
+        assertEquals(expResult, result);
+        result = ringZi2.getPowerBasis();
+        assertEquals(expResult, result);
+        result = ringEisenstein.getPowerBasis();
+        assertEquals(expResult, result);
+        result = ringOQi7.getPowerBasis();
+        assertEquals(expResult, result);
+        result = ringRandom.getPowerBasis();
         assertEquals(expResult, result);
     }
     
