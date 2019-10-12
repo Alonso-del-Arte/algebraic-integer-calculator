@@ -16,8 +16,10 @@
  */
 package algebraics.quartics;
 
+import algebraics.PowerBasis;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quadratics.QuadraticRing;
+import fractions.Fraction;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -65,6 +67,24 @@ public class PurelyRealBiquadraticRingTest {
         assertEquals(12544, testRing.discriminant());
     }
     
+    /**
+     * Test of getPowerBasis method, of class PurelyRealBiquadraticRing, 
+     * inherited from {@link BiquadraticRing}.
+     */
+    @Test
+    public void testGetPowerBasis() {
+        System.out.println("getPowerBasis");
+        PurelyRealBiquadraticRing testRing = new PurelyRealBiquadraticRing(ringA, ringB);
+        Fraction oneAsFract = new Fraction(1);
+        Fraction oneThird = new Fraction(1, 3);
+        Fraction[] powerMults = {oneAsFract, oneAsFract, oneAsFract, oneThird};
+        Fraction zeroAsFract = new Fraction(0);
+        Fraction[] powerAddAdjs = {zeroAsFract, zeroAsFract, zeroAsFract, oneThird};
+        PowerBasis expResult = new PowerBasis(powerMults, powerAddAdjs, null);
+        PowerBasis result = testRing.getPowerBasis();
+        assertEquals(expResult, result);
+    }
+
     /**
      * Test of equals method, of class PurelyRealBiquadraticRing. Regardless of 
      * which two of the three intermediate rings are used to instantiate, if two 

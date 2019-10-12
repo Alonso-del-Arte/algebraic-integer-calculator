@@ -16,14 +16,16 @@
  */
 package algebraics.quartics;
 
+import algebraics.PowerBasis;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import fileops.PNGFileFilter;
+import fractions.Fraction;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the QuarticGaussianRing class.
  * @author Alonso del Arte
  */
 public class QuarticGaussianRingTest {
@@ -48,6 +50,28 @@ public class QuarticGaussianRingTest {
         assertEquals(512, ring.discriminant());
     }
     
+    /**
+     * Test of getPowerBasis method, of class QuarticGaussianRing. The power 
+     * basis should be 1, <i>a</i>, <i>a</i><sup>2</sup>, <i>a</i><sup>3</sup>, 
+     * where <i>a</i> stands for &radic;(1 + <i>i</i>).
+     */
+    @Test
+    public void testGetPowerBasis() {
+        System.out.println("getPowerBasis");
+        Fraction oneAsFraction = new Fraction(1);
+        Fraction[] fourOnes = {oneAsFraction, oneAsFraction, oneAsFraction, oneAsFraction};
+        PowerBasis expResult = new PowerBasis(fourOnes);
+        PowerBasis result = ring.getPowerBasis();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of equals method, of class QuarticGaussianRing. A 
+     * QuarticGaussianRing object should be equal to any other 
+     * QuarticGaussianRing object, and distinct from an object of any other 
+     * class, even if that class be an object representing the intermediate ring 
+     * <b>Z</b>[<i>i</i>].
+     */
     @Test
     public void testEquals() {
         System.out.println("equals");
@@ -59,6 +83,11 @@ public class QuarticGaussianRingTest {
         assertNotEquals(filter, ring);
     }
     
+    /**
+     * Test of hashCode method, of class QuarticGaussianRing. It should always 
+     * give a hash code of &minus;512, which is the discriminant multiplied by 
+     * &minus;1.
+     */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");

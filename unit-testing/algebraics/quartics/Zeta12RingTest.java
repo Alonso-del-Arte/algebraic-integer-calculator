@@ -16,6 +16,8 @@
  */
 package algebraics.quartics;
 
+import algebraics.PowerBasis;
+import fractions.Fraction;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -43,6 +45,21 @@ public class Zeta12RingTest {
     public void testDiscriminant() {
         System.out.println("discriminant");
         assertEquals(144, ring.discriminant());
+    }
+
+    /**
+     * Test of getPowerBasis method, of class Zeta12Ring. The power basis should 
+     * be 1, <i>a</i>, <i>a</i><sup>2</sup>, <i>a</i><sup>3</sup>, where 
+     * <i>a</i> stands for &zeta;<sub>12</sub>.
+     */
+    @Test
+    public void testGetPowerBasis() {
+        System.out.println("getPowerBasis");
+        Fraction oneAsFraction = new Fraction(1);
+        Fraction[] fourOnes = {oneAsFraction, oneAsFraction, oneAsFraction, oneAsFraction};
+        PowerBasis expResult = new PowerBasis(fourOnes);
+        PowerBasis result = ring.getPowerBasis();
+        assertEquals(expResult, result);
     }
 
     /**

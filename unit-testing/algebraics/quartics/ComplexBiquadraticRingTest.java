@@ -16,21 +16,23 @@
  */
 package algebraics.quartics;
 
+import algebraics.PowerBasis;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.RealQuadraticRing;
+import fractions.Fraction;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the ComplexBiquadraticRing class.
  * @author Alonso del Arte
  */
 public class ComplexBiquadraticRingTest {
     
     private final ImaginaryQuadraticRing ringA = new ImaginaryQuadraticRing(-2);
     private final RealQuadraticRing ringB = new RealQuadraticRing(7);
-    private final ImaginaryQuadraticRing ringC = new ImaginaryQuadraticRing(-10);
+    private final ImaginaryQuadraticRing ringC = new ImaginaryQuadraticRing(-14);
     
     /**
      * Test of isPurelyReal method, of class ComplexBiquadraticRing.
@@ -50,7 +52,25 @@ public class ComplexBiquadraticRingTest {
     public void testDiscriminant() {
         System.out.println("discriminant");
         ComplexBiquadraticRing testRing = new ComplexBiquadraticRing(ringA, ringB);
-        assertEquals(1600, testRing.discriminant());
+        assertEquals(12544, testRing.discriminant());
+    }
+
+    /**
+     * Test of getPowerBasis method, of class ComplexBiquadraticRing, inherited 
+     * from {@link BiquadraticRing}.
+     */
+    @Test
+    public void testGetPowerBasis() {
+        System.out.println("getPowerBasis");
+        ComplexBiquadraticRing testRing = new ComplexBiquadraticRing(ringA, ringB);
+        Fraction oneAsFract = new Fraction(1);
+        Fraction oneThird = new Fraction(1, 3);
+        Fraction[] powerMults = {oneAsFract, oneAsFract, oneAsFract, oneThird};
+        Fraction zeroAsFract = new Fraction(0);
+        Fraction[] powerAddAdjs = {zeroAsFract, zeroAsFract, zeroAsFract, oneThird.negate()};
+        PowerBasis expResult = new PowerBasis(powerMults, powerAddAdjs, null);
+        PowerBasis result = testRing.getPowerBasis();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -72,7 +92,9 @@ public class ComplexBiquadraticRingTest {
     }
     
     /**
-     * Test of the constructor of class ComplexBiquadraticRing.
+     * Test of the constructor of class ComplexBiquadraticRing. Constructor 
+     * should not allow the creation of a ComplexBiquadraticRing object with two 
+     * QuadraticRing objects that are the same.
      */
     @Test
     public void testConstructor() {
