@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AL
+ * Copyright (C) 2019 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,14 @@ package algebraics;
 
 import fractions.Fraction;
 
+import java.util.HashSet;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author AL
+ * Tests for the PowerBasis class.
+ * @author Alonso del Arte
  */
 public class PowerBasisTest {
     
@@ -51,13 +53,30 @@ public class PowerBasisTest {
     
     private static final Fraction[] THREE_ONES_AND_ONE_THIRD = {ONE_AS_FRACTION, ONE_AS_FRACTION, ONE_AS_FRACTION, ONE_THIRD};
     
+    /**
+     * The power basis of any quadratic integer ring: 1, <i>a</i>.
+     */
     private static final PowerBasis QUADRATIC_POWER_BASIS = new PowerBasis(TWO_ONES);
     
+    /**
+     * The power basis of <b>Z</b>[&#8731;2] and other cubic rings.
+     */
     private static final PowerBasis CUBIC_POWER_BASIS = new PowerBasis(THREE_ONES);
     
+    /**
+     * The power basis of <i>O</i><sub><b>Q</b>(<i>i</i> + &radic;14)</sub>: 1, 
+     * <i>a</i>, <sup>1</sup>&frasl;<sub>7</sub><i>a</i><sup>2</sup>, 
+     * <sup>1</sup>&frasl;<sub>7</sub><i>a</i><sup>3</sup>.
+     */
     private static final PowerBasis QUARTIC_POWER_BASIS = new PowerBasis(TWO_ONES_AND_TWO_ONE_SEVENTHS);
     
-    private static final PowerBasis QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS = new PowerBasis(THREE_ONES_AND_ONE_THIRD, THREE_ONES_AND_ONE_THIRD, null);
+    /**
+     * The power basis of <i>O</i><sub><b>Q</b>(&radic;2 + &radic;7)</sub>: 1, 
+     * <i>a</i>, <i>a</i><sup>2</sup>, 
+     * <sup>1</sup>&frasl;<sub>3</sub><i>a</i><sup>3</sup> + 
+     * <sup>1</sup>&frasl;<sub>3</sub><i>a</i>.
+     */
+    private static final PowerBasis QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS = new PowerBasis(THREE_ONES_AND_ONE_THIRD, THREE_ZEROES_AND_ONE_THIRD, null);
     
     /**
      * Test of toString method, of class PowerBasis. Spaces are desirable but 
@@ -68,6 +87,15 @@ public class PowerBasisTest {
         System.out.println("toString");
         String expResult = "1,a";
         String result = QUADRATIC_POWER_BASIS.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "1,a,a\u00B2";
+        result = CUBIC_POWER_BASIS.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "1,a,1/7a\u00B2,1/7a\u00B3";
+        result = QUARTIC_POWER_BASIS.toString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = "1,a,a\u00B2,1/3a\u00B3+1/3a";
+        result = QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS.toString().replace(" ", "");
         assertEquals(expResult, result);
     }
 
@@ -118,6 +146,47 @@ public class PowerBasisTest {
         System.out.println("toHTMLString");
         fail("Haven't written test yet");
     }
+    
+    /**
+     * Test of hashCode method, of class PowerBasis.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        HashSet<Integer> hashes = new HashSet<>();
+        int hash = QUADRATIC_POWER_BASIS.hashCode();
+        System.out.println("Quadratic power basis hashed as " + hash);
+        hashes.add(hash);
+        hash = CUBIC_POWER_BASIS.hashCode();
+        System.out.println("Cubic power basis hashed as " + hash);
+        hashes.add(hash);
+        hash = QUARTIC_POWER_BASIS.hashCode();
+        System.out.println("Power basis of O_(i + sqrt(14)) hashed as " + hash);
+        hashes.add(hash);
+        hash = QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS.hashCode();
+        System.out.println("Power basis of O_(sqrt(2) + sqrt(7)) hashed as " + hash);
+        hashes.add(hash);
+        assertEquals("Set of hashes should have four elements", 4, hashes.size());
+    }
+    
+    /**
+     * Test of equals method, of class PowerBasis.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        PowerBasis sameBasis = new PowerBasis(TWO_ONES);
+        assertEquals(QUADRATIC_POWER_BASIS, sameBasis);
+        sameBasis = new PowerBasis(THREE_ONES);
+        assertEquals(CUBIC_POWER_BASIS, sameBasis);
+        sameBasis = new PowerBasis(TWO_ONES_AND_TWO_ONE_SEVENTHS);
+        assertEquals(QUARTIC_POWER_BASIS, sameBasis);
+        sameBasis = new PowerBasis(THREE_ONES_AND_ONE_THIRD, THREE_ZEROES_AND_ONE_THIRD, null);
+        assertEquals(QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS, sameBasis);
+        assertNotEquals(QUADRATIC_POWER_BASIS, CUBIC_POWER_BASIS);
+        assertNotEquals(CUBIC_POWER_BASIS, QUARTIC_POWER_BASIS);
+        assertNotEquals(QUARTIC_POWER_BASIS, QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS);
+    }
 
     /**
      * Test of getDegree method, of class PowerBasis.
@@ -144,7 +213,8 @@ public class PowerBasisTest {
     }
 
     /**
-     * Test of getPowerMultiplicandAdditiveAdjustments method, of class PowerBasis.
+     * Test of getPowerMultiplicandAdditiveAdjustments method, of class 
+     * PowerBasis.
      */
     @Test
     public void testGetPowerMultiplicandAdditiveAdjustments() {
@@ -167,6 +237,11 @@ public class PowerBasisTest {
         assertArrayEquals(FOUR_ZEROES, QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS.getAdditiveAdjustments());
     }
     
+    /**
+     * Test of the PowerBasis constructor. The constructor should require that 
+     * the arrays of Fraction objects it's passed in to all have the same 
+     * length.
+     */
     @Test
     public void testConstructor() {
         System.out.println("Constructor");
