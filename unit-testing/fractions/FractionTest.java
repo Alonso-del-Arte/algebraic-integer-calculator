@@ -22,10 +22,10 @@ import clipboardops.TestImagePanel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -51,7 +51,9 @@ public class FractionTest {
     private Fraction operandB;
     
     /**
-     * Initializes two Fraction objects that will be used in a lot of the tests.
+     * Initializes two Fraction objects that will be used in a lot of the tests. 
+     * Ideally, a Fraction object should be immutable, but these tests should 
+     * not be affected if it's actually mutable.
      */
     @Before
     public void setUp() {
@@ -60,7 +62,9 @@ public class FractionTest {
     }
     
     /**
-     * Test of getNumerator method, of class Fraction.
+     * Test of getNumerator method, of class Fraction. A separate test checks 
+     * that a Fraction object expresses a fraction in lowest terms, this test 
+     * does not.
      */
     @Test
     public void testGetNumerator() {
@@ -74,7 +78,9 @@ public class FractionTest {
     }
 
     /**
-     * Test of getDenominator method, of class Fraction.
+     * Test of getDenominator method, of class Fraction. A separate test checks 
+     * that a Fraction object expresses a fraction in lowest terms, this test 
+     * does not.
      */
     @Test
     public void testGetDenominator() {
@@ -269,6 +275,98 @@ public class FractionTest {
     }
     
     /**
+     * Test of parseFract method, of class Fraction. The tested function should 
+     * not mind spaces, and it should also be able to process the output of 
+     * {@link Fraction#toHTMLString()} and {@link Fraction#toTeXString()}. This 
+     * test uses <sup>3</sup>&frasl;<sub>4</sub> in three different input 
+     * formats (such as "\frac{3}{4}").
+     */
+    @Test
+    public void testParseFract() {
+        System.out.println("parseFract");
+        String parseInput = "3 / 4";
+        Fraction expResult = new Fraction(3, 4);
+        Fraction result = Fraction.parseFract(parseInput);
+        assertEquals(expResult, result);
+        parseInput = "<sup>3</sup> &frasl; <sub>4</sub>";
+        result = Fraction.parseFract(parseInput);
+        assertEquals(expResult, result);
+        parseInput = " \\frac{3}{4} ";
+        result = Fraction.parseFract(parseInput);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of parseFract method, of class Fraction. This test comes up 
+     * with a pseudorandom number, such as, for example, 
+     * <sup>&minus;55</sup>&frasl;<sub>79</sub>, and then uses it in three 
+     * different input formats (e.g., "\frac{-55}{79}") to test the parsing 
+     * function. It also tests with a negative denominator, which should be 
+     * parsed to a positive denominator (and a correspondingly negated 
+     * numerator).
+     */
+    @Test
+    public void testParseFractRandom() {
+        int numer = (int) Math.floor(Math.random() * -100 - 1);
+        int denom = (int) Math.floor(Math.random() * 100 + 1);
+        String parseInput = numer + " / " + denom;
+        Fraction expResult = new Fraction(numer, denom);
+        Fraction result = Fraction.parseFract(parseInput);
+        assertEquals(expResult, result);
+        parseInput = (-numer) + " / " + (-denom);
+        result = Fraction.parseFract(parseInput);
+        assertEquals(expResult, result);
+        parseInput = "<sup>&minus;" + (-numer) + "</sup> &frasl; <sub>" + denom + "</sub>";
+        result = Fraction.parseFract(parseInput);
+        assertEquals(expResult, result);
+        parseInput = " \\frac{" + numer + "}{" + denom + "} ";
+        result = Fraction.parseFract(parseInput);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of parseFract method, of class Fraction. Since integers are 
+     * fractions that have 1 for a denominator, a String consisting of a 
+     * parsable integer should be parsed as a fraction with denominator 1.
+     */
+    @Test
+    public void testParseFractInteger() {
+        String parseInput = "7";
+        Fraction expResult = new Fraction(7, 1);
+        try {
+            Fraction result = Fraction.parseFract(parseInput);
+            assertEquals(expResult, result);
+        } catch (RuntimeException re) {
+            String failMsg = re.getClass().getName() + " should not have occurred for trying to parse \"" + parseInput + "\"";
+            fail(failMsg);
+        }
+    }
+    
+    /**
+     * Another test of parseFract method, of class Fraction. If the input String 
+     * does not represent a fraction in a format the tested function expects, it 
+     * should throw an exception.
+     */
+    @Test
+    public void testParseFractNotParsable() {
+        String parseInput = "three quarters";
+        try {
+            Fraction result = Fraction.parseFract(parseInput);
+            String failMsg = "Trying to parse \"" + parseInput + "\" should have caused an exception, not given result " + result.toString();
+            fail(failMsg);
+        } catch (NumberFormatException nfe) {
+            System.out.println("Trying to parse \"" + parseInput + "\" correctly caused NumberFormatException");
+            System.out.println("\"" + nfe.getMessage() + "\"");
+        } catch (InputMismatchException ime) {
+            System.out.println("InputMismatchException is adequate for trying to parse \"" + parseInput + "\"");
+            System.out.println("\"" + ime.getMessage() + "\"");
+        } catch (Exception e) {
+            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to parse \"" + parseInput + "\"";
+            fail(failMsg);
+        }
+    }
+    
+    /**
      * Test of toString, toHTMLString, toTeXString methods of class Fraction. 
      * Fractions that are integers should be reported with the denominator of 1 
      * as tacit, not explicit.
@@ -395,8 +493,7 @@ public class FractionTest {
     }
     
     /**
-     * Test of compareTo method, of class Fraction, implementing 
-     * Comparable.
+     * Test of compareTo method, of class Fraction, implementing Comparable.
      */
     @Test
     public void testCompareTo() {
@@ -493,7 +590,8 @@ public class FractionTest {
     }
 
     /**
-     * Test of getNumericApproximation method, of class Fraction.
+     * Test of getNumericApproximation method, of class Fraction. A small 
+     * variance in numeric precision is acceptable.
      */
     @Test
     public void testGetNumericApproximation() {
@@ -508,7 +606,8 @@ public class FractionTest {
 
     /**
      * Test of reciprocal method, of class Fraction. Checks that applying the 
-     * reciprocal function to a reciprocal returns the original number.
+     * reciprocal function to a reciprocal returns the original number. A 
+     * separate test checks the reciprocal of 0.
      */
     @Test
     public void testReciprocal() {
@@ -549,106 +648,6 @@ public class FractionTest {
         }
     }
 
-    /**
-     * Test of getEgyptianFractions method, of class Fraction.
-     */
-    @Test
-    public void testGetEgyptianFractions() {
-        System.out.println("getEgyptianFractions(7/8)");
-        Fraction oneHalf = new Fraction(1, 2);
-        Fraction oneThird = new Fraction(1, 3);
-        Fraction one24th = new Fraction(1, 24);
-        Fraction[] expResult = {oneHalf, oneThird, one24th};
-        Fraction[] result = operandA.getEgyptianFractions();
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getEgyptianFractions method, of class Fraction, specifically for 
-     * the case of 5/4.
-     */
-    @Test
-    public void testGetEgyptianFractionsFiveQuarters() {
-        System.out.println("getEgyptianFractions(5/4)");
-        Fraction one = new Fraction(1);
-        Fraction oneQuarter = new Fraction(1, 4);
-        Fraction fiveQuarters = new Fraction(5, 4);
-        Fraction[] expResult = {one, oneQuarter};
-        Fraction[] result = fiveQuarters.getEgyptianFractions();
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getEgyptianFractions method, of class Fraction, specifically for 
-     * the case of 1.
-     */
-    @Test
-    public void testGetEgyptianFractionsOne() {
-        System.out.println("getEgyptianFractions(1)");
-        Fraction one = new Fraction(1);
-        Fraction[] expResult = {one};
-        Fraction[] result = one.getEgyptianFractions();
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getEgyptianFractions method, of class Fraction, specifically for 
-     * the case of 1/15.
-     */
-    @Test
-    public void testGetEgyptianFractionsOneFifteenth() {
-        System.out.println("getEgyptianFractions(1/15)");
-        Fraction oneFifteenth = new Fraction(1, 15);
-        Fraction[] expResult = {oneFifteenth};
-        Fraction[] result = oneFifteenth.getEgyptianFractions();
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getEgyptianFractions method, of class Fraction, specifically for 
-     * the case of 0.
-     */
-    @Test
-    public void testGetEgyptianFractionsZero() {
-        System.out.println("getEgyptianFractions(0)");
-        Fraction zero = new Fraction(0);
-        Fraction[] expResult = {zero};
-        Fraction[] result = zero.getEgyptianFractions();
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getEgyptianFractions method, of class Fraction, specifically for 
-     * the case of &minus;3/2.
-     */
-    @Test
-    public void testGetEgyptianFractionsNegThreeHalves() {
-        System.out.println("getEgyptianFractions(-3/2)");
-        Fraction negTwo = new Fraction(-2);
-        Fraction oneHalf = new Fraction(1, 2);
-        Fraction negThreeHalves = new Fraction(-3, 2);
-        Fraction[] expResult = {negTwo, oneHalf};
-        Fraction[] result = negThreeHalves.getEgyptianFractions();
-        assertArrayEquals(expResult, result);
-    }
-    
-    /**
-     * Test of getEgyptianFractions method, of class Fraction, specifically for 
-     * the case of 99/100. It is expected that that this will deliver the 
-     * correct result of 99/100 = 1/2 + 1/3 + 1/7 + 1/73 + 1/9018 + 1/230409900 
-     * in no more than 30 seconds, or else the test fails even if the correct 
-     * answer would have eventually been found.
-     */
-    @Ignore
-    @Test(timeout = 30000)
-    public void testGetEgyptianFractionsNinetyNineHundredths() {
-        System.out.println("getEgyptianFractions(99/100)");
-        Fraction ninetyNineHundredths = new Fraction(99, 100);
-        Fraction[] expResult = {new Fraction(1, 2), new Fraction(1, 3), new Fraction(1, 7), new Fraction(1, 73), new Fraction(1, 9018), new Fraction(1, 230409900)};
-        Fraction[] result = ninetyNineHundredths.getEgyptianFractions();
-        assertArrayEquals(expResult, result);
-    }
-    
     /**
      * Test of Fraction constructor. Even if the constructor parameters are not 
      * in lowest terms, the constructor should change them to lowest terms.
