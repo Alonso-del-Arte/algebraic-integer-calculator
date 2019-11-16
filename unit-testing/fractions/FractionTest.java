@@ -360,12 +360,6 @@ public class FractionTest {
         } catch (InputMismatchException ime) {
             System.out.println("InputMismatchException is adequate for trying to parse \"" + parseInput + "\"");
             System.out.println("\"" + ime.getMessage() + "\"");
-        } catch (IllegalArgumentException iae) {
-            Throwable wrappedExc = iae.getCause();
-            String assertionMessage = "IllegalArgumentException instance should wrap a NumberFormatException";
-            assertTrue(assertionMessage, wrappedExc instanceof NumberFormatException);
-            System.out.println(assertionMessage);
-            System.out.println("Wrapped NumberFormatException message: \"" + wrappedExc.getMessage() + "\"");
         } catch (Exception e) {
             String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to parse \"" + parseInput + "\"";
             fail(failMsg);
