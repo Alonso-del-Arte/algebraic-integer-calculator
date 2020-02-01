@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -33,7 +33,6 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
-import static algebraics.quadratics.ImaginaryQuadraticRingTest.TEST_DELTA;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -485,7 +484,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
         /* And lastly to make sure calling prime factorization on a number from 
            an unsupported domain triggers UnsupportedNumberDomainException */
-        r = new IllDefinedQuadraticRing(50);
+        r = new IllDefinedQuadraticRing(1);
         z = new IllDefinedQuadraticInteger(7, 8, r);
         try {
             factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
@@ -519,10 +518,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
         assertFalse(NumberTheoreticFunctionsCalculator.isPrime(1));
         assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-1));
-        for (Integer compositeNum : compositesList) {
+        compositesList.stream().map((compositeNum) -> {
             assertFalse(NumberTheoreticFunctionsCalculator.isPrime(compositeNum));
+            return compositeNum;
+        }).forEachOrdered((compositeNum) -> {
             assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-compositeNum));
-        }
+        });
         /* Now we're going to test odd integers greater than the last prime 
         in our List but smaller than the square of that prime. */
         int maxNumForTest = primesList.get(primesListLength - 1) * primesList.get(primesListLength - 1);
@@ -750,7 +751,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         String assertionMessage;
         /* The number 1 + sqrt(d) should be irreducible but not prime in each
            domain Z[sqrt(d)] for squarefree negative d = 3 mod 4. But (1 + 
-           sqrt(d))^2 should not be, nor the conjugate of that number. */
+           sqrt(d))^2 should not be, nor the complexConjugate of that number. */
         for (int iterDiscr = -5; iterDiscr > -200; iterDiscr -= 4) {
             if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscr);
@@ -993,8 +994,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * checking Jacobi(<i>n</i>, <i>m</i>).
      */
     @Test
-    public void testJacobiSymbol() {
-        System.out.println("symbolJacobi");
+    public void testJacobiLegendreCorrespondence() {
         System.out.println("Checking overlap with Legendre symbol...");
         byte expResult, result;
         for (int i = 1; i < primesListLength; i++) {
@@ -1004,8 +1004,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 assertEquals(expResult, result);
             }
         }
-        System.out.println("Now checking Jacobi symbol per se...");
+    }
+    
+    @Test
+    public void testJacobiSymbol() {
+        System.out.println("symbolJacobi");
         int p, q, m;
+        byte expResult, result;
         for (int pindex = 1; pindex < primesListLength; pindex++) {
             p = primesList.get(pindex);
             for (int qindex = pindex + 1; qindex < primesListLength; qindex++) {
@@ -1030,20 +1035,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
 
     /**
      * Test of symbolKronecker method, of class 
-     * NumberTheoreticFunctionsCalculator. First, it checks that 
+     * NumberTheoreticFunctionsCalculator. This test checks that 
      * Legendre(<i>a</i>, <i>p</i>) = Kronecker(<i>a</i>, <i>p</i>), where 
-     * <i>p</i> is an odd prime. Next, it checks that Jacobi(<i>n</i>, <i>m</i>) 
-     * = Kronecker(<i>n</i>, <i>m</i>). If either the Legendre symbol test or 
-     * the Jacobi symbol test fails, the result of this test is meaningless. 
-     * Then follows the actual business of checking Kronecker(<i>n</i>, 
-     * &minus;2), Kronecker(<i>n</i>, &minus;1) and Kronecker(<i>n</i>, 2). On 
-     * another occasion I might add a few multiplicative tests.
+     * <i>p</i> is an odd prime.
      */
     @Test
-    public void testKroneckerSymbol() {
-        System.out.println("symbolKronecker");
+    public void testKroneckerLegendreCorrespondence() {
         byte expResult, result;
-        System.out.println("Checking overlap with Legendre symbol...");
         for (int i = 1; i < primesListLength; i++) {
             for (int a = 7; a < 11; a++) {
                 expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(a, primesList.get(i));
@@ -1051,7 +1049,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 assertEquals(expResult, result);
             }
         }
-        System.out.println("Checking overlap with Jacobi symbol...");
+        System.out.println("Kronecker-Legendre correspondence checks out...");
+    }
+    
+    /**
+     * Test of symbolKronecker method, of class 
+     * NumberTheoreticFunctionsCalculator. This test checks that 
+     * Jacobi(<i>n</i>, <i>m</i>) = Kronecker(<i>n</i>, <i>m</i>), where 
+     * <i>m</i> is odd.
+     */
+    @Test
+    public void testKroneckerJacobiCorrespondence() {
+        byte expResult, result;
         for (int j = -10; j < 10; j++) {
             for (int b = 5; b < 15; b += 2) {
                 expResult = NumberTheoreticFunctionsCalculator.symbolJacobi(j, b);
@@ -1059,7 +1068,20 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 assertEquals(expResult, result);
             }
         }
-        System.out.println("Now checking Kronecker symbol per se...");
+        System.out.println("Kronecker-Jacobi correspondence checks out...");
+    }
+    
+    /**
+     * Test of symbolKronecker method, of class 
+     * NumberTheoreticFunctionsCalculator. This test checks Kronecker(<i>n</i>, 
+     * &minus;2), Kronecker(<i>n</i>, &minus;1) and Kronecker(<i>n</i>, 2). If 
+     * either the Legendre symbol test or the Jacobi symbol test fails, the 
+     * result of this test is meaningless.
+     */
+    @Test
+    public void testKroneckerSymbol() {
+        System.out.println("symbolKronecker");
+        byte expResult, result;
         for (int n = 1; n < 50; n++) {
             expResult = -1;
             result = NumberTheoreticFunctionsCalculator.symbolKronecker(-n, -1);
@@ -1099,18 +1121,42 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertEquals(expResult, result);
             result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 7, 2);
             assertEquals(expResult, result);
-            if (m < 0) {
-                result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 3, -2);
-                assertEquals(expResult, result);
-                result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 5, -2);
-                assertEquals(expResult, result);
-            } else {
-                result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 1, -2);
-                assertEquals(expResult, result);
-                result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 7, -2);
-                assertEquals(expResult, result);
-            }
+            expResult = (byte) Integer.signum(m + 1);
+            result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 1, -2);
+            assertEquals(expResult, result);
+            result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 3, -2);
+            assertEquals(-expResult, result);
+            result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 5, -2);
+            assertEquals(-expResult, result);
+            result = NumberTheoreticFunctionsCalculator.symbolKronecker(m + 7, -2);
+            assertEquals(expResult, result);
         }
+    }
+    
+    /**
+     * Test of symbolKronecker method, of class 
+     * NumberTheoreticFunctionsCalculator. This test checks three specific 
+     * cases: Kronecker(33, &minus;70) = &minus;1, Kronecker(32, &minus;70) = 0 
+     * and Kronecker(31, &minus;70) = 1.
+     */
+    @Test
+    public void testKroneckerSymbolM70CasesWNegN() {
+        assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolKronecker(-33, 70));
+        assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(-32, 70));
+        assertEquals(1, NumberTheoreticFunctionsCalculator.symbolKronecker(-31, 70));
+    }
+
+    /**
+     * Test of symbolKronecker method, of class 
+     * NumberTheoreticFunctionsCalculator. This test checks three specific 
+     * cases: Kronecker(31, 70) = &minus;1, Kronecker(32, 70) = 0 and 
+     * Kronecker(33, 70) = 1.
+     */
+    @Test
+    public void testKroneckerSymbolM70Cases() {
+        assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolKronecker(31, 70));
+        assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(32, 70));
+        assertEquals(1, NumberTheoreticFunctionsCalculator.symbolKronecker(33, 70));
     }
     
     /**
@@ -1528,7 +1574,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
             fail(failMessage);
         }
-        ring = new IllDefinedQuadraticRing(12);
+        ring = new IllDefinedQuadraticRing(1);
         try {
             result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
             String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " should have caused IllegalArgumentException, not given result " + result.toASCIIString() + ".";
@@ -1773,33 +1819,26 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * for a least significant digit, whichever happens first.
      */
     @Test
-    public void testRandomNegativeSquarefreeNumber() {
+    public void testRandomSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
-        /* Our test bound will be the square of the largest prime in our finite 
-           list */
         int testBound = primesList.get(primesListLength - 1) * primesList.get(primesListLength - 1);
         int potentialRanSqFreeNum;
         String assertionMessage;
         do {
             potentialRanSqFreeNum = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(testBound);
             System.out.println("Function came up with this pseudorandom squarefree number: " + potentialRanSqFreeNum);
-            // Check that the pseudorandom number is indeed squarefree
-            double squaredPrime, ranNumDiv, flooredRanNumDiv, sqFrHolder;
+            int squaredPrime, remainder; // TODO: Move initialization to outer scope
             for (int i = 0; i < primesListLength; i++) {
                 squaredPrime = primesList.get(i) * primesList.get(i);
-                sqFrHolder = potentialRanSqFreeNum; // Ensure we're dividing a double by another double
-                ranNumDiv = sqFrHolder / squaredPrime;
-                flooredRanNumDiv = (int) Math.floor(ranNumDiv);
+                remainder = potentialRanSqFreeNum % squaredPrime;
                 assertionMessage = "Since " + potentialRanSqFreeNum + " is said to be squarefree, it should not be divisible by " + squaredPrime;
-                assertNotEquals(assertionMessage, ranNumDiv, flooredRanNumDiv, TEST_DELTA);
+                assertNotEquals(assertionMessage, 0, remainder);
             }
-            /* And lastly, check that it is no more than the test bound but not 
-               less than or equal to 0. */
             assertionMessage = "The number " + potentialRanSqFreeNum + " is not greater than the bound " + testBound;
             assertTrue(assertionMessage, potentialRanSqFreeNum < testBound);
             assertionMessage = "The number " + potentialRanSqFreeNum + " is greater than 0";
             assertTrue(assertionMessage, potentialRanSqFreeNum > 0);
-        } while (potentialRanSqFreeNum % 10 != 7);
+        } while (potentialRanSqFreeNum % 10 != 9);
     }
     
 }
