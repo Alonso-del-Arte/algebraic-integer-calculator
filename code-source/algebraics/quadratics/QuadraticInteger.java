@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -34,10 +34,10 @@ import java.util.Objects;
  */
 public abstract class QuadraticInteger implements AlgebraicInteger {
 
-    protected int regPartMult;
-    protected int surdPartMult;
-    protected QuadraticRing quadRing;
-    protected int denominator;
+    protected final int regPartMult;
+    protected final int surdPartMult;
+    protected final QuadraticRing quadRing;
+    protected final int denominator;
     
     /**
      * Retrieves an object representing the ring this quadratic integer belongs 
@@ -94,8 +94,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     }
 
     /**
-     * Gives the algebraic degree of the algebraic integer. Should not be higher than 2.
-     * @return 0 if the algebraic integer is 0, 1 if it's a purely real integer, 2 otherwise.
+     * Gives the algebraic degree of the algebraic integer. Should not be higher 
+     * than 2.
+     * @return 0 if the algebraic integer is 0, 1 if it's a purely real integer, 
+     * 2 otherwise.
      */
     @Override
     public int algebraicDegree() {
@@ -158,7 +160,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * major malfunction in {@link #algebraicDegree()}.
      */
     @Override
-    public long[] minPolynomial() {
+    public long[] minPolynomialCoeffs() {
         long[] coeffs = {0, 0, 0};
         switch (this.algebraicDegree()) {
             case 0:
@@ -178,16 +180,33 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     }
     
     /**
-     * Gives the minimal polynomial in a format suitable for plain text or TeX.
-     * @return A String. If the algebraic degree is 2, the String should start 
-     * off with "x^2". For example, for 5/2 + sqrt(-7)/2, the result would be 
-     * "x^2 - 5x + 8". The return of an empty String would indicate a major 
-     * malfunction in {@link #algebraicDegree()}.
+     * Gives the minimal polynomial as text, using Unicode characters when 
+     * necessary. In particular, U+00B2 (superscript 2) and U+2212 (minus sign) 
+     * will be used when applicable.
+     * @return The minimal polynomial as text. If the algebraic degree is 2, the 
+     * text should start off with "x&#178;". For example, for 5/2 + 
+     * &radic;(&minus;7)/2, the result would be "x&#178; &#8722; 5x + 8".
      */
     @Override
     public String minPolynomialString() {
+        String polString = this.minPolynomialStringTeX();
+        polString = polString.replace("^2", "\u00B2");
+        polString = polString.replace("-", "\u2212");
+        return polString;
+    }
+    
+    /**
+     * Gives the minimal polynomial as plaintext suitable for use in a TeX 
+     * document, using ASCII characters only. Since the only explicit exponent 
+     * should be 2, that numeric literal is not wrapped in curly braces.
+     * @return If the algebraic degree is 2, the text should start 
+     * off with "x^2". For example, for 5/2 + &radic;(&minus;7)/2, the result 
+     * would be "x^2 - 5x + 8".
+     */
+    @Override
+    public String minPolynomialStringTeX() {
         String polString = "";
-        long[] polCoeffs = this.minPolynomial();
+        long[] polCoeffs = this.minPolynomialCoeffs();
         switch (this.algebraicDegree()) {
             case 0:
                 polString = "x";
@@ -222,8 +241,25 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         }
         return polString;
     }
-    
+
     /**
+     * Gives the minimal polynomial as text suitable for use in an HTML page.
+     * @return If the algebraic degree is 2, the text should start 
+     * off with "&lt;i&gt;x&lt;/i&gt;&lt;sup&gt;2&lt;/sup&gt;". For example, for 
+     * 5/2 + &radic;(&minus;7)/2, the result would be 
+     * "&lt;i&gt;x&lt;/i&gt;&lt;sup&gt;2&lt;/sup&gt; &amp;minus; 
+     * 5&lt;i&gt;x&lt;/i&gt; + 8".
+     */
+    @Override
+    public String minPolynomialStringHTML() {
+        String polString = this.minPolynomialStringTeX();
+        polString = polString.replace("x", "<i>x</i>");
+        polString = polString.replace("^2", "<sup>2</sup>");
+        polString = polString.replace("-", "&minus;");
+        return polString;
+    }
+
+   /**
      * Gives the conjugate of the quadratic integer, the number which multiplied 
      * by this number gives the norm.
      * @return This quadratic integer with the "surd" part negated. For example, 
@@ -234,19 +270,18 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         if (this.surdPartMult == 0) {
             return this;
         }
-        QuadraticInteger conjug = null;
+        QuadraticInteger conjug;
         if (this instanceof ImaginaryQuadraticInteger) {
             conjug = new ImaginaryQuadraticInteger(this.regPartMult, -this.surdPartMult, this.quadRing, this.denominator);
+            return conjug;
         }
         if (this instanceof RealQuadraticInteger) {
             conjug = new RealQuadraticInteger(this.regPartMult, -this.surdPartMult, this.quadRing, this.denominator);
+            return conjug;
         }
-        if (!(this instanceof ImaginaryQuadraticInteger) && !(this instanceof RealQuadraticInteger)) {
-            String exceptionMessage = this.getClass().getName() + " is not a supported number domain for the conjugate function.";
-            exceptionMessage = exceptionMessage + "\nIt may be necessary to override QuadraticInteger.conjugate().";
-            throw new UnsupportedNumberDomainException(exceptionMessage, this, this);
-        }
-        return conjug;
+        String exceptionMessage = this.getClass().getName() + " is not a supported number domain for the conjugate function.";
+        exceptionMessage = exceptionMessage + "\nIt may be necessary to override QuadraticInteger.conjugate().";
+        throw new UnsupportedNumberDomainException(exceptionMessage, this, this);
     }
         
     /**
@@ -258,56 +293,57 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      */
     @Override
     public String toString() {
-        String IQIString = "";
+        String QIString = "";
         if (this.denominator == 2) {
-            IQIString = this.regPartMult + "/2 ";
+            QIString = this.regPartMult + "/2 ";
             if (this.surdPartMult < -1) {
-                IQIString += (("- " + ((-1) * this.surdPartMult)) + "\u221A(" + this.quadRing.radicand + ")/2");
+                QIString += (("- " + ((-1) * this.surdPartMult)) + "\u221A(" + this.quadRing.radicand + ")/2");
             }
             if (this.surdPartMult == -1) {
-                IQIString += ("- \u221A(" + this.quadRing.radicand + ")/2");
+                QIString += ("- \u221A(" + this.quadRing.radicand + ")/2");
             }
             if (this.surdPartMult == 1) {
-                IQIString += ("+ \u221A(" + this.quadRing.radicand + ")/2");
+                QIString += ("+ \u221A(" + this.quadRing.radicand + ")/2");
             }
             if (this.surdPartMult > 1) {
-                IQIString += ("+ " + this.surdPartMult + "\u221A(" + this.quadRing.radicand + ")/2");
+                QIString += ("+ " + this.surdPartMult + "\u221A(" + this.quadRing.radicand + ")/2");
             } 
         } else {
             if (this.regPartMult == 0) {
                 if (this.surdPartMult == 0) {
-                    IQIString = "0";
+                    QIString = "0";
                 } else {
                     if (this.surdPartMult < -1 || this.surdPartMult > 1) {
-                        IQIString = this.surdPartMult + "\u221A(" + this.quadRing.radicand + ")";
+                        QIString = this.surdPartMult + "\u221A(" + this.quadRing.radicand + ")";
                     }
                     if (this.surdPartMult == -1) {
-                        IQIString = "-\u221A(" + this.quadRing.radicand + ")";
+                        QIString = "-\u221A(" + this.quadRing.radicand + ")";
                     }
                     if (this.surdPartMult == 1) {
-                        IQIString = "\u221A(" + this.quadRing.radicand + ")";
+                        QIString = "\u221A(" + this.quadRing.radicand + ")";
                     }
                 }
             } else {
-                IQIString = Integer.toString(this.regPartMult);
+                QIString = Integer.toString(this.regPartMult);
                 if (this.surdPartMult < -1) {
-                    IQIString += ((" - " + ((-1) * this.surdPartMult)) + "\u221A(" + this.quadRing.radicand + ")");
+                    QIString += ((" - " + ((-1) * this.surdPartMult)) + "\u221A(" + this.quadRing.radicand + ")");
                 }
                 if (this.surdPartMult == -1) {
-                    IQIString += (" - \u221A(" + this.quadRing.radicand + ")");
+                    QIString += (" - \u221A(" + this.quadRing.radicand + ")");
                 }
                 if (this.surdPartMult == 1) {
-                    IQIString += (" + \u221A(" + this.quadRing.radicand + ")");
+                    QIString += (" + \u221A(" + this.quadRing.radicand + ")");
                 }
                 if (this.surdPartMult > 1) {
-                    IQIString += (" + " + this.surdPartMult + "\u221A(" + this.quadRing.radicand + ")");
+                    QIString += (" + " + this.surdPartMult + "\u221A(" + this.quadRing.radicand + ")");
                 }
             }
         }
         if (this.quadRing.radicand == -1) {
-            IQIString = IQIString.replace("\u221A(-1)", "i");
+            QIString = QIString.replace("\u221A(-1)", "i");
         }
-        return IQIString;
+        QIString = QIString.replace("-", "\u2212");
+        return QIString;
     }
     
     /**
@@ -373,6 +409,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         } else {
             altQIString = this.toString();
         }
+        altQIString = altQIString.replace("-", "\u2212");
         return altQIString;
     }
     
@@ -385,7 +422,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      */
     @Override
     public String toASCIIString() {
-        return this.toString().replace("\u221A", "sqrt");
+        String QIString = this.toString();
+        QIString = QIString.replace("\u221A", "sqrt");
+        QIString = QIString.replace("\u2212", "-");
+        return QIString;
     }
     
     /**
@@ -406,6 +446,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             } else {
                 intermediateString = intermediateString.replace("\u03B8", "theta");
             }
+            intermediateString = intermediateString.replace("\u2212", "-");
             return intermediateString;
         } else {
             return this.toASCIIString();
@@ -424,13 +465,15 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      */
     @Override
     public String toTeXString() {
+        String QIString;
         if (this.quadRing.radicand == -1) {
-            return this.toString();
+            QIString = this.toString();
+            QIString = QIString.replace("\u2212", "-");
+            return QIString;
         }
         if (this.norm() == 0) {
             return "0";
         }
-        String QIString;
         if (this.denominator == 1) {
             if (this.regPartMult == 0) {
                 switch (this.surdPartMult) {
@@ -448,7 +491,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                     return Integer.toString(this.regPartMult);
                 } else {
                     QIString = this.regPartMult + " + " + this.surdPartMult + " \\sqrt{" + this.quadRing.radicand + "}";
-                    QIString = QIString.replace("+ -", " - ");
+                    QIString = QIString.replace("+ -", "- ");
                     QIString = QIString.replace(" 1 \\sqrt", " \\sqrt");
                 }
             }
@@ -456,7 +499,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             QIString = "\\frac{" + this.regPartMult + "}{2} + \\frac{" + this.surdPartMult + " \\sqrt{" + this.quadRing.radicand + "}}{2}";
             QIString = QIString.replace("\\frac{-", "-\\frac{");
             QIString = QIString.replace("\\frac{1 \\sqrt", "\\frac{\\sqrt");
-            QIString = QIString.replace("+ -", " - ");
+            QIString = QIString.replace("+ -", "- ");
         }
         return QIString;
     }
@@ -471,14 +514,16 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * "\frac{1 + \sqrt{-7}}{2}".
      */
     public String toTeXStringSingleDenom() {
+        String QIString;
         if (this.denominator == 2) {
-            String QIString;
             QIString = "\\frac{" + this.regPartMult + " + " + this.surdPartMult + " \\sqrt{" + this.quadRing.radicand + "}}{2}";
             QIString = QIString.replace(" 1 \\sqrt", " \\sqrt");
             QIString = QIString.replace("+ -", " - ");
             return QIString;
         } else {
-            return this.toTeXString();
+            QIString = this.toTeXString();
+            QIString = QIString.replace("\u2212", "-");
+            return QIString;
         }
     }
     
@@ -496,6 +541,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             QIString = QIString.replace("\u03C9", "\\omega");
             QIString = QIString.replace("\u03B8", "\\theta");
             QIString = QIString.replace("\u03C6", "\\phi");
+            QIString = QIString.replace("\u2212", "-");
             return QIString;
         } else {
             return this.toTeXString();
@@ -517,7 +563,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         String QIString = this.toString();
         QIString = QIString.replace("i", "<i>i</i>");
         QIString = QIString.replace("\u221A", "&radic;");
-        QIString = QIString.replace("-", "&minus;");
+        QIString = QIString.replace("\u2212", "&minus;");
         return QIString;
     }
     
@@ -537,7 +583,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             QIString = QIString.replace("\u03C9", "&omega;");
             QIString = QIString.replace("\u03C6", "&phi;");
             QIString = QIString.replace("\u03B8", "&theta;");
-            QIString = QIString.replace("-", "&minus;");
+            QIString = QIString.replace("\u2212", "&minus;");
             return QIString;
         } else {
             return this.toHTMLString();
@@ -604,6 +650,19 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         return null;
     }
     
+    private static void checkRange(Fraction potentialRegPart, Fraction potentialSurdPart, QuadraticRing ring) {
+        long potReg = potentialRegPart.getNumerator();
+        long potSurd = potentialSurdPart.getNumerator();
+        if (potReg < Integer.MIN_VALUE || potReg > Integer.MAX_VALUE) {
+            String excMsg = "Regular part of " + potentialRegPart.toString() + " + " + potentialSurdPart.toString() + "sqrt(" + ring.getRadicand() + ") exceeds range of QuadraticInteger data type";
+            throw new ArithmeticException(excMsg);
+        }
+        if (potSurd < Integer.MIN_VALUE || potSurd > Integer.MAX_VALUE) {
+            String excMsg = "Surd part of " + potentialRegPart.toString() + " + " + potentialSurdPart.toString() + "sqrt(" + ring.getRadicand() + ") exceeds range of QuadraticInteger data type";
+            throw new ArithmeticException(excMsg);
+        }
+    }
+    
     /**
      * Addition operation, since operator+ (plus) can't be overloaded. 
      * Computations are done with 64-bit variables. Overflow checking is 
@@ -634,44 +693,14 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         if (this.quadRing.radicand != summand.quadRing.radicand) {
             throw new AlgebraicDegreeOverflowException("This operation would result in an algebraic integer of degree 4.", 2, this, summand);
         }
-        long sumRealPart = 0;
-        long sumImagPart = 0;
-        int sumDenom = 1;
-        if (this.quadRing.d1mod4) {
-            if (this.denominator == 1 && summand.denominator == 2) {
-                sumRealPart = 2 * this.regPartMult + summand.regPartMult;
-                sumImagPart = 2 * this.surdPartMult + summand.surdPartMult;
-                sumDenom = 2;
-            }
-            if (this.denominator == 2 && summand.denominator == 1) {
-                sumRealPart = this.regPartMult + 2 * summand.regPartMult;
-                sumImagPart = this.surdPartMult + 2 * summand.surdPartMult;
-                sumDenom = 2;
-            }
-            if (this.denominator == summand.denominator) {
-                sumRealPart = this.regPartMult + summand.regPartMult;
-                sumImagPart = this.surdPartMult + summand.surdPartMult;
-                sumDenom = this.denominator;
-            }
-        } else {
-            sumRealPart = this.regPartMult + summand.regPartMult;
-            sumImagPart = this.surdPartMult + summand.surdPartMult;
-            sumDenom = 1;
-        }
-        if (sumRealPart < Integer.MIN_VALUE || sumRealPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Real part of sum exceeds int data type:" + sumRealPart + " + " + sumImagPart + "sqrt(" + this.quadRing.radicand + ")");
-        }
-        if (sumImagPart < Integer.MIN_VALUE || sumImagPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Imaginary part of sum exceeds int data type:" + sumRealPart + " + " + sumImagPart + "sqrt(" + this.quadRing.radicand + ")");
-        }
-        if (this.quadRing instanceof ImaginaryQuadraticRing) {
-            return new ImaginaryQuadraticInteger((int) sumRealPart, (int) sumImagPart, this.quadRing, sumDenom);
-        }
-        if (this.quadRing instanceof RealQuadraticRing) {
-            return new RealQuadraticInteger((int) sumRealPart, (int) sumImagPart, this.quadRing, sumDenom);
-        }
-        String exceptionMessage = "plus function does not support the " + this.quadRing.getClass().getName() + " implementation of QuadraticRing.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this, summand);
+        Fraction regPartFract = new Fraction(this.regPartMult, this.denominator);
+        Fraction summandFract = new Fraction(summand.regPartMult, summand.denominator);
+        regPartFract = regPartFract.plus(summandFract);
+        Fraction surdPartFract = new Fraction(this.surdPartMult, this.denominator);
+        summandFract = new Fraction(summand.surdPartMult, summand.denominator);
+        surdPartFract = surdPartFract.plus(summandFract);
+        checkRange(regPartFract, surdPartFract, this.quadRing);
+        return apply((int) regPartFract.getNumerator(), (int) surdPartFract.getNumerator(), this.quadRing, (int) regPartFract.getDenominator());
     }
     
     /**
@@ -689,23 +718,16 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * 0.
      */
     public QuadraticInteger plus(int summand) {
-        long sumRealPart = this.regPartMult;
+        long sumRegPart = this.regPartMult;
         if (this.denominator == 2) {
-            sumRealPart += (2 * summand);
+            sumRegPart += (2 * summand);
         } else {
-            sumRealPart += summand;
+            sumRegPart += summand;
         }
-        if (sumRealPart < Integer.MIN_VALUE || sumRealPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Real part of sum exceeds int data type:" + sumRealPart + " + " + this.surdPartMult + "sqrt(" + this.quadRing.radicand + ")");
+        if (sumRegPart < Integer.MIN_VALUE || sumRegPart > Integer.MAX_VALUE) {
+            throw new ArithmeticException("Real part of sum exceeds int data type: " + sumRegPart + " + " + this.surdPartMult + "sqrt(" + this.quadRing.radicand + ")");
         }
-        if (this.quadRing instanceof ImaginaryQuadraticRing) {
-            return new ImaginaryQuadraticInteger((int) sumRealPart, this.surdPartMult, this.quadRing, this.denominator);
-        }
-        if (this.quadRing instanceof RealQuadraticRing) {
-            return new RealQuadraticInteger((int) sumRealPart, this.surdPartMult, this.quadRing, this.denominator);
-        }
-        String exceptionMessage = "plus or minus function does not support the " + this.quadRing.getClass().getName() + " implementation of QuadraticRing.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this);
+        return apply((int) sumRegPart, (int) this.surdPartMult, this.quadRing, this.denominator);
     }
 
     /**
@@ -749,28 +771,8 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     public QuadraticInteger minus(int subtrahend) {
         return this.plus(-subtrahend);
     }
-
-    /**
-     * Multiplication operation, since operator* can't be overloaded. 
-     * Computations are done with 64-bit variables. Overflow checking is 
-     * rudimentary.
-     * @param multiplicand The quadratic integer to be multiplied by this 
-     * quadratic integer.
-     * @return A new QuadraticInteger object with the result of the operation.
-     * @throws AlgebraicDegreeOverflowException If the algebraic integers come 
-     * from different quadratic rings, the product will be an algebraic integer 
-     * of degree 4 and this runtime exception will be thrown.
-     * @throws ArithmeticException A runtime exception thrown if either the 
-     * regular part or the surd part of the product exceeds the range of the int 
-     * data type. You may need long or even BigInteger for the calculation.
-     */
-    public QuadraticInteger times(QuadraticInteger multiplicand) {
-        if (multiplicand.surdPartMult == 0) {
-            return this.times(multiplicand.regPartMult);
-        }
-        if (this.surdPartMult == 0) {
-            return multiplicand.times(this.regPartMult);
-        }
+    
+    private QuadraticInteger timesFromOtherRing(QuadraticInteger multiplicand) {
         boolean crossDomainFlag = (this.regPartMult == 0 && multiplicand.regPartMult == 0);
         crossDomainFlag = crossDomainFlag && (this.surdPartMult != 0 && multiplicand.surdPartMult != 0);
         crossDomainFlag = crossDomainFlag && (this instanceof ImaginaryQuadraticInteger || this instanceof RealQuadraticInteger);
@@ -816,28 +818,57 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                 throw new AlgebraicDegreeOverflowException("This operation would result in an algebraic integer of degree 4.", 2, this, multiplicand);
             }
         }
-        long intermediateRegPart = this.regPartMult * multiplicand.regPartMult + this.surdPartMult * multiplicand.surdPartMult * this.quadRing.radicand;
-        long intermediateSurdPart = this.regPartMult * multiplicand.surdPartMult + this.surdPartMult * multiplicand.regPartMult;
-        int intermediateDenom = this.denominator * multiplicand.denominator;
-        if (intermediateDenom == 4) {
-            intermediateRegPart /= 2;
-            intermediateSurdPart /= 2;
-            intermediateDenom = 2;
+        throw new RuntimeException("Oops, sorry");
+    }
+
+    /**
+     * Multiplication operation, since operator* can't be overloaded. 
+     * Computations are done with 64-bit variables. Overflow checking is 
+     * rudimentary.
+     * @param multiplicand The quadratic integer to be multiplied by this 
+     * quadratic integer.
+     * @return A new QuadraticInteger object with the result of the operation.
+     * @throws AlgebraicDegreeOverflowException If the algebraic integers come 
+     * from different quadratic rings, the product will be an algebraic integer 
+     * of degree 4 and this runtime exception will be thrown.
+     * @throws ArithmeticException A runtime exception thrown if either the 
+     * regular part or the surd part of the product exceeds the range of the int 
+     * data type. You may need long or even BigInteger for the calculation.
+     */
+    public QuadraticInteger times(QuadraticInteger multiplicand) {
+        if (multiplicand.surdPartMult == 0) {
+            return this.times(multiplicand.regPartMult);
         }
-        if (intermediateRegPart < Integer.MIN_VALUE || intermediateRegPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Real part of product exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
+        if (this.surdPartMult == 0) {
+            return multiplicand.times(this.regPartMult);
         }
-        if (intermediateSurdPart < Integer.MIN_VALUE || intermediateSurdPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Imaginary part of product exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
+        if (this.quadRing.equals(multiplicand.quadRing)) {
+//            Fraction multRegFract = new Fraction(this.regPartMult, this.denominator);
+//            Fraction multiplicandFract = new Fraction(multiplicand.regPartMult, multiplicand.denominator);
+//            multRegFract = multRegFract.times(multiplicandFract);
+////            multiplicandFract = new Fraction()
+            
+                    
+                    
+                    
+            long multRegPart = this.regPartMult * multiplicand.regPartMult + this.surdPartMult * multiplicand.surdPartMult * this.quadRing.radicand;
+            long multSurdPart = this.regPartMult * multiplicand.surdPartMult + this.surdPartMult * multiplicand.regPartMult;
+            int multDenom = this.denominator * multiplicand.denominator;
+            if (multDenom == 4) {
+                multRegPart /= 2;
+                multSurdPart /= 2;
+                multDenom = 2;
+            }
+            if (multRegPart < Integer.MIN_VALUE || multRegPart > Integer.MAX_VALUE) {
+                throw new ArithmeticException("Real part of product exceeds int data type:" + multRegPart + " + " + multSurdPart + "sqrt(" + this.quadRing.radicand + ")");
+            }
+            if (multSurdPart < Integer.MIN_VALUE || multSurdPart > Integer.MAX_VALUE) {
+                throw new ArithmeticException("Imaginary part of product exceeds int data type:" + multRegPart + " + " + multSurdPart + "sqrt(" + this.quadRing.radicand + ")");
+            }
+            return apply((int) multRegPart, (int) multSurdPart, this.quadRing, multDenom);
+        } else {
+            return this.timesFromOtherRing(multiplicand);
         }
-        if (this.quadRing instanceof ImaginaryQuadraticRing) {
-            return new ImaginaryQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, this.quadRing, intermediateDenom);
-        }
-        if (this.quadRing instanceof RealQuadraticRing) {
-            return new RealQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, this.quadRing, intermediateDenom);
-        }
-        String exceptionMessage = "times function does not support the " + this.quadRing.getClass().getName() + " implementation of QuadraticRing.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this, multiplicand);
     }
     
     /**
@@ -863,36 +894,26 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         if (multiplicationSurdPart < Integer.MIN_VALUE || multiplicationSurdPart > Integer.MAX_VALUE) {
             throw new ArithmeticException("Imaginary part of product exceeds int data type:" + multiplicationRegPart + " + " + multiplicationSurdPart + "sqrt(" + this.quadRing.radicand + ")");
         }
-        if (this.quadRing instanceof ImaginaryQuadraticRing) {
-            return new ImaginaryQuadraticInteger((int) multiplicationRegPart, (int) multiplicationSurdPart, this.quadRing, this.denominator);
-        }
-        if (this.quadRing instanceof RealQuadraticRing) {
-            return new RealQuadraticInteger((int) multiplicationRegPart, (int) multiplicationSurdPart, this.quadRing, this.denominator);
-        }
-        String exceptionMessage = "times function does not support the " + this.quadRing.getClass().getName() + " implementation of QuadraticRing.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this);
+        return apply((int) multiplicationRegPart, (int) multiplicationSurdPart, this.quadRing, this.denominator);
     }
-
-    /**
-     * Division operation, since operator/ can't be overloaded. Computations are 
-     * done with 64-bit variables. Overflow checking is rudimentary.
-     * @param divisor The quadratic integer by which to divide this quadratic 
-     * integer.
-     * @return A new QuadraticInteger object with the result of the operation.
-     * @throws AlgebraicDegreeOverflowException If the algebraic integers come 
-     * from different quadratic rings, the result of the division will be an 
-     * algebraic integer of degree 4 and this runtime exception will be thrown.
-     * @throws NotDivisibleException If the quadratic integer is not divisible 
-     * by the divisor, this checked exception will be thrown.
-     * @throws IllegalArgumentException Division by 0 is not allowed, and will 
-     * trigger this runtime exception.
-     * @throws ArithmeticException A runtime exception thrown if either the 
-     * "regular" part or the "surd" part of the division exceeds the range of 
-     * the int data type.
-     */
-    public QuadraticInteger divides(QuadraticInteger divisor) throws NotDivisibleException {
+    
+    private QuadraticInteger dividesFromOtherRing(QuadraticInteger divisor) throws NotDivisibleException {
         if (divisor.surdPartMult == 0) {
             return this.divides(divisor.regPartMult);
+        }
+        if (this.surdPartMult == 0 && (!this.quadRing.equals(divisor.quadRing))) {
+            QuadraticInteger wrappedDividend;
+            if (divisor instanceof ImaginaryQuadraticInteger) {
+                wrappedDividend = new ImaginaryQuadraticInteger(this.regPartMult, 0, divisor.quadRing);
+            } else {
+                if (divisor instanceof RealQuadraticInteger) {
+                    wrappedDividend = new RealQuadraticInteger(this.regPartMult, 0, divisor.quadRing);
+                } else {
+                    String exceptionMessage = this.getClass().getName() + " is not supported";
+                    throw new UnsupportedNumberDomainException(exceptionMessage, divisor);
+                }
+            }
+            return wrappedDividend.divides(divisor);
         }
         boolean crossDomainFlag = (this.regPartMult == 0 && divisor.regPartMult == 0);
         crossDomainFlag = crossDomainFlag && (this.surdPartMult != 0 && divisor.surdPartMult != 0);
@@ -922,7 +943,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                 Fraction regPartFract = new Fraction(0);
                 Fraction surdPartFract = new Fraction(this.surdPartMult, divisor.surdPartMult);
                 Fraction[] fracts = {regPartFract, surdPartFract};
-                throw new NotDivisibleException(exceptionMessage, this, divisor, fracts, this.quadRing);
+                throw new NotDivisibleException(exceptionMessage, this, divisor, fracts);
             }
             int divSurd = this.surdPartMult / divisor.surdPartMult;
             int divRad = this.quadRing.radicand / divisor.quadRing.radicand;
@@ -944,55 +965,53 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                 throw new AlgebraicDegreeOverflowException("This operation could result in an algebraic integer of degree 4.", 2, this, divisor);
             }
         }
-        long intermediateRegPart = (long) this.regPartMult * (long) divisor.regPartMult - (long) this.surdPartMult * (long) divisor.surdPartMult * (long) this.quadRing.radicand;
-        long intermediateSurdPart = (long) this.surdPartMult * (long) divisor.regPartMult - (long) this.regPartMult * (long) divisor.surdPartMult;
-        long intermediateDenom = (long) (divisor.norm() * (long) this.denominator * (long) divisor.denominator);
-        if (intermediateDenom < 0) {
-            intermediateRegPart *= -1;
-            intermediateSurdPart *= -1;
-            intermediateDenom *= -1;
-        }
-        long realCutDown = NumberTheoreticFunctionsCalculator.euclideanGCD(intermediateRegPart, intermediateDenom);
-        long imagCutDown = NumberTheoreticFunctionsCalculator.euclideanGCD(intermediateSurdPart, intermediateDenom);
-        if (realCutDown < imagCutDown) {
-            intermediateRegPart /= realCutDown;
-            intermediateSurdPart /= realCutDown;
-            intermediateDenom /= realCutDown;
-        } else {
-            intermediateRegPart /= imagCutDown;
-            intermediateSurdPart /= imagCutDown;
-            intermediateDenom /= imagCutDown;
-        }
-        boolean divisibleFlag;
-        if (this.quadRing.d1mod4) {
-            divisibleFlag = (intermediateDenom == 1 || intermediateDenom == 2);
-            if (intermediateDenom == 2) {
-                divisibleFlag = (Math.abs(intermediateRegPart % 2) == Math.abs(intermediateSurdPart % 2));
+        throw new RuntimeException("Oops");
+    }
+
+    /**
+     * Division operation, since operator/ can't be overloaded. Computations are 
+     * done with 64-bit variables. Overflow checking is rudimentary.
+     * @param divisor The quadratic integer by which to divide this quadratic 
+     * integer.
+     * @return A new QuadraticInteger object with the result of the operation.
+     * @throws AlgebraicDegreeOverflowException If the algebraic integers come 
+     * from different quadratic rings, the result of the division will be an 
+     * algebraic integer of degree 4 and this runtime exception will be thrown.
+     * @throws NotDivisibleException If the quadratic integer is not divisible 
+     * by the divisor, this checked exception will be thrown.
+     * @throws IllegalArgumentException Division by 0 is not allowed, and will 
+     * trigger this runtime exception.
+     * @throws ArithmeticException A runtime exception thrown if either the 
+     * "regular" part or the "surd" part of the division exceeds the range of 
+     * the int data type.
+     */
+    public QuadraticInteger divides(QuadraticInteger divisor) throws NotDivisibleException {
+        if (this.quadRing.equals(divisor.quadRing)) {
+            long divDenom = (long) (divisor.norm() * (long) this.denominator * (long) divisor.denominator);
+            Fraction divRegFract = new Fraction((long) this.regPartMult * (long) divisor.regPartMult - (long) this.surdPartMult * (long) divisor.surdPartMult * (long) this.quadRing.radicand, divDenom);
+            Fraction divSurdFract = new Fraction((long) this.surdPartMult * (long) divisor.regPartMult - (long) this.regPartMult * (long) divisor.surdPartMult, divDenom);
+            boolean divisibleFlag = divRegFract.getDenominator() == divSurdFract.getDenominator();
+            int minDisallowedDenom = 2;
+            if (this.quadRing.d1mod4) {
+                minDisallowedDenom = 3;
             }
+            divisibleFlag = divisibleFlag && (divRegFract.getDenominator() < minDisallowedDenom);
+            if (!divisibleFlag) {
+                Fraction[] fracts = {divRegFract, divSurdFract};
+                throw new NotDivisibleException(this, divisor, fracts);
+            }
+            long divRegFractNumer = divRegFract.getNumerator();
+            long divSurdFractNumer = divSurdFract.getNumerator();
+            if (divRegFractNumer < Integer.MIN_VALUE || divRegFractNumer > Integer.MAX_VALUE) {
+                throw new ArithmeticException("Real part of division exceeds int data type:" + divRegFractNumer + " + " + divSurdFractNumer + "sqrt(" + this.quadRing.radicand + ")");
+            }
+            if (divSurdFractNumer < Integer.MIN_VALUE || divSurdFractNumer > Integer.MAX_VALUE) {
+                throw new ArithmeticException("Imaginary part of division exceeds int data type:" + divRegFractNumer + " + " + divSurdFractNumer + "sqrt(" + this.quadRing.radicand + ")");
+            }
+            return apply((int) divRegFract.getNumerator(), (int) divSurdFract.getNumerator(), this.quadRing, (int) divRegFract.getDenominator());
         } else {
-            divisibleFlag = (intermediateDenom == 1);
+            return this.dividesFromOtherRing(divisor);
         }
-        if (!divisibleFlag) {
-            String exceptionMessage = this.toASCIIString() + " is not divisible by " + divisor.toASCIIString() + ".";
-            Fraction regPartFract = new Fraction(intermediateRegPart, intermediateDenom);
-            Fraction surdPartFract = new Fraction(intermediateSurdPart, intermediateDenom);
-            Fraction[] fracts = {regPartFract, surdPartFract};
-            throw new NotDivisibleException(exceptionMessage, this, divisor, fracts, this.quadRing);
-        }
-        if (intermediateRegPart < Integer.MIN_VALUE || intermediateRegPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Real part of division exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
-        }
-        if (intermediateSurdPart < Integer.MIN_VALUE || intermediateSurdPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Imaginary part of division exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
-        }
-        if (this.quadRing instanceof ImaginaryQuadraticRing) {
-            return new ImaginaryQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, this.quadRing, (int) intermediateDenom);
-        }
-        if (this.quadRing instanceof RealQuadraticRing) {
-            return new RealQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, this.quadRing, (int) intermediateDenom);
-        }
-        String exceptionMessage = "divides function does not support the " + this.quadRing.getClass().getName() + " implementation of QuadraticRing.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this, divisor);
     }
     
     /**
@@ -1016,36 +1035,35 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
         if (divisor == 0) {
             throw new IllegalArgumentException("Division by 0 is not allowed.");
         }
-        long intermediateRegPart = this.regPartMult;
-        long intermediateSurdPart = this.surdPartMult;
-        long intermediateDenom = this.denominator * divisor;
-        long realCutDown = NumberTheoreticFunctionsCalculator.euclideanGCD(intermediateRegPart, intermediateDenom);
-        long imagCutDown = NumberTheoreticFunctionsCalculator.euclideanGCD(intermediateSurdPart, intermediateDenom);
+        long divRegPart = this.regPartMult;
+        long divSurdPart = this.surdPartMult;
+        long divDenom = this.denominator * divisor;
+        long realCutDown = NumberTheoreticFunctionsCalculator.euclideanGCD(divRegPart, divDenom);
+        long imagCutDown = NumberTheoreticFunctionsCalculator.euclideanGCD(divSurdPart, divDenom);
         if (realCutDown < imagCutDown) {
-            intermediateRegPart /= realCutDown;
-            intermediateSurdPart /= realCutDown;
-            intermediateDenom /= realCutDown;
+            divRegPart /= realCutDown;
+            divSurdPart /= realCutDown;
+            divDenom /= realCutDown;
         } else {
-            intermediateRegPart /= imagCutDown;
-            intermediateSurdPart /= imagCutDown;
-            intermediateDenom /= imagCutDown;
+            divRegPart /= imagCutDown;
+            divSurdPart /= imagCutDown;
+            divDenom /= imagCutDown;
         }
-        if (intermediateDenom < 0) {
-            intermediateRegPart *= -1;
-            intermediateSurdPart *= -1;
-            intermediateDenom *= -1;
+        if (divDenom < 0) {
+            divRegPart *= -1;
+            divSurdPart *= -1;
+            divDenom *= -1;
         }
         boolean divisibleFlag;
         if (this.quadRing.d1mod4) {
-            divisibleFlag = (intermediateDenom == 1 || intermediateDenom == 2);
-            if (intermediateDenom == 2) {
-                divisibleFlag = (Math.abs(intermediateRegPart % 2) == Math.abs(intermediateSurdPart % 2));
+            divisibleFlag = (divDenom == 1 || divDenom == 2);
+            if (divDenom == 2) {
+                divisibleFlag = (Math.abs(divRegPart % 2) == Math.abs(divSurdPart % 2));
             }
         } else {
-            divisibleFlag = (intermediateDenom == 1);
+            divisibleFlag = (divDenom == 1);
         }
         if (!divisibleFlag) {
-            String exceptionMessage = this.toASCIIString() + " is not divisible by " + divisor + ".";
             QuadraticInteger wrappedDivisor = null;
             if (this instanceof ImaginaryQuadraticInteger) {
                 wrappedDivisor = new ImaginaryQuadraticInteger(divisor, 0, this.quadRing);
@@ -1053,25 +1071,175 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             if (this instanceof RealQuadraticInteger) {
                 wrappedDivisor = new RealQuadraticInteger(divisor, 0, this.quadRing);
             }
-            Fraction regPartFract = new Fraction(intermediateRegPart, intermediateDenom);
-            Fraction surdPartFract = new Fraction(intermediateSurdPart, intermediateDenom);
+            Fraction regPartFract = new Fraction(divRegPart, divDenom);
+            Fraction surdPartFract = new Fraction(divSurdPart, divDenom);
             Fraction[] fracts = {regPartFract, surdPartFract};
-            throw new NotDivisibleException(exceptionMessage, this, wrappedDivisor, fracts, this.quadRing);
+            throw new NotDivisibleException(this, wrappedDivisor, fracts);
         }
-        if (intermediateRegPart < Integer.MIN_VALUE || intermediateRegPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Real part of division exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
+        if (divRegPart < Integer.MIN_VALUE || divRegPart > Integer.MAX_VALUE) {
+            throw new ArithmeticException("Real part of division exceeds int data type:" + divRegPart + " + " + divSurdPart + "sqrt(" + this.quadRing.radicand + ")");
         }
-        if (intermediateSurdPart < Integer.MIN_VALUE || intermediateSurdPart > Integer.MAX_VALUE) {
-            throw new ArithmeticException("Imaginary part of division exceeds int data type:" + intermediateRegPart + " + " + intermediateSurdPart + "sqrt(" + this.quadRing.radicand + ")");
+        if (divSurdPart < Integer.MIN_VALUE || divSurdPart > Integer.MAX_VALUE) {
+            throw new ArithmeticException("Imaginary part of division exceeds int data type:" + divRegPart + " + " + divSurdPart + "sqrt(" + this.quadRing.radicand + ")");
         }
-        if (this.quadRing instanceof ImaginaryQuadraticRing) {
-            return new ImaginaryQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, this.quadRing, (int) intermediateDenom);
+        return QuadraticInteger.apply((int) divRegPart, (int) divSurdPart, this.quadRing, (int) divDenom);
+    }
+    
+    /**
+     * Creates a new {@link ImaginaryquadraticInteger} or {@link 
+     * RealQuadraticInteger} object as indicated by the parameters.
+     * @param a The "regular" part of the quadratic integer, the real part in 
+     * the case of an imaginary quadratic integer. For example, 8.
+     * @param b The "surd" part of the quadratic integer, the imaginary part in 
+     * the case of an imaginary quadratic integer. For example, 9.
+     * @param ring The quadratic ring in which to place the quadratic integer. 
+     * This should be either of type {@link ImaginaryQuadraticRing} or of type 
+     * {@link RealQuadraticRing}. Two examples: <code>new 
+     * ImaginaryQuadraticRing(-7)</code> 
+     * (<i>O</i><sub><b>Q</b>(&radic;(&minus;7))</sub>), 
+     * <code>new RealQuadraticRing(7)</code> (<b>Z</b>[&radic;7]).
+     * @return A <code>QuadraticInteger</code> object of the appropriate 
+     * subclass. Two examples: 8 + 9&radic;&minus;7, 8 + 9&radic;7.
+     * @throws NullPointerException If <code>ring</code> is null.
+     * @throws UnsupportedNumberDomainException If <code>ring</code> is not of 
+     * class <code>ImaginaryQuadraticRing</code> nor 
+     * <code>RealQuadraticRing</code>.
+     */
+    public static QuadraticInteger apply(int a, int b, QuadraticRing ring) {
+        return apply(a, b, ring, 1);
+    }
+    
+    /**
+     * Creates a new {@link ImaginaryquadraticInteger} or {@link 
+     * RealQuadraticInteger} object as indicated by the parameters. The 
+     * "denominator" must be expressly given.
+     * @param a The "regular" part of the quadratic integer, the real part in 
+     * the case of an imaginary quadratic integer. For example, 8.
+     * @param b The "surd" part of the quadratic integer, the imaginary part in 
+     * the case of an imaginary quadratic integer. For example, 9.
+     * @param ring The quadratic ring in which to place the quadratic integer. 
+     * This should be either of type {@link ImaginaryQuadraticRing} or of type 
+     * {@link RealQuadraticRing}. Two examples: <code>new 
+     * ImaginaryQuadraticRing(-7)</code> 
+     * (<i>O</i><sub><b>Q</b>(&radic;(&minus;7))</sub>), 
+     * <code>new RealQuadraticRing(7)</code> (<b>Z</b>[&radic;7]).
+     * @param denom The denominator. Preferably 1 or 2, but may use &minus;1 or 
+     * &minus;2 if desired. Be sure to check the latter gives the result you 
+     * expect.
+     * @return A <code>QuadraticInteger</code> object of the appropriate 
+     * subclass. Two examples: 8 + 9&radic;&minus;7, 8 + 9&radic;7.
+     * @throws NullPointerException If <code>ring</code> is null.
+     * @throws UnsupportedNumberDomainException If <code>ring</code> is not of 
+     * class <code>ImaginaryQuadraticRing</code> nor 
+     * <code>RealQuadraticRing</code>.
+     */
+    public static QuadraticInteger apply(int a, int b, QuadraticRing ring, int denom) {
+        if (ring == null) {
+            String excMsg = "Ring parameter must not be null";
+            throw new NullPointerException(excMsg);
         }
-        if (this.quadRing instanceof RealQuadraticRing) {
-            return new RealQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, this.quadRing, (int) intermediateDenom);
+        if (ring instanceof ImaginaryQuadraticRing) {
+            return new ImaginaryQuadraticInteger(a, b, ring, denom);
         }
-        String exceptionMessage = "divides function does not support the " + this.quadRing.getClass().getName() + " implementation of QuadraticRing.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this);
+        if (ring instanceof RealQuadraticRing) {
+            return new RealQuadraticInteger(a, b, ring, denom);
+        }
+        String excMsg = ring.toASCIIString() + " of type " + ring.getClass().getName() + " is not supported for the apply operation at this time";
+        throw new UnsupportedNumberDomainException(excMsg, ring);
+    }
+    
+    /**
+     * Creates a new {@link ImaginaryquadraticInteger} or {@link 
+     * RealQuadraticInteger} object as indicated by the parameters using "theta 
+     * notation." For example, given &theta; = <sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;21</sup>&frasl;<sub>2</sub>, this function could be used to 
+     * convert the representation 12 + 5&theta; to 
+     * <sup>29</sup>&frasl;<sub>2</sub> + 
+     * <sup>5&radic;21</sup>&frasl;<sub>2</sub>.
+     * @param m The "non-theta" part of the theta notation representation. For 
+     * example, 12.
+     * @param n The "theta" part of the theta notation representation. For 
+     * example, 5.
+     * @param ring The quadratic ring in which to place the quadratic integer. 
+     * This should be either of type {@link ImaginaryQuadraticRing} or of type 
+     * {@link RealQuadraticRing}. Two examples: <code>new 
+     * ImaginaryQuadraticRing(-7)</code> 
+     * (<i>O</i><sub><b>Q</b>(&radic;(&minus;7))</sub>), 
+     * <code>new RealQuadraticRing(21)</code> 
+     * (<i>O</i><sub><b>Q</b>(&radic;(21))</sub>).
+     * @return A <code>QuadraticInteger</code> object of the appropriate 
+     * subclass. Two examples: 8 + 9&radic;&minus;7, 8 + 9&radic;7.
+     * @throws IllegalArgumentException If <code>ring</code> does not have 
+     * "half-integers," that is, {@link QuadraticRing#hasHalfIntegers() 
+     * ring.hasHalfIntegers()} returns false.
+     * @throws NullPointerException If <code>ring</code> is null.
+     * @throws UnsupportedNumberDomainException If <code>ring</code> is not of 
+     * class <code>ImaginaryQuadraticRing</code> nor 
+     * <code>RealQuadraticRing</code>.
+     */
+    public static QuadraticInteger applyTheta(int m, int n, QuadraticRing ring) {
+        if (ring == null) {
+            String excMsg = "Ring parameter must not be null";
+            throw new NullPointerException(excMsg);
+        }
+        if (!ring.d1mod4) {
+            String excMsg = "The ring " + ring.toASCIIString() 
+                    + " does not have \"half-integers\"";
+            throw new IllegalArgumentException(excMsg);
+        }
+        return apply(2 * m + n, n, ring, 2);
+    }
+    
+    /**
+     * Superclass constructor for {@link ImaginaryquadraticInteger} and {@link 
+     * RealQuadraticInteger}.
+     * @param a The "regular" part of the quadratic integer.
+     * @param b The "surd" part of the quadratic integer.
+     * @param R The ring of the quadratic integer. It should not be null.
+     * @param denom The "denominator" of the quadratic integer. For example, for 
+     * <sup>29</sup>&frasl;<sub>2</sub> + 
+     * <sup>5&radic;21</sup>&frasl;<sub>2</sub> this would be 2; for 7 + 
+     * &radic;&minus;2 this would be 1.
+     * @throws NullPointerException If <code>R</code> is null.
+     */
+    public QuadraticInteger(int a, int b, QuadraticRing R, int denom) {
+        if (R == null) {
+            String excMsg = "Ring parameter must not be null";
+            throw new NullPointerException(excMsg);
+        }
+        boolean abParityMatch;
+        if (denom == -1 || denom == -2) {
+            a *= -1;
+            b *= -1;
+            denom *= -1;
+        }
+        if (denom < 1 || denom > 2) {
+            throw new IllegalArgumentException("Parameter denom must be 1 or 2.");
+        }
+        if (denom == 2) {
+            abParityMatch = Math.abs(a % 2) == Math.abs(b % 2);
+            if (!abParityMatch) {
+                throw new IllegalArgumentException("Parity of parameter a must match parity of parameter b.");
+            }
+            if (a % 2 == 0) {
+                this.regPartMult = a/2;
+                this.surdPartMult = b/2;
+                this.denominator = 1;
+            } else {
+                if (R.d1mod4) {
+                    this.regPartMult = a;
+                    this.surdPartMult = b;
+                    this.denominator = 2;
+                } else {
+                    throw new IllegalArgumentException("Either parameter a and parameter b need to both be even, or parameter denom needs to be 1.");
+                }
+            }
+        } else {
+            this.regPartMult = a;
+            this.surdPartMult = b;
+            this.denominator = 1;
+        }
+        this.quadRing = R;
     }
     
 }

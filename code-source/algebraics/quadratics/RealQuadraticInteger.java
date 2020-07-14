@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -23,7 +23,8 @@ package algebraics.quadratics;
  * in ascending order according to position on the real number line.
  * @author Alonso del Arte
  */
-public class RealQuadraticInteger extends QuadraticInteger implements Comparable<RealQuadraticInteger> {
+public class RealQuadraticInteger extends QuadraticInteger 
+        implements Comparable<RealQuadraticInteger> {
     
     private final double numVal;
     private final double absNumVal;
@@ -122,6 +123,26 @@ public class RealQuadraticInteger extends QuadraticInteger implements Comparable
     }
     
     /**
+     * Creates a <code>RealQuadraticInteger</code> based on the parameters 
+     * according to "theta" notation. Here &theta; = &phi; = 
+     * <sup>1</sup>&frasl;<sub>2</sub> + <sup>&radic;5</sup>&frasl;<sub>2</sub>, 
+     * the golden ratio. Thus the returned algebraic integer can also be 
+     * instantiated as <code>new RealQuadraticInteger(2 * m + n, n, new 
+     * RealQuadraticRing(5), 2)</code>.
+     * @param m The "non-phi" part of the phi notation representation of the 
+     * number. For example, &minus;2.
+     * @param n The "phi" part of the phi notation representation of the number. 
+     * For example, 1.
+     * @return A <code>RealQuadraticInteger</code> object. For example 
+     * &minus;<sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;5</sup>&frasl;<sub>2</sub> = &minus;2 + &phi;.
+     */
+    public static RealQuadraticInteger applyPhi(int m, int n) {
+        return (RealQuadraticInteger) QuadraticInteger.applyTheta(m, n, 
+                new RealQuadraticRing(5));
+    }
+    
+    /**
      * Alternative constructor, may be used when the denominator is known to be 
      * 1. For example, this constructor may be used for 1 + &radic;5. For 1/2 + 
      * (&radic;5)/2, it will be necessary to use the primary constructor. One 
@@ -139,6 +160,7 @@ public class RealQuadraticInteger extends QuadraticInteger implements Comparable
      * {@link RealQuadraticRing}. However, if <code>R</code> is of type {@link 
      * ImaginaryQuadraticRing} and <code>b = 0</code>, a real ring will be 
      * quietly substituted.
+     * @throws NullPointerException If <code>R</code> is null.
      */
     public RealQuadraticInteger(int a, int b, QuadraticRing R) {
         this(a, b, R, 1);
@@ -169,56 +191,14 @@ public class RealQuadraticInteger extends QuadraticInteger implements Comparable
      * type {@link RealQuadraticRing}. However, if <code>R</code> is of type 
      * {@link ImaginaryQuadraticRing} and <code>b</code> is 0, a real ring will 
      * be quietly substituted.
+     * @throws NullPointerException If <code>R</code> is null.
      */
     public RealQuadraticInteger(int a, int b, QuadraticRing R, int denom) {
-        RealQuadraticRing ring;
-        if (R instanceof RealQuadraticRing) {
-            ring = (RealQuadraticRing) R;
-        } else {
-            if ((R instanceof ImaginaryQuadraticRing) && (b == 0)) {
-                int rad = -R.radicand;
-                if (rad == 1) {
-                    rad = 2;
-                }
-                ring = new RealQuadraticRing(rad);
-            } else {
-                String exceptionMessage = R.toASCIIString() + " is not a real quadratic ring as needed.";
-                throw new IllegalArgumentException(exceptionMessage);
-            }
+        super(a, b, R, denom);
+        if (!(R instanceof RealQuadraticRing)) {
+            String excMsg = "Ring is not real as needed.";
+            throw new IllegalArgumentException(excMsg);
         }
-        boolean abParityMatch;
-        if (denom == -1 || denom == -2) {
-            a *= -1;
-            b *= -1;
-            denom *= -1;
-        }
-        if (denom < 1 || denom > 2) {
-            throw new IllegalArgumentException("Parameter denom must be 1 or 2.");
-        }
-        if (denom == 2) {
-            abParityMatch = Math.abs(a % 2) == Math.abs(b % 2);
-            if (!abParityMatch) {
-                throw new IllegalArgumentException("Parity of parameter a must match parity of parameter b.");
-            }
-            if (a % 2 == 0) {
-                this.regPartMult = a/2;
-                this.surdPartMult = b/2;
-                this.denominator = 1;
-            } else {
-                if (R.d1mod4) {
-                    this.regPartMult = a;
-                    this.surdPartMult = b;
-                    this.denominator = 2;
-                } else {
-                    throw new IllegalArgumentException("Either parameter a and parameter b need to both be even, or parameter denom needs to be 1.");
-                }
-            }
-        } else {
-            this.regPartMult = a;
-            this.surdPartMult = b;
-            this.denominator = 1;
-        }
-        this.quadRing = ring;
         double preNumVal = this.quadRing.realRadSqrt * this.surdPartMult + this.regPartMult;
         this.numVal = preNumVal / this.denominator;
         this.absNumVal = Math.abs(this.numVal);

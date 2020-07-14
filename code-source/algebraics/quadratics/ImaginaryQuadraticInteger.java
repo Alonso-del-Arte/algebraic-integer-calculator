@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,6 +16,9 @@
  */
 package algebraics.quadratics;
 
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.NotDivisibleException;
+
 import java.text.DecimalFormatSymbols;
 
 /**
@@ -28,6 +31,14 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
+    /**
+     * Gives twice the real part of the imaginary quadratic integer. If the ring 
+     * has so-called "half-integers," this might be an odd number, otherwise it 
+     * should always be an even number.
+     * @return Twice the real part. For example, for &minus;3/2 + 
+     * (5&radic;&minus;7)/2, this would be &minus;3; for &minus;3 + 
+     * 5&radic;&minus;7, this would be &minus;6.
+     */
     public long getTwiceRealPartMult() {
         long twiceRealPartMult = this.regPartMult;
         if (this.denominator == 1) {
@@ -36,6 +47,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return twiceRealPartMult;
     }
     
+    /**
+     * Gives twice the imaginary part of the imaginary quadratic integer, before 
+     * multiplication by &radic;<i>d</i>. If the ring has so-called 
+     * "half-integers," this might be an odd number, otherwise it should always 
+     * be an even number.
+     * @return Twice the imaginary part before multiplication by 
+     * &radic;<i>d</i>. For example, for &minus;3/2 + (5&radic;&minus;7)/2, this 
+     * would be 5; for &minus;3 + 5&radic;&minus;7, this would be 10.
+     */
     public long getTwiceImagPartMult() {
         long twiceImagPartMult = this.surdPartMult;
         if (this.denominator == 1) {
@@ -104,6 +124,74 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public double angle() {
         return Math.atan2(this.numValIm, this.numValRe);
+    }
+    
+    public static ImaginaryQuadraticInteger inferStep(ImaginaryQuadraticInteger startPoint, ImaginaryQuadraticInteger endPoint) {
+        if (startPoint.equals(endPoint)) {
+            return new ImaginaryQuadraticInteger(0, 0, startPoint.quadRing);
+        }
+        int startRe = startPoint.regPartMult;
+        int startIm = startPoint.surdPartMult;
+        int endRe = endPoint.regPartMult;
+        int endIm = endPoint.surdPartMult;
+        if (startPoint.quadRing.d1mod4) {
+            if (startPoint.denominator == 1) {
+                startRe *= 2;
+                startIm *= 2;
+            }
+            if (endPoint.denominator == 1) {
+                endRe *= 2;
+                endIm *= 2;
+            }
+        }
+        QuadraticInteger step;
+        if (startRe == endRe) {
+            step = new ImaginaryQuadraticInteger(0, 1, startPoint.quadRing);
+            if (startIm > endIm) {
+                step = step.times(-1);
+            }
+        } else if (startIm == endIm) {
+            step = new ImaginaryQuadraticInteger(1, 0, startPoint.quadRing);
+            if (startRe > endRe) {
+                step = step.times(-1);
+            }
+        } else {
+            step = endPoint.minus(startPoint);
+            boolean keepGoing = true;
+            int divisor = 2;
+            while (keepGoing) {
+                try {
+                    step = step.divides(divisor);
+                    keepGoing = step.abs() > 1.0;
+                    divisor = 1;
+                } catch (NotDivisibleException nde) {
+                    keepGoing = nde.getAbs() > 1.0;
+                }
+                divisor++;
+            }
+        }
+        return (ImaginaryQuadraticInteger) step;
+    }
+    
+    /*(TEMPORARY JAVADOC DISABLE)*
+     * Makes a list of the imaginary quadratic integers in a given particular 
+     * imaginary quadratic ring which on the complex plane are on straight line 
+     * starting with this imaginary quadratic integer and the specified other 
+     * imaginary quadratic integer. Infers direction and step as needed.
+     * @param endPoint The imaginary quadratic integer to end with.
+     * @return A list of imaginary quadratic integers, starting with this 
+     * imaginary quadratic integer and ending with <code>endPoint</code>, with 
+     * other imaginary quadratic integers in between if applicable.
+     * @throws AlgebraicDegreeOverflowException If this imaginary quadratic 
+     * integer and <code>endPoint</code> come from different imaginary quadratic 
+     * rings.
+     */
+    public ImaginaryQuadraticIntegerLine to(ImaginaryQuadraticInteger endPoint) {
+        if (!this.quadRing.equals(endPoint.quadRing)) {
+            String exceptionMessage = "Ring that contains both " + this.toASCIIString() + " and " + endPoint.toASCIIString() + " contains infinitely many algebraic integers between them.";
+            throw new AlgebraicDegreeOverflowException(exceptionMessage, 2, this, endPoint);
+        }
+        return new ImaginaryQuadraticIntegerLine(endPoint, this);
     }
       
     /**
@@ -183,7 +271,28 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         }
         return parsedSoFar;
     }
-      
+    
+    /**
+     * Creates an <code>ImaginaryQuadraticInteger</code> based on the parameters 
+     * according to "omega" notation. Here &omega; = 
+     * &minus;<sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub>, a complex cubic root of 
+     * unity. Thus the returned algebraic integer can also be instantiated as 
+     * <code>new ImaginaryQuadraticInteger(2 * m - n, n, new
+     * ImaginaryQuadraticRing(-3), 2)</code>.
+     * @param m The "non-omega" part of the phi notation representation of the 
+     * number. For example, &minus;2.
+     * @param n The "omega" part of the phi notation representation of the 
+     * number. For example, 1.
+     * @return An <code>ImaginaryQuadraticInteger</code> object. For example 
+     * &minus;<sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub> = &minus;2 + &omega;.
+     */
+    public static ImaginaryQuadraticInteger applyOmega(int m, int n) {
+        return (ImaginaryQuadraticInteger) QuadraticInteger.apply(2 * m - n, n, 
+                new ImaginaryQuadraticRing(-3), 2);
+    }
+    
     /**
      * Alternative constructor, may be used when the denominator is known to be 
      * 1. For example, this constructor may be used for &minus;1 + 
@@ -200,10 +309,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * @param R The ring to which this algebraic integer belongs to. For 
      * example, for 5 + &radic;&minus;7, this parameter could be <code>new 
      * ImaginaryQuadraticRing(-7)</code>.
-     * @throws IllegalArgumentException If R is not of the type {@link 
-     * ImaginaryQuadraticRing}. However, if R is of type {@link 
-     * RealQuadraticRing} and b = 0, an imaginary ring will be quietly 
-     * substituted.
+     * @throws IllegalArgumentException If <code>R</code> is not of type {@link 
+     * ImaginaryQuadraticRing}. This exception will occur even if <code>b</code>
+     * = 0 (there will be no quiet substitutions like in an earlier version of 
+     * this class).
+     * @throws NullPointerException If <code>R</code> is null.
      */
     public ImaginaryQuadraticInteger(int a, int b, QuadraticRing R) {
         this(a, b, R, 1);
@@ -233,52 +343,14 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * of the type {@link ImaginaryQuadraticRing}. However, if R is of type 
      * {@link RealQuadraticRing} and b = 0, an imaginary ring will be quietly 
      * substituted.
+     * @throws NullPointerException If <code>R</code> is null.
      */
     public ImaginaryQuadraticInteger(int a, int b, QuadraticRing R, int denom) {
-        ImaginaryQuadraticRing ring;
-        if (R instanceof ImaginaryQuadraticRing) {
-            ring = (ImaginaryQuadraticRing) R;
-        } else {
-            if ((R instanceof RealQuadraticRing) && (b == 0)) {
-                ring = new ImaginaryQuadraticRing(-R.radicand);
-            } else {
-                String exceptionMessage = R.toASCIIString() + " is not an imaginary quadratic ring as needed.";
-                throw new IllegalArgumentException(exceptionMessage);
-            }
+        super(a, b, R, denom);
+        if (!(R instanceof ImaginaryQuadraticRing)) {
+            String excMsg = "Ring is not imaginary as needed.";
+            throw new IllegalArgumentException(excMsg);
         }
-        boolean abParityMatch;
-        if (denom == -1 || denom == -2) {
-            a *= -1;
-            b *= -1;
-            denom *= -1;
-        }
-        if (denom < 1 || denom > 2) {
-            throw new IllegalArgumentException("Parameter denom must be 1 or 2.");
-        }
-        if (denom == 2) {
-            abParityMatch = Math.abs(a % 2) == Math.abs(b % 2);
-            if (!abParityMatch) {
-                throw new IllegalArgumentException("Parity of parameter a must match parity of parameter b.");
-            }
-            if (a % 2 == 0) {
-                this.regPartMult = a/2;
-                this.surdPartMult = b/2;
-                this.denominator = 1;
-            } else {
-                if (R.d1mod4) {
-                    this.regPartMult = a;
-                    this.surdPartMult = b;
-                    this.denominator = 2;
-                } else {
-                    throw new IllegalArgumentException("Either parameter a and parameter b need to both be even, or parameter denom needs to be 1.");
-                }
-            }
-        } else {
-            this.regPartMult = a;
-            this.surdPartMult = b;
-            this.denominator = 1;
-        }
-        this.quadRing = ring;
         double realPart = this.regPartMult;
         if (this.denominator == 2) {
             realPart /= 2;
