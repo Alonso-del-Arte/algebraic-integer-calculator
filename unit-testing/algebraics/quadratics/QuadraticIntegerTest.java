@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -903,7 +903,47 @@ public class QuadraticIntegerTest {
     }
     
     /**
-     * Test of applyTheta method of class QuadraticInteger.
+     * Another test of apply method of class QuadraticInteger. Trying to use 
+     * null as a ring parameter should cause an exception with a message to that 
+     * effect.
+     */
+    @Test
+    public void testApplyRejectsNullRing() {
+        int a = 5403;
+        int b = 29;
+        int denom = 2;
+        try {
+            QuadraticInteger badQuadInt = QuadraticInteger.apply(a, b, null, denom);
+            String msg = "Should not have been able to apply null ring to " 
+                    + badQuadInt.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to apply null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            if (excMsg == null) {
+                fail("Exception message should not be null");
+            } else {
+                System.out.println("\"" + excMsg + "\"");
+                String expected = "ring";
+                String msg = "Exception message contains the word \"" + expected 
+                        + "\"";
+                assert excMsg.toLowerCase().contains(expected) : msg;
+            }
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to use null ring";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of applyTheta method of class QuadraticInteger. It should be the 
+     * case that, given &theta; = <sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub>, that the reverse holds 
+     * true; and that given &theta; = <sup>1</sup>&frasl;<sub>2</sub> 
+     * + <sup>&radic;13</sup>&frasl;<sub>2</sub>, then 
+     * &minus;<sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;13</sup>&frasl;<sub>2</sub> = &minus;2 + &theta;.
      */
     @Test
     public void testApplyTheta() {
@@ -919,6 +959,60 @@ public class QuadraticIntegerTest {
     }
 
     /**
+     * Another test of applyTheta method of class QuadraticInteger. It should be 
+     * the case that, given &theta; = <sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub>,then 1 + &radic;&minus;7 = 
+     * 2&theta;; and that given &theta; = <sup>1</sup>&frasl;<sub>2</sub> 
+     * + <sup>&radic;13</sup>&frasl;<sub>2</sub>, then 
+     * &minus;3 + &radic;13 = &minus;4 + 2&theta;.
+     */
+    @Test
+    public void testApplyThetaFullIntegers() {
+        System.out.println("applyTheta");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-7);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 1, ring);
+        QuadraticInteger result = QuadraticInteger.applyTheta(0, 2, ring);
+        assertEquals(expResult, result);
+        ring = new RealQuadraticRing(13);
+        expResult = new RealQuadraticInteger(-3, 1, ring);
+        result = QuadraticInteger.applyTheta(-4, 2, ring);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Another test of applyTheta method of class QuadraticInteger. Trying to 
+     * use null as a ring parameter should cause an exception with a message to 
+     * that effect.
+     */
+    @Test
+    public void testApplyThetaRejectsNullRing() {
+        int a = -1;
+        int b = 44438;
+        try {
+            QuadraticInteger badQuadInt = QuadraticInteger.applyTheta(a, b, null);
+            String msg = "Should not have been able to apply null ring to " 
+                    + badQuadInt.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to apply null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            if (excMsg == null) {
+                fail("Exception message should not be null");
+            } else {
+                System.out.println("\"" + excMsg + "\"");
+                String expected = "ring";
+                String msg = "Exception message contains the word \"" + expected 
+                        + "\"";
+                assert excMsg.toLowerCase().contains(expected) : msg;
+            }
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to use null ring";
+            fail(msg);
+        }
+    }
+    
+    /**
      * Another test of applyTheta method of class QuadraticInteger. Trying to 
      * use a ring that does not have so-called "half-integers" should cause an 
      * exception.
@@ -928,14 +1022,17 @@ public class QuadraticIntegerTest {
         RealQuadraticRing ring = new RealQuadraticRing(2);
         try {
             QuadraticInteger result = QuadraticInteger.applyTheta(R_A, R_B, ring);
-            String failMsg = "Trying to use " + ring.toASCIIString() + " for applyTheta should have caused an exception, not given result " + result.toString();
-            fail(failMsg);
+            String msg = "Trying to use " + ring.toASCIIString() 
+                    + " for applyTheta should have caused an exception, not given result " + result.toString();
+            fail(msg);
         } catch (IllegalArgumentException iae) {
-            System.out.println("Trying to use " + ring.toASCIIString() + " for applyTheta correctly triggered IllegalArgumentException");
+            System.out.println("Trying to use " + ring.toASCIIString() 
+                    + " for applyTheta correctly triggered IllegalArgumentException");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to use " + ring.toASCIIString() + " for applyTheta";
-            fail(failMsg);
+            String msg = e.getClass().getName() 
+                    + " is the wrong exception to throw for trying to use " + ring.toASCIIString() + " for applyTheta";
+            fail(msg);
         }
     }
 

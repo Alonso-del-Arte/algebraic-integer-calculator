@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -2780,6 +2780,7 @@ public class ImaginaryQuadraticIntegerTest {
         }
     }
 
+    // TODO: Break up this constructor tests into smaller tests
     /**
      * Test of ImaginaryQuadraticInteger class constructor. The main thing we're 
      * testing here is that an invalid argument triggers an 
@@ -2815,6 +2816,35 @@ public class ImaginaryQuadraticIntegerTest {
         } catch (IllegalArgumentException iae) {
             System.out.println("Attempt to use mismatched parities correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
         }
-    }    
+    }
+    
+    @Test
+    public void testConstructorNullRing() {
+        int a = 43;
+        int b = -577;
+        try {
+            ImaginaryQuadraticInteger badQuadInt 
+                    = new ImaginaryQuadraticInteger(a, b, null, 2);
+            String msg = "Should not have been able to create " 
+                    + badQuadInt.toString() + " with null ring";
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to use null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            if (excMsg == null) {
+                fail("Exception message should not be null");
+            } else {
+                System.out.println("\"" + excMsg + "\"");
+                String expected = "ring";
+                String msg = "Exception message contains the word \"" + expected 
+                        + "\"";
+                assert excMsg.toLowerCase().contains(expected) : msg;
+            }
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to use null ring";
+            fail(msg);
+        }
+    }
     
 }
