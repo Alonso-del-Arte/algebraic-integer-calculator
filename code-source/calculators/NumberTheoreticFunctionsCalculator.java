@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -151,6 +151,7 @@ public class NumberTheoreticFunctionsCalculator {
      * negative number, the factorization starts with -1 followed by the 
      * factorization of its positive counterpart. For example, given num = 
      * -44100, the resulting list should be -1, 2, 2, 3, 3, 5, 5, 7, 7.
+     * @since Version 0.1
      */
     public static List<Integer> primeFactors(int num) {
         int n = num;
@@ -189,6 +190,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @return True if the number is prime (even if negative), false otherwise.
      * For example, &minus;2 and 47 should both return true, &minus;25, 0 and 91 
      * should all return false.
+     * @since Version 0.1
      */
     public static boolean isPrime(int num) {
         switch (num) {
@@ -219,6 +221,7 @@ public class NumberTheoreticFunctionsCalculator {
      * Determines whether a given purely real number is prime or not.
      * @param num The number to be tested for primality.
      * @return True if the number is prime, false otherwise.
+     * @since Version 0.1
      */
     public static boolean isPrime(long num) {
         if (num == -1 || num == 0 || num == 1) {
@@ -260,6 +263,7 @@ public class NumberTheoreticFunctionsCalculator {
      * 2018, this program does not really have support for cubic integers, so 
      * asking if 3 &minus; &#8731;2 is prime would probably trigger this 
      * exception.
+     * @since Version 0.5
      */
     public static boolean isPrime(AlgebraicInteger num) {
         if (isPrime(num.norm())) {
@@ -355,6 +359,7 @@ public class NumberTheoreticFunctionsCalculator {
      * have solutions, such as <i>x</i> = 4.
      * @throws IllegalArgumentException If p is not an odd prime. Note that this 
      * is a runtime exception.
+     * @since Version 0.2
      */
     public static byte symbolLegendre(int a, int p) {
         if (!isPrime(p)) {
@@ -366,9 +371,9 @@ public class NumberTheoreticFunctionsCalculator {
         if (euclideanGCD(a, p) > 1) {
             return 0;
         }
-        int oddPrime = Math.abs(p); // Making sure p is positive
-        int exponent = (oddPrime - 1)/2;
-        int modStop = oddPrime - 2;
+        final int oddPrime = Math.abs(p); // Making sure p is positive
+        final int exponent = (oddPrime - 1)/2;
+        final int modStop = oddPrime - 2;
         int adjA = a;
         if (adjA > (oddPrime - 1)) {
             adjA %= oddPrime;
@@ -400,6 +405,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @return The result, for example, 1.
      * @throws IllegalArgumentException If m is even or negative (or both). Note 
      * that this is a runtime exception.
+     * @since Version 0.2
      */
     public static byte symbolJacobi(int n, int m) {
         if (m % 2 == 0) {
@@ -414,11 +420,14 @@ public class NumberTheoreticFunctionsCalculator {
             return 0;
         }
         List<Integer> mFactors = primeFactors(m);
-        byte symbol = 1;
+        List<Integer> symbols = new ArrayList<>();
+        int curr;
         for (Integer mFactor : mFactors) {
-            symbol *= symbolLegendre(n, mFactor);
+            curr = symbolLegendre(n, mFactor);
+            symbols.add(curr);
         }
-        return symbol;
+        int symbol = symbols.stream().reduce(1, (a, b) -> a * b);
+        return (byte) symbol;
     }
     
     private static byte symbolKroneckerNegOne(int n) {
@@ -454,6 +463,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @param n Parameter n, for example, 3.
      * @param m Parameter m, for example, 2.
      * @return The result, for example, &minus;1.
+     * @since Version 0.3
      */
     public static byte symbolKronecker(int n, int m) {
         if (euclideanGCD(n, m) > 1) {
@@ -511,14 +521,20 @@ public class NumberTheoreticFunctionsCalculator {
      * Note that there is no checking of norm overflows, so, for example, 
      * imaginary quadratic integer objects with erroneously negative norms would 
      * be erroneously sorted before units.
+     * @deprecated Recommend using {@link algebraics.NormComparator} or {@link 
+     * algebraics.NormAbsoluteComparator} instead (with the appropriate 
+     * functions or procedures from <code>java.util</code>). I intend to remove 
+     * this function well prior to Version 1.0.
+     * @since Version 0.5
      */
+    @Deprecated
     public static List<AlgebraicInteger> sortListAlgebraicIntegersByNorm(List<AlgebraicInteger> listAlgInt) {
         boolean swapFlag;
         AlgebraicInteger a, b;
         List<AlgebraicInteger> nums = new ArrayList<>();
-        for (AlgebraicInteger ai : listAlgInt) {
+        listAlgInt.forEach((ai) -> {
             nums.add(ai);
-        }
+        });
         int opLen = listAlgInt.size() - 1;
         if (opLen > 0) {
             do {
@@ -581,11 +597,14 @@ public class NumberTheoreticFunctionsCalculator {
                     }
                 }
             }
-            if (d > 0){
+            if (d > 0) {
                 for (int normEuclRealD : NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
                     if (d == normEuclRealD) {
                         notUFDFlag = false;
                     }
+                }
+                if (notUFDFlag) {
+                    notUFDFlag = fieldClassNumber(num.getRing()) > 1;
                 }
             }
             if (notUFDFlag) {
@@ -722,6 +741,9 @@ public class NumberTheoreticFunctionsCalculator {
      * 2018, this program does not really have support for cubic integers, so 
      * asking if 3 &minus; &#8731;2 is irreducible would probably trigger this 
      * exception.
+     * @throws NullPointerException If <code>num</code> is null. The exception 
+     * message will be "Null is not an algebraic integer, neither reducible nor 
+     * irreducible".
      */
     public static boolean isIrreducible(AlgebraicInteger num) {
         if (num instanceof ImaginaryQuadraticInteger || num instanceof RealQuadraticInteger) {
@@ -803,6 +825,10 @@ public class NumberTheoreticFunctionsCalculator {
                     }
                 }
             }
+        }
+        if (num == null) {
+            String excMsg = "Null is not an algebraic integer, neither reducible nor irreducible";
+            throw new NullPointerException(excMsg);
         }
         String exceptionMessage = "The domain of the number " + num.toASCIIString() + " is not yet supported.";
         throw new UnsupportedNumberDomainException(exceptionMessage, num);
@@ -919,9 +945,9 @@ public class NumberTheoreticFunctionsCalculator {
             }
         }
         int product = 1;
-        for (int factor : factors) {
-            product *= factor;
-        }
+        product = factors.stream().map((factor) 
+                -> factor).reduce(product, (accumulator, _item) 
+                        -> accumulator * _item);
         return product;
     }
     
@@ -1214,14 +1240,18 @@ public class NumberTheoreticFunctionsCalculator {
      * @return The fundamental unit. For example, for <b>Z</b>[&radic;2], this 
      * would be 1 + &radic;2; for <b>Z</b>[&radic;3] this would be 2 + &radic;3.
      * @throws ArithmeticException Since computations are performed using 32-bit 
-     * and 64-bit integers, an overflow could occur, especially if the 
-     * fundamental unit is much larger than 2<sup>31</sup>.
+     * and 64-bit integers, an overflow could occur, especially if the real or 
+     * imaginary part of the fundamental unit is less than 
+     * &minus;(2<sup>31</sup>) or greater than 2<sup>31</sup> &minus; 1.
      * @throws IllegalArgumentException If called upon with a supported domain 
      * known to not have infinitely many units, such as an imaginary quadratic 
      * integer ring, this runtime exception will be thrown.
+     * @throws NullPointerException If <code>ring</code> is null. The exception 
+     * message will be "Null ring has no fundamental unit".
      * @throws UnsupportedNumberDomainException If called upon with a number 
      * domain for which support has not been fully fleshed out yet, such as a 
-     * simple cubic integer ring.
+     * simple cubic integer ring. This exception should never be used to 
+     * indicate a mathematical fact about the pertinent number domain.
      */
     public static AlgebraicInteger fundamentalUnit(IntegerRing ring) {
         if (ring instanceof ImaginaryQuadraticRing) {
@@ -1234,12 +1264,12 @@ public class NumberTheoreticFunctionsCalculator {
             int d = r.getRadicand();
             long xd;
             long trialRegNeg;
-            int trialSurd = 1;
+            long trialSurd = 1;
             boolean notFoundYet = true;
             do {
                 xd = trialSurd * trialSurd * d;
                 trialRegNeg = (long) Math.floor(Math.sqrt(xd));
-                potentialUnit = new RealQuadraticInteger((int) trialRegNeg, trialSurd, r);
+                potentialUnit = new RealQuadraticInteger((int) trialRegNeg, (int) trialSurd, r);
                 if (potentialUnit.norm() == -1) {
                     notFoundYet = false;
                 }
@@ -1260,13 +1290,13 @@ public class NumberTheoreticFunctionsCalculator {
                     xd = trialSurd * trialSurd * d;
                     trialRegNeg = (long) Math.floor(Math.sqrt(xd - 4));
                     trialRegNeg += ((trialRegNeg % 2) - 1); // Make sure it's odd
-                    potentialHalfUnit = new RealQuadraticInteger((int) trialRegNeg, trialSurd, r, 2);
+                    potentialHalfUnit = new RealQuadraticInteger((int) trialRegNeg, (int) trialSurd, r, 2);
                     if (potentialHalfUnit.norm() == -1) {
                         return potentialHalfUnit;
                     } else {
                         currAbs = potentialHalfUnit.abs();
                     }
-                    potentialHalfUnit = potentialHalfUnit.plus(1); // Add 2/2 to "regular" part
+                    potentialHalfUnit = potentialHalfUnit.plus(1);
                     if (potentialHalfUnit.norm() == 1) {
                         return potentialHalfUnit;
                     }
@@ -1282,6 +1312,10 @@ public class NumberTheoreticFunctionsCalculator {
         }
         if (ring instanceof Zeta8Ring) {
             return ZETA_8;
+        }
+        if (ring == null) {
+            String excMsg = "Null ring has no fundamental unit";
+            throw new NullPointerException(excMsg);
         }
         String exceptionMessage = "Fundamental unit function not yet supported for " + ring.toASCIIString();
         throw new UnsupportedNumberDomainException(exceptionMessage, ring);
@@ -1364,7 +1398,7 @@ public class NumberTheoreticFunctionsCalculator {
      * supported, but none of higher algebraic degree.
      */
     public static AlgebraicInteger divideOutUnits(AlgebraicInteger num) {
-        if (num.abs() == 0.0) {
+        if (num.norm() == 0) {
             return num;
         }
         if (num instanceof ImaginaryQuadraticInteger) {
@@ -1421,6 +1455,10 @@ public class NumberTheoreticFunctionsCalculator {
         if (ring instanceof Zeta8Ring) {
             return new Zeta8Integer(1, 0, 0, 0);
         }
+        if (ring == null) {
+            String excMsg = "Null ring does not contain the number 1";
+            throw new NullPointerException(excMsg);
+        }
         String exceptionMessage = "1 from given ring function not yet supported for " + ring.toASCIIString() + ".";
         throw new UnsupportedNumberDomainException(exceptionMessage, ring);
     }
@@ -1451,6 +1489,8 @@ public class NumberTheoreticFunctionsCalculator {
      * 2018, this function supports real and imaginary quadratic rings but no 
      * kind of cubic ring, so asking this function to compute the class number 
      * of <b>Z</b>[&#8731;2] should trigger this exception.
+     * @throws NullPointerException If <code>ring</code> is null. The exception 
+     * message will be "Null ring does not have class number".
      */
     public static int fieldClassNumber(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
@@ -1488,6 +1528,10 @@ public class NumberTheoreticFunctionsCalculator {
         }
         if (ring instanceof Zeta8Ring) {
             return 1;
+        }
+        if (ring == null) {
+            String excMsg = "Null ring does not have class number";
+            throw new NullPointerException(excMsg);
         }
         String exceptionMessage = "Class number function not yet supported for " + ring.toASCIIString();
         throw new UnsupportedNumberDomainException(exceptionMessage, ring);
