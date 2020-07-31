@@ -34,13 +34,15 @@ import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
 
+import static calculators.NumberTheoreticFunctionsCalculator.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -174,8 +176,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
            better term, "the Heegner companion primes." */
         int absD, currDiff, currCompCand, currSqrIndex, currSqrDMult;
         boolean numNotFoundYet;
-        for (int d = 0; d < NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS.length; d++) {
-            absD = (-1) * NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[d];
+        for (int d = 0; d < HEEGNER_NUMBERS.length; d++) {
+            absD = (-1) * HEEGNER_NUMBERS[d];
             currIndex = 0;
             do {
                 currPrime = primesList.get(currIndex);
@@ -232,7 +234,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         unsortedList.add(numberC);
         unsortedList.add(numberA);
         unsortedList.add(numberB);
-        List<AlgebraicInteger> result = NumberTheoreticFunctionsCalculator.sortListAlgebraicIntegersByNorm(unsortedList);
+        List<AlgebraicInteger> result = sortListAlgebraicIntegersByNorm(unsortedList);
         assertEquals(expResult, result);
         ring = new RealQuadraticRing(7);
         numberA = new RealQuadraticInteger(8, 3, ring); // Unit
@@ -246,7 +248,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         unsortedList.add(numberC);
         unsortedList.add(numberA);
         unsortedList.add(numberB);
-        result = NumberTheoreticFunctionsCalculator.sortListAlgebraicIntegersByNorm(unsortedList);
+        result = sortListAlgebraicIntegersByNorm(unsortedList);
         assertEquals(expResult, result);
     }
     
@@ -275,6 +277,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * factors be in ascending order, so the expected result is constructed as a 
      * list, not a set.</p>
      */
+    // TODO: Break this test up into smaller tests
     @Test
     public void testPrimeFactors() {
         System.out.println("primeFactors(int)");
@@ -498,6 +501,40 @@ public class NumberTheoreticFunctionsCalculatorTest {
             System.out.println("\"" + unde.getMessage() + "\"");
         }
     }
+    
+    @Test
+    public void testPrimeFactorsFromUFDNotEuclidean() {
+        RealQuadraticRing ring = new RealQuadraticRing(97);
+        RealQuadraticInteger number = new RealQuadraticInteger(345, 35, ring, 2);
+        try {
+            List<AlgebraicInteger> factors = primeFactors(number);
+            System.out.print("Factors of " + number.toASCIIString() 
+                    + " are said to be: ");
+            int lastIndex = factors.size() - 1;
+            for (int i = 0; i < lastIndex; i++) {
+                System.out.print(factors.get(i).toASCIIString() + ", ");
+            }
+            System.out.println(factors.get(lastIndex) + ".");
+            QuadraticInteger product = new RealQuadraticInteger(1, 0, ring);
+            QuadraticInteger m;
+            for (AlgebraicInteger factor : factors) {
+                m = (QuadraticInteger) factor;
+                product = product.times(m);
+            }
+            assertEquals(number, product);
+        } catch (NonUniqueFactorizationDomainException nufde) {
+            String msg = "Trying to factor " + number.toString() 
+                    + " should not have caused NonUniqueFactorizationDomainException";
+            System.out.println(msg);
+            System.out.println("\"" + nufde.getMessage() + "\"");
+            fail(msg);
+        } catch (Exception e) {
+            String msg = e.getClass().getName() 
+                    + " is the wrong exception to throw for trying to factor " 
+                    + number.toString();
+            fail(msg);
+        }
+    }
 
     /**
      * Test of isPrime method, of class NumberTheoreticFunctionsCalculator. The 
@@ -508,6 +545,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * I'm not sure; if you like you can uncomment the line for it and perhaps 
      * change assertFalse to assertTrue.
      */
+    // TODO: Break this test up into smaller tests
     @Test
     public void testIsPrime() {
         System.out.println("isPrime(int)");
@@ -654,8 +692,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
                         numberFromNonUFD = numberFromNonUFD.divides(2);
                         norm /= 4;
                     } catch (NotDivisibleException nde) {
-                        String failMessage = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
-                        fail(failMessage);
+                        String msg = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
+                        fail(msg);
                     }
                 }
                 if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
@@ -681,8 +719,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
                         numberFromNonUFD = numberFromNonUFD.divides(2);
                         norm /= 4;
                     } catch (NotDivisibleException nde) {
-                        String failMessage = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
-                        fail(failMessage);
+                        String msg = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
+                        fail(msg);
                     }
                 }
                 if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
@@ -726,13 +764,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
         z = new IllDefinedQuadraticInteger(5, 4, r);
         try {
             boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isPrime(z);
-            String failMessage = "Somehow determined that " + z.toASCIIString() + " is ";
+            String msg = "Somehow determined that " + z.toASCIIString() + " is ";
             if (compositeFlag) {
-                failMessage = failMessage + "not ";
+                msg = msg + "not ";
             }
-            failMessage = failMessage + " prime.";
-            System.out.println(failMessage);
-            fail(failMessage);
+            msg = msg + " prime.";
+            System.out.println(msg);
+            fail(msg);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("isPrime on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
             System.out.println("\"" + unde.getMessage() + "\"");
@@ -743,6 +781,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of isIrreducible method, of class 
      * NumberTheoreticFunctionsCalculator.
      */
+    // TODO: Break this test up into smaller tests
     @Test
     public void testIsIrreducible() {
         System.out.println("isIrreducible");
@@ -838,17 +877,17 @@ public class NumberTheoreticFunctionsCalculatorTest {
         QuadraticRing currRing;
         QuadraticInteger currInt;
         String assertionMessage;
-        for (int discrUFDIm : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D) {
+        for (int discrUFDIm : NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D) {
             currRing = new ImaginaryQuadraticRing(discrUFDIm);
             for (int v = -3; v < 8; v++) {
                 for (int w = 9; w < 12; w++) {
                     currInt = new ImaginaryQuadraticInteger(v, w, currRing);
                     assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
-                    assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                    assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), isIrreducible(currInt));
                 }
             }
         }
-        for (int discrUFDRe : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+        for (int discrUFDRe : NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
             currRing = new RealQuadraticRing(discrUFDRe);
             for (int x = -3; x < 8; x++) {
                 for (int y = 1; y < 5; y++) {
@@ -857,34 +896,65 @@ public class NumberTheoreticFunctionsCalculatorTest {
                         System.out.println("Skipping " + currInt.toASCIIString() + " for this test.");
                     } else {
                         assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
-                        assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                        assertEquals(assertionMessage, isPrime(currInt), isIrreducible(currInt));
                     }
                 }
             }
         }
         for (int discrNonUFDIm = -5; discrNonUFDIm > -200; discrNonUFDIm -= 4) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrNonUFDIm)) {
+            if (isSquareFree(discrNonUFDIm)) {
                 currRing = new ImaginaryQuadraticRing(discrNonUFDIm);
                 currInt = new ImaginaryQuadraticInteger(2, 0, currRing);
                 assertionMessage = "2 in " + currRing.toString() + " should be found to be irreducible";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                assertTrue(assertionMessage, isIrreducible(currInt));
                 assertionMessage = assertionMessage + " but not prime";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt));
+                assertFalse(assertionMessage, isPrime(currInt));
             }
         }
         for (int discrNonUFDRe = 10; discrNonUFDRe < 200; discrNonUFDRe += 5) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrNonUFDRe)) {
+            if (isSquareFree(discrNonUFDRe)) {
                 currRing = new RealQuadraticRing(discrNonUFDRe);
                 for (int p = 3; p < 20; p += 2) {
-                    if (NumberTheoreticFunctionsCalculator.isPrime(p)) {
+                    if (isPrime(p)) {
                         currInt = new RealQuadraticInteger(p, 0, currRing);
-                        if (NumberTheoreticFunctionsCalculator.isPrime(currInt)) {
-                            assertionMessage = "Since " + p + " is said to be prime in " + currRing.toString() + ", it should also be said to be irreducible.";
-                            assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currInt));
+                        if (isPrime(currInt)) {
+                            assertionMessage = "Since " + p 
+                                    + " is said to be prime in " 
+                                    + currRing.toString() 
+                                    + ", it should also be said to be irreducible.";
+                            assertTrue(assertionMessage, isIrreducible(currInt));
                         }
                     }
                 }
             }
+        }
+    }
+    
+    /**
+     * Another test of isIrreducible method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
+     * algebraics.AlgebraicInteger AlgebraicInteger} to {@link 
+     * NumberTheoreticFunctionsCalculator#isIrreducible(algebraics.AlgebraicInteger) 
+     * isIrreducible()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNullNeitherReducibleNorIrreducible() {
+        try {
+            boolean result = NumberTheoreticFunctionsCalculator.isIrreducible(null);
+            String failMsg = "Trying to see if null is irreducible should have caused an exception, not given result " 
+                    + result;
+            fail(failMsg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to see if null is irreducible correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            assertNotNull("Exception message should not be null", excMsg);
+            assert !excMsg.equals("") : "Exception message should not be empty";
+        } catch (RuntimeException re) {
+            String failMsg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to see if null is irreducible";
+            fail(failMsg);
         }
     }
     
@@ -986,26 +1056,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
 
     /**
      * Test of symbolJacobi method, of class NumberTheoreticFunctionsCalculator. 
-     * First, it checks that Legendre(<i>a</i>, <i>p</i>) = Jacobi(<i>a</i>, 
-     * <i>p</i>), where <i>p</i> is an odd prime. Next, it checks that 
-     * Jacobi(<i>n</i>, <i>pq</i>) = Legendre(<i>n</i>, <i>p</i>) 
-     * Legendre(<i>n</i>, <i>q</i>). If the Legendre symbol test fails, the 
-     * result of this test is meaningless. Then follows the actual business of 
-     * checking Jacobi(<i>n</i>, <i>m</i>).
+     * This test checks Jacobi(<i>n</i>, <i>pq</i>), where <i>n</i> is an 
+     * integer from 15 to 19, <i>p</i> is an odd prime and <i>q</i> is the next 
+     * higher prime.
      */
-    @Test
-    public void testJacobiLegendreCorrespondence() {
-        System.out.println("Checking overlap with Legendre symbol...");
-        byte expResult, result;
-        for (int i = 1; i < primesListLength; i++) {
-            for (int a = 5; a < 13; a++) {
-                expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(a, primesList.get(i));
-                result = NumberTheoreticFunctionsCalculator.symbolJacobi(a, primesList.get(i));
-                assertEquals(expResult, result);
-            }
-        }
-    }
-    
     @Test
     public void testJacobiSymbol() {
         System.out.println("symbolJacobi");
@@ -1033,6 +1087,28 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
 
+    /**
+     * Another test of symbolJacobi method, of class 
+     * NumberTheoreticFunctionsCalculator. First, it checks that 
+     * Legendre(<i>a</i>, <i>p</i>) = Jacobi(<i>a</i>, <i>p</i>), where <i>p</i> 
+     * is an odd prime. Next, it checks that Jacobi(<i>n</i>, <i>pq</i>) = 
+     * Legendre(<i>n</i>, <i>p</i>) Legendre(<i>n</i>, <i>q</i>). If the 
+     * Legendre symbol test fails, the result of this test is meaningless. Then 
+     * follows the actual business of checking Jacobi(<i>n</i>, <i>m</i>).
+     */
+    @Test
+    public void testJacobiLegendreCorrespondence() {
+        System.out.println("Checking overlap with Legendre symbol...");
+        byte expResult, result;
+        for (int i = 1; i < primesListLength; i++) {
+            for (int a = 5; a < 13; a++) {
+                expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(a, primesList.get(i));
+                result = NumberTheoreticFunctionsCalculator.symbolJacobi(a, primesList.get(i));
+                assertEquals(expResult, result);
+            }
+        }
+    }
+    
     /**
      * Test of symbolKronecker method, of class 
      * NumberTheoreticFunctionsCalculator. This test checks that 
@@ -1319,6 +1395,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * course happen in {@link algebraics.NonEuclideanDomainExceptionTest}, not 
      * here.</p>
      */
+    // TODO: Break this test up into smaller tests
     @Test
     public void testEuclideanGCD() {
         System.out.println("euclideanGCD");
@@ -1509,6 +1586,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * fundamental unit of the ring of algebraic integers of 
      * <b>Q</b>(&zeta;<sub>8</sub>) is &zeta;<sub>8</sub>.
      */
+    // TODO: Break this test up into smaller tests
     @Test
     public void testFundamentalUnit() {
         System.out.println("fundamentalUnit");
@@ -1592,22 +1670,70 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Test of fundamentalUnit method, of class 
+     * Another test of fundamentalUnit method, of class 
      * NumberTheoreticFunctionsCalculator. This test is specifically for the 
      * specific case of <b>Z</b>[&radic;103], the fundamental unit of which is  
      * a number with a value of approximately 455055.9999978. An implementation 
      * of a brute force algorithm is likely to fail this test if it takes too 
      * long, even if it would eventually come up with the right result.
      */
-    @Ignore
     @Test(timeout = 30000)
     public void testFundamentalUnitZSqrt103() {
         System.out.println("fundamentalUnit(Z[sqrt(103)])");
         RealQuadraticRing ring = new RealQuadraticRing(103);
         RealQuadraticInteger expResult = new RealQuadraticInteger(227528, 22419, ring);
         AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
-        System.out.println("Fundamental unit of " + ring.toASCIIString() + " is said to be " + result.toASCIIString() + ".");
+        System.out.println("Fundamental unit of " + ring.toASCIIString() 
+                + " is said to be " + result.toASCIIString() + ".");
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of fundamentalUnit method, of class 
+     * NumberTheoreticFunctionsCalculator. This test is specifically for the 
+     * specific case of <i>O</i><sub><b>Q</b>(&radic;109)</sub>, the fundamental 
+     * unit of which is a number with a value of approximately 261.00383136138. 
+     * One night I tried it and it gave me the erroneous result of 1, instead of 
+     * <sup>261</sup>&frasl;<sub>2</sub> + 
+     * <sup>25&radic;109</sup>&frasl;<sub>2</sub>. So I wrote this test.
+     */
+    @Test(timeout = 30000)
+    public void testFundamentalUnitOQSqrt109() {
+        System.out.println("fundamentalUnit(O_(Q(sqrt(109))))");
+        RealQuadraticRing ring = new RealQuadraticRing(109);
+        RealQuadraticInteger expResult = new RealQuadraticInteger(261, 25, ring, 2);
+        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+        System.out.println("Fundamental unit of " + ring.toASCIIString() 
+                + " is said to be " + result.toASCIIString() + ".");
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of fundamentalUnit method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
+     * algebraics.IntegerRing IntegerRing} to {@link 
+     * NumberTheoreticFunctionsCalculator#fundamentalUnit(algebraics.IntegerRing) 
+     * fundamentalUnit()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoFundamentalUnitForNullRing() {
+        try {
+            AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(null);
+            String failMsg = "Trying to get fundamental unit of null ring should have caused exception, not given result " 
+                    + result.toString();
+            fail(failMsg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to get fundamental unit of null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            assertNotNull("Exception message should not be null", excMsg);
+            assert !excMsg.equals("") : "Exception message should not be empty";
+        } catch (RuntimeException re) {
+            String failMsg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get fundamental unit of null ring";
+            fail(failMsg);
+        }
     }
     
     /**
@@ -1717,6 +1843,34 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
+     * Another test of getOneInRing method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
+     * algebraics.AlgebraicInteger AlgebraicInteger} to {@link 
+     * NumberTheoreticFunctionsCalculator#getOneInRing(algebraics.IntegerRing) 
+     * getOneInRing()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoOneForNullRing() {
+        try {
+            AlgebraicInteger result = NumberTheoreticFunctionsCalculator.getOneInRing(null);
+            String failMsg = "Trying to get 1 for null ring should have caused exception, not given result " 
+                    + result.toString();
+            fail(failMsg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to get 1 for null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            assertNotNull("Exception message should not be null", excMsg);
+            assert !excMsg.equals("") : "Exception message should not be empty";
+        } catch (RuntimeException re) {
+            String failMsg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get 1 for null ring";
+            fail(failMsg);
+        }
+    }
+    
+    /**
      * Test of fieldClassNumber method, of class 
      * NumberTheoreticFunctionsCalculator. Five specific imaginary quadratic 
      * rings and five specific real quadratic rings are tested for their known 
@@ -1730,6 +1884,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * to have class number -12 even though it very clearly should have a class 
      * number of at least 3.
      */
+    // TODO: Break this test up into smaller tests
     @Test
     public void testFieldClassNumber() {
         System.out.println("fieldClassNumber");
@@ -1811,11 +1966,39 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
+     * Another test of fieldClassNumber method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
+     * algebraics.IntegerRing IntegerRing} to {@link 
+     * NumberTheoreticFunctionsCalculator#fieldClassNumber(algebraics.IntegerRing) 
+     * fieldClassNumber()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoClassNumberForNullRing() {
+        try {
+            int result = NumberTheoreticFunctionsCalculator.fieldClassNumber(null);
+            String failMsg = "Trying to get field class number of null ring should have caused exception, not given result " 
+                    + result;
+            fail(failMsg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to get field class number of null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            assertNotNull("Exception message should not be null", excMsg);
+            assert !excMsg.equals("") : "Exception message should not be empty";
+        } catch (RuntimeException re) {
+            String failMsg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get field class number of null ring";
+            fail(failMsg);
+        }
+    }
+    
+    /**
      * Test of randomSquarefreeNumber method, of class 
      * NumberTheoreticFunctionsCalculator. This test doesn't check whether the 
      * distribution is random enough, only that the numbers produced are indeed 
      * squarefree, that they don't have repeated prime factors. The test will 
-     * keep going until either an assertion fails or a number is produced with 7 
+     * keep going until either an assertion fails or a number is produced with 9 
      * for a least significant digit, whichever happens first.
      */
     @Test
