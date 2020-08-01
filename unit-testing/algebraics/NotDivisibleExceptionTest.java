@@ -73,17 +73,21 @@ public class NotDivisibleExceptionTest {
     public static void setUpClass() {
         QuadraticRing currRing = new ImaginaryQuadraticRing(-1);
         String initMsg = "Initialization state, not the result of an actually thrown exception.";
-        ImaginaryQuadraticInteger initDividend = new ImaginaryQuadraticInteger(0, 0, currRing);
-        ImaginaryQuadraticInteger initDivisor = new ImaginaryQuadraticInteger(1, 0, currRing);
+        ImaginaryQuadraticInteger initDividend 
+                = new ImaginaryQuadraticInteger(0, 0, currRing);
+        ImaginaryQuadraticInteger initDivisor 
+                = new ImaginaryQuadraticInteger(1, 0, currRing);
         Fraction zero = new Fraction(0);
         Fraction[] initFracts = {zero, zero};
-        notDivGaussian = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
+        notDivGaussian = new NotDivisibleException(initMsg, initDividend, 
+                initDivisor, initFracts);
         QuadraticInteger dividend = new ImaginaryQuadraticInteger(5, 1, currRing);
         QuadraticInteger divisor = new ImaginaryQuadraticInteger(3, 1, currRing);
         QuadraticInteger division;
         try {
             division = dividend.divides(divisor);
-            System.out.println(dividend.toASCIIString() + " divided by " + divisor.toASCIIString() + " is " + division.toASCIIString());
+            System.out.println(dividend.toASCIIString() + " divided by " 
+                    + divisor.toASCIIString() + " is " + division.toASCIIString());
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.err.println("AlgebraicDegreeOverflowException should not have occurred in this context: " + adoe.getMessage());
             // This would merit a fail if occurred in a test.
@@ -92,12 +96,14 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Gaussian integers example has this message: \"" + notDivGaussian.getMessage() + "\"");
         currRing = new ImaginaryQuadraticRing(-3);
-        notDivEisenstein = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
+        notDivEisenstein = new NotDivisibleException(initMsg, initDividend, 
+                initDivisor, initFracts);
         dividend = new ImaginaryQuadraticInteger(61, 0, currRing);
         divisor = new ImaginaryQuadraticInteger(1, 9, currRing);
         try {
             division = dividend.divides(divisor);
-            System.out.println(dividend.toASCIIString() + " divided by " + divisor.toASCIIString() + " is " + division.toASCIIString());
+            System.out.println(dividend.toASCIIString() + " divided by " 
+                    + divisor.toASCIIString() + " is " + division.toASCIIString());
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.err.println("AlgebraicDegreeOverflowException should not have occurred in this context: " + adoe.getMessage());
         } catch (NotDivisibleException nde) {
@@ -105,12 +111,14 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Eisenstein integers example has this message: \"" + notDivEisenstein.getMessage() + "\"");
         currRing = new RealQuadraticRing(2);
-        notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
+        notDivZ2 = new NotDivisibleException(initMsg, initDividend, initDivisor, 
+                initFracts);
         dividend = new RealQuadraticInteger(3, -8, currRing);
         divisor = new RealQuadraticInteger(7, 0, currRing);
         try {
             division = dividend.divides(divisor);
-            System.out.println(dividend.toASCIIString() + " divided by " + divisor.toASCIIString() + " is " + division.toASCIIString());
+            System.out.println(dividend.toASCIIString() + " divided by " 
+                    + divisor.toASCIIString() + " is " + division.toASCIIString());
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.err.println("AlgebraicDegreeOverflowException should not have occurred in this context: " + adoe.getMessage());
         } catch (NotDivisibleException nde) {
@@ -118,12 +126,14 @@ public class NotDivisibleExceptionTest {
         }
         System.out.println("NotDivisibleException for the Z[sqrt(2)] example has this message: \"" + notDivZ2.getMessage() + "\"");
         currRing = new RealQuadraticRing(5);
-        notDivZPhi = new NotDivisibleException(initMsg, initDividend, initDivisor, initFracts);
+        notDivZPhi = new NotDivisibleException(initMsg, initDividend, 
+                initDivisor, initFracts);
         dividend = new RealQuadraticInteger(0, 1, currRing);
         divisor = new RealQuadraticInteger(15, -3, currRing, 2);
         try {
             division = dividend.divides(divisor);
-            System.out.println(dividend.toASCIIString() + " divided by " + divisor.toASCIIString() + " is " + division.toASCIIString());
+            System.out.println(dividend.toASCIIString() + " divided by " 
+                    + divisor.toASCIIString() + " is " + division.toASCIIString());
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.err.println("AlgebraicDegreeOverflowException should not have occurred in this context: " + adoe.getMessage());
         } catch (NotDivisibleException nde) {
@@ -219,16 +229,19 @@ public class NotDivisibleExceptionTest {
      */
     @Test
     public void testGetCausingRingInferredCoprime() {
-        String message = "Example with dividend and divisor from different rings";
+        String msg = "Example with dividend and divisor from different rings";
         RealQuadraticRing dividendRing = new RealQuadraticRing(21);
-        RealQuadraticInteger dividend = new RealQuadraticInteger(0, 1, dividendRing);
+        RealQuadraticInteger dividend = new RealQuadraticInteger(0, 1, 
+                dividendRing);
         RealQuadraticRing divisorRing = new RealQuadraticRing(5);
-        RealQuadraticInteger divisor = new RealQuadraticInteger(0, 1, divisorRing);
+        RealQuadraticInteger divisor = new RealQuadraticInteger(0, 1, 
+                divisorRing);
         Fraction regPartFract = new Fraction(0);
         Fraction surdPartFract = new Fraction(1, 5);
         Fraction[] fracts = {regPartFract, surdPartFract};
         RealQuadraticRing expResult = new RealQuadraticRing(105);
-        NotDivisibleException notDivExcForInference = new NotDivisibleException(message, dividend, divisor, fracts);
+        NotDivisibleException notDivExcForInference 
+                = new NotDivisibleException(msg, dividend, divisor, fracts);
         IntegerRing result = notDivExcForInference.getCausingRing();
         assertEquals(expResult, result);
     }
@@ -241,16 +254,19 @@ public class NotDivisibleExceptionTest {
      */
     @Test
     public void testGetCausingRingInferredCommonDivisor() {
-        String message = "Example with dividend and divisor from different rings";
+        String msg = "Example with dividend and divisor from different rings";
         RealQuadraticRing dividendRing = new RealQuadraticRing(21);
-        RealQuadraticInteger dividend = new RealQuadraticInteger(0, 4, dividendRing);
+        RealQuadraticInteger dividend = new RealQuadraticInteger(0, 4, 
+                dividendRing);
         RealQuadraticRing divisorRing = new RealQuadraticRing(3);
-        RealQuadraticInteger divisor = new RealQuadraticInteger(0, 3, divisorRing);
+        RealQuadraticInteger divisor = new RealQuadraticInteger(0, 3, 
+                divisorRing);
         Fraction regPartFract = new Fraction(0);
         Fraction surdPartFract = new Fraction(4, 3);
         Fraction[] fracts = {regPartFract, surdPartFract};
         RealQuadraticRing expResult = new RealQuadraticRing(7);
-        NotDivisibleException notDivExcForInference = new NotDivisibleException(message, dividend, divisor, fracts);
+        NotDivisibleException notDivExcForInference 
+                = new NotDivisibleException(msg, dividend, divisor, fracts);
         IntegerRing result = notDivExcForInference.getCausingRing();
         assertEquals(expResult, result);
     }
@@ -358,20 +374,20 @@ public class NotDivisibleExceptionTest {
         assertArrayEquals(expResult, result);
         currRing = new RealQuadraticRing(2);
         RealQuadraticInteger currElem = new RealQuadraticInteger(-1, 0, currRing);
-        String assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
+        String msg = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
         result = notDivZ2.getBoundingIntegers();
-        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
+        assertTrue(msg, Arrays.asList(result).contains(currElem));
         currElem = new RealQuadraticInteger(-2, 0, currRing);
-        assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
-        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
+        msg = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
+        assertTrue(msg, Arrays.asList(result).contains(currElem));
         currElem = new RealQuadraticInteger(0, -1, currRing);
-        assertionMessage = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
-        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
+        msg = "Array of bounding integers for the Z[sqrt(2)] example should contain " + currElem.toASCIIString();
+        assertTrue(msg, Arrays.asList(result).contains(currElem));
         currRing = new RealQuadraticRing(5);
         currElem = new RealQuadraticInteger(1, 1, currRing, 2);
-        assertionMessage = "Array of bounding integers for the Z[phi] example should contain " + currElem.toASCIIString();
+        msg = "Array of bounding integers for the Z[phi] example should contain " + currElem.toASCIIString();
         result = notDivZPhi.getBoundingIntegers();
-        assertTrue(assertionMessage, Arrays.asList(result).contains(currElem));
+        assertTrue(msg, Arrays.asList(result).contains(currElem));
     }
 
     /**
@@ -391,6 +407,7 @@ public class NotDivisibleExceptionTest {
         expResult = new ImaginaryQuadraticInteger(0, -2, currRing);
         result = notDivEisenstein.roundTowardsZero();
         assertEquals(expResult, result);
+        // TODO: Figure out tests for real rings
 //        currRing = new RealQuadraticRing(2);
 //        expResult = new ImaginaryQuadraticInteger(1, 0, currRing);
 //        result = notDivZ2.roundTowardsZero();
@@ -411,13 +428,15 @@ public class NotDivisibleExceptionTest {
     public void testRoundAwayFromZero() {
         System.out.println("roundAwayFromZero");
         QuadraticRing currRing = new ImaginaryQuadraticRing(-1);
-        QuadraticInteger expResult = new ImaginaryQuadraticInteger(2, -1, currRing);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(2, -1, 
+                currRing);
         AlgebraicInteger result = notDivGaussian.roundAwayFromZero();
         assertEquals(expResult, result);
         currRing = new ImaginaryQuadraticRing(-3);
         expResult = new ImaginaryQuadraticInteger(0, -3, currRing);
         result = notDivEisenstein.roundAwayFromZero();
         assertEquals(expResult, result);
+        // TODO: Figure out tests for real rings
 //        currRing = new RealQuadraticRing(2);
 //        expResult = new ImaginaryQuadraticInteger(2, 0, currRing);
 //        result = notDivZ2.roundAwayFromZero();
@@ -429,15 +448,61 @@ public class NotDivisibleExceptionTest {
     }
     
     /**
+     * Test of the auxiliary NotDivisibleException constructor. This only tests 
+     * that the exception message is correctly inferred, using {@link 
+     * algebraics.quadratics.QuadraticInteger#toASCIIString()} (which is assumed 
+     * to have been properly tested in the relevant test classes).
+     */
+    @Test
+    public void testAuxiliaryConstructor() {
+        System.out.println("Auxiliary Constructor");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-13);
+        ImaginaryQuadraticInteger dividend = new ImaginaryQuadraticInteger(0, 1, 
+                ring);
+        ImaginaryQuadraticInteger divisor = new ImaginaryQuadraticInteger(2, 0, 
+                ring);
+        Fraction fractA = new Fraction(0);
+        Fraction fractB = new Fraction(1, 2);
+        Fraction[] fracts = {fractA, fractB};
+        try {
+            throw new NotDivisibleException(dividend, divisor, fracts);
+        } catch (NotDivisibleException nde) {
+            String expResult = dividend.toASCIIString() 
+                    + " is not divisible by 2";
+            String result = nde.getMessage();
+            assertEquals(expResult, result);
+        } catch (Exception e) {
+            String msg = e.getClass().getName() 
+                    + " should not have occurred for valid 3-parameter constructor call";
+            fail(msg);
+        }
+        ring = new ImaginaryQuadraticRing(-15);
+        dividend = new ImaginaryQuadraticInteger(0, 2, ring);
+        divisor = new ImaginaryQuadraticInteger(4, 0, ring);
+        try {
+            throw new NotDivisibleException(dividend, divisor, fracts);
+        } catch (NotDivisibleException nde) {
+            String expResult = dividend.toASCIIString() 
+                    + " is not divisible by 4";
+            String result = nde.getMessage();
+            assertEquals(expResult, result);
+        } catch (Exception e) {
+            String msg = e.getClass().getName() 
+                    + " should not have occurred for valid 3-parameter constructor call";
+            fail(msg);
+        }
+    }
+    
+    /**
      * Test of the NotDivisibleException constructor. The only thing we're 
-     * testing here is that the constructor throws {@link 
-     * IllegalArgumentException} if passed an array of fractions with a length 
-     * that doesn't match the algebraic degree of the pertinent ring.
+     * testing here is that the constructor throws IllegalArgumentException if 
+     * passed an array of fractions with a length that doesn't match the 
+     * algebraic degree of the pertinent ring.
      */
     @Test
     public void testConstructor() {
         System.out.println("Constructor");
-        String exceptionMessage = "This is an exception message for an invalidly constructed NotDivisibleException";
+        String excMsg = "This is an exception message for an invalidly constructed NotDivisibleException";
         QuadraticRing ring = new RealQuadraticRing(19);
         RealQuadraticInteger initDividend = new RealQuadraticInteger(0, 0, ring);
         RealQuadraticInteger initDivisor = new RealQuadraticInteger(1, 0, ring);
@@ -446,16 +511,16 @@ public class NotDivisibleExceptionTest {
         Fraction fractC = new Fraction(3, 2);
         Fraction[] wrongLenFractArray = {fractA, fractB, fractC};
         try {
-            throw new NotDivisibleException(exceptionMessage, initDividend, initDivisor, wrongLenFractArray);
+            throw new NotDivisibleException(excMsg, initDividend, initDivisor, wrongLenFractArray);
         } catch (NotDivisibleException nde) {
-            String failMessage = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
-            fail(failMessage);
+            String msg = "NotDivisibleException incorrectly created: \"" + nde.getMessage() + "\"";
+            fail(msg);
         } catch(IllegalArgumentException iae) {
             System.out.println("Attempt to create NotDivisibleException with arrays of excessive length correctly triggered IllegalArgumentException.");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch(Exception e) {
-            String failMessage = e.getClass().getName() + " is the wrong exception in this situation of arrays of excessive length.";
-            System.out.println(failMessage);
+            String msg = e.getClass().getName() + " is the wrong exception in this situation of arrays of excessive length.";
+            System.out.println(msg);
             System.out.println("\"" + e.getMessage() + "\"");
         }
     }
