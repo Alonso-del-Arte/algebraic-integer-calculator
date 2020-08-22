@@ -21,6 +21,7 @@ import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
 import algebraics.NonEuclideanDomainException;
 import algebraics.NonUniqueFactorizationDomainException;
+import algebraics.NormAbsoluteComparator;
 import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.IllDefinedQuadraticInteger;
@@ -37,6 +38,7 @@ import algebraics.quartics.Zeta8Ring;
 import static calculators.NumberTheoreticFunctionsCalculator.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -213,8 +215,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Test of sortListAlgebraicIntegersByNorm method, of class 
-     * NumberTheoreticFunctionsCalculator. If norms may be negative, the 
+     * Originally a test of sortListAlgebraicIntegersByNorm method, of class 
+     * NumberTheoreticFunctionsCalculator, which was deprecated and then 
+     * removed. Now it's a redundant test for {@link 
+     * algebraics.NormAbsoluteComparator}. If norms may be negative, the 
      * algebraic integers should be sorted by the absolute value of the norm. No 
      * expectation is laid out for what should happen if the algebraic integers 
      * to be sorted come from different rings.
@@ -226,30 +230,31 @@ public class NumberTheoreticFunctionsCalculatorTest {
         QuadraticInteger numberA = new ImaginaryQuadraticInteger(1, 0, ring); // Unit
         QuadraticInteger numberB = new ImaginaryQuadraticInteger(-1, 1, ring, 2); // -1/2 + sqrt(-7)/2, norm 2
         QuadraticInteger numberC = new ImaginaryQuadraticInteger(1, 2, ring); // 1 + 2sqrt(-7), norm 29
-        List<AlgebraicInteger> expResult = new ArrayList<>();
-        expResult.add(numberA);
-        expResult.add(numberB);
-        expResult.add(numberC);
-        List<AlgebraicInteger> unsortedList = new ArrayList<>();
-        unsortedList.add(numberC);
-        unsortedList.add(numberA);
-        unsortedList.add(numberB);
-        List<AlgebraicInteger> result = sortListAlgebraicIntegersByNorm(unsortedList);
-        assertEquals(expResult, result);
+        List<AlgebraicInteger> expected = new ArrayList<>();
+        expected.add(numberA);
+        expected.add(numberB);
+        expected.add(numberC);
+        List<AlgebraicInteger> actual = new ArrayList<>();
+        actual.add(numberC);
+        actual.add(numberA);
+        actual.add(numberB);
+        Comparator comparator = new NormAbsoluteComparator();
+        actual.sort(comparator);
+        assertEquals(expected, actual);
         ring = new RealQuadraticRing(7);
         numberA = new RealQuadraticInteger(8, 3, ring); // Unit
         numberB = new RealQuadraticInteger(3, -1, ring); // 3 - sqrt(-7), norm 2
         numberC = new RealQuadraticInteger(18, 7, ring); // 18 + 7sqrt(7), norm -19
-        expResult.clear();
-        expResult.add(numberA);
-        expResult.add(numberB);
-        expResult.add(numberC);
-        unsortedList.clear();
-        unsortedList.add(numberC);
-        unsortedList.add(numberA);
-        unsortedList.add(numberB);
-        result = sortListAlgebraicIntegersByNorm(unsortedList);
-        assertEquals(expResult, result);
+        expected.clear();
+        expected.add(numberA);
+        expected.add(numberB);
+        expected.add(numberC);
+        actual.clear();
+        actual.add(numberC);
+        actual.add(numberA);
+        actual.add(numberB);
+        actual.sort(comparator);
+        assertEquals(expected, actual);
     }
     
     /**
@@ -1045,12 +1050,43 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 assertEquals(expResult, result);
             }
         }
-        // And lastly to check for exceptions for bad arguments.
+    }
+    
+    @Test
+    public void testLegendreSymbolSuggestJacobi() {
         try {
-            byte attempt = NumberTheoreticFunctionsCalculator.symbolLegendre(7, 2);
-            fail("Calling Legendre(7, 2) should have triggered an exception, not given result " + attempt + ".");
+            byte attempt = symbolLegendre(13, 21);
+            fail("Calling Legendre(13, 21) should have triggered an exception, not given result " 
+                    + attempt + ".");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Calling Legendre(7, 2) correctly triggered IllegalArgumentException. \"" + iae.getMessage() + "\"");
+            System.out.println("Calling Legendre(13, 21) correctly triggered IllegalArgumentException.");
+            String excMsg = iae.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            String msg = "Exception message should mention Jacobi symbol";
+            assert excMsg.contains("Jacobi") : msg;
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for calling Legendre(13, 21)";
+            fail(msg);
+        }
+    }
+
+    @Test
+    public void testLegendreSymbolSuggestKronecker() {
+        try {
+            byte attempt = symbolLegendre(7, 2);
+            fail("Calling Legendre(7, 2) should have triggered an exception, not given result " 
+                    + attempt + ".");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Calling Legendre(7, 2) correctly triggered IllegalArgumentException.");
+            String excMsg = iae.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            String msg = "Exception message should mention Kronecker symbol";
+            assert excMsg.contains("Kronecker") : msg;
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for calling Legendre(7, 2)";
+            fail(msg);
         }
     }
 
@@ -1710,6 +1746,64 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     /**
      * Another test of fundamentalUnit method, of class 
+     * NumberTheoreticFunctionsCalculator. This test is specifically for the 
+     * specific case of <b>Z</b>[&radic;166], the fundamental unit of which is  
+     * a number with a value of approximately 3401805129.9999999997. One time 
+     * this function caused an <code>ArithmeticException</code> with the 
+     * puzzling exception message "Overflow occurred, fundamental unit is 
+     * greater than &minus;2147483638 + 166677057&radic;166." That exception 
+     * should only occur when the "regular" and "surd" parts of the unit are 
+     * outside the range of 32-bit integers.
+     */
+    @Test(timeout = 30000)
+    public void testFundamentalUnitZSqrt166() {
+        System.out.println("fundamentalUnit(Z[sqrt(166)])");
+        RealQuadraticRing ring = new RealQuadraticRing(166);
+        RealQuadraticInteger expected = new RealQuadraticInteger(1700902565, 
+                132015642, ring);
+        try {
+            AlgebraicInteger actual = fundamentalUnit(ring);
+            System.out.println("Fundamental unit of " + ring.toASCIIString() 
+                + " is said to be " + actual.toASCIIString() + ".");
+            assertEquals(expected, actual);
+        } catch (ArithmeticException ae) {
+            String msg = "Trying to compute fundamental unit of " 
+                    + ring.toString() 
+                    + " should not have caused ArithmeticException";
+            System.out.println("\"" + ae.getMessage() + "\"");
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Another test of fundamentalUnit method, of class 
+     * NumberTheoreticFunctionsCalculator. This test is specifically for the 
+     * specific case of <b>Z</b>[&radic;199], the fundamental unit of which is  
+     */
+    @Test(timeout = 30000)
+    public void testFundamentalUnitZSqrt199() {
+        System.out.println("fundamentalUnit(Z[sqrt(199)])");
+        RealQuadraticRing ring = new RealQuadraticRing(199);
+        try {
+            AlgebraicInteger result = fundamentalUnit(ring);
+            System.out.println("Fundamental unit of " + ring.toASCIIString() 
+                + " is said to be " + result.toASCIIString() + ".");
+            assertEquals(1, result.norm());
+        } catch (ArithmeticException ae) {
+            System.out.println("Given that the fundamental unit of " 
+                    + ring.toASCIIString()
+                    + " is outside the range of QuadraticInteger to represent,");
+            System.out.println("the fundamental unit function was correct to throw ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for an arithmetic overflow problem";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Another test of fundamentalUnit method, of class 
      * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
      * algebraics.IntegerRing IntegerRing} to {@link 
      * NumberTheoreticFunctionsCalculator#fundamentalUnit(algebraics.IntegerRing) 
@@ -1870,6 +1964,68 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @Test
+    public void testIsUFD() {
+        System.out.println("isUFD");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-3);
+        String msg = ring.toString() + " should be found to be UFD";
+        assert isUFD(ring) : msg;
+        ring = new RealQuadraticRing(29);
+        msg = ring.toString() + " should be found to be UFD";
+        assert isUFD(ring) : msg;
+    }
+    
+    @Test
+    public void testIsNotUFD() {
+        QuadraticRing ring = new ImaginaryQuadraticRing(-31);
+        String msg = ring.toString() + " should not be found to be UFD";
+        assert !isUFD(ring) : msg;
+        ring = new RealQuadraticRing(30);
+        msg = ring.toString() + " should not be found to be UFD";
+        assert !isUFD(ring) : msg;
+    }
+    
+    @Test
+    public void testNullRingNotUFD() {
+        try {
+            boolean result = isUFD(null);
+            String msg = "Trying to determine if null ring is UFD should not have given result " 
+                    + result;
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to determine if null ring is UFD correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            String msg = "NullPointerException message should not be null";
+            assert excMsg != null : msg;
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to determine if null ring is UFD";
+            fail(msg);
+        }
+    }
+    
+    @Test
+    public void testMaybeUFDButNotYetSupported() {
+        QuadraticRing ring = new IllDefinedQuadraticRing(-10);
+        try {
+            boolean result = isUFD(ring);
+            String msg = "Trying to determine if " + ring.toString() 
+                    + " is UFD should have caused an exception, not given result " 
+                    + result;
+            fail(msg);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to determine if " + ring.toString() 
+                    + " is UFD correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to determine if " 
+                    + ring.toString() + " is UFD or not";
+            fail(msg);
+        }
+    }
+    
     /**
      * Test of fieldClassNumber method, of class 
      * NumberTheoreticFunctionsCalculator. Five specific imaginary quadratic 
@@ -2004,23 +2160,27 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testRandomSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
-        int testBound = primesList.get(primesListLength - 1) * primesList.get(primesListLength - 1);
-        int potentialRanSqFreeNum;
-        String assertionMessage;
+        int testBound = primesList.get(primesListLength - 1) 
+                * primesList.get(primesListLength - 1);
+        int potentialRanSqFreeNum, squaredPrime, remainder;
+        String msg;
         do {
-            potentialRanSqFreeNum = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(testBound);
-            System.out.println("Function came up with this pseudorandom squarefree number: " + potentialRanSqFreeNum);
-            int squaredPrime, remainder; // TODO: Move initialization to outer scope
+            potentialRanSqFreeNum = randomSquarefreeNumber(testBound);
+            System.out.println("Function came up with this pseudorandom squarefree number: " 
+                    + potentialRanSqFreeNum);
             for (int i = 0; i < primesListLength; i++) {
                 squaredPrime = primesList.get(i) * primesList.get(i);
                 remainder = potentialRanSqFreeNum % squaredPrime;
-                assertionMessage = "Since " + potentialRanSqFreeNum + " is said to be squarefree, it should not be divisible by " + squaredPrime;
-                assertNotEquals(assertionMessage, 0, remainder);
+                msg = "Since " + potentialRanSqFreeNum 
+                        + " is said to be squarefree, it should not be divisible by " 
+                        + squaredPrime;
+                assertNotEquals(msg, 0, remainder);
             }
-            assertionMessage = "The number " + potentialRanSqFreeNum + " is not greater than the bound " + testBound;
-            assertTrue(assertionMessage, potentialRanSqFreeNum < testBound);
-            assertionMessage = "The number " + potentialRanSqFreeNum + " is greater than 0";
-            assertTrue(assertionMessage, potentialRanSqFreeNum > 0);
+            msg = "The number " + potentialRanSqFreeNum 
+                    + " is not greater than the bound " + testBound;
+            assert potentialRanSqFreeNum < testBound : msg;
+            msg = "The number " + potentialRanSqFreeNum + " is greater than 0";
+            assert potentialRanSqFreeNum > 0 : msg;
         } while (potentialRanSqFreeNum % 10 != 9);
     }
     
