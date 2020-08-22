@@ -21,6 +21,7 @@ import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
 import algebraics.NonEuclideanDomainException;
 import algebraics.NonUniqueFactorizationDomainException;
+import algebraics.NormAbsoluteComparator;
 import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
@@ -33,6 +34,7 @@ import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -43,13 +45,17 @@ import java.util.Random;
  */
 public class NumberTheoreticFunctionsCalculator {
     
+    private static final NormAbsoluteComparator COMPARATOR 
+            = new NormAbsoluteComparator();
+    
     /**
      * The only twenty-one values of <i>d</i> such that 
      * <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> is a unique factorization 
      * domain and a norm-Euclidean domain. These numbers are listed in <a 
      * href="http://oeis.org/A048981">Sloane's A048981</a>.
      */
-    public static final int[] NORM_EUCLIDEAN_QUADRATIC_RINGS_D = {-11, -7, -3, -2, -1, 2, 3, 5, 6, 7, 11, 13, 17, 19, 21, 29, 33, 37, 41, 57, 73};
+    public static final int[] NORM_EUCLIDEAN_QUADRATIC_RINGS_D = {-11, -7, -3, 
+        -2, -1, 2, 3, 5, 6, 7, 11, 13, 17, 19, 21, 29, 33, 37, 41, 57, 73};
     
     /**
      * The only five negative values <i>d</i> such that 
@@ -61,7 +67,8 @@ public class NumberTheoreticFunctionsCalculator {
      * <i>O</i><sub><b>Q</b>(&radic;&minus;7)</sub> and 
      * <i>O</i><sub><b>Q</b>(&radic;&minus;11)</sub>.
      */
-    public static final int[] NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D = {-11, -7, -3, -2, -1};
+    public static final int[] NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D = {-11, 
+        -7, -3, -2, -1};
 
     /**
      * The sixteen positive values <i>d</i> such that 
@@ -80,7 +87,8 @@ public class NumberTheoreticFunctionsCalculator {
      * <i>O</i><sub><b>Q</b>(&radic;57)</sub> and 
      * <i>O</i><sub><b>Q</b>(&radic;73)</sub>.
      */
-    public static final int[] NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D = {2, 3, 5, 6, 7, 11, 13, 17, 19, 21, 29, 33, 37, 41, 57, 73};
+    public static final int[] NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D = {2, 3, 5, 
+        6, 7, 11, 13, 17, 19, 21, 29, 33, 37, 41, 57, 73};
     
     /**
      * There are the only nine negative numbers d such that the ring of 
@@ -96,17 +104,20 @@ public class NumberTheoreticFunctionsCalculator {
      * <i>O</i><sub><b>Q</b>(&radic;-67)</sub> and 
      * <i>O</i><sub><b>Q</b>(&radic;-163)</sub>.
      */
-    public static final int[] HEEGNER_NUMBERS = {-163, -67, -43, -19, -11, -7, -3, -2, -1};
+    public static final int[] HEEGNER_NUMBERS = {-163, -67, -43, -19, -11, -7, 
+        -3, -2, -1};
     
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>].
      */
-    public static final ImaginaryQuadraticRing RING_GAUSSIAN = new ImaginaryQuadraticRing(-1);
+    public static final ImaginaryQuadraticRing RING_GAUSSIAN 
+            = new ImaginaryQuadraticRing(-1);
     
     /**
      * The imaginary unit <i>i</i> = &radic;-1.
      */
-    public static final ImaginaryQuadraticInteger IMAG_UNIT_I = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN, 1);
+    public static final ImaginaryQuadraticInteger IMAG_UNIT_I 
+            = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN, 1);
     
     /**
      * The additive inverse of the imaginary unit, -<i>i</i> = -&radic;-1.
@@ -116,13 +127,15 @@ public class NumberTheoreticFunctionsCalculator {
     /**
      * The ring of Eisenstein integers, <b>Z</b>[&omega;].
      */
-    public static final ImaginaryQuadraticRing RING_EISENSTEIN = new ImaginaryQuadraticRing(-3);
+    public static final ImaginaryQuadraticRing RING_EISENSTEIN 
+            = new ImaginaryQuadraticRing(-3);
     
     /**
      * A complex cubic root of unity, &omega; = -1/2 + (&radic;-3)/2, a number 
      * such that &omega;<sup>3</sup> = 1.
      */
-    public static final ImaginaryQuadraticInteger COMPLEX_CUBIC_ROOT_OF_UNITY = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
+    public static final ImaginaryQuadraticInteger COMPLEX_CUBIC_ROOT_OF_UNITY 
+            = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
     
     /**
      * <b>Z</b>[&phi;], the ring of algebraic integers of <b>Q</b>(&radic;5).
@@ -133,13 +146,41 @@ public class NumberTheoreticFunctionsCalculator {
      * The number 1/2 + (&radic;5)/2 &asymp; 1.618, the fundamental unit of 
      * <b>Z</b>[&phi;].
      */
-    public static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
+    public static final RealQuadraticInteger GOLDEN_RATIO 
+            = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
     
     /**
      * The number &zeta;<sub>8</sub> = (&radic;2)/2 + (&radic;&minus;2)/2, 
      * principal square root of the imaginary unit <i>i</i>.
      */
     public static final Zeta8Integer ZETA_8 = new Zeta8Integer(0, 1, 0, 0);
+    
+    // TODO: Better algorithm so as to not need units cache
+    private static final HashMap<IntegerRing, AlgebraicInteger> UNITS_CACHE 
+            = new HashMap<>();
+    
+    static {
+        RealQuadraticRing ring = new RealQuadraticRing(139);
+        RealQuadraticInteger unit = new RealQuadraticInteger(77563250, 6578829, 
+                ring);
+        UNITS_CACHE.put(ring, unit);
+        ring = new RealQuadraticRing(151);
+        unit = new RealQuadraticInteger(1728148040, 140634693, ring);
+        UNITS_CACHE.put(ring, unit);
+        ring = new RealQuadraticRing(166);
+        unit = new RealQuadraticInteger(1700902565, 132015642, ring);
+        UNITS_CACHE.put(ring, unit);
+    }
+    
+    private static final int SURD_PART_CACHE_THRESHOLD = 100000;
+    
+    private static final HashMap<IntegerRing, Integer> CLASS_NUMBERS_CACHE 
+            = new HashMap<>();
+    
+    static {
+        RealQuadraticRing ring = new RealQuadraticRing(199);
+        CLASS_NUMBERS_CACHE.put(ring, 1);
+    }
 
     /**
      * Determines the prime factors of a given number. Uses simple trial 
@@ -363,10 +404,14 @@ public class NumberTheoreticFunctionsCalculator {
      */
     public static byte symbolLegendre(int a, int p) {
         if (!isPrime(p)) {
-            throw new IllegalArgumentException(p + " is not a prime number. Consider using the Jacobi symbol instead.");
+            String excMsg = "The number " + p 
+                    + " is not a prime number. Consider using the Jacoby symbol instead.";
+            throw new IllegalArgumentException(excMsg);
         }
         if (p == -2 || p == 2) {
-            throw new IllegalArgumentException(p + " is not an odd prime. Consider using the Kronecker symbol instead.");
+            String excMsg = "The number " + p 
+                    + " is prime but not odd. Consider using the Kronecker symbol instead.";
+            throw new IllegalArgumentException(excMsg);
         }
         if (euclideanGCD(a, p) > 1) {
             return 0;
@@ -504,65 +549,78 @@ public class NumberTheoreticFunctionsCalculator {
         }
         return symbol;
     }
-        
-    /**
-     * Sorts a list of algebraic integers in ascending order by the absolute 
-     * value of the norm. Do note that integers of the same norm might come back 
-     * in the same order relative to each other that they were originally in. 
-     * The sorting is done with a rudimentary bubble sort algorithm, so do not 
-     * use this if speed or efficiency are required.
-     * @param listAlgInt A list of algebraic integers, which may be in any order 
-     * whatsoever. For example: &minus;1 + <i>i</i>, 4 + <i>i</i>, 
-     * &minus;<i>i</i>, 1 &minus; <i>i</i>. The algebraic integers need not come 
-     * from the same ring and there is no checking here of whether or not that 
-     * is the case.
-     * @return A list of the algebraic integers sorted by norm. For example: 
-     * &minus;<i>i</i>, &minus;1 + <i>i</i>, 1 &minus; <i>i</i>, 4 + <i>i</i>. 
-     * Note that there is no checking of norm overflows, so, for example, 
-     * imaginary quadratic integer objects with erroneously negative norms would 
-     * be erroneously sorted before units.
-     * @deprecated Recommend using {@link algebraics.NormComparator} or {@link 
-     * algebraics.NormAbsoluteComparator} instead (with the appropriate 
-     * functions or procedures from <code>java.util</code>). I intend to remove 
-     * this function well prior to Version 1.0.
-     * @since Version 0.5
-     */
-    @Deprecated
-    public static List<AlgebraicInteger> sortListAlgebraicIntegersByNorm(List<AlgebraicInteger> listAlgInt) {
-        boolean swapFlag;
-        AlgebraicInteger a, b;
-        List<AlgebraicInteger> nums = new ArrayList<>();
-        listAlgInt.forEach((ai) -> {
-            nums.add(ai);
-        });
-        int opLen = listAlgInt.size() - 1;
-        if (opLen > 0) {
-            do {
-                swapFlag = false;
-                for (int counter = 0; counter < opLen; counter++) {
-                    a = nums.get(counter);
-                    b = nums.get(counter + 1);
-                    if (Math.abs(a.norm()) > Math.abs(b.norm())) {
-                        nums.set(counter, b);
-                        nums.set(counter + 1, a);
-                        swapFlag = true;
-                    }
+    
+    private static boolean isImQuadUFD(ImaginaryQuadraticRing ring) {
+        int d = ring.getRadicand();
+        boolean ufdFlag = false;
+        if (d > -164) {
+            for (int heegNum : HEEGNER_NUMBERS) {
+                if (d == heegNum) {
+                    ufdFlag = true;
                 }
-                a = nums.get(opLen);
-                b = nums.get(0);
-                if (Math.abs(a.norm()) < Math.abs(b.norm())) {
-                    nums.set(opLen, b);
-                    nums.set(0, a);
-                    swapFlag = true;
-                }
-            } while (swapFlag);
+            }
         }
-        return nums;
+        return ufdFlag;
+    }
+    
+    private static boolean isReQuadRUFD(RealQuadraticRing ring) {
+        int d = ring.getRadicand();
+        boolean ufdFlag = false;
+        if (d > 0) {
+            for (int normEuclRealD : NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+                if (d == normEuclRealD) {
+                    ufdFlag = true;
+                }
+            }
+            if (!ufdFlag) {
+                ufdFlag = fieldClassNumber(ring) == 1;
+            }
+        }
+        return ufdFlag;
     }
     
     /**
+     * Determines whether or not a particular integer ring is a unique 
+     * factorization domain (UFD) or not. For an imaginary quadratic ring 
+     * <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> (where <i>d</i> is a 
+     * negative squarefree integer), the operation is a simple matter of 
+     * checking whether <i>d</i> is one of nine numbers known as the Heegner 
+     * numbers (&minus;163, &minus;67, &minus;43, &minus;19, &minus;11, 
+     * &minus;7, &minus;3, &minus;2, &minus;1). For other kinds of rings, a 
+     * field class number computation may be necessary.
+     * @param ring The ring for which to make the determination. Two examples: 
+     * <i>O</i><sub><b>Q</b>(&radic;29)</sub> and <b>Z</b>[&radic;30].
+     * @return True if the ring is a unique factorization domain, false 
+     * otherwise. For example, true for <i>O</i><sub><b>Q</b>(&radic;29)</sub>, 
+     * false for <b>Z</b>[&radic;30].
+     * @throws NullPointerException If <code>ring</code> is null.
+     * @throws UnsupportedNumberDomainException If the kind of ring is not 
+     * currently supported. For example, a cubic integer ring. The occurrence of 
+     * this exception does not rule out the possibility that the kind of ring 
+     * for which it occurred might be supported in a future version of this 
+     * program.
+     */
+    public static boolean isUFD(IntegerRing ring) {
+        if (ring == null) {
+            String excMsg = "Can't determine if null ring is UFD";
+            throw new NullPointerException(excMsg);
+        }
+        if (ring instanceof ImaginaryQuadraticRing) {
+            return isImQuadUFD((ImaginaryQuadraticRing) ring);
+        }
+        if (ring instanceof RealQuadraticRing) {
+            return isReQuadRUFD((RealQuadraticRing) ring);
+        }
+        if (ring instanceof Zeta8Ring) return true;
+        String excMsg = "The domain " + ring.toASCIIString() 
+                + " is not yet supported for UFD determination";
+        throw new UnsupportedNumberDomainException(excMsg, ring);
+    }
+        
+    /**
      * Computes the prime factors, and unit factors when applicable, of an 
-     * algebraic integer from a unique factorization domain (UFD).
+     * algebraic integer from a unique factorization domain (UFD). An 
+     * "applicable" unit factor is any unit other than 1.
      * @param num The algebraic integer to find the prime factors of. For 
      * example, &minus;4 + 3&radic;(&minus;19).
      * @return A list of algebraic integers, with the first possibly being a 
@@ -574,43 +632,30 @@ public class NumberTheoreticFunctionsCalculator {
      * be thrown if this function is called upon to compute the prime factors of 
      * a number from a non-UFD, even if a complete factorization into primes is 
      * possible in the given domain, e.g., 5 and 41 in 
-     * <b>Z</b>[(&radic;&minus;5)]. However, as of 2018, this exception will be 
-     * erroneously thrown for numbers from real quadratic integer rings that are 
-     * UFDs but not norm-Euclidean. This is a compromise while I work on getting 
-     * the timed <b>Z</b>[(&radic;103)] fundamental unit test to pass.
+     * <b>Z</b>[(&radic;&minus;5)].
+     * @throws NullPointerException If <code>num</code> is null.
      * @throws UnsupportedNumberDomainException Thrown when called upon a number
      * from a type of ring that is not fully supported yet. For example, as of 
      * 2018, this program hardly has any support for cubic integers, so asking 
      * for the prime factorization of &minus;15 + 2&#8731;2 + 
      * (&#8731;2)<sup>2</sup> would probably trigger this exception.
+     * @since Version 0.3
      */
-    public static List<AlgebraicInteger> primeFactors(AlgebraicInteger num) throws NonUniqueFactorizationDomainException {
+    public static List<AlgebraicInteger> primeFactors(AlgebraicInteger num) 
+            throws NonUniqueFactorizationDomainException {
+        if (num == null) {
+            String excMsg = "Can't factorize null number";
+            throw new NullPointerException(excMsg);
+        }
+        if (!isUFD(num.getRing())) {
+            String excMsg = num.getRing().toASCIIString() 
+                    + " is not a unique factorization domain.";
+            throw new NonUniqueFactorizationDomainException(excMsg, num);
+        }
         if (num instanceof QuadraticInteger) {
             QuadraticInteger number = (QuadraticInteger) num;
             QuadraticInteger unity = number.minus(number).plus(1);
             int d = number.getRing().getRadicand();
-            boolean notUFDFlag = true;
-            if ((d > -164) && (d < 0)) {
-                for (int heegNum : HEEGNER_NUMBERS) {
-                    if (d == heegNum) {
-                        notUFDFlag = false;
-                    }
-                }
-            }
-            if (d > 0) {
-                for (int normEuclRealD : NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
-                    if (d == normEuclRealD) {
-                        notUFDFlag = false;
-                    }
-                }
-                if (notUFDFlag) {
-                    notUFDFlag = fieldClassNumber(num.getRing()) > 1;
-                }
-            }
-            if (notUFDFlag) {
-                String exceptionMessage = number.getRing().toASCIIString() + " is not a unique factorization domain.";
-                throw new NonUniqueFactorizationDomainException(exceptionMessage, num);
-            }
             if ((d < 0) && (num.norm() < 0)) {
                 String exceptionMessage = "A norm computation error occurred for " + num.toASCIIString() + ", which should not have norm " + num.norm();
                 throw new ArithmeticException(exceptionMessage);
@@ -707,7 +752,7 @@ public class NumberTheoreticFunctionsCalculator {
                 }
                 factors.add(number); // This should be a unit, most likely -1 or 1
             }
-            factors = sortListAlgebraicIntegersByNorm(factors);
+            factors.sort(COMPARATOR);
             QuadraticInteger currFac;
             QuadraticInteger currFirstUnit = number;
             for (int i = 1; i < factors.size(); i++) {
@@ -723,7 +768,9 @@ public class NumberTheoreticFunctionsCalculator {
             }
             return factors;
         }
-        throw new UnsupportedNumberDomainException("At this time only ImaginaryQuadraticInteger and RealQuadraticInteger are supported for this factorization operation.", num);
+        String excMsg = "At this time, " + num.getRing().getClass().getName() 
+                + " is not supported for this factorization operation.";
+        throw new UnsupportedNumberDomainException(excMsg, num);
     }
     
     /**
@@ -744,6 +791,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @throws NullPointerException If <code>num</code> is null. The exception 
      * message will be "Null is not an algebraic integer, neither reducible nor 
      * irreducible".
+     * @since Version 0.2
      */
     public static boolean isIrreducible(AlgebraicInteger num) {
         if (num instanceof ImaginaryQuadraticInteger || num instanceof RealQuadraticInteger) {
@@ -834,6 +882,21 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(exceptionMessage, num);
     }
     
+    // TODO: Write tests for this
+    public List<AlgebraicInteger> irreducibleFactors(AlgebraicInteger num) {
+        List<AlgebraicInteger> factors = new ArrayList<>();
+        IntegerRing ring = num.getRing();
+        if (isUFD(ring)) {
+            try {
+                factors = primeFactors(num);
+            } catch (NonUniqueFactorizationDomainException nufde) {
+                System.err.println("\"" + nufde.getMessage() + "\"");
+                factors.add(num);
+            }
+        }
+        return factors;
+    }
+    
     /**
      * Tests whether one algebraic integer is divisible by another.
      * @param a The number to test for divisibility by another. For example, 
@@ -858,6 +921,7 @@ public class NumberTheoreticFunctionsCalculator {
      * 2018, this program does not really have support for cubic integers, so 
      * asking if 35 + 5&#8731;2 is divisible by 3 &minus; &#8731;2 would 
      * probably trigger this exception.
+     * @since Version 0.4
      */
     public static boolean isDivisibleBy(AlgebraicInteger a, AlgebraicInteger b) {
         if (!a.getRing().equals(b.getRing())) {
@@ -1140,8 +1204,6 @@ public class NumberTheoreticFunctionsCalculator {
                     QuadraticInteger holder;
                     do {
                         holder = (QuadraticInteger) bounds[counter];
-                        // TODO: REMOVE NEXT LINE AFTER DEBUGGING
-//                        System.out.println("bounds[" + counter + "] = " + holder.toASCIIString());
                         tempMultiple = holder.times(currB);
                         currRemainder = currA.minus(tempMultiple);
                         notFound = Math.abs(currRemainder.norm()) >= Math.abs(currB.norm());
@@ -1149,8 +1211,6 @@ public class NumberTheoreticFunctionsCalculator {
                     } while (notFound);
                 }
                 currA = currB;
-                // TODO: REMOVE NEXT LINE AFTER DEBUGGING
-//                System.out.println("currA = " + currA.toASCIIString());
                 currB = currRemainder;
             }
             if (radic == -1 && currA.getRegPartMult() == 0) {
@@ -1230,6 +1290,62 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException("Not supported yet, sorry", b);
     }
     
+    private static QuadraticInteger realQuadUnitFind(RealQuadraticRing r) {
+        QuadraticInteger potentialUnit;
+        int d = r.getRadicand();
+        long xd, trialRegNeg;
+        long trialSurd = 1;
+        boolean notFoundYet = true;
+        do {
+            xd = trialSurd * trialSurd * d;
+            trialRegNeg = (long) Math.floor(Math.sqrt(xd));
+            potentialUnit = new RealQuadraticInteger((int) trialRegNeg, 
+                    (int) trialSurd, r);
+            if (potentialUnit.norm() == -1) {
+                notFoundYet = false;
+            }
+            if (notFoundYet) {
+                potentialUnit = potentialUnit.plus(1);
+                if (potentialUnit.norm() == 1) {
+                    notFoundYet = false;
+                }
+            }
+            trialSurd++;
+        } while ((trialRegNeg < Integer.MAX_VALUE) && notFoundYet);
+        if (r.hasHalfIntegers()) {
+            double threshold = potentialUnit.abs();
+            double currAbs;
+            QuadraticInteger potentialHalfUnit;
+            trialSurd = 1;
+            do {
+                xd = trialSurd * trialSurd * d;
+                trialRegNeg = (long) Math.floor(Math.sqrt(xd - 4));
+                trialRegNeg += ((trialRegNeg % 2) - 1); // Make sure it's odd
+                potentialHalfUnit = new RealQuadraticInteger((int) trialRegNeg, (int) trialSurd, r, 2);
+                if (potentialHalfUnit.norm() == -1) {
+                    return potentialHalfUnit;
+                } else {
+                    currAbs = potentialHalfUnit.abs();
+                }
+                potentialHalfUnit = potentialHalfUnit.plus(1);
+                if (potentialHalfUnit.norm() == 1) {
+                    return potentialHalfUnit;
+                }
+                trialSurd += 2;
+            } while (currAbs < threshold);
+        }
+        if (notFoundYet) {
+            String excMsg = "Overflow occurred considering potential unit " 
+                    + potentialUnit.toASCIIString();
+            throw new ArithmeticException(excMsg);
+        } else {
+            if (trialSurd > SURD_PART_CACHE_THRESHOLD) {
+                UNITS_CACHE.put(r, potentialUnit);
+            }
+            return potentialUnit;
+        }
+    }
+    
     /**
      * Gives the fundamental unit of a ring that has infinitely many units. In a  
      * domain of purely real numbers, the fundamental unit is the smallest unit 
@@ -1254,68 +1370,23 @@ public class NumberTheoreticFunctionsCalculator {
      * indicate a mathematical fact about the pertinent number domain.
      */
     public static AlgebraicInteger fundamentalUnit(IntegerRing ring) {
+        if (ring == null) {
+            String excMsg = "Null ring has no fundamental unit";
+            throw new NullPointerException(excMsg);
+        }
         if (ring instanceof ImaginaryQuadraticRing) {
             String exceptionMessage = "Since " + ring.toASCIIString() + " has a finite unit group, there is no fundamental unit.";
             throw new IllegalArgumentException(exceptionMessage);
         }
         if (ring instanceof RealQuadraticRing) {
-            RealQuadraticRing r = (RealQuadraticRing) ring;
-            QuadraticInteger potentialUnit;
-            int d = r.getRadicand();
-            long xd;
-            long trialRegNeg;
-            long trialSurd = 1;
-            boolean notFoundYet = true;
-            do {
-                xd = trialSurd * trialSurd * d;
-                trialRegNeg = (long) Math.floor(Math.sqrt(xd));
-                potentialUnit = new RealQuadraticInteger((int) trialRegNeg, (int) trialSurd, r);
-                if (potentialUnit.norm() == -1) {
-                    notFoundYet = false;
-                }
-                if (notFoundYet) {
-                    potentialUnit = potentialUnit.plus(1);
-                    if (potentialUnit.norm() == 1) {
-                        notFoundYet = false;
-                    }
-                }
-                trialSurd++;
-            } while ((trialRegNeg < Integer.MAX_VALUE) && notFoundYet);
-            if (r.hasHalfIntegers()) {
-                double threshold = potentialUnit.abs();
-                double currAbs;
-                QuadraticInteger potentialHalfUnit;
-                trialSurd = 1;
-                do {
-                    xd = trialSurd * trialSurd * d;
-                    trialRegNeg = (long) Math.floor(Math.sqrt(xd - 4));
-                    trialRegNeg += ((trialRegNeg % 2) - 1); // Make sure it's odd
-                    potentialHalfUnit = new RealQuadraticInteger((int) trialRegNeg, (int) trialSurd, r, 2);
-                    if (potentialHalfUnit.norm() == -1) {
-                        return potentialHalfUnit;
-                    } else {
-                        currAbs = potentialHalfUnit.abs();
-                    }
-                    potentialHalfUnit = potentialHalfUnit.plus(1);
-                    if (potentialHalfUnit.norm() == 1) {
-                        return potentialHalfUnit;
-                    }
-                    trialSurd += 2;
-                } while (currAbs < threshold);
-            }
-            if (notFoundYet) {
-                String exceptionMessage = "Overflow occurred, fundamental unit is greater than " + potentialUnit.toASCIIString() + ".";
-                throw new ArithmeticException(exceptionMessage);
+            if (UNITS_CACHE.containsKey(ring)) {
+                return UNITS_CACHE.get(ring);
             } else {
-                return potentialUnit;
+                return realQuadUnitFind((RealQuadraticRing) ring);
             }
         }
         if (ring instanceof Zeta8Ring) {
             return ZETA_8;
-        }
-        if (ring == null) {
-            String excMsg = "Null ring has no fundamental unit";
-            throw new NullPointerException(excMsg);
         }
         String exceptionMessage = "Fundamental unit function not yet supported for " + ring.toASCIIString();
         throw new UnsupportedNumberDomainException(exceptionMessage, ring);
@@ -1474,6 +1545,36 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
+    private static int imagQuadClassNumFind(int d) {
+        double sumMult, interNum;
+        sumMult = (double) w(d) / (2.0 * d);
+        int kronSum = 0;
+        if (d == -4) {
+            kronSum = -2;
+        }
+        for (int i = 1; i < Math.abs(d); i++) {
+            kronSum += symbolKronecker(d, i) * i;
+        }
+        interNum = sumMult * kronSum;
+        return (int) Math.round(interNum);
+    }
+    
+    private static int realQuadClassNumFind(int d, RealQuadraticRing r) {
+        double sumMult, interNum;
+        sumMult = fundamentalUnit(r).getRealPartNumeric();
+        sumMult = 2 * Math.log(sumMult);
+        sumMult = -1.0 / sumMult;
+        double indKron;
+        double kronSum = 0.0;
+        for (int i = 1; i < d; i++) {
+            indKron = Math.log(Math.sin((Math.PI * i)/d));
+            indKron *= symbolKronecker(d, i);
+            kronSum += indKron;
+        }
+        interNum = sumMult * kronSum;
+        return (int) Math.round(interNum);
+    }
+    
     /**
      * Gives the class number of a ring of algebraic integers.
      * @param ring The ring for which for which to compute the class number. For 
@@ -1493,48 +1594,35 @@ public class NumberTheoreticFunctionsCalculator {
      * message will be "Null ring does not have class number".
      */
     public static int fieldClassNumber(IntegerRing ring) {
+        if (ring == null) {
+            String excMsg = "Null ring does not have class number";
+            throw new NullPointerException(excMsg);
+        }
+        if (CLASS_NUMBERS_CACHE.containsKey(ring)) {
+            return CLASS_NUMBERS_CACHE.get(ring);
+        }
         if (ring instanceof QuadraticRing) {
             QuadraticRing r = (QuadraticRing) ring;
             int d = r.getRadicand();
             if (!r.hasHalfIntegers()) {
                 d *= 4;
             }
-            double sumMult, interNum;
             if (d < 0) {
-                sumMult = (double) w(d) / (2.0 * d);
-                short kronSum = 0;
-                if (d == -4) {
-                    kronSum = -2;
-                }
-                for (short i = 1; i < Math.abs(d); i++) {
-                    kronSum += symbolKronecker(d, i) * i;
-                }
-                interNum = sumMult * kronSum;
-                return (int) Math.round(interNum);
+                int h = imagQuadClassNumFind(d);
+                CLASS_NUMBERS_CACHE.put(ring, h);
+                return h;
             } else {
-                sumMult = fundamentalUnit(r).getRealPartNumeric();
-                sumMult = 2 * Math.log(sumMult);
-                sumMult = -1.0 / sumMult;
-                double indKron;
-                double kronSum = 0.0;
-                for (int i = 1; i < d; i++) {
-                    indKron = Math.log(Math.sin((Math.PI * i)/d));
-                    indKron *= symbolKronecker(d, i);
-                    kronSum += indKron;
-                }
-                interNum = sumMult * kronSum;
-                return (int) Math.round(interNum);
+                int h = realQuadClassNumFind(d, (RealQuadraticRing) r);
+                CLASS_NUMBERS_CACHE.put(ring, h);
+                return h;
             }
         }
         if (ring instanceof Zeta8Ring) {
             return 1;
         }
-        if (ring == null) {
-            String excMsg = "Null ring does not have class number";
-            throw new NullPointerException(excMsg);
-        }
-        String exceptionMessage = "Class number function not yet supported for " + ring.toASCIIString();
-        throw new UnsupportedNumberDomainException(exceptionMessage, ring);
+        String excMsg = "Class number function not yet supported for " 
+                + ring.toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, ring);
     }
 
     /**
