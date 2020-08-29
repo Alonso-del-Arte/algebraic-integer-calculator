@@ -36,6 +36,7 @@ import algebraics.quartics.Zeta8Ring;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -172,7 +173,7 @@ public class NumberTheoreticFunctionsCalculator {
         UNITS_CACHE.put(ring, unit);
     }
     
-    private static final int SURD_PART_CACHE_THRESHOLD = 100000;
+    private static final int SURD_PART_CACHE_THRESHOLD = 1000;
     
     private static final HashMap<IntegerRing, Integer> CLASS_NUMBERS_CACHE 
             = new HashMap<>();
@@ -405,7 +406,7 @@ public class NumberTheoreticFunctionsCalculator {
     public static byte symbolLegendre(int a, int p) {
         if (!isPrime(p)) {
             String excMsg = "The number " + p 
-                    + " is not a prime number. Consider using the Jacoby symbol instead.";
+                    + " is not a prime number. Consider using the Jacobi symbol instead.";
             throw new IllegalArgumentException(excMsg);
         }
         if (p == -2 || p == 2) {
@@ -882,19 +883,193 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(exceptionMessage, num);
     }
     
-    // TODO: Write tests for this
-    public List<AlgebraicInteger> irreducibleFactors(AlgebraicInteger num) {
+    private static List<AlgebraicInteger> findIrreducibleFactorsOf(QuadraticInteger n) {
+        boolean realFlag = n instanceof RealQuadraticInteger;
+        QuadraticRing r = n.getRing();
+        if (r == null) {
+            String excMsg = "Ring of " + n.toASCIIString() + " should not be null";
+            throw new NullPointerException(excMsg);
+        }
+        QuadraticInteger unity = (QuadraticInteger) NumberTheoreticFunctionsCalculator.getOneInRing(r);
+        QuadraticInteger negOne = unity.times(-1);
         List<AlgebraicInteger> factors = new ArrayList<>();
+        if (Math.abs(n.norm()) < 2) {
+            factors.add(n);
+            return factors;
+        }
+        boolean keepGoing = true;
+        if (NumberTheoreticFunctionsCalculator.isIrreducible(n)) {
+            factors.add(unity);
+            factors.add(n);
+            if (!NumberTheoreticFunctionsCalculator.isPrime(n)) {
+                factors.add(negOne);
+                factors.add(negOne);
+            }
+        } else {
+            QuadraticInteger testDivisor = unity.plus(1); // Should be 2
+            if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor)) {
+                while (n.norm() % 4 == 0 && keepGoing) {
+                    try {
+                        n = n.divides(testDivisor);
+                        factors.add(testDivisor);
+                        if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
+                            factors.add(negOne);
+                            factors.add(negOne);
+                        }
+                    } catch (NotDivisibleException nde) {
+                        keepGoing = false;
+                    }
+                }
+            }
+            testDivisor = testDivisor.plus(1); // Now 3
+            keepGoing = true;
+            while (Math.abs(n.norm()) >= Math.abs(testDivisor.norm()) && keepGoing) {
+                if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor)) {
+                    while (n.norm() % testDivisor.norm() == 0 && keepGoing) {
+                        try {
+                            n = n.divides(testDivisor);
+                            factors.add(testDivisor);
+                            if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
+                                factors.add(negOne);
+                                factors.add(negOne);
+                            }
+                        } catch (NotDivisibleException nde) {
+                            keepGoing = false;
+                        }
+                    }
+                }
+                testDivisor = testDivisor.plus(2); // Next odd integer
+            }
+            int testDivRegPartMult = 0;
+            int testDivSurdPartMult = 2;
+            if (n.getRing().hasHalfIntegers()) {
+                testDivRegPartMult = 1;
+                testDivSurdPartMult = 1;
+            }
+            boolean withinRange;
+            while (Math.abs(n.norm()) > 1) {
+                if (r instanceof ImaginaryQuadraticRing) {
+                    testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+                }
+                if (r instanceof RealQuadraticRing) {
+                    testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+                }
+                withinRange = (testDivisor.norm() <= n.norm());
+                if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor) && Math.abs(testDivisor.norm()) != 1) {
+                    keepGoing = true;
+                    while (n.norm() % testDivisor.norm() == 0 && keepGoing) {
+                        try {
+                            n = n.divides(testDivisor.conjugate());
+                            factors.add(testDivisor.conjugate());
+                            if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
+                                factors.add(negOne);
+                                factors.add(negOne);
+                            }
+                        } catch (NotDivisibleException nde) {
+                            // We just ignore the exception when it pertains 
+                            // to the conjugate 
+                        }
+                        try {
+                            n = n.divides(testDivisor);
+                            factors.add(testDivisor);
+                            if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
+                                factors.add(negOne);
+                                factors.add(negOne);
+                            }
+                        } catch (NotDivisibleException nde) {
+                            if (realFlag) {
+                                withinRange = Math.abs(testDivisor.getRealPartNumeric()) <= Math.abs(n.getRealPartNumeric());
+                            } else {
+                                withinRange = ((Math.abs(nde.getNumericRealPart()) >= 1) || (Math.abs(nde.getNumericImagPart()) >= 1));
+                            }
+                            keepGoing = false;
+                        }
+                    }
+                }
+                if (withinRange) {
+                    testDivRegPartMult += 2;
+                } else {
+                    if (!r.hasHalfIntegers()) {
+                        testDivRegPartMult = 0;
+                        testDivSurdPartMult += 2;
+                    } else {
+                        if (testDivSurdPartMult % 2 == 0) {
+                            testDivRegPartMult = 1;
+                        } else {
+                            testDivRegPartMult = 0;
+                        }
+                        testDivSurdPartMult++;
+                    }
+                }
+            }
+            factors.add(n); // This should be a unit, most likely -1 or 1
+        }
+        factors.sort(COMPARATOR);
+        int quadrantAdjustStart = 1;
+        keepGoing = true;
+        while (quadrantAdjustStart < factors.size() && keepGoing) {
+            if (Math.abs(factors.get(quadrantAdjustStart).norm()) == 1) {
+                quadrantAdjustStart++;
+            } else {
+                keepGoing = false;
+            }
+        }
+        QuadraticInteger currFac;
+        QuadraticInteger currFirstUnit = (QuadraticInteger) factors.get(0);
+        int unitAdjustCount = 0;
+        for (int i = quadrantAdjustStart; i < factors.size(); i++) {
+            currFac = (QuadraticInteger) factors.get(i);
+            if (currFac.getRegPartMult() < 0 || ((currFac.getRegPartMult() == 0 && currFac.getSurdPartMult() < 0))) {
+                factors.set(i, currFac.times(-1));
+                currFirstUnit = currFirstUnit.times(-1);
+                factors.set(0, currFirstUnit);
+                unitAdjustCount++;
+            }
+        }
+        int removalIndex = 0;
+        int unitRemovalCount = 0;
+        while (removalIndex < factors.size()) {
+            if (unity.equals(factors.get(removalIndex))) {
+                factors.remove(removalIndex);
+                unitRemovalCount++;
+            }
+            removalIndex++;
+        }
+        return factors;
+    }
+    
+    /**
+     * Determines the irreducible factors of an algebraic integer.
+     * @param num The number to factorize into irreducibles. For example, 26 in 
+     * <b>Z</b>[&radic;26].
+     * @return A list of irreducible factors. No exponents are used, repeated 
+     * factors are simply repeated. For example,
+     * @throws RuntimeException In the unlikely event that this function is 
+     * called with a number from a unique factorization domain (UFD) but it 
+     * causes a <code>NonUniqueFactorizationDomainException</code>, that 
+     * exception will be wrapped in this exception. Or in the still unlikelier 
+     * event that <code>UnsupportedNumberDomainException</code> should have 
+     * occurred but didn't, this exception will occur without wrapping any 
+     * exception.
+     * @throws UnsupportedNumberDomainException If this function is called with 
+     * an algebraic integer from a domain that is not fully supported yet.
+     */
+    public static List<AlgebraicInteger> irreducibleFactors(AlgebraicInteger num) {
         IntegerRing ring = num.getRing();
         if (isUFD(ring)) {
             try {
-                factors = primeFactors(num);
+                List<AlgebraicInteger> factors = primeFactors(num);
+                return factors;
             } catch (NonUniqueFactorizationDomainException nufde) {
-                System.err.println("\"" + nufde.getMessage() + "\"");
-                factors.add(num);
+                throw new RuntimeException(nufde);
             }
         }
-        return factors;
+        if (ring instanceof QuadraticRing) {
+            List<AlgebraicInteger> factors 
+                    = findIrreducibleFactorsOf((QuadraticInteger) num);
+            return factors;
+        }
+        throw new RuntimeException("Unexpected circumstance occurred");
     }
     
     /**
@@ -1370,10 +1545,6 @@ public class NumberTheoreticFunctionsCalculator {
      * indicate a mathematical fact about the pertinent number domain.
      */
     public static AlgebraicInteger fundamentalUnit(IntegerRing ring) {
-        if (ring == null) {
-            String excMsg = "Null ring has no fundamental unit";
-            throw new NullPointerException(excMsg);
-        }
         if (ring instanceof ImaginaryQuadraticRing) {
             String exceptionMessage = "Since " + ring.toASCIIString() + " has a finite unit group, there is no fundamental unit.";
             throw new IllegalArgumentException(exceptionMessage);
@@ -1388,8 +1559,27 @@ public class NumberTheoreticFunctionsCalculator {
         if (ring instanceof Zeta8Ring) {
             return ZETA_8;
         }
-        String exceptionMessage = "Fundamental unit function not yet supported for " + ring.toASCIIString();
-        throw new UnsupportedNumberDomainException(exceptionMessage, ring);
+        if (ring == null) {
+            String excMsg = "Null ring has no fundamental unit";
+            throw new NullPointerException(excMsg);
+        }
+        String excMsg = "Fundamental unit function not yet supported for " 
+                + ring.toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, ring);
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public static Optional<AlgebraicInteger> searchForUnit(IntegerRing ring, 
+            AlgebraicInteger max) {
+        ImaginaryQuadraticInteger num = new ImaginaryQuadraticInteger(5, 7, RING_EISENSTEIN, 2);
+        return Optional.of(num);
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public static Optional<AlgebraicInteger> searchForUnit(IntegerRing ring, 
+            AlgebraicInteger min, AlgebraicInteger max) {
+        ImaginaryQuadraticInteger num = new ImaginaryQuadraticInteger(5, 7, RING_EISENSTEIN, 2);
+        return Optional.of(num);
     }
     
     /**
@@ -1504,24 +1694,54 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(exceptionMessage, num);
     }
 
+    // STUB TO FAIL THE TEST
+    public static AlgebraicInteger getNegOneInRing(IntegerRing ring) {
+        if (ring instanceof QuadraticRing) {
+            return QuadraticInteger.apply(1, 0, (QuadraticRing) ring);
+        }
+        if (ring instanceof Zeta8Ring) {
+            return new Zeta8Integer(1, 0, 0, 0);
+        }
+        return new Zeta8Integer(1, 1, 1, 1);
+//        if (ring == null) {
+//            String excMsg = "Null ring does not contain the number 1";
+//            throw new NullPointerException(excMsg);
+//        }
+//        String excMsg = "1 from given ring function not yet supported for " 
+//                + ring.toASCIIString();
+//        throw new UnsupportedNumberDomainException(excMsg, ring);
+    }
+    
+    // STUB TO FAIL THE TEST
+    public static AlgebraicInteger getZeroInRing(IntegerRing ring) {
+        if (ring instanceof QuadraticRing) {
+            return QuadraticInteger.apply(1, 0, (QuadraticRing) ring);
+        }
+        if (ring instanceof Zeta8Ring) {
+            return new Zeta8Integer(1, 0, 0, 0);
+        }
+        return new Zeta8Integer(1, 1, 1, 1);
+//        if (ring == null) {
+//            String excMsg = "Null ring does not contain the number 1";
+//            throw new NullPointerException(excMsg);
+//        }
+//        String excMsg = "1 from given ring function not yet supported for " 
+//                + ring.toASCIIString();
+//        throw new UnsupportedNumberDomainException(excMsg, ring);
+    }
+    
     /**
-     * Wraps the purely real, rational unit 1 into an implementation of {@link 
-     * AlgebraicInteger}.
+     * Wraps the purely real, rational unit 1 into an implementation of 
+     * <code>AlgebraicInteger</code>.
      * @param ring The ring of algebraic integers from which to get 1.
-     * @return An object implementing AlgebraicInteger representing the number 
-     * with real part 1 and imaginary part 0 in the given ring.
+     * @return An object implementing <code>AlgebraicInteger</code> representing 
+     * the number with real part 1 and imaginary part 0 in the given ring.
      * @throws UnsupportedNumberDomainException If called upon with a type of 
      * ring for which support has not been fleshed out yet.
      */
     public static AlgebraicInteger getOneInRing(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
-            QuadraticRing r = (QuadraticRing) ring;
-            if (r instanceof ImaginaryQuadraticRing) {
-                return new ImaginaryQuadraticInteger(1, 0, r);
-            }
-            if (r instanceof RealQuadraticRing) {
-                return new RealQuadraticInteger(1, 0, r);
-            }
+            return QuadraticInteger.apply(1, 0, (QuadraticRing) ring);
         }
         if (ring instanceof Zeta8Ring) {
             return new Zeta8Integer(1, 0, 0, 0);
@@ -1530,8 +1750,10 @@ public class NumberTheoreticFunctionsCalculator {
             String excMsg = "Null ring does not contain the number 1";
             throw new NullPointerException(excMsg);
         }
-        String exceptionMessage = "1 from given ring function not yet supported for " + ring.toASCIIString() + ".";
-        throw new UnsupportedNumberDomainException(exceptionMessage, ring);
+        return new Zeta8Integer(1, 1, 1, 1);
+//        String excMsg = "1 from given ring function not yet supported for " 
+//                + ring.toASCIIString();
+//        throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
     private static short w(int d) {
