@@ -225,7 +225,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testSortListAlgebraicIntegersByNorm() {
-        System.out.println("sortListAlgebraicIntegersByNorm");
+        System.out.println("sortListAlgebraicIntegersByNorm was deprecated and removed");
+        System.out.println("This test actually now uses algebraics.NormAbsoluteComparator");
         QuadraticRing ring = new ImaginaryQuadraticRing(-7);
         QuadraticInteger numberA = new ImaginaryQuadraticInteger(1, 0, ring); // Unit
         QuadraticInteger numberB = new ImaginaryQuadraticInteger(-1, 1, ring, 2); // -1/2 + sqrt(-7)/2, norm 2
@@ -779,6 +780,60 @@ public class NumberTheoreticFunctionsCalculatorTest {
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("isPrime on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
             System.out.println("\"" + unde.getMessage() + "\"");
+        }
+    }
+    
+    private void checkFactorsAreIrreducible(QuadraticInteger num) {
+        List<AlgebraicInteger> factors = irreducibleFactors(num);
+        QuadraticInteger product = QuadraticInteger.apply(1, 0, num.getRing());
+        String msgFrag = " ought to be an irreducible factor of " 
+                + num.toString();
+        String msg;
+        for (AlgebraicInteger factor : factors) {
+            msg = factor.toString() + msgFrag;
+            assert isIrreducible(factor) : msg;
+            product = product.times((QuadraticInteger) factor);
+        }
+        msg = "Factors of " + num.toString() + " should multiply to that number";
+        assertEquals(msg, num, product);
+    }
+    
+    @Test
+    public void testIrreducibleFactors() {
+        System.out.println("irreducibleFactors");
+        QuadraticRing ring = new ImaginaryQuadraticRing(-31);
+        QuadraticInteger num = new ImaginaryQuadraticInteger(-29, 1, ring);
+        checkFactorsAreIrreducible(num);
+        ring = new RealQuadraticRing(26);
+        num = new RealQuadraticInteger(28, 3, ring);
+        checkFactorsAreIrreducible(num);
+    }
+    
+    @Test
+    public void testIrreducibleFactorsForUnsupportedRing() {
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
+        IllDefinedQuadraticInteger num = new IllDefinedQuadraticInteger(21, 3, 
+                ring);
+        try {
+            List<AlgebraicInteger> factors = irreducibleFactors(num);
+            String msg = "Trying to find irreducible factors of " 
+                    + num.toString() + " from unsupported ill-defined ring " 
+                    + ring.toString() 
+                    + " should have caused exception, not given result " 
+                    + factors.toString();
+            fail(msg);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to find irreducible factors of " 
+                    + num.toString() + " from unsupported ill-defined ring " 
+                    + ring.toString() 
+                    + " correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to find irreducible factors of "
+                    + num.toString() + " from unsupported ill-defined ring " 
+                    + ring.toString();
+            fail(msg);
         }
     }
     
@@ -1916,30 +1971,195 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
+     * Test of getNegOneInRing method, of class 
+     * NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testGetNegOneInRing() {
+        System.out.println("getNegOneInRing");
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(-1, 0, 
+                RING_GAUSSIAN);
+        AlgebraicInteger result = getNegOneInRing(RING_GAUSSIAN);
+        assertEquals(expResult, result);
+        expResult = new ImaginaryQuadraticInteger(-1, 0, RING_EISENSTEIN);
+        result = getNegOneInRing(RING_EISENSTEIN);
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(-1, 0, RING_ZPHI);
+        result = getNegOneInRing(RING_ZPHI);
+        assertEquals(expResult, result);
+        Zeta8Ring z8r = new Zeta8Ring();
+        Zeta8Integer expResDeg4 = new Zeta8Integer(-1, 0, 0, 0);
+        result = getNegOneInRing(z8r);
+        assertEquals(expResDeg4, result);
+    }
+    
+    /**
+     * Another test of getNegOneInRing method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
+     * algebraics.IntegerRing IntegerRing} to {@link 
+     * NumberTheoreticFunctionsCalculator#getNegOneInRing(algebraics.IntegerRing) 
+     * getNegOneInRing()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoNegOneForNullRing() {
+        try {
+            AlgebraicInteger result = getNegOneInRing(null);
+            String msg = "Trying to get -1 for null ring should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to get -1 for null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            assertNotNull("Exception message should not be null", excMsg);
+            assert !excMsg.equals("") : "Exception message should not be empty";
+        } catch (RuntimeException re) {
+            String failMsg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get -1 for null ring";
+            fail(failMsg);
+        }
+    }
+    
+    /**
+     * Another test of getNegOneInRing method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing an instance of an unsupported
+     * implementation of {@link algebraics.IntegerRing IntegerRing} to {@link 
+     * NumberTheoreticFunctionsCalculator#getNegOneInRing(algebraics.IntegerRing) 
+     * getNegOneInRing()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoNegOneForUnsupportedRing() {
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(-110);
+        try {
+            AlgebraicInteger result = getNegOneInRing(ring);
+            String msg = "Trying to get -1 for unsupported ring " 
+                    + ring.toString() 
+                    + " should have caused an exception, not given result" 
+                    + result.toString();
+            fail(msg);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to get -1 for unsupported ring " 
+                    + ring.toString() 
+                    + " correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get -1 for unsupported ring " 
+                    + ring.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of getZeroInRing method, of class 
+     * NumberTheoreticFunctionsCalculator.
+     */
+    @Test
+    public void testGetZeroInRing() {
+        System.out.println("getZeroInRing");
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(0, 0, 
+                RING_GAUSSIAN);
+        AlgebraicInteger result = getZeroInRing(RING_GAUSSIAN);
+        assertEquals(expResult, result);
+        expResult = new ImaginaryQuadraticInteger(0, 0, RING_EISENSTEIN);
+        result = getZeroInRing(RING_EISENSTEIN);
+        assertEquals(expResult, result);
+        expResult = new RealQuadraticInteger(0, 0, RING_ZPHI);
+        result = getZeroInRing(RING_ZPHI);
+        assertEquals(expResult, result);
+        Zeta8Ring z8r = new Zeta8Ring();
+        Zeta8Integer expResDeg4 = new Zeta8Integer(0, 0, 0, 0);
+        result = getZeroInRing(z8r);
+        assertEquals(expResDeg4, result);
+    }
+    
+    /**
+     * Another test of getZeroInRing method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
+     * algebraics.IntegerRing IntegerRing} to {@link 
+     * NumberTheoreticFunctionsCalculator#getZeroInRing(algebraics.IntegerRing) 
+     * getZeroInRing()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoZeroForNullRing() {
+        try {
+            AlgebraicInteger result = getZeroInRing(null);
+            String msg = "Trying to get 0 for null ring should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Trying to get 0 for null ring correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            assertNotNull("Exception message should not be null", excMsg);
+            assert !excMsg.equals("") : "Exception message should not be empty";
+        } catch (RuntimeException re) {
+            String failMsg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get 0 for null ring";
+            fail(failMsg);
+        }
+    }
+    
+    /**
+     * Another test of getZeroInRing method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing an instance of an unsupported
+     * implementation of {@link algebraics.IntegerRing IntegerRing} to {@link 
+     * NumberTheoreticFunctionsCalculator#getZeroInRing(algebraics.IntegerRing) 
+     * getZeroInRing()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoZeroForUnsupportedRing() {
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(-110);
+        try {
+            AlgebraicInteger result = getZeroInRing(ring);
+            String msg = "Trying to get 0 for unsupported ring " 
+                    + ring.toString() 
+                    + " should have caused an exception, not given result" 
+                    + result.toString();
+            fail(msg);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to get 0 for unsupported ring " 
+                    + ring.toString() 
+                    + " correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get 0 for unsupported ring " 
+                    + ring.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
      * Test of getOneInRing method, of class NumberTheoreticFunctionsCalculator.
      */
     @Test
     public void testGetOneInRing() {
         System.out.println("getOneInRing");
-        QuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
-        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.getOneInRing(NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+        QuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 0, 
+                RING_GAUSSIAN);
+        AlgebraicInteger result = getOneInRing(RING_GAUSSIAN);
         assertEquals(expResult, result);
-        expResult = new ImaginaryQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
-        result = NumberTheoreticFunctionsCalculator.getOneInRing(NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
+        expResult = new ImaginaryQuadraticInteger(1, 0, RING_EISENSTEIN);
+        result = getOneInRing(RING_EISENSTEIN);
         assertEquals(expResult, result);
-        expResult = new RealQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_ZPHI);
-        result = NumberTheoreticFunctionsCalculator.getOneInRing(NumberTheoreticFunctionsCalculator.RING_ZPHI);
+        expResult = new RealQuadraticInteger(1, 0, RING_ZPHI);
+        result = getOneInRing(RING_ZPHI);
         assertEquals(expResult, result);
         Zeta8Ring z8r = new Zeta8Ring();
         Zeta8Integer expResDeg4 = new Zeta8Integer(1, 0, 0, 0);
-        result = NumberTheoreticFunctionsCalculator.getOneInRing(z8r);
+        result = getOneInRing(z8r);
         assertEquals(expResDeg4, result);
     }
     
     /**
      * Another test of getOneInRing method, of class 
      * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
-     * algebraics.AlgebraicInteger AlgebraicInteger} to {@link 
+     * algebraics.IntegerRing IntegerRing} to {@link 
      * NumberTheoreticFunctionsCalculator#getOneInRing(algebraics.IntegerRing) 
      * getOneInRing()} should cause an exception, not give any particular 
      * result.
@@ -1947,10 +2167,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testNoOneForNullRing() {
         try {
-            AlgebraicInteger result = NumberTheoreticFunctionsCalculator.getOneInRing(null);
-            String failMsg = "Trying to get 1 for null ring should have caused exception, not given result " 
+            AlgebraicInteger result = getOneInRing(null);
+            String msg = "Trying to get 1 for null ring should not have given result " 
                     + result.toString();
-            fail(failMsg);
+            fail(msg);
         } catch (NullPointerException npe) {
             System.out.println("Trying to get 1 for null ring correctly caused NullPointerException");
             String excMsg = npe.getMessage();
@@ -1961,6 +2181,37 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMsg = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to get 1 for null ring";
             fail(failMsg);
+        }
+    }
+    
+    /**
+     * Another test of getOneInRing method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing an instance of an unsupported
+     * implementation of {@link algebraics.IntegerRing IntegerRing} to {@link 
+     * NumberTheoreticFunctionsCalculator#getOneInRing(algebraics.IntegerRing) 
+     * getOneInRing()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoOneForUnsupportedRing() {
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(-110);
+        try {
+            AlgebraicInteger result = getOneInRing(ring);
+            String msg = "Trying to get 1 for unsupported ring " 
+                    + ring.toString() 
+                    + " should have caused an exception, not given result" 
+                    + result.toString();
+            fail(msg);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to get 1 for unsupported ring " 
+                    + ring.toString() 
+                    + " correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get 1 for unsupported ring " 
+                    + ring.toString();
+            fail(msg);
         }
     }
     
@@ -2157,6 +2408,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * keep going until either an assertion fails or a number is produced with 9 
      * for a least significant digit, whichever happens first.
      */
+    @org.junit.Ignore
     @Test
     public void testRandomSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
