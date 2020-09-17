@@ -277,7 +277,7 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testTrace() {
         System.out.println("trace");
-        long expResult = 2 * randomRealPart;
+        long expResult = 2L * randomRealPart;
         long result;
         for (int i = 0; i < totalTestIntegers; i++) {
             result = testIntegers.get(i).trace();
@@ -2104,6 +2104,24 @@ public class ImaginaryQuadraticIntegerTest {
                 fail(failMessage);
             }
         }
+    }
+    
+    /**
+     * Test of negate method, of class ImaginaryQuadraticInteger, inherited from 
+     * QuadraticInteger.
+     */
+    @Test
+    public void testNegate() {
+        System.out.println("negate");
+        assertEquals(IMAG_UNIT_NEG_I, IMAG_UNIT_I.negate());
+        ImaginaryQuadraticInteger someNumber 
+                = new ImaginaryQuadraticInteger(randomRealPart, -randomRealPart, 
+                        RING_ZI2);
+        ImaginaryQuadraticInteger expected 
+                = new ImaginaryQuadraticInteger(-randomRealPart, randomRealPart, 
+                        RING_ZI2);
+        QuadraticInteger actual = someNumber.negate();
+        assertEquals(expected, actual);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -22,11 +22,34 @@ package algebraics.quadratics;
  * necessary to test that {@link algebraics.UnsupportedNumberDomainException} 
  * arises. It should be in a test package, not in a source package, and it 
  * should not be compiled to any JARs.
+ * <p>This class can't represent numbers of the form 
+ * <sup><i>a</i></sup>&frasl;<sub>2</sub> + 
+ * <sup><i>b</i>&radic;<i>d</i></sup>&frasl;<sub>2</sub></p> regardless of what 
+ * <i>d</i> is. Some arithmetic operations might work correctly, but most will 
+ * give incorrect results if they don't cause 
+ * <code>UnsupportedNumberDomainException</code>.
  * @author Alonso del Arte
  */
 public class IllDefinedQuadraticInteger extends QuadraticInteger {
     
+    private static final long serialVersionUID = 4547543568079665971L;
+    
     private final double numValRe, numValIm;
+    
+    /**
+     * This function is implemented only because it is required by the {@link 
+     * algebraics.Arithmeticable} interface. This class can't use {@link 
+     * QuadraticInteger#negate()} because that would cause {@link 
+     * algebraics.UnsupportedNumberDomainException}, perhaps resulting in 
+     * misleading test results.
+     * @return A value that is actually correct. Though I haven't actually 
+     * tested this, so I don't guarantee correctness.
+     */
+    @Override
+    public IllDefinedQuadraticInteger negate() {
+        return new IllDefinedQuadraticInteger(-this.regPartMult, 
+                -this.regPartMult, this.quadRing);
+    }
 
     /**
      * Possibly the absolute value of the ill-defined quadratic integer.

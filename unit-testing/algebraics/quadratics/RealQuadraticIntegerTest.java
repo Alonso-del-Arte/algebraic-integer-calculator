@@ -238,7 +238,7 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testTrace() {
         System.out.println("trace");
-        long expResult = 2 * randomRegPart;
+        long expResult = 2L * randomRegPart;
         long result;
         for (int i = 0; i < totalTestIntegers; i++) {
             result = testIntegers.get(i).trace();
@@ -1169,33 +1169,33 @@ public class RealQuadraticIntegerTest {
         RealQuadraticInteger numNeg136plus44Sqrt10 = new RealQuadraticInteger(-136, 44, ringZ10);
         RealQuadraticInteger num117minus36Sqrt10 = new RealQuadraticInteger(117, -36, ringZ10);
         RealQuadraticInteger numSqrt10 = new RealQuadraticInteger(0, 1, ringZ10);
-        List<RealQuadraticInteger> expectedList = new ArrayList<>();
-        expectedList.add(negSeven);
-        expectedList.add(numNeg136plus44Sqrt10);
-        expectedList.add(num117minus36Sqrt10);
-        expectedList.add(numSqrt10);
-        List<RealQuadraticInteger> unsortedList = new ArrayList<>();
-        unsortedList.add(num117minus36Sqrt10);
-        unsortedList.add(negSeven);
-        unsortedList.add(numSqrt10);
-        unsortedList.add(numNeg136plus44Sqrt10);
-        Collections.sort(unsortedList);
-        assertEquals(expectedList, unsortedList);
+        List<RealQuadraticInteger> expected = new ArrayList<>();
+        expected.add(negSeven);
+        expected.add(numNeg136plus44Sqrt10);
+        expected.add(num117minus36Sqrt10);
+        expected.add(numSqrt10);
+        List<RealQuadraticInteger> actual = new ArrayList<>();
+        actual.add(num117minus36Sqrt10);
+        actual.add(negSeven);
+        actual.add(numSqrt10);
+        actual.add(numNeg136plus44Sqrt10);
+        Collections.sort(actual);
+        assertEquals(expected, actual);
         RealQuadraticInteger surd = new RealQuadraticInteger(0, 1, RING_OQ13);
-        expectedList.add(surd);
-        unsortedList.add(surd);
+        expected.add(surd);
+        actual.add(surd);
         surd = new RealQuadraticInteger(0, 1, RING_ZPHI);
-        expectedList.add(1, surd);
-        unsortedList.add(surd);
-        expectedList.add(1, GOLDEN_RATIO);
-        unsortedList.add(GOLDEN_RATIO);
+        expected.add(1, surd);
+        actual.add(surd);
+        expected.add(1, GOLDEN_RATIO);
+        actual.add(GOLDEN_RATIO);
         surd = new RealQuadraticInteger(0, 1, RING_Z2);
-        expectedList.add(1, surd);
-        unsortedList.add(surd);
-        expectedList.add(1, oneRQI);
-        unsortedList.add(oneRQI);
-        Collections.sort(unsortedList);
-        assertEquals(expectedList, unsortedList);
+        expected.add(1, surd);
+        actual.add(surd);
+        expected.add(1, oneRQI);
+        actual.add(oneRQI);
+        Collections.sort(actual);
+        assertEquals(expected, actual);
     }
     
     /**
@@ -1522,6 +1522,26 @@ public class RealQuadraticIntegerTest {
         expResult = new RealQuadraticInteger(5, 3, RING_OQ13);
         result = testSummandA.plus(testSummandB);
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of negate method, of class RealQuadraticInteger, inherited from 
+     * QuadraticInteger.
+     */
+    @Test
+    public void testNegate() {
+        System.out.println("negate");
+        RealQuadraticInteger expected = new RealQuadraticInteger(-1, -1, 
+                RING_ZPHI, 2);
+        QuadraticInteger actual = GOLDEN_RATIO.negate();
+        assertEquals(expected, actual);
+        RealQuadraticInteger someNumber = new RealQuadraticInteger(
+                randomRegForHalfInts, randomSurdForHalfInts, 
+                ringRandomForAltTesting, 2);
+        expected = new RealQuadraticInteger(-randomRegForHalfInts, 
+                -randomSurdForHalfInts, ringRandomForAltTesting, 2);
+        actual = someNumber.negate();
+        assertEquals(expected, actual);
     }
     
     /**
