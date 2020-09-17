@@ -18,13 +18,16 @@ package algebraics.quadratics;
 
 /**
  * Defines objects to represent real quadratic integers, for the most part 
- * symbolically rather than numerically. Is <code>Comparable</code>, enabling 
- * sorting through <code>Collections.sort()</code> or <code>Arrays.sort()</code> 
- * in ascending order according to position on the real number line.
+ * symbolically rather than numerically. This class is <code>Comparable</code>, 
+ * enabling sorting through <code>Collections.sort()</code> or 
+ * <code>Arrays.sort()</code> in ascending order according to position on the 
+ * real number line, without needing a <code>Comparator</code>.
  * @author Alonso del Arte
  */
 public class RealQuadraticInteger extends QuadraticInteger 
         implements Comparable<RealQuadraticInteger> {
+    
+    private static final long serialVersionUID =  4547847540095073075L;
     
     private final double numVal;
     private final double absNumVal;
@@ -153,17 +156,17 @@ public class RealQuadraticInteger extends QuadraticInteger
      * for 5 + 4&radic;3, this parameter would be 5.
      * @param b The part to be multiplied by &radic;<i>d</i>. For example, for 5 
      * + 4&radic;3, this parameter would be 4.
-     * @param R The ring to which this algebraic integer belongs to. For 
+     * @param ring The ring to which this algebraic integer belongs to. For 
      * example, for 5 + 4&radic;3, this parameter could be <code>new 
      * RealQuadraticRing(3)</code>.
-     * @throws IllegalArgumentException If <code>R</code> is not of the type 
-     * {@link RealQuadraticRing}. However, if <code>R</code> is of type {@link 
-     * ImaginaryQuadraticRing} and <code>b = 0</code>, a real ring will be 
-     * quietly substituted.
-     * @throws NullPointerException If <code>R</code> is null.
+     * @throws IllegalArgumentException If <code>ring</code> is not of the type 
+     * {@link RealQuadraticRing}. This exception will occur even if 
+     * <code>b</code> equals 0. There will be no quiet substitution of a real 
+     * ring, unlike in an earlier version of this class.
+     * @throws NullPointerException If <code>ring</code> is null.
      */
-    public RealQuadraticInteger(int a, int b, QuadraticRing R) {
-        this(a, b, R, 1);
+    public RealQuadraticInteger(int a, int b, QuadraticRing ring) {
+        this(a, b, ring, 1);
     }
         
     /**
@@ -172,34 +175,33 @@ public class RealQuadraticInteger extends QuadraticInteger
      * @param a The "regular" part of the real quadratic integer, multiplied by 
      * 2 when applicable. For example, for 7/2 + (31&radic;5)/2, this parameter 
      * would be 7.
-     * @param b The part to be multiplied by &radic;<i>d</i>, though multiplied 
-     * by 2 when applicable. For example, for 7/2 + (31&radic;5)/2, this 
-     * parameter would be 31.
-     * @param R The ring to which this algebraic integer belongs to. For 
+     * @param b The part to be multiplied by &radic;<i>d</i>, multiplied by 2 
+     * when applicable. For example, for 7/2 + (31&radic;5)/2, this parameter 
+     * would be 31.
+     * @param ring The ring to which this algebraic integer belongs to. For 
      * example, for 7/2 + (31&radic;5)/2, this parameter could be <code>new 
      * RealQuadraticRing(5)</code>.
-     * @param denom In most cases 1, but may be 2 if a and b have the same 
-     * parity and R{@link QuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is 
-     * true. If that is the case, &minus;2 may also be used, and &minus;1 can 
-     * always be used; the constructor will quietly substitute 1 or 2 and 
-     * multiply a and b by &minus;1.
-     * @throws IllegalArgumentException If <code>denom</code> is 2 but there is 
-     * a parity mismatch between <code>a</code> and <code>b</code> (that is, one 
-     * is odd and the other is even), or if <code>denom</code> is 2 but 
-     * <code>R</code>{@link QuadraticRing#hasHalfIntegers() .hasHalfIntegers()} 
-     * is false. This exception may also arise if <code>R</code> is not of the 
-     * type {@link RealQuadraticRing}. However, if <code>R</code> is of type 
-     * {@link ImaginaryQuadraticRing} and <code>b</code> is 0, a real ring will 
-     * be quietly substituted.
-     * @throws NullPointerException If <code>R</code> is null.
+     * @param denom In most cases 1, but may be 2 if <code>a</code> and 
+     * <code>b</code> have the same parity and 
+     * <code>ring</code>{@link QuadraticRing#hasHalfIntegers() 
+     * .hasHalfIntegers()} is true. If that is the case, &minus;2 may also be 
+     * used, and &minus;1 can always be used; the constructor will quietly 
+     * substitute 1 or 2 and multiply <code>a</code> and <code>b</code> by 
+     * &minus;1.
+     * @throws IllegalArgumentException If <code>ring</code> is not of the type 
+     * {@link RealQuadraticRing}. This exception will occur even if 
+     * <code>b</code> equals 0. There will be no quiet substitution of a real 
+     * ring, unlike in an earlier version of this class.
+     * @throws NullPointerException If <code>ring</code> is null.
      */
-    public RealQuadraticInteger(int a, int b, QuadraticRing R, int denom) {
-        super(a, b, R, denom);
-        if (!(R instanceof RealQuadraticRing)) {
+    public RealQuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
+        super(a, b, ring, denom);
+        if (!(ring instanceof RealQuadraticRing)) {
             String excMsg = "Ring is not real as needed.";
             throw new IllegalArgumentException(excMsg);
         }
-        double preNumVal = this.quadRing.realRadSqrt * this.surdPartMult + this.regPartMult;
+        double preNumVal = this.quadRing.realRadSqrt * this.surdPartMult 
+                + this.regPartMult;
         this.numVal = preNumVal / this.denominator;
         this.absNumVal = Math.abs(this.numVal);
     }

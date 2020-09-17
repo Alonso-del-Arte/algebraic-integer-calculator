@@ -18,11 +18,13 @@ package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
+import algebraics.Arithmeticable;
 import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -32,7 +34,8 @@ import java.util.Objects;
  * have to define them, unless absolutely necessary.
  * @author Aonso del Arte
  */
-public abstract class QuadraticInteger implements AlgebraicInteger {
+public abstract class QuadraticInteger implements AlgebraicInteger, 
+        Arithmeticable<QuadraticInteger>, Serializable {
 
     protected final int regPartMult;
     protected final int surdPartMult;
@@ -41,11 +44,15 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     
     /**
      * Retrieves an object representing the ring this quadratic integer belongs 
-     * to.
-     * @return An object subclassed from {@link QuadraticRing}.
+     * to. This function can't be overridden, in order to guarantee that the 
+     * return value is the non-null ring parameter the constructor received.
+     * @return An object subclassed from {@link QuadraticRing}. In the case of 
+     * an {@link ImaginaryQuadraticInteger}, this should be an {@link 
+     * ImaginaryQuadraticRing}; and in the case of a {@link 
+     * RealQuadraticInteger}, this should be a {@link RealQuadraticRing}.
      */
     @Override
-    public QuadraticRing getRing() {
+    public final QuadraticRing getRing() {
         return this.quadRing;
     }
     
@@ -114,17 +121,18 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     
     /**
      * Calculates the trace of the quadratic integer (twice the "regular" part, 
-     * twice the real part in the case of imaginary quadratic integers).
+     * twice the real part in the case of imaginary quadratic integers). 
+     * Overflows are mathematically impossible.
      * @return Twice the "regular" part. For example, for 1/2 + 
      * (&radic;&minus;7)/2, this would be 1; for 1 + &radic;&minus;7 it would be 
      * 2; and for 2 + &radic;14, it would be 4.
      */
     @Override
     public long trace() {
-        if (this.quadRing.d1mod4 && this.denominator == 2) {
+        if (this.denominator == 2) {
             return this.regPartMult;
         } else {
-            return 2 * this.regPartMult;
+            return 2L * this.regPartMult;
         }
     }
     
@@ -132,19 +140,22 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * Calculates the norm of the quadratic integer. 64-bit integers are used 
      * for the computation, but there is no overflow checking.
      * @return Square of the "regular" part minus square of the surd part times 
-     * radicand. Should be 0 if an only if the quadratic integer is 0. Negative 
-     * norms for imaginary quadratic integers are mathematically impossible, but 
-     * could occur in this program as a result of an arithmetic overflow. Norms 
-     * for nonzero real quadratic integers may be positive or negative. For 
-     * example, the norm of 1/2 + (&radic;&minus;7)/2 is 2; the norm of 1 + 
-     * &radic;&minus;7 is 8; and the norm of 2 + &radic;14 is &minus;10.
+     * the radicand of the square root that is adjoined to <b>Q</b> (e.g., 3 in 
+     * the case of <b>Z</b>[&radic;3]. Should be 0 if and only if the quadratic 
+     * integer is 0. Negative norms for imaginary quadratic integers are 
+     * mathematically impossible, but could occur in this program as a result of 
+     * an arithmetic overflow. Norms for nonzero real quadratic integers may be 
+     * positive or negative. For example, the norm of 1/2 + (&radic;&minus;7)/2 
+     * is 2; the norm of 1 + &radic;&minus;7 is 8; and the norm of 2 + &radic;14 
+     * is &minus;10.
      */
     @Override
     public long norm() {
         long Na = (long) this.regPartMult * (long) this.regPartMult;
-        long Nb = (long) this.surdPartMult * (long) this.surdPartMult * (long) this.quadRing.radicand;
+        long Nb = (long) this.surdPartMult * (long) this.surdPartMult 
+                * (long) this.quadRing.radicand;
         long N = Na - Nb;
-        if (this.quadRing.d1mod4 && (this.denominator == 2)) {
+        if (this.denominator == 2) {
             N /= 4L;
         }
         return N;
@@ -155,9 +166,16 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * integer.
      * @return An array of three integers. If the algebraic integer is of degree 
      * 2, the array will be {norm, negative trace, 1}; if of degree 1, then 
-     * {number, 1, 0}, and for 0, {0, 1, 0}. For example, for 5/2 + sqrt(-7)/2, 
-     * the result would be {8, -5, 1}. A return of {0, 0, 0} would indicate a 
-     * major malfunction in {@link #algebraicDegree()}.
+     * {number, 1, 0}, and for 0, {0, 1, 0}. For example, for 5/2 + 
+     * &radic;(&minus;7)/2, the result would be {8, &minus;5, 1}. A return of 
+     * {0, 0, 0} would indicate a major malfunction in {@link 
+     * #algebraicDegree()}.
+     * @throws RuntimeException In the highly unlikely event of a malfunctioning 
+     * <code>algebraicDegree()</code> returning a number less than 0 or greater 
+     * than 2. This exception will then wrap an {@link 
+     * algebraics.AlgebraicDegreeOverflowException 
+     * AlgebraicDegreeOverflowException} with the unexpected degree in the 
+     * message of that exception.
      */
     @Override
     public long[] minPolynomialCoeffs() {
@@ -175,6 +193,12 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
                 coeffs[1] = -this.trace();
                 coeffs[2] = 1;
                 break;
+            default:
+                String excMsg = "Excessive degree " + this.algebraicDegree() 
+                        + " occurred somehow";
+                Exception exc = new AlgebraicDegreeOverflowException(excMsg, 2, 
+                        this, this);
+                throw new RuntimeException(exc);
         }
         return coeffs;
     }
@@ -197,7 +221,8 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     
     /**
      * Gives the minimal polynomial as plaintext suitable for use in a TeX 
-     * document, using ASCII characters only. Since the only explicit exponent 
+     * document, using ASCII characters only. The TeX rendering engine should 
+     * then be able to format appropriately. Since the only explicit exponent 
      * should be 2, that numeric literal is not wrapped in curly braces.
      * @return If the algebraic degree is 2, the text should start 
      * off with "x^2". For example, for 5/2 + &radic;(&minus;7)/2, the result 
@@ -243,12 +268,16 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     }
 
     /**
-     * Gives the minimal polynomial as text suitable for use in an HTML page.
+     * Gives the minimal polynomial as text suitable for use in an HTML page. 
+     * Italics tags are used for lowercase X when needed, and superscript tags 
+     * are used for the exponent 2 when necessary.
      * @return If the algebraic degree is 2, the text should start 
      * off with "&lt;i&gt;x&lt;/i&gt;&lt;sup&gt;2&lt;/sup&gt;". For example, for 
      * 5/2 + &radic;(&minus;7)/2, the result would be 
      * "&lt;i&gt;x&lt;/i&gt;&lt;sup&gt;2&lt;/sup&gt; &amp;minus; 
-     * 5&lt;i&gt;x&lt;/i&gt; + 8".
+     * 5&lt;i&gt;x&lt;/i&gt; + 8". Saved to an HTML page, this ought to render 
+     * to look something like this: "<i>x</i><sup>2</sup> &minus; 5<i>x</i> + 
+     * 8".
      */
     @Override
     public String minPolynomialStringHTML() {
@@ -635,7 +664,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             return false;
         }
         if (this.surdPartMult == 0) {
-            return true; // The radicand might be different, but its square root multiplied by 0 is still 0
+            return true;
         }
         return (this.quadRing.radicand == other.quadRing.radicand);
     }
@@ -667,7 +696,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * Addition operation, since operator+ (plus) can't be overloaded. 
      * Computations are done with 64-bit variables. Overflow checking is 
      * rudimentary.
-     * @param summand The quadratic integer to be added to this quadratic 
+     * @param addend The quadratic integer to be added to this quadratic 
      * integer.
      * @return A new QuadraticInteger object with the result of the operation. 
      * If both summands are from the same ring, the result will also be from 
@@ -683,21 +712,22 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * data type. You may need long or even {@link java.math.BigInteger} for the 
      * calculation.
      */
-    public QuadraticInteger plus(QuadraticInteger summand) {
-        if (summand.surdPartMult == 0) {
-            return this.plus(summand.regPartMult);
+    @Override
+    public QuadraticInteger plus(QuadraticInteger addend) {
+        if (addend.surdPartMult == 0) {
+            return this.plus(addend.regPartMult);
         }
         if (this.surdPartMult == 0) {
-            return summand.plus(this.regPartMult);
+            return addend.plus(this.regPartMult);
         }
-        if (this.quadRing.radicand != summand.quadRing.radicand) {
-            throw new AlgebraicDegreeOverflowException("This operation would result in an algebraic integer of degree 4.", 2, this, summand);
+        if (this.quadRing.radicand != addend.quadRing.radicand) {
+            throw new AlgebraicDegreeOverflowException("This operation would result in an algebraic integer of degree 4.", 2, this, addend);
         }
         Fraction regPartFract = new Fraction(this.regPartMult, this.denominator);
-        Fraction summandFract = new Fraction(summand.regPartMult, summand.denominator);
+        Fraction summandFract = new Fraction(addend.regPartMult, addend.denominator);
         regPartFract = regPartFract.plus(summandFract);
         Fraction surdPartFract = new Fraction(this.surdPartMult, this.denominator);
-        summandFract = new Fraction(summand.surdPartMult, summand.denominator);
+        summandFract = new Fraction(addend.surdPartMult, addend.denominator);
         surdPartFract = surdPartFract.plus(summandFract);
         checkRange(regPartFract, surdPartFract, this.quadRing);
         return apply((int) regPartFract.getNumerator(), (int) surdPartFract.getNumerator(), this.quadRing, (int) regPartFract.getDenominator());
@@ -709,7 +739,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * Although the previous plus function can be passed a QuadraticInteger with 
      * "surd" part equal to 0, this function is to be preferred if you know for 
      * sure the summand is purely real and rational.
-     * @param summand The purely real and rational integer to be added to the 
+     * @param addend The purely real and rational integer to be added to the 
      * "regular" part of the QuadraticInteger.
      * @return A new QuadraticInteger object with the result of the operation.
      * @throws ArithmeticException A runtime exception thrown if the "regular" 
@@ -717,17 +747,36 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * of the sum should be fine, since the summand has a tacit "surd" part of 
      * 0.
      */
-    public QuadraticInteger plus(int summand) {
+    @Override
+    public QuadraticInteger plus(int addend) {
         long sumRegPart = this.regPartMult;
         if (this.denominator == 2) {
-            sumRegPart += (2 * summand);
+            sumRegPart += (2 * addend);
         } else {
-            sumRegPart += summand;
+            sumRegPart += addend;
         }
         if (sumRegPart < Integer.MIN_VALUE || sumRegPart > Integer.MAX_VALUE) {
             throw new ArithmeticException("Real part of sum exceeds int data type: " + sumRegPart + " + " + this.surdPartMult + "sqrt(" + this.quadRing.radicand + ")");
         }
         return apply((int) sumRegPart, (int) this.surdPartMult, this.quadRing, this.denominator);
+    }
+    
+    /**
+     * Multiplies this quadratic integer by &minus;1. The result is the same as 
+     * <code>times(-1)</code>, and there's probably no performance gain 
+     * whatsoever. Even so, this function should generally be preferred when one 
+     * multiplicand is known in advance to be &minus;1.
+     * @return This quadratic integer multiplied by &minus;1. For example, given 
+     * &minus;<sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub> this would give 
+     * <sup>1</sup>&frasl;<sub>2</sub> &minus; 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub>; given 3 + &radic;2 this 
+     * would give &minus;3 &minus; &radic;2.
+     */
+    @Override
+    public QuadraticInteger negate() {
+        return QuadraticInteger.apply(-this.regPartMult, -this.surdPartMult, 
+                this.quadRing, this.denominator);
     }
 
     /**
@@ -749,9 +798,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * the int data type. You may need long or even {@link java.math.BigInteger} 
      * for the calculation.
      */
+    @Override
     public QuadraticInteger minus(QuadraticInteger subtrahend) {
-        QuadraticInteger negAddend = subtrahend.times(-1);
-        return this.plus(negAddend);
+        return this.plus(subtrahend.negate());
     }
     
     /**
@@ -763,11 +812,12 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * @param subtrahend The purely real, rational integer to be subtracted from 
      * this quadratic integer.
      * @return A new QuadraticInteger object with the result of the operation.
-     * @throws ArithmeticException A runtime exception thrown if the regular part 
-     * of the subtraction exceeds the range of the int data type. The surd part 
-     * of the sum should be fine, since the subtrahend has a tacit surd part of 
-     * 0.
+     * @throws ArithmeticException A runtime exception thrown if the regular 
+     * part of the subtraction exceeds the range of the <code>int</code> data 
+     * type. The surd part of the sum should be fine, since the subtrahend has a 
+     * tacit surd part of 0.
      */
+    @Override
     public QuadraticInteger minus(int subtrahend) {
         return this.plus(-subtrahend);
     }
@@ -835,6 +885,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * regular part or the surd part of the product exceeds the range of the int 
      * data type. You may need long or even BigInteger for the calculation.
      */
+    @Override
     public QuadraticInteger times(QuadraticInteger multiplicand) {
         if (multiplicand.surdPartMult == 0) {
             return this.times(multiplicand.regPartMult);
@@ -884,6 +935,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * regular part or the surd part of the product exceeds the range of the int 
      * data type.
      */
+    @Override
     public QuadraticInteger times(int multiplicand) {
         long multiplicationRegPart = this.regPartMult * multiplicand;
         long multiplicationSurdPart = this.surdPartMult * multiplicand;
@@ -985,6 +1037,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * "regular" part or the "surd" part of the division exceeds the range of 
      * the int data type.
      */
+    @Override
     public QuadraticInteger divides(QuadraticInteger divisor) throws NotDivisibleException {
         if (this.quadRing.equals(divisor.quadRing)) {
             long divDenom = (long) (divisor.norm() * (long) this.denominator * (long) divisor.denominator);
@@ -1031,6 +1084,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * regular part or the surd part of the division exceeds the range of the 
      * int data type.
      */
+    @Override
     public QuadraticInteger divides(int divisor) throws NotDivisibleException {
         if (divisor == 0) {
             throw new IllegalArgumentException("Division by 0 is not allowed.");
@@ -1086,7 +1140,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     }
     
     /**
-     * Creates a new {@link ImaginaryquadraticInteger} or {@link 
+     * Creates a new {@link ImaginaryQuadraticInteger} or {@link 
      * RealQuadraticInteger} object as indicated by the parameters.
      * @param a The "regular" part of the quadratic integer, the real part in 
      * the case of an imaginary quadratic integer. For example, 8.
@@ -1110,7 +1164,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     }
     
     /**
-     * Creates a new {@link ImaginaryquadraticInteger} or {@link 
+     * Creates a new {@link ImaginaryQuadraticInteger} or {@link 
      * RealQuadraticInteger} object as indicated by the parameters. The 
      * "denominator" must be expressly given.
      * @param a The "regular" part of the quadratic integer, the real part in 
@@ -1121,8 +1175,8 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
      * This should be either of type {@link ImaginaryQuadraticRing} or of type 
      * {@link RealQuadraticRing}. Two examples: <code>new 
      * ImaginaryQuadraticRing(-7)</code> 
-     * (<i>O</i><sub><b>Q</b>(&radic;(&minus;7))</sub>), 
-     * <code>new RealQuadraticRing(7)</code> (<b>Z</b>[&radic;7]).
+     * (for <i>O</i><sub><b>Q</b>(&radic;(&minus;7))</sub>), 
+     * <code>new RealQuadraticRing(7)</code> (for <b>Z</b>[&radic;7]).
      * @param denom The denominator. Preferably 1 or 2, but may use &minus;1 or 
      * &minus;2 if desired. Be sure to check the latter gives the result you 
      * expect.
@@ -1191,19 +1245,19 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
     }
     
     /**
-     * Superclass constructor for {@link ImaginaryquadraticInteger} and {@link 
+     * Superclass constructor for {@link ImaginaryQuadraticInteger} and {@link 
      * RealQuadraticInteger}.
      * @param a The "regular" part of the quadratic integer.
      * @param b The "surd" part of the quadratic integer.
-     * @param R The ring of the quadratic integer. It should not be null.
+     * @param ring The ring of the quadratic integer. It must not be null.
      * @param denom The "denominator" of the quadratic integer. For example, for 
      * <sup>29</sup>&frasl;<sub>2</sub> + 
      * <sup>5&radic;21</sup>&frasl;<sub>2</sub> this would be 2; for 7 + 
      * &radic;&minus;2 this would be 1.
-     * @throws NullPointerException If <code>R</code> is null.
+     * @throws NullPointerException If <code>ring</code> is null.
      */
-    public QuadraticInteger(int a, int b, QuadraticRing R, int denom) {
-        if (R == null) {
+    public QuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
+        if (ring == null) {
             String excMsg = "Ring parameter must not be null";
             throw new NullPointerException(excMsg);
         }
@@ -1214,24 +1268,27 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             denom *= -1;
         }
         if (denom < 1 || denom > 2) {
-            throw new IllegalArgumentException("Parameter denom must be 1 or 2.");
+            String excMsg = "Parameter denom must be 1 or 2.";
+            throw new IllegalArgumentException(excMsg);
         }
         if (denom == 2) {
             abParityMatch = Math.abs(a % 2) == Math.abs(b % 2);
             if (!abParityMatch) {
-                throw new IllegalArgumentException("Parity of parameter a must match parity of parameter b.");
+                String excMsg = "Parity of parameter a must match parity of parameter b.";
+                throw new IllegalArgumentException(excMsg);
             }
             if (a % 2 == 0) {
                 this.regPartMult = a/2;
                 this.surdPartMult = b/2;
                 this.denominator = 1;
             } else {
-                if (R.d1mod4) {
+                if (ring.d1mod4) {
                     this.regPartMult = a;
                     this.surdPartMult = b;
                     this.denominator = 2;
                 } else {
-                    throw new IllegalArgumentException("Either parameter a and parameter b need to both be even, or parameter denom needs to be 1.");
+                    String excMsg = "Parameters a and b should both be even, or denom should be 1.";
+                    throw new IllegalArgumentException(excMsg);
                 }
             }
         } else {
@@ -1239,7 +1296,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger {
             this.surdPartMult = b;
             this.denominator = 1;
         }
-        this.quadRing = R;
+        this.quadRing = ring;
     }
     
 }

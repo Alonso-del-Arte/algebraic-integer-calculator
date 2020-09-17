@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,34 +16,54 @@
  */
 package algebraics.quadratics;
 
-import calculators.NumberTheoreticFunctionsCalculator;
-
 /**
  * Defines objects to represent imaginary quadratic rings.
  * @author Alonso del Arte
  */
 public class ImaginaryQuadraticRing extends QuadraticRing {
+    
+    private static final long serialVersionUID = 4547847535800105779L;
 
     /**
-     * A convenient holder for the absolute value of radicand
+     * A convenient holder for the absolute value of radicand.
      */
     protected int absRadicand;
+    
+    /**
+     * Indicates that this ring is not purely real. This ring contains purely 
+     * imaginary numbers as well as complex numbers, in addition to purely real 
+     * integers.
+     * @return Always false, since this is an imaginary quadratic ring.
+     */
+    @Override
+    public final boolean isPurelyReal() {
+        return false;
+    }
     
     /**
      * This function is included strictly only to simplify inheritance from 
      * {@link QuadraticRing} to {@link RealQuadraticRing}.
      * @return Nothing, ever.
-     * @throws UnsupportedOperationException Always thrown, because the double 
-     * primitive can't represent a purely imaginary number. If you need the 
+     * @throws UnsupportedOperationException Always thrown, because a floating 
+     * point number can't represent a purely imaginary number. If you need the 
      * square root of the radicand divided by <i>i</i>, use {@link 
      * #getAbsNegRadSqrt() getAbsNegRadSqrt()} instead.
      */
     @Override
     public double getRadSqrt() {
-        String exceptionMessage = "Since the radicand " + this.radicand + " is negative, this operation requires an object that can represent an imaginary number.";
-        throw new UnsupportedOperationException(exceptionMessage);
+        String excMsg = "Since the radicand is negative, sqrt(" + this.radicand 
+                + ") requires an object that can represent an imaginary number.";
+        throw new UnsupportedOperationException(excMsg);
     }
     
+    /**
+     * Gives a numeric approximation of the square root of the absolute value of 
+     * the radicand. For imaginary quadratic rings, use this function instead of 
+     * {@link #getRadSqrt()}.
+     * @return A numeric approximation of &radic;<i>d</i>/<i>i</i>. For example, 
+     * for <b>Z</b>[&radic;&minus;10], we see that &radic;&minus;10 = 
+     * <i>i</i>&radic;10, so this function returns approximately 3.1622777.
+     */
     @Override
     public int getAbsNegRad() {
         return this.absRadicand;
@@ -54,8 +74,8 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
      * imaginary unit <i>i</i>.
      * @return A double with a rational approximation of the square root of the 
      * radicand divided by <i>i</i>. For example, for <b>Z</b>[&radic;&minus;2], 
-     * this would be roughly 1.414; for <b>Z</b>[&radic;&minus;3], this would be 
-     * roughly 1.732.
+     * this would be roughly 1.414213562373; for <b>Z</b>[&radic;&minus;3], this 
+     * would be roughly 1.7320508.
      */
     @Override
     public double getAbsNegRadSqrt() {
@@ -66,18 +86,18 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
      * Constructs a new object representing an imaginary quadratic ring.
      * @param d A squarefree, negative integer. Examples: &minus;3, &minus;58, 
      * &minus;163.
-     * @throws IllegalArgumentException If d is 0 or positive, or negative but 
-     * the multiple of a nontrivial square. Examples: &minus;12, 3583.
+     * @throws IllegalArgumentException If <code>d</code> is 0 or positive, or 
+     * negative but the multiple of a nontrivial square. For example, 3583 would 
+     * cause this exception on account of being positive; &minus;12 would cause 
+     * it because it's a multiple of 2<sup>2</sup>, even though it's negative.
      */
     public ImaginaryQuadraticRing(int d) {
+        super(d);
         if (d > -1) {
-            throw new IllegalArgumentException("Negative integer required for parameter d.");
-        }
-        if (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) {
-            throw new IllegalArgumentException("Squarefree integer required for parameter d.");
+            String excMsg = "Negative integer required for parameter d.";
+            throw new IllegalArgumentException(excMsg);
         }
         this.d1mod4 = (d % 4 == -3);
-        this.radicand = d;
         this.absRadicand = Math.abs(this.radicand);
         this.realRadSqrt = Math.sqrt(this.absRadicand);
     }

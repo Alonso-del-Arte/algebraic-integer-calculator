@@ -28,6 +28,8 @@ import java.text.DecimalFormatSymbols;
  */
 public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
+    private static final long serialVersionUID = 4547649335944297267L;
+    
     private final double numValRe;
     private final double numValIm;
     
@@ -65,13 +67,16 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     }
 
     /**
-     * Gives the imaginary quadratic integer's distance from 0.
-     * @return This distance from 0 of the imaginary quadratic integer expressed 
-     * as a nonnegative real double. For example, for 5/2 + (&radic;-7)/2, this 
+     * Gives this imaginary quadratic integer's distance from 0 as a floating 
+     * point number. Sometimes called "complex norm."
+     * @return This distance from 0 of the imaginary quadratic integer as a 
+     * floating point number. For example, for 5/2 + (&radic;&minus;7)/2, this 
      * would be approximately 2.82842712. For a purely real positive integer, 
-     * just the integer itself as a double, likewise for purely real negative 
-     * integers this is the integer itself multiplied by -1.
+     * just the integer itself as a floating point number, and likewise for 
+     * purely real negative integers this is the integer itself multiplied by 
+     * &minus;1.0.
      */
+    // TODO: Refactor
     @Override
     public double abs() {
         if (this.surdPartMult == 0) {
@@ -98,7 +103,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     }
 
     /**
-     * Gets the real part of the imaginary quadratic integer. May be half an 
+     * Gets the real part of this imaginary quadratic integer. May be half an 
      * integer.
      * @return The real part of the imaginary quadratic integer. For example, 
      * for &minus;1/2 + (&radic;&minus;7)/2, the result should be &minus;0.5.
@@ -109,7 +114,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     }
     
     /**
-     * Gets the imaginary part of the imaginary quadratic integer multiplied by 
+     * Gets the imaginary part of this imaginary quadratic integer multiplied by 
      * &minus;<i>i</i>. It will most likely be the rational approximation of an 
      * irrational real number.
      * @return The imaginary part of the imaginary quadratic integer multiplied 
@@ -121,6 +126,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return this.numValIm;
     }
     
+    // TODO: Write custom Javadoc to replace inherited Javadoc
     @Override
     public double angle() {
         return Math.atan2(this.numValIm, this.numValRe);
@@ -201,12 +207,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * any Gaussian integer can be represented without the need for minus signs 
      * and without the need to separate the real and imaginary parts of the 
      * number.
-     * @param str The String to parse. May contain spaces, which will be 
-     * stripped out prior to parsing. May also contain a "decimal" dot followed 
-     * by either "2" and zero or more zeroes, or just zeroes.
-     * @return An ImaginaryQuadraticInteger object containing the Gaussian 
+     * @param str The text to parse. May contain spaces, which will be stripped 
+     * out prior to parsing. May also contain a "decimal" dot followed by either 
+     * "2" and zero or more zeroes, or just zeroes.
+     * @return An imaginary quadratic integer object containing the Gaussian 
      * integer represented by the quater-imaginary String.
-     * @throws NumberFormatException If str has a "decimal" dot followed by any 
+     * @throws NumberFormatException If <code>str</code> has a "decimal" dot followed by any 
      * digit other than a single 2 or a bunch of zeroes, or if it contains 
      * digits other than 0, 1, 2 or 3, this runtime exception will be thrown. 
      * The problematic character mentioned in the exception message may or may 
@@ -306,17 +312,17 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * @param b The imaginary part of the imaginary quadratic integer divided by 
      * &radic;<i>d</i>. For example, for 5 + 4&radic;&minus;7, this parameter 
      * would be 4.
-     * @param R The ring to which this algebraic integer belongs to. For 
+     * @param ring The ring to which this algebraic integer belongs to. For 
      * example, for 5 + &radic;&minus;7, this parameter could be <code>new 
      * ImaginaryQuadraticRing(-7)</code>.
-     * @throws IllegalArgumentException If <code>R</code> is not of type {@link 
-     * ImaginaryQuadraticRing}. This exception will occur even if <code>b</code>
-     * = 0 (there will be no quiet substitutions like in an earlier version of 
-     * this class).
-     * @throws NullPointerException If <code>R</code> is null.
+     * @throws IllegalArgumentException If <code>ring</code> is not of type 
+     * {@link ImaginaryQuadraticRing}. This exception will occur even if 
+     * <code>b</code> equals 0 (there will be no quiet substitutions like in an 
+     * earlier version of this class).
+     * @throws NullPointerException If <code>ring</code> is null.
      */
-    public ImaginaryQuadraticInteger(int a, int b, QuadraticRing R) {
-        this(a, b, R, 1);
+    public ImaginaryQuadraticInteger(int a, int b, QuadraticRing ring) {
+        this(a, b, ring, 1);
     }
     
     /**
@@ -325,29 +331,28 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * @param a The real part of the imaginary quadratic integer, multiplied by 
      * 2 when applicable. For example, for 7/2 + (29&radic;&minus;3)/2, this 
      * parameter would be 7.
-     * @param b The imaginary part divided by &radic;<i>d</i> and perhaps 
-     * multiplied by 2 when applicable. For example, for 7/2 + 
-     * (29&radic;&minus;3)/2, this parameter would be 29.
-     * @param R The ring to which this algebraic integer belongs to. For 
+     * @param b The imaginary part divided by &radic;<i>d</i> and multiplied by 
+     * 2 when applicable. For example, for 7/2 + (29&radic;&minus;3)/2, this 
+     * parameter would be 29.
+     * @param ring The ring to which this algebraic integer belongs to. For 
      * example, for 7/2 + (29&radic;&minus;3)/2, this parameter could be 
      * <code>new ImaginaryQuadraticRing(-3)</code>.
-     * @param denom In most cases 1, but may be 2 if a and b have the same 
-     * parity and R{@link QuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is 
-     * true. If that is the case, &minus;2 may also be used, and &minus;1 can 
-     * always be used; the constructor will quietly substitute 1 or 2 and 
-     * multiply a and b by &minus;1.
-     * @throws IllegalArgumentException If denom = 2 but there is a parity 
-     * mismatch between a and b (that is, one is odd and the other is even), or 
-     * if denom = 2 but R{@link QuadraticRing#hasHalfIntegers() 
-     * .hasHalfIntegers()} is false. This exception may also arise if R is not 
-     * of the type {@link ImaginaryQuadraticRing}. However, if R is of type 
-     * {@link RealQuadraticRing} and b = 0, an imaginary ring will be quietly 
-     * substituted.
-     * @throws NullPointerException If <code>R</code> is null.
+     * @param denom In most cases 1, but may be 2 if <code>a</code> and 
+     * <code>b</code> have the same parity and 
+     * <code>ring</code>{@link QuadraticRing#hasHalfIntegers() 
+     * .hasHalfIntegers()} is true. If that is the case, &minus;2 may also be 
+     * used, and &minus;1 can always be used; the constructor will quietly 
+     * substitute 1 or 2 and multiply <code>a</code> and <code>b</code> by 
+     * &minus;1.
+     * @throws IllegalArgumentException If <code>ring</code> is not of type 
+     * {@link ImaginaryQuadraticRing}. This exception will occur even if 
+     * <code>b</code> equals 0 (there will be no quiet substitutions like in an 
+     * earlier version of this class).
+     * @throws NullPointerException If <code>ring</code> is null.
      */
-    public ImaginaryQuadraticInteger(int a, int b, QuadraticRing R, int denom) {
-        super(a, b, R, denom);
-        if (!(R instanceof ImaginaryQuadraticRing)) {
+    public ImaginaryQuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
+        super(a, b, ring, denom);
+        if (!(ring instanceof ImaginaryQuadraticRing)) {
             String excMsg = "Ring is not imaginary as needed.";
             throw new IllegalArgumentException(excMsg);
         }
