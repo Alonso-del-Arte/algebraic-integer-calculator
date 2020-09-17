@@ -24,6 +24,7 @@ import algebraics.NonUniqueFactorizationDomainException;
 import algebraics.NormAbsoluteComparator;
 import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
+import algebraics.cubics.BadCubicRing;
 import algebraics.quadratics.IllDefinedQuadraticInteger;
 import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -1174,7 +1176,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
             byte attempt = NumberTheoreticFunctionsCalculator.symbolJacobi(7, 2);
             fail("Calling Jacobi(7, 2) should have triggered an exception, not given result " + attempt + ".");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Calling Jacobi(7, 2) correctly triggered IllegalArgumentException. \"" + iae.getMessage() + "\"");
+            System.out.println("Calling Jacobi(7, 2) correctly triggered IllegalArgumentException.");
+            System.out.println("\"" + iae.getMessage() + "\"");
         }
     }
 
@@ -1490,7 +1493,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testEuclideanGCD() {
         System.out.println("euclideanGCD");
-        int result;
+        long result;
         int expResult = 1; /* Going to test with consecutive integers, expect 
                               the result to be 1 each time */
         for (int i = -30; i < 31; i++) {
@@ -1868,7 +1871,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testNoFundamentalUnitForNullRing() {
         try {
-            AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(null);
+            AlgebraicInteger result = fundamentalUnit(null);
             String failMsg = "Trying to get fundamental unit of null ring should have caused exception, not given result " 
                     + result.toString();
             fail(failMsg);
@@ -1882,6 +1885,176 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMsg = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to get fundamental unit of null ring";
             fail(failMsg);
+        }
+    }
+    
+    /**
+     * Another test of fundamentalUnit method, of class 
+     * NumberTheoreticFunctionsCalculator. Passing an implementation of {@link 
+     * algebraics.IntegerRing IntegerRing} that is not yet supported to {@link 
+     * NumberTheoreticFunctionsCalculator#fundamentalUnit(algebraics.IntegerRing) 
+     * fundamentalUnit()} should cause an exception, not give any particular 
+     * result.
+     */
+    @Test
+    public void testNoFundamentalUnitForUnsupportedRing() {
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
+        try {
+            AlgebraicInteger result = fundamentalUnit(ring);
+            String msg = "Trying to get fundamental unit of " + ring.toString() 
+                    + " should have caused exception, not given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to get fundamental unit of " 
+                    + ring.toASCIIString()
+                    + " correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to get fundamental unit of " 
+                    + ring.toString();
+            fail(msg);
+        }
+    }
+    
+    @Test
+    public void testNoSearchForUnitsWithNullMax() {
+        try {
+            Optional<AlgebraicInteger> result = searchForUnit(null);
+            String msg = "Unit search with null max should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Unit search with null max correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            String msg = "Exception message should not be null";
+            assertNotNull(msg, excMsg);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for unit search with null max";
+            fail(msg);
+        }
+    }
+
+    @Test
+    public void testNoSearchForUnitsWithNullMinButGoodMax() {
+        RealQuadraticRing ring = new RealQuadraticRing(53);
+        RealQuadraticInteger max = new RealQuadraticInteger(7, 5, ring, 2);
+        try {
+            Optional<AlgebraicInteger> result = searchForUnit(null, max);
+            String msg = "Unit search with max " + max.toString() 
+                    + " but null min should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Unit search with max " + max.toASCIIString() 
+                    + " but null min correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            String msg = "Exception message should not be null";
+            assertNotNull(msg, excMsg);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for unit search with null min";
+            fail(msg);
+        }
+    }
+
+    @Test
+    public void testNoSearchForUnitsWithNullMaxButGoodMin() {
+        RealQuadraticRing ring = new RealQuadraticRing(53);
+        RealQuadraticInteger min = new RealQuadraticInteger(3, 1, ring, 2);
+        try {
+            Optional<AlgebraicInteger> result = searchForUnit(min, null);
+            String msg = "Unit search with min " + min.toString() 
+                    + " but null max should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Unit search with min " + min.toASCIIString() 
+                    + " but null max correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            String msg = "Exception message should not be null";
+            assertNotNull(msg, excMsg);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for unit search with null max";
+            fail(msg);
+        }
+    }
+
+    @Test
+    public void testNoSearchForUnitsWithNullMinAndMax() {
+        try {
+            Optional<AlgebraicInteger> result = searchForUnit(null, null);
+            String msg = "Unit search with null min and max should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Unit search with null min and max correctly caused NullPointerException");
+            String excMsg = npe.getMessage();
+            System.out.println("\"" + excMsg + "\"");
+            String msg = "Exception message should not be null";
+            assertNotNull(msg, excMsg);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for unit search with null min and max";
+            fail(msg);
+        }
+    }
+
+    @Test
+    public void testNoUnitSearchWithRingMismatch() {
+        RealQuadraticRing ringA = new RealQuadraticRing(10);
+        RealQuadraticRing ringB = new RealQuadraticRing(26);
+        RealQuadraticInteger badMin = new RealQuadraticInteger(3, 1, ringA);
+        RealQuadraticInteger badMax = new RealQuadraticInteger(11, 21, ringB);
+        try {
+            Optional<AlgebraicInteger> result = searchForUnit(badMin, badMax);
+            String msg = "Searching for unit between " + badMin.toString() 
+                    + " and " + badMax.toString() 
+                    + " should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println("Searching for unit between " 
+                    + badMin.toASCIIString() + " and " + badMax.toASCIIString() 
+                    + " correctly caused AlgebraicDegreeOverflowException");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for mismatch of " 
+                    + badMin.toString() + " and " + badMax.toString();
+            fail(msg);
+        }
+    }
+    
+    @Test
+    public void testSearchForUnitProperMinMax() {
+        RealQuadraticRing ring = new RealQuadraticRing(35);
+        RealQuadraticInteger badMin = new RealQuadraticInteger(10, 3, ring);
+        RealQuadraticInteger badMax = new RealQuadraticInteger(0, -1, ring);
+        try {
+            Optional<AlgebraicInteger> result = searchForUnit(badMin, badMax);
+            String msg = "Searching for unit between " + badMin.toString() 
+                    + " and " + badMax.toString() 
+                    + " should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Searching for unit between " 
+                    + badMin.toASCIIString() + " and " + badMax.toASCIIString() 
+                    + " correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for minimum " 
+                    + badMin.toString() + " that is actually greater than " 
+                    + badMax.toString();
+            fail(msg);
         }
     }
     
@@ -2031,12 +2204,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoNegOneForUnsupportedRing() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(-110);
+        BadCubicRing ring = new BadCubicRing();
         try {
             AlgebraicInteger result = getNegOneInRing(ring);
             String msg = "Trying to get -1 for unsupported ring " 
                     + ring.toString() 
-                    + " should have caused an exception, not given result" 
+                    + " should have caused an exception, not given result " 
                     + result.toString();
             fail(msg);
         } catch (UnsupportedNumberDomainException unde) {
@@ -2113,12 +2286,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoZeroForUnsupportedRing() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(-110);
+        BadCubicRing ring = new BadCubicRing();
         try {
             AlgebraicInteger result = getZeroInRing(ring);
             String msg = "Trying to get 0 for unsupported ring " 
                     + ring.toString() 
-                    + " should have caused an exception, not given result" 
+                    + " should have caused an exception, not given result " 
                     + result.toString();
             fail(msg);
         } catch (UnsupportedNumberDomainException unde) {
@@ -2194,12 +2367,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoOneForUnsupportedRing() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(-110);
+        BadCubicRing ring = new BadCubicRing();
         try {
             AlgebraicInteger result = getOneInRing(ring);
             String msg = "Trying to get 1 for unsupported ring " 
                     + ring.toString() 
-                    + " should have caused an exception, not given result" 
+                    + " should have caused an exception, not given result " 
                     + result.toString();
             fail(msg);
         } catch (UnsupportedNumberDomainException unde) {
