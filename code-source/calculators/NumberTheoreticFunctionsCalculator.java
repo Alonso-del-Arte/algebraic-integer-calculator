@@ -455,9 +455,14 @@ public class NumberTheoreticFunctionsCalculator {
      */
     public static byte symbolJacobi(int n, int m) {
         if (m % 2 == 0) {
-            throw new IllegalArgumentException(m + " is not an odd number. Consider using the Kronecker symbol instead.");        }
+            String excMsg = "The number " + m 
+                    + " is not an odd number. Consider using the Kronecker symbol instead.";
+            throw new IllegalArgumentException(excMsg);
+        }
         if (m < 0) {
-            throw new IllegalArgumentException(m + " is not a positive number. Consider using the Kronecker symbol instead.");
+            String excMsg = "The number " + m 
+                    + " is not a positive number. Consider using the Kronecker symbol instead.";
+            throw new IllegalArgumentException(excMsg);
         }
         if (m == 1) {
             return 1;
@@ -1225,65 +1230,27 @@ public class NumberTheoreticFunctionsCalculator {
      * Computes the greatest common divisor (GCD) of two purely real integers by 
      * using the Euclidean algorithm.
      * @param a One of the two integers. May be negative, need not be greater 
-     * than the other.
+     * than the other. For example, 114.
      * @param b One of the two integers. May be negative, need not be smaller 
-     * than the other.
-     * @return The GCD as an integer.
-     * If one of a or b is 0 and the other is nonzero, the result will be the 
-     * nonzero number.
-     * If both a and b are 0, then the result will be 0, which is perhaps 
+     * than the other. For example, 152.
+     * @return The GCD as a 64-bit integer (it should be okay to cast the result 
+     * to a 32-bit integer if both parameters are 32-bit integers, aside from a 
+     * few edge cases involving <code>Integer.MIN_VALUE</code>). For example, 
+     * 38. If one of <code>a</code> or <code>b</code> is 0 and the other number 
+     * is nonzero, the result will be the nonzero number. If both <code>a</code> 
+     * and <code>b</code> are 0, then the result will be 0, which is perhaps 
      * technically wrong, but I think it's good enough for the purpose here.
      */
-    public static int euclideanGCD(int a, int b) {
-        int currA, currB, currRemainder;
-        if (a < b) {
-            currA = b;
-            currB = a;
-        } else {
-            currA = a;
-            currB = b;
-        }
-        while (currB != 0) {
-            currRemainder = currA % currB;
-            currA = currB;
-            currB = currRemainder;
-        }
-        if (currA < 0) {
-            currA *= -1;
-        }
-        return currA;
-    }
-
-    /**
-     * Computes the greatest common divisor (GCD) of two purely real integers by 
-     * using the Euclidean algorithm.
-     * @param a One of the two integers. May be negative, need not be greater 
-     * than the other.
-     * @param b One of the two integers. May be negative, need not be smaller 
-     * than the other.
-     * @return The GCD as an integer. If one of a or b is 0 and the other is 
-     * nonzero, the result will be the nonzero number. If both a and b are 0, 
-     * then the result will be 0, which is perhaps technically wrong, but I 
-     * think it's good enough for the purpose here.
-     */
     public static long euclideanGCD(long a, long b) {
-        long currA, currB, currRemainder;
-        if (a < b) {
-            currA = b;
-            currB = a;
-        } else {
-            currA = a;
-            currB = b;
-        }
-        while (currB != 0) {
-            currRemainder = currA % currB;
+        long currA = Math.abs(a);
+        long currB = Math.abs(b);
+        long remainder = currA;
+        while (remainder != 0) {
             currA = currB;
-            currB = currRemainder;
+            currB = remainder;
+            remainder = currA % currB;
         }
-        if (currA < 0) {
-            currA *= -1;
-        }
-        return currA;
+        return currB;
     }
 
     /**
@@ -1568,16 +1535,57 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
-    // STUB TO FAIL THE FIRST TEST
-    public static Optional<AlgebraicInteger> searchForUnit(IntegerRing ring, 
-            AlgebraicInteger max) {
-        ImaginaryQuadraticInteger num = new ImaginaryQuadraticInteger(5, 7, RING_EISENSTEIN, 2);
-        return Optional.of(num);
+    private static AlgebraicInteger inferMinForUnitSearch(IntegerRing ring) {
+        if (ring instanceof RealQuadraticRing) {
+            RealQuadraticRing r = (RealQuadraticRing) ring;
+            if (r.hasHalfIntegers()) {
+                return new RealQuadraticInteger(1, 1, r, 2);
+            } else {
+                return new RealQuadraticInteger(2, 0, r);
+            }
+        }
+        throw new RuntimeException("Oops, sorry!");
     }
     
-    // STUB TO FAIL THE FIRST TEST
-    public static Optional<AlgebraicInteger> searchForUnit(IntegerRing ring, 
-            AlgebraicInteger min, AlgebraicInteger max) {
+    private static Optional<AlgebraicInteger> unitSearchVerifiedParams(AlgebraicInteger min, 
+            AlgebraicInteger max) {
+        return Optional.of(max);
+    }
+    
+    // STUB TO FAIL THE TEST
+    public static Optional<AlgebraicInteger> searchForUnit(AlgebraicInteger max) {
+        if (max == null) {
+            String excMsg = "Can't do unit search with null max";
+            throw new NullPointerException(excMsg);
+        }
+        return unitSearchVerifiedParams(inferMinForUnitSearch(max.getRing()), max);
+    }
+    
+    // STUB TO FAIL THE TEST
+    public static Optional<AlgebraicInteger> searchForUnit(AlgebraicInteger min, 
+            AlgebraicInteger max) {
+        if (min == null || max == null) {
+            String excMsg = "Can't do unit search with null min and/or null max";
+            throw new NullPointerException(excMsg);
+        }
+        IntegerRing minRing = min.getRing();
+        IntegerRing maxRing = max.getRing();
+        if (!minRing.equals(maxRing)) {
+            String excMsg = "Ring mismatch: " + minRing.toASCIIString() 
+                    + " and " + maxRing.toASCIIString();
+            int deg = Math.max(minRing.getMaxAlgebraicDegree(), 
+                    maxRing.getMaxAlgebraicDegree());
+            throw new AlgebraicDegreeOverflowException(excMsg, deg, min, max);
+        }
+        if (min instanceof RealQuadraticInteger) {
+            RealQuadraticInteger minimum = (RealQuadraticInteger) min;
+            RealQuadraticInteger maximum = (RealQuadraticInteger) max;
+            if (minimum.compareTo(maximum) > 0) {
+                String excMsg = "Minimum " + minimum.toASCIIString() 
+                        + " is not less than maximum " + maximum.toASCIIString();
+                throw new IllegalArgumentException(excMsg);
+            }
+        }
         ImaginaryQuadraticInteger num = new ImaginaryQuadraticInteger(5, 7, RING_EISENSTEIN, 2);
         return Optional.of(num);
     }
@@ -1694,40 +1702,36 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(exceptionMessage, num);
     }
 
-    // STUB TO FAIL THE TEST
     public static AlgebraicInteger getNegOneInRing(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
-            return QuadraticInteger.apply(1, 0, (QuadraticRing) ring);
+            return QuadraticInteger.apply(-1, 0, (QuadraticRing) ring);
         }
         if (ring instanceof Zeta8Ring) {
-            return new Zeta8Integer(1, 0, 0, 0);
+            return new Zeta8Integer(-1, 0, 0, 0);
         }
-        return new Zeta8Integer(1, 1, 1, 1);
-//        if (ring == null) {
-//            String excMsg = "Null ring does not contain the number 1";
-//            throw new NullPointerException(excMsg);
-//        }
-//        String excMsg = "1 from given ring function not yet supported for " 
-//                + ring.toASCIIString();
-//        throw new UnsupportedNumberDomainException(excMsg, ring);
+        if (ring == null) {
+            String excMsg = "Null ring does not contain the number -1";
+            throw new NullPointerException(excMsg);
+        }
+        String excMsg = "-1 from given ring function not yet supported for " 
+                + ring.toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
-    // STUB TO FAIL THE TEST
     public static AlgebraicInteger getZeroInRing(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
-            return QuadraticInteger.apply(1, 0, (QuadraticRing) ring);
+            return QuadraticInteger.apply(0, 0, (QuadraticRing) ring);
         }
         if (ring instanceof Zeta8Ring) {
-            return new Zeta8Integer(1, 0, 0, 0);
+            return new Zeta8Integer(0, 0, 0, 0);
         }
-        return new Zeta8Integer(1, 1, 1, 1);
-//        if (ring == null) {
-//            String excMsg = "Null ring does not contain the number 1";
-//            throw new NullPointerException(excMsg);
-//        }
-//        String excMsg = "1 from given ring function not yet supported for " 
-//                + ring.toASCIIString();
-//        throw new UnsupportedNumberDomainException(excMsg, ring);
+        if (ring == null) {
+            String excMsg = "Null ring does not contain the number 0";
+            throw new NullPointerException(excMsg);
+        }
+        String excMsg = "0 from given ring function not yet supported for " 
+                + ring.toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
     /**
@@ -1750,10 +1754,9 @@ public class NumberTheoreticFunctionsCalculator {
             String excMsg = "Null ring does not contain the number 1";
             throw new NullPointerException(excMsg);
         }
-        return new Zeta8Integer(1, 1, 1, 1);
-//        String excMsg = "1 from given ring function not yet supported for " 
-//                + ring.toASCIIString();
-//        throw new UnsupportedNumberDomainException(excMsg, ring);
+        String excMsg = "1 from given ring function not yet supported for " 
+                + ring.toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
     private static short w(int d) {
