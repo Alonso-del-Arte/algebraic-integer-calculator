@@ -23,13 +23,19 @@ import java.math.BigInteger;
  * Represents a fraction.
  * @author Alonso del Arte
  */
-public class BigFraction {
+public class BigFraction implements Comparable<BigFraction> {
     
     private final BigInteger numerator, denominator;
     
     @Override
     public String toString() {
         return this.numerator.toString() + "/" + this.denominator.toString();
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    public int compareTo(BigFraction other) {
+        return 0;
     }
     
     // STUB TO FAIL THE FIRST TEST
