@@ -102,7 +102,7 @@ public class BigFraction {
     }
     
     // STUB TO FAIL THE FIRST TEST
-    public BigFraction dividedBy(Fraction addend) {
+    public BigFraction dividedBy(Fraction divisor) {
         return new BigFraction(BigInteger.ONE, BigInteger.TEN);
     }
     
