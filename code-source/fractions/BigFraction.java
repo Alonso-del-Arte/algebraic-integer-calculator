@@ -27,11 +27,21 @@ public class BigFraction implements Comparable<BigFraction> {
     
     private final BigInteger numerator, denominator;
     
+    // STUB TO FAILT THE FIRST TEST
+    public BigInteger getNumerator() {
+        return BigInteger.ZERO;
+    }
+    
+    // STUB TO FAILT THE FIRST TEST
+    public BigInteger getDenominator() {
+        return BigInteger.ZERO;
+    }
+    
     @Override
     public String toString() {
         return this.numerator.toString() + "/" + this.denominator.toString();
     }
-    
+
     // STUB TO FAIL THE FIRST TEST
     @Override
     public int compareTo(BigFraction other) {
@@ -108,7 +118,7 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     // STUB TO FAIL THE FIRST TEST
-    public BigFraction dividedBy(Fraction divisor) {
+    public BigFraction dividedBy(Fraction addend) {
         return new BigFraction(BigInteger.ONE, BigInteger.TEN);
     }
     
