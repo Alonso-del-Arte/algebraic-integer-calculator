@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -22,7 +22,6 @@ import clipboardops.TestImagePanel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.List;
 
 import org.junit.Before;
@@ -178,8 +177,10 @@ public class FractionTest {
         Fraction result;
         try {
             result = operandA.dividedBy(zero);
-            String failMessage = operandA.toString() + " divided by 0 should have caused an Exception, not given result " + result.toString();
-            fail(failMessage);
+            String msg = operandA.toString() 
+                    + " divided by 0 should have caused exception, not given result " 
+                    + result.toString();
+            fail(msg);
         } catch (IllegalArgumentException iae) {
             System.out.println("IllegalArgumentException is considered preferable for division by zero.");
             System.out.println("\"" + iae.getMessage() + "\"");
@@ -187,13 +188,13 @@ public class FractionTest {
             System.out.println("ArithmeticException is deemed acceptable for division by zero.");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " is not an appropriate exception for division by zero.";
-            fail(failMessage);
+            String msg = e.getClass().getName() + " is not an appropriate exception for division by zero.";
+            fail(msg);
         }
         try {
             result = operandB.dividedBy(0);
-            String failMessage = operandB.toString() + " divided by 0 should have caused an Exception, not given result " + result.toString();
-            fail(failMessage);
+            String msg = operandB.toString() + " divided by 0 should have caused an Exception, not given result " + result.toString();
+            fail(msg);
         } catch (IllegalArgumentException iae) {
             System.out.println("IllegalArgumentException is considered preferable for division by zero.");
             System.out.println("\"" + iae.getMessage() + "\"");
@@ -201,8 +202,8 @@ public class FractionTest {
             System.out.println("ArithmeticException is deemed acceptable for division by zero.");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " is not an appropriate exception for division by zero.";
-            fail(failMessage);
+            String msg = e.getClass().getName() + " is not an appropriate exception for division by zero.";
+            fail(msg);
         }
     }
 
@@ -272,98 +273,6 @@ public class FractionTest {
         expResult = "\\frac{1}{3}";
         result = operandB.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
-    }
-    
-    /**
-     * Test of parseFract method, of class Fraction. The tested function should 
-     * not mind spaces, and it should also be able to process the output of 
-     * {@link Fraction#toHTMLString()} and {@link Fraction#toTeXString()}. This 
-     * test uses <sup>3</sup>&frasl;<sub>4</sub> in three different input 
-     * formats (such as "\frac{3}{4}").
-     */
-    @Test
-    public void testParseFract() {
-        System.out.println("parseFract");
-        String parseInput = "3 / 4";
-        Fraction expResult = new Fraction(3, 4);
-        Fraction result = Fraction.parseFract(parseInput);
-        assertEquals(expResult, result);
-        parseInput = "<sup>3</sup> &frasl; <sub>4</sub>";
-        result = Fraction.parseFract(parseInput);
-        assertEquals(expResult, result);
-        parseInput = " \\frac{3}{4} ";
-        result = Fraction.parseFract(parseInput);
-        assertEquals(expResult, result);
-    }
-    
-    /**
-     * Another test of parseFract method, of class Fraction. This test comes up 
-     * with a pseudorandom number, such as, for example, 
-     * <sup>&minus;55</sup>&frasl;<sub>79</sub>, and then uses it in three 
-     * different input formats (e.g., "\frac{-55}{79}") to test the parsing 
-     * function. It also tests with a negative denominator, which should be 
-     * parsed to a positive denominator (and a correspondingly negated 
-     * numerator).
-     */
-    @Test
-    public void testParseFractRandom() {
-        int numer = (int) Math.floor(Math.random() * -100 - 1);
-        int denom = (int) Math.floor(Math.random() * 100 + 1);
-        String parseInput = numer + " / " + denom;
-        Fraction expResult = new Fraction(numer, denom);
-        Fraction result = Fraction.parseFract(parseInput);
-        assertEquals(expResult, result);
-        parseInput = (-numer) + " / " + (-denom);
-        result = Fraction.parseFract(parseInput);
-        assertEquals(expResult, result);
-        parseInput = "<sup>&minus;" + (-numer) + "</sup> &frasl; <sub>" + denom + "</sub>";
-        result = Fraction.parseFract(parseInput);
-        assertEquals(expResult, result);
-        parseInput = " \\frac{" + numer + "}{" + denom + "} ";
-        result = Fraction.parseFract(parseInput);
-        assertEquals(expResult, result);
-    }
-    
-    /**
-     * Another test of parseFract method, of class Fraction. Since integers are 
-     * fractions that have 1 for a denominator, a String consisting of a 
-     * parsable integer should be parsed as a fraction with denominator 1.
-     */
-    @Test
-    public void testParseFractInteger() {
-        String parseInput = "7";
-        Fraction expResult = new Fraction(7, 1);
-        try {
-            Fraction result = Fraction.parseFract(parseInput);
-            assertEquals(expResult, result);
-        } catch (RuntimeException re) {
-            String failMsg = re.getClass().getName() + " should not have occurred for trying to parse \"" + parseInput + "\"";
-            fail(failMsg);
-        }
-    }
-    
-    /**
-     * Another test of parseFract method, of class Fraction. If the input String 
-     * does not represent a fraction in a format the tested function expects, it 
-     * should throw an exception.
-     */
-    @Test
-    public void testParseFractNotParsable() {
-        String parseInput = "three quarters";
-        try {
-            Fraction result = Fraction.parseFract(parseInput);
-            String failMsg = "Trying to parse \"" + parseInput + "\" should have caused an exception, not given result " + result.toString();
-            fail(failMsg);
-        } catch (NumberFormatException nfe) {
-            System.out.println("Trying to parse \"" + parseInput + "\" correctly caused NumberFormatException");
-            System.out.println("\"" + nfe.getMessage() + "\"");
-        } catch (InputMismatchException ime) {
-            System.out.println("InputMismatchException is adequate for trying to parse \"" + parseInput + "\"");
-            System.out.println("\"" + ime.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to parse \"" + parseInput + "\"";
-            fail(failMsg);
-        }
     }
     
     /**
@@ -534,14 +443,14 @@ public class FractionTest {
         assertTrue(assertionMessage, comparison > 0);
         try {
             comparison = approxPiSevenths.compareTo(null);
-            String failMsg = "Comparing " + approxPiSevenths.toString() + " to null should have caused an exception, not given result " + comparison + ".";
-            fail(failMsg);
+            String msg = "Comparing " + approxPiSevenths.toString() + " to null should have caused an exception, not given result " + comparison + ".";
+            fail(msg);
         } catch (NullPointerException npe) {
             System.out.println("Comparing " + approxPiSevenths.toString() + " to null correctly triggered NullPointerException.");
             System.out.println("NullPointerException had this message: \"" + npe.getMessage() + "\"");
         } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception to throw for comparing " + approxPiSevenths.toString() + " to null.";
-            fail(failMsg);
+            String msg = e.getClass().getName() + " is the wrong exception to throw for comparing " + approxPiSevenths.toString() + " to null.";
+            fail(msg);
         }
     }
     
@@ -603,6 +512,38 @@ public class FractionTest {
         result = operandB.getNumericApproximation();
         assertEquals(expResult, result, TEST_DELTA);
     }
+    
+    @Test
+    public void testIsUnitFraction() {
+        System.out.println("isUnitFraction");
+        Fraction fraction = new Fraction(1, 7);
+        String msg = fraction.toString() 
+                + " should be considered a unit fraction";
+        assert fraction.isUnitFraction() : msg;
+    }
+    
+    @Test
+    public void testIsNotUnitFraction() {
+        Fraction fraction = new Fraction(2, 7);
+        String msg = fraction.toString() 
+                + " should NOT be considered a unit fraction";
+        assert !fraction.isUnitFraction() : msg;
+    }
+    
+    @Test
+    public void testIsInteger() {
+        System.out.println("isInteger");
+        Fraction fraction = new Fraction(7, 1);
+        String msg = fraction.toString() + " should be considered an integer";
+        assert fraction.isInteger() : msg;
+    }
+
+    @Test
+    public void testIsNotInteger() {
+        Fraction fraction = new Fraction(7, 2);
+        String msg = fraction.toString() + " should NOT be considered an integer";
+        assert !fraction.isInteger() : msg;
+    }
 
     /**
      * Test of reciprocal method, of class Fraction. Checks that applying the 
@@ -634,8 +575,9 @@ public class FractionTest {
         Fraction zero = new Fraction(0, 1);
         try {
             Fraction result = zero.reciprocal();
-            String failMessage = "Trying to get reciprocal of 0 should have caused an exception, not given result " + result.toString();
-            fail(failMessage);
+            String msg = "Trying to get reciprocal of 0 should not have given result " 
+                    + result.toString();
+            fail(msg);
         } catch (IllegalArgumentException iae) {
             System.out.println("IllegalArgumentException is appropriate for trying to take the reciprocal of 0.");
             System.out.println("\"" + iae.getMessage() + "\"");
@@ -643,8 +585,62 @@ public class FractionTest {
             System.out.println("ArithmeticException is deemed acceptable for trying to take the reciprocal of 0.");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " is not an appropriate exception for trying to take the reciprocal of 0.";
-            fail(failMessage);
+            String msg = e.getClass().getName() 
+                    + " is not appropriate for trying to take the reciprocal of 0.";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of parseFract method, of class Fraction.
+     */
+    @Test
+    public void testParseFract() {
+        System.out.println("parseFract");
+        String s = "4/7";
+        Fraction expected = new Fraction(4, 7);
+        Fraction actual = Fraction.parseFract(s);
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Another test of parseFract method, of class Fraction.
+     */
+    @Test
+    public void testParseOtherFract() {
+        String s = "355/113";
+        Fraction expected = new Fraction(355, 113);
+        Fraction actual = Fraction.parseFract(s);
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Another test of parseFract method, of class Fraction.
+     */
+    @Test
+    public void testParseInteger() {
+        String s = "32768";
+        Fraction expected = new Fraction(32768);
+        Fraction actual = Fraction.parseFract(s);
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Another test of parseFract method, of class Fraction.
+     */
+    @Test
+    public void testParseFractIgnoresSpaces() {
+        String s = "355 / 113";
+        Fraction expected = new Fraction(355, 113);
+        try {
+            Fraction actual = Fraction.parseFract(s);
+            assertEquals(expected, actual);
+        } catch (NumberFormatException nfe) {
+            String msg = "NumberFormatException shouldn't occur for parsing \"" 
+                    + s + "\"";
+            System.out.println(msg);
+            System.out.println("\"" + nfe.getMessage() + "\"");
+            fail(msg);
         }
     }
 
@@ -678,6 +674,27 @@ public class FractionTest {
         Fraction fraction = new Fraction(12, -29);
         assertEquals(-12L, fraction.getNumerator());
         assertEquals(29L, fraction.getDenominator());
+    }
+    
+    @Test
+    public void testConstructorRejectsLongMinValueDenom() {
+        try {
+            Fraction badFraction = new Fraction(-7, Long.MIN_VALUE);
+            String msg = "Should not have been able to create fraction " 
+                    + badFraction.toString();
+            fail(msg);
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to use denominator " + Long.MIN_VALUE 
+                    + " correctly caused ArithmeticException");
+            String excMsg = ae.getMessage();
+            assert excMsg != null : "Exception message should not be null";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to use denominator " 
+                    + Long.MIN_VALUE;
+            fail(msg);
+        }
     }
         
 }
