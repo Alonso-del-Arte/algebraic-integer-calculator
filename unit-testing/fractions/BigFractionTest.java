@@ -73,6 +73,27 @@ public class BigFractionTest {
     }
     
     @Test
+    public void testToHTMLString() {
+        System.out.println("toHTMLString");
+        BigFraction fraction = new BigFraction(TWO.negate(), 
+                BigInteger.valueOf(Long.MAX_VALUE));
+        String expected = "&minus;<sup>2</sup>&frasl;<sub>" + Long.MAX_VALUE 
+                + "</sub>";
+        String actual = fraction.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToTeXString() {
+        System.out.println("toTeXString");
+        BigFraction fraction = new BigFraction(TWO.negate(), 
+                BigInteger.valueOf(Long.MAX_VALUE));
+        String expected = "-\\frac{2}{" + Long.MAX_VALUE + "}";
+        String actual = fraction.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testReferentialEquality() {
         BigFraction someFrac = new BigFraction(BigInteger.ONE, TWO);
         assertEquals(someFrac, someFrac);

@@ -111,7 +111,7 @@ public class FractionRangeTest {
     public void testLength() {
         System.out.println("length");
         FractionRange range = new FractionRange(testStart, testEnd);
-        int expResult = 21;
+        int expResult = 20;
         int result = range.length();
         assertEquals(expResult, result);
     }
