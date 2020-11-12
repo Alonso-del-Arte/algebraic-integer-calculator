@@ -157,15 +157,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * example, if this fraction is <sup>1</sup>&frasl;<sub>2</sub> and the 
      * divisor is <sup>1</sup>&frasl;<sub>7</sub>, the result will be 
      * <sup>7</sup>&frasl;<sub>2</sub>.
-     * @throws IllegalArgumentException If the divisor is 0, this runtime 
-     * exception will be thrown.
+     * @throws ArithmeticException If <code>divisor</code> is 0, this runtime 
+     * exception might be thrown.
+     * @throws IllegalArgumentException If <code>divisor</code> is 0, this 
+     * runtime exception might be thrown.
      */
     public Fraction dividedBy(Fraction divisor) {
-        if (divisor.numerator == 0) {
-            String excMsg = "Dividing " + this.toString() 
-                    + " by 0 results in an indeterminate number.";
-            throw new IllegalArgumentException(excMsg);
-        }
         return this.times(divisor.reciprocal());
     }
     
@@ -175,15 +172,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * @return A new <code>Fraction</code> object with the division. For 
      * example, if this fraction is <sup>1</sup>&frasl;<sub>2</sub> and the 
      * divisor is 3, the result will be <sup>1</sup>&frasl;<sub>6</sub>.
-     * @throws IllegalArgumentException If the divisor is 0, this runtime 
-     * exception will be thrown.
+     * @throws ArithmeticException If <code>divisor</code> is 0, this runtime 
+     * exception might be thrown.
+     * @throws IllegalArgumentException If <code>divisor</code> is 0, this 
+     * runtime exception might be thrown.
      */
     public Fraction dividedBy(int divisor) {
-        if (divisor == 0) {
-            String excMsg = "Dividing " + this.toString() 
-                    + " by 0 results in an indeterminate number.";
-            throw new IllegalArgumentException(excMsg);
-        }
         return new Fraction(this.numerator, this.denominator * divisor);
     }
     
@@ -204,9 +198,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * example, if this fraction is <sup>1</sup>&frasl;<sub>2</sub>, the result 
      * will be 2; if this fraction is <sup>7</sup>&frasl;<sub>2</sub>, the 
      * result will be <sup>2</sup>&frasl;<sub>7</sub>.
+     * @throws ArithmeticException If this fraction is 0, this runtime exception 
+     * might be thrown with the exception detail message "Denominator 0 is 
+     * invalid or unavailable."
      * @throws IllegalArgumentException If this fraction is 0, this runtime 
-     * exception will be thrown with the exception detail message "Denominator 0 
-     * is invalid or unavailable."
+     * exception might be thrown with the exception detail message "Denominator 
+     * 0 is invalid or unavailable."
      */
     public Fraction reciprocal() {
         return new Fraction(this.denominator, this.numerator);
@@ -484,16 +481,11 @@ public class Fraction implements Comparable<Fraction>, Serializable {
                     + " is invalid or unavailable";
             throw new ArithmeticException(excMsg);
         }
-        if (denom == Long.MIN_VALUE) {
-            String excMsg = "Denominator " + denom + " has caused overflow";
-            throw new ArithmeticException(excMsg);
-        }
-        long gcdNumDen = NumberTheoreticFunctionsCalculator.euclideanGCD(numer, denom);
-        if (denom < 0) {
-            gcdNumDen *= -1;
-        }
-        this.numerator = numer / gcdNumDen;
-        this.denominator = denom / gcdNumDen;
+        long adjustment = NumberTheoreticFunctionsCalculator.euclideanGCD(numer, 
+                denom);
+        adjustment *= Long.signum(denom);
+        this.numerator = numer / adjustment;
+        this.denominator = denom / adjustment;
     }
 
 }
