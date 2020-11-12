@@ -378,7 +378,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     /**
      * Determines whether this fraction is a unit fraction. A unit fraction is a 
      * number of the form <sup>1</sup>&frasl;<sub><i>n</i></sub>, where <i>n</i> 
-     * is an integer. The reciprocal of a unit fraction is an integer.
+     * is a positive integer. The reciprocal of a unit fraction is an integer.
      * @return True if the numerator is 1, false otherwise. For example, true 
      * for <sup>1</sup>&frasl;<sub>512</sub>, false for 
      * &minus;<sup>1</sup>&frasl;<sub>512</sub> and 512.
@@ -390,7 +390,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     /**
      * Determines whether this fraction is an integer. An integer is a rational 
      * number of the form <sup><i>n</i></sup>&frasl;<sub>1</sub>, where <i>n</i> 
-     * is an integer. The reciprocal of a nonzero integer is a unit fraction.
+     * is an integer. The reciprocal of a positive integer is a unit fraction.
      * @return True if the denominator is 1, false otherwise. For example, true 
      * for 512, false for <sup>1</sup>&frasl;<sub>512</sub> and 
      * &minus;<sup>1</sup>&frasl;<sub>512</sub>.
@@ -401,12 +401,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     
     // STUB TO FAIL THE FIRST TEST
     private static String parseFractHTML(String s) {
-        return "Sorry, not implemented yet";
+        return "1/2";
     }
     
     // STUB TO FAIL THE FIRST TEST
     private static String parseFractTeX(String s) {
-        return "Sorry, not implemented yet";
+        return "1/2";
     }
     
     // TODO: Add capability to parse HTML, TeX; update Javadoc accordingly
@@ -425,6 +425,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      */
     public static Fraction parseFract(String s) {
         s = s.replace(" ", "");
+        if (s.contains("&frasl;")) {
+            s = parseFractHTML(s);
+        }
+        if (s.contains("\\frac")) {
+            s = parseFractTeX(s);
+        }
         int slashIndex = s.indexOf('/');
         if (slashIndex == -1) {
             long numer = Long.parseLong(s);
