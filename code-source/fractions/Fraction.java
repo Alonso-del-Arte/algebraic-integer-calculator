@@ -22,7 +22,12 @@ import java.io.Serializable;
 
 /**
  * Defines objects to represent fractions symbolically rather than numerically. 
- * For example, to represent one half as 1/2 rather than 0.5.
+ * For example, to represent one half as <sup>1</sup>&frasl;<sub>2</sub> rather 
+ * than 0.5. Note that there is hardly any overflow checking. Therefore, it's 
+ * best to keep numerators and denominators within the range of <code>int</code> 
+ * even though those fields are of type <code>long</code>. If you're definitely 
+ * going to need numerators and denominators outside the range of 
+ * <code>int</code>, you should use {@link BigFraction} instead of this class.
  * @author Alonso del Arte
  */
 public class Fraction implements Comparable<Fraction>, Serializable {
@@ -32,8 +37,10 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     private final long numerator;
     private final long denominator;
     
-    private final double numericVal;
-    
+    /**
+     * Specifies an interval by which to separate the numerator and the 
+     * denominator in a hash code.
+     */
     protected static final int HASH_SEP = 65536;
     
     /**
@@ -74,9 +81,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     public Fraction plus(Fraction addend) {
         long interNumerA = this.numerator * addend.denominator;
         long interNumerB = addend.numerator * this.denominator;
-        long newNumer = interNumerA + interNumerB;
-        long newDenom = this.denominator * addend.denominator;
-        return new Fraction(newNumer, newDenom);
+        long resNumer = interNumerA + interNumerB;
+        long resDenom = this.denominator * addend.denominator;
+        return new Fraction(resNumer, resDenom);
     }
     
     /**
@@ -87,16 +94,16 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * is 3, the result will be <sup>7</sup>&frasl;<sub>2</sub>.
      */
     public Fraction plus(int addend) {
-        long newNumer = this.numerator + addend * this.denominator;
-        return new Fraction(newNumer, this.denominator);
+        long resNumer = this.numerator + addend * this.denominator;
+        return new Fraction(resNumer, this.denominator);
     }
     
     /**
      * Subtracts a fraction from this fraction.
      * @param subtrahend The fraction to subtract. For example, 
      * <sup>1</sup>&frasl;<sub>7</sub>.
-     * @return A new <code>Fraction</code> object with the subtraction. 
-     * For example, if this fraction is <sup>1</sup>&frasl;<sub>2</sub> and the 
+     * @return A new <code>Fraction</code> object with the subtraction. For 
+     * example, if this fraction is <sup>1</sup>&frasl;<sub>2</sub> and the 
      * subtrahend is <sup>1</sup>&frasl;<sub>7</sub>, the result will be 
      * <sup>5</sup>&frasl;<sub>14</sub>.
      */
@@ -126,9 +133,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * <sup>1</sup>&frasl;<sub>14</sub>.
      */
     public Fraction times(Fraction multiplicand) {
-        long newNumer = this.numerator * multiplicand.numerator;
-        long newDenom = this.denominator * multiplicand.denominator;
-        return new Fraction(newNumer, newDenom);
+        long resNumer = this.numerator * multiplicand.numerator;
+        long resDenom = this.denominator * multiplicand.denominator;
+        return new Fraction(resNumer, resDenom);
     }
     
     /**
@@ -155,8 +162,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      */
     public Fraction dividedBy(Fraction divisor) {
         if (divisor.numerator == 0) {
-            String exceptionMessage = "Dividing " + this.toString() + " by 0 results in an indeterminate number.";
-            throw new IllegalArgumentException(exceptionMessage);
+            String excMsg = "Dividing " + this.toString() 
+                    + " by 0 results in an indeterminate number.";
+            throw new IllegalArgumentException(excMsg);
         }
         return this.times(divisor.reciprocal());
     }
@@ -172,8 +180,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      */
     public Fraction dividedBy(int divisor) {
         if (divisor == 0) {
-            String exceptionMessage = "Dividing " + this.toString() + " by 0 results in an indeterminate number.";
-            throw new IllegalArgumentException(exceptionMessage);
+            String excMsg = "Dividing " + this.toString() 
+                    + " by 0 results in an indeterminate number.";
+            throw new IllegalArgumentException(excMsg);
         }
         return new Fraction(this.numerator, this.denominator * divisor);
     }
@@ -197,7 +206,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * result will be <sup>2</sup>&frasl;<sub>7</sub>.
      * @throws IllegalArgumentException If this fraction is 0, this runtime 
      * exception will be thrown with the exception detail message "Denominator 0 
-     * is not allowed."
+     * is invalid or unavailable."
      */
     public Fraction reciprocal() {
         return new Fraction(this.denominator, this.numerator);
@@ -224,8 +233,8 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     }
     
     /**
-     * Gives a representation of this fraction as a String suitable for use in 
-     * an HTML document. The output placed in the context of an HTML document 
+     * Gives a textual representation of this fraction suitable for use in an 
+     * HTML document. The output placed in the context of an HTML document 
      * viewed in a Web browser should render with the numerator towards the top 
      * left and the denominator towards the bottom right of the space allotted 
      * for the text.
@@ -234,8 +243,8 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * denominator set as an HTML subscript. However, if this fraction is an 
      * integer, the "&nbsp;&frasl;<sub>1</sub>" part will be omitted and the 
      * integer will be presented with no special formatting markup. If the 
-     * fraction is negative, the String will start with "&minus;" rather than 
-     * "-". For example, if this fraction is 
+     * fraction is negative, the <code>String</code> will start with "&minus;" 
+     * rather than "-". For example, if this fraction is 
      * &minus;<sup>1</sup>&frasl;<sub>2</sub>, the result will be 
      * "<sup>&minus;1</sup>&frasl;<sub>2</sub>".
      */
@@ -272,8 +281,8 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     }
     
     /**
-     * Gives a hash code for the fraction. This is guaranteed to be the same for 
-     * two fractions that are arithmetically equal. It is likely but not 
+     * Gives a hash code for this fraction. This is guaranteed to be the same  
+     * for two fractions that are arithmetically equal. It is likely but not 
      * guaranteed to be different for two fractions that are arithmetically 
      * unequal. Also, it is likely but not guaranteed that the sign of the hash 
      * code will match the sign of the fraction.
@@ -299,8 +308,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * <sup>9</sup>&frasl;<sub>12</sub> should be found to be equal. 
      * <sup>3</sup>&frasl;<sub>4</sub> and <sup>3</sup>&frasl;<sub>5</sub> 
      * should not be found to be equal. A <code>Fraction</code> object should 
-     * not be found to be equal to an {@link Integer} object even if their 
-     * values are arithmetically equal.
+     * not be found to be equal to an <code>Integer</code> object even if their 
+     * values are arithmetically equal, nor should it be found to be equal to 
+     * null.
      */
     @Override
     public boolean equals(Object obj) {
@@ -324,7 +334,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * Compares this fraction to another fraction for order. Returns a negative 
      * integer, zero, or a positive integer as this fraction is less than, equal 
      * to, or greater than the other fraction. This enables sorting with  
-     * <code>java.util.Collections#sort(java.util.List)</code> without need for 
+     * <code>java.util.Collections.sort(java.util.List)</code> without need for 
      * a comparator.
      * @param other The fraction to compare to. Examples: 
      * &minus;<sup>1</sup>&frasl;<sub>2</sub>, <sup>5</sup>&frasl;<sub>3</sub>, 
@@ -355,31 +365,63 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * likely to be precise if the denominator is a small power of 2.
      * @return A floating point approximation of the value of this fraction. For 
      * example, if this fraction is <sup>1</sup>&frasl;<sub>7</sub>, the result 
-     * might be something like 0.14285714285714285714285714285714. If this 
-     * fraction is <sup>6</sup>&frasl;<sub>13</sub>, the result might be 
-     * something like 0.46153846153846153846153846153846.
+     * should be 0.14285714285714285. If this fraction is 
+     * <sup>6</sup>&frasl;<sub>13</sub>, the result should be 
+     * 0.46153846153846156. In no case should the floating point value of a 
+     * fraction be lost as infinity or not a number (NaN), nor should numbers 
+     * very close to 0 be lost as &plusmn;0.0.
      */
     public double getNumericApproximation() {
-        return this.numericVal;
+        return (double) this.numerator / this.denominator;
     }
     
+    /**
+     * Determines whether this fraction is a unit fraction. A unit fraction is a 
+     * number of the form <sup>1</sup>&frasl;<sub><i>n</i></sub>, where <i>n</i> 
+     * is an integer. The reciprocal of a unit fraction is an integer.
+     * @return True if the numerator is 1, false otherwise. For example, true 
+     * for <sup>1</sup>&frasl;<sub>512</sub>, false for 
+     * &minus;<sup>1</sup>&frasl;<sub>512</sub> and 512.
+     */
     public boolean isUnitFraction() {
         return this.numerator == 1L;
     }
     
+    /**
+     * Determines whether this fraction is an integer. An integer is a rational 
+     * number of the form <sup><i>n</i></sup>&frasl;<sub>1</sub>, where <i>n</i> 
+     * is an integer. The reciprocal of a nonzero integer is a unit fraction.
+     * @return True if the denominator is 1, false otherwise. For example, true 
+     * for 512, false for <sup>1</sup>&frasl;<sub>512</sub> and 
+     * &minus;<sup>1</sup>&frasl;<sub>512</sub>.
+     */
     public boolean isInteger() {
         return this.denominator == 1L;
     }
     
+    // STUB TO FAIL THE FIRST TEST
+    private static String parseFractHTML(String s) {
+        return "Sorry, not implemented yet";
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    private static String parseFractTeX(String s) {
+        return "Sorry, not implemented yet";
+    }
+    
+    // TODO: Add capability to parse HTML, TeX; update Javadoc accordingly
     /**
      * Parses a <code>String</code> into a <code>Fraction</code> object.
      * @param s The <code>String</code> to parse. It may contain spaces. For 
-     * example, "22 / 7".
+     * example, "22 / 7". Currently this function is incapable of parsing HTML 
+     * or TeX.
      * @return A <code>Fraction</code> object. For example, <code>new 
      * Fraction(22, 7)</code>.
      * @throws NumberFormatException If <code>s</code> contains characters other 
      * than digits, spaces, "-" (may occur once or twice, but only preceding 
-     * digits) or "/" (may only occur once or not at all).
+     * digits) or "/" (may only occur once or not at all). The exception message 
+     * will most likely contain only what this function understood to be the 
+     * intended as the denominator.
      */
     public static Fraction parseFract(String s) {
         s = s.replace(" ", "");
@@ -395,27 +437,30 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     
     /**
      * Implicit denominator constructor for integers. Denominator is filled in 
-     * as 1.
+     * as 1. Note that this is a chained constructor. I figure it will be much 
+     * more useful to someone using this class on a REPL (like the Scala REPL) 
+     * than to other classes or to interfaces.
      * @param numer The numerator of the fraction. For example, 7. Then the 
      * fraction <sup>7</sup>&frasl;<sub>1</sub> is arithmetically equal to the 
      * integer 7.
      */
     public Fraction(long numer) {
-        this.numerator = numer;
-        this.numericVal = numer;
-        this.denominator = 1;
+        this(numer, 1);
     }
     
     /**
-     * This should be considered the default constructor. It makes sure the 
-     * fraction is expressed in lowest terms and that the denominator is 
-     * positive.
-     * @param numer The numerator of the fraction. For example, 2.
-     * @param denom The denominator of the fraction. It must not be 0. Other 
-     * than that, there are no requirements for the denominator. It need not be 
-     * coprime to the numerator, and it may be negative. The constructor will 
-     * make sure the fraction is in lowest terms, and that it has a positive 
-     * denominator. For example, &minus;4.
+     * The default constructor. It makes sure the fraction is expressed in 
+     * lowest terms and that the denominator is positive.
+     * @param numer The numerator of the fraction. For example, 2. Preferably in 
+     * the range of <code>int</code>, to avoid overflows in operations with 
+     * other fractions.
+     * @param denom The denominator of the fraction. It must not be 0 nor 
+     * <code>Long.MIN_VALUE</code>. Other than that, there are no requirements 
+     * for the denominator, though I do recommend that it be in the range of 
+     * <code>int</code>, to avoid overflows in operations with other fractions. 
+     * It need not be coprime to the numerator, and it may be negative. The 
+     * constructor will make sure the fraction is in lowest terms, and that it 
+     * has a positive denominator. For example, &minus;4.
      * @throws ArithmeticException If <code>denom</code> is 0 or 
      * <code>Long.MIN_VALUE</code>. The problem with the latter is that its 
      * absolute value is just outside the range of <code>long</code> to 
@@ -443,7 +488,6 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         }
         this.numerator = numer / gcdNumDen;
         this.denominator = denom / gcdNumDen;
-        this.numericVal = ((double) this.numerator / (double) this.denominator);
     }
 
 }
