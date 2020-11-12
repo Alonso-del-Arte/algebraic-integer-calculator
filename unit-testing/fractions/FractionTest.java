@@ -597,8 +597,8 @@ public class FractionTest {
     @Test
     public void testParseFract() {
         System.out.println("parseFract");
-        String s = "4/7";
-        Fraction expected = new Fraction(4, 7);
+        String s = "-4/7";
+        Fraction expected = new Fraction(-4, 7);
         Fraction actual = Fraction.parseFract(s);
         assertEquals(expected, actual);
     }
@@ -624,6 +624,29 @@ public class FractionTest {
         Fraction actual = Fraction.parseFract(s);
         assertEquals(expected, actual);
     }
+    
+    /**
+     * Another test of parseFract method, of class Fraction.
+     */
+    @Test
+    public void testParseFractRecognizesProperMinusSign() {
+        String s = "\u22121/2";
+        try{
+            String msg = s + " should be recognized as negative one half";
+            Fraction expected = new Fraction(-1, 2);
+            Fraction actual = Fraction.parseFract(s);
+            assertEquals(msg, expected, actual);
+        } catch (NumberFormatException nfe) {
+            String msg = "Parsing " + s 
+                    + " should not have caused NumberFormatException";
+            System.out.println("\"" + nfe.getMessage() + "\"");
+            fail(msg);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is inappropriate for parsing " + s;
+            fail(msg);
+        }
+    }
 
     /**
      * Another test of parseFract method, of class Fraction.
@@ -642,6 +665,49 @@ public class FractionTest {
             System.out.println("\"" + nfe.getMessage() + "\"");
             fail(msg);
         }
+    }
+    
+    /**
+     * Another test of parseFract method, of class Fraction.
+     */
+    @Test
+    public void testParseFractHTML() {
+        String s = "<sup>79</sup>&frasl;<sub>43</sub>";
+        Fraction expected = new Fraction(79, 43);
+        Fraction actual = Fraction.parseFract(s);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of parseFract method, of class Fraction.
+     */
+    @Test
+    public void testParseFractTeX() {
+        String s = "\\frac{79}{43}";
+        Fraction expected = new Fraction(79, 43);
+        Fraction actual = Fraction.parseFract(s);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testParseFractToStringCorrespondence() {
+        Fraction expected = new Fraction(53, 40);
+        Fraction actual = Fraction.parseFract(expected.toString());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testParseFractToHTMLStringCorrespondence() {
+        Fraction expected = new Fraction(53, 40);
+        Fraction actual = Fraction.parseFract(expected.toHTMLString());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testParseFractToTeXStringCorrespondence() {
+        Fraction expected = new Fraction(53, 40);
+        Fraction actual = Fraction.parseFract(expected.toTeXString());
+        assertEquals(expected, actual);
     }
 
     /**
@@ -670,7 +736,6 @@ public class FractionTest {
      */
     @Test
     public void testNegativeDenomsQuietlyChanged() {
-        System.out.println("Negative denominators should be quietly changed to positive");
         Fraction fraction = new Fraction(12, -29);
         assertEquals(-12L, fraction.getNumerator());
         assertEquals(29L, fraction.getDenominator());
