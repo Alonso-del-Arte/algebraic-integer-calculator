@@ -243,7 +243,7 @@ public class FractionTest {
 
     /**
      * Test of toHTMLString method, of class Fraction. Spaces are acceptable in 
-     * the output, so this test strips them out.
+     * the output; this test strips them out.
      */
     @Test
     public void testToHTMLString() {
@@ -254,10 +254,20 @@ public class FractionTest {
         expResult = "<sup>1</sup>&frasl;<sub>3</sub>";
         result = operandB.toHTMLString().replace(" ", "");
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Another test of toHTMLString method, of class Fraction. If the fraction 
+     * is a negative number, the minus sign should not be a superscript like the 
+     * numerator. Spaces are acceptable in the output; this test strips them 
+     * out.
+     */
+    @Test
+    public void testToHTMLStringNegativeFraction() {
         Fraction negOneHalf = new Fraction(-1, 2);
-        expResult = "<sup>&minus;1</sup>&frasl;<sub>2</sub>";
-        result = negOneHalf.toHTMLString();
-        assertEquals(expResult, result);
+        String expected = "&minus;<sup>1</sup>&frasl;<sub>2</sub>";
+        String actual = negOneHalf.toHTMLString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
@@ -275,6 +285,20 @@ public class FractionTest {
         assertEquals(expResult, result);
     }
     
+    /**
+     * Another test of toTeXString method, of class Fraction. If the fraction 
+     * is a negative number, the minus sign should be aligned to the fraction 
+     * line rather than the vertical center of the numerator digits. Spaces are 
+     * acceptable in the output; this test strips them out.
+     */
+    @Test
+    public void testToTeXStringNegativeFraction() {
+        Fraction negOneHalf = new Fraction(-1, 2);
+        String expected = "-\\frac{1}{2}";
+        String actual = negOneHalf.toTeXString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
     /**
      * Test of toString, toHTMLString, toTeXString methods of class Fraction. 
      * Fractions that are integers should be reported with the denominator of 1 

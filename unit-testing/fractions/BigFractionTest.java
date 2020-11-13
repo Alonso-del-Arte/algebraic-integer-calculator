@@ -77,7 +77,7 @@ public class BigFractionTest {
         System.out.println("toHTMLString");
         BigFraction fraction = new BigFraction(TWO.negate(), 
                 BigInteger.valueOf(Long.MAX_VALUE));
-        String expected = "&minus;<sup>2</sup>&frasl;<sub>" + Long.MAX_VALUE 
+        String expected = "<sup>&minus;2</sup>&frasl;<sub>" + Long.MAX_VALUE 
                 + "</sub>";
         String actual = fraction.toHTMLString();
         assertEquals(expected, actual);
