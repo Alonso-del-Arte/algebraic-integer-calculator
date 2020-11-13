@@ -241,22 +241,23 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * integer, the "&nbsp;&frasl;<sub>1</sub>" part will be omitted and the 
      * integer will be presented with no special formatting markup. If the 
      * fraction is negative, the <code>String</code> will start with "&minus;" 
-     * rather than "-". For example, if this fraction is 
-     * &minus;<sup>1</sup>&frasl;<sub>2</sub>, the result will be 
-     * "<sup>&minus;1</sup>&frasl;<sub>2</sub>".
+     * rather than "-" for the minus sign, and the minus sign will not be a 
+     * superscript regardless of whether or not the fraction is an integer. For 
+     * example, if this fraction is <sup>&minus;1</sup>&frasl;<sub>2</sub>, the 
+     * result will be "&minus;<sup>1</sup>&frasl;<sub>2</sub>".
      */
     public String toHTMLString() {
         if (this.denominator == 1) {
             return Long.toString(this.numerator);
         } else {
-            String fractStr = "<sup>";
+            String str = "<sup>";
             if (this.numerator < 0) {
-                fractStr = fractStr + "&minus;" + Math.abs(this.numerator);
+                str = "&minus;" + str + Math.abs(this.numerator);
             } else {
-                fractStr = fractStr + this.numerator;
+                str = str + this.numerator;
             }
-            fractStr = fractStr + "</sup>&frasl;<sub>" + this.denominator + "</sub>";
-            return fractStr;
+            str = str + "</sup>&frasl;<sub>" + this.denominator + "</sub>";
+            return str;
         }
     }
     
@@ -273,7 +274,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         if (this.denominator == 1) {
             return Long.toString(this.numerator);
         } else {
-            return ("\\frac{" + this.numerator + "}{" + this.denominator + "}");
+            String str = "\\frac{" + this.numerator + "}{" + this.denominator 
+                    + "}";
+            return str.replace("\\frac\u007B-", "-\\frac\u007B");
         }
     }
     
@@ -396,22 +399,35 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         return this.denominator == 1L;
     }
     
-    // STUB TO FAIL THE FIRST TEST
     private static String parseFractHTML(String s) {
-        return "1/2";
+        s = s.replace("&minus;", "-");
+        s = s.replace("&#x2212;", "-");
+        s = s.replace("&#8722;", "-");
+        int slashIndex = s.indexOf("&frasl;");
+        String numerStr = s.substring(0, slashIndex);
+        numerStr = numerStr.replace("<sup>", "");
+        numerStr = numerStr.replace("</sup>", "");
+        String denomStr = s.substring(slashIndex + 7);
+        denomStr = denomStr.replace("<sub>", "");
+        denomStr = denomStr.replace("</sub>", "");
+        return numerStr + "/" + denomStr;
     }
     
-    // STUB TO FAIL THE FIRST TEST
     private static String parseFractTeX(String s) {
-        return "1/2";
+        s = s.replace("\\frac{", "");
+        s = s.replace("}{", "/");
+        s = s.replace("}", "");
+        return s;
     }
     
-    // TODO: Add capability to parse HTML, TeX; update Javadoc accordingly
     /**
      * Parses a <code>String</code> into a <code>Fraction</code> object.
      * @param s The <code>String</code> to parse. It may contain spaces. For 
-     * example, "22 / 7". Currently this function is incapable of parsing HTML 
-     * or TeX.
+     * example, "22 / 7". Currently this function can parse HTML or TeX if it 
+     * conforms to certain expectations: namely, a fraction from an HTML 
+     * document includes the fraction slash character entity "&amp;frasl;", and 
+     * a fraction from a TeX document uses the "\frac{numerator}{denominator}" 
+     * syntax.
      * @return A <code>Fraction</code> object. For example, <code>new 
      * Fraction(22, 7)</code>.
      * @throws NumberFormatException If <code>s</code> contains characters other 
@@ -422,6 +438,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      */
     public static Fraction parseFract(String s) {
         s = s.replace(" ", "");
+        s = s.replace("\u2212", "-");
         if (s.contains("&frasl;")) {
             s = parseFractHTML(s);
         }

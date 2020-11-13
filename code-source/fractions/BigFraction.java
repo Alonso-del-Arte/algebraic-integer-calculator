@@ -68,9 +68,10 @@ public class BigFraction implements Comparable<BigFraction> {
      * Gives a textual representation of this fraction in lowest terms. Uses 
      * ASCII characters only.
      * @return The numerator followed by "/" and then the denominator, except in 
-     * the case of integers, in which case "/1" is omitted. For example, if this 
-     * fraction was constructed as 9/6144, this function will return "3/2048". 
-     * If this fraction is the integer 7, this function will return "7".
+     * the case of integers, for which the "/1" is omitted. For example, if this 
+     * fraction was constructed as <sup>9</sup>&frasl;<sub>6144</sub>, this 
+     * function will return "3/2048". If this fraction is the integer 7, this 
+     * function will simply return "7".
      */
     @Override
     public String toString() {
@@ -82,14 +83,47 @@ public class BigFraction implements Comparable<BigFraction> {
         }
     }
     
-    // STUB TO FAIL THE FIRST TET
+    /**
+     * Gives a textual representation of this fraction in lowest terms, suitable 
+     * for use in an HTML document. Uses HTML character entities when 
+     * applicable.
+     * @return The numerator as a superscript, followed by the fraction slash 
+     * character entity, and then the denominator as a subscript, except in the 
+     * case of integers, for which the output is the same as {@link 
+     * #toString()}. For example, if this fraction was constructed as 
+     * <sup>9</sup>&frasl;<sub>6144</sub>, this function will return 
+     * "<sup>3</sup>&frasl;<sub>2048</sub>". If this fraction is the integer 7, 
+     * this function will simply return "7".
+     */
     public String toHTMLString() {
-        return "Not implemented yet: HTML for " + this.toString();
+        if (this.denominator.equals(BigInteger.ONE)) {
+            return this.numerator.toString();
+        } else {
+            String str = "<sup>" + this.numerator.toString() 
+                    + "</sup>&frasl;<sub>" + this.denominator.toString() 
+                    + "</sub>";
+            return str.replace("-", "&minus;");
+        }
     }
     
-    // STUB TO FAIL THE FIRST TET
+    /**
+     * Gives a textual representation of this fraction in lowest terms, suitable 
+     * for use in a TeX document.
+     * @return "\frac{" followed by the numerator, then "}{", the denominator 
+     * and "}" to close. Except in the case of integers, for which the output is 
+     * the same as {@link #toString()}. For example, if this fraction was 
+     * constructed as <sup>9</sup>&frasl;<sub>6144</sub>, this function will 
+     * return "\frac{3}{2048}". If this fraction is the integer 7, this function 
+     * will simply return "7".
+     */
     public String toTeXString() {
-        return "Not implemented yet: TeX for " + this.toString();
+        if (this.denominator.equals(BigInteger.ONE)) {
+            return this.numerator.toString();
+        } else {
+            String str = "\\frac{" + this.numerator.toString() + "}{" 
+                    + this.denominator.toString() + "}";
+            return str.replace("\\frac\u007B-", "-\\frac\u007B");
+        }
     }
     
     /**
