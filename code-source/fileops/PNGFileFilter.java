@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -22,8 +22,9 @@ import javax.swing.filechooser.FileFilter;
 /**
  * File filter for selecting Portable Network Graphics (PNG) files in a 
  * JFileChooser dialog box.
- * @author Alonso del Arte, based on the tutorial at 
- * <a href="http://www.codejava.net/java-se/swing/add-file-filter-for-jfilechooser-dialog">CodeJava</a>.
+ * @author Alonso del Arte, based on the tutorial  
+ * <a href="www.codejava.net/java-se/swing/add-file-filter-for-jfilechooser-dialog">at 
+ * CodeJava</a>.
  */
 public class PNGFileFilter extends FileFilter {
     

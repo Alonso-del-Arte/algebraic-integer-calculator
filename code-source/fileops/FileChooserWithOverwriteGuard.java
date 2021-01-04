@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,14 +16,15 @@
  */
 package fileops;
 
+import java.io.File;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import java.io.File;
 
 /**
  * Just a simple tweak on JFileChooser so that it asks before overwriting an 
  * existing file. This is done simply by overriding 
- * {@link JFileChooser#approveSelection()}.
+ * <code>JFileChooser.approveSelection()</code>.
  * @author Alonso del Arte, based on the tutorial at 
  * http://www.thepcwizard.in/2013/05/complete-guide-to-jfilechooser.html
  */
@@ -33,11 +34,13 @@ public class FileChooserWithOverwriteGuard extends JFileChooser {
     public void approveSelection() {
         File file = this.getSelectedFile();
         if (file.exists()) {
-            int confResp = JOptionPane.showConfirmDialog(this, "Do you want to overwrite the existing file?", file.getName() + " already exists", JOptionPane.YES_NO_CANCEL_OPTION);
+            int confResp = JOptionPane.showConfirmDialog(this, 
+                    "Do you want to overwrite the existing file?", 
+                    file.getName() + " already exists", 
+                    JOptionPane.YES_NO_CANCEL_OPTION);
             switch (confResp) {
                 case JOptionPane.YES_OPTION:
                     super.approveSelection();
-                    return;
                 case JOptionPane.NO_OPTION:
                     return;
                 case JOptionPane.CLOSED_OPTION:
