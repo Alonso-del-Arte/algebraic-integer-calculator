@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -32,6 +32,8 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class QuadraticIntegerTest {
+    
+    // TODO: Write arithmetic overflow tests
     
     private static final int R_D = 21;
     private static final int R_A = 5;
@@ -74,8 +76,8 @@ public class QuadraticIntegerTest {
     
     /**
      * Another test of the trace function of class QuadraticInteger. Although 
-     * 2<sup>31</sup> &minus; 1 is the greatest value an <code>int</code> can have, 
-     * as the "regular" part of a quadratic integer it should not cause an 
+     * 2<sup>31</sup> &minus; 1 is the greatest value an <code>int</code> can 
+     * have, as the "regular" part of a quadratic integer it should not cause an 
      * overflow for the trace function, since the return type is 
      * <code>long</code>, which can represent 2<sup>32</sup> &minus; 2 easily. 
      * So, for example, the trace of 2147483647 + &radic;(&minus;89) is 
@@ -103,22 +105,28 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testConjugateUnsupportedCausesException() {
-        System.out.println("Testing that conjugate on an unsupported quadratic integer causes the appropriate exception");
+        System.out.println("Testing conjugate on unsupported quadratic integer");
         QuadraticInteger conj;
         try {
             conj = ILL_DEF_INT_A.conjugate();
-            System.out.println("Trying to get conjugate of " + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " + conj.toASCIIString() + ".");
-            fail("Trying to get conjugate of an ill-defined quadratic integer should have caused UnsupportedNumberDomainException.");
+            System.out.println("Trying to get conjugate of " 
+                    + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " 
+                    + conj.toASCIIString() + ".");
+            String msg = "Conjugate of ill-defined integer should have caused exception";
+            fail(msg);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("UnsupportedNumberDomainException correctly triggered for attempted conjugate.");
             System.out.println("Message: " + unde.getMessage());
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String msg = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(msg);
         }
         try {
             conj = ILL_DEF_INT_B.conjugate();
-            System.out.println("Trying to get conjugate of " + ILL_DEF_INT_B.toASCIIString() + " somehow resulted in " + conj.toASCIIString() + ".");
+            System.out.println("Trying to get conjugate of " 
+                    + ILL_DEF_INT_B.toASCIIString() + " somehow resulted in " 
+                    + conj.toASCIIString() + ".");
             fail("Trying to get conjugate of an ill-defined quadratic integer should have caused UnsupportedNumberDomainException.");
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("UnsupportedNumberDomainException correctly triggered for attempted conjugate.");
@@ -571,17 +579,22 @@ public class QuadraticIntegerTest {
         QuadraticInteger division;
         try {
             division = ILL_DEF_INT_C.divides(ILL_DEF_INT_A);
-            System.out.println("Trying to divide " + ILL_DEF_INT_C.toASCIIString() + " by " + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " + division.toASCIIString() + ".");
+            System.out.println("Trying to divide " 
+                    + ILL_DEF_INT_C.toASCIIString() + " by " 
+                    + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " 
+                    + division.toASCIIString() + ".");
             fail("Trying to divide one ill-defined quadratic integer by another should have caused UnsupportedNumberDomainException.");
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("UnsupportedNumberDomainException correctly triggered for attempted division.");
             System.out.println("Message: " + unde.getMessage());
         } catch (NotDivisibleException nde) {
-            String failMessage = "NotDivisibleException is not appropriate in this context: " + nde.getMessage();
-            fail(failMessage);
+            String msg = "NotDivisibleException is not appropriate for " 
+                    + nde.getMessage();
+            fail(msg);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String msg = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(msg);
         }
         try {
             division = ILL_DEF_INT_C.divides(ILL_DEF_INT_B);
@@ -591,11 +604,11 @@ public class QuadraticIntegerTest {
             System.out.println("UnsupportedNumberDomainException correctly triggered for attempted division.");
             System.out.println("Message: " + unde.getMessage());
         } catch (NotDivisibleException nde) {
-            String failMessage = "NotDivisibleException is not appropriate in this context: " + nde.getMessage();
-            fail(failMessage);
+            String msg = "NotDivisibleException is not appropriate in this context: " + nde.getMessage();
+            fail(msg);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String msg = e.getClass().getName() + " triggered: " + e.getMessage();
+            fail(msg);
         }
     }
     
