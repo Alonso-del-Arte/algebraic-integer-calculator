@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,28 +26,37 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the QuarticGaussianInteger class.
  * @author Alonso del Arte
  */
 public class QuarticGaussianIntegerTest {
     
-    private static final QuarticGaussianInteger ONE = new QuarticGaussianInteger(1, 0, 0, 0);
+    private static final QuarticGaussianInteger ONE 
+            = new QuarticGaussianInteger(1, 0, 0, 0);
     
-    private static final QuarticGaussianInteger NEG_ONE = new QuarticGaussianInteger(-1, 0, 0, 0);
+    private static final QuarticGaussianInteger NEG_ONE 
+            = new QuarticGaussianInteger(-1, 0, 0, 0);
     
-    private static final QuarticGaussianInteger SQRT1I = new QuarticGaussianInteger(0, 1, 0, 0);
+    private static final QuarticGaussianInteger SQRT1I 
+            = new QuarticGaussianInteger(0, 1, 0, 0);
     
-    private static final QuarticGaussianInteger IMAG_UNIT = new QuarticGaussianInteger(-1, 0, 1, 0);
+    private static final QuarticGaussianInteger IMAG_UNIT 
+            = new QuarticGaussianInteger(-1, 0, 1, 0);
     
-    private static final QuarticGaussianInteger NEG_IMAG_UNIT = new QuarticGaussianInteger(1, 0, -1, 0);
+    private static final QuarticGaussianInteger NEG_IMAG_UNIT 
+            = new QuarticGaussianInteger(1, 0, -1, 0);
     
-    private static final QuarticGaussianInteger FUND_UNIT_WOLFRAM = new QuarticGaussianInteger(1, 1, -1, 0);
+    private static final QuarticGaussianInteger FUND_UNIT_WOLFRAM 
+            = new QuarticGaussianInteger(1, 1, -1, 0);
     
-    private static final QuarticGaussianInteger FUND_UNIT_LMFDB = new QuarticGaussianInteger(1, -1, -1, 1);
+    private static final QuarticGaussianInteger FUND_UNIT_LMFDB 
+            = new QuarticGaussianInteger(1, -1, -1, 1);
     
-    private static final QuarticGaussianInteger ONE_PLUS_IMAG_UNIT = new QuarticGaussianInteger(0, 0, 1, 0);
+    private static final QuarticGaussianInteger ONE_PLUS_IMAG_UNIT 
+            = new QuarticGaussianInteger(0, 0, 1, 0);
     
-    private static final QuarticGaussianInteger SQRT1ICUBED = new QuarticGaussianInteger(0, 0, 0, 1);
+    private static final QuarticGaussianInteger SQRT1ICUBED 
+            = new QuarticGaussianInteger(0, 0, 0, 1);
     
     public static final double TEST_DELTA = 0.00000001;
     
@@ -55,9 +64,10 @@ public class QuarticGaussianIntegerTest {
     public void testGetRing() {
         System.out.println("getRing");
         QuarticGaussianRing expRing = new QuarticGaussianRing();
-        String assertionMessage = "Ring of " + SQRT1I.toString() + " should be " + expRing.toString();
+        String msg = "Ring of " + SQRT1I.toString() + " should be " 
+                + expRing.toString();
         IntegerRing ring = SQRT1I.getRing();
-        assertEquals(assertionMessage, expRing, ring);
+        assertEquals(msg, expRing, ring);
     }
     
     /**
@@ -138,9 +148,9 @@ public class QuarticGaussianIntegerTest {
     @Test
     public void testMinPolynomialStringHTML() {
         System.out.println("minPolynomialStringHTML");
-        String expResult = "x<sup>4</sup>&minus;2x<sup>2</sup>+2";
-        String result = SQRT1I.minPolynomialStringHTML().replace(" ", "");
-        assertEquals(expResult, result);
+        String expected = "<i>x</i><sup>4</sup>&minus;2<i>x</i><sup>2</sup>+2";
+        String actual = SQRT1I.minPolynomialStringHTML().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
@@ -193,7 +203,8 @@ public class QuarticGaussianIntegerTest {
     @Test
     public void testEquals() {
         System.out.println("equals");
-        QuarticGaussianInteger sameNumber = new QuarticGaussianInteger(1, 1, -1, 0);
+        QuarticGaussianInteger sameNumber = new QuarticGaussianInteger(1, 1, -1, 
+                0);
         assertEquals(FUND_UNIT_WOLFRAM, sameNumber);
         sameNumber = new QuarticGaussianInteger(1, -1, -1, 1);
         assertEquals(FUND_UNIT_LMFDB, sameNumber);
@@ -205,7 +216,8 @@ public class QuarticGaussianIntegerTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        QuarticGaussianInteger sameNumber = new QuarticGaussianInteger(1, 1, -1, 0);
+        QuarticGaussianInteger sameNumber = new QuarticGaussianInteger(1, 1, -1, 
+                0);
         assertEquals(FUND_UNIT_WOLFRAM.hashCode(), sameNumber.hashCode());
         sameNumber = new QuarticGaussianInteger(1, -1, -1, 1);
         assertEquals(FUND_UNIT_LMFDB.hashCode(), sameNumber.hashCode());
@@ -222,20 +234,27 @@ public class QuarticGaussianIntegerTest {
     public void testConvertToQuadraticInteger() {
         System.out.println("convertToQuadraticInteger");
         ImaginaryQuadraticRing quadGaussianRing = new ImaginaryQuadraticRing(-1);
-        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 1, quadGaussianRing);
-        ImaginaryQuadraticInteger result = ONE_PLUS_IMAG_UNIT.convertToQuadraticInteger();
-        assertEquals(expResult, result);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(1, 1, 
+                quadGaussianRing);
+        ImaginaryQuadraticInteger actual 
+                = ONE_PLUS_IMAG_UNIT.convertToQuadraticInteger();
+        assertEquals(expected, actual);
         try {
-            result = SQRT1I.convertToQuadraticInteger();
-            String failMsg = "Trying to convert " + SQRT1I.toString() + " to a quadratic integer should have caused an exception, not given result " + result.toString();
-            fail(failMsg);
+            actual = SQRT1I.convertToQuadraticInteger();
+            String msg = "Trying to convert " + SQRT1I.toString() 
+                    + " to a quadratic integer should not have given result " 
+                    + actual.toString();
+            fail(msg);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            System.out.println("Trying to convert " + SQRT1I.toString() + " to a quadratic integer correctly caused AlgebraicDegreeOverflowException");
+            System.out.println("Trying to convert " + SQRT1I.toString() 
+                    + " correctly caused AlgebraicDegreeOverflowException");
             System.out.println("\"" + adoe.getMessage() + "\"");
         } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to convert " + SQRT1I.toString() + " to a quadratic integer";
+            String msg = e.getClass().getName() 
+                    + " is the wrong exception to throw for trying to convert " 
+                    + SQRT1I.toString() + " to a quadratic integer";
             System.out.println("\"" + e.getMessage() + "\"");
-            fail(failMsg);
+            fail(msg);
         }
     }
     
@@ -246,10 +265,12 @@ public class QuarticGaussianIntegerTest {
     public void testConvertFromQuadraticInteger() {
         System.out.println("convertFromQuadraticInteger");
         ImaginaryQuadraticRing quadGaussianRing = new ImaginaryQuadraticRing(-1);
-        ImaginaryQuadraticInteger quadInt = new ImaginaryQuadraticInteger(3, 1, quadGaussianRing);
-        QuarticGaussianInteger expResult = new QuarticGaussianInteger(2, 0, 1, 0);
-        QuarticGaussianInteger result = QuarticGaussianInteger.convertFromQuadraticInteger(quadInt);
-        assertEquals(expResult, result);
+        ImaginaryQuadraticInteger quadInt = new ImaginaryQuadraticInteger(3, 1, 
+                quadGaussianRing);
+        QuarticGaussianInteger expected = new QuarticGaussianInteger(2, 0, 1, 0);
+        QuarticGaussianInteger actual 
+                = QuarticGaussianInteger.convertFromQuadraticInteger(quadInt);
+        assertEquals(expected, actual);
     }
 
     /**
@@ -260,10 +281,24 @@ public class QuarticGaussianIntegerTest {
         System.out.println("plus");
         QuarticGaussianInteger summandA = new QuarticGaussianInteger(1, 0, 0, 1);
         int purelyRealSummand = 7;
-        QuarticGaussianInteger expResult = new QuarticGaussianInteger(8, 0, 0, 1);
-        QuarticGaussianInteger result = summandA.plus(purelyRealSummand);
-        assertEquals(expResult, result);
+        QuarticGaussianInteger expected = new QuarticGaussianInteger(8, 0, 0, 1);
+        QuarticGaussianInteger actual = summandA.plus(purelyRealSummand);
+        assertEquals(expected, actual);
         assertEquals(ONE_PLUS_IMAG_UNIT, ONE.plus(IMAG_UNIT));
+    }
+    
+    @Test
+    public void testNegate() {
+        System.out.println("negate");
+        QuarticGaussianInteger someNumber = new QuarticGaussianInteger(-7, 3, 8, 
+                -1);
+        QuarticGaussianInteger expected = new QuarticGaussianInteger(7, -3, -8, 
+                1);
+        QuarticGaussianInteger actual = someNumber.negate();
+        assertEquals(expected, actual);
+        assertEquals(someNumber, actual.negate());
+        assertEquals(NEG_ONE, ONE.negate());
+        assertEquals(NEG_IMAG_UNIT, IMAG_UNIT.negate());
     }
 
     /**
@@ -274,9 +309,9 @@ public class QuarticGaussianIntegerTest {
         System.out.println("minus");
         QuarticGaussianInteger minuend = new QuarticGaussianInteger(1, 0, 0, 1);
         int purelyRealSubtrahend = 7;
-        QuarticGaussianInteger expResult = new QuarticGaussianInteger(-6, 0, 0, 1);
+        QuarticGaussianInteger expected = new QuarticGaussianInteger(-6, 0, 0, 1);
         QuarticGaussianInteger result = minuend.minus(purelyRealSubtrahend);
-        assertEquals(expResult, result);
+        assertEquals(expected, result);
         assertEquals(ONE, ONE_PLUS_IMAG_UNIT.minus(IMAG_UNIT));
     }
 
@@ -286,11 +321,12 @@ public class QuarticGaussianIntegerTest {
     @Test
     public void testTimes() {
         System.out.println("times");
-        QuarticGaussianInteger multiplicandA = new QuarticGaussianInteger(1, 0, 0, 1);
+        QuarticGaussianInteger multiplicandA = new QuarticGaussianInteger(1, 0, 
+                0, 1);
         int purelyRealMultiplicand = 7;
-        QuarticGaussianInteger expResult = new QuarticGaussianInteger(7, 0, 0, 7);
-        QuarticGaussianInteger result = multiplicandA.plus(purelyRealMultiplicand);
-        assertEquals(expResult, result);
+        QuarticGaussianInteger expected = new QuarticGaussianInteger(7, 0, 0, 7);
+        QuarticGaussianInteger actual = multiplicandA.plus(purelyRealMultiplicand);
+        assertEquals(expected, actual);
         assertEquals(NEG_ONE, IMAG_UNIT.plus(IMAG_UNIT));
     }
 
@@ -300,33 +336,45 @@ public class QuarticGaussianIntegerTest {
     @Test
     public void testDivides() {
         System.out.println("divides");
-        QuarticGaussianInteger dividend = new QuarticGaussianInteger(21, 7, 42, 84);
+        QuarticGaussianInteger dividend = new QuarticGaussianInteger(21, 7, 42, 
+                84);
         int purelyRealDivisor = 7;
-        QuarticGaussianInteger expResult = new QuarticGaussianInteger(3, 1, 6, 12);
+        QuarticGaussianInteger expResult = new QuarticGaussianInteger(3, 1, 6, 
+                12);
         try {
             QuarticGaussianInteger result = dividend.divides(purelyRealDivisor);
             assertEquals(expResult, result);
         } catch (NotDivisibleException nde) {
-            String failMsg = "Trying to divide " + dividend.toString() + " by " + purelyRealDivisor + " should have given result, not caused NotDivisibleException";
+            String msg = "Trying to divide " + dividend.toString() + " by " 
+                    + purelyRealDivisor 
+                    + " should have given result, not caused NotDivisibleException";
             System.out.println("\"" + nde.getMessage() + "\"");
-            fail(failMsg);
+            fail(msg);
         }
         dividend = new QuarticGaussianInteger(20, 7, 43, 85);
         try {
             QuarticGaussianInteger result = dividend.divides(purelyRealDivisor);
-            String failMsg = "Trying to divide " + dividend.toString() + " by " + purelyRealDivisor + " should have caused an exception, not given result " + result.toString();
-            fail(failMsg);
+            String msg = "Trying to divide " + dividend.toString() + " by " 
+                    + purelyRealDivisor 
+                    + " should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
         } catch (NotDivisibleException nde) {
-            System.out.println("Trying to divide " + dividend.toString() + " by " + purelyRealDivisor + " correctly triggered NotDivisibleException");
+            System.out.println("Trying to divide " + dividend.toString() + " by " 
+                    + purelyRealDivisor 
+                    + " correctly triggered NotDivisibleException");
             System.out.println("\"" + nde.getMessage() + "\"");
         }
         try {
-            QuarticGaussianInteger result = SQRT1ICUBED.divides(ONE_PLUS_IMAG_UNIT);
+            QuarticGaussianInteger result 
+                    = SQRT1ICUBED.divides(ONE_PLUS_IMAG_UNIT);
             assertEquals(SQRT1I, result);
         } catch (NotDivisibleException nde) {
-            String failMsg = "Trying to divide " + SQRT1ICUBED.toString() + " by " + ONE_PLUS_IMAG_UNIT.toString() + " should have given result, not caused NotDivisibleException";
+            String msg = "Trying to divide " + SQRT1ICUBED.toString() + " by " 
+                    + ONE_PLUS_IMAG_UNIT.toString() 
+                    + " should have given result, not caused NotDivisibleException";
             System.out.println("\"" + nde.getMessage() + "\"");
-            fail(failMsg);
+            fail(msg);
         }
 //        try {
 //            QuarticGaussianInteger result = SQRT1ICUBED.divides(dividend);
@@ -343,33 +391,43 @@ public class QuarticGaussianIntegerTest {
      */
     @Test
     public void testDivisionByZero() {
-        QuarticGaussianInteger dividend = new QuarticGaussianInteger(21, 7, 42, 84);
+        QuarticGaussianInteger dividend = new QuarticGaussianInteger(21, 7, 42, 
+                84);
         int purelyRealDivisor = 0;
         try {
             QuarticGaussianInteger result = dividend.divides(purelyRealDivisor);
-            String failMsg = "Trying to divide " + dividend.toString() + " by 0 should have caused an exception, not given result " + result.toString();
-            fail(failMsg);
+            String msg = "Trying to divide " + dividend.toString() 
+                    + " by 0 should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
         } catch (NotDivisibleException nde) {
-            String failMsg = "Trying to divide " + dividend.toString() + " by 0 should have caused an exception other than NotDivisibleException";
+            String msg = "Trying to divide " + dividend.toString() 
+                    + " by 0 should not have caused NotDivisibleException";
             System.out.println("\"" + nde.getMessage() + "\"");
-            fail(failMsg);
+            fail(msg);
         } catch (IllegalArgumentException iae) {
-            System.out.println("Trying to divide " + dividend.toASCIIString() + " by 0 correctly caused IllegalArgumentException");
+            System.out.println("Trying to divide " + dividend.toASCIIString() 
+                    + " by 0 correctly caused IllegalArgumentException");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch (ArithmeticException ae) {
-            System.out.println("ArithmeticException is acceptable for trying to divide " + dividend.toASCIIString() + " by 0");
+            System.out.println("ArithmeticException is acceptable for division of " 
+                    + dividend.toASCIIString() + " by 0");
             System.out.println("\"" + ae.getMessage() + "\"");
         }
         try {
             QuarticGaussianInteger result = SQRT1ICUBED.divides(purelyRealDivisor);
-            String failMsg = "Trying to divide " + SQRT1ICUBED.toString() + " by 0 should have caused an exception, not given result " + result.toString();
-            fail(failMsg);
+            String msg = "Trying to divide " + SQRT1ICUBED.toString() 
+                    + " by 0 should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
         } catch (NotDivisibleException nde) {
-            String failMsg = "Trying to divide " + SQRT1ICUBED.toString() + " by " + ONE_PLUS_IMAG_UNIT.toString() + " should have given result, not caused NotDivisibleException";
+            String msg = "Trying to divide " + SQRT1ICUBED.toString() + " by " 
+                    + ONE_PLUS_IMAG_UNIT.toString() + " should have given result, not caused NotDivisibleException";
             System.out.println("\"" + nde.getMessage() + "\"");
-            fail(failMsg);
+            fail(msg);
         } catch (IllegalArgumentException iae) {
-            System.out.println("Trying to divide " + SQRT1ICUBED.toASCIIString() + " by 0 correctly caused IllegalArgumentException");
+            System.out.println("Trying to divide " + SQRT1ICUBED.toASCIIString() 
+                    + " by 0 correctly caused IllegalArgumentException");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch (ArithmeticException ae) {
             System.out.println("ArithmeticException is acceptable for trying to divide " + SQRT1ICUBED.toASCIIString() + " by 0");

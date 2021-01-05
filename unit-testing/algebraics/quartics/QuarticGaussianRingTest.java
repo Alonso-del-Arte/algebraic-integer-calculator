@@ -93,42 +93,63 @@ public class QuarticGaussianRingTest {
         System.out.println("hashCode");
         assertEquals(-512, ring.hashCode());
     }
+    
+    /**
+     * Test of toString method, of class QuarticGaussianRing. It is strongly 
+     * recommended that the output include spaces, but spaces are not required 
+     * to pass the test.
+     */
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        assertEquals("Z[\u221A1+i]", ring.toString().replace(" ", ""));
+    }
 
     /**
-     * Test of toASCIIString method, of class QuarticGaussianRing.
+     * Test of toASCIIString method, of class QuarticGaussianRing. It is 
+     * strongly recommended that the output include spaces, but spaces are not 
+     * required to pass the test.
      */
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        assertEquals("Z[sqrt(1 + i)]", ring.toASCIIString());
+        assertEquals("Z[sqrt(1+i)]", ring.toASCIIString().replace(" ", ""));
     }
 
     /**
-     * Test of toTeXString method, of class QuarticGaussianRing.
+     * Test of toTeXString method, of class QuarticGaussianRing. It is strongly 
+     * recommended that the output include spaces, but spaces are not required 
+     * to pass the test.
      */
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
         QuarticRing.preferBlackboardBold(true);
-        assertEquals("\\mathbb Z[\\sqrt{1 + i}]", ring.toTeXString());
+        assertEquals("\\mathbbZ[\\sqrt{1+i}]", 
+                ring.toTeXString().replace(" ", ""));
         QuarticRing.preferBlackboardBold(false);
-        assertEquals("\\textbf Z[\\sqrt{1 + i}]", ring.toTeXString());
+        assertEquals("\\textbfZ[\\sqrt{1+i}]", 
+                ring.toTeXString().replace(" ", ""));
     }
 
     /**
-     * Test of toHTMLString method, of class QuarticGaussianRing.
+     * Test of toHTMLString method, of class QuarticGaussianRing. It is strongly 
+     * recommended that the output include spaces, but spaces are not required 
+     * to pass the test.
      */
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
         QuarticRing.preferBlackboardBold(true);
-        assertEquals("\u2124[&radic;(1 + <i>i</i>)]", ring.toHTMLString());
+        assertEquals("\u2124[&radic;(1+<i>i</i>)]", ring.toHTMLString().replace(" ", ""));
         QuarticRing.preferBlackboardBold(false);
-        assertEquals("<b>Z</b>[&radic;(1 + <i>i</i>)]", ring.toHTMLString());
+        assertEquals("<b>Z</b>[&radic;(1+<i>i</i>)]", ring.toHTMLString().replace(" ", ""));
     }
 
     /**
-     * Test of toFilenameString method, of class QuarticGaussianRing.
+     * Test of toFilenameString method, of class QuarticGaussianRing. Unlike the 
+     * other tests for functions that return <code>String</code> instances, this 
+     * test requires the output to contain no spaces at all.
      */
     @Test
     public void testToFilenameString() {
