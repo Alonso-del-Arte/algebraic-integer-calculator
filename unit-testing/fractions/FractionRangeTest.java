@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -86,6 +86,36 @@ public class FractionRangeTest {
     }
     
     @Test
+    public void testNotEqualsDiffEnd() {
+        FractionRange someRange = new FractionRange(this.testStart, 
+                this.testEnd, this.testStep);
+        FractionRange diffRange 
+                = new FractionRange(this.testStart, 
+                        this.testEnd.plus(this.testStep), this.testStep);
+        assertNotEquals(someRange, diffRange);
+    }
+    
+    @Test
+    public void testNotEqualsDiffStep() {
+        FractionRange someRange = new FractionRange(this.testStart, 
+                this.testEnd, this.testStep);
+        Fraction smallerStep = this.testStep.dividedBy(7);
+        FractionRange diffRange 
+                = new FractionRange(this.testStart, this.testEnd, smallerStep);
+        assertNotEquals(someRange, diffRange);
+    }
+    
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        FractionRange someRange = new FractionRange(this.testStart, 
+                this.testEnd, this.testStep);
+        FractionRange sameRange = new FractionRange(this.testStart, 
+                this.testEnd, this.testStep);
+        assertEquals(someRange, sameRange);
+    }
+    
+    @Test
     public void testInferStep() {
         System.out.println("inferStep");
         Fraction start = new Fraction(47, 20);
@@ -122,10 +152,66 @@ public class FractionRangeTest {
     @Test
     public void testApply() {
         System.out.println("apply");
-        FractionRange range = new FractionRange(testStart, testEnd);
-        Fraction expResult = new Fraction(-3, 8);
-        Fraction result = range.apply(1);
-        assertEquals(expResult, result);
+        FractionRange range = new FractionRange(this.testStart, this.testEnd);
+        Fraction expected = this.testStart;
+        Fraction actual;
+        for (int i = 0; i < 20; i++) {
+            actual = range.apply(i);
+            assertEquals(expected, actual);
+            expected = expected.plus(this.testStep);
+        }
+    }
+    
+    /**
+     * Another test of apply method, of class FractionRange. Negative indices 
+     * should cause <code>IndexOutOfBoundsException</code>.
+     */
+    @Test
+    public void testApplyRejectsNegativeIndex() {
+        FractionRange range = new FractionRange(this.testStart, this.testEnd);
+        int badIndex = -1;
+        try {
+            Fraction result = range.apply(badIndex);
+            String msg = "Trying to apply bad index " + badIndex 
+                    + " should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (IndexOutOfBoundsException ioobe) {
+            System.out.println("Trying to apply bad index " + badIndex 
+                    + " correctly caused IndexOutOfBoundsException");
+            System.out.println("\"" + ioobe.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to apply " 
+                    + badIndex;
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Another test of apply method, of class FractionRange. Excessive indices  
+     * should cause <code>IndexOutOfBoundsException</code>.
+     */
+    @Test
+    public void testApplyRejectsExcessiveIndex() {
+        FractionRange range = new FractionRange(this.testStart, this.testEnd);
+        int badIndex = 20;
+        try {
+            Fraction result = range.apply(badIndex);
+            String msg = "Trying to apply bad index " + badIndex 
+                    + " should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (IndexOutOfBoundsException ioobe) {
+            System.out.println("Trying to apply bad index " + badIndex 
+                    + " correctly caused IndexOutOfBoundsException");
+            System.out.println("\"" + ioobe.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to apply " 
+                    + badIndex;
+            fail(msg);
+        }
     }
     
     @Test
