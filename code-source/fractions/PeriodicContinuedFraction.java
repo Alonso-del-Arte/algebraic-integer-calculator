@@ -53,4 +53,23 @@ public class PeriodicContinuedFraction extends ContinuedFraction {
         return new Fraction(-7, 8);
     }
     
+    public PeriodicContinuedFraction(int[] partialDenominators) {
+        // STUB TO FAIL THE FIRST TEST
+    }
+    
+    public PeriodicContinuedFraction(int[] partialNumerators, 
+            int[] partialDenominators) {
+        // STUB TO FAIL THE FIRST TEST
+    }
+    
+    public PeriodicContinuedFraction(int initial, int[] partialNumerators, 
+            int[] partialDenominators) {
+        // STUB TO FAIL THE FIRST TEST
+    }
+    
+    public PeriodicContinuedFraction(Fraction initial, int[] partialNumerators, 
+            int[] partialDenominators) {
+        // STUB TO FAIL THE FIRST TEST
+    }
+    
 }

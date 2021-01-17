@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -450,6 +450,21 @@ public class BigFraction implements Comparable<BigFraction> {
     public BigFraction dividedBy(int divisor) {
         BigInteger wrap = this.denominator.multiply(BigInteger.valueOf(divisor));
         return new BigFraction(this.numerator, wrap);
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public boolean canDownsample() {
+        return false;
+    }
+
+    // STUB TO FAIL THE FIRST TEST
+    public Fraction downsample() {
+        return new Fraction(0);
+    }
+
+    // STUB TO FAIL THE FIRST TEST
+    public static BigFraction parseFract(String s) {
+        return new BigFraction(BigInteger.ZERO, BigInteger.ONE);
     }
     
     /**
