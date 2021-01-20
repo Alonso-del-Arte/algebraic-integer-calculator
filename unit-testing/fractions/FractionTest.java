@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -34,233 +34,414 @@ import static org.junit.Assert.*;
  */
 public class FractionTest {
     
-    /**
-     * The test delta, 10<sup>&minus;8</sup>.
-     */
-    public static final double TEST_DELTA = 0.00000001;
+    private static final Random RANDOM = new Random();
     
     /**
-     * This one should be initialized to 7/8 in setUp().
-     */
-    private Fraction operandA;
-    
-    /**
-     * This one should be initialized to 1/3 in setUp().
-     */
-    private Fraction operandB;
-    
-    /**
-     * Initializes two Fraction objects that will be used in a lot of the tests. 
-     * Ideally, a Fraction object should be immutable, but these tests should 
-     * not be affected if it's actually mutable.
-     */
-    @Before
-    public void setUp() {
-        operandA = new Fraction(7, 8);
-        operandB = new Fraction(1, 3);
-    }
-    
-    /**
-     * Test of getNumerator method, of class Fraction. A separate test checks 
-     * that a Fraction object expresses a fraction in lowest terms, this test 
-     * does not.
+     * Test of the getNumerator function, of class Fraction. A separate test 
+     * checks that a Fraction object expresses a fraction in lowest terms, this 
+     * test does not, because the denominator is 1033, which is prime, and the 
+     * numerator is a number between 1 and 1032, ensuring the fraction is in 
+     * lowest terms.
      */
     @Test
     public void testGetNumerator() {
         System.out.println("getNumerator");
-        long expResult = 7L;
-        long result = operandA.getNumerator();
-        assertEquals(expResult, result);
-        expResult = 1L;
-        result = operandB.getNumerator();
-        assertEquals(expResult, result);
+        int denominator = 1033;
+        int expected = RANDOM.nextInt(denominator - 2) + 1;
+        Fraction fraction = new Fraction(expected, denominator);
+        long actual = fraction.getNumerator();
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of getDenominator method, of class Fraction. A separate test checks 
-     * that a Fraction object expresses a fraction in lowest terms, this test 
-     * does not.
+     * Test of the getDenominator function, of class Fraction. A separate test 
+     * checks that a Fraction object expresses a fraction in lowest terms, this 
+     * test does not.
      */
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
-        long expResult = 8L;
-        long result = operandA.getDenominator();
-        assertEquals(expResult, result);
-        expResult = 3L;
-        result = operandB.getDenominator();
-        assertEquals(expResult, result);
+        int expected = RANDOM.nextInt(32768) + 16384;
+        Fraction fraction = new Fraction(1, expected);
+        long actual = fraction.getDenominator();
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of plus method, of class Fraction.
+     * Test of the equals function, of class Fraction. A Fraction instance 
+     * should be equal to itself.
+     */
+    @Test
+    public void testReferentialEquality() {
+        Fraction someFraction = new Fraction(-1, 2);
+        assertEquals(someFraction, someFraction);
+    }
+    
+    /**
+     * Another test of the equals function, of class Fraction. No Fraction 
+     * instance should be equal to null, not even if its value is 0.
+     */
+    @Test
+    public void testNotEqualsNull() {
+        Fraction someFraction = new Fraction(0);
+        assertNotEquals(someFraction, null);
+    }
+    
+    /**
+     * Another test of the equals function, of class Fraction. No Fraction 
+     * instance should be equal to an instance of a different class.
+     */
+    @Test
+    public void testNotEqualsDiffClass() {
+        Fraction someFraction = new Fraction(12, 25);
+        TestImagePanel obj = new TestImagePanel();
+        assertNotEquals(someFraction, obj);
+    }
+    
+    /**
+     * Test of the equals function, of class Fraction.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        Fraction someFraction = new Fraction(3, 4);
+        Fraction sameFraction = new Fraction(6, 8);
+        assertEquals(someFraction, sameFraction);
+    }
+    
+    /**
+     * Another test of the equals function, of class Fraction. A Fraction 
+     * instance should not be equal to null to another Fraction instance which 
+     * in lowest terms has the same denominator but a different numerator.
+     */
+    @Test
+    public void testNotEqualsDifferentNumerator() {
+        Fraction someFraction = new Fraction(12, 13);
+        Fraction otherFraction = new Fraction(14, 13);
+        assertNotEquals(someFraction, otherFraction);
+    }
+    
+    /**
+     * Another test of the equals function, of class Fraction. A Fraction 
+     * instance should not be equal to null to another Fraction instance which 
+     * in lowest terms has the same numerator but a different denominator.
+     */
+    @Test
+    public void testNotEqualsDifferentDenominator() {
+        Fraction someFraction = new Fraction(13, 12);
+        Fraction otherFraction = new Fraction(13, 14);
+        assertNotEquals(someFraction, otherFraction);
+    }
+    
+    /**
+     * Test of the plus function, of class Fraction.
      */
     @Test
     public void testPlus() {
         System.out.println("plus");
-        Fraction expResult = new Fraction(29, 24);
-        Fraction result = operandA.plus(operandB);
-        assertEquals(expResult, result);
-        result = operandB.plus(operandA); // Commutative test
-        assertEquals(expResult, result);
-        expResult = new Fraction(15, 8);
-        result = operandA.plus(1);
-        assertEquals(expResult, result);
-        expResult = new Fraction(4, 3);
-        result = operandB.plus(1);
-        assertEquals(expResult, result);
+        Fraction addendA = new Fraction(11, 24);
+        Fraction addendB = new Fraction(107, 224);
+        Fraction expected = new Fraction(629, 672);
+        Fraction actual = addendA.plus(addendB);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of plus function, of class Fraction. Since addition is 
+     * commutative, a + b should equal b + a.
+     */
+    @Test
+    public void testPlusCommutative() {
+        int numerator = RANDOM.nextInt();
+        if (numerator == Integer.MAX_VALUE) {
+            numerator--;
+        }
+        int denominator = RANDOM.nextInt(Math.abs(numerator)) + 1;
+        Fraction addendA = new Fraction(numerator, denominator);
+        Fraction addendB = new Fraction(numerator + 1, denominator);
+        Fraction expected = addendA.plus(addendB);
+        Fraction actual = addendB.plus(addendA);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of plus function, of class Fraction.
+     */
+    @Test
+    public void testPlusInt() {
+        Fraction addendA = new Fraction(7, 8);
+        int addendB = 3;
+        Fraction expected = new Fraction(31, 8);
+        Fraction actual = addendA.plus(addendB);
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of minus method, of class Fraction.
+     * Test of the minus function, of class Fraction.
      */
     @Test
     public void testMinus() {
         System.out.println("minus");
-        Fraction expResult = new Fraction(13, 24);
-        Fraction result = operandA.minus(operandB);
-        assertEquals(expResult, result);
-        expResult = new Fraction(-1, 8);
-        result = operandA.minus(1);
-        assertEquals(expResult, result);
-        expResult = new Fraction(-2, 3);
-        result = operandB.minus(1);
-        assertEquals(expResult, result);
+        Fraction minuend = new Fraction(109, 224);
+        Fraction subtrahend = new Fraction(13, 24);
+        Fraction expected = new Fraction(-37, 672);
+        Fraction actual = minuend.minus(subtrahend);
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of times method, of class Fraction.
+     * Another test of the minus function, of class Fraction.
+     */
+    @Test
+    public void testMinusInt() {
+        Fraction minuend = new Fraction(7, 8);
+        int subtrahend = 1;
+        Fraction expected = new Fraction(-1, 8);
+        Fraction actual = minuend.minus(subtrahend);
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the times function, of class Fraction.
      */
     @Test
     public void testTimes() {
         System.out.println("times");
-        Fraction expResult = new Fraction(7, 24);
-        Fraction result = operandA.times(operandB);
-        assertEquals(expResult, result);
-        result = operandB.times(operandA); // Commutative test
-        assertEquals(expResult, result);
-        expResult = new Fraction(21, 2);
-        result = operandA.times(12);
-        assertEquals(expResult, result);
-        expResult = new Fraction(4);
-        result = operandB.times(12);
-        assertEquals(expResult, result);
+        Fraction multiplicandA = new Fraction(41, 43);
+        Fraction multiplicandB = new Fraction(49, 47);
+        Fraction expected = new Fraction(2009, 2021);
+        Fraction actual = multiplicandA.times(multiplicandB);
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of dividedBy method, of class Fraction.
+     * Another test of the times function, of class Fraction. Since 
+     * multiplication is commutative, a * b should equal b * a.
+     */
+    @Test
+    public void testTimesCommutative() {
+        int numerator = RANDOM.nextInt(32768);
+        int denominator = RANDOM.nextInt(Math.abs(numerator)) + 1;
+        Fraction multiplicandA = new Fraction(numerator, denominator);
+        Fraction multiplicandB = new Fraction(numerator, denominator + 1);
+        Fraction expected = multiplicandA.times(multiplicandB);
+        Fraction actual = multiplicandB.times(multiplicandA);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the times function, of class Fraction.
+     */
+    @Test
+    public void testTimesInt() {
+        Fraction multiplicandA = new Fraction(9, 5);
+        int multiplicandB = 35;
+        Fraction expected = new Fraction(63, 1);
+        Fraction actual = multiplicandA.times(multiplicandB);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Test of the dividedBy function, of class Fraction.
      */
     @Test
     public void testDividedBy() {
         System.out.println("dividedBy");
-        Fraction expResult = new Fraction(21, 8);
-        Fraction result = operandA.dividedBy(operandB);
-        assertEquals(expResult, result);
-        expResult = new Fraction(7, 96);
-        result = operandA.dividedBy(12);
-        assertEquals(expResult, result);
-        expResult = new Fraction(1, 36);
-        result = operandB.dividedBy(12);
-        assertEquals(expResult, result);
+        Fraction dividend = new Fraction(7, 8);
+        Fraction divisor = new Fraction(9, 5);
+        Fraction expected = new Fraction(35, 72);
+        Fraction actual = dividend.dividedBy(divisor);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the dividedBy function, of class Fraction.
+     */
+    @Test
+    public void testDividedByInt() {
+        Fraction dividend = new Fraction(56, 25);
+        int divisor = 7;
+        Fraction expected = new Fraction(8, 25);
+        Fraction actual = dividend.dividedBy(divisor);
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of dividedBy method, of class Fraction. Trying to divide by zero 
-     * should cause either {@link IllegalArgumentException} or {@link 
-     * ArithmeticException}. Any other exception will fail the test. So will 
-     * giving any kind of result.
+     * Another test of the dividedBy function, of class Fraction. Trying to 
+     * divide by zero should cause either {@link IllegalArgumentException} or 
+     * {@link ArithmeticException}. Any other exception will fail the test. So 
+     * will giving any kind of result.
      */
     @Test
     public void testDivisionByZeroCausesException() {
-        System.out.println("Division by zero should cause an exception");
+        int numerator = RANDOM.nextInt(392);
+        int denominator = numerator + 1;
+        Fraction fraction = new Fraction(numerator, denominator);
         Fraction zero = new Fraction(0, 1);
         Fraction result;
         try {
-            result = operandA.dividedBy(zero);
-            String msg = operandA.toString() 
-                    + " divided by 0 should have caused exception, not given result " 
+            result = fraction.dividedBy(zero);
+            String msg = "Trying to divide " + fraction.toString()
+                    + " by 0 should have caused an exception, not given result " 
                     + result.toString();
             fail(msg);
         } catch (IllegalArgumentException iae) {
-            System.out.println("IllegalArgumentException is considered preferable for division by zero.");
+            System.out.println("Trying to divide " + fraction.toString()
+                    + " by 0 correctly caused IllegalArgumentException");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch (ArithmeticException ae) {
-            System.out.println("ArithmeticException is deemed acceptable for division by zero.");
+            System.out.println("Trying to divide " + fraction.toString()
+                    + " by 0 correctly caused ArithmeticException");
             System.out.println("\"" + ae.getMessage() + "\"");
-        } catch (Exception e) {
-            String msg = e.getClass().getName() + " is not an appropriate exception for division by zero.";
-            fail(msg);
-        }
-        try {
-            result = operandB.dividedBy(0);
-            String msg = operandB.toString() + " divided by 0 should have caused an Exception, not given result " + result.toString();
-            fail(msg);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("IllegalArgumentException is considered preferable for division by zero.");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch (ArithmeticException ae) {
-            System.out.println("ArithmeticException is deemed acceptable for division by zero.");
-            System.out.println("\"" + ae.getMessage() + "\"");
-        } catch (Exception e) {
-            String msg = e.getClass().getName() + " is not an appropriate exception for division by zero.";
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is not an appropriate exception for trying to divide " 
+                    + fraction.toString() + " by 0";
             fail(msg);
         }
     }
 
     /**
-     * Test of negate method, of class Fraction. Applying negate twice should 
-     * return the original number.
+     * Another test of the dividedBy function, of class Fraction. Trying to 
+     * divide by zero should cause either {@link IllegalArgumentException} or 
+     * {@link ArithmeticException}. Any other exception will fail the test. So 
+     * will giving any kind of result.
+     */
+    @Test
+    public void testDivisionByIntZeroCausesException() {
+        int numerator = RANDOM.nextInt(784);
+        int denominator = numerator + 3;
+        Fraction fraction = new Fraction(numerator, denominator);
+        Fraction result;
+        try {
+            result = fraction.dividedBy(0);
+            String msg = "Trying to divide " + fraction.toString()
+                    + " by 0 should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to divide " + fraction.toString()
+                    + " by 0 correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to divide " + fraction.toString()
+                    + " by 0 correctly caused ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is not an appropriate exception for trying to divide " 
+                    + fraction.toString() + " by 0";
+            fail(msg);
+        }
+    }
+
+    /**
+     * Test of the negate function, of class Fraction. Applying negate twice 
+     * should return the original number.
      */
     @Test
     public void testNegate() {
         System.out.println("negate");
-        Fraction expResult = new Fraction(-7, 8);
-        Fraction result = operandA.negate();
-        assertEquals(expResult, result);
-        result = expResult.negate();
-        assertEquals(operandA, result);
-        expResult = new Fraction(-1, 3);
-        result = operandB.negate();
-        assertEquals(expResult, result);
-        result = expResult.negate();
-        assertEquals(operandB, result);
+        int numerator = RANDOM.nextInt(4096);
+        int denominator = 2 * numerator + 5;
+        Fraction fraction = new Fraction(numerator, denominator);
+        Fraction expected = new Fraction(-numerator, denominator);
+        Fraction actual = fraction.negate();
+        assertEquals(expected, actual);
+        assertEquals(actual.negate(), fraction);
     }
 
     /**
-     * Test of toString method, of class Fraction. Spaces are acceptable in the 
-     * output, so this test strips them out.
+     * Test of the reciprocal function, of class Fraction. Checks that applying 
+     * the reciprocal function to a reciprocal returns the original number. A 
+     * separate test checks the reciprocal of 0.
+     */
+    @Test
+    public void testReciprocal() {
+        System.out.println("reciprocal");
+        int numerator = RANDOM.nextInt(8192) + 16;
+        int denominator = 5 * RANDOM.nextInt(numerator) + 7;
+        Fraction fraction = new Fraction(numerator, denominator);
+        Fraction expected = new Fraction(denominator, numerator);
+        Fraction actual = fraction.reciprocal();
+        assertEquals(expected, actual);
+        assertEquals(actual.reciprocal(), fraction);
+    }
+
+    /**
+     * Another test of the reciprocal function, of class Fraction. Checks that 
+     * trying to take the reciprocal of zero triggers the appropriate exception.
+     */
+    @Test
+    public void testReciprocalOfZero() {
+        Fraction zero = new Fraction(0, 1);
+        try {
+            Fraction result = zero.reciprocal();
+            String msg = "Reciprocal of 0 should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("reciprocal(0) caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (ArithmeticException ae) {
+            System.out.println("reciprocal(0) caused ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is not appropriate for reciprocal(0)";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of the toString function, of class Fraction. Spaces are acceptable 
+     * in the output, so this test strips them out.
      */
     @Test
     public void testToString() {
         System.out.println("toString");
-        String expResult = "7/8";
-        String result = operandA.toString().replace(" ", "");
-        assertEquals(expResult, result);
-        expResult = "1/3";
-        result = operandB.toString().replace(" ", "");
-        assertEquals(expResult, result);
+        int denominator = 4099;
+        int numerator = RANDOM.nextInt(denominator - 2) + 1;
+        Fraction fraction = new Fraction(numerator, denominator);
+        String expected = numerator + "/" + denominator;
+        String actual = fraction.toString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of toHTMLString method, of class Fraction. Spaces are acceptable in 
-     * the output; this test strips them out.
+     * Another test of the toString function, of class Fraction. Spaces are 
+     * acceptable in the output, so this test strips them out.
+     */
+    @Test
+    public void testToStringOmitsDenomOne() {
+        int numerator = RANDOM.nextInt();
+        Fraction fraction = new Fraction(numerator, 1);
+        String expected = Integer.toString(numerator);
+        String actual = fraction.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the toHTMLString function, of class Fraction. Spaces are 
+     * acceptable in the output; this test strips them out.
      */
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        String expResult = "<sup>7</sup>&frasl;<sub>8</sub>";
-        String result = operandA.toHTMLString().replace(" ", "");
-        assertEquals(expResult, result);
-        expResult = "<sup>1</sup>&frasl;<sub>3</sub>";
-        result = operandB.toHTMLString().replace(" ", "");
-        assertEquals(expResult, result);
+        int denominator = 8419;
+        int numerator = RANDOM.nextInt(denominator - 2) + 1;
+        Fraction fraction = new Fraction(numerator, denominator);
+        String expected = "<sup>" + numerator + "</sup>&frasl;<sub>" 
+                + denominator + "</sub>";
+        String actual = fraction.toHTMLString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
-     * Another test of toHTMLString method, of class Fraction. If the fraction 
-     * is a negative number, the minus sign should not be a superscript like the 
-     * numerator. Spaces are acceptable in the output; this test strips them 
-     * out.
+     * Another test of the toHTMLString function, of class Fraction. If the 
+     * fraction is a negative number, the minus sign should not be a superscript 
+     * like the numerator. Spaces are acceptable in the output; this test strips 
+     * them out.
      */
     @Test
     public void testToHTMLStringNegativeFraction() {
@@ -271,25 +452,39 @@ public class FractionTest {
     }
 
     /**
-     * Test of toTeXString method, of class Fraction. Spaces are acceptable in 
-     * the output, so this test strips them out.
+     * Another test of the toHTMLString function, of class Fraction. If the 
+     * fraction is a negative integer, this function's output should omit the 
+     * tacit denominator 1, but it should still include the proper minus sign as 
+     * an HTML character entity.
+     */
+    @Test
+    public void testToHTMLStringOmitsDenomOne() {
+        Fraction negOne = new Fraction(-256, 1);
+        String expected = "&minus;256";
+        String actual = negOne.toHTMLString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the toTeXString function, of class Fraction. Spaces are 
+     * acceptable in the output, so this test strips them out.
      */
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-        String expResult = "\\frac{7}{8}";
-        String result = operandA.toTeXString().replace(" ", "");
-        assertEquals(expResult, result);
-        expResult = "\\frac{1}{3}";
-        result = operandB.toTeXString().replace(" ", "");
-        assertEquals(expResult, result);
+        int denominator = 2503;
+        int numerator = RANDOM.nextInt(denominator - 2) + 1;
+        Fraction fraction = new Fraction(numerator, denominator);
+        String expected = "\\frac{" + numerator + "}{" + denominator + "}";
+        String actual = fraction.toTeXString().replace(" ", "");
+        assertEquals(expected, actual);
     }
     
     /**
-     * Another test of toTeXString method, of class Fraction. If the fraction 
-     * is a negative number, the minus sign should be aligned to the fraction 
-     * line rather than the vertical center of the numerator digits. Spaces are 
-     * acceptable in the output; this test strips them out.
+     * Another test of the toTeXString function, of class Fraction. If the 
+     * fraction is a negative number, the minus sign should be aligned to the 
+     * fraction line rather than the vertical center of the numerator digits. 
+     * Spaces are acceptable in the output; this test strips them out.
      */
     @Test
     public void testToTeXStringNegativeFraction() {
@@ -300,53 +495,40 @@ public class FractionTest {
     }
 
     /**
-     * Test of toString, toHTMLString, toTeXString methods of class Fraction. 
-     * Fractions that are integers should be reported with the denominator of 1 
-     * as tacit, not explicit.
+     * Another test of the toTeXString function, of class Fraction. If the 
+     * fraction is a negative integer, the tacit denominator 1
+     */
+    @Test
+    public void testToTeXStringOmitsDenomOne() {
+        int numerator = -RANDOM.nextInt(44100);
+        Fraction negativeInteger = new Fraction(numerator, 1);
+        String expected = Integer.toString(numerator);
+        String actual = negativeInteger.toTeXString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the toString, toHTMLString, toTeXString functions of class 
+     * Fraction. Fractions that are integers should be reported with the 
+     * denominator of 1 as tacit, not explicit.
      */
     @Test
     public void testIntegersHaveTacitDenominator() {
-        System.out.println("Integers should be reported with a tacit, not explicit, denominator");
-        Fraction actualInt = new Fraction(12, 1);
-        assertEquals("12", actualInt.toString());
-        assertEquals("12", actualInt.toHTMLString());
-        assertEquals("12", actualInt.toTeXString());
+        Fraction actuallyAnInteger = new Fraction(12, 1);
+        assertEquals("12", actuallyAnInteger.toString());
+        assertEquals("12", actuallyAnInteger.toHTMLString());
+        assertEquals("12", actuallyAnInteger.toTeXString());
     }
     
     /**
-     * Test of hashCode method, of class Fraction.
+     * Test of the hashCode function, of class Fraction. More than 400 instances 
+     * of Fraction are created, representing distinct fractions with 
+     * denominators ranging from 2 to 103. They should all get distinct hash 
+     * codes.
      */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        int operAHash = operandA.hashCode();
-        int operBHash = operandB.hashCode();
-        System.out.println(operandA.toString() + " hashed as " + operAHash);
-        System.out.println(operandB.toString() + " hashed as " + operBHash);
-        Fraction operADup = new Fraction(7, 8);
-        Fraction operBDup = new Fraction(1, 3);
-        int operAHashDup = operADup.hashCode();
-        int operBHashDup = operBDup.hashCode();
-        System.out.println(operADup.toString() + " hashed as " + operAHashDup);
-        System.out.println(operBDup.toString() + " hashed as " + operBHashDup);
-        String assertionMessage = operandA.toString() + " and " + operADup.toString() + " should hash the same";
-        assertEquals(assertionMessage, operAHash, operAHashDup);
-        assertionMessage = operandB.toString() + " and " + operBDup.toString() + " should hash the same";
-        assertEquals(assertionMessage, operBHash, operBHashDup);
-        assertionMessage = operandA.toString() + " and " + operBDup.toString() + " should hash differently";
-        assertNotEquals(assertionMessage, operAHash, operBHashDup);
-        assertionMessage = operandB.toString() + " and " + operADup.toString() + " should hash differently";
-        assertNotEquals(assertionMessage, operBHash, operAHashDup);
-    }
-    
-    /**
-     * Test of hashCode method, of class Fraction. More than 400 instances of 
-     * Fraction are created, representing distinct fractions with denominators 
-     * ranging from 2 to 103. They should all get distinct hash codes.
-     */
-    @Test
-    public void testHashCodeOnManyFractions() {
-        System.out.println("hashCode on several instances of Fraction");
         HashSet<Integer> fractHashes = new HashSet<>(435);
         Fraction currUnitFract, currFract;
         int currHash, currSize, prevSize;
@@ -356,8 +538,8 @@ public class FractionTest {
         currUnitFract = new Fraction(1, 103);
         currHash = currUnitFract.hashCode();
         fractHashes.add(currHash);
-        String assertionMessage = "Set of Fraction hash codes should have two hash codes";
-        assertEquals(assertionMessage, 2, fractHashes.size());
+        String msg = "Set of Fraction hash codes should have two hash codes";
+        assertEquals(msg, 2, fractHashes.size());
         prevSize = 2;
         for (int n = 2; n < 102; n++) {
             if (NumberTheoreticFunctionsCalculator.euclideanGCD(n, 102) == 1) {
@@ -365,68 +547,52 @@ public class FractionTest {
                 currHash = currUnitFract.hashCode();
                 fractHashes.add(currHash);
                 currSize = fractHashes.size();
-                assertionMessage = "Hash code " + currHash + " for " + currUnitFract.toString() + " should be distinct.";
-                assertTrue(assertionMessage, currSize > prevSize);
+                msg = "Hash code " + currHash + " for " 
+                        + currUnitFract.toString() + " should be distinct.";
+                assert currSize > prevSize : msg;
                 prevSize++;
             }
             currFract = new Fraction(n, 102);
             currHash = currFract.hashCode();
             fractHashes.add(currHash);
             currSize = fractHashes.size();
-            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
-            assertTrue(assertionMessage, currSize > prevSize);
+            msg = "Hash code " + currHash + " for " + currFract.toString() 
+                    + " should be distinct.";
+            assert currSize > prevSize : msg;
             prevSize++;
             currFract = new Fraction(-n, 102);
             currHash = currFract.hashCode();
             fractHashes.add(currHash);
             currSize = fractHashes.size();
-            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
-            assertTrue(assertionMessage, currSize > prevSize);
+            msg = "Hash code " + currHash + " for " + currFract.toString() 
+                    + " should be distinct.";
+            assert currSize > prevSize : msg;
             prevSize++;
             currFract = new Fraction(n, 103);
             currHash = currFract.hashCode();
             fractHashes.add(currHash);
             currSize = fractHashes.size();
-            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
-            assertTrue(assertionMessage, currSize > prevSize);
+            msg = "Hash code " + currHash + " for " + currFract.toString() 
+                    + " should be distinct.";
+            assertTrue(msg, currSize > prevSize);
             prevSize++;
             currFract = new Fraction(-n, 103);
             currHash = currFract.hashCode();
             fractHashes.add(currHash);
             currSize = fractHashes.size();
-            assertionMessage = "Hash code " + currHash + " for " + currFract.toString() + " should be distinct.";
-            assertTrue(assertionMessage, currSize > prevSize);
+            msg = "Hash code " + currHash + " for " + currFract.toString() 
+                    + " should be distinct.";
+            assert currSize > prevSize : msg;
             prevSize++;
         }
-        System.out.println("Successfully created " + prevSize + " instances of Fraction with " + prevSize + " distinct hash codes.");
+        System.out.println("Successfully created " + prevSize 
+                + " instances of Fraction with " + prevSize 
+                + " distinct hash codes.");
     }
     
     /**
-     * Test of equals method, of class Fraction.
-     */
-    @Test
-    public void testEquals() {
-        System.out.println("equals");
-        assertTrue(operandA.equals(operandA)); // Reflexive test
-        assertTrue(operandB.equals(operandB));
-        Fraction tempHold = new Fraction(7, 8);
-        assertTrue(operandA.equals(tempHold));
-        assertTrue(tempHold.equals(operandA)); // Symmetric test
-        Fraction transitiveHold = new Fraction(7, 8);
-        assertTrue(tempHold.equals(transitiveHold));
-        assertTrue(transitiveHold.equals(tempHold)); // Transitive test
-        tempHold = new Fraction(1, 3); // Now to do symmetric and transitive with operandB
-        assertTrue(operandB.equals(tempHold));
-        assertTrue(tempHold.equals(operandB)); 
-        transitiveHold = new Fraction(1, 3);
-        assertTrue(tempHold.equals(transitiveHold));
-        assertTrue(transitiveHold.equals(tempHold));
-        TestImagePanel obj = new TestImagePanel();
-        assertNotEquals(operandA, obj);
-    }
-    
-    /**
-     * Test of compareTo method, of class Fraction, implementing Comparable.
+     * Test of the compareTo function, of class Fraction, implementing the 
+     * Comparable interface.
      */
     @Test
     public void testCompareTo() {
@@ -435,79 +601,8 @@ public class FractionTest {
         Fraction approxPiFiftieths = new Fraction(157, 50);
         Fraction approxPi113ths = new Fraction(355, 113);
         Fraction approxPiSevenths = new Fraction(22, 7);
-        int comparison = negThreeHalves.compareTo(approxPiFiftieths);
-        String assertionMessage = negThreeHalves.toString() + " should be found to be less than " + approxPiFiftieths.toString();
-        assertTrue(assertionMessage, comparison < 0);
-        comparison = operandB.compareTo(operandA);
-        assertionMessage = operandB.toString() + " should be found to be less than " + operandA.toString();
-        assertTrue(assertionMessage, comparison < 0);
-        comparison = approxPiFiftieths.compareTo(approxPi113ths);
-        assertionMessage = approxPiFiftieths.toString() + " should be found to be less than " + approxPi113ths.toString();
-        assertTrue(assertionMessage, comparison < 0);
-        comparison = approxPi113ths.compareTo(approxPiSevenths);
-        assertionMessage = approxPi113ths.toString() + " should be found to be less than " + approxPiSevenths.toString();
-        assertTrue(assertionMessage, comparison < 0);
-        comparison = approxPiFiftieths.compareTo(approxPiFiftieths);
-        assertEquals(0, comparison);
-        comparison = approxPi113ths.compareTo(approxPi113ths);
-        assertEquals(0, comparison);
-        comparison = approxPiSevenths.compareTo(approxPiSevenths);
-        assertEquals(0, comparison);
-        comparison = operandA.compareTo(operandB);
-        assertionMessage = operandA.toString() + " should be found to be greater than " + operandB.toString();
-        assertTrue(assertionMessage, comparison > 0);
-        comparison = approxPiFiftieths.compareTo(negThreeHalves);
-        assertionMessage = approxPiFiftieths.toString() + " should be found to be greater than " + negThreeHalves.toString();
-        assertTrue(assertionMessage, comparison > 0);
-        comparison = approxPi113ths.compareTo(approxPiFiftieths);
-        assertionMessage = approxPi113ths.toString() + " should be found to be greater than " + approxPiFiftieths.toString();
-        assertTrue(assertionMessage, comparison > 0);
-        comparison = approxPiSevenths.compareTo(approxPi113ths);
-        assertionMessage = approxPiSevenths.toString() + " should be found to be greater than " + approxPi113ths.toString();
-        assertTrue(assertionMessage, comparison > 0);
-        try {
-            comparison = approxPiSevenths.compareTo(null);
-            String msg = "Comparing " + approxPiSevenths.toString() + " to null should have caused an exception, not given result " + comparison + ".";
-            fail(msg);
-        } catch (NullPointerException npe) {
-            System.out.println("Comparing " + approxPiSevenths.toString() + " to null correctly triggered NullPointerException.");
-            System.out.println("NullPointerException had this message: \"" + npe.getMessage() + "\"");
-        } catch (Exception e) {
-            String msg = e.getClass().getName() + " is the wrong exception to throw for comparing " + approxPiSevenths.toString() + " to null.";
-            fail(msg);
-        }
-    }
-    
-    /**
-     * Another test of compareTo method, of class Fraction. This one tests 
-     * whether Fraction can distinguish between 1/9223372036854775807 and 
-     * 1/9223372036854775806.
-     */
-    @Test
-    public void testCompareToCloseFraction() {
-        Fraction numberA = new Fraction(1, Integer.MAX_VALUE);
-        Fraction numberB = new Fraction(1, Integer.MAX_VALUE - 1);
-        String assertionMessage = numberA.toString() + " should be found to be less than " + numberB.toString();
-        assertTrue(assertionMessage, numberA.compareTo(numberB) < 0);
-        assertionMessage = numberB.toString() + " should be found to be greater than " + numberA.toString();
-        assertTrue(assertionMessage, numberB.compareTo(numberA) > 0);
-    }
-    
-    /**
-     * Yet another test of compareTo method, of class Fraction. This one checks 
-     * that {@link Collections#sort(java.util.List)} can use compareTo to sort a 
-     * list of fractions in ascending order.
-     */
-    @Test
-    public void testCompareToThroughCollectionSort() {
-        Fraction negThreeHalves = new Fraction(-3, 2);
-        Fraction approxPiFiftieths = new Fraction(157, 50);
-        Fraction approxPi113ths = new Fraction(355, 113);
-        Fraction approxPiSevenths = new Fraction(22, 7);
         List<Fraction> expectedList = new ArrayList<>();
         expectedList.add(negThreeHalves);
-        expectedList.add(operandB);
-        expectedList.add(operandA);
         expectedList.add(approxPiFiftieths);
         expectedList.add(approxPi113ths);
         expectedList.add(approxPiSevenths);
@@ -515,28 +610,51 @@ public class FractionTest {
         unsortedList.add(approxPi113ths);
         unsortedList.add(negThreeHalves);
         unsortedList.add(approxPiSevenths);
-        unsortedList.add(operandA);
         unsortedList.add(approxPiFiftieths);
-        unsortedList.add(operandB);
         Collections.sort(unsortedList);
         assertEquals(expectedList, unsortedList);
     }
-
+    
     /**
-     * Test of getNumericApproximation method, of class Fraction. A small 
-     * variance in numeric precision is acceptable.
+     * Another test of the compareTo function, of class Fraction. This one tests 
+     * whether Fraction can distinguish between 1/9223372036854775807 and 
+     * 1/9223372036854775806.
+     */
+    @Test
+    public void testCompareToCloseFraction() {
+        Fraction numberA = new Fraction(1, Integer.MAX_VALUE);
+        Fraction numberB = new Fraction(1, Integer.MAX_VALUE - 1);
+        String msg = numberA.toString() + " should be found to be less than " 
+                + numberB.toString();
+        assert numberA.compareTo(numberB) < 0 : msg;
+        msg = numberB.toString() + " should be found to be greater than " 
+                + numberA.toString();
+        assert numberB.compareTo(numberA) > 0 : msg;
+    }
+    
+    /**
+     * Test of the getNumericApproximation function, of class Fraction. A small 
+     * variance in numeric precision is acceptable. The tolerance is 
+     * 10<sup>&minus;8</sup>.
      */
     @Test
     public void testGetNumericApproximation() {
         System.out.println("getNumericApproximation");
-        double expResult = 0.875;
-        double result = operandA.getNumericApproximation();
-        assertEquals(expResult, result, TEST_DELTA);
-        expResult = 0.33333333;
-        result = operandB.getNumericApproximation();
-        assertEquals(expResult, result, TEST_DELTA);
+        Fraction thirds;
+        double thirdApprox = 1.0 / 3.0;
+        double expected, actual;
+        for (int i = 1; i < 31; i++) {
+            thirds = new Fraction(i, 3);
+            expected = thirdApprox * i;
+            actual = thirds.getNumericApproximation();
+            assertEquals(expected, actual, 0.00000001);
+        }
     }
     
+    /**
+     * Test of the isUnitFraction function, of class Fraction. Any fraction with 
+     * 1 for a numerator is a unit fraction.
+     */
     @Test
     public void testIsUnitFraction() {
         System.out.println("isUnitFraction");
@@ -546,14 +664,24 @@ public class FractionTest {
         assert fraction.isUnitFraction() : msg;
     }
     
+    /**
+     * Another test of the isUnitFraction function, of class Fraction. Any 
+     * fraction with 1 for a numerator is a unit fraction. Any other numerator 
+     * means the fraction should not be considered a unit fraction, even if that 
+     * numerator is &minus;1.
+     */
     @Test
     public void testIsNotUnitFraction() {
-        Fraction fraction = new Fraction(2, 7);
+        Fraction fraction = new Fraction(-1, 7);
         String msg = fraction.toString() 
                 + " should NOT be considered a unit fraction";
         assert !fraction.isUnitFraction() : msg;
     }
     
+    /**
+     * Test of the isInteger function, of class Fraction. Any Fraction instance 
+     * with 1 for a denominator represents an integer.
+     */
     @Test
     public void testIsInteger() {
         System.out.println("isInteger");
@@ -562,61 +690,24 @@ public class FractionTest {
         assert fraction.isInteger() : msg;
     }
 
+    /**
+     * Another test of the isInteger function, of class Fraction. Any Fraction 
+     * with 1 for a denominator represents an integer. Any denominator other 
+     * than 1 should cause a fraction to not be considered an integer, even 
+     * &minus;1 (however, if the constructor receives a negative integer as a 
+     * denominator, it should multiply both the numerator and denominator by 
+     * &minus;1 &mdash; but that's a separate test).
+     */
     @Test
     public void testIsNotInteger() {
         Fraction fraction = new Fraction(7, 2);
-        String msg = fraction.toString() + " should NOT be considered an integer";
+        String msg = fraction.toString() 
+                + " should NOT be considered an integer";
         assert !fraction.isInteger() : msg;
     }
 
     /**
-     * Test of reciprocal method, of class Fraction. Checks that applying the 
-     * reciprocal function to a reciprocal returns the original number. A 
-     * separate test checks the reciprocal of 0.
-     */
-    @Test
-    public void testReciprocal() {
-        System.out.println("reciprocal");
-        Fraction expResult = new Fraction(8, 7);
-        Fraction result = operandA.reciprocal();
-        assertEquals(expResult, result);
-        result = expResult.reciprocal();
-        assertEquals(operandA, result);
-        expResult = new Fraction(3);
-        result = operandB.reciprocal();
-        assertEquals(expResult, result);
-        result = expResult.reciprocal();
-        assertEquals(operandB, result);
-    }
-
-    /**
-     * Another test of reciprocal method, of class Fraction. Checks that trying 
-     * to take the reciprocal of zero triggers the appropriate exception.
-     */
-    @Test
-    public void testReciprocalOfZero() {
-        System.out.println("reciprocal(0)");
-        Fraction zero = new Fraction(0, 1);
-        try {
-            Fraction result = zero.reciprocal();
-            String msg = "Trying to get reciprocal of 0 should not have given result " 
-                    + result.toString();
-            fail(msg);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("IllegalArgumentException is appropriate for trying to take the reciprocal of 0.");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch (ArithmeticException ae) {
-            System.out.println("ArithmeticException is deemed acceptable for trying to take the reciprocal of 0.");
-            System.out.println("\"" + ae.getMessage() + "\"");
-        } catch (Exception e) {
-            String msg = e.getClass().getName() 
-                    + " is not appropriate for trying to take the reciprocal of 0.";
-            fail(msg);
-        }
-    }
-    
-    /**
-     * Test of parseFract method, of class Fraction.
+     * Test of the parseFract function, of class Fraction.
      */
     @Test
     public void testParseFract() {
@@ -628,7 +719,7 @@ public class FractionTest {
     }
 
     /**
-     * Another test of parseFract method, of class Fraction.
+     * Another test of the parseFract function, of class Fraction.
      */
     @Test
     public void testParseOtherFract() {
@@ -639,18 +730,21 @@ public class FractionTest {
     }
 
     /**
-     * Another test of parseFract method, of class Fraction.
+     * Another test of the parseFract function, of class Fraction. If the String 
+     * represents an integer (tacit denominator 1), the parsing function should 
+     * fill in the tacit denominator.
      */
     @Test
     public void testParseInteger() {
         String s = "32768";
-        Fraction expected = new Fraction(32768);
+        Fraction expected = new Fraction(32768, 1);
         Fraction actual = Fraction.parseFract(s);
         assertEquals(expected, actual);
     }
     
     /**
-     * Another test of parseFract method, of class Fraction.
+     * Another test of the parseFract function, of class Fraction. The parsing 
+     * function should not be thrown by the proper minus sign, U+2212.
      */
     @Test
     public void testParseFractRecognizesProperMinusSign() {
@@ -673,7 +767,8 @@ public class FractionTest {
     }
 
     /**
-     * Another test of parseFract method, of class Fraction.
+     * Another test of the parseFract function, of class Fraction. Spaces should 
+     * be allowed in the parsing function's input.
      */
     @Test
     public void testParseFractIgnoresSpaces() {
@@ -692,18 +787,20 @@ public class FractionTest {
     }
     
     /**
-     * Another test of parseFract method, of class Fraction.
+     * Another test of the parseFract function, of class Fraction. The output of 
+     * toHTMLString should be parseable by parseFract.
      */
     @Test
     public void testParseFractHTML() {
-        String s = "<sup>79</sup>&frasl;<sub>43</sub>";
-        Fraction expected = new Fraction(79, 43);
+        String s = "&minus;<sup>79</sup>&frasl;<sub>43</sub>";
+        Fraction expected = new Fraction(-79, 43);
         Fraction actual = Fraction.parseFract(s);
         assertEquals(expected, actual);
     }
     
     /**
-     * Another test of parseFract method, of class Fraction.
+     * Another test of the parseFract function, of class Fraction. The output of 
+     * toTeXString should be parseable by parseFract.
      */
     @Test
     public void testParseFractTeX() {
@@ -713,6 +810,10 @@ public class FractionTest {
         assertEquals(expected, actual);
     }
     
+    /**
+     * Test of the correspondence between the toString and parseFract functions 
+     * of the Fraction class.
+     */
     @Test
     public void testParseFractToStringCorrespondence() {
         Fraction expected = new Fraction(53, 40);
@@ -720,6 +821,10 @@ public class FractionTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test of the correspondence between the toHTMLString and parseFract 
+     * functions of the Fraction class.
+     */
     @Test
     public void testParseFractToHTMLStringCorrespondence() {
         Fraction expected = new Fraction(53, 40);
@@ -727,6 +832,10 @@ public class FractionTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Test of the correspondence between the toTeXString and parseFract 
+     * functions of the Fraction class.
+     */
     @Test
     public void testParseFractToTeXStringCorrespondence() {
         Fraction expected = new Fraction(53, 40);
@@ -735,28 +844,27 @@ public class FractionTest {
     }
 
     /**
-     * Test of Fraction constructor. Even if the constructor parameters are not 
-     * in lowest terms, the constructor should change them to lowest terms.
+     * Test of the Fraction constructor. Even if the constructor parameters are 
+     * not in lowest terms, the constructor should change them to lowest terms.
      */
     @Test
     public void testFractionsAreInLowestTerms() {
-        System.out.println("Fractions should be in lowest terms");
-        Fraction fraction = new Fraction(21, 24);
-        assertEquals(operandA, fraction);
-        assertEquals(7L, fraction.getNumerator());
-        assertEquals(8L, fraction.getDenominator());
-        assertEquals("7/8", fraction.toString().replace(" ", ""));
-        fraction = new Fraction(8, 24);
-        assertEquals(operandB, fraction);
-        assertEquals(1L, fraction.getNumerator());
-        assertEquals(3L, fraction.getDenominator());
-        assertEquals("1/3", fraction.toString().replace(" ", ""));
+        Fraction fraction;
+        int prime = 103;
+        for (int numerator = 1; numerator < prime; numerator++) {
+            for (int multiplier = 2; multiplier < 29; multiplier++) {
+                fraction = new Fraction(numerator * multiplier, prime 
+                        * multiplier);
+                assertEquals(numerator, fraction.getNumerator());
+                assertEquals(prime, fraction.getDenominator());
+            }
+        }
     }
     
     /**
-     * Test of Fraction constructor. Even if the denominator passed to the 
+     * Test of the Fraction constructor. Even if the denominator passed to the 
      * constructor is negative, the constructor should change it to a positive 
-     * integer.
+     * integer, and change the numerator accordingly.
      */
     @Test
     public void testNegativeDenomsQuietlyChanged() {
@@ -765,6 +873,14 @@ public class FractionTest {
         assertEquals(29L, fraction.getDenominator());
     }
     
+    /**
+     * Test of the Fraction constructor. If the denominator passed to the 
+     * constructor is negative, the constructor should change it to a positive 
+     * integer. However, if the denominator happens to be Long.MIN_VALUE, the 
+     * constructor can't multiply it by &minus;1 because the desired number is 
+     * Long.MAX_VALUE + 1, so the Java Virtual Machine just gives 0. Therefore, 
+     * Long.MIN_VALUE should be just as invalid as 0 as a denominator.
+     */
     @Test
     public void testConstructorRejectsLongMinValueDenom() {
         try {
@@ -780,7 +896,7 @@ public class FractionTest {
             System.out.println("\"" + excMsg + "\"");
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to use denominator " 
+                    + " is the wrong exception to throw for denominator " 
                     + Long.MIN_VALUE;
             fail(msg);
         }
