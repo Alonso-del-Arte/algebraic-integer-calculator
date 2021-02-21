@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -17,19 +17,25 @@
 package algebraics.quadratics;
 
 import algebraics.IntegerRing;
+import algebraics.PowerBasis;
+import fractions.Fraction;
+import calculators.NumberTheoreticFunctionsCalculator;
+
+import java.io.Serializable;
 
 /**
  * Provides a template for defining objects to represent real or imaginary 
  * quadratic rings. Also provides functions for getting the radicand of the 
- * generating algebraic integer and functions for representation as a String.
+ * generating algebraic integer and functions for representation as a 
+ * <code>String</code>.
  * @author Alonso del Arte
  */
-public abstract class QuadraticRing implements IntegerRing {
+public abstract class QuadraticRing implements IntegerRing, Serializable {
     
     /**
      * Ought to be a squarefree integer.
      */
-    protected int radicand;
+    protected final int radicand;
     
     /**
      * A rational approximation of either &radic;<i>d</i> for <i>d</i> positive 
@@ -48,6 +54,15 @@ public abstract class QuadraticRing implements IntegerRing {
      * quadratic integer ring.
      */
     public static final int MAX_ALGEBRAIC_DEGREE = 2;
+    
+    private static final Fraction ONE_FRACT = new Fraction(1);
+    
+    private static final Fraction[] ONES = {ONE_FRACT, ONE_FRACT};
+    
+    /**
+     * The power basis for any quadratic integer ring is 1, <i>a</i>.
+     */
+    public static final PowerBasis QUADRATIC_POWER_BASIS = new PowerBasis(ONES);
     
     /**
      * Whether blackboard bold is preferred or not.
@@ -83,22 +98,23 @@ public abstract class QuadraticRing implements IntegerRing {
      * <b>Z</b>[&radic;14].
      */
     public boolean hasHalfIntegers() {
-        return d1mod4;
+        return this.d1mod4;
     }
     
     /**
      * Gives the radicand, <i>d</i> for &radic;<i>d</i>, which depends on the 
-     * parameter d at construction time.
-     * @return The parameter d. For example, for <b>Z</b>[&radic;&minus;2], this 
-     * would be &minus;2, for <b>Z</b>[&radic;2] this would be 2.
+     * parameter <code>d</code> at construction time.
+     * @return The parameter <code>d</code> that was passed to the constructor. 
+     * For example, for <b>Z</b>[&radic;&minus;2], this would be &minus;2, for 
+     * <b>Z</b>[&radic;2] this would be 2.
      */
     public int getRadicand() {
-        return radicand;
+        return this.radicand;
     }
     
     /**
      * Gives the numeric value of the square root of the radicand as a double 
-     * precision floating point primitive, if possible.
+     * precision floating point number, if possible.
      * @return A rational approximation of the square root of the radicand, if 
      * possible. For example, for <b>Z</b>[&radic;2] this would be roughly 
      * 1.414213562373.
@@ -112,8 +128,9 @@ public abstract class QuadraticRing implements IntegerRing {
      * {@link QuadraticRing} to {@link ImaginaryQuadraticRing}.
      * @return The same number as {@link QuadraticRing#getRadicand() 
      * getRadicand()} in the case of {@link RealQuadraticRing}. However, for 
-     * ImaginaryQuadraticRing, this is the absolute value. For example, for both 
-     * <b>Z</b>[&radic;&minus;2] and <b>Z</b>[&radic;2] this would be 2.
+     * <code>ImaginaryQuadraticRing</code>, this is the absolute value. For 
+     * example, for both <b>Z</b>[&radic;&minus;2] and <b>Z</b>[&radic;2] this 
+     * would be 2.
      */
     public abstract int getAbsNegRad();
     
@@ -132,9 +149,35 @@ public abstract class QuadraticRing implements IntegerRing {
     public abstract double getAbsNegRadSqrt();
     
     /**
+     * 
+     * @return Same as {@link #getRadicand()} if this ring has so-called 
+     * "half-integers," otherwise that number multiplied by 4. For example, for 
+     * <b>Z</b>[&omega;], this would be &minus;3; for <b>Z</b>[&radic;2] this 
+     * would be 8.
+     */
+    @Override
+    public int discriminant() {
+        if (this.d1mod4) {
+            return this.radicand;
+        } else {
+            return 4 * this.radicand;
+        }
+    }
+    
+    /**
+     * Gives the power basis of the ring. It's always the same for a quadratic 
+     * integer ring.
+     * @return The power basis, 1, <i>a</i>.
+     */
+    @Override
+    public PowerBasis getPowerBasis() {
+        return QUADRATIC_POWER_BASIS;
+    }
+    
+    /**
      * The ring's label, using mostly alphanumeric ASCII characters but also 
      * often the "&radic;" character and occasionally Greek letters.
-     * @return A String representing the quadratic ring.
+     * @return A <code>String</code> representing the quadratic ring.
      */
     @Override
     public String toString() {
@@ -180,13 +223,13 @@ public abstract class QuadraticRing implements IntegerRing {
         String IQRString;
         switch (this.radicand) {
             case -3:
-                IQRString = "Z[omega]"; // omega = -1/2 + sqrt(-3)/2 is a complex cubic root of 1
+                IQRString = "Z[omega]";
                 break;
             case -1:
-                IQRString = "Z[i]"; // i is the imaginary unit, sqrt(-1)
+                IQRString = "Z[i]";
                 break;
             case 5:
-                IQRString = "Z[phi]"; // phi = 1/2 + sqrt(5)/2, the golden ratio
+                IQRString = "Z[phi]";
                 break;
             default:
                 if (this.d1mod4) {
@@ -236,7 +279,8 @@ public abstract class QuadraticRing implements IntegerRing {
                 break;
             default:
                 if (this.d1mod4) {
-                    IQRString = "\\mathcal O_{" + QChar + "(\\sqrt{" + this.radicand + "})}";
+                    IQRString = "\\mathcal O_{" + QChar + "(\\sqrt{" 
+                            + this.radicand + "})}";
                 } else {
                     IQRString = ZChar + "[\\sqrt{" + this.radicand + "}]";
             }
@@ -289,7 +333,8 @@ public abstract class QuadraticRing implements IntegerRing {
                 break;
             default:
                 if (this.d1mod4) {
-                    IQRString = "<i>O</i><sub>" + QChar + "(&radic;(" + this.radicand + ")</sub>";
+                    IQRString = "<i>O</i><sub>" + QChar + "(&radic;(" 
+                            + this.radicand + "))</sub>";
                 } else {
                     IQRString = ZChar + "[&radic;" + this.radicand + "]";
                 }
@@ -314,7 +359,7 @@ public abstract class QuadraticRing implements IntegerRing {
         int radNum = this.radicand;
         switch (radNum) {
             case -3:
-                IQRString = "ZW"; // It is frowned upon to use "w" as a makeshift omega, but for the purpose here it is acceptable.
+                IQRString = "ZW";
                 break;
             case -1:
                 IQRString = "ZI";
@@ -391,6 +436,28 @@ public abstract class QuadraticRing implements IntegerRing {
     @Override
     public final int getMaxAlgebraicDegree() {
         return MAX_ALGEBRAIC_DEGREE;
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public static QuadraticRing apply(int d) {
+        return new ImaginaryQuadraticRing(-1);
+    }
+    
+    /**
+     * Superclass constructor for {@link ImaginaryQuadraticRing} and {@link 
+     * RealQuadraticRing}.
+     * @param d A squarefree integer. Subclasses can and should place further 
+     * restrictions.
+     * @throws IllegalArgumentException If <code>d</code> is a multiple of a 
+     * square other than 1.
+     */
+    public QuadraticRing(int d) {
+        if (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) {
+            String excMsg = "Squarefree integer required for parameter d, " + d 
+                    + " is not squarefree";
+            throw new IllegalArgumentException(excMsg);
+        }
+        this.radicand = d;
     }
     
 }
