@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,7 +16,6 @@
  */
 package algebraics;
 
-import algebraics.quadratics.ImaginaryQuadraticRingTest;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.QuadraticInteger;
@@ -41,6 +40,11 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class NotDivisibleExceptionTest {
+    
+    /**
+     * The delta value to use when assertEquals() requires a delta value.
+     */
+    public static final double TEST_DELTA = 0.00000001;
     
     /**
      * An exception to correspond to (5 + i)/(3 + i) after setUpClass().
@@ -280,16 +284,16 @@ public class NotDivisibleExceptionTest {
         double expResult, result;
         expResult = 1.0 / 4.0;
         result = notDivEisenstein.getNumericRealPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = 8.0 / 5.0;
         result = notDivGaussian.getNumericRealPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = -1.18767;
         result = notDivZ2.getNumericRealPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = 0.53934;
         result = notDivZPhi.getNumericRealPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
     }
 
     /**
@@ -301,15 +305,15 @@ public class NotDivisibleExceptionTest {
         double expResult, result;
         expResult = -9.0 * Math.sqrt(3) / 4.0;
         result = notDivEisenstein.getNumericImagPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = -1.0 / 5.0;
         result = notDivGaussian.getNumericImagPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = 0.0;
         result = notDivZ2.getNumericImagPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         result = notDivZPhi.getNumericImagPart();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
     }
 
     /**
@@ -321,16 +325,16 @@ public class NotDivisibleExceptionTest {
         double expResult, result;
         expResult = 1.61245;
         result = notDivGaussian.getAbs();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = 3.90512;
         result = notDivEisenstein.getAbs();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = 1.18767;
         result = notDivZ2.getAbs();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
         expResult = 0.53934;
         result = notDivZPhi.getAbs();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, TEST_DELTA);
     }
 
     private void sortAlgIntArray(AlgebraicInteger[] algIntArray) {
