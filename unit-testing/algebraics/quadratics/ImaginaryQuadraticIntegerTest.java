@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -21,6 +21,9 @@ import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
+
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
 import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 
 import java.text.DecimalFormatSymbols;
@@ -31,6 +34,7 @@ import java.util.Random;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -45,21 +49,24 @@ public class ImaginaryQuadraticIntegerTest {
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
      * ImaginaryQuadraticInteger will be tested.
      */
-    private static final ImaginaryQuadraticRing RING_GAUSSIAN = new ImaginaryQuadraticRing(-1);
+    private static final ImaginaryQuadraticRing RING_GAUSSIAN 
+            = new ImaginaryQuadraticRing(-1);
     
     /**
      * The ring <b>Z</b>[&radic;-2], numbers of the form  <i>a</i> + 
      * <i>b</i>&radic;-2. This is one of the rings in which 
      * ImaginaryQuadraticInteger will be tested.
      */
-    private static final ImaginaryQuadraticRing RING_ZI2 = new ImaginaryQuadraticRing(-2);
+    private static final ImaginaryQuadraticRing RING_ZI2 
+            = new ImaginaryQuadraticRing(-2);
     
     /**
      * The ring of Eisenstein integers, <b>Z</b>[&omega;], numbers of the form 
      * <i>a</i> + <i>b</i>&omega;, where &omega; = -1/2 + (&radic;-3)/2. This is 
      * one of the rings in which ImaginaryQuadraticInteger will be tested.
      */
-    private static final ImaginaryQuadraticRing RING_EISENSTEIN = new ImaginaryQuadraticRing(-3);
+    private static final ImaginaryQuadraticRing RING_EISENSTEIN 
+            = new ImaginaryQuadraticRing(-3);
     
     /**
      * The ring <i>O</i><sub><b>Q</b>(&radic;-7)</sub>, numbers of the form 
@@ -67,7 +74,8 @@ public class ImaginaryQuadraticIntegerTest {
      * the same parity (both odd or both even). This is one of the rings in 
      * which ImaginaryQuadraticInteger will be tested.
      */
-    private static final ImaginaryQuadraticRing RING_OQI7 = new ImaginaryQuadraticRing(-7);
+    private static final ImaginaryQuadraticRing RING_OQI7 
+            = new ImaginaryQuadraticRing(-7);
     
     /**
      * A ring that will be randomly chosen during setUpClass().
@@ -86,7 +94,8 @@ public class ImaginaryQuadraticIntegerTest {
      */
     private static ImaginaryQuadraticRing ringRandomForAltTesting;
     
-    private static List<QuadraticInteger> testIntegers, testAdditiveInverses, testConjugates, testNorms;
+    private static List<QuadraticInteger> testIntegers, testAdditiveInverses, 
+            testConjugates, testNorms;
     private static List<Integer> testNormsRealParts;
     
     /**
@@ -103,14 +112,16 @@ public class ImaginaryQuadraticIntegerTest {
      */
     private static ImaginaryQuadraticInteger oneIQI;
     
-    private static int randomRealPart, randomImagPart, randomRealForHalfInts, randomImagForHalfInts, totalTestIntegers;
+    private static int randomRealPart, randomImagPart, randomRealForHalfInts, 
+            randomImagForHalfInts, totalTestIntegers;
     
     /**
      * The imaginary unit, <i>i</i> = &radic;&minus;1.  This duplicates a field 
      * in {@link NumberTheoreticFunctionsCalculator}. This repetition is 
      * necessary to make these tests independent of that class.
      */
-    private static final ImaginaryQuadraticInteger IMAG_UNIT_I = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
+    private static final ImaginaryQuadraticInteger IMAG_UNIT_I 
+            = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
     
     /**
      * The other imaginary unit, &minus;<i>i</i> = &minus;&radic;&minus;1. This 
@@ -121,14 +132,16 @@ public class ImaginaryQuadraticIntegerTest {
      * cause a cascade of misleading test failures here if one is working on 
      * {@link ImaginaryQuadraticInteger#times(int)}.
      */
-    private static final ImaginaryQuadraticInteger IMAG_UNIT_NEG_I = new ImaginaryQuadraticInteger(0, -1, RING_GAUSSIAN);
+    private static final ImaginaryQuadraticInteger IMAG_UNIT_NEG_I 
+            = new ImaginaryQuadraticInteger(0, -1, RING_GAUSSIAN);
     
     /**
      * A complex cubic root of unity, &minus;1/2 + &radic;&minus;3/2.  This 
      * duplicates a field in {@link NumberTheoreticFunctionsCalculator}. This 
      * repetition is necessary to make these tests independent of that class.
      */
-    private static final ImaginaryQuadraticInteger COMPLEX_CUBIC_ROOT_OF_UNITY = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
+    private static final ImaginaryQuadraticInteger COMPLEX_CUBIC_ROOT_OF_UNITY 
+            = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
     
     /**
      * Sets up the static variables that will be used for the tests. Some of the 
@@ -136,9 +149,9 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @BeforeClass
     public static void setUpClass() {
-        int randomDiscr = -NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(MINIMUM_RING_D);
+        int randomDiscr = -randomSquarefreeNumber(MINIMUM_RING_D);
         if (randomDiscr > -5) {
-            randomDiscr = -5; // This is just in case we get -3 or -1, which we are already testing for and which require special treatment in some of the tests.
+            randomDiscr = -5;
         }
         boolean ringRandomd1mod4 = (randomDiscr % 4 == -3);
         ringRandom = new ImaginaryQuadraticRing(randomDiscr);
@@ -148,13 +161,18 @@ public class ImaginaryQuadraticIntegerTest {
             int nextD = ringRandom.getRadicand();
             do {
                 nextD++;
-            } while (!(NumberTheoreticFunctionsCalculator.isSquareFree(nextD) && (nextD % 4 == -3)));
+            } while (!(NumberTheoreticFunctionsCalculator.isSquareFree(nextD) 
+                    && (nextD % 4 == -3)));
             ringRandomForAltTesting = new ImaginaryQuadraticRing(nextD);
-            System.out.println(ringRandomForAltTesting.toASCIIString() + " has been chosen for testing toStringAlt(), toASCIIStringAlt, toTeXStringAlt and toHTMLStringAlt.");
+            System.out.println(ringRandomForAltTesting.toASCIIString() 
+                    + " has been chosen for testing alt toStrings");
         }
-        System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
-        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/((-16) * (randomDiscr + 1))));
-        System.out.println("Maximum for real and imaginary parts of test imaginary quadratic integers is " + maxAB + ".");
+        System.out.println(ringRandom.toASCIIString() 
+                + " has been randomly chosen for testing purposes");
+        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE / ((-16) 
+                * (randomDiscr + 1))));
+        System.out.println("Maximum for real and imaginary parts is " + maxAB 
+                + ".");
         Random ranNumGen = new Random();
         randomRealPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
         randomImagPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
@@ -580,7 +598,8 @@ public class ImaginaryQuadraticIntegerTest {
         ImaginaryQuadraticInteger ramifier;
         for (QuadraticInteger testInteger : testIntegers) {
             if (testInteger.getRing().hasHalfIntegers()) {
-                ySquared = preYForHalfInts * testInteger.getRing().getAbsNegRad();
+                ySquared = preYForHalfInts 
+                        * testInteger.getRing().getAbsNegRad();
                 expResult = (xSqForHalfInts + ySquared)/4;
                 expResult = Math.sqrt(expResult);
             } else {
@@ -588,21 +607,22 @@ public class ImaginaryQuadraticIntegerTest {
                 expResult = Math.sqrt(xSquared + ySquared);
             }
             result = testInteger.abs();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
             // The result should be the same for the conjugate...
             result = testInteger.conjugate().abs();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
             // ...and the conjugate times -1...
             result = testInteger.conjugate().times(-1).abs();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
             // ...and the original number times -1.
             result = testInteger.conjugate().times(-1).abs();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
             // abs(sqrt(d)) should equal sqrt(-d)
-            ramifier = new ImaginaryQuadraticInteger(0, 1, testInteger.getRing());
+            ramifier = new ImaginaryQuadraticInteger(0, 1, 
+                    testInteger.getRing());
             expResult = testInteger.getRing().getAbsNegRadSqrt();
             result = ramifier.abs();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         }
     }
     
@@ -617,9 +637,9 @@ public class ImaginaryQuadraticIntegerTest {
         for (int i = 0; i < totalTestIntegers; i++) {
             result = testIntegers.get(i).getRealPartNumeric();
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+                assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
             } else {
-                assertEquals(randomRealPart, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+                assertEquals(randomRealPart, result, QuadraticRingTest.TEST_DELTA);
             }
         }
     }
@@ -634,11 +654,13 @@ public class ImaginaryQuadraticIntegerTest {
         for (int i = 0; i < totalTestIntegers; i++) {
             result = testIntegers.get(i).getImagPartNumeric();
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = ((double) randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRadSqrt())/2;
+                expResult = ((double) randomImagForHalfInts 
+                        * testIntegers.get(i).getRing().getAbsNegRadSqrt()) / 2;
             } else {
-                expResult = (double) randomImagPart * testIntegers.get(i).getRing().getAbsNegRadSqrt();
+                expResult = (double) randomImagPart 
+                        * testIntegers.get(i).getRing().getAbsNegRadSqrt();
             }
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         }
     }
 
@@ -722,17 +744,17 @@ public class ImaginaryQuadraticIntegerTest {
         System.out.println("angle");
         double expResult = 1.57079633;
         double result = IMAG_UNIT_I.angle();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         expResult *= -1.0;
         result = IMAG_UNIT_NEG_I.angle();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         expResult = 2.0943951;
         result = COMPLEX_CUBIC_ROOT_OF_UNITY.angle();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         expResult *= -1.0;
         QuadraticInteger omegaSquared = COMPLEX_CUBIC_ROOT_OF_UNITY.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
         result = omegaSquared.angle();
-        assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
     }
     
     /**
@@ -2691,73 +2713,77 @@ public class ImaginaryQuadraticIntegerTest {
             gauInt = gauInt.plus(1); // Purely real for now
             eisenInt = eisenInt.plus(1); // Also purely real for now
             currSquare = n * n;
-            normResult = gauInt.norm(); // Concentrating on the Gaussian integers for now
+            normResult = gauInt.norm(); // Now on the Gaussian integers
             assertEquals(currSquare, normResult);
             absResult = gauInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), 
+                    QuadraticRingTest.TEST_DELTA);
             gauInt = gauInt.times(IMAG_UNIT_I); // n * i
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             absResult = gauInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), 
+                    QuadraticRingTest.TEST_DELTA);
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             gauInt = gauInt.times(IMAG_UNIT_I); // -n
             absResult = gauInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), 
+                    QuadraticRingTest.TEST_DELTA);
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             gauInt = gauInt.times(IMAG_UNIT_I); // -n * i
             absResult = gauInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
-            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
+            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), 
+                    QuadraticRingTest.TEST_DELTA);
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             gauInt = gauInt.times(IMAG_UNIT_I); // Back to n
             normResult = gauInt.norm();
             assertEquals(currSquare, normResult);
             absResult = gauInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
             // And then the Eisenstein integers
             normResult = eisenInt.norm();
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
             eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // n * omega
             normResult = eisenInt.norm();
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
             eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // n * omega^2
             normResult = eisenInt.norm();
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
             eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
             eisenInt = eisenInt.times(-1); // -n
             normResult = eisenInt.norm();
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
             eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // -n * omega
             normResult = eisenInt.norm();
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
             eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // -n * omega^2
             normResult = eisenInt.norm();
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
             eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
             eisenInt = eisenInt.times(-1); // Back to n
             normResult = eisenInt.norm();
             assertEquals(currSquare, normResult);
             absResult = eisenInt.abs();
-            assertEquals(n, absResult, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
         }
     }
     

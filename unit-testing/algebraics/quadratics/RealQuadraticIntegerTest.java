@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -21,6 +21,10 @@ import algebraics.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
+import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +33,7 @@ import java.util.Random;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -81,7 +86,8 @@ public class RealQuadraticIntegerTest {
     
     public static final int MAXIMUM_RING_D = 211;
     
-    private static List<QuadraticInteger> testIntegers, testAdditiveInverses, testConjugates, testNorms;
+    private static List<QuadraticInteger> testIntegers, testAdditiveInverses, 
+            testConjugates, testNorms;
     private static List<Integer> testNormsRegParts;
     
     /**
@@ -96,21 +102,23 @@ public class RealQuadraticIntegerTest {
      */
     private static RealQuadraticInteger oneRQI;
     
-    private static int randomRegPart, randomSurdPart, randomRegForHalfInts, randomSurdForHalfInts, totalTestIntegers;
+    private static int randomRegPart, randomSurdPart, randomRegForHalfInts, 
+            randomSurdForHalfInts, totalTestIntegers;
     
     /**
      * The golden ratio, &phi; = 1/2 + (&radic;5)/2. Approximately 1.618.
      */
-    private static final RealQuadraticInteger GOLDEN_RATIO = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
+    private static final RealQuadraticInteger GOLDEN_RATIO 
+            = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
     
     @BeforeClass
     public static void setUpClass() {
-        int randomDiscr = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(MAXIMUM_RING_D);
+        int randomDiscr = randomSquarefreeNumber(MAXIMUM_RING_D);
         if (randomDiscr == 1) {
             randomDiscr = 7;
         }
         if (randomDiscr == 2 || randomDiscr == 5 || randomDiscr == 13) {
-            randomDiscr++; // This is just in case we get 2, 5 or 13.
+            randomDiscr++;
         }
         boolean ringRandomd1mod4 = (randomDiscr % 4 == 1);
         ringRandom = new RealQuadraticRing(randomDiscr);
@@ -120,18 +128,22 @@ public class RealQuadraticIntegerTest {
             int nextD = ringRandom.getRadicand();
             do {
                 nextD++;
-            } while (!(NumberTheoreticFunctionsCalculator.isSquareFree(nextD) && (nextD % 4 == 1)));
+            } while (!(isSquareFree(nextD) && (nextD % 4 == 1)));
             ringRandomForAltTesting = new RealQuadraticRing(nextD);
-            System.out.println(ringRandomForAltTesting.toASCIIString() + " has been chosen for testing toStringAlt(), toASCIIStringAlt, toTeXStringAlt and toHTMLStringAlt.");
+            System.out.println(ringRandomForAltTesting.toASCIIString() 
+                    + " has been chosen for testing alt toStrings");
         }
-        System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
-        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE/(32 * (randomDiscr + 1))));
-        System.out.println("Maximum for regular and surd parts of test real quadratic integers is " + maxAB + ".");
+        System.out.println(ringRandom.toASCIIString() 
+                + " has been randomly chosen for testing purposes.");
+        int maxAB = (int) Math.floor(Math.sqrt(Integer.MAX_VALUE / (32 
+                * (randomDiscr + 1))));
+        System.out.println("Maximum for regular and surd parts is " + maxAB 
+                + ".");
         Random ranNumGen = new Random();
         randomRegPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
         randomSurdPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
         if (randomSurdPart == 0) {
-            randomSurdPart = 1; // We want to make sure none of these random imaginary quadratic integers are purely real.
+            randomSurdPart = 1;
         }
         randomRegForHalfInts = 2 * randomRegPart + 1;
         randomSurdForHalfInts = 2 * randomSurdPart + 1;
@@ -143,55 +155,76 @@ public class RealQuadraticIntegerTest {
         testNorms = new ArrayList<>();
         testNormsRegParts = new ArrayList<>();
         int currNorm;
-        RealQuadraticInteger currRQI = new RealQuadraticInteger(randomRegPart, randomSurdPart, RING_Z2);
+        RealQuadraticInteger currRQI = new RealQuadraticInteger(randomRegPart, 
+                randomSurdPart, RING_Z2);
         testIntegers.add(currRQI);
-        currRQI = new RealQuadraticInteger(-randomRegPart, -randomSurdPart, RING_Z2);
+        currRQI = new RealQuadraticInteger(-randomRegPart, -randomSurdPart, 
+                RING_Z2);
         testAdditiveInverses.add(currRQI);
-        currRQI = new RealQuadraticInteger(randomRegPart, -randomSurdPart, RING_Z2);
+        currRQI = new RealQuadraticInteger(randomRegPart, -randomSurdPart, 
+                RING_Z2);
         testConjugates.add(currRQI);
-        currNorm = randomRegPart * randomRegPart - 2 * randomSurdPart * randomSurdPart;
+        currNorm = randomRegPart * randomRegPart - 2 * randomSurdPart 
+                * randomSurdPart;
         currRQI = new RealQuadraticInteger(currNorm, 0, RING_Z2);
         testNorms.add(currRQI);
         testNormsRegParts.add(currNorm);
-        currRQI = new RealQuadraticInteger(randomRegForHalfInts, randomSurdForHalfInts, RING_ZPHI, 2);
+        currRQI = new RealQuadraticInteger(randomRegForHalfInts, 
+                randomSurdForHalfInts, RING_ZPHI, 2);
         testIntegers.add(currRQI);
-        currRQI = new RealQuadraticInteger(-randomRegForHalfInts, -randomSurdForHalfInts, RING_ZPHI, 2);
+        currRQI = new RealQuadraticInteger(-randomRegForHalfInts, 
+                -randomSurdForHalfInts, RING_ZPHI, 2);
         testAdditiveInverses.add(currRQI);
-        currRQI = new RealQuadraticInteger(randomRegForHalfInts, -randomSurdForHalfInts, RING_ZPHI, 2);
+        currRQI = new RealQuadraticInteger(randomRegForHalfInts, 
+                -randomSurdForHalfInts, RING_ZPHI, 2);
         testConjugates.add(currRQI);
-        currNorm = (randomRegForHalfInts * randomRegForHalfInts - 5 * randomSurdForHalfInts * randomSurdForHalfInts)/4;
+        currNorm = (randomRegForHalfInts * randomRegForHalfInts - 5 
+                * randomSurdForHalfInts * randomSurdForHalfInts) / 4;
         currRQI = new RealQuadraticInteger(currNorm, 0, RING_ZPHI);
         testNorms.add(currRQI);
         testNormsRegParts.add(currNorm);
-        currRQI = new RealQuadraticInteger(randomRegForHalfInts, randomSurdForHalfInts, RING_OQ13, 2);
+        currRQI = new RealQuadraticInteger(randomRegForHalfInts, 
+                randomSurdForHalfInts, RING_OQ13, 2);
         testIntegers.add(currRQI);
-        currRQI = new RealQuadraticInteger(-randomRegForHalfInts, -randomSurdForHalfInts, RING_OQ13, 2);
+        currRQI = new RealQuadraticInteger(-randomRegForHalfInts, 
+                -randomSurdForHalfInts, RING_OQ13, 2);
         testAdditiveInverses.add(currRQI);
-        currRQI = new RealQuadraticInteger(randomRegForHalfInts, -randomSurdForHalfInts, RING_OQ13, 2);
+        currRQI = new RealQuadraticInteger(randomRegForHalfInts, 
+                -randomSurdForHalfInts, RING_OQ13, 2);
         testConjugates.add(currRQI);
-        currNorm = (randomRegForHalfInts * randomRegForHalfInts - 13 * randomSurdForHalfInts * randomSurdForHalfInts)/4;
+        currNorm = (randomRegForHalfInts * randomRegForHalfInts - 13 
+                * randomSurdForHalfInts * randomSurdForHalfInts) / 4;
         currRQI = new RealQuadraticInteger(currNorm, 0, RING_OQ13, 1);
         testNorms.add(currRQI);
         testNormsRegParts.add(currNorm);
         if (ringRandomd1mod4) {
-            currRQI = new RealQuadraticInteger(randomRegForHalfInts, randomSurdForHalfInts, ringRandom, 2);
+            currRQI = new RealQuadraticInteger(randomRegForHalfInts, 
+                    randomSurdForHalfInts, ringRandom, 2);
             testIntegers.add(currRQI);
-            currRQI = new RealQuadraticInteger(-randomRegForHalfInts, -randomSurdForHalfInts, ringRandom, 2);
+            currRQI = new RealQuadraticInteger(-randomRegForHalfInts, 
+                    -randomSurdForHalfInts, ringRandom, 2);
             testAdditiveInverses.add(currRQI);
-            currRQI = new RealQuadraticInteger(randomRegForHalfInts, -randomSurdForHalfInts, ringRandom, 2);
+            currRQI = new RealQuadraticInteger(randomRegForHalfInts, 
+                    -randomSurdForHalfInts, ringRandom, 2);
             testConjugates.add(currRQI);
-            currNorm = (randomRegForHalfInts * randomRegForHalfInts - randomDiscr * randomSurdForHalfInts * randomSurdForHalfInts)/4;
+            currNorm = (randomRegForHalfInts * randomRegForHalfInts 
+                    - randomDiscr * randomSurdForHalfInts 
+                    * randomSurdForHalfInts) / 4;
             currRQI = new RealQuadraticInteger(currNorm, 0, ringRandom);
             testNorms.add(currRQI);
             testNormsRegParts.add(currNorm);
         } else {
-            currRQI = new RealQuadraticInteger(randomRegPart, randomSurdPart, ringRandom);
+            currRQI = new RealQuadraticInteger(randomRegPart, randomSurdPart, 
+                    ringRandom);
             testIntegers.add(currRQI);
-            currRQI = new RealQuadraticInteger(-randomRegPart, -randomSurdPart, ringRandom);
+            currRQI = new RealQuadraticInteger(-randomRegPart, -randomSurdPart, 
+                    ringRandom);
             testAdditiveInverses.add(currRQI);
-            currRQI = new RealQuadraticInteger(randomRegPart, -randomSurdPart, ringRandom);
+            currRQI = new RealQuadraticInteger(randomRegPart, -randomSurdPart, 
+                    ringRandom);
             testConjugates.add(currRQI);
-            currNorm = randomRegPart * randomRegPart - randomDiscr * randomSurdPart * randomSurdPart;
+            currNorm = randomRegPart * randomRegPart - randomDiscr 
+                    * randomSurdPart * randomSurdPart;
             currRQI = new RealQuadraticInteger(currNorm, 0, ringRandom);
             testNorms.add(currRQI);
             testNormsRegParts.add(currNorm);
@@ -206,29 +239,40 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
-        int expResult = 2; // Quadratic integers with nonzero "surd" part should have algebraic degree 2
-        int result;
+        int expected = 2;
+        int actual;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).algebraicDegree();
-            assertEquals(expResult, result);
-            result = testAdditiveInverses.get(i).algebraicDegree();
-            assertEquals(expResult, result);
-            result = testConjugates.get(i).algebraicDegree();
-            assertEquals(expResult, result);
+            actual = testIntegers.get(i).algebraicDegree();
+            assertEquals(expected, actual);
+            actual = testAdditiveInverses.get(i).algebraicDegree();
+            assertEquals(expected, actual);
+            actual = testConjugates.get(i).algebraicDegree();
+            assertEquals(expected, actual);
         }
-        expResult = 1; // Purely real and rational nonzero integers should have algebraic degree 1
-        for (QuadraticInteger normIQI : testNorms) {
-            result = normIQI.algebraicDegree();
-            assertEquals(expResult, result);
-        }
-        /* And last but not least, 0 should have algebraic degree 0 regardless 
-           of which ring it comes from. */
-        expResult = 0;
-        result = zeroRQI.algebraicDegree();
-        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of algebraicDegree method, of class RealQuadraticInteger, 
+     * inherited from QuadraticInteger. Purely real and rational nonzero 
+     * integers should have algebraic degree 1.
+     */
+    @Test
+    public void testAlgebraicDegreeOne() {
+        testNorms.forEach((normIQI) -> {
+            assertEquals(1, normIQI.algebraicDegree());
+        });
+    }
+    
+    /**
+     * Another test of algebraicDegree method, of class RealQuadraticInteger, 
+     * inherited from QuadraticInteger. Zero should have algebraic degree 0 
+     * regardless of what ring it comes from.
+     */
+    @Test
+    public void testAlgebraicDegreeZero() {
+        assertEquals(0, zeroRQI.algebraicDegree());
         zeroRQI = new RealQuadraticInteger(0, 0, RING_ZPHI);
-        result = zeroRQI.algebraicDegree();
-        assertEquals(expResult, result);
+        assertEquals(0, zeroRQI.algebraicDegree());
     }
 
     /**
@@ -515,14 +559,17 @@ public class RealQuadraticIntegerTest {
         double expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() * randomSurdForHalfInts + randomRegForHalfInts);
+                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
+                        * randomSurdForHalfInts + randomRegForHalfInts);
                 expResult /= 2;
             } else {
-                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() * randomSurdPart + randomRegPart);
+                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
+                        * randomSurdPart + randomRegPart);
             }
             result = testIntegers.get(i).abs();
-            System.out.println("|" + testIntegers.get(i).toASCIIString() + "| = " + result);
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            System.out.println("|" + testIntegers.get(i).toASCIIString() 
+                    + "| = " + result);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         }
     }
 
@@ -535,14 +582,17 @@ public class RealQuadraticIntegerTest {
         double expResult, result;
         for (int i = 0; i < totalTestIntegers; i++) {
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = testIntegers.get(i).getRing().getRadSqrt() * randomSurdForHalfInts + randomRegForHalfInts;
+                expResult = testIntegers.get(i).getRing().getRadSqrt() 
+                        * randomSurdForHalfInts + randomRegForHalfInts;
                 expResult /= 2;
             } else {
-                expResult = testIntegers.get(i).getRing().getRadSqrt() * randomSurdPart + randomRegPart;
+                expResult = testIntegers.get(i).getRing().getRadSqrt() 
+                        * randomSurdPart + randomRegPart;
             }
             result = testIntegers.get(i).getRealPartNumeric();
-            System.out.println(testIntegers.get(i).toASCIIString() + " = " + result);
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            System.out.println(testIntegers.get(i).toASCIIString() + " = " 
+                    + result);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         }
     }
 
@@ -556,7 +606,7 @@ public class RealQuadraticIntegerTest {
         double result;
         for (int i = 0; i < totalTestIntegers; i++) {
             result = testIntegers.get(i).getImagPartNumeric();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         }
     }
     
@@ -572,11 +622,11 @@ public class RealQuadraticIntegerTest {
             num = num.plus(i);
             expResult = 0.0;
             result = num.angle();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
             num = num.times(-1); // Negate number
             expResult = Math.PI;
             result = num.angle();
-            assertEquals(expResult, result, ImaginaryQuadraticRingTest.TEST_DELTA);
+            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
             num = num.times(-1); // Back to positive
         }
     }
@@ -1447,43 +1497,6 @@ public class RealQuadraticIntegerTest {
                 failMessage = failMessage + "Exception \"" + e.getMessage() + "\"";
                 fail(failMessage);
             }
-        }
-    }
-    
-    /**
-     * Test of plus method, of class RealQuadraticInteger, inherited from {@link 
-     * QuadraticInteger}. Adding real quadratic integers at the edges of what 
-     * the QuadraticInteger type can represent should cause arithmetic overflows 
-     * indicated by ArithmeticException being thrown.
-     */
-    @Test
-    public void testPlusArithmeticOverflow() {
-        RealQuadraticInteger testSummandA = new RealQuadraticInteger(1, Integer.MAX_VALUE, ringRandom);
-        RealQuadraticInteger testSummandB = new RealQuadraticInteger(3, 7, ringRandom);
-        QuadraticInteger result;
-        try {
-            result = testSummandA.plus(testSummandB);
-            String failMsg = "Trying to add " + testSummandA.toString() + " to " + testSummandB.toString() + " should have caused arithmetic overflow, not given result " + result.toString();
-            fail(failMsg);
-        } catch (ArithmeticException ae) {
-            System.out.println("Trying to add " + testSummandA.toASCIIString() + " to " + testSummandB.toASCIIString() + " correctly triggered ArithmeticException");
-            System.out.println("\"" + ae.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to add "+ testSummandA.toString() + " to " + testSummandB.toString();
-            fail(failMsg);
-        }
-        testSummandA = new RealQuadraticInteger(Integer.MIN_VALUE + 1, 13, RING_ZPHI, 2);
-        int rationalTestSummand = -8;
-        try {
-            result = testSummandA.plus(rationalTestSummand);
-            String failMsg = "Trying to add " + testSummandA.toString() + " to " + rationalTestSummand + " should have caused arithmetic overflow, not given result " + result.toString();
-            fail(failMsg);
-        } catch (ArithmeticException ae) {
-            System.out.println("Trying to add " + testSummandA.toASCIIString() + " to " + rationalTestSummand + " correctly triggered ArithmeticException");
-            System.out.println("\"" + ae.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception to throw for trying to add "+ testSummandA.toString() + " to " + rationalTestSummand;
-            fail(failMsg);
         }
     }
     

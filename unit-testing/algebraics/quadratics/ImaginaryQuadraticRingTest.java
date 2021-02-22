@@ -42,12 +42,6 @@ public class ImaginaryQuadraticRingTest {
     private static boolean ringRandomd1mod4;
     
     /**
-     * The delta value to use when assertEquals() requires a delta value.
-     * Is this an appropriate value, or does it need to be smaller?
-     */
-    public static final double TEST_DELTA = 0.00001;
-    
-    /**
      * Sets up five ImaginaryQuadraticRing objects, corresponding to 
      * <b>Z</b>[<i>i</i>], <b>Z</b>[&radic;&minus;2], <b>Z</b>[&omega;], 
      * <i>O</i><sub><b>Q</b>(&radic;&minus;7)</sub> and a randomly chosen ring.
@@ -229,11 +223,16 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testGetAbsNegRadSqrt() {
         System.out.println("getAbsNegRadSqrt");
-        assertEquals(1.0, ringGaussian.getAbsNegRadSqrt(), TEST_DELTA);
-        assertEquals(Math.sqrt(2), ringZi2.getAbsNegRadSqrt(), TEST_DELTA);
-        assertEquals(Math.sqrt(3), ringEisenstein.getAbsNegRadSqrt(), TEST_DELTA);
-        assertEquals(Math.sqrt(7), ringOQi7.getAbsNegRadSqrt(), TEST_DELTA);
-        assertEquals(Math.sqrt(-randomDiscr), ringRandom.getAbsNegRadSqrt(), TEST_DELTA);
+        assertEquals(1.0, ringGaussian.getAbsNegRadSqrt(), 
+                QuadraticRingTest.TEST_DELTA);
+        assertEquals(Math.sqrt(2), ringZi2.getAbsNegRadSqrt(), 
+                QuadraticRingTest.TEST_DELTA);
+        assertEquals(Math.sqrt(3), ringEisenstein.getAbsNegRadSqrt(), 
+                QuadraticRingTest.TEST_DELTA);
+        assertEquals(Math.sqrt(7), ringOQi7.getAbsNegRadSqrt(), 
+                QuadraticRingTest.TEST_DELTA);
+        assertEquals(Math.sqrt(-randomDiscr), ringRandom.getAbsNegRadSqrt(), 
+                QuadraticRingTest.TEST_DELTA);
     }
     
     /**
