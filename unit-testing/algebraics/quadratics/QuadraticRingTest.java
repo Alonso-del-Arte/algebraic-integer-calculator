@@ -17,6 +17,9 @@
 package algebraics.quadratics;
 
 import algebraics.PowerBasis;
+
+import java.util.Random;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -26,10 +29,12 @@ import static org.junit.Assert.*;
  */
 public class QuadraticRingTest {
     
+    private static final Random RANDOM = new Random();
+    
     /**
      * The delta value to use when assertEquals() requires a delta value.
      */
-    public static final double TEST_DELTA = 0.00000001;
+    static final double TEST_DELTA = 0.00000001;
     
     /**
      * Test of getRadicand method, of class QuadraticRing.
@@ -39,8 +44,8 @@ public class QuadraticRingTest {
         System.out.println("getRadicand");
         QuadraticRing instance = null;
         int expResult = 0;
-        int result = instance.getRadicand();
-        assertEquals(expResult, result);
+//        int result = instance.getRadicand();
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -53,8 +58,8 @@ public class QuadraticRingTest {
         System.out.println("getRadSqrt");
         QuadraticRing instance = null;
         double expResult = 0.0;
-        double result = instance.getRadSqrt();
-        assertEquals(expResult, result, 0.0);
+//        double result = instance.getRadSqrt();
+//        assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -67,8 +72,8 @@ public class QuadraticRingTest {
         System.out.println("getAbsNegRad");
         QuadraticRing instance = null;
         int expResult = 0;
-        int result = instance.getAbsNegRad();
-        assertEquals(expResult, result);
+//        int result = instance.getAbsNegRad();
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -81,8 +86,8 @@ public class QuadraticRingTest {
         System.out.println("getAbsNegRadSqrt");
         QuadraticRing instance = null;
         double expResult = 0.0;
-        double result = instance.getAbsNegRadSqrt();
-        assertEquals(expResult, result, 0.0);
+//        double result = instance.getAbsNegRadSqrt();
+//        assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -110,8 +115,8 @@ public class QuadraticRingTest {
         Object obj = null;
         QuadraticRing instance = null;
         boolean expResult = false;
-        boolean result = instance.equals(obj);
-        assertEquals(expResult, result);
+//        boolean result = instance.equals(obj);
+//        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -150,38 +155,64 @@ public class QuadraticRingTest {
     @Test
     public void testApply() {
         System.out.println("apply");
-        int d = 0;
-        QuadraticRing expResult = null;
-        QuadraticRing result = QuadraticRing.apply(d);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int d = -1;
+        QuadraticRing expected = new ImaginaryQuadraticRing(d);
+        QuadraticRing actual = QuadraticRing.apply(d);
+        assertEquals(expected, actual);
+        d = 2;
+        expected = new RealQuadraticRing(d);
+        actual = QuadraticRing.apply(d);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testApplyRejectsZero() {
+        try {
+            QuadraticRing badRing = QuadraticRing.apply(0);
+            String msg = "apply(0) should not have given " + badRing.toString();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("apply(0) caused IllegalArgumentException");
+            String excMsg = iae.getMessage();
+            assert excMsg != null : "Message should not be null";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for apply(0)";
+            fail(msg);
+        }
+    }
+
+    @Test
+    public void testApplyRejectsSquareMultiple() {
+        int d = RANDOM.nextInt() * 36;
+        try {
+            QuadraticRing badRing = QuadraticRing.apply(d);
+            String msg = "apply(" + d + ") should not have given " 
+                    + badRing.toString();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("apply(" + d 
+                    + ") caused IllegalArgumentException");
+            String excMsg = iae.getMessage();
+            assert excMsg != null : "Message should not be null";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for apply(" + d + ")";
+            fail(msg);
+        }
     }
 
     public class QuadraticRingImpl extends QuadraticRing {
 
         @Override
         public boolean isPurelyReal() {
-            return false;
+            return this.radicand > 0;
         }
 
-        @Override
-        public double getRadSqrt() {
-            return 0.0;
-        }
-
-        @Override
-        public int getAbsNegRad() {
-            return 0;
-        }
-
-        @Override
-        public double getAbsNegRadSqrt() {
-            return 0.0;
-        }
-
-        public QuadraticRingImpl() {
-            super(0);
+        public QuadraticRingImpl(int d) {
+            super(d);
         }
 
     }
