@@ -37,11 +37,13 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      */
     protected final int radicand;
     
+    protected final int absRadicand;
+    
     /**
      * A rational approximation of either &radic;<i>d</i> for <i>d</i> positive 
      * or (&radic;<i>d</i>)/<i>i</i> for <i>d</i> negative.
      */
-    protected double realRadSqrt;
+    protected final double realRadSqrt;
 
     /**
      * Should be true only if radicand is congruent to 1 modulo 4. Remember that 
@@ -116,23 +118,28 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * Gives the numeric value of the square root of the radicand as a double 
      * precision floating point number, if possible.
      * @return A rational approximation of the square root of the radicand, if 
-     * possible. For example, for <b>Z</b>[&radic;2] this would be roughly 
-     * 1.414213562373.
+     * possible. For example, for <b>Z</b>[&radic;2] this would probably be 
+     * 1.4142135623730951.
      * @throws UnsupportedOperationException If called upon an instance of 
      * {@link ImaginaryQuadraticRing}.
      */
-    public abstract double getRadSqrt();
+    public double getRadSqrt() {
+        return this.realRadSqrt;
+    }
     
     /**
-     * This function is included merely to simplify the inheritance structure of 
-     * {@link QuadraticRing} to {@link ImaginaryQuadraticRing}.
+     * Gives the absolute value of the radicand. This function is included 
+     * merely to simplify the inheritance structure of {@link QuadraticRing} to 
+     * {@link ImaginaryQuadraticRing}.
      * @return The same number as {@link QuadraticRing#getRadicand() 
      * getRadicand()} in the case of {@link RealQuadraticRing}. However, for 
      * <code>ImaginaryQuadraticRing</code>, this is the absolute value. For 
      * example, for both <b>Z</b>[&radic;&minus;2] and <b>Z</b>[&radic;2] this 
      * would be 2.
      */
-    public abstract int getAbsNegRad();
+    public int getAbsNegRad() {
+        return this.absRadicand;
+    }
     
     /**
      * Gives a numeric approximation of the square root of the absolute value of 
@@ -146,7 +153,9 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * case is this number ever an exact value: in the case of 
      * <b>Z</b>[<i>i</i>].
      */
-    public abstract double getAbsNegRadSqrt();
+    public double getAbsNegRadSqrt() {
+        return this.realRadSqrt;
+    }
     
     /**
      * 
@@ -181,28 +190,25 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      */
     @Override
     public String toString() {
-        String IQRString;
+        String intermediate;
         switch (this.radicand) {
             case 5:
-                IQRString = "Z[\u03C6]";
-                break;
+                return "Z[\u03C6]";
             case -1:
-                IQRString = "Z[i]";
-                break;
+                return "Z[i]";
             case -3:
-                IQRString = "Z[\u03C9]";
-                break;
+                return "Z[\u03C9]";
             default:
                 if (this.d1mod4) {
-                    IQRString = "O_(Q(\u221A" + this.radicand + "))";
+                    intermediate = "O_(Q(\u221A" + this.radicand + "))";
                 } else {
-                    IQRString = "Z[\u221A" + this.radicand + "]";
+                    intermediate = "Z[\u221A" + this.radicand + "]";
                 }
         }
         if (this.radicand < 0) {
-            IQRString = IQRString.replace("-", "\u2212");
+            intermediate = intermediate.replace("-", "\u2212");
         }
-        return IQRString;
+        return intermediate;
     }
     
     /**
@@ -220,25 +226,20 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      */
     @Override
     public String toASCIIString() {
-        String IQRString;
         switch (this.radicand) {
             case -3:
-                IQRString = "Z[omega]";
-                break;
+                return "Z[omega]";
             case -1:
-                IQRString = "Z[i]";
-                break;
+                return "Z[i]";
             case 5:
-                IQRString = "Z[phi]";
-                break;
+                return "Z[phi]";
             default:
                 if (this.d1mod4) {
-                    IQRString = "O_(Q(sqrt(" + this.radicand + ")))";
+                    return "O_(Q(sqrt(" + this.radicand + ")))";
                 } else {
-                    IQRString = "Z[sqrt(" + this.radicand + ")]";
+                    return "Z[sqrt(" + this.radicand + ")]";
                 }
         }
-        return IQRString;
     }
 
     /**
@@ -257,35 +258,30 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      */
     @Override
     public String toTeXString() {
-        String IQRString;
-        String QChar;
-        String ZChar;
+        String qSymbol;
+        String zSymbol;
         if (preferenceForBlackboardBold) {
-            QChar = "\\mathbb Q";
-            ZChar = "\\mathbb Z";
+            qSymbol = "\\mathbb Q";
+            zSymbol = "\\mathbb Z";
         } else {
-            QChar = "\\textbf Q";
-            ZChar = "\\textbf Z";
+            qSymbol = "\\textbf Q";
+            zSymbol = "\\textbf Z";
         }
         switch (this.radicand) {
             case -1:
-                IQRString = ZChar + "[i]";
-                break;
+                return zSymbol + "[i]";
             case -3:
-                IQRString = ZChar + "[\\omega]";
-                break;
+                return zSymbol + "[\\omega]";
             case 5:
-                IQRString = ZChar + "[\\phi]";
-                break;
+                return zSymbol + "[\\phi]";
             default:
                 if (this.d1mod4) {
-                    IQRString = "\\mathcal O_{" + QChar + "(\\sqrt{" 
+                    return "\\mathcal O_{" + qSymbol + "(\\sqrt{" 
                             + this.radicand + "})}";
                 } else {
-                    IQRString = ZChar + "[\\sqrt{" + this.radicand + "}]";
+                    return zSymbol + "[\\sqrt{" + this.radicand + "}]";
             }
         }
-        return IQRString;
     }
     
     /**
@@ -311,35 +307,30 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      */
     @Override
     public String toHTMLString() {
-        String IQRString;
-        String QChar;
-        String ZChar;
+        String qSymbol;
+        String zSymbol;
         if (preferenceForBlackboardBold) {
-            QChar = "\u211A"; // Double-struck capital Q
-            ZChar = "\u2124"; // Double-struck capital Z
+            qSymbol = "\u211A"; // Double-struck capital Q
+            zSymbol = "\u2124"; // Double-struck capital Z
         } else {
-            QChar = "<b>Q</b>";
-            ZChar = "<b>Z</b>";
+            qSymbol = "<b>Q</b>";
+            zSymbol = "<b>Z</b>";
         }
         switch (this.radicand) {
             case -3:
-                IQRString = ZChar + "[&omega;]";
-                break;
+                return zSymbol + "[&omega;]";
             case -1:
-                IQRString = ZChar + "[<i>i</i>]";
-                break;
+                return zSymbol + "[<i>i</i>]";
             case 5:
-                IQRString = ZChar + "[&phi;]";
-                break;
+                return zSymbol + "[&phi;]";
             default:
                 if (this.d1mod4) {
-                    IQRString = "<i>O</i><sub>" + QChar + "(&radic;(" 
+                    return "<i>O</i><sub>" + qSymbol + "(&radic;(" 
                             + this.radicand + "))</sub>";
                 } else {
-                    IQRString = ZChar + "[&radic;" + this.radicand + "]";
+                    return zSymbol + "[&radic;" + this.radicand + "]";
                 }
         }
-        return IQRString;
     }
     
     /**
@@ -355,31 +346,28 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      */
     @Override
     public String toFilenameString() {
-        String IQRString;
+        String intermediate;
         int radNum = this.radicand;
         switch (radNum) {
             case -3:
-                IQRString = "ZW";
-                break;
+                return "ZW";
             case -1:
-                IQRString = "ZI";
-                break;
+                return "ZI";
             case 5:
-                IQRString = "ZPhi";
-                break;
+                return "ZPhi";
             default:
                 if (this.d1mod4) {
-                    IQRString = "OQ";
+                    intermediate = "OQ";
                 } else {
-                    IQRString = "Z";
+                    intermediate = "Z";
                 }
                 if (this.radicand < 0) {
-                    IQRString = IQRString + "I";
+                    intermediate = intermediate + "I";
                     radNum *= -1;
                 }
-                IQRString = IQRString + radNum;
+                intermediate = intermediate + radNum;
         }
-        return IQRString;
+        return intermediate;
     }
     
     /**
@@ -438,9 +426,20 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
         return MAX_ALGEBRAIC_DEGREE;
     }
     
-    // STUB TO FAIL THE FIRST TEST
     public static QuadraticRing apply(int d) {
-        return new ImaginaryQuadraticRing(-1);
+        String excMsg;
+        switch (Integer.signum(d)) {
+            case -1:
+                return new ImaginaryQuadraticRing(d);
+            case 0:
+                excMsg = "0 is not valid for parameter d";
+                throw new IllegalArgumentException(excMsg);
+            case 1:
+                return new RealQuadraticRing(d);
+            default:
+                excMsg = "Unexpected error for d = " + d;
+                throw new RuntimeException(excMsg);
+        }
     }
     
     /**
@@ -458,6 +457,8 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
             throw new IllegalArgumentException(excMsg);
         }
         this.radicand = d;
+        this.absRadicand = Math.abs(d);
+        this.realRadSqrt = Math.sqrt(this.absRadicand);
     }
     
 }
