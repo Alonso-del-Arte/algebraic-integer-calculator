@@ -18,6 +18,7 @@ package algebraics.quadratics;
 
 import algebraics.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
+import fractions.Fraction;
 
 import java.util.Random;
 
@@ -43,26 +44,12 @@ public class QuadraticRingTest {
     @Test
     public void testGetRadicand() {
         System.out.println("getRadicand");
-        QuadraticRing instance = null;
-        int expResult = 0;
-//        int result = instance.getRadicand();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getRadSqrt method, of class QuadraticRing.
-     */
-    @Test
-    public void testGetRadSqrt() {
-        System.out.println("getRadSqrt");
-        QuadraticRing instance = null;
-        double expResult = 0.0;
-//        double result = instance.getRadSqrt();
-//        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int d = RANDOM.nextInt();
+        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        int expected = d;
+        int actual = ring.getRadicand();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -71,12 +58,12 @@ public class QuadraticRingTest {
     @Test
     public void testGetAbsNegRad() {
         System.out.println("getAbsNegRad");
-        QuadraticRing instance = null;
-        int expResult = 0;
-//        int result = instance.getAbsNegRad();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int d = RANDOM.nextInt();
+        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        int expected = Math.abs(d);
+        int actual = ring.getAbsNegRad();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -99,12 +86,14 @@ public class QuadraticRingTest {
     @Test
     public void testGetPowerBasis() {
         System.out.println("getPowerBasis");
-//        QuadraticRing instance = null;
-//        PowerBasis expResult = null;
-//        PowerBasis result = instance.getPowerBasis();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int d = RANDOM.nextInt();
+        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        Fraction one = new Fraction(1);
+        Fraction[] ones = {one, one};
+        PowerBasis expected = new PowerBasis(ones);
+        PowerBasis actual = ring.getPowerBasis();
+        assertEquals(expected, actual);
     }
 
     /**
