@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.PowerBasis;
+import calculators.NumberTheoreticFunctionsCalculator;
 
 import java.util.Random;
 
@@ -162,6 +163,24 @@ public class QuadraticRingTest {
         d = 2;
         expected = new RealQuadraticRing(d);
         actual = QuadraticRing.apply(d);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testApplyRandomImaginary() {
+        int d = -RANDOM.nextInt(4096) - 1;
+        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        QuadraticRing expected = new ImaginaryQuadraticRing(d);
+        QuadraticRing actual = QuadraticRing.apply(d);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testApplyRandomReal() {
+        int d = RANDOM.nextInt(4096) + 2;
+        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        QuadraticRing expected = new RealQuadraticRing(d);
+        QuadraticRing actual = QuadraticRing.apply(d);
         assertEquals(expected, actual);
     }
     
