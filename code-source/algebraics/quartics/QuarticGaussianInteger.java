@@ -286,6 +286,18 @@ public class QuarticGaussianInteger extends QuarticInteger
 
     // STUB TO FAIL FIRST TEST
     @Override
+    public QuarticGaussianInteger mod(QuarticGaussianInteger divisor) {
+        return new QuarticGaussianInteger(-1, -1, -1, -1);
+    }
+
+    // STUB TO FAIL FIRST TEST
+    @Override
+    public QuarticGaussianInteger mod(int divisor) {
+        return new QuarticGaussianInteger(-1, -1, -1, -1);
+    }
+
+    // STUB TO FAIL FIRST TEST
+    @Override
     public double abs() {
         return 0.0;
     }
