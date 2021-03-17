@@ -44,6 +44,8 @@ import static org.junit.Assert.*;
  */
 public class ImaginaryQuadraticIntegerTest {
     
+    private static final Random RANDOM = new Random();
+    
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>], numbers of the form 
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
@@ -173,11 +175,10 @@ public class ImaginaryQuadraticIntegerTest {
                 * (randomDiscr + 1))));
         System.out.println("Maximum for real and imaginary parts is " + maxAB 
                 + ".");
-        Random ranNumGen = new Random();
-        randomRealPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
-        randomImagPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
+        randomRealPart = RANDOM.nextInt(2 * maxAB) - maxAB;
+        randomImagPart = RANDOM.nextInt(2 * maxAB) - maxAB;
         if (randomImagPart == 0) {
-            randomImagPart = 1; // We want to make sure none of these random imaginary quadratic integers are purely real.
+            randomImagPart = 1;
         }
         randomRealForHalfInts = 2 * randomRealPart + 1;
         randomImagForHalfInts = 2 * randomImagPart + 1;
@@ -189,67 +190,92 @@ public class ImaginaryQuadraticIntegerTest {
         testNorms = new ArrayList<>();
         testNormsRealParts = new ArrayList<>();
         int currNorm;
-        ImaginaryQuadraticInteger currIQI = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger currIQI 
+                = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, 
+                        RING_GAUSSIAN);
         testIntegers.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(-randomRealPart, -randomImagPart, RING_GAUSSIAN);
+        currIQI = new ImaginaryQuadraticInteger(-randomRealPart, 
+                -randomImagPart, RING_GAUSSIAN);
         testAdditiveInverses.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(randomRealPart, -randomImagPart, RING_GAUSSIAN);
+        currIQI = new ImaginaryQuadraticInteger(randomRealPart, -randomImagPart, 
+                RING_GAUSSIAN);
         testConjugates.add(currIQI);
-        currNorm = randomRealPart * randomRealPart + randomImagPart * randomImagPart;
+        currNorm = randomRealPart * randomRealPart + randomImagPart 
+                * randomImagPart;
         currIQI = new ImaginaryQuadraticInteger(currNorm, 0, RING_GAUSSIAN, 1);
         testNorms.add(currIQI);
         testNormsRealParts.add(currNorm);
-        currIQI = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, RING_ZI2);
+        currIQI = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, 
+                RING_ZI2);
         testIntegers.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(-randomRealPart, -randomImagPart, RING_ZI2);
+        currIQI = new ImaginaryQuadraticInteger(-randomRealPart, 
+                -randomImagPart, RING_ZI2);
         testAdditiveInverses.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(randomRealPart, -randomImagPart, RING_ZI2);
+        currIQI = new ImaginaryQuadraticInteger(randomRealPart, -randomImagPart, 
+                RING_ZI2);
         testConjugates.add(currIQI);
-        currNorm = randomRealPart * randomRealPart + 2 * randomImagPart * randomImagPart;
+        currNorm = randomRealPart * randomRealPart + 2 * randomImagPart 
+                * randomImagPart;
         currIQI = new ImaginaryQuadraticInteger(currNorm, 0, RING_ZI2);
         testNorms.add(currIQI);
         testNormsRealParts.add(currNorm);
-        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, randomImagForHalfInts, RING_EISENSTEIN, 2);
+        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, 
+                randomImagForHalfInts, RING_EISENSTEIN, 2);
         testIntegers.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(-randomRealForHalfInts, -randomImagForHalfInts, RING_EISENSTEIN, 2);
+        currIQI = new ImaginaryQuadraticInteger(-randomRealForHalfInts, 
+                -randomImagForHalfInts, RING_EISENSTEIN, 2);
         testAdditiveInverses.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, -randomImagForHalfInts, RING_EISENSTEIN, 2);
+        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, 
+                -randomImagForHalfInts, RING_EISENSTEIN, 2);
         testConjugates.add(currIQI);
-        currNorm = (randomRealForHalfInts * randomRealForHalfInts + 3 * randomImagForHalfInts * randomImagForHalfInts)/4;
+        currNorm = (randomRealForHalfInts * randomRealForHalfInts + 3 
+                * randomImagForHalfInts * randomImagForHalfInts)/4;
         currIQI = new ImaginaryQuadraticInteger(currNorm, 0, RING_EISENSTEIN);
         testNorms.add(currIQI);
         testNormsRealParts.add(currNorm);
-        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, randomImagForHalfInts, RING_OQI7, 2);
+        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, 
+                randomImagForHalfInts, RING_OQI7, 2);
         testIntegers.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(-randomRealForHalfInts, -randomImagForHalfInts, RING_OQI7, 2);
+        currIQI = new ImaginaryQuadraticInteger(-randomRealForHalfInts, 
+                -randomImagForHalfInts, RING_OQI7, 2);
         testAdditiveInverses.add(currIQI);
-        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, -randomImagForHalfInts, RING_OQI7, 2);
+        currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, 
+                -randomImagForHalfInts, RING_OQI7, 2);
         testConjugates.add(currIQI);
-        currNorm = (randomRealForHalfInts * randomRealForHalfInts + 7 * randomImagForHalfInts * randomImagForHalfInts)/4;
+        currNorm = (randomRealForHalfInts * randomRealForHalfInts + 7 
+                * randomImagForHalfInts * randomImagForHalfInts) / 4;
         currIQI = new ImaginaryQuadraticInteger(currNorm, 0, RING_OQI7, 1);
         testNorms.add(currIQI);
         testNormsRealParts.add(currNorm);
         if (ringRandomd1mod4) {
-            currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, randomImagForHalfInts, ringRandom, 2);
+            currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, 
+                    randomImagForHalfInts, ringRandom, 2);
             testIntegers.add(currIQI);
-            currIQI = new ImaginaryQuadraticInteger(-randomRealForHalfInts, -randomImagForHalfInts, ringRandom, 2);
+            currIQI = new ImaginaryQuadraticInteger(-randomRealForHalfInts, 
+                    -randomImagForHalfInts, ringRandom, 2);
             testAdditiveInverses.add(currIQI);
-            currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, -randomImagForHalfInts, ringRandom, 2);
+            currIQI = new ImaginaryQuadraticInteger(randomRealForHalfInts, 
+                    -randomImagForHalfInts, ringRandom, 2);
             testConjugates.add(currIQI);
             currNorm = randomRealForHalfInts * randomRealForHalfInts;
-            currNorm -= randomDiscr * randomImagForHalfInts * randomImagForHalfInts;
+            currNorm -= randomDiscr * randomImagForHalfInts 
+                    * randomImagForHalfInts;
             currNorm /= 4;
             currIQI = new ImaginaryQuadraticInteger(currNorm, 0, ringRandom);
             testNorms.add(currIQI);
             testNormsRealParts.add(currNorm);
         } else {
-            currIQI = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, ringRandom);
+            currIQI = new ImaginaryQuadraticInteger(randomRealPart, 
+                    randomImagPart, ringRandom);
             testIntegers.add(currIQI);
-            currIQI = new ImaginaryQuadraticInteger(-randomRealPart, -randomImagPart, ringRandom);
+            currIQI = new ImaginaryQuadraticInteger(-randomRealPart, 
+                    -randomImagPart, ringRandom);
             testAdditiveInverses.add(currIQI);
-            currIQI = new ImaginaryQuadraticInteger(randomRealPart, -randomImagPart, ringRandom);
+            currIQI = new ImaginaryQuadraticInteger(randomRealPart, 
+                    -randomImagPart, ringRandom);
             testConjugates.add(currIQI);
-            currNorm = randomRealPart * randomRealPart + (-randomDiscr) * randomImagPart * randomImagPart;
+            currNorm = randomRealPart * randomRealPart + (-randomDiscr) 
+                    * randomImagPart * randomImagPart;
             currIQI = new ImaginaryQuadraticInteger(currNorm, 0, ringRandom);
             testNorms.add(currIQI);
             testNormsRealParts.add(currNorm);
@@ -258,35 +284,55 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of algebraicDegree method, of class ImaginaryQuadraticInteger, 
-     * inherited from {@link QuadraticInteger}.
+     * Test of the algebraicDegree function, of the ImaginaryQuadraticInteger  
+     * class, inherited from {@link QuadraticInteger}. Quadratic integers with 
+     * nonzero imaginary part should have algebraic degree 2.
      */
     @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
-        int expResult = 2; // Quadratic integers with nonzero imaginary part should have algebraic degree 2
-        int result;
+        int expected = 2;
+        int actual;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).algebraicDegree();
-            assertEquals(expResult, result);
-            result = testAdditiveInverses.get(i).algebraicDegree();
-            assertEquals(expResult, result);
-            result = testConjugates.get(i).algebraicDegree();
-            assertEquals(expResult, result);
+            actual = testIntegers.get(i).algebraicDegree();
+            assertEquals(expected, actual);
+            actual = testAdditiveInverses.get(i).algebraicDegree();
+            assertEquals(expected, actual);
+            actual = testConjugates.get(i).algebraicDegree();
+            assertEquals(expected, actual);
         }
-        expResult = 1; // Purely real nonzero integers should have algebraic degree 1
+    }
+    
+    /**
+     * Another test of the algebraicDegree function, of the 
+     * ImaginaryQuadraticInteger inherited from {@link QuadraticInteger}. Purely 
+     * real nonzero integers should have algebraic degree 1.
+     */
+    @Test
+    public void testAlgebraicDegreeOrdinaryIntegers() {
+        int expected = 1;
+        int actual;
         for (QuadraticInteger normIQI : testNorms) {
-            result = normIQI.algebraicDegree();
-            assertEquals(expResult, result);
+            actual = normIQI.algebraicDegree();
+            assertEquals(expected, actual);
         }
-        /* And last but not least, 0 should have algebraic degree 0 regardless 
-           of which ring it comes from. */
-        expResult = 0;
-        result = zeroIQI.algebraicDegree();
-        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Another test of the algebraicDegree function, of the 
+     * ImaginaryQuadraticInteger class, inherited from {@link QuadraticInteger}. 
+     * Zero should have algebraic degree 0 regardless of which ring it comes 
+     * from.
+     */
+    @Test
+    public void testAlgebraicDegreeZero() {
+        /* And last but not least, 0  */
+        int expected = 0;
+        int actual = zeroIQI.algebraicDegree();
+        assertEquals(expected, actual);
         zeroIQI = new ImaginaryQuadraticInteger(0, 0, RING_EISENSTEIN);
-        result = zeroIQI.algebraicDegree();
-        assertEquals(expResult, result);
+        actual = zeroIQI.algebraicDegree();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -1553,52 +1599,141 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of inferStep method, of class ImaginaryQuadraticInteger.
+     * Test of the inferStep function, of the ImaginaryQuadraticInteger class. A 
+     * line is chosen so that the step is either 1 + sqrt(d) or 1/2 + sqrt(d)/2 
+     * (the latter only if ringRandom is a domain with "half-integers").
      */
     @Test
     public void testInferStep() {
         System.out.println("inferStep");
-        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, -5, RING_GAUSSIAN);
-        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(5, 5, RING_GAUSSIAN);
-        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(1, 1, RING_GAUSSIAN);
-        ImaginaryQuadraticInteger result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
-        assertEquals(expResult, result);
-        beginPoint = new ImaginaryQuadraticInteger(-2, 0, RING_ZI2);
-        endPoint = new ImaginaryQuadraticInteger(-11, 3, RING_ZI2);
-        expResult = new ImaginaryQuadraticInteger(-3, 1, RING_ZI2);
-        result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
-        assertEquals(expResult, result);
-        beginPoint = new ImaginaryQuadraticInteger(-7, 0, RING_EISENSTEIN);
-        endPoint = new ImaginaryQuadraticInteger(-5, -2, RING_EISENSTEIN);
-        expResult = new ImaginaryQuadraticInteger(1, -1, RING_EISENSTEIN, 2);
-        result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
-        assertEquals(expResult, result);
-        beginPoint = new ImaginaryQuadraticInteger(-1, -3, RING_OQI7, 2);
-        endPoint = new ImaginaryQuadraticInteger(-11, -3, RING_OQI7);
-        expResult = new ImaginaryQuadraticInteger(-7, -1, RING_OQI7, 2);
-        result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
-        assertEquals(expResult, result);
+        int startCoord = -RANDOM.nextInt(128) - 1;
+        int endCoord = -startCoord * RANDOM.nextInt(32);
+        int offset = RANDOM.nextInt(16) - 8;
+        ImaginaryQuadraticInteger startPoint 
+                = new ImaginaryQuadraticInteger(startCoord - offset, startCoord, 
+                        ringRandom);
+        ImaginaryQuadraticInteger endPoint 
+                = new ImaginaryQuadraticInteger(endCoord - offset, endCoord, 
+                        ringRandom);
+        QuadraticInteger expected = new ImaginaryQuadraticInteger(1, 1, 
+                ringRandom);
+        if (ringRandom.hasHalfIntegers()) {
+            try {
+                expected = expected.divides(2);
+            } catch (NotDivisibleException nde) {
+                System.out.println("\"" + nde.getMessage() + "\"");
+                String msg = "Trying to halve " + expected.toString() 
+                        + " should not have caused NotDivisibleException";
+                fail(msg);
+            }
+        }
+        ImaginaryQuadraticInteger actual 
+                = ImaginaryQuadraticInteger.inferStep(startPoint, endPoint);
+        assertEquals(expected, actual);
     }
     
     /**
-     * Test of inferStep method, of class ImaginaryQuadraticInteger. Trying to 
-     * infer a step between imaginary quadratic integers from different rings 
-     * should cause {@link algebraics.AlgebraicDegreeOverflowException}.
+     * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
+     * class. The step to be inferred from 5 - 5i to -5 + 5i is -1 + i.
+     */
+    @Test
+    public void testInferStepGaussian() {
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(5, 
+                -5, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-5, 
+                5, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(-1, 
+                1, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger actual 
+                = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
+     * class. The step to be inferred from -2 to -11 + 3sqrt(-2) is -3 + 
+     * sqrt(-2).
+     */
+    @Test
+    public void testInferStepZi2() {
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-2, 
+                0, RING_ZI2);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-11, 
+                3, RING_ZI2);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(-3, 
+                1, RING_ZI2);
+        ImaginaryQuadraticInteger actual 
+                = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
+     * class. The step to be inferred from -7 to -5 - 2sqrt(-3) is 1/2 - 
+     * sqrt(-3)/2.
+     */
+    @Test
+    public void testInferStepEisenstein() {
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-7, 
+                0, RING_EISENSTEIN);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-5, 
+                -2, RING_EISENSTEIN);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(1, 
+                -1, RING_EISENSTEIN, 2);
+        ImaginaryQuadraticInteger actual 
+                = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
+     * class. The step to be inferred from -1 - 3sqrt(-7)/2 to -11 - 3sqrt(-7) 
+     * is -7/2 - sqrt(-7)/2.
+     */
+    @Test
+    public void testInferStepOQi7() {
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-1, 
+                -3, RING_OQI7, 2);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-11, 
+                -3, RING_OQI7);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(-7, 
+                -1, RING_OQI7, 2);
+        ImaginaryQuadraticInteger actual 
+                = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
+     * class. Trying to infer a step between imaginary quadratic integers from 
+     * different rings should cause {@link 
+     * algebraics.AlgebraicDegreeOverflowException}.
      */
     @Test
     public void testInferStepAlgebraicDegreeOverflow() {
-        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, -5, RING_GAUSSIAN);
-        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-1, -3, RING_OQI7, 2);
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, 
+                -5, RING_GAUSSIAN);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-1, 
+                -3, RING_OQI7, 2);
         try {
-            ImaginaryQuadraticInteger result = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
-            String failMessage = "Trying to infer step between " + beginPoint.toString() + " and " + endPoint.toString() + " should have caused an exception, not given result " + result.toString();
-            fail(failMessage);
+            ImaginaryQuadraticInteger result 
+                    = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+            String msg = "Trying to infer step between " + beginPoint.toString() 
+                    + " and " + endPoint.toString() 
+                    + " should have caused an exception, not given result " 
+                    + result.toString();
+            fail(msg);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            System.out.println("Trying to infer step between " + beginPoint.toASCIIString() + " and " + endPoint.toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException");
+            System.out.println("Trying to infer step between " 
+                    + beginPoint.toASCIIString() + " and " 
+                    + endPoint.toASCIIString() 
+                    + " correctly caused AlgebraicDegreeOverflowException");
             System.out.println("\"" + adoe.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " is the wrong exception to throw for Trying to infer step between " + beginPoint.toString() + " and " + endPoint.toString();
-            fail(failMessage);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to trying to infer step between " 
+                    + beginPoint.toString() + " and " + endPoint.toString();
+            fail(msg);
         }
     }
     
