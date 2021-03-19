@@ -19,6 +19,7 @@ package algebraics.quadratics;
 import fileops.PNGFileFilter;
 
 import java.util.HashSet;
+import java.util.Random;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,6 +32,8 @@ public class ImaginaryQuadraticIntegerLineTest {
     
     private static final ImaginaryQuadraticRing RING_OQI7 
             = new ImaginaryQuadraticRing(-7);
+    
+    private static final Random RANDOM = new Random();
     
     /**
      * Test of the toString function, of the ImaginaryQuadraticIntegerLine 
@@ -75,24 +78,171 @@ public class ImaginaryQuadraticIntegerLineTest {
     }
     
     /**
-     * Test of toASCIIString method, of class ImaginaryQuadraticIntegerLine.
+     * Test of the toASCIIString function, of the ImaginaryQuadraticIntegerLine 
+     * class.
      */
     @Test
     public void testToASCIIString() {
-        fail("Haven't written test yet");
         System.out.println("toASCIIString");
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(9, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(2, 0,  
+                RING_OQI7);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        String expected = start.toASCIIString() + " to " + end.toASCIIString() 
+                + " by " + step.toASCIIString();
+        String actual = line.toASCIIString();
+        assertEquals(expected, actual);
     }
     
     /**
-     * Test of length method, of class ImaginaryQuadraticIntegerLine.
+     * Another test of the toASCIIString function, of the 
+     * ImaginaryQuadraticIntegerLine class.
+     */
+    @Test
+    public void testToASCIIStringInferredString() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(1, 0,  
+                RING_OQI7);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        String expected = start.toASCIIString() + " to " + end.toASCIIString();
+        String actual = line.toASCIIString();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testReferentialEquality() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(25, 5, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        assertEquals(line, line);
+    }
+    
+    @Test
+    public void testNotEqualsNull() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(25, 5, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        assertNotEquals(line, null);
+    }
+    
+    @Test
+    public void testNotEqualsDiffClass() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(25, 5, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        PNGFileFilter filter = new PNGFileFilter();
+        assertNotEquals(line, filter);
+    }
+    
+    @Test
+    public void testNotEqualsDiffStart() {
+        ImaginaryQuadraticInteger startA = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger startB = new ImaginaryQuadraticInteger(-5, 0, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(25, 5, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine lineA 
+                = new ImaginaryQuadraticIntegerLine(startA, end, step);
+        ImaginaryQuadraticIntegerLine lineB 
+                = new ImaginaryQuadraticIntegerLine(startB, end, step);
+        assertNotEquals(lineA, lineB);
+    }
+    
+    @Test
+    public void testNotEqualsDiffEnd() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger endA = new ImaginaryQuadraticInteger(25, 5, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger endB = new ImaginaryQuadraticInteger(16, 3, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine lineA 
+                = new ImaginaryQuadraticIntegerLine(start, endA, step);
+        ImaginaryQuadraticIntegerLine lineB 
+                = new ImaginaryQuadraticIntegerLine(start, endB, step);
+        assertNotEquals(lineA, lineB);
+    }
+    
+    @Test
+    public void testNotEqualsDiffStep() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(25, 5, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger stepA = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger stepB = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7);
+        ImaginaryQuadraticIntegerLine lineA 
+                = new ImaginaryQuadraticIntegerLine(start, end, stepA);
+        ImaginaryQuadraticIntegerLine lineB 
+                = new ImaginaryQuadraticIntegerLine(start, end, stepB);
+        assertNotEquals(lineA, lineB);
+    }
+    
+    /**
+     * Test of the equals function, of the ImaginaryQuadraticIntegerLine class.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-3, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(25, 5, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(7, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine someLine 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        ImaginaryQuadraticIntegerLine sameLine 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        assertEquals(someLine, sameLine);
+    }
+    
+    /**
+     * Test of the length function, of the ImaginaryQuadraticIntegerLine class.
      */
     @Test
     public void testLength() {
-        fail("Haven't written test yet");
-//        System.out.println("length");
-//        int expResult = 5;
-//        int result = gaussianLine.length();
-//        assertEquals(expResult, result);
+        int expected = RANDOM.nextInt(128) + 2;
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(3, 1, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(3, 
+                expected, RING_OQI7);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(0, 1, 
+                RING_OQI7);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        int actual = line.length();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -185,31 +335,6 @@ public class ImaginaryQuadraticIntegerLineTest {
 //        assertEquals(doubleStepLine.apply(doubleStepLine.length() - 1), 
 //                altEisensteinLine.apply(altEisensteinLine.length() - 1));
 //        assertNotEquals(doubleStepLine.length(), altEisensteinLine.length());
-    }
-    
-    /**
-     * Test of equals method, of class ImaginaryQuadraticIntegerLine.
-     */
-    @Test
-    public void testEquals() {
-        fail("Haven't written test yet");
-        System.out.println("equals");
-//        ImaginaryQuadraticIntegerLine sameLine 
-//                = new ImaginaryQuadraticIntegerLine(gaussianLineStart, 
-//                        gaussianLineEnd);
-//        assertEquals(gaussianLine, sameLine);
-//        assertNotEquals(gaussianLine, eisensteinLine);
-//        ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(-1);
-//        ImaginaryQuadraticInteger replacingStep 
-//                = new ImaginaryQuadraticInteger(2, 2, ring);
-//        ImaginaryQuadraticIntegerLine doubleStepLine 
-//                = gaussianLine.by(replacingStep);
-//        assertNotEquals(gaussianLine, doubleStepLine);
-//        sameLine = new ImaginaryQuadraticIntegerLine(eisensteinLineStart, 
-//                eisensteinLineEnd);
-//        assertEquals(eisensteinLine, sameLine);
-//        PNGFileFilter objDiffClass = new PNGFileFilter();
-//        assertNotEquals(gaussianLine, objDiffClass);
     }
     
     /**
