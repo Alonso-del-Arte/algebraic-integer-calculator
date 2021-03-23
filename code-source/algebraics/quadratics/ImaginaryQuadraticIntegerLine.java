@@ -22,6 +22,8 @@ import algebraics.NotDivisibleException;
  * A data structure for imaginary quadratic integers in arithmetic progression. 
  * Or more poetically, a line of imaginary quadratic integers on the complex 
  * plane.
+ * <p>NOTE: This data structure is not designed to be able to represent an 
+ * "empty" line.</p>
  * @author Alonso del Arte
  */
 public class ImaginaryQuadraticIntegerLine {
@@ -31,22 +33,42 @@ public class ImaginaryQuadraticIntegerLine {
             lineStep;
     private final int lineLength;
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Gives the starting point of this line. The result is the same as calling 
+     * {@link #apply(int)} with an index of 0.
+     * @return The starting number. For example, for a line starting at 127/2 + 
+     * 31&radic;(&minus;43)/2 and ending at &minus;53/2 &minus; 
+     * 29&radic;(&minus;43)/2, with a step of &minus;3/2 &minus; 
+     * &radic;(&minus;43)/2, this function will give 127/2 + 
+     * 31&radic;(&minus;43)/2.
+     */
     public ImaginaryQuadraticInteger getStart() {
-        return new ImaginaryQuadraticInteger(0, -1, 
-                new ImaginaryQuadraticRing(-1));
+        return this.startingPoint;
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Gives the ending point of this line. The result is the same as calling 
+     * {@link #apply(int)} with an index one less than the length of this line.
+     * @return The ending number. For example, for a line starting at 127/2 + 
+     * 31&radic;(&minus;43)/2 and ending at &minus;53/2 &minus; 
+     * 29&radic;(&minus;43)/2, with a step of &minus;3/2 &minus; 
+     * &radic;(&minus;43)/2, this function will give &minus;53/2 &minus; 
+     * 29&radic;(&minus;43)/2.
+     */
     public ImaginaryQuadraticInteger getEnd() {
-        return new ImaginaryQuadraticInteger(0, 1, 
-                new ImaginaryQuadraticRing(-1));
+        return this.endingPoint;
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Gives the step of this line. This is the most direct way to get the step.
+     * @return The step of this line. For example, for a line starting at 127/2 
+     * + 31&radic;(&minus;43)/2 and ending at &minus;53/2 &minus; 
+     * 29&radic;(&minus;43)/2, with a step of &minus;3/2 &minus; 
+     * &radic;(&minus;43)/2, this function will give &minus;3/2 &minus; 
+     * &radic;(&minus;43)/2.
+     */
     public ImaginaryQuadraticInteger getStep() {
-        return new ImaginaryQuadraticInteger(-1, -1, 
-                new ImaginaryQuadraticRing(-1));
+        return this.lineStep;
     }
     
     /**
@@ -61,14 +83,16 @@ public class ImaginaryQuadraticIntegerLine {
     }
 
     /**
-     * Retrieves a number from this line by its index.
+     * Retrieves a number from this line by its index. The index is bounded. 
+     * Trying to use an out-of-bounds index will cause an exception.
      * @param index The index of the number to retrieve. Use 0 for the starting 
-     * point, {@link #length()} &minus; 1 for the ending point, and index in 
-     * between for the numbers in between. For example, if this line has twenty 
-     * numbers, index 9 will return the tenth number.
+     * point, {@link #length()} &minus; 1 for the ending point, or an index in 
+     * between for the numbers in between the starting point and the ending 
+     * point. For example, if this line has twenty numbers, index 10 will return 
+     * the eleventh number.
      * @return The number at the specified index. For example, if this line 
      * starts at 0 and ends at 19 + 19<i>i</i>, this function will return 10 + 
-     * 10<i>i</i> for index 9.
+     * 10<i>i</i> for index 10.
      * @throws IndexOutOfBoundsException If <code>index</code> is negative, or 
      * equal to or greater than {@link #length()}.
      */
@@ -84,15 +108,29 @@ public class ImaginaryQuadraticIntegerLine {
         return (ImaginaryQuadraticInteger) indexed;
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Retrieves a number from this line by its index. This is a synonym for 
+     * {@link #apply(int)}. If an exception arises, the stack trace will have 
+     * one more line than if <code>apply()</code> had been called directly.
+     * @param index The index of the number to retrieve. Use 0 for the starting 
+     * point, {@link #length()} &minus; 1 for the ending point, or an index in 
+     * between for the numbers in between the starting point and the ending 
+     * point. For example, if this line has twenty numbers, index 10 will return 
+     * the eleventh number.
+     * @return The number at the specified index. For example, if this line 
+     * starts at 0 and ends at 19 + 19<i>i</i>, this function will return 10 + 
+     * 10<i>i</i> for index 10.
+     * @throws IndexOutOfBoundsException If <code>index</code> is negative, or 
+     * equal to or greater than {@link #length()}.
+     */
     public ImaginaryQuadraticInteger get(int index) {
-        return new ImaginaryQuadraticInteger(index, index, 
-                new ImaginaryQuadraticRing(-1));
+        return this.apply(index);
     }
     
     /**
      * Creates a new line with the same starting and ending points but a 
-     * different step.
+     * different step. This is provided mostly to get a line with a larger step 
+     * from a line with a small step.
      * @param replacementStep The step to replace the step of this line. It 
      * actually may be equal to the current step, but then there's no point in 
      * passing it through this function. For example, 3<i>i</i>.
@@ -110,7 +148,8 @@ public class ImaginaryQuadraticIntegerLine {
      * of {@link algebraics.NotDivisibleException NotDivisibleException}) or if 
      * <code>replacementStep</code> goes in the wrong direction (for example if 
      * this line starts at <i>i</i> and ends at 10<i>i</i> but 
-     * <code>replacementStep</code> is &minus;3<i>i</i> instead of 3<i>i</i>).
+     * <code>replacementStep</code> is &minus;3<i>i</i> instead of 3<i>i</i>; no 
+     * exception will be wrapped in this exception).
      * @throws NullPointerException If <code>replacementStep</code> is null.
      */
     public ImaginaryQuadraticIntegerLine 
@@ -118,7 +157,20 @@ public class ImaginaryQuadraticIntegerLine {
         return new ImaginaryQuadraticIntegerLine(this.startingPoint, 
                 this.endingPoint, replacementStep);
     }
-    
+        
+    /**
+     * Gives a representation of this line using only ASCII characters. This is 
+     * mostly for use in a REPL which may or may not have the appropriate 
+     * characters, like "&radic;" or "&minus;".
+     * @return An ASCII text representation of the line. For example, for 5 
+     * &minus; 7&radic;(&minus;2) to 19 + 35&radic;(&minus;2), this would give 
+     * "5 - 7sqrt(-2) to 19 + 35sqrt(-2)". That one has a step of 1 + 
+     * 3&radic;(&minus;2). The word "by" and the step are included only if the 
+     * step is not the same as the one inferred by {@link 
+     * ImaginaryQuadraticInteger#inferStep}. For example, for 5 &minus; 
+     * 7&radic;(&minus;2) to 19 + 35&radic;(&minus;2) by 2 + 6&radic;(&minus;2), 
+     * this would be "5 - 7sqrt(-2) to 19 + 35sqrt(-2) by 2 + 6sqrt(-2)".
+     */
     public String toASCIIString() {
         String iqilStr = this.startingPoint.toASCIIString() + " to " 
                 + this.endingPoint.toASCIIString();
@@ -128,6 +180,21 @@ public class ImaginaryQuadraticIntegerLine {
         return iqilStr;
     }
     
+    /**
+     * Gives a text representation of this line. It may include characters 
+     * outside of the ASCII set, especially if the numbers are in 
+     * <b>Z</b>[<i>i</i>]. If you need it limited to ASCII characters, use 
+     * {@link #toASCIIString()}.
+     * @return A text representation of the line. For example, for 5 
+     * &minus; 7&radic;(&minus;2) to 19 + 35&radic;(&minus;2), this would give 
+     * "5 &minus; 7&radic;(&minus;2) to 19 + 35&radic;(&minus;2)". That one has 
+     * a step of 1 + 3&radic;(&minus;2). The word "by" and the step are included 
+     * only if the step is not the same as the one inferred by {@link 
+     * ImaginaryQuadraticInteger#inferStep}. For example, for 5 &minus; 
+     * 7&radic;(&minus;2) to 19 + 35&radic;(&minus;2) by 2 + 6&radic;(&minus;2), 
+     * this would be "5 &minus; 7&radic;(&minus;2) to 19 + 35&radic;(&minus;2) 
+     * by 2 + 6&radic;(&minus;2)".
+     */
     @Override
     public String toString() {
         String iqilStr = this.startingPoint.toString() + " to " 
@@ -138,11 +205,11 @@ public class ImaginaryQuadraticIntegerLine {
         return iqilStr;
     }
     
-    // TODO: Fill in example in the following Javadoc
     /**
      * Gives a hash code for this line. Not guaranteed to be unique, but I do 
      * believe it's unique enough for most purposes.
-     * @return A hash code. [EXAMPLE GOES HERE]
+     * @return A hash code. For example, for &minus;9/2 + 7&radic;(&minus;3)/2 
+     * to 81/2 &minus; 23&radic;(&minus;3)/2, this would be 187837006.
      */
     @Override
     public int hashCode() {
@@ -152,6 +219,30 @@ public class ImaginaryQuadraticIntegerLine {
         return hash;
     }
 
+    /**
+     * Determines if this line is equal to some other object. The starting 
+     * point, ending point and step must all be the same for this line and the 
+     * compared line to register as equal.
+     * @param obj The object to check for equality. Examples: the imaginary 
+     * quadratic integer 7/2 &minus; 5&radic;(&minus;19)/2, a line from 7/2 
+     * &minus; 5&radic;(&minus;19)/2 to &minus;113/2 + 25&radic;(&minus;19)/2, a 
+     * line from 7/2 &minus; 5&radic;(&minus;19)/2 to &minus;113/2 + 
+     * 25&radic;(&minus;19)/2 by &minus;20 + 5&radic;(&minus;19), and null.
+     * @return True if and only if this line and <code>obj</code> have the same 
+     * starting point, ending point and step; false in all other cases. With the 
+     * examples listed above, this would be false for any imaginary quadratic 
+     * integer, even if it matches the starting point, ending point or step of 
+     * this line; if this line is 7/2 &minus; 5&radic;(&minus;19)/2 to 
+     * &minus;113/2 + 25&radic;(&minus;19)/2 with an inferred step of &minus;4 + 
+     * &radic;(&minus;19) then this function would return true for 7/2 &minus; 
+     * 5&radic;(&minus;19)/2 to &minus;113/2 + 25&radic;(&minus;19)/2 even if 
+     * the step of &minus;4 + &radic;(&minus;19) was explicitly given to the 
+     * constructor; this function would return false for 7/2 &minus; 
+     * 5&radic;(&minus;19)/2 to &minus;113/2 + 25&radic;(&minus;19)/2 with a 
+     * step of &minus;20 + 5&radic;(&minus;19) even though the starting points 
+     * and ending points match, but the step is different; and this function 
+     * would certainly return false for null.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
