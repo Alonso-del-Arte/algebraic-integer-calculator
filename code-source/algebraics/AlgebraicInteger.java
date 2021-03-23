@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,18 +20,20 @@ package algebraics;
  * This interface sets the basic requirements for objects representing algebraic 
  * integers. The implementing classes should provide an algebraic degree 
  * function, trace and norm functions, and the minimal polynomial formatted 
- * both as an integer array of coefficients and as a String.
+ * both as an integer array of coefficients and as a <code>String</code>.
  * <p>Almost from the beginning, {@link 
  * algebraics.quadratics.ImaginaryQuadraticInteger}, an implementation of 
- * AlgebraicInteger, had some variants of {@link Object#toString()} specifically 
+ * this interface, had some variants of {@link Object#toString()} specifically 
  * for ASCII plaintext, TeX documents and HTML pages, but it wasn't until July 
  * 2018 that I decided that some of those should be required by this 
  * interface.</p>
  * <p>Basic arithmetic functions (addition, subtraction, multiplication and 
  * division) would be nice but are not explicitly required by this interface. It 
  * is then up to the implementer to define basic arithmetic methods as static or 
- * instance methods, or both, or not at all. Other specifics are also left to 
+ * instance functions, or both, or not at all. Other specifics are also left to 
  * the implementer.</p>
+ * <p>Those wishing to implement the basic arithmetic functions as instance 
+ * functions should consider using the {@link Arithmeticable} interface.</p>
  * @author Alonso del Arte
  */
 public interface AlgebraicInteger {
@@ -47,9 +49,9 @@ public interface AlgebraicInteger {
     
     /**
      * Gives the trace of the algebraic integer. In the original version, this 
-     * was an int, but due to many overflow problems, I changed it to a long. 
-     * Overflow problems can still occur, but they're hopefully less frequent 
-     * now.
+     * was a 32-bit integer, but due to many overflow problems, I changed it to 
+     * a 64-bit integer. Overflow problems can still occur, but they're 
+     * hopefully less frequent now.
      * @return The trace. For example, given 5/2 + (&radic;&minus;7)/2, the 
      * trace would be 5.
      */
@@ -57,9 +59,10 @@ public interface AlgebraicInteger {
     
     /**
      * Gives the norm of the algebraic integer, useful for comparing integers in 
-     * the Euclidean GCD algorithm. In the original version, this was an int, 
-     * but due to many overflow problems, I changed it to a long. Overflow 
-     * problems can still occur, but they're hopefully less frequent now.
+     * the Euclidean GCD algorithm. In the original version, this was a 32-bit 
+     * integer, but due to many overflow problems, I changed it to a 64-bit 
+     * integer. Overflow problems can still occur, but they're hopefully less 
+     * frequent now.
      * @return The norm. For example, given 5/2 + (&radic;&minus;7)/2, the norm 
      * would be 8.
      */
@@ -72,41 +75,78 @@ public interface AlgebraicInteger {
      * @return An array of 64-bit integers, in total one more than the maximum 
      * possible algebraic degree in the applicable ring. If the algebraic degree 
      * of this integer is equal to that maximum possible algebraic degree in the 
-     * given ring, then the element at position length &minus; 1 in the array 
-     * ought to be 1. For example, if the algebraic integer is 1 + &#8731;2, the 
-     * result would be {3, 3, 3, 1}.
+     * given ring, then the element at position <code>length</code> &minus; 1 in 
+     * the array ought to be 1. For example, if the algebraic integer is 1 + 
+     * &#8731;2, the result would be {3, 3, 3, 1}.
      */
-    long[] minPolynomial();
+    long[] minPolynomialCoeffs();
     
     /**
-     * Gives the minimal polynomial formatted as a String. Spaces in the 
-     * polynomial String are desirable but not required. The multiplication 
-     * operator is preferably tacit, for easy transfer to TeX.
-     * @return A String in which the variable x appears as many times as 
+     * Gives the minimal polynomial formatted as text. Spaces in the text are 
+     * desirable but not required. The multiplication operator is preferably 
+     * tacit. The proper minus sign should be used when applicable. Also, 
+     * Unicode exponent characters should be used when applicable, and not the 
+     * usual digits preceded by "^". Be aware that although the fonts available 
+     * to Java AWT and Swing may have the Unicode exponent characters, those 
+     * characters may in some cases be very small and hard to read.
+     * @return Text in which the variable <i>x</i> appears as many times as 
      * dictated by the algebraic degree and how many nonzero coefficients there 
      * are. For example, if the algebraic integer is 1 + \u221B2, the result 
-     * should be preferably "x^3 - 3x^2 + 3x - 3", but "x^3-3x^2+3x-3" and 
-     * "x^3-3*x^2+3*x-3" are also acceptable. The ASCII dash should be used 
-     * instead of the Unicode minus sign, since TeX will properly understand the 
-     * former, and it can be converted to the latter if needed for HTML.
+     * should be preferably "x<sup>3</sup> &minus; 3x<sup>2</sup> + 3x &minus; 
+     * 3", but "x<sup>3</sup>&minus;3x<sup>2</sup>+3x&minus;3" would also be 
+     * acceptable.
      */
     String minPolynomialString();
     
     /**
+     * Gives the minimal polynomial formatted as text suitable for use in a TeX 
+     * document. Spaces in the text are desirable but not required. The 
+     * multiplication operator is preferably tacit. The dash should be used 
+     * instead of the minus sign, which a TeX rendering engine would convert to 
+     * the proper minus sign. When applicable, exponents should be preceded by 
+     * "^", and enclosed by curly braces if more than one digit.
+     * @return Text in which the variable <i>x</i> appears as many times as 
+     * dictated by the algebraic degree and how many nonzero coefficients there 
+     * are. For example, if the algebraic integer is 1 + \u221B2, the result 
+     * should be preferably "x^3 - 3x^2 + 3x - 3", but "x^3-3x^2+3x-3" would 
+     * also be acceptable.
+     */
+    String minPolynomialStringTeX();
+    
+    /**
+     * Gives the minimal polynomial formatted as text suitable for use in an 
+     * HTML document. Spaces in the text are desirable but not required. The 
+     * multiplication operator is preferably tacit. The proper minus sign, as an 
+     * HTML character entity, should be used instead of the dash. Also, the 
+     * variable <i>x</i> should be italicized by means of the HTML italics tag. 
+     * Exponents should be enclosed in HTML superscript tags.
+     * @return Text in which the variable <i>x</i> appears as many times as 
+     * dictated by the algebraic degree and how many nonzero coefficients there 
+     * are. For example, if the algebraic integer is 1 + \u221B2, the result 
+     * should be preferably "&lt;i&gt;x&lt;/i&gt;&lt;sup&gt;3&lt;/sup&gt; 
+     * &amp;minus; 3&lt;i&gt;x&lt;/i&gt;&lt;sup&gt;2&lt;/sup&gt; + 
+     * 3&lt;i&gt;x&lt;/i&gt; &amp;minus; 3", but that same text with the spaces 
+     * removed would also be acceptable.
+     */
+    String minPolynomialStringHTML();
+    
+    /**
      * Retrieves an object representing the ring this algebraic integer belongs 
      * to. This is mainly to enable verification that two algebraic integers 
-     * come from the same ring of algebraic integers.
+     * come from the same ring of algebraic integers. Implementing classes can 
+     * and probably should narrow down the return type.
      * @return An object subclassed from {@link IntegerRing}. To check degree, 
      * one may use {@link IntegerRing#getMaxAlgebraicDegree()} or one may check 
-     * if it's an instance of {@link QuadraticRing}, {@link CubicRing}, etc.
+     * if it's an instance of {@link algebraics.quadratics.QuadraticRing}, 
+     * {@link algebraics.cubics.CubicRing}, etc.
      */
     IntegerRing getRing();
         
     /**
      * A text representation of the algebraic integer using only ASCII 
      * characters. It is strongly recommended that any implementations of 
-     * AlgebraicInteger also override {@link Object#toString}.
-     * @return A String using only ASCII characters. For example, for 
+     * this interface also override <code>Object.toString</code>.
+     * @return Text using only ASCII characters. For example, for 
      * &omega;\u221B2, this might be "omega cbrt(2)". Spaces are very desirable 
      * but not strictly required. However, if spaces are omitted in certain 
      * cases, such as this example, it might be necessary to make the previously 
@@ -118,8 +158,10 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer suitable for use in a TeX 
      * document. It is strongly recommended that any implementations of 
-     * AlgebraicInteger also override {@link Object#toString}.
-     * @return A String suitable for use in a TeX document. For example, for 1 + 
+     * this interface also override <code>Object.toString</code>. For square 
+     * roots, it is acceptable to use "\sqrt", but for cube roots and others, 
+     * the "\root m \of n" syntax should be used, and not "\sqrt[m]{n}".
+     * @return Text suitable for use in a TeX document. For example, for 1 + 
      * \u221B2, the result might be "1 + \root 3 \of 2".
      */
     String toTeXString();
@@ -127,8 +169,8 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer suitable for use in an 
      * HTML page. It is strongly recommended that any implementations of 
-     * AlgebraicInteger also override {@link Object#toString}.
-     * @return A String suitable for use in an HTML page. For example, for 1 + 
+     * this interface also override <code>Object.toString</code>.
+     * @return Text suitable for use in an HTML page. For example, for 1 + 
      * \u221B2, the result might be "1 + &amp;#8731;2", which should then render 
      * as "1 + &#8731;2".
      */
@@ -145,7 +187,7 @@ public interface AlgebraicInteger {
     double abs();
     
     /**
-     * Retrieves the real part of this algebraic integer according to machine 
+     * Gives the real part of this algebraic integer according to machine 
      * precision.
      * @return The real part, which may be a rational approximation in some 
      * cases. For example, for 1 + &#8731;2, this would be roughly 2.259921. For 
@@ -154,10 +196,11 @@ public interface AlgebraicInteger {
     double getRealPartNumeric();
     
     /**
-     * Retrieves the imaginary part of this algebraic integer, divided by 
-     * <i>i</i> or &minus;<i>i</i> as needed. It is strongly recommended that 
-     * the author of an implementation write Javadoc clarifying this and other 
-     * points.
+     * Gives the imaginary part of this algebraic integer, divided by <i>i</i> 
+     * or &minus;<i>i</i> as needed. It is strongly recommended that the author 
+     * of an implementation write documentation clarifying this and other 
+     * points. However, in the case of algebraic integers from purely real 
+     * rings, this issue is moot, since the result should always be 0.
      * @return The imaginary part, divided by <i>i</i> or &minus;<i>i</i>. In 
      * some cases may be 0, in others it may be a rational approximation. For 
      * example, for 1 + &#8731;2, this should be exactly 0. For 3/2 + 
@@ -177,9 +220,8 @@ public interface AlgebraicInteger {
      * to &pi; radians. For example, the angle of <i>i</i> should be roughly 
      * 1.57 radians (90 degrees) and the angle of &minus;<i>i</i> should be 
      * roughly &minus;1.57 radians (&minus;90 degrees). The numerical precision 
-     * should be better than two decimal places, but should not be expected to 
-     * be the same on every instance of the Java Virtual Machine. If you need 
-     * this angle in degrees, you can use {@link Math#toDegrees(double)} to make 
+     * should generally be better than two decimal places. If you need this 
+     * angle in degrees, you can use <code>Math.toDegrees(double)</code> to make 
      * the conversion.
      */
     double angle();
