@@ -16,6 +16,7 @@
  */
 package algebraics.quadratics;
 
+import algebraics.NotDivisibleException;
 import fileops.PNGFileFilter;
 
 import java.util.HashSet;
@@ -34,6 +35,19 @@ public class ImaginaryQuadraticIntegerLineTest {
             = new ImaginaryQuadraticRing(-7);
     
     private static final Random RANDOM = new Random();
+    
+    private static ImaginaryQuadraticInteger pickRandomNumber() {
+        int x = RANDOM.nextInt(256) - 128;
+        int y = RANDOM.nextInt(256) - 128;
+        int denom = (x % 2 == y % 2) ? 2 : 1;
+        return new ImaginaryQuadraticInteger(x, y, RING_OQI7, denom);
+    }
+    
+    private static ImaginaryQuadraticIntegerLine makeRandomLine() {
+        ImaginaryQuadraticInteger start = pickRandomNumber();
+        ImaginaryQuadraticInteger end = pickRandomNumber();
+        return new ImaginaryQuadraticIntegerLine(start, end);
+    }
     
     /**
      * Test of the toString function, of the ImaginaryQuadraticIntegerLine 
@@ -228,6 +242,125 @@ public class ImaginaryQuadraticIntegerLineTest {
     }
     
     /**
+     * Test of hashCode method, of class ImaginaryQuadraticIntegerLine.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        HashSet<ImaginaryQuadraticIntegerLine> lines = new HashSet<>();
+        HashSet<Integer> hashes = new HashSet<>();
+        ImaginaryQuadraticInteger start, end;
+        ImaginaryQuadraticIntegerLine line;
+        int denom;
+        for (int x = -10; x < 10; x++) {
+            for (int y = -10; y < 10; y++) {
+                if (x % 2 == y % 2) {
+                    denom = 2;
+                } else {
+                    denom = 1;
+                }
+                start = new ImaginaryQuadraticInteger(x, y, RING_OQI7, denom);
+                end = new ImaginaryQuadraticInteger(y, x, RING_OQI7, denom);
+                line = new ImaginaryQuadraticIntegerLine(start, end);
+                lines.add(line);
+                hashes.add(line.hashCode());
+            }
+        }
+        int expected = lines.size();
+        int actual = hashes.size();
+        System.out.println("Successfully created " + expected 
+                + " distinct lines with " + actual 
+                + " distinct hash codes");
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Test of the getStart function, of the ImaginaryQuadraticIntegerLine 
+     * class.
+     */
+    @Test
+    public void testGetStart() {
+        System.out.println("getStart");
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(-315, 
+                75, RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = pickRandomNumber();
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(expected, end);
+        ImaginaryQuadraticInteger actual = line.getStart();
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the getStart function, of the 
+     * ImaginaryQuadraticIntegerLine class. The calls getStart() and apply(0) 
+     * should give the same result.
+     */
+    @Test
+    public void testGetStartApplyZeroCorrespondence() {
+        ImaginaryQuadraticIntegerLine line = makeRandomLine();
+        ImaginaryQuadraticInteger expected = line.getStart();
+        ImaginaryQuadraticInteger actual = line.apply(0);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Test of the getEnd function, of the ImaginaryQuadraticIntegerLine class.
+     */
+    @Test
+    public void testGetEnd() {
+        System.out.println("getEnd");
+        ImaginaryQuadraticInteger start = pickRandomNumber();
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(315, 
+                -75, RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, expected);
+        ImaginaryQuadraticInteger actual = line.getEnd();
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the getEnd function, of the ImaginaryQuadraticIntegerLine 
+     * class. The calls getEnd() and apply(length - 1)) should give the same 
+     * result.
+     */
+    @Test
+    public void testGetEndApplyLengthMinusOneCorrespondence() {
+        ImaginaryQuadraticIntegerLine line = makeRandomLine();
+        ImaginaryQuadraticInteger expected = line.getEnd();
+        ImaginaryQuadraticInteger actual = line.apply(line.length() - 1);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Test of the getStep function, of the ImaginaryQuadraticIntegerLine class.
+     */
+    @Test
+    public void testGetStep() {
+        System.out.println("getStep");
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-10, 1, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(1, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = (ImaginaryQuadraticInteger) 
+                start.plus(expected.times(RANDOM.nextInt(32) + 8));
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, expected);
+        ImaginaryQuadraticInteger actual = line.getStep();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testApplyGetCorrespondence() {
+        ImaginaryQuadraticIntegerLine line = makeRandomLine();
+        ImaginaryQuadraticInteger expected, actual;
+        for (int i = 0; i < line.length() - 1; i++) {
+            expected = line.apply(i);
+            actual = line.get(i);
+            assertEquals(expected, actual);
+        }
+    }
+    
+    /**
      * Test of the length function, of the ImaginaryQuadraticIntegerLine class.
      */
     @Test
@@ -246,131 +379,218 @@ public class ImaginaryQuadraticIntegerLineTest {
     }
 
     /**
-     * Test of apply method, of class ImaginaryQuadraticIntegerLine.
+     * Test of the apply function, of the ImaginaryQuadraticIntegerLine class.
      */
     @Test
     public void testApply() {
-        fail("Haven't written test yet");
-        System.out.println("apply");
-//        QuadraticInteger expResult = gaussianLineStart;
-//        ImaginaryQuadraticInteger result;
-//        for (int index = 0; index < 5; index++) {
-//            result = gaussianLine.apply(index);
-//            assertEquals(expResult, result);
-//            expResult = expResult.plus(gaussianLineStart);
-//        }
+        int endRe = RANDOM.nextInt(64) + 16;
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(0, 7, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(-endRe, 7, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(-1, 0, 
+                RING_OQI7);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        QuadraticInteger expected, actual;
+        for (int i = 0; i <= endRe; i++) {
+            expected = new ImaginaryQuadraticInteger(-i, 7, RING_OQI7);
+            actual = line.apply(i);
+            assertEquals(expected, actual);
+        }
+    }
+    
+    @Test
+    public void testApplyNegativeIndex() {
+        ImaginaryQuadraticIntegerLine line = makeRandomLine();
+        int badIndex = -RANDOM.nextInt(128) - 1;
+        System.out.print("Trying to use negative index " + badIndex 
+                + " on line " + line.toASCIIString() + "... ");
+        try {
+            ImaginaryQuadraticInteger badResult = line.apply(badIndex);
+            System.out.println("should not have given result " 
+                    + badResult.toASCIIString());
+            String msg = "Index " + badIndex + " gave result " 
+                    + badResult.toString() + " instead of causing an exception";
+            fail(msg);
+        } catch (IndexOutOfBoundsException ioobe) {
+            System.out.println("correctly caused IndexOutOfBoundsException");
+            String excMsg = ioobe.getMessage();
+            assert excMsg != null;
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for bad index " + badIndex;
+            fail(msg);
+        }
     }
     
     /**
-     * Test of apply method, of class ImaginaryQuadraticIntegerLine. Negative 
-     * indexes and positive indexes beyond the last index should both cause 
+     * Another test of the apply function, of the ImaginaryQuadraticIntegerLine 
+     * class. Positive indexes beyond the last index should cause 
      * IndexOutOfBoundsException.
      */
     @Test
     public void testApplyOutOfBounds() {
-        fail("Haven't written test yet");
-        int badIndex = -5;
-//        try {
-//            ImaginaryQuadraticInteger result = gaussianLine.apply(badIndex);
-//            String msg = "Trying to access index " + badIndex + " of " 
-//                    + gaussianLine.toString() + " should have caused an exception, not given result " + result.toString();
-//            fail(msg);
-//        } catch (IndexOutOfBoundsException ioobe) {
-//            System.out.println("Trying to access index " + badIndex + " of  " 
-//                    + gaussianLine.toASCIIString() 
-//                    + " correctly triggered IndexOutOfBoundsException");
-//            System.out.println("\"" + ioobe.getMessage() + "\"");
-//        } catch (Exception e) {
-//            String msg = e.getClass().getName() 
-//                    + " is the wrong exception for trying to access index " 
-//                    + badIndex + " of " + gaussianLine.toString();
-//            fail(msg);
-//        }
-//        badIndex = eisensteinLine.length() + 1000;
-//        try {
-//            ImaginaryQuadraticInteger result = eisensteinLine.apply(badIndex);
-//            String msg = "Trying to access index " + badIndex + " of " 
-//                    + eisensteinLine.toString() 
-//                    + " should have caused an exception, not given result " 
-//                    + result.toString();
-//            fail(msg);
-//        } catch (IndexOutOfBoundsException ioobe) {
-//            System.out.println("Trying to access index " + badIndex + " of  " 
-//                    + eisensteinLine.toASCIIString() 
-//                    + " correctly triggered IndexOutOfBoundsException");
-//            System.out.println("\"" + ioobe.getMessage() + "\"");
-//        } catch (Exception e) {
-//            String msg = e.getClass().getName() 
-//                    + " is the wrong exception for trying to access index " 
-//                    + badIndex + " of " + eisensteinLine.toString();
-//            fail(msg);
-//        }
+        int endRe = RANDOM.nextInt(64) + 16;
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(0, 7, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(endRe, 7, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(1, 0, 
+                RING_OQI7);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        int badIndex = RANDOM.nextInt(4096) + 128;
+        System.out.print("Trying to use out-of-bounds index " + badIndex 
+                + " on line " + line.toASCIIString() + "... ");
+        try {
+            ImaginaryQuadraticInteger badResult = line.apply(badIndex);
+            System.out.println("should not have given result " 
+                    + badResult.toASCIIString());
+            String msg = "Index " + badIndex + " gave result " 
+                    + badResult.toString() + " instead of causing an exception";
+            fail(msg);
+        } catch (IndexOutOfBoundsException ioobe) {
+            System.out.println("correctly caused IndexOutOfBoundsException");
+            String excMsg = ioobe.getMessage();
+            assert excMsg != null;
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for bad index " + badIndex;
+            fail(msg);
+        }
     }
     
     /**
-     * Test of by method, of class ImaginaryQuadraticIntegerLine.
+     * Test of the by function, of the ImaginaryQuadraticIntegerLine class.
      */
     @Test
     public void testBy() {
-        fail("Haven't written test yet");
         System.out.println("by");
-//        ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(-1);
-//        ImaginaryQuadraticInteger replacingStep 
-//                = new ImaginaryQuadraticInteger(2, 2, ring);
-//        ImaginaryQuadraticIntegerLine doubleStepLine 
-//                = gaussianLine.by(replacingStep);
-//        assertEquals(doubleStepLine.apply(0), gaussianLine.apply(0));
-//        assertEquals(doubleStepLine.apply(doubleStepLine.length() - 1), 
-//                gaussianLine.apply(gaussianLine.length() - 1));
-//        assertNotEquals(doubleStepLine.length(), gaussianLine.length());
-//        ring = new ImaginaryQuadraticRing(-3);
-//        ImaginaryQuadraticInteger altEisensteinLineEnd 
-//                = new ImaginaryQuadraticInteger(-17, -7, ring, 2);
-//        ImaginaryQuadraticIntegerLine altEisensteinLine 
-//                = new ImaginaryQuadraticIntegerLine(eisensteinLineStart, 
-//                        altEisensteinLineEnd);
-//        replacingStep = new ImaginaryQuadraticInteger(-1, -1, ring);
-//        doubleStepLine = altEisensteinLine.by(replacingStep);
-//        assertEquals(doubleStepLine.apply(0), altEisensteinLine.apply(0));
-//        assertEquals(doubleStepLine.apply(doubleStepLine.length() - 1), 
-//                altEisensteinLine.apply(altEisensteinLine.length() - 1));
-//        assertNotEquals(doubleStepLine.length(), altEisensteinLine.length());
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-9, -7, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(11, 13, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(1, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        ImaginaryQuadraticInteger replacementStep 
+                = new ImaginaryQuadraticInteger(2, 2, RING_OQI7);
+        ImaginaryQuadraticIntegerLine expected 
+                = new ImaginaryQuadraticIntegerLine(start, end, 
+                        replacementStep);
+        ImaginaryQuadraticIntegerLine actual = line.by(replacementStep);
+        assertEquals(expected, actual);
     }
     
     /**
-     * Test of hashCode method, of class ImaginaryQuadraticIntegerLine.
+     * Another test of the by function, of the ImaginaryQuadraticIntegerLine 
+     * class.
      */
     @Test
-    public void testHashCode() {
-        fail("Haven't written test yet");
-        System.out.println("hashCode");
-//        HashSet<Integer> hashCodes = new HashSet<>();
-//        int hash = gaussianLine.hashCode();
-//        System.out.println(gaussianLine.toASCIIString() + " hashed as " + hash);
-//        hashCodes.add(hash);
-//        hash = eisensteinLine.hashCode();
-//        System.out.println(eisensteinLine.toASCIIString() + " hashed as " 
-//                + hash);
-//        hashCodes.add(hash);
-//        HashSet<ImaginaryQuadraticIntegerLine> lines = new HashSet<>();
-//        lines.add(gaussianLine);
-//        lines.add(eisensteinLine);
-//        ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(-7);
-//        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-8, -15, 
-//                ring);
-//        QuadraticInteger end = start;
-//        ImaginaryQuadraticInteger incr = new ImaginaryQuadraticInteger(1, 1, 
-//                ring, 2);
-//        ImaginaryQuadraticIntegerLine extraLine;
-//        for (int i = 0; i < 100; i++) {
-//            extraLine = new ImaginaryQuadraticIntegerLine(start, 
-//                    (ImaginaryQuadraticInteger) end);
-//            lines.add(extraLine);
-//            hashCodes.add(extraLine.hashCode());
-//            end = end.plus(incr);
-//        }
-//        String msg = "Set of lines should have same size as set of hash codes";
-//        assertEquals(msg, lines.size(), hashCodes.size());
+    public void testByRejectsNotDivisibleStep() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-9, -7, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(11, 13, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(1, 1, 
+                RING_OQI7, 2);
+        ImaginaryQuadraticIntegerLine line 
+                = new ImaginaryQuadraticIntegerLine(start, end, step);
+        ImaginaryQuadraticInteger badReplacementStep 
+                = new ImaginaryQuadraticInteger(3, 2, RING_OQI7);
+        System.out.print("Trying to use bad replacement step " 
+                + badReplacementStep.toASCIIString() + " for line " 
+                + line.toASCIIString() + "... ");
+        try {
+            ImaginaryQuadraticIntegerLine badLine = line.by(badReplacementStep);
+            System.out.println("incorrectly gave result " 
+                    + badLine.toASCIIString());
+            String msg = "Bad step " + badReplacementStep.toString() 
+                    + " should have caused an exception, not given result " 
+                    + badLine.toASCIIString();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("correctly caused IllegalArgumentException");
+            Throwable cause = iae.getCause();
+            String msg = "RuntimeException should wrap NotDivisibleException";
+            assert cause instanceof NotDivisibleException : msg;
+            System.out.println("\"" + cause.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for bad step " 
+                    + badReplacementStep.toString();
+            fail(msg);
+        }
+    }
+    
+    @Test
+    public void testConstructorRejectsNotDivisibleStep() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(14, 1, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(-21, 13, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(1, 1, 
+                RING_OQI7, 2);
+        System.out.print("Trying to use step " + step.toASCIIString() 
+                + " to go from " + start.toASCIIString() + " to " 
+                + end.toASCIIString() + "... ");
+        try {
+            ImaginaryQuadraticIntegerLine badLine 
+                    = new ImaginaryQuadraticIntegerLine(start, end, step);
+            System.out.println("incorrectly created " 
+                    + badLine.toASCIIString());
+            String msg = "Step " + step.toString() + " for " + start.toString() 
+                    + " to " + end.toString() 
+                    + " should have caused an exception";
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("correctly caused IllegalArgumentException");
+            String excMsg = iae.getMessage();
+            assert excMsg != null : "Exception message should not be null";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for step " + step.toString() 
+                    + " for " + start.toString() + " to " + end.toString();
+            fail(msg);
+        }
+    }
+    
+    @Test
+    public void testConstructorRejectsWrongDirectionStep() {
+        ImaginaryQuadraticInteger start = new ImaginaryQuadraticInteger(-8, 0, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger end = new ImaginaryQuadraticInteger(-8, 13, 
+                RING_OQI7);
+        ImaginaryQuadraticInteger step = new ImaginaryQuadraticInteger(0, -1, 
+                RING_OQI7);
+        System.out.print("Trying to use step " + step.toASCIIString() 
+                + " to go from " + start.toASCIIString() + " to " 
+                + end.toASCIIString() + "... ");
+        try {
+            ImaginaryQuadraticIntegerLine badLine 
+                    = new ImaginaryQuadraticIntegerLine(start, end, step);
+            System.out.println("incorrectly created " 
+                    + badLine.toASCIIString());
+            String msg = "Step " + step.toString() + " for " + start.toString() 
+                    + " to " + end.toString() 
+                    + " should have caused an exception";
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("correctly caused IllegalArgumentException");
+            String excMsg = iae.getMessage();
+            assert excMsg != null : "Exception message should not be null";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for step " + step.toString() 
+                    + " for " + start.toString() + " to " + end.toString();
+            fail(msg);
+        }
     }
     
 }
