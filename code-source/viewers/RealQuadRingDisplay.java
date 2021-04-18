@@ -21,9 +21,7 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
-import calculators.NumberTheoreticFunctionsCalculator;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.net.URI;
@@ -49,7 +47,12 @@ public class RealQuadRingDisplay extends RingDisplay {
      */
     public static final int MAXIMUM_RING_D = 102;
     
-    private RealQuadraticInteger diagRingMainUnit, diagRingOne;
+    private RealQuadraticInteger diagRingMainUnit;
+    
+    /**
+     * The number 1 + 0&radic;<i>d</i>.
+     */
+    private RealQuadraticInteger  diagRingOne;
     
     /**
      * Tells whether the fundamental unit of the currently displayed ring is 
@@ -59,11 +62,18 @@ public class RealQuadRingDisplay extends RingDisplay {
      */
     private boolean unitAvailable = false;
     
+    private static final String MANUAL_URL_TOP_LEVEL = "https://github.com/";
+    
+    private static final String MANUAL_URL_SUBDIRS 
+            = "Alonso-del-Arte/algebraic-integer-calculator/blob/master/dist-jar/";
+    
+    private static final String MANUAL_URL_NAME = "MissingManual.md";
+    
     /**
      * The name of the program to show in the About box.
      */
     private static final String ABOUT_BOX_PROGRAM_NAME 
-            = "Real Quadratic Integer Ring Viewer";
+            = "_Real Quadratic Integer Ring Viewer";
     
     /**
      * The version identification to show in the About box.
@@ -74,12 +84,12 @@ public class RealQuadRingDisplay extends RingDisplay {
      * The copyright notice to show in the About box.
      */
     private static final String ABOUT_BOX_COPYRIGHT_NOTICE 
-            = "\u00A9 2021 Alonso del Arte";
+            = "u00A9 2021 Alonso del Arte_";
     
     /**
      * Draws two lines, corresponding to the specified real quadratic integer 
-     * and its conjugate. It is assumed the caller has already specified the 
-     * appropriate color on the passed in <code>Graphics</code> object.
+     * and its additive inverse. It is assumed the caller has already specified 
+     * the appropriate color on the passed-in <code>Graphics</code> object.
      * @param g The <code>Graphics</code> object supplied by the caller.
      * @param x The real quadratic integer to draw lines for. For example, 19 + 
      * 6&radic;10.
@@ -98,16 +108,19 @@ public class RealQuadRingDisplay extends RingDisplay {
         this.drawTwoLines(g, x.conjugate());
     }
     
-    private void drawLinesMultByUnit(Graphics g, Color c, RealQuadraticInteger x) {
-        g.setColor(c);
+    private void drawLinesMultByUnit(Graphics g, RealQuadraticInteger x) {
         this.drawFourLines(g, x);
     }
     
     private void drawUnits(Graphics g) {
-        this.drawLinesMultByUnit(g, this.unitColor, this.diagRingOne);
+        g.setColor(this.unitColor);
+        this.drawTwoLines(g, this.diagRingOne);
+        if (this.unitAvailable) {
+            this.drawLinesMultByUnit(g, this.diagRingOne);
+        }
     }
     
-    private void drawPlainInts(Graphics g) {
+    private void drawInerts(Graphics g) {
         //
     }
     
@@ -129,7 +142,7 @@ public class RealQuadRingDisplay extends RingDisplay {
         super.paintComponent(g);
         this.drawSplits(g);
         this.drawRamifieds(g);
-        this.drawPlainInts(g);
+        this.drawInerts(g);
         this.drawUnits(g);
     }
     
@@ -158,7 +171,8 @@ public class RealQuadRingDisplay extends RingDisplay {
     public void chooseDiscriminant() {
         int currDiscr = ((QuadraticRing) this.diagramRing).getRadicand();
         String discrString = Integer.toString(currDiscr);
-        String userChoice = (String) JOptionPane.showInputDialog(this.ringFrame, "Please enter a positive, squarefree integer:", discrString);
+        String userChoice = (String) JOptionPane.showInputDialog(this.ringFrame, 
+                "Please enter a positive, squarefree integer:", discrString);
         int discr;
         boolean repaintNeeded;
         try {
@@ -173,7 +187,8 @@ public class RealQuadRingDisplay extends RingDisplay {
         if (discr > MAXIMUM_RING_D) {
             discr = MAXIMUM_RING_D;
         }
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(discr) && discr < MAXIMUM_RING_D) {
+        while (!isSquareFree(discr) 
+                && discr < MAXIMUM_RING_D) {
             discr++;
         }
         repaintNeeded = (discr != currDiscr);
@@ -199,7 +214,8 @@ public class RealQuadRingDisplay extends RingDisplay {
     @Override
     public void incrementDiscriminant() {
         int discr = ((QuadraticRing) this.diagramRing).getRadicand() + 1;
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(discr) && discr < MAXIMUM_RING_D) {
+        while (!isSquareFree(discr) 
+                && discr < MAXIMUM_RING_D) {
             discr++;
         }
         if (discr == MAXIMUM_RING_D) {
@@ -216,7 +232,8 @@ public class RealQuadRingDisplay extends RingDisplay {
     @Override
     public void decrementDiscriminant() {
         int discr = ((QuadraticRing) this.diagramRing).getRadicand() - 1;
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(discr) && discr > (Integer.MIN_VALUE + 1)) {
+        while (!isSquareFree(discr) 
+                && discr > (Integer.MIN_VALUE + 1)) {
             discr--;
         }
         if (discr == 2) {
@@ -230,14 +247,41 @@ public class RealQuadRingDisplay extends RingDisplay {
         this.updateRingHistory(ring);
     }
 
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    public void copyReadoutsToClipboard() {
+        java.awt.datatransfer.StringSelection ss 
+                = new java.awt.datatransfer.StringSelection("Sorry");
+        this.getToolkit().getSystemClipboard().setContents(ss, ss);
+    }
+
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected void updateBoundaryNumber() {
+        //
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected double getBoundaryRe() {
+        return -1.0;
+    }
+
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected double getBoundaryIm() {
+        return 0.0;
+    }
+
     @Override
     public URI getUserManualURL() {
-        String urlStr = "https://github.com/Alonso-del-Arte/algebraic-integer-calculator/blob/master/dist-jar/MissingManual.md";
+        String urlStr = MANUAL_URL_TOP_LEVEL + MANUAL_URL_SUBDIRS 
+                + MANUAL_URL_NAME;
         try {
             URI url = new URI(urlStr);
             return url;
         } catch (URISyntaxException urise) {
-            throw new RuntimeException(urise); // Rethrow wrapped in a RuntimeException
+            throw new RuntimeException(urise);
         }
     }
 
@@ -261,6 +305,7 @@ public class RealQuadRingDisplay extends RingDisplay {
         super(ring);
         this.ringCanvasVerticMax = PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX;
         this.mouseAlgInt = new RealQuadraticInteger(0, 0, ring);
+        this.diagRingOne = new RealQuadraticInteger(1, 0, ring);
         this.findUnit();
     }
     

@@ -317,8 +317,17 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      */
     protected boolean preferenceForThetaNotation;
     
-    protected int ringCanvasHorizMax;
-    protected int ringCanvasVerticMax;
+    /**
+     * The horizontal or vertical integer for the pixel at the bottom right 
+     * corner.
+     */
+    protected int ringCanvasHorizMax, ringCanvasVerticMax;
+    
+    /**
+     * The real or imaginary part of the number at the top right corner of the 
+     * diagram
+     */
+    protected double boundaryRe, boundaryIm;
     
     /**
      * Half the thickness of the lines or the radius of the dots.
@@ -942,6 +951,12 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
         }
     }
     
+    protected abstract void updateBoundaryNumber();
+    
+    protected abstract double getBoundaryRe();
+
+    protected abstract double getBoundaryIm();
+
     /**
      * Override this to set the user manual URL.
      * @return The URL where the user manual can be found.

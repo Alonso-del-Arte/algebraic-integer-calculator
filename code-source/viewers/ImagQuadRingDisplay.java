@@ -57,6 +57,16 @@ public final class ImagQuadRingDisplay extends RingDisplay {
      */
     public static final int MINIMUM_RING_D = -8191;
     
+    private static final String MANUAL_URL_TOP_LEVEL = "https://github.com/";
+    
+    private static final String MANUAL_URL_HIGH_SUBDIRS 
+            = "Alonso-del-Arte/visualization-quadratic-imaginary-rings/";
+    
+    private static final String MANUAL_URL_LOW_SUBDIRS 
+            = "blob/master/dist-jar/";
+    
+    private static final String MANUAL_URL_NAME = "README.md";
+    
     /**
      * The name of the program to show in the About box.
      */
@@ -713,19 +723,38 @@ public final class ImagQuadRingDisplay extends RingDisplay {
         this.getToolkit().getSystemClipboard().setContents(ss, ss);
     }
     
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected void updateBoundaryNumber() {
+        //
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected double getBoundaryRe() {
+        return -1.0;
+    }
+
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected double getBoundaryIm() {
+        return -1.0;
+    }
+
     /**
      * Gives the location online of the user manual.
-     * @return The URL <a href="https://github.com/Alonso-del-Arte/visualization-quadratic-imaginary-rings/blob/master/dist-jar/README.md">https://github.com/Alonso-del-Arte/visualization-quadratic-imaginary-rings/blob/master/dist-jar/README.md</a>.
+     * @return The URL which is currently on GitHub.
      * @throws RuntimeException If any problems are encountered forming the URL.
      */
     @Override
     public URI getUserManualURL() {
-        String urlStr = "https://github.com/Alonso-del-Arte/visualization-quadratic-imaginary-rings/blob/master/dist-jar/README.md";
+        String urlStr = MANUAL_URL_TOP_LEVEL + MANUAL_URL_HIGH_SUBDIRS 
+                + MANUAL_URL_LOW_SUBDIRS + MANUAL_URL_NAME;
         try {
             URI url = new URI(urlStr);
             return url;
         } catch (URISyntaxException urise) {
-            throw new RuntimeException(urise); // Rethrow wrapped in a RuntimeException
+            throw new RuntimeException(urise);
         }
     }
     
