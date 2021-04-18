@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,19 +16,22 @@
  */
 package viewers;
 
+import algebraics.IntegerRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
-import calculators.NumberTheoreticFunctionsCalculator;
+import algebraics.quartics.Zeta8Ring;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import static calculators.NumberTheoreticFunctionsCalculator.*;
 
 /**
  * WORK IN PROGRESS.
@@ -41,27 +44,34 @@ public final class Zeta8RingDisplay extends RingDisplay {
     /**
      * The ring <b>Z</b>[&radic;&minus;2].
      */
-    public static final ImaginaryQuadraticRing RING_ZI2 = new ImaginaryQuadraticRing(-2);
+    public static final ImaginaryQuadraticRing RING_ZI2 
+            = new ImaginaryQuadraticRing(-2);
     
     /**
      * The ring <b>Z</b>[<i>i</i>], the ring of Gaussian integers.
      */
-    public static final ImaginaryQuadraticRing RING_GAUSSIAN = new ImaginaryQuadraticRing(-1);
+    public static final ImaginaryQuadraticRing RING_GAUSSIAN 
+            = new ImaginaryQuadraticRing(-1);
     
     /**
      * The ring <b>Z</b>[&radic;2].
      */
-    public static final RealQuadraticRing RING_Z2 = new RealQuadraticRing(2);
+    public static final RealQuadraticRing RING_Z2 
+            = new RealQuadraticRing(2);
     
-    public static final RealQuadraticInteger UNIT_Z2 = new RealQuadraticInteger(1, 1, RING_Z2);
+    public static final RealQuadraticInteger UNIT_Z2 
+            = new RealQuadraticInteger(1, 1, RING_Z2);
     
-    public static final RealQuadraticInteger SQRT_2 = new RealQuadraticInteger(0, 1, RING_Z2);
+    public static final RealQuadraticInteger SQRT_2 
+            = new RealQuadraticInteger(0, 1, RING_Z2);
     
     public static final Zeta8Integer UNIT_ZETA8 = new Zeta8Integer(0, 1, 0, 0);
     
-    public static final Zeta8Integer SILVER_RATIO = Zeta8Integer.convertFromQuadraticInteger(UNIT_Z2);
+    public static final Zeta8Integer SILVER_RATIO 
+            = Zeta8Integer.convertFromQuadraticInteger(UNIT_Z2);
     
-    public static final Zeta8Integer SILVER_RATIO_CONJUGATE = Zeta8Integer.convertFromQuadraticInteger(UNIT_Z2.conjugate());
+    public static final Zeta8Integer SILVER_RATIO_CONJUGATE 
+            = Zeta8Integer.convertFromQuadraticInteger(UNIT_Z2.conjugate());
     
     /**
      * Draws eight dots corresponding to the algebraic integer <i>z</i> 
@@ -70,7 +80,7 @@ public final class Zeta8RingDisplay extends RingDisplay {
      * @param c The Color to use for the eight dots.
      * @param z An algebraic integer from <b>Q</b>(&zeta;<sub>8</sub>), 
      * preferably a nonzero number. It may be 0, but that would probably just be 
-     * a waste of computer clock cycles.
+     * a waste of a couple of computer clock cycles.
      */
     private void drawEightDots(Graphics g, Color c, Zeta8Integer z) {
         g.setColor(c);
@@ -84,7 +94,8 @@ public final class Zeta8RingDisplay extends RingDisplay {
             y = (int) Math.round(currIm * this.pixelsPerUnitInterval);
             x += this.zeroCoordX;
             y += this.zeroCoordY;
-            g.fillOval(x - this.dotRadius, y - this.dotRadius, this.dotDiameter, this.dotDiameter);
+            g.fillOval(x - this.dotRadius, y - this.dotRadius, this.dotDiameter, 
+                    this.dotDiameter);
             currNum = currNum.times(UNIT_ZETA8);
         }
     }
@@ -99,7 +110,8 @@ public final class Zeta8RingDisplay extends RingDisplay {
             this.drawEightDots(g, this.unitColor, currUnit);
             currUnitConjugate = currUnitConjugate.times(SILVER_RATIO_CONJUGATE);
             this.drawEightDots(g, this.unitColor, currUnitConjugate);
-            withinBoundaries = (currUnit.getRealPartNumeric() < this.thresholdRe);
+            withinBoundaries 
+                    = (currUnit.getRealPartNumeric() < this.thresholdRe);
         } while (withinBoundaries);
     }
     
@@ -109,7 +121,7 @@ public final class Zeta8RingDisplay extends RingDisplay {
         boolean withinBoundaries = true;
         while (withinBoundaries) {
             currInt += 2;
-            if (NumberTheoreticFunctionsCalculator.isPrime(currInt)) {
+            if (isPrime(currInt)) {
                 plainInt = new Zeta8Integer(currInt, 0, 0, 0);
                 this.drawEightDots(g, this.splitPrimeColor, plainInt);
             }
@@ -118,50 +130,80 @@ public final class Zeta8RingDisplay extends RingDisplay {
     }
     
     private void drawRamifieds(Graphics g) {
-        Zeta8Integer currRam = Zeta8Integer.convertFromQuadraticInteger(SQRT_2);
+        Zeta8Integer currRam = new Zeta8Integer(1, -1, 0, 0);
         this.drawEightDots(g, this.ramifiedPrimeColor, currRam);
-        Zeta8Integer currRamConjugate = currRam;
+        Zeta8Integer currRamConjugate = new Zeta8Integer(1, 1, 0, 0);
         boolean withinBoundaries;
         do {
             currRam = currRam.times(SILVER_RATIO);
             this.drawEightDots(g, this.ramifiedPrimeColor, currRam);
             currRamConjugate = currRamConjugate.times(SILVER_RATIO_CONJUGATE);
             this.drawEightDots(g, this.ramifiedPrimeColor, currRamConjugate);
-            withinBoundaries = (currRam.getRealPartNumeric() < this.thresholdRe);
+            withinBoundaries 
+                    = (currRam.getRealPartNumeric() < this.thresholdRe);
+        } while (withinBoundaries);
+        currRam = Zeta8Integer.convertFromQuadraticInteger(SQRT_2);
+        this.drawEightDots(g, this.ramifiedPrimeMidDegreeColor, currRam);
+        currRamConjugate = currRam;
+//        boolean withinBoundaries;
+        do {
+            currRam = currRam.times(SILVER_RATIO);
+            this.drawEightDots(g, this.ramifiedPrimeMidDegreeColor, currRam);
+            currRamConjugate = currRamConjugate.times(SILVER_RATIO_CONJUGATE);
+            this.drawEightDots(g, this.ramifiedPrimeMidDegreeColor, 
+                    currRamConjugate);
+            withinBoundaries 
+                    = (currRam.getRealPartNumeric() < this.thresholdRe);
         } while (withinBoundaries);
         currRam = new Zeta8Integer(2, 0, 0, 0);
-        this.drawEightDots(g, this.ramifiedPrimeColor, currRam);
+        this.drawEightDots(g, this.ramifiedPrimeMidDegreeColor, currRam);
         currRamConjugate = currRam;
         do {
             currRam = currRam.times(SILVER_RATIO);
-            this.drawEightDots(g, this.ramifiedPrimeColor, currRam);
-            this.drawEightDots(g, this.ramifiedPrimeColor, currRamConjugate);
-            withinBoundaries = (currRam.getRealPartNumeric() < this.thresholdRe);
+            this.drawEightDots(g, this.ramifiedPrimeMidDegreeColor, currRam);
+            this.drawEightDots(g, this.ramifiedPrimeMidDegreeColor, 
+                    currRamConjugate);
+            withinBoundaries 
+                    = (currRam.getRealPartNumeric() < this.thresholdRe);
         } while (withinBoundaries);
     }
     
     private void drawSplits(Graphics g) {
         int currA = 0;
         int currB;
-        QuadraticInteger currGaussianInt, currZi2Int, currZ2Int;
-        Zeta8Integer currGaussZ8, currZi2Z8, currZ2Z8;
+        QuadraticInteger currGaussianInt, currZi2Int; // ??? , currZ2Int; ????
+        Zeta8Integer currGaussZ8, currZi2Z8; // ??? , currZ2Z8; ????
+        long currNorm;
+        Color currColor;
         boolean withinBoundaries = true;
         while (withinBoundaries) {
             currA++;
             currB = 0;
             while (withinBoundaries) {
                 currB++;
-                currGaussianInt = new ImaginaryQuadraticInteger(currA, currB, RING_GAUSSIAN);
-                if (NumberTheoreticFunctionsCalculator.isPrime(currGaussianInt.norm())) {
-                    currGaussZ8 = Zeta8Integer.convertFromQuadraticInteger(currGaussianInt);
-                    this.drawEightDots(g, this.splitPrimeMidDegreeColor, currGaussZ8);
+                currGaussianInt = new ImaginaryQuadraticInteger(currA, currB, 
+                        RING_GAUSSIAN);
+                if (isPrime(currGaussianInt.norm())) {
+                    currGaussZ8 
+                            = Zeta8Integer.convertFromQuadraticInteger(currGaussianInt);
+                    this.drawEightDots(g, this.splitPrimeMidDegreeColor, 
+                            currGaussZ8);
                 }
-                currZi2Int = new ImaginaryQuadraticInteger(currA, currB, RING_ZI2);
-                if (NumberTheoreticFunctionsCalculator.isPrime(currZi2Int.norm())) {
-                    currZi2Z8 = Zeta8Integer.convertFromQuadraticInteger(currZi2Int);
-                    this.drawEightDots(g, this.splitPrimeMidDegreeColor, currZi2Z8);
-                    currZi2Z8 = Zeta8Integer.convertFromQuadraticInteger(currZi2Int.conjugate());
-                    this.drawEightDots(g, this.splitPrimeMidDegreeColor, currZi2Z8);
+                currZi2Int = new ImaginaryQuadraticInteger(currA, currB, 
+                        RING_ZI2);
+                currNorm = currZi2Int.norm();
+                if (isPrime(currNorm)) {
+                    if (currNorm % 4 == 3) {
+                        currColor = this.splitPrimeColor;
+                    } else {
+                        currColor = this.splitPrimeMidDegreeColor;
+                    }
+                    currZi2Z8 
+                            = Zeta8Integer.convertFromQuadraticInteger(currZi2Int);
+                    this.drawEightDots(g, currColor, currZi2Z8);
+                    currZi2Z8 
+                            = Zeta8Integer.convertFromQuadraticInteger(currZi2Int.conjugate());
+                    this.drawEightDots(g, currColor, currZi2Z8);
                 }
                 withinBoundaries = (currB < this.thresholdIm);
             }
@@ -176,9 +218,12 @@ public final class Zeta8RingDisplay extends RingDisplay {
      */
     @Override
     protected void setPixelsPerBasicImaginaryInterval() {
-        this.pixelsPerBasicImaginaryInterval = (int) Math.floor(Math.sqrt(2) * this.pixelsPerUnitInterval);
-        this.thresholdRe = (double) this.ringCanvasHorizMax / (double) this.pixelsPerUnitInterval * 3 / 4;
-        this.thresholdIm = (double) this.ringCanvasVerticMax / (double) this.pixelsPerUnitInterval * 2 / 3;
+        this.pixelsPerBasicImaginaryInterval = (int) Math.floor(Math.sqrt(2) 
+                * this.pixelsPerUnitInterval);
+        this.thresholdRe = (double) this.ringCanvasHorizMax 
+                / (double) this.pixelsPerUnitInterval * 3 / 4;
+        this.thresholdIm = (double) this.ringCanvasVerticMax 
+                / (double) this.pixelsPerUnitInterval * 2 / 3;
     }
     
     /**
@@ -194,22 +239,53 @@ public final class Zeta8RingDisplay extends RingDisplay {
         this.drawPlainInts(g);
         this.drawUnits(g);
         g.setColor(this.zeroColor);
-        g.fillOval(this.zeroCoordX - this.dotRadius, this.zeroCoordY - this.dotRadius, this.dotDiameter, this.dotDiameter);
+        g.fillOval(this.zeroCoordX - this.dotRadius, this.zeroCoordY 
+                - this.dotRadius, this.dotDiameter, this.dotDiameter);
+    }
+    
+    @Override
+    protected void validateRing(IntegerRing ring) {
+        if (ring == null) {
+            throw new NullPointerException("Null ring can't be validated");
+        }
+        if (!(ring instanceof Zeta8Ring)) {
+            String excMsg = ring.toASCIIString() + " is not " 
+                    + Zeta8Integer.ZETA8RING.toASCIIString();
+            throw new IllegalArgumentException(excMsg);
+        }
     }
 
     @Override
     public void chooseDiscriminant() {
-        // NOT APPLICABLE
+        System.err.println("chooseDiscriminant not applicable to Zeta8RingDisplay");
     }
 
     @Override
     public void incrementDiscriminant() {
-        // NOT APPLICABLE
+        System.err.println("incrementDiscriminant not applicable to Zeta8RingDisplay");
     }
-
+    
     @Override
     public void decrementDiscriminant() {
-        // NOT APPLICABLE
+        System.err.println("decrementDiscriminant not applicable to Zeta8RingDisplay");
+    }
+
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected void updateBoundaryNumber() {
+        //
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected double getBoundaryRe() {
+        return -1.0;
+    }
+
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    protected double getBoundaryIm() {
+        return -1.0;
     }
 
     @Override
@@ -243,8 +319,11 @@ public final class Zeta8RingDisplay extends RingDisplay {
         this.includeRingChoice = false;
         this.includeReadoutsUpdate = false;
         this.includeThetaToggle = false;
-        this.thresholdRe = (double) this.ringCanvasHorizMax / (double) this.pixelsPerUnitInterval * 3 / 4;
-        this.thresholdIm = (double) this.ringCanvasVerticMax / (double) this.pixelsPerUnitInterval * 2 / 3;
+        this.thresholdRe = (double) this.ringCanvasHorizMax 
+                / (double) this.pixelsPerUnitInterval * 3 / 4;
+        this.thresholdIm = (double) this.ringCanvasVerticMax 
+                / (double) this.pixelsPerUnitInterval * 2 / 3;
+        this.mouseAlgInt = new Zeta8Integer(0, 0, 0, 0);
     }
 
 }

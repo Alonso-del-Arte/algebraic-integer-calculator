@@ -16,6 +16,7 @@
  */
 package viewers;
 
+import algebraics.IntegerRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
@@ -613,20 +614,42 @@ public final class ImagQuadRingDisplay extends RingDisplay {
     public void mouseDragged(MouseEvent mauv) {
         // IMPLEMENTATION PLACEHOLDER
     }
+    
+    /**
+     * Ensures a ring object is of the appropriate type, specifically {@link 
+     * algebraics.quadratics.ImaginaryQuadraticRing}.
+     * @param ring The ring object to be validated.
+     * @throws IllegalArgumentException If <code>ring</code> is not null but 
+     * also not an instance of <code>ImaginaryQuadraticRing</code>.
+     * @throws NullPointerException If <code>ring</code> is null. The exception 
+     * message will state that a null ring can't be validated.
+     */
+    @Override
+    protected void validateRing(IntegerRing ring) {
+        if (ring == null) {
+            throw new NullPointerException("Null ring can't be validated");
+        }
+        if (!(ring instanceof ImaginaryQuadraticRing)) {
+            String excMsg = ring.toASCIIString() 
+                    + " is not of type ImaginaryQuadraticRing";
+            throw new IllegalArgumentException(excMsg);
+        }
+    }
         
     /**
-     * Function to ask user to enter a new, negative, squarefree integer for the 
+     * Asks the user to enter a new, negative, squarefree integer for the 
      * parameter <i>d</i> of a ring adjoining &radic;<i>d</i>. If the user 
      * enters a positive integer, the number will be multiplied by &minus;1. And 
-     * if that number is not squarefree, the function looks for the next lower 
-     * squarefree number, taking care not to go below {@link #MINIMUM_RING_D 
-     * MINIMUM_RING_D}.
+     * if that number is not squarefree, this procedure will look for the next 
+     * lower squarefree number, taking care not to go below 
+     * {@link #MINIMUM_RING_D MINIMUM_RING_D}.
      */
     @Override
     public void chooseDiscriminant() {
         int currDiscr = ((QuadraticRing) this.diagramRing).getRadicand();
         String discrString = Integer.toString(currDiscr);
-        String userChoice = (String) JOptionPane.showInputDialog(this.ringFrame, "Please enter a negative, squarefree integer:", discrString);
+        String userChoice = (String) JOptionPane.showInputDialog(this.ringFrame, 
+                "Please enter a negative, squarefree integer:", discrString);
         int discr;
         boolean repaintNeeded;
         try {

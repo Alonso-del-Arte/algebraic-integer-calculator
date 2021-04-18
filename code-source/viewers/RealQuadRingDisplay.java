@@ -157,6 +157,27 @@ public class RealQuadRingDisplay extends RingDisplay {
         }
     }
     
+    /**
+     * Ensures a ring object is of the appropriate type, specifically {@link 
+     * algebraics.quadratics.RealQuadraticRing}.
+     * @param ring The ring object to be validated.
+     * @throws IllegalArgumentException If <code>ring</code> is not null but 
+     * also not an instance of <code>RealQuadraticRing</code>.
+     * @throws NullPointerException If <code>ring</code> is null. The exception 
+     * message will state that a null ring can't be validated.
+     */
+    @Override
+    protected void validateRing(IntegerRing ring) {
+        if (ring == null) {
+            throw new NullPointerException("Null ring can't be validated");
+        }
+        if (!(ring instanceof RealQuadraticRing)) {
+            String excMsg = ring.toASCIIString() 
+                    + " is not of type RealQuadraticRing";
+            throw new IllegalArgumentException(excMsg);
+        }
+    }
+        
     @Override
     protected void switchToRing(IntegerRing ring) {
         this.ringFrame.setTitle("Ring Diagram for " + ring.toString());

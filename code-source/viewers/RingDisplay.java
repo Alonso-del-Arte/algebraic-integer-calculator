@@ -641,6 +641,15 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     }
     
     /**
+     * Ensures a ring object is of the appropriate type. If it is not, this 
+     * procedure should throw an appropriate exception.
+     * @param ring The ring object to validate. For example, 
+     * <b>Z</b>[&#8731;43]. That would be an appropriate parameter for a display 
+     * of cubic integer rings, but not for a display of quadratic integer rings.
+     */
+    protected abstract void validateRing(IntegerRing ring);
+
+    /**
      * Switches to a different ring. This procedure should not be overridden 
      * unless strictly necessary. Generally it will be best to rely on callers 
      * to provide a ring of the appropriate implementation of 
