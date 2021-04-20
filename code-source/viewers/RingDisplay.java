@@ -60,10 +60,12 @@ import javax.swing.filechooser.FileFilter;
  * logic, that's for the subclasses to take care of.
  * @author Alonso del Arte
  */
-public abstract class RingDisplay extends JPanel implements ActionListener, MouseMotionListener {
+public abstract class RingDisplay extends JPanel 
+        implements ActionListener, MouseMotionListener {
     
     /**
-     * How many RingDisplay windows are open during the current JVM session.
+     * How many <code>RingDisplay</code> windows are open during the current JVM 
+     * session.
      */
     private static int windowCount = 0;
     
@@ -83,7 +85,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
      * The minimum pixels per unit interval for which the program will draw 
      * grids.
      */
-    protected static final int MINIMUM_PIXELS_PER_UNIT_INTERVAL_TO_DRAW_GRIDS = 5;
+    protected static final int MINIMUM_PIXELS_PER_UNIT_INTERVAL_TO_DRAW_GRIDS 
+            = 5;
     
     /**
      * The maximum pixels per unit interval. Even on an 8K display, this value 
@@ -350,6 +353,16 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     protected Color splitPrimeMidDegreeColor, ramifiedPrimeColor;
     protected Color ramifiedPrimeMidDegreeColor;
     
+    protected boolean unitApplicable = false;
+    
+    /**
+     * Tells whether the fundamental unit of the currently displayed ring is 
+     * available. It might not be if the calculation took too long or if the 
+     * number is beyond the range of 
+     * {@link algebraics.quadratics.RealQuadraticInteger} to represent.
+     */
+    protected boolean unitAvailable = false;
+    
     /**
      * The x of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
      * diagram.
@@ -473,11 +486,11 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     
     /**
      * Changes the background color. I have not tested this one yet.
-     * @param newBackgroundColor Preferably a color that will contrast nicely 
+     * @param proposedBackgroundColor Preferably a color that will contrast nicely 
      * with the foreground points but which the grids can blend into.
      */
-    public void changeBackgroundColor(Color newBackgroundColor) {
-        this.backgroundColor = newBackgroundColor;
+    public void changeBackgroundColor(Color proposedBackgroundColor) {
+        this.backgroundColor = proposedBackgroundColor;
     }
     
     /**
@@ -642,12 +655,30 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     
     /**
      * Ensures a ring object is of the appropriate type. If it is not, this 
-     * procedure should throw an appropriate exception.
-     * @param ring The ring object to validate. For example, 
-     * <b>Z</b>[&#8731;43]. That would be an appropriate parameter for a display 
-     * of cubic integer rings, but not for a display of quadratic integer rings.
+     * procedure should throw an appropriate exception. This procedure should 
+     * only be overridden if there is a need to support ring object types that 
+     * might not have the same runtime class.
+     * @param ring The ring object to validate. For example, <b>Z</b>[&#8731;5]. 
+     * That would be an appropriate parameter for a display of cubic integer 
+     * rings, but not for a display of quadratic integer rings.
+     * @throws IllegalArgumentException If <code>ring</code> is not null but 
+     * also not an instance of the appropriate type.
+     * @throws NullPointerException If <code>ring</code> is null. The exception 
+     * message will state that a null ring can't be validated.
+     * @throws algebraics.UnsupportedNumberDomainException If <code>ring</code> 
+     * is an instance of a type that is not currently supported, but there is a 
+     * definite plan or intention to support that type in the future.
      */
-    protected abstract void validateRing(IntegerRing ring);
+    protected void validateRing(IntegerRing ring) {
+        if (ring == null) {
+            throw new NullPointerException("Null ring can't be validated");
+        }
+        if (!ring.getClass().equals(this.diagramRing.getClass())) {
+            String excMsg = ring.toASCIIString() + " is not an instance of " 
+                    + this.diagramRing.getClass().getName();
+            throw new IllegalArgumentException(excMsg);
+        }
+    }
 
     /**
      * Switches to a different ring. This procedure should not be overridden 
@@ -1032,6 +1063,9 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
                 break;
             case "close":
                 RingDisplay.windowCount--;
+                if (RingDisplay.windowCount == 0) {
+                    System.exit(0);
+                }
                 this.ringFrame.dispose();
                 break;
             case "exit":
@@ -1106,7 +1140,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener, Mous
     /**
      * Retrieves the ring currently displayed. This is mainly for testability 
      * purposes.
-     * @return The ring currently displayed
+     * @return The ring currently displayed.
      */
     public IntegerRing getRing() {
         return this.diagramRing;

@@ -52,15 +52,7 @@ public class RealQuadRingDisplay extends RingDisplay {
     /**
      * The number 1 + 0&radic;<i>d</i>.
      */
-    private RealQuadraticInteger  diagRingOne;
-    
-    /**
-     * Tells whether the fundamental unit of the currently displayed ring is 
-     * available. It might not be if the calculation took too long or if the 
-     * number is beyond the range of 
-     * {@link algebraics.quadratics.RealQuadraticInteger} to represent.
-     */
-    private boolean unitAvailable = false;
+    private RealQuadraticInteger diagRingOne;
     
     private static final String MANUAL_URL_TOP_LEVEL = "https://github.com/";
     
@@ -325,6 +317,7 @@ public class RealQuadRingDisplay extends RingDisplay {
     public RealQuadRingDisplay(RealQuadraticRing ring) {
         super(ring);
         this.ringCanvasVerticMax = PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX;
+        this.unitApplicable = true;
         this.mouseAlgInt = new RealQuadraticInteger(0, 0, ring);
         this.diagRingOne = new RealQuadraticInteger(1, 0, ring);
         this.findUnit();
