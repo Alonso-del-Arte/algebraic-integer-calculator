@@ -616,27 +616,6 @@ public final class ImagQuadRingDisplay extends RingDisplay {
     }
     
     /**
-     * Ensures a ring object is of the appropriate type, specifically {@link 
-     * algebraics.quadratics.ImaginaryQuadraticRing}.
-     * @param ring The ring object to be validated.
-     * @throws IllegalArgumentException If <code>ring</code> is not null but 
-     * also not an instance of <code>ImaginaryQuadraticRing</code>.
-     * @throws NullPointerException If <code>ring</code> is null. The exception 
-     * message will state that a null ring can't be validated.
-     */
-    @Override
-    protected void validateRing(IntegerRing ring) {
-        if (ring == null) {
-            throw new NullPointerException("Null ring can't be validated");
-        }
-        if (!(ring instanceof ImaginaryQuadraticRing)) {
-            String excMsg = ring.toASCIIString() 
-                    + " is not of type ImaginaryQuadraticRing";
-            throw new IllegalArgumentException(excMsg);
-        }
-    }
-        
-    /**
      * Asks the user to enter a new, negative, squarefree integer for the 
      * parameter <i>d</i> of a ring adjoining &radic;<i>d</i>. If the user 
      * enters a positive integer, the number will be multiplied by &minus;1. And 
@@ -687,12 +666,6 @@ public final class ImagQuadRingDisplay extends RingDisplay {
         }
     }
     
-    @Override
-    public void switchToRing(IntegerRing ring) {
-        this.validateRing(ring);
-        super.switchToRing(ring);
-    }
-
     /**
      * Function to choose for parameter <i>d</i> the next higher negative 
      * squarefree integer. If this brings us up to &minus;1, then the "Increase 

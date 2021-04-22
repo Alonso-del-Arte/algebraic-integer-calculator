@@ -154,34 +154,6 @@ public final class RealQuadRingDisplay extends RingDisplay {
         }
     }
     
-    /**
-     * Ensures a ring object is of the appropriate type, specifically {@link 
-     * algebraics.quadratics.RealQuadraticRing}.
-     * @param ring The ring object to be validated.
-     * @throws IllegalArgumentException If <code>ring</code> is not null but 
-     * also not an instance of <code>RealQuadraticRing</code>.
-     * @throws NullPointerException If <code>ring</code> is null. The exception 
-     * message will state that a null ring can't be validated.
-     */
-    @Override
-    protected void validateRing(IntegerRing ring) {
-        if (ring == null) {
-            throw new NullPointerException("Null ring can't be validated");
-        }
-        if (!(ring instanceof RealQuadraticRing)) {
-            String excMsg = ring.toASCIIString() 
-                    + " is not of type RealQuadraticRing";
-            throw new IllegalArgumentException(excMsg);
-        }
-    }
-        
-    @Override
-    protected void switchToRing(IntegerRing ring) {
-        this.validateRing(ring);
-        super.switchToRing(ring);
-        this.findUnit();
-    }
-
     @Override
     public void chooseDiscriminant() {
         int currDiscr = ((QuadraticRing) this.diagramRing).getRadicand();
@@ -260,14 +232,6 @@ public final class RealQuadRingDisplay extends RingDisplay {
         RealQuadraticRing ring = new RealQuadraticRing(discr);
         this.switchToRing(ring);
         this.updateRingHistory(ring);
-    }
-
-    // STUB TO FAIL THE FIRST TEST
-    @Override
-    public void copyReadoutsToClipboard() {
-        java.awt.datatransfer.StringSelection ss 
-                = new java.awt.datatransfer.StringSelection("Sorry");
-        this.getToolkit().getSystemClipboard().setContents(ss, ss);
     }
 
     // STUB TO FAIL THE FIRST TEST

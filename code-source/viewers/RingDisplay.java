@@ -729,8 +729,12 @@ public abstract class RingDisplay extends JPanel
      * point down the line.
      */
     protected void switchToRing(IntegerRing ring) {
+        this.validateRing(ring);
         this.ringFrame.setTitle("Ring Diagram for " + ring.toString());
         this.setRing(ring);
+        if (this.unitApplicable) {
+            this.findUnit();
+        }
         this.repaint();
     }
     
@@ -1200,7 +1204,9 @@ public abstract class RingDisplay extends JPanel
      */
     private void setRing(IntegerRing ring) {
         this.diagramRing = ring;
-        this.setPixelsPerBasicImaginaryInterval();
+        if (this.includeImaginary) {
+            this.setPixelsPerBasicImaginaryInterval();
+        }
     }
     
     private JMenuItem makeMenuItem(String menuItemText, 
