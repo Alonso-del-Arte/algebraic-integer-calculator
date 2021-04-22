@@ -686,6 +686,12 @@ public final class ImagQuadRingDisplay extends RingDisplay {
             this.updateRingHistory(ring);
         }
     }
+    
+    @Override
+    public void switchToRing(IntegerRing ring) {
+        this.validateRing(ring);
+        super.switchToRing(ring);
+    }
 
     /**
      * Function to choose for parameter <i>d</i> the next higher negative 

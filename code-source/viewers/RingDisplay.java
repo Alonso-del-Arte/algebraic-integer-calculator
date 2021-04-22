@@ -474,7 +474,9 @@ public abstract class RingDisplay extends JPanel
             throw new IllegalArgumentException(excMsg);
         }
         this.pixelsPerUnitInterval = pixelLength;
-        this.setPixelsPerBasicImaginaryInterval();
+        if (this.includeImaginary) {
+            this.setPixelsPerBasicImaginaryInterval();
+        }
     }
     
     /**
@@ -693,7 +695,8 @@ public abstract class RingDisplay extends JPanel
             throw new NullPointerException("Null ring can't be validated");
         }
         if (!ring.getClass().equals(this.diagramRing.getClass())) {
-            String excMsg = ring.toASCIIString() + " is not an instance of " 
+            String excMsg = ring.toASCIIString() + " is an instance of " 
+                    + ring.getClass().getName() + ", not an instance of " 
                     + this.diagramRing.getClass().getName();
             throw new IllegalArgumentException(excMsg);
         }

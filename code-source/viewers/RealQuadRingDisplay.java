@@ -177,6 +177,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
         
     @Override
     protected void switchToRing(IntegerRing ring) {
+        this.validateRing(ring);
         super.switchToRing(ring);
         this.findUnit();
     }
