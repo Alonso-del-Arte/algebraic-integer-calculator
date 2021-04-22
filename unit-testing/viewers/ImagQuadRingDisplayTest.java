@@ -17,6 +17,7 @@
 package viewers;
 
 import algebraics.IntegerRing;
+import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 
 //import java.awt.Graphics;
@@ -144,6 +145,18 @@ public class ImagQuadRingDisplayTest {
         this.ringDisplay.decrementDiscriminant();
         IntegerRing actualRing = this.ringDisplay.getRing();
         assertEquals(expectedRing, actualRing);
+    }
+    
+    /**
+     * Test of the switchToRing procedure, of the ImagQuadRingDisplay class.
+     */
+    @Test
+    public void testSwitchToRing() {
+        System.out.println("switchToRing");
+        ImaginaryQuadraticRing expected = new ImaginaryQuadraticRing(-330);
+        this.ringDisplay.switchToRing(expected);
+        IntegerRing actual = this.ringDisplay.getRing();
+        assertEquals(expected, actual);
     }
 
     /**

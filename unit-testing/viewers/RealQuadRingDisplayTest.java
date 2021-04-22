@@ -16,7 +16,9 @@
  */
 package viewers;
 
+import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
+import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 
 import java.awt.Graphics;
@@ -83,18 +85,46 @@ public class RealQuadRingDisplayTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    
+    /**
+     * Test of the getFundamentalUnit function, of the RealQuadRingDisplay 
+     * class.
+     */
+    @Test
+    public void testGetFundamentalUnit() {
+        System.out.println("");
+        RealQuadraticInteger expected = new RealQuadraticInteger(3, 1, 
+                RING_OQ13, 2);
+        AlgebraicInteger actual = this.ringDisplay.getFundamentalUnit();
+        assertEquals(expected, actual);
+    }
 
     /**
-     * Test of switchToRing method, of class RealQuadRingDisplay.
+     * Test of the switchToRing procedure, of the RealQuadRingDisplay class.
      */
     @Test
     public void testSwitchToRing() {
         System.out.println("switchToRing");
-//        IntegerRing ring = null;
-//        RealQuadRingDisplay instance = null;
-//        instance.switchToRing(ring);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        RealQuadraticRing expected = new RealQuadraticRing(247);
+        this.ringDisplay.switchToRing(expected);
+        IntegerRing actual = this.ringDisplay.getRing();
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Another test of the switchToRing procedure, of the RealQuadRingDisplay 
+     * class. If switching to a ring for which the fundamental unit can readily 
+     * be found, such as for example <b>Z</b>[&radic;2] (the fundamental unit of 
+     * which is 1 + &radic;2), the fundamental unit property should be updated 
+     * accordingly.
+     */
+    @Test
+    public void testSwitchToRingChangesUnitIfFound() {
+        RealQuadraticRing ring = new RealQuadraticRing(2);
+        this.ringDisplay.switchToRing(ring);
+        RealQuadraticInteger expected = new RealQuadraticInteger(1, 1, ring);
+        AlgebraicInteger actual = this.ringDisplay.getFundamentalUnit();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -203,7 +233,7 @@ public class RealQuadRingDisplayTest {
     public void testGetAboutBoxMessage() {
         System.out.println("getAboutBoxMessage");
         String aboutBoxText = this.ringDisplay.getAboutBoxMessage();
-        String programName = "Imaginary Quadratic Integer Ring Viewer";
+        String programName = "Real Quadratic Integer Ring Viewer";
         String msg = "About box message should start with program name \"" 
                 + programName + "\"";
         assert aboutBoxText.startsWith(programName) : msg;
