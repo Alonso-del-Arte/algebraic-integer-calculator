@@ -37,7 +37,7 @@ import static viewers.RingDisplay.PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX;
  * real quadratic integer rings.
  * @author Alonso del Arte
  */
-public class RealQuadRingDisplay extends RingDisplay {
+public final class RealQuadRingDisplay extends RingDisplay {
     
     public static final int DEFAULT_RING_D = 2;
     
@@ -65,7 +65,7 @@ public class RealQuadRingDisplay extends RingDisplay {
      * The name of the program to show in the About box.
      */
     private static final String ABOUT_BOX_PROGRAM_NAME 
-            = "_Real Quadratic Integer Ring Viewer";
+            = "Real Quadratic Integer Ring Viewer";
     
     /**
      * The version identification to show in the About box.
@@ -76,7 +76,7 @@ public class RealQuadRingDisplay extends RingDisplay {
      * The copyright notice to show in the About box.
      */
     private static final String ABOUT_BOX_COPYRIGHT_NOTICE 
-            = "u00A9 2021 Alonso del Arte_";
+            = "\u00A9 2021 Alonso del Arte_";
     
     /**
      * Draws two lines, corresponding to the specified real quadratic integer 
@@ -138,14 +138,19 @@ public class RealQuadRingDisplay extends RingDisplay {
         this.drawUnits(g);
     }
     
-    private void findUnit() {
-        try {
-            this.diagRingMainUnit 
-                    = (RealQuadraticInteger) fundamentalUnit(this.diagramRing);
-            this.unitAvailable = true;
-        } catch (ArithmeticException ae) {
-            System.err.println(ae.getMessage());
-            this.unitAvailable = false;
+    /**
+     * Calls {@link RingDisplay#findUnit()}, and if that sets 
+     * {@link RingDisplay#unitAvailable} to true, copies the unit to a private 
+     * field conveniently cast to the 
+     * {@link algebraics.quadratics.RealQuadraticInteger}.
+     */
+    @Override
+    protected void findUnit() {
+        this.diagRingOne = new RealQuadraticInteger(1, 0, 
+                (RealQuadraticRing) this.diagramRing);
+        super.findUnit();
+        if (this.unitAvailable) {
+            this.diagRingMainUnit = (RealQuadraticInteger) this.fundamentalUnit;
         }
     }
     
@@ -172,12 +177,8 @@ public class RealQuadRingDisplay extends RingDisplay {
         
     @Override
     protected void switchToRing(IntegerRing ring) {
-        this.ringFrame.setTitle("Ring Diagram for " + ring.toString());
-        this.setRing(ring);
-        this.diagRingOne = new RealQuadraticInteger(1, 0, 
-                (RealQuadraticRing) this.diagramRing);
+        super.switchToRing(ring);
         this.findUnit();
-        this.repaint();
     }
 
     @Override

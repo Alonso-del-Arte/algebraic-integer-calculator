@@ -53,6 +53,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import static calculators.NumberTheoreticFunctionsCalculator.fundamentalUnit;
+
 /**
  * A Swing component in which to draw diagrams of prime numbers in various rings 
  * of algebraic integers. Includes facilities for saving diagrams to files and 
@@ -353,15 +355,32 @@ public abstract class RingDisplay extends JPanel
     protected Color splitPrimeMidDegreeColor, ramifiedPrimeColor;
     protected Color ramifiedPrimeMidDegreeColor;
     
+    /**
+     * Tells whether this diagram viewer includes imaginary numbers and complex 
+     * numbers with nonzero imaginary part. This is determined at the time of 
+     * construction according to the ring that is passed to the constructor.
+     */
+    protected final boolean includeImaginary;
+    
+    /**
+     * Tells whether or not a calculation of a fundamental unit is necessary
+     */
     protected boolean unitApplicable = false;
     
     /**
      * Tells whether the fundamental unit of the currently displayed ring is 
      * available. It might not be if the calculation took too long or if the 
-     * number is beyond the range of 
-     * {@link algebraics.quadratics.RealQuadraticInteger} to represent.
+     * number is beyond the range of the pertinent {@link 
+     * algebraics.IntegerRing} implementation to represent.
      */
     protected boolean unitAvailable = false;
+    
+    /**
+     * Potentially the fundamental unit of the currently displayed ring. The 
+     * number may not be available for a variety of reasons, and this field 
+     * might even be null. Be sure to check if {@link #unitAvailable} is true.
+     */
+    protected AlgebraicInteger fundamentalUnit;
     
     /**
      * The x of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
@@ -679,6 +698,22 @@ public abstract class RingDisplay extends JPanel
             throw new IllegalArgumentException(excMsg);
         }
     }
+    
+    /**
+     * Tries to find the fundamental unit of the currently displayed ring. If it 
+     * is found, it is placed in the {@link #fundamentalUnit} field (that may 
+     * need to be cast to a narrower type) and the flag {@link #unitAvailable} 
+     * is set to true.
+     */
+    protected void findUnit() {
+        try {
+            this.fundamentalUnit = fundamentalUnit(this.diagramRing);
+            this.unitAvailable = true;
+        } catch (ArithmeticException ae) {
+            System.err.println(ae.getMessage());
+            this.unitAvailable = false;
+        }
+    }
 
     /**
      * Switches to a different ring. This procedure should not be overridden 
@@ -980,8 +1015,8 @@ public abstract class RingDisplay extends JPanel
     }
     
     /**
-     * Enables or disables updating of the readout fields for integer, trace, norm 
-     * and polynomial.
+     * Enables or disables updating of the readout fields for integer, trace, 
+     * norm and polynomial.
      */
     public void toggleReadOutsEnabled() {
         if (this.toggleReadOutsEnabledMenuItem.isSelected()) {
@@ -989,6 +1024,17 @@ public abstract class RingDisplay extends JPanel
         } else {
             this.removeMouseMotionListener(this);
         }
+    }
+    
+    /**
+     * When applicable and available, the fundamental unit of the currently 
+     * displayed ring. When applicable, check {@link #unitAvailable}.
+     * @return The fundamental unit of either the currently displayed ring, or 
+     * the fundamental unit of the last requested ring for which the unit could 
+     * be calculated, or null if it's not applicable.
+     */
+    public AlgebraicInteger getFundamentalUnit() {
+        return this.fundamentalUnit;
     }
     
     protected abstract void updateBoundaryNumber();
@@ -1063,9 +1109,6 @@ public abstract class RingDisplay extends JPanel
                 break;
             case "close":
                 RingDisplay.windowCount--;
-                if (RingDisplay.windowCount == 0) {
-                    System.exit(0);
-                }
                 this.ringFrame.dispose();
                 break;
             case "exit":
@@ -1152,7 +1195,7 @@ public abstract class RingDisplay extends JPanel
      * number of pixels by basic imaginary interval is adjusted accordingly.
      * @param ring The ring to set.
      */
-    protected void setRing(IntegerRing ring) {
+    private void setRing(IntegerRing ring) {
         this.diagramRing = ring;
         this.setPixelsPerBasicImaginaryInterval();
     }
@@ -1479,6 +1522,7 @@ public abstract class RingDisplay extends JPanel
      * subpackage.
      */
     public RingDisplay(IntegerRing ring) {
+        this.includeImaginary = !ring.isPurelyReal();
         this.pixelsPerUnitInterval = DEFAULT_PIXELS_PER_UNIT_INTERVAL;
         this.pixelsPerBasicImaginaryInterval = this.pixelsPerUnitInterval;
         this.ringCanvasHorizMax = RING_CANVAS_DEFAULT_HORIZ_MAX;
