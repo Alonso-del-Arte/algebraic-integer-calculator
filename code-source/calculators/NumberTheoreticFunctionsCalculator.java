@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -173,6 +173,18 @@ public class NumberTheoreticFunctionsCalculator {
         UNITS_CACHE.put(ring, unit);
     }
     
+    /**
+     * Under the assumption the units of real quadratic integer rings with 
+     * "surd" part greater than a certain threshold take much more time to 
+     * calculate, at least with a brute force search, a static cache is 
+     * maintained. If the "surd" part of a found unit is greater than this 
+     * threshold, the unit is added to the cache. For example, the fundamental 
+     * unit of <b>Z</b>[&radic;102] is 101 + 10&radic;102, which can be 
+     * recalculated quickly, even by brute force, so it's not cached. But the 
+     * fundamental unit of <b>Z</b>[&radic;103] is 227528 + 22419&radic;103, 
+     * which is probably very expensive to have to do a brute force search for 
+     * more than once.
+     */
     private static final int SURD_PART_CACHE_THRESHOLD = 1000;
     
     private static final HashMap<IntegerRing, Integer> CLASS_NUMBERS_CACHE 
@@ -599,6 +611,9 @@ public class NumberTheoreticFunctionsCalculator {
      * @return True if the ring is a unique factorization domain, false 
      * otherwise. For example, true for <i>O</i><sub><b>Q</b>(&radic;29)</sub>, 
      * false for <b>Z</b>[&radic;30].
+     * @throws ArithmeticException If an overflow occurred in the computation of 
+     * a fundamental unit (this is applicable to real quadratic rings and many 
+     * other kinds of rings, but not all rings).
      * @throws NullPointerException If <code>ring</code> is null.
      * @throws UnsupportedNumberDomainException If the kind of ring is not 
      * currently supported. For example, a cubic integer ring. The occurrence of 
@@ -624,9 +639,9 @@ public class NumberTheoreticFunctionsCalculator {
     }
         
     /**
-     * Computes the prime factors, and unit factors when applicable, of an 
-     * algebraic integer from a unique factorization domain (UFD). An 
-     * "applicable" unit factor is any unit other than 1.
+     * Computes the prime factors, and nontrivial unit factors if needed, of an 
+     * algebraic integer from a unique factorization domain (UFD). A nontrivial 
+     * unit factor is any unit other than 1.
      * @param num The algebraic integer to find the prime factors of. For 
      * example, &minus;4 + 3&radic;(&minus;19).
      * @return A list of algebraic integers, with the first possibly being a 
@@ -642,7 +657,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @throws NullPointerException If <code>num</code> is null.
      * @throws UnsupportedNumberDomainException Thrown when called upon a number
      * from a type of ring that is not fully supported yet. For example, as of 
-     * 2018, this program hardly has any support for cubic integers, so asking 
+     * 2021, this program hardly has any support for cubic integers, so asking 
      * for the prime factorization of &minus;15 + 2&#8731;2 + 
      * (&#8731;2)<sup>2</sup> would probably trigger this exception.
      * @since Version 0.3
@@ -1462,8 +1477,9 @@ public class NumberTheoreticFunctionsCalculator {
             do {
                 xd = trialSurd * trialSurd * d;
                 trialRegNeg = (long) Math.floor(Math.sqrt(xd - 4));
-                trialRegNeg += ((trialRegNeg % 2) - 1); // Make sure it's odd
-                potentialHalfUnit = new RealQuadraticInteger((int) trialRegNeg, (int) trialSurd, r, 2);
+                trialRegNeg += ((trialRegNeg % 2) - 1);
+                potentialHalfUnit = new RealQuadraticInteger((int) trialRegNeg, 
+                        (int) trialSurd, r, 2);
                 if (potentialHalfUnit.norm() == -1) {
                     return potentialHalfUnit;
                 } else {
@@ -1492,7 +1508,8 @@ public class NumberTheoreticFunctionsCalculator {
      * Gives the fundamental unit of a ring that has infinitely many units. In a  
      * domain of purely real numbers, the fundamental unit is the smallest unit 
      * greater than 1. It may have norm &minus;1 or 1. At least for now, this 
-     * uses a brute force algorithm that may in some cases be unacceptably slow.
+     * function uses a brute force algorithm that may be unacceptably slow in 
+     * some cases.
      * @param ring The ring of algebraic integers for which to find the 
      * fundamental unit.
      * @return The fundamental unit. For example, for <b>Z</b>[&radic;2], this 
@@ -1509,12 +1526,14 @@ public class NumberTheoreticFunctionsCalculator {
      * @throws UnsupportedNumberDomainException If called upon with a number 
      * domain for which support has not been fully fleshed out yet, such as a 
      * simple cubic integer ring. This exception should never be used to 
-     * indicate a mathematical fact about the pertinent number domain.
+     * indicate an immutable mathematical fact about the pertinent number 
+     * domain, but rather a condition that may change in the future.
      */
     public static AlgebraicInteger fundamentalUnit(IntegerRing ring) {
         if (ring instanceof ImaginaryQuadraticRing) {
-            String exceptionMessage = "Since " + ring.toASCIIString() + " has a finite unit group, there is no fundamental unit.";
-            throw new IllegalArgumentException(exceptionMessage);
+            String excMsg = "Since " + ring.toASCIIString() 
+                    + " has a finite unit group, there is no fundamental unit";
+            throw new IllegalArgumentException(excMsg);
         }
         if (ring instanceof RealQuadraticRing) {
             if (UNITS_CACHE.containsKey(ring)) {
@@ -1810,13 +1829,21 @@ public class NumberTheoreticFunctionsCalculator {
      * number of <b>Z</b>[&radic;&minus;5] is 2. A return of 0 or a negative 
      * integer could indicate either an arithmetic overflow problem or a mistake 
      * on the programmer's part.
+     * @throws ArithmeticException If an overflow occurs during the computation. 
+     * This is likelier to occur for real quadratic rings than for imaginary 
+     * quadratic rings, because the former requires a calculation of the 
+     * fundamental unit. I recommend calling {@link 
+     * #fundamentalUnit(algebraics.IntegerRing) fundamentalUnit()} directly 
+     * first whenever real quadratic rings are involved, as that function might 
+     * cause this exception. If this exception does occur, then you know that 
+     * the field class number computation would be likewise unsuccessful.
+     * @throws NullPointerException If <code>ring</code> is null. The exception 
+     * message will be "Null ring does not have class number".
      * @throws UnsupportedNumberDomainException If called upon for a type of 
      * ring which is not yet supported by this function. For example, as of 
      * 2018, this function supports real and imaginary quadratic rings but no 
      * kind of cubic ring, so asking this function to compute the class number 
      * of <b>Z</b>[&#8731;2] should trigger this exception.
-     * @throws NullPointerException If <code>ring</code> is null. The exception 
-     * message will be "Null ring does not have class number".
      */
     public static int fieldClassNumber(IntegerRing ring) {
         if (ring == null) {
