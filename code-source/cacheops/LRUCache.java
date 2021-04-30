@@ -59,7 +59,7 @@ public abstract class LRUCache<N, V> {
     }
     
     // STUB TO FAIL THE FIRST TEST
-    boolean isCached(V value) {
+    boolean has(V value) {
         return false;
     }
     
