@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class EratosthenesSieve {
     
-    private static int threshold = 100;
+    private static int currThresh = 100;
     
     private static final int[] FIRST_25_PRIMES = {2, 3, 5, 7, 11, 13, 17, 19, 
         23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
@@ -39,11 +39,33 @@ public class EratosthenesSieve {
         }
     }
     
-    // STUB TO FAIL THE FIRST TEST
     public static ArrayList<Integer> listPrimes(int threshold) {
-        ArrayList<Integer> badList = new ArrayList<>();
-        badList.add(4);
-        return badList;
+        int thresh = Math.abs(threshold);
+        if (thresh < currThresh) {
+            int trimIndex = PRIMES.size();
+            int p;
+            do {
+                trimIndex--;
+                p = PRIMES.get(trimIndex);
+            } while (p > thresh);
+            return new ArrayList<>(PRIMES.subList(0, trimIndex + 1));
+        }
+        if (thresh > currThresh) {
+            for (int n = currThresh + 1; n <= thresh; n++) {
+                double root = Math.sqrt(n);
+                boolean noDivisorFound = true;
+                int index = 0;
+                int p;
+                do {
+                    p = PRIMES.get(index);
+                    noDivisorFound = (n % p != 0);
+                    index++;
+                } while (p <= root && noDivisorFound);
+                if (noDivisorFound) PRIMES.add(n);
+            }
+            currThresh = thresh;
+        }
+        return new ArrayList<>(PRIMES);
     }
     
 }
