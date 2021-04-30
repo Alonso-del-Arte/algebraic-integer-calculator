@@ -16,61 +16,23 @@
  */
 package cacheops;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the LRUCache class.
  * @author Alonso del Arte
  */
 public class LRUCacheTest {
     
+    private static final Random RANDOM = new Random();
+    
     /**
-     * Test of create method, of class LRUCache.
-     */
-    @Test
-    public void testCreate() {
-        System.out.println("create");
-//        Object name = null;
-//        LRUCache instance = null;
-//        Object expResult = null;
-//        Object result = instance.create(name);
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of moveToFront method, of class LRUCache.
-     */
-    @Test
-    public void testMoveToFront() {
-        System.out.println("moveToFront");
-//        Object[] objects = null;
-//        int i = 0;
-//        LRUCache.moveToFront(objects, i);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of hasName method, of class LRUCache.
-     */
-    @Test
-    public void testHasName() {
-        System.out.println("hasName");
-//        Object value = null;
-//        Object name = null;
-//        LRUCache instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.hasName(value, name);
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of forName method, of class LRUCache.
+     * Test of the forName function, of the LRUCache class.
      */
     @Test
     public void testForName() {
@@ -82,6 +44,83 @@ public class LRUCacheTest {
 //        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testConstructorRejectsNegativeCapacity() {
+        int badSize = -RANDOM.nextInt(128) - 1;
+        try {
+            LRUCacheImpl cache = new LRUCacheImpl(badSize);
+            String msg = "Should not have been able to create " 
+                    + cache.toString() + " with size " + badSize;
+            fail(msg);
+        } catch (NegativeArraySizeException nase) {
+            System.out.println("NegativeArraySizeException adequate for size " 
+                    + badSize);
+            System.out.println("\"" + nase.getMessage() + "\"");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("IllegalArgumentException preferred for size " 
+                    + badSize);
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for size " + badSize;
+            fail(msg);
+        }
+    }
+    
+    @Test
+    public void testConstructorRejectsZeroCapacity() {
+        try {
+            LRUCacheImpl cache = new LRUCacheImpl(0);
+            String msg = "Should not have been able to create " 
+                    + cache.toString() + " with size 0";
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("IllegalArgumentException correct for size 0");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for size 0";
+            fail(msg);
+        }
+    }
+    
+    @Test
+    public void testConstructorRejectsLowPositiveCapacity() {
+        int badSize = LRUCache.MINIMUM_CAPACITY - 1;
+        try {
+            LRUCacheImpl cache = new LRUCacheImpl(badSize);
+            String msg = "Should not have been able to create " 
+                    + cache.toString() + " with size " + badSize;
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("IllegalArgumentException correct for size " 
+                    + badSize);
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for size " + badSize;
+            fail(msg);
+        }
+    }
+    
+    private static class LRUCacheImpl extends LRUCache<LocalDate, String> {
+
+        @Override
+        protected String create(LocalDate name) {
+            return DateTimeFormatter.ISO_LOCAL_DATE.format(name);
+        }
+
+        @Override
+        protected boolean hasName(String value, LocalDate name) {
+            return DateTimeFormatter.ISO_LOCAL_DATE.format(name).equals(value);
+        }
+
+        public LRUCacheImpl(int size) {
+            super(size);
+        }
+        
     }
     
 }
