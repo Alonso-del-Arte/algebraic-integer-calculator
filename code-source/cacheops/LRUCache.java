@@ -17,30 +17,42 @@
 package cacheops;
 
 /**
- * A least recently used (LRU) cache. This is modeled on the 
- * <code>sun.misc.LRUCache</code> class that <code>java.util.Scanner</code> uses 
- * in some implementations of the JDK. But unlike that one, this one uses no 
- * "native methods."
+ * A least recently used (LRU) cache. The idea is that the cache makes the most 
+ * recently used items available. The cache has a capacity specified at the time 
+ * of construction. New items can still be added when capacity is reached, the 
+ * cache simply discards the least recently used item.
+ * <p>One way to implement the cache is with an array. New items are added at 
+ * the first index of the array and the other items are pushed back one index. 
+ * Whatever is at the last index is simply discarded.</p>
+ * <p>As long as an item is in the cache, it can't be collected by the garbage 
+ * collector. Once it's out of the cache, there might be no more references to 
+ * the object, in which case the memory it takes up can be reclaimed.</p>
+ * <p>This class is modeled on the <code>sun.misc.LRUCache</code> class that 
+ * <code>java.util.Scanner</code> uses in some implementations of the JDK. But 
+ * unlike that one, this one uses no "native methods."</p>
  * @param <N> The name for the value to cache.
  * @param <V> The value to cache.
  * @author Alonso del Arte
  */
-public class LRUCache<N, V> {
+public abstract class LRUCache<N, V> {
     
-    // STUB TO FAIL THE FIRST TEST
-    V create(N name) {
-        return null;
-    }
+    /**
+     * The minimum capacity for the cache. Obviously this should not be a 
+     * negative number, and zero doesn't make sense either. A value of 1 would 
+     * be pointless, since the cache would be constantly pushing items out. So 
+     * perhaps 2 is the smallest value that makes sense. But I think 4 is the 
+     * smallest value likely to be used with any frequency. I don't think the 
+     * cache should be too large, however.
+     */
+    public static final int MINIMUM_CAPACITY = 4;
     
-    // STUB TO FAIL THE FIRST TEST
-    public static void moveToFront(Object[] objects, int i) {
+    protected abstract V create(N name);
+    
+    private static void moveToFront(Object[] objects, int i) {
         //
     }
     
-    // STUB TO FAIL THE FIRST TEST
-    boolean hasName(V value, N name) {
-        return false;
-    }
+    protected abstract boolean hasName(V value, N name);
     
     // STUB TO FAIL THE FIRST TEST
     public V forName(N name) {
