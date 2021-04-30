@@ -31,19 +31,65 @@ public class LRUCacheTest {
     
     private static final Random RANDOM = new Random();
     
+    private static void fillCache(LRUCacheImpl cache, int size) {
+        String current;
+        System.out.print("Added values ");
+        for (int i = 0; i < size; i++) {
+            current = cache.forName(LocalDate.now().minusDays(i));
+            System.out.print("\"" + current + "\", ");
+        }
+        System.out.println(" to " + cache.toString());
+    }
+    
     /**
      * Test of the forName function, of the LRUCache class.
      */
     @Test
     public void testForName() {
         System.out.println("forName");
-//        Object name = null;
-//        LRUCache instance = null;
-//        Object expResult = null;
-//        Object result = instance.forName(name);
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        LRUCacheImpl cache = new LRUCacheImpl(LRUCache.MINIMUM_CAPACITY);
+        int dayOffset = RANDOM.nextInt(65536) - 32768;
+        LocalDate date = LocalDate.now().plusDays(dayOffset);
+        String expected = DateTimeFormatter.ISO_LOCAL_DATE.format(date);
+        String actual = cache.forName(date);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Test of the has function, of the LRUCache class. A value that was just 
+     * cached should register as cached.
+     */
+    @Test
+    public void testHas() {
+        System.out.println("has");
+        LRUCacheImpl cache = new LRUCacheImpl(LRUCache.MINIMUM_CAPACITY);
+        LocalDate today = LocalDate.now();
+        String value = cache.forName(today);
+        String msg = "Cache should have value \"" + value + "\"";
+        assert cache.has(value) : msg;
+    }
+    
+    /**
+     * Another test of the has function, of the LRUCache class. A value that has 
+     * not been cached should not register as cached.
+     */
+    @Test
+    public void testDoesNotHave() {
+        LRUCacheImpl cache = new LRUCacheImpl(LRUCache.MINIMUM_CAPACITY);
+        LocalDate today = LocalDate.now();
+        String value = DateTimeFormatter.ISO_LOCAL_DATE.format(today);
+        String msg = "Cache should not have value \"" + value + "\"";
+        assert !cache.has(value) : msg;
+    }
+    
+    @Test
+    public void testCacheRetainsValueWhileCapacityAvailable() {
+        int size = LRUCache.MINIMUM_CAPACITY + RANDOM.nextInt(4);
+        LRUCacheImpl cache = new LRUCacheImpl(size);
+        LocalDate firstDate = LocalDate.now().plusDays(1);
+        String firstValue = cache.forName(firstDate);
+        fillCache(cache, size);
+        fail("Finish writing this test");
     }
     
     @Test
