@@ -23,7 +23,7 @@ package cacheops;
  * cache simply discards the least recently used item.
  * <p>One way to implement the cache is with an array. New items are added at 
  * the first index of the array and the other items are pushed back one index. 
- * Whatever is at the last index is simply discarded.</p>
+ * Whatever was at the last index is simply discarded.</p>
  * <p>As long as an item is in the cache, it can't be collected by the garbage 
  * collector. Once it's out of the cache, there might be no more references to 
  * the object, in which case the memory it takes up can be reclaimed.</p>
@@ -46,21 +46,37 @@ public abstract class LRUCache<N, V> {
      */
     public static final int MINIMUM_CAPACITY = 4;
     
+    private final V[] values;
+    
+    private final int capacity;
+    
+    private final int nextUp = 0;
+    
     protected abstract V create(N name);
     
     private static void moveToFront(Object[] objects, int i) {
         //
     }
     
-    protected abstract boolean hasName(V value, N name);
-    
     // STUB TO FAIL THE FIRST TEST
-    public V forName(N name) {
-        return null;
+    boolean isCached(V value) {
+        return false;
     }
     
-    public LRUCache(int i) {
-        //
+    protected abstract boolean hasName(V value, N name);
+    
+    public V forName(N name) {
+        return this.create(name);
+    }
+    
+    public LRUCache(int size) {
+        if (size < MINIMUM_CAPACITY) {
+            String excMsg = "Proposed cache size " + size 
+                    + " is less than minimum capacity " + MINIMUM_CAPACITY;
+            throw new IllegalArgumentException(excMsg);
+        }
+        this.capacity = size;
+        this.values = (V[]) new Object[this.capacity];
     }
     
 }
