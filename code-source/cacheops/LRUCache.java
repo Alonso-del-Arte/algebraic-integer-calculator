@@ -16,6 +16,8 @@
  */
 package cacheops;
 
+import java.util.Scanner;
+
 /**
  * A least recently used (LRU) cache. The idea is that the cache makes the most 
  * recently used items available. The cache has a capacity specified at the time 
@@ -33,7 +35,8 @@ package cacheops;
  * @param <N> The type of the names for the values to cache. Ideally this should 
  * be an immutable class that is easily calculated anew.
  * @param <V> The type of the values to cache. To be worth caching, the values 
- * should be too expensive to recalculate each and every time they're needed.
+ * should be too expensive to recalculate each and every time they're needed, so 
+ * that it's easier to retrieve from the cache.
  * @author Alonso del Arte
  */
 public abstract class LRUCache<N, V> {
@@ -44,7 +47,8 @@ public abstract class LRUCache<N, V> {
      * be pointless, since the cache would be constantly pushing items out. So 
      * perhaps 2 is the smallest value that makes sense. But I think 4 is the 
      * smallest value likely to be used with any frequency. I don't think the 
-     * cache should be too large, however.
+     * cache should be too large, however, though I'm not providing a maximum 
+     * capacity constant.
      */
     public static final int MINIMUM_CAPACITY = 4;
     
@@ -58,8 +62,30 @@ public abstract class LRUCache<N, V> {
     
     private int nextUp = 0;
     
+    /**
+     * Creates a value for a given name. Ideally this function should only be 
+     * called by {@link #forName(java.lang.Object) forName()}.
+     * @param name The name to create a value for. Once the value is in the 
+     * cache, this name can be used to retrieve it.
+     * @return A new value. Preferably not null.
+     */
     protected abstract V create(N name);
     
+    /**
+     * Gives the index of an object in an array. This will be the first 
+     * occurrence of the object even if the object occurs in the array more than 
+     * once.
+     * @param obj The object to search for.
+     * @param array The array in which to search for the object.
+     * @param endBound The index after the last index to search. May be less 
+     * than or equal to <code>array.length</code>, but it should not be greater.
+     * @return The index where the object was found, or &minus;1 if the object 
+     * is not in the array at an index prior to <code>endBound</code>.
+     * @throws ArrayIndexOutOfBoundsException If <code>endBound</code> is 
+     * greater than <code>array.length</code> and <code>obj</code> is not in the 
+     * array (because if it is in the array there's no reason for this function 
+     * to iterate out of bounds).
+     */
     private static int indexOf(Object obj, Object[] array, int endBound) {
         boolean found = false;
         int curr = -1;
@@ -106,8 +132,6 @@ public abstract class LRUCache<N, V> {
         return index > -1;
     }
     
-    protected abstract boolean hasName(V value, N name);
-    
     private static void moveToFront(Object[] objects, int position) {
         Object mostRecent = objects[position];
         for (int i = position; i > 0; i--) {
@@ -118,20 +142,20 @@ public abstract class LRUCache<N, V> {
     
     public V forName(N name) {
         V value;
-        int retrievalIndex = indexOf(name, this.names, this.nextUp);
-        if (retrievalIndex == -1) {
+        int index = indexOf(name, this.names, this.nextUp);
+        if (index == -1) {
             value = this.create(name);
             this.names[this.nextUp] = name;
             this.values[this.nextUp] = value;
-            retrievalIndex = this.nextUp;
+            index = this.nextUp;
             if (this.nextUp < this.lastIndex) {
                 this.nextUp++;
             }
         } else {
-            value = this.values[retrievalIndex];
+            value = this.values[index];
         }
-        moveToFront(this.names, retrievalIndex);
-        moveToFront(this.values, retrievalIndex);
+        moveToFront(this.names, index);
+        moveToFront(this.values, index);
         return value;
     }
     
