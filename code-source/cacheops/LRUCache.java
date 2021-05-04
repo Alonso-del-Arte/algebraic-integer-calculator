@@ -16,8 +16,6 @@
  */
 package cacheops;
 
-import java.util.Scanner;
-
 /**
  * A least recently used (LRU) cache. The idea is that the cache makes the most 
  * recently used items available. The cache has a capacity specified at the time 
@@ -31,7 +29,8 @@ import java.util.Scanner;
  * the object, in which case the memory it takes up can be reclaimed.</p>
  * <p>This class is modeled on the <code>sun.misc.LRUCache</code> class that 
  * <code>java.util.Scanner</code> uses in some implementations of the JDK. But 
- * unlike that one, this one uses no "native methods."</p>
+ * unlike that one, this one uses no "native methods," and, perhaps more 
+ * importantly, is not proprietary.</p>
  * @param <N> The type of the names for the values to cache. Ideally this should 
  * be an immutable class that is easily calculated anew.
  * @param <V> The type of the values to cache. To be worth caching, the values 
@@ -42,9 +41,9 @@ import java.util.Scanner;
 public abstract class LRUCache<N, V> {
     
     /**
-     * The minimum capacity for the cache. Obviously this should not be a 
-     * negative number, and zero doesn't make sense either. A value of 1 would 
-     * be pointless, since the cache would be constantly pushing items out. So 
+     * The minimum capacity for a cache. Obviously this should not be a negative 
+     * number, and zero doesn't make sense either. A value of 1 would be 
+     * pointless, since the cache would be constantly pushing items out. So 
      * perhaps 2 is the smallest value that makes sense. But I think 4 is the 
      * smallest value likely to be used with any frequency. I don't think the 
      * cache should be too large, however, though I'm not providing a maximum 
@@ -85,32 +84,14 @@ public abstract class LRUCache<N, V> {
      * greater than <code>array.length</code> and <code>obj</code> is not in the 
      * array (because if it is in the array there's no reason for this function 
      * to iterate out of bounds).
+     * @throws NullPointerException If <code>obj</code> is null. The exception 
+     * message will probably be empty, and thus not very helpful.
      */
     private static int indexOf(Object obj, Object[] array, int endBound) {
         boolean found = false;
-        int curr = -1;
-        while (!found && (curr < endBound)) {
-            curr++;
-            found = obj.equals(array[curr]);
-        }
-        if (found) {
-            return curr;
-        } else {
-            return -1;
-        }
-    }
-    
-    /**
-     * Gives the index of the specified value in this cache's values array.
-     * @param value The value to search for.
-     * @return The index where the value is found in this cache's values array, 
-     * or &minus;1 if the value is not in that array.
-     */
-    private int indexOf(V value) {
-        boolean found = false;
         int curr = 0;
-        while (!found && (curr < this.capacity)) {
-            found = value.equals(this.values[curr]);
+        while (!found && (curr < endBound)) {
+            found = obj.equals(array[curr]);
             curr++;
         }
         if (found) {
@@ -121,9 +102,21 @@ public abstract class LRUCache<N, V> {
     }
     
     /**
+     * Gives the index of the specified value in this cache's values array.
+     * @param value The value to search for.
+     * @return The index where the value is found in this cache's values array, 
+     * or &minus;1 if the value is not in that array.
+     * @throws NullPointerException If <code>value</code> is null. The exception 
+     * message will probably be empty, and thus not very helpful.
+     */
+    private int indexOf(V value) {
+        return indexOf(value, this.values, this.capacity);
+    }
+    
+    /**
      * Indicates whether or not a particular value is in this cache. Note that 
      * this function is package private. It exists for the sake of testing how 
-     * items are retained or removed from the cache.
+     * items are retained in the cache or removed from the cache.
      * @param value The value to search for.
      * @return True if the value is currently in the cache, false if it is not.
      */
@@ -132,6 +125,15 @@ public abstract class LRUCache<N, V> {
         return index > -1;
     }
     
+    /**
+     * Moves an object in an array to index 0. The other objects are shifted 
+     * accordingly, e.g., the object at index 0 is moved to index 1, the object 
+     * at index 1 is moved to index 2, etc.
+     * @param objects The array of objects.
+     * @param position A nonnegative integer, preferably positive.
+     * @throws ArrayIndexOutOfBoundsException If <code>position</code> is 
+     * negative, equal to or greater than <code>objects.length</code>.
+     */
     private static void moveToFront(Object[] objects, int position) {
         Object mostRecent = objects[position];
         for (int i = position; i > 0; i--) {
@@ -140,6 +142,18 @@ public abstract class LRUCache<N, V> {
         objects[0] = mostRecent;    
     }
     
+    /**
+     * Retrieves a value from the cache by its name, or creates it anew and adds 
+     * it to the cache if it wasn't already stored. In either case, the cache 
+     * notes the value is the most recently used. If a value is added to the 
+     * cache and the cache was already at capacity, the least recently used 
+     * value will be removed from the cache. If the name of a removed value is 
+     * called for later, it will have to be created anew.
+     * @param name The name for the value.
+     * @return The value.
+     * @throws NullPointerException If <code>name</code> is null. The exception 
+     * message will probably be empty, and thus not very helpful.
+     */
     public V forName(N name) {
         V value;
         int index = indexOf(name, this.names, this.nextUp);
@@ -159,6 +173,17 @@ public abstract class LRUCache<N, V> {
         return value;
     }
     
+    /**
+     * Sole constructor. The cache is initialized to the specified capacity, 
+     * which can't be altered later. Use {@link #forName(java.lang.Object) 
+     * forName()} to add values to the cache, and that same function to retrieve 
+     * the values.
+     * @param size The capacity for the cache. Should be at least {@link 
+     * #MINIMUM_CAPACITY}. Should probably not be greater than a hundred, though 
+     * no specific upper bound is specified, much less enforced.
+     * @throws IllegalArgumentException If <code>size</code> is less than {@link 
+     * #MINIMUM_CAPACITY}.
+     */
     public LRUCache(int size) {
         if (size < MINIMUM_CAPACITY) {
             String excMsg = "Proposed cache size " + size 
