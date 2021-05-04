@@ -31,6 +31,18 @@ public class LRUCacheTest {
     
     private static final Random RANDOM = new Random();
     
+    /**
+     * Adds a specified number of elements to the cache. This helper procedure 
+     * is actually unaware of the size of the cache, so it may be used to almost 
+     * fill the cache, stopping short of capacity, as well as to add enough 
+     * items that the cache has to drop some items.
+     * @param cache The cache to add elements to. Upon returning, the cache 
+     * should contain <code>String</code> instances for dates from today to 
+     * <code>size</code> &minus; 1 days ago.
+     * @param size The number of elements to add to the cache to. Should 
+     * generally be the same as the cache capacity, but it can just as easily be 
+     * shy of capacity or in excess of capacity.
+     */
     private static void fillCache(LRUCacheImpl cache, int size) {
         String current;
         System.out.print("Added values ");
@@ -38,7 +50,7 @@ public class LRUCacheTest {
             current = cache.forName(LocalDate.now().minusDays(i));
             System.out.print("\"" + current + "\", ");
         }
-        System.out.println(" to " + cache.toString());
+        System.out.println("to " + cache.toString());
     }
     
     /**
@@ -57,7 +69,8 @@ public class LRUCacheTest {
     
     /**
      * Test of the has function, of the LRUCache class. A value that was just 
-     * cached should register as cached.
+     * cached should register as cached. Note that the has function is a package 
+     * private function.
      */
     @Test
     public void testHas() {
@@ -82,16 +95,79 @@ public class LRUCacheTest {
         assert !cache.has(value) : msg;
     }
     
+    /**
+     * Test that the first added value stays in the cache as new items are 
+     * added, provided the capacity is not exceeded. However, this doesn't test 
+     * whether the cache is keeping track of how recently an item was accessed.
+     */
     @Test
     public void testCacheRetainsValueWhileCapacityAvailable() {
-        int size = LRUCache.MINIMUM_CAPACITY + RANDOM.nextInt(4);
+        int size = LRUCache.MINIMUM_CAPACITY + 1;
         LRUCacheImpl cache = new LRUCacheImpl(size);
-        LocalDate firstDate = LocalDate.now().plusDays(1);
-        String firstValue = cache.forName(firstDate);
-        fillCache(cache, size);
-        fail("Finish writing this test");
+        LocalDate firstAddedName = LocalDate.now().plusDays(1);
+        String firstAddedValue = cache.forName(firstAddedName);
+        fillCache(cache, size - 1);
+        String msg = "After adding " + size 
+                + " items to cache of size " + size 
+                + ", first added value should still be in the cache";
+        assert cache.has(firstAddedValue) : msg;
     }
     
+    /**
+     * Test that the cache drops the first added value once enough new items are 
+     * added that capacity is exceeded and it becomes necessary to remove items 
+     * from the cache. However, this test is not sufficient to prove that the 
+     * cache is correctly working as a least recently used cache.
+     */
+    @Test
+    public void testCacheDropsLeastRecentAfterReachingFullCapacity() {
+        int size = LRUCache.MINIMUM_CAPACITY;
+        LRUCacheImpl cache = new LRUCacheImpl(size);
+        LocalDate firstAddedName = LocalDate.now().plusDays(1);
+        String firstAddedValue = cache.forName(firstAddedName);
+        fillCache(cache, size);
+        String msg = "After adding " + (size + 1) 
+                + " items to cache of size " + size 
+                + ", first added value should no longer be in the cache";
+        assert !cache.has(firstAddedValue) : msg;
+    }
+    
+    /**
+     * Test that the cache does not drop an item from the cache if it's 
+     * repeatedly accessed so that it stays recent. More than twice as many 
+     * distinct elements as the cache has capacity for will be added, but the 
+     * first added value will be repeatedly retrieved so that it stays as the 
+     * most recent or second most recent item.
+     */
+    @Test
+    public void testCacheKeepsTrackOfRecentness() {
+        int size = LRUCache.MINIMUM_CAPACITY + RANDOM.nextInt(4);
+        LRUCacheImpl cache = new LRUCacheImpl(size);
+        LocalDate firstAddedName = LocalDate.now().plusDays(7);
+        String firstAddedValue = cache.forName(firstAddedName);
+        System.out.println("Added \"" + firstAddedValue + "\" to the cache");
+        int twiceCapacityPlusTwo = 2 * size + 2;
+        LocalDate currName;
+        String wrongValue = "wrong value";
+        String currValue = wrongValue;
+        String msg;
+        for (int i = 1; i < twiceCapacityPlusTwo; i++) {
+            currName = LocalDate.now().minusWeeks(i);
+            msg = "Repeated recall of " + cache.forName(firstAddedName) 
+                    + " should ensure it's still in the cache after adding " + i 
+                    + " other elements, including " + currName.toString() 
+                    + "\"";
+            currValue = cache.forName(currName);
+            assert cache.has(firstAddedValue) : msg;
+        }
+        assert !currValue.equals(wrongValue);
+        System.out.println("Last added value was \"" + currValue);
+    }
+    
+    /**
+     * Test of the LRUCache constructor. A negative pseudorandom number will be 
+     * passed to the constructor. This should cause one of two exceptions.
+     */
     @Test
     public void testConstructorRejectsNegativeCapacity() {
         int badSize = -RANDOM.nextInt(128) - 1;
@@ -115,6 +191,10 @@ public class LRUCacheTest {
         }
     }
     
+    /**
+     * Test of the LRUCache constructor. Zero will be passed to the constructor. 
+     * This should cause an exception.
+     */
     @Test
     public void testConstructorRejectsZeroCapacity() {
         try {
@@ -132,6 +212,11 @@ public class LRUCacheTest {
         }
     }
     
+    /**
+     * Test of the LRUCache constructor. A number that is one less than {@link 
+     * LRUCache#MINIMUM_CAPACITY} will be passed to the constructor. This should 
+     * cause an exception.
+     */
     @Test
     public void testConstructorRejectsLowPositiveCapacity() {
         int badSize = LRUCache.MINIMUM_CAPACITY - 1;
@@ -151,6 +236,12 @@ public class LRUCacheTest {
         }
     }
     
+    /**
+     * Concrete subclass of {@link LRUCache}, with <code>LocalDate</code> 
+     * instances as the names and <code>String</code> instances as the values. 
+     * Although <code>String</code> instances are not particularly worth 
+     * caching, they're easy enough to understand for writing tests.
+     */
     private static class LRUCacheImpl extends LRUCache<LocalDate, String> {
 
         @Override
