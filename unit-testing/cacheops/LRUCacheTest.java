@@ -248,11 +248,6 @@ public class LRUCacheTest {
             return DateTimeFormatter.ISO_LOCAL_DATE.format(name);
         }
 
-        @Override
-        protected boolean hasName(String value, LocalDate name) {
-            return DateTimeFormatter.ISO_LOCAL_DATE.format(name).equals(value);
-        }
-
         public LRUCacheImpl(int size) {
             super(size);
         }
