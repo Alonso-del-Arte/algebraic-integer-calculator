@@ -155,8 +155,7 @@ public class LRUCacheTest {
             currName = LocalDate.now().minusWeeks(i);
             msg = "Repeated recall of " + cache.forName(firstAddedName) 
                     + " should ensure it's still in the cache after adding " + i 
-                    + " other elements, including " + currName.toString() 
-                    + "\"";
+                    + " other elements, including " + currName.toString();
             currValue = cache.forName(currName);
             assert cache.has(firstAddedValue) : msg;
         }
