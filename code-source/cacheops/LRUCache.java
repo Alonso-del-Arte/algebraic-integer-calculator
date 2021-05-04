@@ -30,8 +30,10 @@ package cacheops;
  * <p>This class is modeled on the <code>sun.misc.LRUCache</code> class that 
  * <code>java.util.Scanner</code> uses in some implementations of the JDK. But 
  * unlike that one, this one uses no "native methods."</p>
- * @param <N> The name for the value to cache.
- * @param <V> The value to cache.
+ * @param <N> The type of the names for the values to cache. Ideally this should 
+ * be an immutable class that is easily calculated anew.
+ * @param <V> The type of the values to cache. To be worth caching, the values 
+ * should be too expensive to recalculate each and every time they're needed.
  * @author Alonso del Arte
  */
 public abstract class LRUCache<N, V> {
@@ -50,7 +52,9 @@ public abstract class LRUCache<N, V> {
     
     private final int capacity;
     
-    private final int nextUp = 0;
+    private final int lastIndex;
+    
+    private int nextUp = 0;
     
     protected abstract V create(N name);
     
@@ -58,15 +62,49 @@ public abstract class LRUCache<N, V> {
         //
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Gives the index of the specified value in this cache's values array.
+     * @param value The value to search for.
+     * @return The index where the value is found in this cache's values array, 
+     * or &minus;1 if the value is not in that array.
+     */
+    private int indexOf(V value) {
+        boolean found = false;
+        int curr = 0;
+        while (!found && (curr < this.capacity)) {//.nextUp)) {
+            found = value.equals(this.values[curr]);
+            curr++;
+        }
+        if (found) {
+            return curr;
+        } else {
+            return -1;
+        }
+    }
+    
+    /**
+     * Indicates whether or not a particular value is in this cache. Note that 
+     * this function is package private. It exists for the sake of testing how 
+     * items are retained or removed from the cache.
+     * @param value The value to search for.
+     * @return True if the value is currently in the cache, false if it is not.
+     */
     boolean has(V value) {
-        return false;
+        int index = this.indexOf(value);
+        return index > -1;
     }
     
     protected abstract boolean hasName(V value, N name);
     
     public V forName(N name) {
-        return this.create(name);
+        V value = this.create(name);
+        if (this.has(value)) return value;
+        this.values[this.nextUp] = value;
+        this.nextUp++;
+        if (this.nextUp == this.capacity) {
+            this.nextUp = 0;
+        }
+        return value;
     }
     
     public LRUCache(int size) {
@@ -77,6 +115,7 @@ public abstract class LRUCache<N, V> {
         }
         this.capacity = size;
         this.values = (V[]) new Object[this.capacity];
+        this.lastIndex = this.capacity - 1;
     }
     
 }
