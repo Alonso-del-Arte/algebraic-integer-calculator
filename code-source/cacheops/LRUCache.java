@@ -48,6 +48,8 @@ public abstract class LRUCache<N, V> {
      */
     public static final int MINIMUM_CAPACITY = 4;
     
+    private final N[] names;
+    
     private final V[] values;
     
     private final int capacity;
@@ -58,8 +60,18 @@ public abstract class LRUCache<N, V> {
     
     protected abstract V create(N name);
     
-    private static void moveToFront(Object[] objects, int i) {
-        //
+    private static int indexOf(Object obj, Object[] array, int endBound) {
+        boolean found = false;
+        int curr = 0;
+        while (!found && (curr < endBound)) {
+            found = obj.equals(array[curr]);
+            curr++;
+        }
+        if (found) {
+            return curr - 1;
+        } else {
+            return -1;
+        }
     }
     
     /**
@@ -76,7 +88,7 @@ public abstract class LRUCache<N, V> {
             curr++;
         }
         if (found) {
-            return curr;
+            return curr - 1;
         } else {
             return -1;
         }
@@ -96,14 +108,31 @@ public abstract class LRUCache<N, V> {
     
     protected abstract boolean hasName(V value, N name);
     
-    public V forName(N name) {
-        V value = this.create(name);
-        if (this.has(value)) return value;
-        this.values[this.nextUp] = value;
-        this.nextUp++;
-        if (this.nextUp == this.capacity) {
-            this.nextUp = 0;
+    private static void moveToFront(Object[] objects, int position) {
+        Object mostRecent = objects[position];
+        for (int i = position; i > 0; i--) {
+            objects[i] = objects[i - 1];
         }
+        objects[0] = mostRecent;    
+    }
+    
+    public V forName(N name) {
+        V value;
+        int retrievalIndex = indexOf(name, this.names, this.nextUp);
+        if (retrievalIndex == -1) {
+            value = this.create(name);
+            this.names[this.nextUp] = name;
+            this.values[this.nextUp] = value;
+            retrievalIndex = this.nextUp;
+            if (this.nextUp < this.lastIndex) {
+                this.nextUp++;
+            }
+        } else {
+            value = this.values[retrievalIndex];
+        }
+        moveToFront(this.names, retrievalIndex);
+        moveToFront(this.values, retrievalIndex);
+        System.out.println("About to return " + value.toString());
         return value;
     }
     
@@ -114,6 +143,7 @@ public abstract class LRUCache<N, V> {
             throw new IllegalArgumentException(excMsg);
         }
         this.capacity = size;
+        this.names = (N[]) new Object[this.capacity];
         this.values = (V[]) new Object[this.capacity];
         this.lastIndex = this.capacity - 1;
     }
