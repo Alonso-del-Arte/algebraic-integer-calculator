@@ -62,13 +62,13 @@ public abstract class LRUCache<N, V> {
     
     private static int indexOf(Object obj, Object[] array, int endBound) {
         boolean found = false;
-        int curr = 0;
+        int curr = -1;
         while (!found && (curr < endBound)) {
-            found = obj.equals(array[curr]);
             curr++;
+            found = obj.equals(array[curr]);
         }
         if (found) {
-            return curr - 1;
+            return curr;
         } else {
             return -1;
         }
@@ -83,7 +83,7 @@ public abstract class LRUCache<N, V> {
     private int indexOf(V value) {
         boolean found = false;
         int curr = 0;
-        while (!found && (curr < this.capacity)) {//.nextUp)) {
+        while (!found && (curr < this.capacity)) {
             found = value.equals(this.values[curr]);
             curr++;
         }
@@ -132,7 +132,6 @@ public abstract class LRUCache<N, V> {
         }
         moveToFront(this.names, retrievalIndex);
         moveToFront(this.values, retrievalIndex);
-        System.out.println("About to return " + value.toString());
         return value;
     }
     
