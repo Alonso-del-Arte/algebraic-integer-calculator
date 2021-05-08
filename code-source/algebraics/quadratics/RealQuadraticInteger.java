@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -67,6 +67,28 @@ public class RealQuadraticInteger extends QuadraticInteger
     }
     
     /**
+     * Indicates whether the real part of this number, as given by {@link 
+     * #getRealPartNumeric()}, is an approximation or not. It will generally be  
+     * an approximation.
+     * @return False if and only if the "surd" part is 0, otherwise true.
+     */
+    @Override
+    public boolean isReApprox() {
+        return this.surdPartMult != 0;
+    }
+    
+    /**
+     * Indicates whether the imaginary part of this number, as given by {@link 
+     * #getImagPartNumeric()}, is an approximation or not.
+     * @return Always false for a real quadratic integer, since the imaginary 
+     * part, 0, can be represented precisely in floating point as 0.0.
+     */
+    @Override
+    public boolean isImApprox() {
+        return false;
+    }
+    
+    /**
      * This function, generally called "argument," sometimes "phase" or 
      * "amplitude," is not so useful for purely real numbers like the ones 
      * represented by this class. It is included because it is required by the 
@@ -92,7 +114,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      * specified real quadratic integer. This enables sorting with {@link 
      * java.util.Collections#sort(java.util.List)} without need for a 
      * comparator. If you need to sort by norm, use {@link 
-     * calculators.NumberTheoreticFunctionsCalculator#sortListAlgebraicIntegersByNorm(java.util.List)}.
+     * algebraics.NormAbsoluteComparator} or {@link algebraics.NormComparator}.
      * @param other The real quadratic integer to compare this real quadratic 
      * integer to. The comparison is more reliable if all involved real 
      * quadratic integers come from the same ring. Examples: &minus;&radic;21 

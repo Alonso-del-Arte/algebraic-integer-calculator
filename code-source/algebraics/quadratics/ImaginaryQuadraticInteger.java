@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -94,7 +94,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             }
         }
         double realLegSquare = this.regPartMult * this.regPartMult;
-        double imagLegSquare = this.surdPartMult * this.surdPartMult * (-this.quadRing.radicand);
+        double imagLegSquare = this.surdPartMult * this.surdPartMult 
+                * (-this.quadRing.radicand);
         double hypotenuseSquare = realLegSquare + imagLegSquare;
         if (this.denominator == 2) {
             hypotenuseSquare /= 4;
@@ -126,13 +127,73 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return this.numValIm;
     }
     
-    // TODO: Write custom Javadoc to replace inherited Javadoc
+    /**
+     * Indicates whether the real part of this number, as given by {@link 
+     * #getRealPartNumeric()}, is an approximation or not. It should not be an 
+     * approximation.
+     * @return Always false for imaginary quadratic integers, since the real 
+     * part is either an ordinary integer of half an ordinary integer.
+     */
+    @Override
+    public boolean isReApprox() {
+        return false;
+    }
+    
+    /**
+     * Indicates whether the imaginary part of this number, as given by {@link 
+     * #getImagPartNumeric()}, is an approximation or not. This is often the 
+     * case for imaginary quadratic integers that are not from 
+     * <b>Z</b>[<i>i</i>].
+     * @return False if the imaginary part is 0 or this is an algebraic integer 
+     * from <b>Z</b>[<i>i</i>], true otherwise.
+     */
+    @Override
+    public boolean isImApprox() {
+        return this.surdPartMult != 0 && this.quadRing.radicand != -1;
+    }
+    
+    /**
+     * Gives the angle on the complex plane formed by a line segment starting at 
+     * this imaginary quadratic integer and extending to 0, and another line 
+     * segment going along on the real axis from 0 to positive infinity. For 
+     * numbers with positive nonzero imaginary part, the angle should be 
+     * positive, and for numbers with negative nonzero imaginary part, the angle 
+     * should be negative.
+     * @return The angle expressed in radians, ranging from &minus;&pi; radians 
+     * to &pi; radians. For example, the angle of <i>i</i> should be roughly 
+     * 1.57 radians (90 degrees) and the angle of &minus;<i>i</i> should be 
+     * roughly &minus;1.57 radians (&minus;90 degrees). If you need this angle 
+     * in degrees, you can use <code>Math.toDegrees(double)</code> to make the 
+     * conversion.
+     */
     @Override
     public double angle() {
         return Math.atan2(this.numValIm, this.numValRe);
     }
     
-    public static ImaginaryQuadraticInteger inferStep(ImaginaryQuadraticInteger startPoint, ImaginaryQuadraticInteger endPoint) {
+    /**
+     * Infers a step between two points, so that the distance between them can 
+     * be split up into intervals of equal length. This is used by an auxiliary 
+     * {@link ImaginaryQuadraticIntegerLine} constructor for which the caller 
+     * does not have to specify a step.
+     * @param startPoint The point to start from. For example, &minus;21/2 + 
+     * 7&radic;(&minus;3)/2.
+     * @param endPoint The point to end on. Preferably not the same as 
+     * <code>startPoint</code>. For example, 49/2 + 21&radic;(&minus;3)/2.
+     * @return The inferred step. It will be, at most, the distance between 
+     * <code>startPoint</code> and <code>endPoint</code>, and at least a number 
+     * with norm 1 (provided <code>startPoint</code> and <code>endPoint</code> 
+     * are distinct. If they are the same, the result will simply be 0. For the 
+     * examples given above, the example result would be 5/2 + 
+     * &radic;(&minus;3)/2.
+     * @throws AlgebraicDegreeOverflowException If <code>startPoint</code> and 
+     * <code>endPoint</code> come from different rings. For example, if 
+     * <code>startPoint</code> is 6 + <i>i</i> but <code>endPoint</code> is 
+     * &minus;&radic;(&minus;2).
+     */
+    public static ImaginaryQuadraticInteger 
+        inferStep(ImaginaryQuadraticInteger startPoint, 
+                ImaginaryQuadraticInteger endPoint) {
         if (startPoint.equals(endPoint)) {
             return new ImaginaryQuadraticInteger(0, 0, startPoint.quadRing);
         }
@@ -194,8 +255,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     public ImaginaryQuadraticIntegerLine to(ImaginaryQuadraticInteger endPoint) {
         if (!this.quadRing.equals(endPoint.quadRing)) {
-            String exceptionMessage = "Ring that contains both " + this.toASCIIString() + " and " + endPoint.toASCIIString() + " contains infinitely many algebraic integers between them.";
-            throw new AlgebraicDegreeOverflowException(exceptionMessage, 2, this, endPoint);
+            String exceptionMessage = "Ring that contains both " 
+                    + this.toASCIIString() + " and " + endPoint.toASCIIString() 
+                    + " contains infinitely many algebraic integers between them";
+            throw new AlgebraicDegreeOverflowException(exceptionMessage, 2, 
+                    this, endPoint);
         }
         return new ImaginaryQuadraticIntegerLine(endPoint, this);
     }
@@ -212,20 +276,24 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * "2" and zero or more zeroes, or just zeroes.
      * @return An imaginary quadratic integer object containing the Gaussian 
      * integer represented by the quater-imaginary String.
-     * @throws NumberFormatException If <code>str</code> has a "decimal" dot followed by any 
-     * digit other than a single 2 or a bunch of zeroes, or if it contains 
-     * digits other than 0, 1, 2 or 3, this runtime exception will be thrown. 
-     * The problematic character mentioned in the exception message may or may 
-     * not be the only parsing obstacle.
+     * @throws NumberFormatException If <code>str</code> has a "decimal" dot 
+     * followed by any digit other than a single 2 or a bunch of zeroes, or if 
+     * it contains digits other than 0, 1, 2 or 3, this runtime exception will 
+     * be thrown. The problematic character mentioned in the exception message 
+     * may or may not be the only parsing obstacle.
      */
     public static QuadraticInteger parseQuaterImaginary(String str) {
         ImaginaryQuadraticRing ringGaussian = new ImaginaryQuadraticRing(-1);
-        ImaginaryQuadraticInteger base = new ImaginaryQuadraticInteger(0, 2, ringGaussian);
-        QuadraticInteger currPower = new ImaginaryQuadraticInteger(1, 0, ringGaussian);
+        ImaginaryQuadraticInteger base = new ImaginaryQuadraticInteger(0, 2, 
+                ringGaussian);
+        QuadraticInteger currPower = new ImaginaryQuadraticInteger(1, 0, 
+                ringGaussian);
         QuadraticInteger currPowerMult;
-        QuadraticInteger parsedSoFar = new ImaginaryQuadraticInteger(0, 0, ringGaussian);
-        ImaginaryQuadraticInteger gaussianZero = new ImaginaryQuadraticInteger(0, 0, ringGaussian);
-        str = str.replace(" ", ""); // Strip out spaces
+        QuadraticInteger parsedSoFar = new ImaginaryQuadraticInteger(0, 0, 
+                ringGaussian);
+        ImaginaryQuadraticInteger gaussianZero = new ImaginaryQuadraticInteger(0, 
+                0, ringGaussian);
+        str = str.replace(" ", "");
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         int dotPlace = str.indexOf(dfs.getDecimalSeparator());
         if (dotPlace > - 1) {
@@ -236,12 +304,14 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 currFractPlace++;
             }
             if (!keepGoing) {
-                throw new NumberFormatException("'" + str.charAt(currFractPlace - 1) + "' after \"decimal\" separator is not a valid digit for the quater-imaginary representation of a Gaussian integer.");
+                throw new NumberFormatException("'" 
+                        + str.charAt(currFractPlace - 1) 
+                        + "' after \"decimal\" separator is not a valid digit");
             }
             if (str.length() == dotPlace + 1) {
                 str = str + "0";
             }
-            str = str.substring(0, dotPlace + 2); // Discard trailing "decimal" zeroes
+            str = str.substring(0, dotPlace + 2);
         }
         String dotZeroEnding = dfs.getDecimalSeparator() + "0";
         if (str.endsWith(dotZeroEnding)) {
@@ -269,8 +339,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                     currPowerMult = currPower.times(3);
                     break;
                 default:
-                    String exceptionMessage = "'" + currDigit + "' is not a valid quater-imaginary digit (should be one of 0, 1, 2, 3).";
-                    throw new NumberFormatException(exceptionMessage);
+                    String excMsg = "'" + currDigit 
+                            + "' is not a valid quater-imaginary digit";
+                    throw new NumberFormatException(excMsg);
             }
             parsedSoFar = parsedSoFar.plus(currPowerMult);
             currPower = currPower.times(base);
@@ -353,7 +424,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public ImaginaryQuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
         super(a, b, ring, denom);
         if (!(ring instanceof ImaginaryQuadraticRing)) {
-            String excMsg = "Ring is not imaginary as needed.";
+            String excMsg = "Ring is not imaginary as needed";
             throw new IllegalArgumentException(excMsg);
         }
         double realPart = this.regPartMult;
@@ -361,7 +432,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             realPart /= 2;
         }
         this.numValRe = realPart;
-        double imagPartwRad = this.surdPartMult * this.quadRing.getAbsNegRadSqrt();
+        double imagPartwRad = this.surdPartMult 
+                * this.quadRing.getAbsNegRadSqrt();
         if (this.denominator == 2) {
             imagPartwRad /= 2;
         }
