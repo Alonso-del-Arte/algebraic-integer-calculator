@@ -321,6 +321,18 @@ public class QuarticGaussianInteger extends QuarticInteger
         return im;
     }
 
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    public boolean isReApprox() {
+        return false;
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    public boolean isImApprox() {
+        return true;
+    }
+    
     // STUB TO FAIL FIRST TEST
     @Override
     public double angle() {

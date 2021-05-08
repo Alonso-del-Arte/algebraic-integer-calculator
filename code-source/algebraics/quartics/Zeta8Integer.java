@@ -372,19 +372,29 @@ public final class Zeta8Integer extends QuarticInteger
             long divZ8L = divZ8.getNumerator();
             long divImL = divIm.getNumerator();
             long divZ8CuL = divZ8Cu.getNumerator();
-            boolean inRangeFlag = (divReL >= Integer.MIN_VALUE) && (divReL <= Integer.MAX_VALUE);
-            inRangeFlag = inRangeFlag && ((divZ8L >= Integer.MIN_VALUE) && (divZ8L <= Integer.MAX_VALUE));
-            inRangeFlag = inRangeFlag && ((divImL >= Integer.MIN_VALUE) && (divImL <= Integer.MAX_VALUE));
-            inRangeFlag = inRangeFlag && ((divZ8CuL >= Integer.MIN_VALUE) && (divZ8CuL <= Integer.MAX_VALUE));
+            boolean inRangeFlag = (divReL >= Integer.MIN_VALUE) 
+                    && (divReL <= Integer.MAX_VALUE);
+            inRangeFlag = inRangeFlag && ((divZ8L >= Integer.MIN_VALUE) 
+                    && (divZ8L <= Integer.MAX_VALUE));
+            inRangeFlag = inRangeFlag && ((divImL >= Integer.MIN_VALUE) 
+                    && (divImL <= Integer.MAX_VALUE));
+            inRangeFlag = inRangeFlag && ((divZ8CuL >= Integer.MIN_VALUE) 
+                    && (divZ8CuL <= Integer.MAX_VALUE));
             if (inRangeFlag) {
-                return new Zeta8Integer((int) divReL, (int) divZ8L, (int) divImL, (int) divZ8CuL);
+                return new Zeta8Integer((int) divReL, (int) divZ8L, 
+                        (int) divImL, (int) divZ8CuL);
             } else {
-                String excMsg = "The number " + divReL + " + " + divZ8L + "zeta_8 + " + divImL + "i + " + divZ8CuL + "(zeta_8)^3 exceeds the range of the Zeta8Integer data type.";
+                String excMsg = "The number " + divReL + " + " + divZ8L 
+                        + "zeta_8 + " + divImL + "i + " + divZ8CuL 
+                        + "(zeta_8)^3 exceeds the range of this data type";
                 throw new ArithmeticException(excMsg);
             }
         } else {
             Fraction[] fracts = {divRe, divZ8, divIm, divZ8Cu};
-            String excMsg = "The number " + divRe.toString() + " + " + divZ8.toString() + "zeta_8 + " + divIm.toString() + "i + " + divZ8Cu.toString() + "(zeta_8)^3 is an algebraic number but not an algebraic integer.";
+            String excMsg = "The number " + divRe.toString() + " + " 
+                    + divZ8.toString() + "zeta_8 + " + divIm.toString() + "i + " 
+                    + divZ8Cu.toString() 
+                    + "(zeta_8)^3 is algebraic but not an algebraic integer";
             throw new NotDivisibleException(excMsg, this, divisor, fracts);
         }
     }
@@ -392,8 +402,8 @@ public final class Zeta8Integer extends QuarticInteger
     @Override
     public Zeta8Integer divides(int divisor) throws NotDivisibleException {
 //        if (divisor == 0) {
-//            String exceptionMessage = "Can't divide " + this.toASCIIString() + " by 0.";
-//            throw new ArithmeticException(exceptionMessage);
+//            String excMsg = "Can't divide " + this.toASCIIString() + " by 0";
+//            throw new ArithmeticException(excMsg);
 //        }
         boolean divisibilityFlag = (this.realIntPart % divisor == 0);
         divisibilityFlag = (divisibilityFlag && (this.zeta8Part % divisor == 0));
@@ -413,7 +423,8 @@ public final class Zeta8Integer extends QuarticInteger
             Fraction imFract = new Fraction(this.imagIntPart, divisor);
             Fraction z83Fract = new Fraction(this.zeta8CuPart, divisor);
             Fraction[] fracts = {reFract, z8Fract, imFract, z83Fract};
-            throw new NotDivisibleException(exceptionMessage, this, wrappedDivisor, fracts);
+            throw new NotDivisibleException(exceptionMessage, this, 
+                    wrappedDivisor, fracts);
         }
     }
     
@@ -493,6 +504,18 @@ public final class Zeta8Integer extends QuarticInteger
     @Override
     public double getImagPartNumeric() {
         return this.numValIm;
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    public boolean isReApprox() {
+        return false;
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    @Override
+    public boolean isImApprox() {
+        return true;
     }
     
     @Override
