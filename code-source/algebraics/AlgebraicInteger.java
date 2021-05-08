@@ -188,10 +188,13 @@ public interface AlgebraicInteger {
     
     /**
      * Gives the real part of this algebraic integer according to machine 
-     * precision.
+     * precision. Most calculations by implementing classes ought to be done 
+     * symbolically as much as possible, but sometimes it's absolutely necessary 
+     * to use floating point numbers, which bring with them all manner of vexing 
+     * problems.
      * @return The real part, which may be a rational approximation in some 
-     * cases. For example, for 1 + &#8731;2, this would be roughly 2.259921. For 
-     * 3/2 + (&radic;&minus;19)/2, this should be exactly 1.5.
+     * cases. For example, for 1 + &#8731;2, this might be 2.259921049894873. 
+     * For 3/2 + (&radic;&minus;19)/2, this should be exactly 1.5.
      */
     double getRealPartNumeric();
     
@@ -207,6 +210,35 @@ public interface AlgebraicInteger {
      * (&radic;&minus;19)/2, this would be roughly 2.17944947177.
      */
     double getImagPartNumeric();
+    
+    /**
+     * Indicates whether the real part of this number, as given by {@link 
+     * #getRealPartNumeric()}, is an approximation or not. This tends to be the 
+     * case for numbers from purely real rings of degree 2 or higher.
+     * @return True if the real part of this number as given by 
+     * <code>getRealPartNumeric()</code> is an approximation, false if it is 
+     * exact. For example, this would be true for 1 + &#8731;2, the real part of 
+     * which might be given as 2.2599210498948734; it would be false for 1 + 
+     * <i>i</i>&#8731;2, the real part of which should be given as 1.0, which is 
+     * exact. The imaginary part of the latter number divided by <i>i</i> might 
+     * be given as 1.2599210498948732. Notice that those two floating point 
+     * approximations differ by 1.0000000000000002 rather than by 1.0.
+     */
+    boolean isReApprox();
+    
+    /**
+     * Indicates whether the imaginary part of this number, as given by {@link 
+     * #getImagPartNumeric()}, is an approximation or not. This tends to be the 
+     * case for algebraic integers from imaginary rings of degree 2 or higher.
+     * @return True if the imaginary part of this number as given by 
+     * <code>getImagPartNumeric()</code> is an approximation, false if it is 
+     * exact. For example, this would be true for 1 + <i>i</i>&#8731;2, since  
+     * the imaginary part of that number would be given in floating point as an 
+     * approximation such as 1.2599210498948732; this would be false for 1 + 
+     * &#8731;2, since the imaginary part of that number should be given exactly 
+     * as 0.0.
+     */
+    boolean isImApprox();
     
     /**
      * Gives the angle on the complex plane formed by a line segment starting at 
