@@ -82,6 +82,16 @@ public class IllDefinedQuadraticInteger extends QuadraticInteger {
         return this.numValIm;
     }
     
+    @Override
+    public boolean isReApprox() {
+        return this.quadRing.radicand > 0;
+    }
+    
+    @Override
+    public boolean isImApprox() {
+        return this.quadRing.radicand < 0;
+    }
+    
     /**
      * This function is implemented here only because it is abstract in {@link 
      * QuadraticInteger}.

@@ -43,6 +43,8 @@ import static org.junit.Assert.*;
  */
 public class RealQuadraticIntegerTest {
     
+    private static final Random RANDOM = new Random();
+    
     /**
      * The ring <b>Z</b>[&radic;2], consisting of all numbers of the form 
      * <i>a</i> + <i>b</i>&radic;2. This is one of the rings in which 
@@ -139,9 +141,8 @@ public class RealQuadraticIntegerTest {
                 * (randomDiscr + 1))));
         System.out.println("Maximum for regular and surd parts is " + maxAB 
                 + ".");
-        Random ranNumGen = new Random();
-        randomRegPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
-        randomSurdPart = ranNumGen.nextInt(2 * maxAB) - maxAB;
+        randomRegPart = RANDOM.nextInt(2 * maxAB) - maxAB;
+        randomSurdPart = RANDOM.nextInt(2 * maxAB) - maxAB;
         if (randomSurdPart == 0) {
             randomSurdPart = 1;
         }
@@ -301,22 +302,27 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testNorm() {
         System.out.println("norm");
-        long expResult, result;
+        long expected, actual;
         for (int i = 0; i < totalTestIntegers; i++) {
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = (randomRegForHalfInts * randomRegForHalfInts - testIntegers.get(i).getRing().getRadicand() * randomSurdForHalfInts * randomSurdForHalfInts)/4;
+                expected = (randomRegForHalfInts * randomRegForHalfInts 
+                        - testIntegers.get(i).getRing().getRadicand() 
+                        * randomSurdForHalfInts * randomSurdForHalfInts)/4;
             } else {
-                expResult = randomRegPart * randomRegPart - testIntegers.get(i).getRing().getRadicand() * randomSurdPart * randomSurdPart;
+                expected = randomRegPart * randomRegPart 
+                        - testIntegers.get(i).getRing().getRadicand() 
+                        * randomSurdPart * randomSurdPart;
             }
-            result = testIntegers.get(i).norm();
-            assertEquals(expResult, result);
+            actual = testIntegers.get(i).norm();
+            assertEquals(expected, actual);
         }
         RealQuadraticRing r = new RealQuadraticRing(Integer.MAX_VALUE);
         RealQuadraticInteger x = new RealQuadraticInteger(0, 2, r);
-        expResult = -4L * Integer.MAX_VALUE;
-        result = x.norm();
-        String assertionMessage = "Norm computation for " + x.toString() + " should not overflow to 4.";
-        assertEquals(assertionMessage, expResult, result);
+        expected = -4L * Integer.MAX_VALUE;
+        actual = x.norm();
+        String msg = "Norm computation for " + x.toString() 
+                + " should not overflow to 4.";
+        assertEquals(msg, expected, actual);
     }
 
     /**
@@ -574,7 +580,8 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of getRealPartNumeric method, of class RealQuadraticInteger.
+     * Test of the getRealPartNumeric function, of the RealQuadraticInteger 
+     * class.
      */
     @Test
     public void testGetRealPartNumeric() {
@@ -597,7 +604,8 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of getImagPartNumeric method, of class RealQuadraticInteger.
+     * Test of the getImagPartNumeric function, of the RealQuadraticInteger 
+     * class.
      */
     @Test
     public void testGetImagPartNumeric() {
@@ -610,6 +618,57 @@ public class RealQuadraticIntegerTest {
         }
     }
     
+    /**
+     * Test of the isReApprox function, of the RealQuadraticInteger class.
+     */
+    @Test
+    public void testIsReApprox() {
+        System.out.println("isReApprox");
+        int a = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        int b = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13, 
+                2);
+        String msg = "Real part of " + number.toString() + " given as " 
+                + number.getRealPartNumeric() 
+                + " should be considered an approximation";
+        assert number.isReApprox() : msg;
+    }
+
+    /**
+     * Another test of the isReApprox function, of the RealQuadraticInteger 
+     * class. Given <i>a</i> + 0&radic;<i>d</i>, where <i>a</i> and <i>d</i> are 
+     * integers of degree 1, the real part of the number is a number that can be 
+     * represented precisely as a floating point number. That is to say, it is 
+     * not a rational approximation in floating point of an irrational number.
+     */
+    @Test
+    public void testIsNotReApproxIfSurdPartZero() {
+        System.out.println("isReApprox");
+        int a = RANDOM.nextInt(32768) - 16384;
+        int b = 0;
+        RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13);
+        String msg = "Real part of " + number.toString() + " given as " 
+                + number.getRealPartNumeric() 
+                + " should be considered exact, not an approximation";
+        assert !number.isReApprox() : msg;
+    }
+
+    /**
+     * Test of the isImApprox function, of the RealQuadraticInteger class.
+     */
+    @Test
+    public void testIsImApprox() {
+        System.out.println("isImApprox");
+        int a = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        int b = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13, 
+                2);
+        String msg = "Imaginary part of " + number.toString() + " given as " 
+                + number.getImagPartNumeric() 
+                + " should be considered exact, not an approximation";
+        assert number.isReApprox() : msg;
+    }
+
     /**
      * Test of getImagPartNumeric method, of class RealQuadraticInteger.
      */

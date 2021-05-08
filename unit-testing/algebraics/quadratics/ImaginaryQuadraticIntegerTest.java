@@ -709,6 +709,67 @@ public class ImaginaryQuadraticIntegerTest {
             assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
         }
     }
+    
+    /**
+     * Test of the isReApprox function, of the ImaginaryQuadraticInteger class.
+     */
+    @Test
+    public void testIsReApprox() {
+        System.out.println("isReApprox");
+        int a = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        int b = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        ImaginaryQuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_EISENSTEIN, 2);
+        String msg = "Real part given as " + number.getRealPartNumeric() 
+                + " of " + number.toString() 
+                + " should be considered exact, not an approximation";
+        assert !number.isReApprox() : msg;
+    }
+
+    /**
+     * Test of the isImApprox function, of the ImaginaryQuadraticInteger class.
+     */
+    @Test
+    public void testIsImApprox() {
+        System.out.println("isImApprox");
+        int a = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        int b = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        ImaginaryQuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_EISENSTEIN, 2);
+        String msg = "Imaginary part given as " + number.getImagPartNumeric() 
+                + " of " + number.toString() 
+                + " should be regarded as an approximation";
+        assert number.isImApprox() : msg;
+    }
+    
+    /**
+     * Another test of the isImApprox function, of the ImaginaryQuadraticInteger 
+     * class. If the imaginary part is 0, then 0.0 is an exact value, not an 
+     * approximation.
+     */
+    @Test
+    public void testIsNotImApproxIfImagPartZero() {
+        int a = RANDOM.nextInt(32768) - 16384;
+        int b = 0;
+        ImaginaryQuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_ZI2);
+        String msg = "Imaginary part given as " + number.getImagPartNumeric() 
+                + " of " + number.toString() 
+                + " should be considered exact, not an approximation";
+        assert !number.isImApprox() : msg;
+    }
+
+    @Test
+    public void testIsNotImApproxIfGaussian() {
+        int a = RANDOM.nextInt(32768) - 16384;
+        int b = RANDOM.nextInt(32768) - 16384;
+        ImaginaryQuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_GAUSSIAN);
+        String msg = "Imaginary part given as " + number.getImagPartNumeric() 
+                + " of " + number.toString() 
+                + " should be considered exact, not an approximation";
+        assert !number.isImApprox() : msg;
+    }
 
     /* (TEMPORARY JAVADOC DISABLE) *
      * Test of getTwiceRealPartMult method, of class ImaginaryQuadraticInteger.
@@ -1687,7 +1748,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     /**
      * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
-     * class. The step to be inferred from -1 - 3sqrt(-7)/2 to -11 - 3sqrt(-7) 
+     * class. The step to be inferred from -1/2 - 3sqrt(-7)/2 to -11 - 3sqrt(-7) 
      * is -7/2 - sqrt(-7)/2.
      */
     @Test
@@ -1698,6 +1759,42 @@ public class ImaginaryQuadraticIntegerTest {
                 -3, RING_OQI7);
         ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(-7, 
                 -1, RING_OQI7, 2);
+        ImaginaryQuadraticInteger actual 
+                = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
+     * class. The step to be inferred from -5/2 - 3sqrt(d)/2 to 11/2 - 
+     * 3sqrt(d)/2 is 1.
+     */
+    @Test
+    public void testInferStepHorizontal() {
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, 
+                -3, ringRandomForAltTesting, 2);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(11,  
+                -3, ringRandomForAltTesting, 2);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(1, 0, 
+                ringRandomForAltTesting);
+        ImaginaryQuadraticInteger actual 
+                = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
+     * class. The step to be inferred from -5/2 - 3sqrt(d)/2 to -5/2 + 
+     * 13sqrt(d)/2 is sqrt(d).
+     */
+    @Test
+    public void testInferStepVertical() {
+        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, 
+                -3, ringRandomForAltTesting, 2);
+        ImaginaryQuadraticInteger endPoint = new ImaginaryQuadraticInteger(-5, 
+                13, ringRandomForAltTesting, 2);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(0, 1, 
+                ringRandomForAltTesting);
         ImaginaryQuadraticInteger actual 
                 = ImaginaryQuadraticInteger.inferStep(beginPoint, endPoint);
         assertEquals(expected, actual);
@@ -2702,22 +2799,24 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testDivisionByZeroInt() {
-        String failMessage;
+        String msg;
         for (int i = 0; i < totalTestIntegers; i++) {
             try {
                 QuadraticInteger result = testIntegers.get(i).divides(0);
-                failMessage = "Dividing " + testIntegers.get(i).toString() + " by 0 should have caused an exception, not given result " + result.toString();
-                fail(failMessage);
+                msg = "Dividing " + testIntegers.get(i).toString() 
+                        + " by 0 should not have given result " 
+                        + result.toString();
+                fail(msg);
             } catch (NotDivisibleException nde) {
-                failMessage = "NotDivisibleException is the wrong exception to throw for division by 0 \"" + nde.getMessage() + "\"";
-                fail(failMessage);
+                msg = "NotDivisibleException is the wrong exception to throw for division by 0 \"" + nde.getMessage() + "\"";
+                fail(msg);
             } catch (IllegalArgumentException iae) {
                 System.out.println("IllegalArgumentException correctly triggered upon attempt to divide by 0 \"" + iae.getMessage() + "\"");
             } catch (ArithmeticException ae) {
                 System.out.println("ArithmeticException correctly triggered upon attempt to divide by 0. \"" + ae.getMessage() + "\"");
             } catch (Exception e) {
-                failMessage = "Wrong exception thrown for attempt to divide by 0. " + e.getMessage();
-                fail(failMessage);
+                msg = "Wrong exception thrown for attempt to divide by 0. " + e.getMessage();
+                fail(msg);
             }
         }
     }
@@ -2810,7 +2909,7 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticInteger testDivisor = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
         RealQuadraticRing expResultRingRe = new RealQuadraticRing(5);
         QuadraticInteger expResult = new RealQuadraticInteger(0, 1, expResultRingRe);
-        String failMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should not have";
+        String msg = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should not have";
         try {
             QuadraticInteger result = testDividend.divides(testDivisor);
             String assertionMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should result in " + expResult.toString() + ".";
@@ -2820,15 +2919,23 @@ public class ImaginaryQuadraticIntegerTest {
             System.out.println("Dividing " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " triggered UnsupportedNumberDomainException \"" + unde.getMessage() + "\"");
             System.out.println("This is perhaps the best solution if the source package lacks a way to represent the real number sqrt(5), approximately " + realNumericApprox + "...");
         } catch (AlgebraicDegreeOverflowException adoe) {
-            failMessage = failMessage + " triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
-            fail(failMessage);
+            msg = msg + " triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+            fail(msg);
         } catch(NotDivisibleException nde) {
-            failMessage = failMessage + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
-            fail(failMessage);
+            msg = msg + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
+            fail(msg);
         } catch (Exception e) {
-            failMessage = failMessage + " caused" + e.getClass().getName() + "\"" + e.getMessage() + "\"";
-            fail(failMessage);
+            msg = msg + " caused" + e.getClass().getName() + "\"" + e.getMessage() + "\"";
+            fail(msg);
         }
+    }
+    
+    @Test
+    public void testMod() {
+        System.out.println("mod");
+        int d = -randomSquarefreeNumber(4096);
+        ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(d);
+        fail("Finish writing test");
     }
     
     /**
