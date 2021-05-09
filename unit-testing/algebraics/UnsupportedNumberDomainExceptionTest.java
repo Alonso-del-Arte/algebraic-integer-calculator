@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,10 +19,12 @@ package algebraics;
 import algebraics.quadratics.IllDefinedQuadraticInteger;
 import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
-import calculators.NumberTheoreticFunctionsCalculator;
-import fractions.Fraction;
 
-import org.junit.BeforeClass;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+
+import java.util.Random;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -32,124 +34,229 @@ import static org.junit.Assert.*;
  */
 public class UnsupportedNumberDomainExceptionTest {
     
-    private static UnsupportedNumberDomainException unsNumDomExcOneNum;
-    private static UnsupportedNumberDomainException unsNumDomExcTwoNums;
-    private static UnsupportedNumberDomainException unsNumDomExcDomain;
+    private static final Random RANDOM = new Random();
     
-    private static final int R_D = -55;
-    private static final int R_A = 2;
-    private static final int R_B = 1;
+    private static final String TESTING_MESSAGE 
+            = "This is for testing purposes only";
     
     /**
-     * Sets up the UnsupportedNumberDomainException objects to use in the tests. 
-     * If any of these objects fail to initialize properly, it will have the 
-     * exception detail message "Initialization state, not the result of an 
-     * actually thrown exception."
-     */
-    @BeforeClass
-    public static void setUpClass() {
-        IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(R_D);
-        QuadraticInteger a = new IllDefinedQuadraticInteger(R_A, R_B, r);
-        QuadraticInteger b = new IllDefinedQuadraticInteger(R_B, R_A, r);
-        unsNumDomExcOneNum = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", a);
-        unsNumDomExcTwoNums = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", b);
-        unsNumDomExcDomain = new UnsupportedNumberDomainException("Initialization state, not the result of an actually thrown exception.", a, b);
-        try {
-            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isPrime(a);
-            String message = "Determined somehow that " + a.toASCIIString() + " is ";
-            if (compositeFlag) {
-                message = message + "not ";
-            }
-            message = message + "prime.";
-            System.out.println(message);
-            System.err.println("Problem in set up: UnsupportedNumberDomainException not moved beyond initialization state.");
-        } catch (UnsupportedNumberDomainException unde) {
-            unsNumDomExcOneNum = unde;
-        }
-        System.out.println("UnsupportedNumberDomainException for the single number example has this message: \"" + unsNumDomExcOneNum.getMessage() + "\"");
-        try {
-            QuadraticInteger sum = a.plus(b);
-            System.out.println("Trying to add " + a.toASCIIString() + " to " + b.toASCIIString() + " somehow resulted in " + sum.toASCIIString() + ".");
-            System.err.println("Problem in set up: UnsupportedNumberDomainException not moved beyond initialization state.");
-        } catch (UnsupportedNumberDomainException unde) {
-            unsNumDomExcTwoNums = unde;
-        }
-        System.out.println("UnsupportedNumberDomainException for the 2-number example has this message: \"" + unsNumDomExcTwoNums.getMessage() + "\"");
-        Fraction fractRe = new Fraction(442, 881);
-        Fraction fractIm = new Fraction(6, 881);
-        Fraction[] fracts = {fractRe, fractIm};
-        NotDivisibleException notDivExc = new NotDivisibleException("Initialization message", a, b, fracts);
-        try {
-            AlgebraicInteger num = notDivExc.roundTowardsZero();
-            System.out.println("(442 + 6sqrt(-220))/881 rounded down to " + num.toASCIIString());
-            System.err.println("Problem in set up: UnsupportedNumberDomainException not moved beyond initialization state.");
-        } catch (UnsupportedNumberDomainException unde) {
-            unsNumDomExcDomain = unde;
-        }
-        System.out.println("UnsupportedNumberDomainException for the domain example has this message: \"" + unsNumDomExcDomain.getMessage() + "\"");
-    }
-    
-    /**
-     * Test of getMessage method, of class UnsupportedNumberDomainException, 
-     * inherited from RuntimeException. This test only requires that the message 
-     * not be an empty String and that it contain characters other than 
+     * Test of the getMessage function, of the UnsupportedNumberDomainException 
+     * class, inherited from RuntimeException. This test only requires that the 
+     * message not be an empty String and that it contain characters other than 
      * whitespace characters. Whether the message is helpful to someone 
      * debugging the program is beyond the scope of this test.
      */
     @Test
     public void testGetMessage() {
         System.out.println("getMessage");
-        String msg = unsNumDomExcOneNum.getMessage();
-        String assertionMessage1 = "Exception message should not be empty String.";
-        assertFalse(assertionMessage1, msg.isEmpty());
-        String assertionMessage2 = "Exception message should contain characters other than space, 0x20.";
-        msg = msg.replace(" ", ""); // Strip out whitespace
-        assertFalse(assertionMessage2, msg.isEmpty());
-        msg = unsNumDomExcTwoNums.getMessage();
-        assertFalse(assertionMessage1, msg.isEmpty());
-        msg = msg.replace(" ", "");
-        assertFalse(assertionMessage2, msg.isEmpty());
-        msg = unsNumDomExcDomain.getMessage();
-        assertFalse(assertionMessage1, msg.isEmpty());
-        msg = msg.replace(" ", "");
-        assertFalse(assertionMessage2, msg.isEmpty());
+        int d = randomSquarefreeNumber(200);
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(d);
+        UnsupportedNumberDomainException exc 
+                = new UnsupportedNumberDomainException(TESTING_MESSAGE, ring);
+        String msg = "Exception message should not be empty";
+        assert !exc.getMessage().isEmpty() : msg;
     }
 
     /**
-     * Test of getCausingNumbers method, of class 
-     * UnsupportedNumberDomainException.
+     * Test of the getCausingNumbers function, of the 
+     * UnsupportedNumberDomainException class.
      */
     @Test
     public void testGetCausingNumbers() {
         System.out.println("getCausingNumbers");
-        IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(R_D);
-        QuadraticInteger a = new IllDefinedQuadraticInteger(R_A, R_B, r);
-        QuadraticInteger b = new IllDefinedQuadraticInteger(R_B, R_A, r);
-        AlgebraicInteger[] expResult = {a, b};
-        AlgebraicInteger[] result = unsNumDomExcTwoNums.getCausingNumbers();
-        assertArrayEquals(expResult, result);
-        expResult[1] = null;
-        result = unsNumDomExcOneNum.getCausingNumbers();
-        assertArrayEquals(expResult, result);
-        expResult[0] = null;
-        result = unsNumDomExcDomain.getCausingNumbers();
-        assertArrayEquals(expResult, result);
+        int d = -randomSquarefreeNumber(200);
+        int re = RANDOM.nextInt(16384) - 8192;
+        int im = RANDOM.nextInt(16384) - 8192;
+        IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(d);
+        QuadraticInteger a = new IllDefinedQuadraticInteger(re, im, r);
+        QuadraticInteger b = new IllDefinedQuadraticInteger(im, re, r);
+        UnsupportedNumberDomainException exc 
+                = new UnsupportedNumberDomainException(TESTING_MESSAGE, a, b);
+        AlgebraicInteger[] expected = {a, b};
+        AlgebraicInteger[] actual = exc.getCausingNumbers();
+        assertArrayEquals(expected, actual);
     }
     
     /**
-     * Test of getCausingDomain method, of class 
-     * UnsupportedNumberDomainException.
+     * Test of the getCausingDomain function, of the 
+     * UnsupportedNumberDomainException class.
      */
     @Test
     public void testGetCausingDomain() {
         System.out.println("getCausingDomain");
-        IllDefinedQuadraticRing expResult = new IllDefinedQuadraticRing(R_D);
-        IntegerRing result = unsNumDomExcDomain.getCausingDomain();
-        assertEquals(expResult, result);
-        result = unsNumDomExcOneNum.getCausingDomain();
-        assertEquals(expResult, result);
-        result = unsNumDomExcTwoNums.getCausingDomain();
-        assertEquals(expResult, result);
+        int d = -randomSquarefreeNumber(200);
+        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(d);
+        UnsupportedNumberDomainException exc 
+                = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
+                        expected);
+        IntegerRing actual = exc.getCausingDomain();
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * This is necessary only because trying to pass a null literal to the 
+     * UnsupportedNumberDomainException 2-parameter constructor results in an 
+     * ambiguity the compiler refuses to process. The possibility of a null 
+     * falling through the cracks remains, hence this null provider.
+     * @return Null, always.
+     */
+    private static IntegerRing provideNullRing() {
+        return null;
+    }
+    
+    /**
+     * Test of the UnsupportedNumberDomainException constructor. Trying to use 
+     * null for the ring parameter should cause an exception.
+     */
+    @Test
+    public void testConstructorRejectsNullRing() {
+        IntegerRing badRing = provideNullRing();
+        try {
+            UnsupportedNumberDomainException badExc 
+                    = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
+                            badRing);
+            String msg = "Should not have been able to create " 
+                    + badExc.toString() + " with null ring";
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Null ring correctly caused exception");
+            String excMsg = npe.getMessage();
+            assert excMsg != null : "Message should not be null";
+            assert !excMsg.isEmpty() : "Message should not be empty";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for null ring";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * This is necessary only because trying to pass a null literal to the 
+     * UnsupportedNumberDomainException 2-parameter constructor results in an 
+     * ambiguity the compiler refuses to process. The possibility of a null 
+     * falling through the cracks remains, hence this null provider.
+     * @return Null, always.
+     */
+    private static AlgebraicInteger provideNullNumber() {
+        return null;
+    }
+    
+    /**
+     * Test of the UnsupportedNumberDomainException constructor. Trying to use 
+     * null for the numberA parameter should cause an exception.
+     */
+    @Test
+    public void testConstructorRejectsNullNumberA() {
+        AlgebraicInteger badNumber = provideNullNumber();
+        try {
+            UnsupportedNumberDomainException badExc 
+                    = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
+                            badNumber);
+            String msg = "Should not have been able to create " 
+                    + badExc.toString() + " with null numberA";
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Null numberA correctly caused exception");
+            String excMsg = npe.getMessage();
+            assert excMsg != null : "Message should not be null";
+            assert !excMsg.isEmpty() : "Message should not be empty";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for null numberA";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of the UnsupportedNumberDomainException constructor. When using the 
+     * 3-parameter constructor, the numberA parameter must not be null. As it 
+     * turns out, it's unnecessary to test the 2-parameter constructors for a 
+     * null literal, because using null for the second parameter causes an 
+     * ambiguous reference that the compiler will refuse to process.
+     */
+    @Test
+    public void testConstructorRejectsNullNumberARegardlessOfNumberB() {
+        int d = randomSquarefreeNumber(200);
+        int a = RANDOM.nextInt(16384) - 8192;
+        int b = RANDOM.nextInt(16384) - 8192;
+        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(d);
+        QuadraticInteger num = new IllDefinedQuadraticInteger(a, b, expected);
+        try {
+            UnsupportedNumberDomainException badExc 
+                    = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
+                            null, num);
+            String msg = "Should not have been able to create " 
+                    + badExc.toString() + " with null numberA";
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("Null for numberA correctly caused exception");
+            String excMsg = npe.getMessage();
+            assert excMsg != null : "Message should not be null";
+            assert !excMsg.isEmpty() : "Message should not be empty";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for null numberA";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of the UnsupportedNumberDomainException constructor. When passing 
+     * the constructor an {@link AlgebraicInteger} parameter rather than an 
+     * {@link IntegerRing} parameter, the constructor should nevertheless infer 
+     * the correct ring.
+     */
+    @Test
+    public void testConstructorInfersRing() {
+        int d = randomSquarefreeNumber(200);
+        int a = RANDOM.nextInt(16384) - 8192;
+        int b = RANDOM.nextInt(16384) - 8192;
+        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(d);
+        QuadraticInteger num = new IllDefinedQuadraticInteger(a, b, expected);
+        UnsupportedNumberDomainException exc 
+                = new UnsupportedNumberDomainException(TESTING_MESSAGE, num);
+        IntegerRing actual = exc.getCausingDomain();
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Test of the UnsupportedNumberDomainException constructor. When using the 
+     * 2-number constructor, it should check that the numbers come from the same 
+     * ring.
+     */
+    @Test
+    public void testConstructorChecksRingsMatch() {
+        int d = randomSquarefreeNumber(200);
+        int a = RANDOM.nextInt(16384) - 8192;
+        int b = RANDOM.nextInt(16384) - 8192;
+        IllDefinedQuadraticRing ringA = new IllDefinedQuadraticRing(d);
+        IllDefinedQuadraticRing ringB = new IllDefinedQuadraticRing(-d);
+        QuadraticInteger numberA = new IllDefinedQuadraticInteger(a, b, ringA);
+        QuadraticInteger numberB = new IllDefinedQuadraticInteger(a, b, ringB);
+        try {
+            UnsupportedNumberDomainException badExc 
+                    = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
+                            numberA, numberB);
+            String msg = "Should not have been able to create " 
+                    + badExc.toString() + " with " + numberA.toString() 
+                    + " and " + numberB.toString() 
+                    + ", which come from different rings";
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to use " + numberA.toString() 
+                    + " and " + numberB.toString() 
+                    + " correctly caused exception");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to use " 
+                    + numberA.toString() + " and " + numberB.toString() 
+                    + ", which come from different rings";
+            fail(msg);
+        }
     }
     
 }
