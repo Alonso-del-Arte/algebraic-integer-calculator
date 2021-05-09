@@ -16,7 +16,7 @@
  */
 package algebraics.quadratics;
 
-import algebraics.PowerBasis;
+import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
@@ -72,12 +72,12 @@ public class QuadraticRingTest {
     @Test
     public void testGetAbsNegRadSqrt() {
         System.out.println("getAbsNegRadSqrt");
-        QuadraticRing instance = null;
-        double expResult = 0.0;
-//        double result = instance.getAbsNegRadSqrt();
-//        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int d = RANDOM.nextInt();
+        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        double expected = Math.sqrt(Math.abs(d));
+        double actual = ring.getAbsNegRadSqrt();
+        assertEquals(expected, actual, TEST_DELTA);
     }
 
     /**
@@ -131,12 +131,10 @@ public class QuadraticRingTest {
     @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
-//        QuadraticRing instance = null;
-//        int expResult = 0;
-//        int result = instance.getMaxAlgebraicDegree();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int d = RANDOM.nextInt();
+        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        assertEquals(2, ring.getMaxAlgebraicDegree());
     }
 
     /**

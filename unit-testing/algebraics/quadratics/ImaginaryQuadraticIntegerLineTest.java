@@ -16,7 +16,7 @@
  */
 package algebraics.quadratics;
 
-import algebraics.NotDivisibleException;
+import arithmetic.NotDivisibleException;
 import fileops.PNGFileFilter;
 
 import java.util.HashSet;

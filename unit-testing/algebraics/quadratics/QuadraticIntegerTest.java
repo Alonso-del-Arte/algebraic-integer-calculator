@@ -17,8 +17,8 @@
 package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
-import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
+import arithmetic.NotDivisibleException;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

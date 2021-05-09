@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,7 +16,7 @@
  */
 package algebraics.quadratics;
 
-import algebraics.PowerBasis;
+import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fileops.PNGFileFilter;
 import fractions.Fraction;
@@ -32,10 +32,18 @@ import static org.junit.Assert.*;
  */
 public class ImaginaryQuadraticRingTest {
     
-    private static ImaginaryQuadraticRing ringGaussian;
-    private static ImaginaryQuadraticRing ringZi2;
-    private static ImaginaryQuadraticRing ringEisenstein;
-    private static ImaginaryQuadraticRing ringOQi7;
+    private static final ImaginaryQuadraticRing RING_GAUSSIAN 
+            = new ImaginaryQuadraticRing(-1);
+    
+    private static final ImaginaryQuadraticRing RING_ZI2 
+            = new ImaginaryQuadraticRing(-2);
+    
+    private static final ImaginaryQuadraticRing RING_EISENSTEIN 
+            = new ImaginaryQuadraticRing(-3);
+    
+    private static final ImaginaryQuadraticRing RING_OQI7 
+            = new ImaginaryQuadraticRing(-7);
+    
     private static ImaginaryQuadraticRing ringRandom;
     
     private static int randomDiscr;
@@ -55,20 +63,18 @@ public class ImaginaryQuadraticRingTest {
      */
     @BeforeClass
     public static void setUpClass() {
-        randomDiscr = -NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(ImagQuadRingDisplay.MINIMUM_RING_D);
+        randomDiscr = -NumberTheoreticFunctionsCalculator
+                .randomSquarefreeNumber(ImagQuadRingDisplay.MINIMUM_RING_D);
         if (randomDiscr > -5) {
-            randomDiscr = -5; // This is just in case we get -3 or -1, which we are already testing for and which require special treatment in some of the tests.
+            randomDiscr = -5;
         }
         if (randomDiscr == -7) {
-            randomDiscr = -11; // Resetting -7 to -11 since -7 is being tested regardless
+            randomDiscr = -11;
         }
         ringRandomd1mod4 = (randomDiscr % 4 == -3);
-        ringGaussian = new ImaginaryQuadraticRing(-1);
-        ringZi2 = new ImaginaryQuadraticRing(-2);
-        ringEisenstein = new ImaginaryQuadraticRing(-3);
-        ringOQi7 = new ImaginaryQuadraticRing(-7);
         ringRandom = new ImaginaryQuadraticRing(randomDiscr);
-        System.out.println(ringRandom.toASCIIString() + " has been randomly chosen for testing purposes.");
+        System.out.println(ringRandom.toASCIIString() 
+                + " has been randomly chosen for testing purposes");
     }
     
     /**
@@ -79,14 +85,14 @@ public class ImaginaryQuadraticRingTest {
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
         String msgPart = " should not be said to be a purely real ring.";
-        String assertionMessage = ringGaussian.toString() + msgPart;
-        assertFalse(assertionMessage, ringGaussian.isPurelyReal());
-        assertionMessage = ringZi2.toString() + msgPart;
-        assertFalse(assertionMessage, ringZi2.isPurelyReal());
-        assertionMessage = ringEisenstein.toString() + msgPart;
-        assertFalse(assertionMessage, ringEisenstein.isPurelyReal());
-        assertionMessage = ringOQi7.toString() + msgPart;
-        assertFalse(assertionMessage, ringOQi7.isPurelyReal());
+        String assertionMessage = RING_GAUSSIAN.toString() + msgPart;
+        assertFalse(assertionMessage, RING_GAUSSIAN.isPurelyReal());
+        assertionMessage = RING_ZI2.toString() + msgPart;
+        assertFalse(assertionMessage, RING_ZI2.isPurelyReal());
+        assertionMessage = RING_EISENSTEIN.toString() + msgPart;
+        assertFalse(assertionMessage, RING_EISENSTEIN.isPurelyReal());
+        assertionMessage = RING_OQI7.toString() + msgPart;
+        assertFalse(assertionMessage, RING_OQI7.isPurelyReal());
         assertionMessage = ringRandom.toString() + msgPart;
         assertFalse(assertionMessage, ringRandom.isPurelyReal());
     }
@@ -102,19 +108,19 @@ public class ImaginaryQuadraticRingTest {
     public void testDiscriminant() {
         System.out.println("discriminant");
         int expResult = -4;
-        int result = ringGaussian.discriminant();
+        int result = RING_GAUSSIAN.discriminant();
         assertEquals(expResult, result);
         expResult = -8;
-        result = ringZi2.discriminant();
+        result = RING_ZI2.discriminant();
         assertEquals(expResult, result);
         expResult = -3;
-        result = ringEisenstein.discriminant();
+        result = RING_EISENSTEIN.discriminant();
         assertEquals(expResult, result);
         expResult = -7;
-        result = ringOQi7.discriminant();
+        result = RING_OQI7.discriminant();
         assertEquals(expResult, result);
         expResult = randomDiscr;
-        if (randomDiscr % 4 != -3) { // Remember that -3 = 1 mod 4
+        if (randomDiscr % 4 != -3) {
             expResult *= 4;
         }
         result = ringRandom.discriminant();
@@ -134,13 +140,13 @@ public class ImaginaryQuadraticRingTest {
         Fraction one = new Fraction(1);
         Fraction[] powMults = {one, one};
         PowerBasis expResult = new PowerBasis(powMults);
-        PowerBasis result = ringGaussian.getPowerBasis();
+        PowerBasis result = RING_GAUSSIAN.getPowerBasis();
         assertEquals(expResult, result);
-        result = ringZi2.getPowerBasis();
+        result = RING_ZI2.getPowerBasis();
         assertEquals(expResult, result);
-        result = ringEisenstein.getPowerBasis();
+        result = RING_EISENSTEIN.getPowerBasis();
         assertEquals(expResult, result);
-        result = ringOQi7.getPowerBasis();
+        result = RING_OQI7.getPowerBasis();
         assertEquals(expResult, result);
         result = ringRandom.getPowerBasis();
         assertEquals(expResult, result);
@@ -153,10 +159,10 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testGetRadicand() {
         System.out.println("getRadicand");
-        assertEquals(-1, ringGaussian.getRadicand());
-        assertEquals(-2, ringZi2.getRadicand());
-        assertEquals(-3, ringEisenstein.getRadicand());
-        assertEquals(-7, ringOQi7.getRadicand());
+        assertEquals(-1, RING_GAUSSIAN.getRadicand());
+        assertEquals(-2, RING_ZI2.getRadicand());
+        assertEquals(-3, RING_EISENSTEIN.getRadicand());
+        assertEquals(-7, RING_OQI7.getRadicand());
         assertEquals(randomDiscr, ringRandom.getRadicand());
     }
 
@@ -166,41 +172,33 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testGetRadSqrt() {
         System.out.println("getRadSqrt");
+        int startD = randomDiscr + 1;
+        if (startD % 29 == 0) {
+            startD++;
+        }
+        ImaginaryQuadraticRing ring;
         double result;
-        try {
-            result = ringGaussian.getRadSqrt();
-            String failMessage = "getRadSqrt() for " + ringGaussian.toASCIIString() + " should have triggered an exception, not given result " + result;
-            fail(failMessage);
-        } catch (UnsupportedOperationException uoe) {
-            System.out.println("UnsupportedOperationException correctly triggered for " + ringGaussian.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
-        }
-        try {
-            result = ringZi2.getRadSqrt();
-            String failMessage = "getRadSqrt() for " + ringZi2.toASCIIString() + " should have triggered an exception, not given result " + result;
-            fail(failMessage);
-        } catch (UnsupportedOperationException uoe) {
-            System.out.println("UnsupportedOperationException correctly triggered for " + ringZi2.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
-        }
-        try {
-            result = ringEisenstein.getRadSqrt();
-            String failMessage = "getRadSqrt() for " + ringEisenstein.toASCIIString() + " should have triggered an exception, not given result " + result;
-            fail(failMessage);
-        } catch (UnsupportedOperationException uoe) {
-            System.out.println("UnsupportedOperationException correctly triggered for " + ringEisenstein.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
-        }
-        try {
-            result = ringOQi7.getRadSqrt();
-            String failMessage = "getRadSqrt() for " + ringOQi7.toASCIIString() + " should have triggered an exception, not given result " + result;
-            fail(failMessage);
-        } catch (UnsupportedOperationException uoe) {
-            System.out.println("UnsupportedOperationException correctly triggered for " + ringOQi7.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
-        }
-        try {
-            result = ringRandom.getRadSqrt();
-            String failMessage = "getRadSqrt() for " + ringRandom.toASCIIString() + " should have triggered an exception, not given result " + result;
-            fail(failMessage);
-        } catch (UnsupportedOperationException uoe) {
-            System.out.println("UnsupportedOperationException correctly triggered for " + ringRandom.toASCIIString() + ".getRadSqrt(): " + uoe.getMessage());
+        String msg;
+        for (int i = startD; i % 29 != 0; i++) {
+            if (NumberTheoreticFunctionsCalculator.isSquareFree(i)) {
+                ring = new ImaginaryQuadraticRing(i);
+                try {
+                    result = ring.getRadSqrt();
+                    msg = "getRadSqrt() for " + ring.toString() 
+                            + " should not have given result " + result;
+                    fail(msg);
+                } catch (UnsupportedOperationException uoe) {
+                    System.out.println("Calling getRadSqrt() for " 
+                            + ring.toASCIIString() 
+                            + " correctly caused UnsupportedOperationException");
+                    System.out.println("\"" + uoe.getMessage() + "\"");
+                } catch (RuntimeException re) {
+                    msg = re.getClass().getName() 
+                            + " is the wrong exception for getRadSqrt() on " 
+                            + ring.toString();
+                    fail(msg);
+                }
+            }
         }
     }
 
@@ -210,10 +208,10 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testGetAbsNegRad() {
         System.out.println("getAbsNegRad");
-        assertEquals(1, ringGaussian.getAbsNegRad());
-        assertEquals(2, ringZi2.getAbsNegRad());
-        assertEquals(3, ringEisenstein.getAbsNegRad());
-        assertEquals(7, ringOQi7.getAbsNegRad());
+        assertEquals(1, RING_GAUSSIAN.getAbsNegRad());
+        assertEquals(2, RING_ZI2.getAbsNegRad());
+        assertEquals(3, RING_EISENSTEIN.getAbsNegRad());
+        assertEquals(7, RING_OQI7.getAbsNegRad());
         assertEquals(-randomDiscr, ringRandom.getAbsNegRad());
     }
 
@@ -223,13 +221,13 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testGetAbsNegRadSqrt() {
         System.out.println("getAbsNegRadSqrt");
-        assertEquals(1.0, ringGaussian.getAbsNegRadSqrt(), 
+        assertEquals(1.0, RING_GAUSSIAN.getAbsNegRadSqrt(), 
                 QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(2), ringZi2.getAbsNegRadSqrt(), 
+        assertEquals(Math.sqrt(2), RING_ZI2.getAbsNegRadSqrt(), 
                 QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(3), ringEisenstein.getAbsNegRadSqrt(), 
+        assertEquals(Math.sqrt(3), RING_EISENSTEIN.getAbsNegRadSqrt(), 
                 QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(7), ringOQi7.getAbsNegRadSqrt(), 
+        assertEquals(Math.sqrt(7), RING_OQI7.getAbsNegRadSqrt(), 
                 QuadraticRingTest.TEST_DELTA);
         assertEquals(Math.sqrt(-randomDiscr), ringRandom.getAbsNegRadSqrt(), 
                 QuadraticRingTest.TEST_DELTA);
@@ -242,21 +240,22 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testHasHalfIntegers() {
         System.out.println("hasHalfIntegers");
-        String assertionMessage = ringGaussian.toASCIIString() + " should not be said to have half-integers.";
-        assertFalse(assertionMessage, ringGaussian.hasHalfIntegers());
-        assertionMessage = ringZi2.toASCIIString() + " should not be said to have half-integers.";
-        assertFalse(assertionMessage, ringZi2.hasHalfIntegers());
-        assertionMessage = ringEisenstein.toASCIIString() + " should be said to have half-integers.";
-        assertTrue(assertionMessage, ringEisenstein.hasHalfIntegers());
-        assertionMessage = ringOQi7.toASCIIString() + " should be said to have half-integers.";
-        assertTrue(assertionMessage, ringOQi7.hasHalfIntegers());
-        assertionMessage = ringRandom.toASCIIString() + " should ";
+        String msgNoHalves = " should not be said to have half-integers";
+        String msgHalves = " should be said to have half-integers";
+        String msg = RING_GAUSSIAN.toString() + msgNoHalves;
+        assert !RING_GAUSSIAN.hasHalfIntegers() : msg;
+        msg = RING_ZI2.toString() + msgNoHalves;
+        assert !RING_ZI2.hasHalfIntegers() : msg;
+        msg = RING_EISENSTEIN.toString() + msgHalves;
+        assert RING_EISENSTEIN.hasHalfIntegers() : msg;
+        msg = RING_OQI7.toString() + msgHalves;
+        assert RING_OQI7.hasHalfIntegers() : msg;
         if (ringRandomd1mod4) {
-            assertionMessage = assertionMessage + "be said to have half-integers.";
+            msg = ringRandom.toString() + msgHalves;
         } else {
-            assertionMessage = assertionMessage + "not be said to have half-integers.";
+            msg = ringRandom.toString() + msgNoHalves;
         }
-        assertEquals(assertionMessage, ringRandomd1mod4, ringRandom.hasHalfIntegers());
+        assert ringRandomd1mod4 == ringRandom.hasHalfIntegers() : msg;
     }
 
     /**
@@ -270,9 +269,9 @@ public class ImaginaryQuadraticRingTest {
     public void testPreferBlackboardBold() {
         System.out.println("preferBlackboardBold");
         ImaginaryQuadraticRing.preferBlackboardBold(true);
-        assertTrue(ImaginaryQuadraticRing.preferBlackboardBold());
+        assertTrue(QuadraticRing.preferBlackboardBold());
         ImaginaryQuadraticRing.preferBlackboardBold(false);
-        assertFalse(ImaginaryQuadraticRing.preferBlackboardBold());
+        assertFalse(QuadraticRing.preferBlackboardBold());
     }
     
     /**
@@ -285,26 +284,26 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        int expResult = ringGaussian.hashCode();
-        System.out.println("BeforeClass-initialized " + ringGaussian.toASCIIString() + " hashed as " + expResult);
+        int expResult = RING_GAUSSIAN.hashCode();
+        System.out.println("BeforeClass-initialized " + RING_GAUSSIAN.toASCIIString() + " hashed as " + expResult);
         ImaginaryQuadraticRing someRing = new ImaginaryQuadraticRing(-1);
         int result = someRing.hashCode();
         String assertionMessage = "BeforeClass-initialized and test-initialized Z[i] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
-        expResult = ringZi2.hashCode();
-        System.out.println("BeforeClass-initialized " + ringZi2.toASCIIString() + " hashed as " + expResult);
+        expResult = RING_ZI2.hashCode();
+        System.out.println("BeforeClass-initialized " + RING_ZI2.toASCIIString() + " hashed as " + expResult);
         someRing = new ImaginaryQuadraticRing(-2);
         result = someRing.hashCode();
         assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-2)] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
-        expResult = ringEisenstein.hashCode();
-        System.out.println("BeforeClass-initialized " + ringEisenstein.toASCIIString() + " hashed as " + expResult);
+        expResult = RING_EISENSTEIN.hashCode();
+        System.out.println("BeforeClass-initialized " + RING_EISENSTEIN.toASCIIString() + " hashed as " + expResult);
         someRing = new ImaginaryQuadraticRing(-3);
         result = someRing.hashCode();
         assertionMessage = "BeforeClass-initialized and test-initialized Z[omega] should hash the same.";
         assertEquals(assertionMessage, expResult, result);
-        expResult = ringOQi7.hashCode();
-        System.out.println("BeforeClass-initialized " + ringOQi7.toASCIIString() + " hashed as " + expResult);
+        expResult = RING_OQI7.hashCode();
+        System.out.println("BeforeClass-initialized " + RING_OQI7.toASCIIString() + " hashed as " + expResult);
         someRing = new ImaginaryQuadraticRing(-7);
         result = someRing.hashCode();
         assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-7)] should hash the same.";
@@ -328,16 +327,16 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("equals");
         ImaginaryQuadraticRing someRing = new ImaginaryQuadraticRing(-1);
         ImaginaryQuadraticRing transitiveHold = new ImaginaryQuadraticRing(-1);
-        assertTrue(ringGaussian.equals(ringGaussian)); // Reflexive test
-        assertEquals(ringGaussian, someRing);
-        assertEquals(someRing, ringGaussian); // Symmetric test
+        assertTrue(RING_GAUSSIAN.equals(RING_GAUSSIAN)); // Reflexive test
+        assertEquals(RING_GAUSSIAN, someRing);
+        assertEquals(someRing, RING_GAUSSIAN); // Symmetric test
         assertEquals(someRing, transitiveHold);
-        assertEquals(transitiveHold, ringGaussian); // Transitive test
+        assertEquals(transitiveHold, RING_GAUSSIAN); // Transitive test
         // Now to test that rings that are not equal are reported as not equal
-        assertNotEquals(ringGaussian, ringZi2);
-        assertNotEquals(ringZi2, ringEisenstein);
-        assertNotEquals(ringEisenstein, ringOQi7);
-        assertNotEquals(ringOQi7, ringRandom);
+        assertNotEquals(RING_GAUSSIAN, RING_ZI2);
+        assertNotEquals(RING_ZI2, RING_EISENSTEIN);
+        assertNotEquals(RING_EISENSTEIN, RING_OQI7);
+        assertNotEquals(RING_OQI7, ringRandom);
         // Lastly, a ring should not be equal to an unrelated object
         PNGFileFilter obj = new PNGFileFilter();
         assertNotEquals(ringRandom, obj);
@@ -351,16 +350,16 @@ public class ImaginaryQuadraticRingTest {
     public void testToString() {
         System.out.println("toString");
         String expResult = "Z[i]";
-        String result = ringGaussian.toString();
+        String result = RING_GAUSSIAN.toString();
         assertEquals(expResult, result);
         expResult = "Z[\u221A\u22122]";
-        result = ringZi2.toString();
+        result = RING_ZI2.toString();
         assertEquals(expResult, result);
         expResult = "Z[\u03C9]";
-        result = ringEisenstein.toString();
+        result = RING_EISENSTEIN.toString();
         assertEquals(expResult, result);
         expResult = "O_(Q(\u221A\u22127))";
-        result = ringOQi7.toString();
+        result = RING_OQI7.toString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
             expResult = "O_(Q(\u221A\u2212" + Math.abs(randomDiscr) + "))";
@@ -379,16 +378,16 @@ public class ImaginaryQuadraticRingTest {
     public void testToASCIIString() {
         System.out.println("toASCIIString");
         String expResult = "Z[i]";
-        String result = ringGaussian.toASCIIString();
+        String result = RING_GAUSSIAN.toASCIIString();
         assertEquals(expResult, result);
         expResult = "Z[sqrt(-2)]";
-        result = ringZi2.toASCIIString();
+        result = RING_ZI2.toASCIIString();
         assertEquals(expResult, result);
         expResult = "Z[omega]";
-        result = ringEisenstein.toASCIIString();
+        result = RING_EISENSTEIN.toASCIIString();
         assertEquals(expResult, result);
         expResult = "O_(Q(sqrt(-7)))";
-        result = ringOQi7.toASCIIString();
+        result = RING_OQI7.toASCIIString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
             expResult = "O_(Q(sqrt(" + randomDiscr + ")))";
@@ -407,46 +406,46 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-        ImaginaryQuadraticRing.preferBlackboardBold(true);
-        String expResult = "\\mathbb Z[i]";
-        String result = ringGaussian.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\mathbb Z[\\sqrt{-2}]";
-        result = ringZi2.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\mathbb Z[\\omega]";
-        result = ringEisenstein.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\mathcal O_{\\mathbb Q(\\sqrt{-7})}";
-        result = ringOQi7.toTeXString();
-        assertEquals(expResult, result);
+        QuadraticRing.preferBlackboardBold(true);
+        String expected = "\\mathbb Z[i]";
+        String actual = RING_GAUSSIAN.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\mathbb Z[\\sqrt{-2}]";
+        actual = RING_ZI2.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\mathbb Z[\\omega]";
+        actual = RING_EISENSTEIN.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\mathcal O_{\\mathbb Q(\\sqrt{-7})}";
+        actual = RING_OQI7.toTeXString();
+        assertEquals(expected, actual);
         if (ringRandomd1mod4) {
-            expResult = "\\mathcal O_{\\mathbb Q(\\sqrt{" + randomDiscr + "})}";
+            expected = "\\mathcal O_{\\mathbb Q(\\sqrt{" + randomDiscr + "})}";
         } else {
-            expResult = "\\mathbb Z[\\sqrt{" + randomDiscr + "}]";
+            expected = "\\mathbb Z[\\sqrt{" + randomDiscr + "}]";
         }
-        result = ringRandom.toTeXString();
-        assertEquals(expResult, result);
-        ImaginaryQuadraticRing.preferBlackboardBold(false);
-        expResult = "\\textbf Z[i]";
-        result = ringGaussian.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\textbf Z[\\sqrt{-2}]";
-        result = ringZi2.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\textbf Z[\\omega]";
-        result = ringEisenstein.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\mathcal O_{\\textbf Q(\\sqrt{-7})}";
-        result = ringOQi7.toTeXString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toTeXString();
+        assertEquals(expected, actual);
+        QuadraticRing.preferBlackboardBold(false);
+        expected = "\\textbf Z[i]";
+        actual = RING_GAUSSIAN.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\textbf Z[\\sqrt{-2}]";
+        actual = RING_ZI2.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\textbf Z[\\omega]";
+        actual = RING_EISENSTEIN.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\mathcal O_{\\textbf Q(\\sqrt{-7})}";
+        actual = RING_OQI7.toTeXString();
+        assertEquals(expected, actual);
         if (ringRandomd1mod4) {
-            expResult = "\\mathcal O_{\\textbf Q(\\sqrt{" + randomDiscr + "})}";
+            expected = "\\mathcal O_{\\textbf Q(\\sqrt{" + randomDiscr + "})}";
         } else {
-            expResult = "\\textbf Z[\\sqrt{" + randomDiscr + "}]";
+            expected = "\\textbf Z[\\sqrt{" + randomDiscr + "}]";
         }
-        result = ringRandom.toTeXString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toTeXString();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -457,18 +456,18 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        ImaginaryQuadraticRing.preferBlackboardBold(true);
+        QuadraticRing.preferBlackboardBold(true);
         String expResult = "\u2124[<i>i</i>]";
-        String result = ringGaussian.toHTMLString();
+        String result = RING_GAUSSIAN.toHTMLString();
         assertEquals(expResult, result);
         expResult = "\u2124[&radic;-2]";
-        result = ringZi2.toHTMLString();
+        result = RING_ZI2.toHTMLString();
         assertEquals(expResult, result);
         expResult = "\u2124[&omega;]";
-        result = ringEisenstein.toHTMLString();
+        result = RING_EISENSTEIN.toHTMLString();
         assertEquals(expResult, result);
         expResult = "<i>O</i><sub>\u211A(&radic;(-7))</sub>";
-        result = ringOQi7.toHTMLString();
+        result = RING_OQI7.toHTMLString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
             expResult = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr + "))</sub>";
@@ -477,18 +476,18 @@ public class ImaginaryQuadraticRingTest {
         }
         result = ringRandom.toHTMLString();
         assertEquals(expResult, result);
-        ImaginaryQuadraticRing.preferBlackboardBold(false);
+        QuadraticRing.preferBlackboardBold(false);
         expResult = "<b>Z</b>[<i>i</i>]";
-        result = ringGaussian.toHTMLString();
+        result = RING_GAUSSIAN.toHTMLString();
         assertEquals(expResult, result);
         expResult = "<b>Z</b>[&radic;-2]";
-        result = ringZi2.toHTMLString();
+        result = RING_ZI2.toHTMLString();
         assertEquals(expResult, result);
         expResult = "<b>Z</b>[&omega;]";
-        result = ringEisenstein.toHTMLString();
+        result = RING_EISENSTEIN.toHTMLString();
         assertEquals(expResult, result);
         expResult = "<i>O</i><sub><b>Q</b>(&radic;(-7))</sub>";
-        result = ringOQi7.toHTMLString();
+        result = RING_OQI7.toHTMLString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
             expResult = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr + "))</sub>";
@@ -508,16 +507,16 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("toFilenameString");
         // Preference for blackboard bold is irrelevant for this particular test.
         String expResult = "ZI";
-        String result = ringGaussian.toFilenameString();
+        String result = RING_GAUSSIAN.toFilenameString();
         assertEquals(expResult, result);
         expResult = "ZI2";
-        result = ringZi2.toFilenameString();
+        result = RING_ZI2.toFilenameString();
         assertEquals(expResult, result);
         expResult = "ZW";
-        result = ringEisenstein.toFilenameString();
+        result = RING_EISENSTEIN.toFilenameString();
         assertEquals(expResult, result);
         expResult = "OQI7";
-        result = ringOQi7.toFilenameString();
+        result = RING_OQI7.toFilenameString();
         assertEquals(expResult, result);
         if (ringRandomd1mod4) {
             expResult = "OQI" + (-1 * randomDiscr);

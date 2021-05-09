@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,8 +16,8 @@
  */
 package algebraics.quadratics;
 
-import algebraics.PowerBasis;
 import algebraics.UnsupportedNumberDomainException;
+import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fileops.FileChooserWithOverwriteGuard;
 import fractions.Fraction;
@@ -71,15 +71,15 @@ public class RealQuadraticRingTest {
     @Test
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
-        String msgPart = " should be said to be a purely real ring.";
-        String assertionMessage = RING_Z2.toString() + msgPart;
-        assertTrue(assertionMessage, RING_Z2.isPurelyReal());
-        assertionMessage = RING_ZPHI.toString() + msgPart;
-        assertTrue(assertionMessage, RING_ZPHI.isPurelyReal());
-        assertionMessage = RING_OQ13.toString() + msgPart;
-        assertTrue(assertionMessage, RING_OQ13.isPurelyReal());
-        assertionMessage = ringRandom.toString() + msgPart;
-        assertTrue(assertionMessage, ringRandom.isPurelyReal());
+        String msgPart = " should be said to be a purely real ring";
+        String msg = RING_Z2.toString() + msgPart;
+        assert RING_Z2.isPurelyReal() : msg;
+        msg = RING_ZPHI.toString() + msgPart;
+        assert RING_ZPHI.isPurelyReal() : msg;
+        msg = RING_OQ13.toString() + msgPart;
+        assert RING_OQ13.isPurelyReal() : msg;
+        msg = ringRandom.toString() + msgPart;
+        assert ringRandom.isPurelyReal() : msg;
     }
     
     /**
@@ -200,7 +200,6 @@ public class RealQuadraticRingTest {
      */
     @Test
     public void testGetRadSqrtGetAbsNegRadSqrtCorr() {
-        System.out.println("getRadSqrt and getAbsNegRadSqrt should be the same for an instance of RealQuadraticRing.");
         assertEquals(RING_Z2.getRadSqrt(), RING_Z2.getAbsNegRadSqrt(), 
                 QuadraticRingTest.TEST_DELTA);
         assertEquals(RING_ZPHI.getRadSqrt(), RING_ZPHI.getAbsNegRadSqrt(), 
@@ -218,19 +217,20 @@ public class RealQuadraticRingTest {
     @Test
     public void testHasHalfIntegers() {
         System.out.println("hasHalfIntegers");
-        String assertionMessage = RING_Z2.toASCIIString() + " should not be said to have half-integers.";
-        assertFalse(assertionMessage, RING_Z2.hasHalfIntegers());
-        assertionMessage = RING_ZPHI.toASCIIString() + " should be said to have half-integers.";
-        assertTrue(assertionMessage, RING_ZPHI.hasHalfIntegers());
-        assertionMessage = RING_OQ13.toASCIIString() + " should be said to have half-integers.";
-        assertTrue(assertionMessage, RING_OQ13.hasHalfIntegers());
-        assertionMessage = ringRandom.toASCIIString() + " should ";
+        String msgNoHalves = " should not be said to have half-integers";
+        String msg = RING_Z2.toString() + msgNoHalves;
+        assert !RING_Z2.hasHalfIntegers() : msg;
+        String msgHalves = " should be said to have half-integers";
+        msg = RING_ZPHI.toString() + msgHalves;
+        assert RING_ZPHI.hasHalfIntegers() : msg;
+        msg = RING_OQ13.toString() + msgHalves;
+        assertTrue(msg, RING_OQ13.hasHalfIntegers());
         if (ringRandomD1Mod4) {
-            assertionMessage = assertionMessage + "be said to have half-integers.";
+            msg = ringRandom.toString() + msgHalves;
         } else {
-            assertionMessage = assertionMessage + "not be said to have half-integers.";
+            msg = ringRandom.toString() + msgNoHalves;
         }
-        assertEquals(assertionMessage, ringRandomD1Mod4, ringRandom.hasHalfIntegers());
+        assertEquals(msg, ringRandomD1Mod4, ringRandom.hasHalfIntegers());
     }
     
     /**
@@ -243,10 +243,12 @@ public class RealQuadraticRingTest {
     @Test
     public void testPreferBlackboardBold() {
         System.out.println("preferBlackboardBold");
+        String msg = "Preference for blackboard bold should be on";
         RealQuadraticRing.preferBlackboardBold(true);
-        assertTrue(RealQuadraticRing.preferBlackboardBold());
+        assert RealQuadraticRing.preferBlackboardBold() : msg;
+        msg = "Preference for blackboard bold should be off";
         RealQuadraticRing.preferBlackboardBold(false);
-        assertFalse(RealQuadraticRing.preferBlackboardBold());
+        assert !RealQuadraticRing.preferBlackboardBold() : msg;
     }
     
     /**
@@ -284,30 +286,35 @@ public class RealQuadraticRingTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        int expResult = RING_Z2.hashCode();
-        System.out.println("BeforeClass-initialized " + RING_Z2.toASCIIString() + " hashed as " + expResult);
+        int expected = RING_Z2.hashCode();
+        System.out.println("BeforeClass " + RING_Z2.toASCIIString() 
+                + " hashed as " + expected);
         RealQuadraticRing someRing = new RealQuadraticRing(2);
-        int result = someRing.hashCode();
-        String assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(2)] should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
-        expResult = RING_ZPHI.hashCode();
-        System.out.println("BeforeClass-initialized " + RING_ZPHI.toASCIIString() + " hashed as " + expResult);
+        int actual = someRing.hashCode();
+        String msg = "BeforeClass and test Z[sqrt(2)] should hash same";
+        assertEquals(msg, expected, actual);
+        expected = RING_ZPHI.hashCode();
+        System.out.println("BeforeClass " + RING_ZPHI.toASCIIString() 
+                + " hashed as " + expected);
         someRing = new RealQuadraticRing(5);
-        result = someRing.hashCode();
-        assertionMessage = "BeforeClass-initialized and test-initialized Z[omega] should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
-        expResult = RING_OQ13.hashCode();
-        System.out.println("BeforeClass-initialized " + RING_OQ13.toASCIIString() + " hashed as " + expResult);
+        actual = someRing.hashCode();
+        msg = "BeforeClass and test Z[omega] should hash the same";
+        assertEquals(msg, expected, actual);
+        expected = RING_OQ13.hashCode();
+        System.out.println("BeforeClass " + RING_OQ13.toASCIIString() 
+                + " hashed as " + expected);
         someRing = new RealQuadraticRing(13);
-        result = someRing.hashCode();
-        assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-7)] should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
-        expResult = ringRandom.hashCode();
-        System.out.println("BeforeClass-initialized " + ringRandom.toASCIIString() + " hashed as " + expResult);
+        actual = someRing.hashCode();
+        msg = "BeforeClass and test Z[sqrt(-7)] should hash the same";
+        assertEquals(msg, expected, actual);
+        expected = ringRandom.hashCode();
+        System.out.println("BeforeClass " + ringRandom.toASCIIString() 
+                + " hashed as " + expected);
         someRing = new RealQuadraticRing(randomDiscr);
-        result = someRing.hashCode();
-        assertionMessage = "BeforeClass-initialized and test-initialized " + ringRandom.toASCIIString() + " should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
+        actual = someRing.hashCode();
+        msg = "BeforeClass and test " + ringRandom.toASCIIString() 
+                + " should hash the same";
+        assertEquals(msg, expected, actual);
     }
 
     /**
@@ -317,19 +324,19 @@ public class RealQuadraticRingTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        String expResult = "Z[\u221A2]";
-        String result = RING_Z2.toString();
-        assertEquals(expResult, result);
-        expResult = "Z[\u03C6]";
-        result = RING_ZPHI.toString();
-        assertEquals(expResult, result);
+        String expected = "Z[\u221A2]";
+        String actual = RING_Z2.toString();
+        assertEquals(expected, actual);
+        expected = "Z[\u03C6]";
+        actual = RING_ZPHI.toString();
+        assertEquals(expected, actual);
         if (ringRandomD1Mod4) {
-            expResult = "O_(Q(\u221A" + randomDiscr + "))";
+            expected = "O_(Q(\u221A" + randomDiscr + "))";
         } else {
-            expResult = "Z[\u221A" + randomDiscr + "]";
+            expected = "Z[\u221A" + randomDiscr + "]";
         }
-        result = ringRandom.toString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toString();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -339,19 +346,19 @@ public class RealQuadraticRingTest {
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        String expResult = "Z[sqrt(2)]";
-        String result = RING_Z2.toASCIIString();
-        assertEquals(expResult, result);
-        expResult = "Z[phi]";
-        result = RING_ZPHI.toASCIIString();
-        assertEquals(expResult, result);
+        String expected = "Z[sqrt(2)]";
+        String actual = RING_Z2.toASCIIString();
+        assertEquals(expected, actual);
+        expected = "Z[phi]";
+        actual = RING_ZPHI.toASCIIString();
+        assertEquals(expected, actual);
         if (ringRandomD1Mod4) {
-            expResult = "O_(Q(sqrt(" + randomDiscr + ")))";
+            expected = "O_(Q(sqrt(" + randomDiscr + ")))";
         } else {
-            expResult = "Z[sqrt(" + randomDiscr + ")]";
+            expected = "Z[sqrt(" + randomDiscr + ")]";
         }
-        result = ringRandom.toASCIIString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toASCIIString();
+        assertEquals(expected, actual);
     }
     
     /**
@@ -362,34 +369,34 @@ public class RealQuadraticRingTest {
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-        ImaginaryQuadraticRing.preferBlackboardBold(true);
-        String expResult = "\\mathbb Z[\\sqrt{2}]";
-        String result = RING_Z2.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\mathbb Z[\\phi]";
-        result = RING_ZPHI.toTeXString();
-        assertEquals(expResult, result);
+        QuadraticRing.preferBlackboardBold(true);
+        String expected = "\\mathbb Z[\\sqrt{2}]";
+        String actual = RING_Z2.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\mathbb Z[\\phi]";
+        actual = RING_ZPHI.toTeXString();
+        assertEquals(expected, actual);
         if (ringRandomD1Mod4) {
-            expResult = "\\mathcal O_{\\mathbb Q(\\sqrt{" + randomDiscr + "})}";
+            expected = "\\mathcal O_{\\mathbb Q(\\sqrt{" + randomDiscr + "})}";
         } else {
-            expResult = "\\mathbb Z[\\sqrt{" + randomDiscr + "}]";
+            expected = "\\mathbb Z[\\sqrt{" + randomDiscr + "}]";
         }
-        result = ringRandom.toTeXString();
-        assertEquals(expResult, result);
-        ImaginaryQuadraticRing.preferBlackboardBold(false);
-        expResult = "\\textbf Z[\\sqrt{2}]";
-        result = RING_Z2.toTeXString();
-        assertEquals(expResult, result);
-        expResult = "\\textbf Z[\\phi]";
-        result = RING_ZPHI.toTeXString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toTeXString();
+        assertEquals(expected, actual);
+        QuadraticRing.preferBlackboardBold(false);
+        expected = "\\textbf Z[\\sqrt{2}]";
+        actual = RING_Z2.toTeXString();
+        assertEquals(expected, actual);
+        expected = "\\textbf Z[\\phi]";
+        actual = RING_ZPHI.toTeXString();
+        assertEquals(expected, actual);
         if (ringRandomD1Mod4) {
-            expResult = "\\mathcal O_{\\textbf Q(\\sqrt{" + randomDiscr + "})}";
+            expected = "\\mathcal O_{\\textbf Q(\\sqrt{" + randomDiscr + "})}";
         } else {
-            expResult = "\\textbf Z[\\sqrt{" + randomDiscr + "}]";
+            expected = "\\textbf Z[\\sqrt{" + randomDiscr + "}]";
         }
-        result = ringRandom.toTeXString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toTeXString();
+        assertEquals(expected, actual);
     }
 
     /**
@@ -400,44 +407,46 @@ public class RealQuadraticRingTest {
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        ImaginaryQuadraticRing.preferBlackboardBold(true);
-        String expResult = "\u2124[&radic;2]";
-        String result = RING_Z2.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "\u2124[&phi;]";
-        result = RING_ZPHI.toHTMLString();
-        assertEquals(expResult, result);
+        QuadraticRing.preferBlackboardBold(true);
+        String expected = "\u2124[&radic;2]";
+        String actual = RING_Z2.toHTMLString();
+        assertEquals(expected, actual);
+        expected = "\u2124[&phi;]";
+        actual = RING_ZPHI.toHTMLString();
+        assertEquals(expected, actual);
         if (ringRandomD1Mod4) {
-            expResult = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr + "))</sub>";
+            expected = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr 
+                    + "))</sub>";
         } else {
-            expResult = "\u2124[&radic;" + randomDiscr + "]";
+            expected = "\u2124[&radic;" + randomDiscr + "]";
         }
-        result = ringRandom.toHTMLString();
-        assertEquals(expResult, result);
-        ImaginaryQuadraticRing.preferBlackboardBold(false);
-        expResult = "<b>Z</b>[&radic;2]";
-        result = RING_Z2.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "<b>Z</b>[&phi;]";
-        result = RING_ZPHI.toHTMLString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toHTMLString();
+        assertEquals(expected, actual);
+        QuadraticRing.preferBlackboardBold(false);
+        expected = "<b>Z</b>[&radic;2]";
+        actual = RING_Z2.toHTMLString();
+        assertEquals(expected, actual);
+        expected = "<b>Z</b>[&phi;]";
+        actual = RING_ZPHI.toHTMLString();
+        assertEquals(expected, actual);
         if (ringRandomD1Mod4) {
-            expResult = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr + "))</sub>";
+            expected = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr 
+                    + "))</sub>";
         } else {
-            expResult = "<b>Z</b>[&radic;" + randomDiscr + "]";
+            expected = "<b>Z</b>[&radic;" + randomDiscr + "]";
         }
-        result = ringRandom.toHTMLString();
-        assertEquals(expResult, result);
+        actual = ringRandom.toHTMLString();
+        assertEquals(expected, actual);
     }
 
     /**
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
-     * from {@link QuadraticRing}.
+     * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
+     * for this particular test.
      */
     @Test
     public void testToFilenameString() {
         System.out.println("toFilenameString");
-        // Preference for blackboard bold is irrelevant for this particular test.
         String expResult = "Z2";
         String result = RING_Z2.toFilenameString();
         assertEquals(expResult, result);
@@ -454,43 +463,70 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of RealQuadraticRing class constructor. The main thing we're 
-     * testing here is that an invalid argument triggers an 
-     * IllegalArgumentException. That the other tests pass makes us plenty 
-     * confident that the constructor works correctly on valid arguments.
+     * Test of the RealQuadraticRing constructor.
      */
     @Test
     public void testConstructor() {
-        System.out.println("RealQuadraticRing (constructor)");
-        RealQuadraticRing ringZ10 = new RealQuadraticRing(10); // This should work fine
-        System.out.println("Created " + ringZ10.toASCIIString() + " without problem.");
-        RealQuadraticRing ringZ11 = new RealQuadraticRing(53); // This should also work fine
-        System.out.println("Created " + ringZ11.toASCIIString() + " without problem.");
+        RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
+        System.out.println("Created " + ringZ10.toASCIIString() 
+                + " without problem");
+        RealQuadraticRing ringZ11 = new RealQuadraticRing(53);
+        System.out.println("Created " + ringZ11.toASCIIString() 
+                + " without problem");
+    }
+    
+    /**
+     * Test of the RealQuadraticRing constructor. The parameter d = 1 should be 
+     * rejected.
+     */
+    @Test
+    public void testConstructorRejectsD1() {
         try {
             RealQuadraticRing ringZ1 = new RealQuadraticRing(1);
-            System.out.println("Somehow created " + ringZ1.toASCIIString() + " without problem.");
-            fail("Attempt to use 1 should have caused an UnsupportedNumberDomainException.");
+            System.out.println("Somehow created " + ringZ1.toASCIIString() 
+                    + " without problem");
+            fail("Attempt to use 1 should have caused an exception");
         } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Attempt to use 1 correctly triggered UnsupportedNumberDomainException \"" + unde.getMessage() + "\"");
+            System.out.println("UnsupportedNumberDomainException for d = 1");
+            System.out.println("\"" + unde.getMessage() + "\"");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use 1 correctly triggered IllegalArgumentException");
+            System.out.println("IllegalArgumentException for d = 1 adequate");
             System.out.println("\"" + iae.getMessage() + "\"");
         }
+    }
+    
+    /**
+     * Test of the RealQuadraticRing constructor. Any number divisible by a 
+     * nontrivial perfect square should be rejected.
+     */
+    @Test
+    public void testConstructorRejectsSquarefulD() {
         try {
             RealQuadraticRing ringZ12 = new RealQuadraticRing(12);
-            System.out.println("Somehow created " + ringZ12.toASCIIString() + " without problem.");
-            fail("Attempt to use 12 should have caused an IllegalArgumentException.");
+            System.out.println("Somehow created " + ringZ12.toASCIIString() 
+                    + " without problem.");
+            fail("Attempt to use 12 should have caused an exception");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use 12 correctly triggered IllegalArgumentException");
+            System.out.println("IllegalArgumentException correct for d = 12");
             System.out.println("\"" + iae.getMessage() + "\"");
         }
+    }
+    
+    /**
+     * Test of the RealQuadraticRing constructor. A negative parameter, even if 
+     * squarefree, should be rejected.
+     */
+    @Test
+    public void testConstructorRejectsNegativeD() {
         try {
             RealQuadraticRing ringZi7 = new RealQuadraticRing(-7);
-            System.out.println("Somehow created " + ringZi7.toASCIIString() + " without problem.");
-            fail("Attempt to use \u22127 should have caused an IllegalArgumentException.");
+            System.out.println("Somehow created " + ringZi7.toASCIIString() 
+                    + " without problem");
+            fail("Attempt to use \u22127 should have caused an exception");
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use -7 correctly triggered IllegalArgumentException");
+            System.out.println("IllegalArgumentException correct for d = -7");
             System.out.println("\"" + iae.getMessage() + "\"");
         }
-    }    
+    }
+    
 }
