@@ -16,9 +16,9 @@
  */
 package algebraics.quartics;
 
-import algebraics.PowerBasis;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.RealQuadraticRing;
+import arithmetic.PowerBasis;
 import fractions.Fraction;
 
 import org.junit.Test;

@@ -16,7 +16,7 @@
  */
 package algebraics.quartics;
 
-import algebraics.PowerBasis;
+import arithmetic.PowerBasis;
 import fractions.Fraction;
 
 import org.junit.Test;

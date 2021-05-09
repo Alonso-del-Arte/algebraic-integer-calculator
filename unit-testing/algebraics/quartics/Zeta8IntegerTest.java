@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2020 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,20 +19,19 @@ package algebraics.quartics;
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
-import algebraics.NotDivisibleException;
-import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import arithmetic.NotDivisibleException;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the Zeta8Integer class.
  * @author Alonso del Arte
  */
 public class Zeta8IntegerTest {
@@ -778,18 +777,65 @@ public class Zeta8IntegerTest {
         quadInt = new RealQuadraticInteger(0, 1, currRing);
         result = Zeta8Integer.convertFromQuadraticInteger(quadInt);
         assertEquals(SQRT_2, result);
-        currRing = new RealQuadraticRing(3);
-        quadInt = new RealQuadraticInteger(1, 1, currRing);
+    }
+    
+    /**
+     * Another test of convertFromQuadraticInteger method, of class 
+     * Zeta8Integer. The only quadratic rings from which numbers can be reliably 
+     * converted to Zeta8Integer are those from <b>Z</b>[&radic;&minus;2], 
+     * <b>Z</b>[<i>i</i>] and <b>Z</b>[&radic;2]. However, if the represented 
+     * algebraic integer is actually of degree 1, the conversion should still 
+     * occur even though the ring is not one of the three listed here.
+     */
+    @Test
+    public void testConvertFromQuadraticIntegerButUnary() {
+        QuadraticRing ring = new RealQuadraticRing(109);
+        QuadraticInteger unaryInt = new RealQuadraticInteger(126, 0, ring);
+        Zeta8Integer expected = new Zeta8Integer(126, 0, 0, 0);
         try {
-            result = Zeta8Integer.convertFromQuadraticInteger(quadInt);
-            String failMessage = "Trying to convert " + quadInt.toASCIIString() + " to an integer in O_Q(zeta_8) should have triggered an exception, not given result " + result.toASCIIString();
-            fail(failMessage);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Trying to convert " + quadInt.toASCIIString() + " to an integer in O_Q(zeta_8) correctly triggered UnsupportedNumberDomainException.");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception for trying to convert " + quadInt.toASCIIString() + " to an integer in O_Q(zeta_8)";
-            fail(failMsg);
+            Zeta8Integer actual = Zeta8Integer.convertFromQuadraticInteger(unaryInt);
+            assertEquals(expected, actual);
+        } catch (RuntimeException re) {
+            String msg = "Trying to convert " + unaryInt.toString() 
+                    + " to a quartic integer should not have caused " 
+                    + re.getClass().getName();
+            fail(msg);
+        }
+    }
+
+    /**
+     * Another test of convertFromQuadraticInteger method, of class 
+     * Zeta8Integer. For some reason, I originally thought that the correct 
+     * exception to throw for trying to convert a quadratic integer from a ring 
+     * other than <b>Z</b>[&radic;&minus;2], <b>Z</b>[<i>i</i>] or 
+     * <b>Z</b>[&radic;2] is {@link algebraics.UnsupportedNumberDomainException 
+     * UnsupportedNumberDomainException}. However, that exception suggests that 
+     * the failure of the operation is because no one has gotten around to 
+     * supporting the necessary number domains, which is not the case. And 
+     * {@link AlgebraicDegreeOverflowException} doesn't really make sense 
+     * either. So now I'm thinking the correct choice is the good old 
+     * <code>IllegalArgumentException</code>.
+     */
+    @Test
+    public void testNoConversionFromQuadraticInteger() {
+        QuadraticRing ring = new RealQuadraticRing(53);
+        QuadraticInteger quadInt = new RealQuadraticInteger(7, 1, ring, 2);
+        try {
+            Zeta8Integer result = Zeta8Integer.convertFromQuadraticInteger(quadInt);
+            String msg = "Trying to convert " + quadInt.toString() 
+                    + " to a quartic integer should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to convert " + quadInt.toASCIIString() 
+                    + " to a quartic integer correctly triggered IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to convert " 
+                    + quadInt.toString() + " to an integer in " 
+                    + Zeta8Integer.ZETA8RING.toString();
+            fail(msg);
         }
     }
 
