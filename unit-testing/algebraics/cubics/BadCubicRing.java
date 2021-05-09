@@ -16,7 +16,7 @@
  */
 package algebraics.cubics;
 
-import algebraics.PowerBasis;
+import arithmetic.PowerBasis;
 import fractions.Fraction;
 
 /**

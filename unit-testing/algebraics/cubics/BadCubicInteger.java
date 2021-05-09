@@ -92,6 +92,16 @@ public class BadCubicInteger extends CubicInteger {
     }
 
     @Override
+    public boolean isReApprox() {
+        return false;
+    }
+    
+    @Override
+    public boolean isImApprox() {
+        return true;
+    }
+    
+    @Override
     public double angle() {
         return 361.2;
     }
