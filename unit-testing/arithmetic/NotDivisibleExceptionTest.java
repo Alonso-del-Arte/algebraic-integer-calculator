@@ -14,8 +14,12 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package arithmetic;
 
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.AlgebraicInteger;
+import algebraics.IntegerRing;
+import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.QuadraticInteger;

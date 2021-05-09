@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -14,8 +14,12 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package arithmetic;
 
+import algebraics.AlgebraicInteger;
+import algebraics.UnsupportedNumberDomainException;
+import algebraics.quadratics.IllDefinedQuadraticInteger;
+import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
@@ -23,11 +27,18 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
 
+import static calculators.NumberTheoreticFunctionsCalculator.isIrreducible;
+import static calculators.NumberTheoreticFunctionsCalculator.isPrime;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
+import static calculators.NumberTheoreticFunctionsCalculator.RING_GAUSSIAN;
+import static calculators.NumberTheoreticFunctionsCalculator.primeFactors;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -150,7 +161,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         List<AlgebraicInteger> factorsList;
         init = new ImaginaryQuadraticInteger(0, 1, RING_ZI5);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufdeSqrti5 = nufde;
@@ -158,7 +169,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufdeSqrti5.getMessage() + "\"");
         init = new ImaginaryQuadraticInteger(5, 0, RING_ZI5);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufde05 = nufde;
@@ -166,7 +177,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde05.getMessage() + "\"");
         init = new ImaginaryQuadraticInteger(6, 0, RING_ZI5);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufde06 = nufde;
@@ -174,7 +185,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde06.getMessage() + "\"");
         init = new ImaginaryQuadraticInteger(6, 1, RING_ZI5);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufde41ZI5PF = nufde;
@@ -182,7 +193,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde41ZI5PF.getMessage() + "\"");
         init = new ImaginaryQuadraticInteger(41, 0, RING_ZI5);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufde41ZI5 = nufde;
@@ -190,7 +201,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde41ZI5.getMessage() + "\"");
         init = new ImaginaryQuadraticInteger(25, 1, RING_ZI5);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufdeNorm630 = nufde;
@@ -198,7 +209,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufdeNorm630.getMessage() + "\"");
         init = new RealQuadraticInteger(10, 0, RING_Z10);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufde10 = nufde;
@@ -206,7 +217,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde10.getMessage() + "\"");
         init = new RealQuadraticInteger(77, 0, RING_Z10);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufde77 = nufde;
@@ -214,7 +225,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde77.getMessage() + "\"");
         init = new RealQuadraticInteger(41, 0, RING_Z10);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufde41Z10 = nufde;
@@ -222,7 +233,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("NonUniqueFactorizationDomainException for the " + init.toASCIIString() + " example has this message: \"" + nufde41Z10.getMessage() + "\"");
         init = new RealQuadraticInteger(-40, -11, RING_Z10);
         try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(init);
+            factorsList = primeFactors(init);
             System.out.println(init.toASCIIString() + " has " + factorsList.size() + " factors.");
         } catch (NonUniqueFactorizationDomainException nufde) {
             nufdeNorm390 = nufde;
@@ -362,18 +373,24 @@ public class NonUniqueFactorizationDomainExceptionTest {
         System.out.println("Try to factorize " + num.toASCIIString());
         QuadraticInteger product = new ImaginaryQuadraticInteger(1, 0, RING_ZI5);
         List<AlgebraicInteger> factors = nufdeNorm630.tryToFactorizeAnyway();
+        String msgFrag = " ought to be an irreducible factor of ";
+        String msgFragWithProd = msgFrag + num.toString();
+        String msg;
         for (AlgebraicInteger factor : factors) {
             product = product.times((QuadraticInteger) factor);
-            assertTrue(NumberTheoreticFunctionsCalculator.isIrreducible(factor));
+            msg = factor.toString() + msgFragWithProd;
+            assert isIrreducible(factor) : msg;
         }
         assertEquals(num, product);
         num = nufdeNorm390.getUnfactorizedNumber();
         System.out.println("Try to factorize " + num.toASCIIString());
-        product = new ImaginaryQuadraticInteger(1, 0, RING_Z10);
+        product = new ImaginaryQuadraticInteger(1, 0, RING_ZI5);
         factors = nufdeNorm390.tryToFactorizeAnyway();
+        msgFragWithProd = msgFrag + num.toString();
         for (AlgebraicInteger factor : factors) {
             product = product.times((QuadraticInteger) factor);
-            assertTrue(NumberTheoreticFunctionsCalculator.isIrreducible(factor));
+            msg = factor.toString() + msgFragWithProd;
+            assert isIrreducible(factor) : msg;
         }
         assertEquals(num, product);
     }
@@ -391,15 +408,15 @@ public class NonUniqueFactorizationDomainExceptionTest {
     public void testTryToFactorizeAnywayInSeveralImagRings() {
         System.out.println("tryToFactorizeAnyway in several different imaginary rings");
         ImaginaryQuadraticRing ring;
-        ImaginaryQuadraticInteger number = new ImaginaryQuadraticInteger(1, 0, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+        ImaginaryQuadraticInteger number = new ImaginaryQuadraticInteger(1, 0, RING_GAUSSIAN);
         QuadraticInteger zero, negOne, facProd;
-        String assertionMessage;
+        String msg;
         int negOneCount, irrNotPrCount;
         List<AlgebraicInteger> factorsList = new ArrayList<>();
         factorsList.add(number); // This and previous line just to avoid might not have been initialized errors
         boolean notUFDFlag;
         for (int r = -5; r > -100; r--) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(r)) {
+            if (isSquareFree(r)) {
                 ring = new ImaginaryQuadraticRing(r);
                 zero = new ImaginaryQuadraticInteger(0, 0, ring);
                 negOne = new ImaginaryQuadraticInteger(-1, 0, ring);
@@ -408,7 +425,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
                         number = new ImaginaryQuadraticInteger(a, 3, ring, 2);
                         notUFDFlag = true;
                         try {
-                            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                            factorsList = primeFactors(number);
                             notUFDFlag = false;
                         } catch (NonUniqueFactorizationDomainException nufde) {
                             factorsList = nufde.tryToFactorizeAnyway();
@@ -427,17 +444,17 @@ public class NonUniqueFactorizationDomainExceptionTest {
                             if (factor.equals(negOne)) {
                                 negOneCount++;
                             }
-                            if ((factor.norm() > 1) && (NumberTheoreticFunctionsCalculator.isIrreducible(factor) && !NumberTheoreticFunctionsCalculator.isPrime(factor))) {
+                            if ((factor.norm() > 1) && (isIrreducible(factor) && !isPrime(factor))) {
                                 irrNotPrCount++;
                             }
                             facProd = facProd.times((QuadraticInteger) factor);
                         }
-                        assertionMessage = "Product of factors of " + facProd.toString() + " should match " + number.toString();
-                        assertEquals(assertionMessage, number, facProd);
+                        msg = "Product of factors of " + number.toString() + " should multiply to that number ";
+                        assertEquals(msg, number, facProd);
                         System.out.println(" Confirmed.");
                         if (irrNotPrCount > 0) {
-                            assertionMessage = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
-                            assertTrue(assertionMessage, negOneCount > 1);
+                            msg = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
+                            assertTrue(msg, negOneCount > 1);
                         }
                     }
                 }
@@ -445,7 +462,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
                     number = new ImaginaryQuadraticInteger(m, 1, ring);
                     notUFDFlag = true;
                     try {
-                        factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                        factorsList = primeFactors(number);
                         notUFDFlag = false;
                     } catch (NonUniqueFactorizationDomainException nufde) {
                         factorsList = nufde.tryToFactorizeAnyway();
@@ -464,17 +481,17 @@ public class NonUniqueFactorizationDomainExceptionTest {
                         if (factor.equals(negOne)) {
                             negOneCount++;
                         }
-                        if ((factor.norm() > 1) && (NumberTheoreticFunctionsCalculator.isIrreducible(factor) && !NumberTheoreticFunctionsCalculator.isPrime(factor))) {
+                        if ((factor.norm() > 1) && (isIrreducible(factor) && !isPrime(factor))) {
                             irrNotPrCount++;
                         }
                         facProd = facProd.times((QuadraticInteger) factor);
                     }
-                    assertionMessage = "Product of factors of " + facProd.toString() + " should match " + number.toString();
-                    assertEquals(assertionMessage, number, facProd);
+                    msg = "Product of factors of " + number.toString() + " should multiply to that number";
+                    assertEquals(msg, number, facProd);
                     System.out.println(" Confirmed.");
                     if (irrNotPrCount > 0) {
-                        assertionMessage = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
-                        assertTrue(assertionMessage, negOneCount > 1);
+                        msg = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
+                        assertTrue(msg, negOneCount > 1);
                     }
                 }
             }
@@ -494,12 +511,12 @@ public class NonUniqueFactorizationDomainExceptionTest {
         RealQuadraticRing ring;
         RealQuadraticInteger number;
         QuadraticInteger zero, negOne, facProd;
-        String assertionMessage;
+        String msg;
         int negOneCount, irrNotPrCount;
         List<AlgebraicInteger> factorsList;
         boolean notUFDFlag;
         for (int r = 10; r < 75; r += 5) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(r)) {
+            if (isSquareFree(r)) {
                 ring = new RealQuadraticRing(r);
                 zero = new RealQuadraticInteger(0, 0, ring);
                 negOne = new RealQuadraticInteger(-1, 0, ring);
@@ -509,7 +526,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
                         System.out.print(number.toASCIIString());
                         notUFDFlag = true;
                         try {
-                            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                            factorsList = primeFactors(number);
                             notUFDFlag = false;
                         } catch (NonUniqueFactorizationDomainException nufde) {
                             factorsList = nufde.tryToFactorizeAnyway();
@@ -528,17 +545,18 @@ public class NonUniqueFactorizationDomainExceptionTest {
                             if (factor.equals(negOne)) {
                                 negOneCount++;
                             }
-                            if ((factor.norm() > 1) && (NumberTheoreticFunctionsCalculator.isIrreducible(factor) && !NumberTheoreticFunctionsCalculator.isPrime(factor))) {
+                            if ((factor.norm() > 1) && (isIrreducible(factor) 
+                                    && !isPrime(factor))) {
                                 irrNotPrCount++;
                             }
                             facProd = facProd.times((QuadraticInteger) factor);
                         }
-                        assertionMessage = "Product of factors of " + facProd.toString() + " should match " + number.toString();
-                        assertEquals(assertionMessage, number, facProd);
+                        msg = "Product of factors of " + number.toString() + " should multiply to that number";
+                        assertEquals(msg, number, facProd);
                         System.out.println(" Confirmed.");
                         if (irrNotPrCount > 0) {
-                            assertionMessage = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
-                            assertTrue(assertionMessage, negOneCount > 1);
+                            msg = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
+                            assertTrue(msg, negOneCount > 1);
                         }
                     }
                 }
@@ -547,7 +565,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
                     System.out.print(number.toASCIIString());
                     notUFDFlag = true;
                     try {
-                        factorsList = NumberTheoreticFunctionsCalculator.primeFactors(number);
+                        factorsList = primeFactors(number);
                         notUFDFlag = false;
                     } catch (NonUniqueFactorizationDomainException nufde) {
                         factorsList = nufde.tryToFactorizeAnyway();
@@ -566,20 +584,48 @@ public class NonUniqueFactorizationDomainExceptionTest {
                         if (factor.equals(negOne)) {
                             negOneCount++;
                         }
-                        if ((factor.norm() > 1) && (NumberTheoreticFunctionsCalculator.isIrreducible(factor) && !NumberTheoreticFunctionsCalculator.isPrime(factor))) {
+                        if ((factor.norm() > 1) && (isIrreducible(factor) && !isPrime(factor))) {
                             irrNotPrCount++;
                         }
                         facProd = facProd.times((QuadraticInteger) factor);
                     }
-                    assertionMessage = "Product of factors of " + facProd.toString() + " should match " + number.toString();
-                    assertEquals(assertionMessage, number, facProd);
+                    msg = "Product of factors of " + number.toString() + " should multiply to that number ";
+                    assertEquals(msg, number, facProd);
                     System.out.println(" Confirmed.");
                     if (irrNotPrCount > 0) {
-                        assertionMessage = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
-                        assertTrue(assertionMessage, negOneCount > 1);
+                        msg = "Since " + number.toString() + " is the product of at least one irreducible but not prime number, its attempted factorization should include at least two instances of -1";
+                        assertTrue(msg, negOneCount > 1);
                     }
                 }
             }
+        }
+    }
+    
+    @Test
+    public void testTryToFactorizeAnywayUnsupportedRing() {
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(10);
+        IllDefinedQuadraticInteger num = new IllDefinedQuadraticInteger(70, 5, 
+                ring);
+        String excMsg = "This exception is for testing purposes only";
+        NonUniqueFactorizationDomainException nufde 
+                = new NonUniqueFactorizationDomainException(excMsg, num);
+        try {
+            List<AlgebraicInteger> factors = nufde.tryToFactorizeAnyway();
+            String msg = "Trying to factorize " + num.toString() 
+                    + " from ill-defined ring " + ring.toString()
+                    + " should have caused an exception, not given result "
+                    + factors.toString();
+            fail(msg);
+        } catch (UnsupportedNumberDomainException unde) {
+            System.out.println("Trying to factorize " + num.toASCIIString() 
+                    + " correctly caused UnsupportedNumberDomainException");
+            System.out.println("\"" + unde.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for trying to factorize " 
+                    + num.toString() + " from unsupported ill-defined ring " 
+                    + ring.toString();
+            fail(msg);
         }
     }
     

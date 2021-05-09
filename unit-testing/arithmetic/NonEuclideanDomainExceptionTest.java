@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package arithmetic;
 
+import algebraics.AlgebraicInteger;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
@@ -41,13 +42,13 @@ public class NonEuclideanDomainExceptionTest {
     
     /**
      * The famous ring <b>Z</b>[&radic;-5], consisting of numbers of the form a 
-     * + b&radic;-5. It is not an Euclidean domain, since, for example, the 
-     * Euclidean GCD algorithm fails for gcd(2, 1 + &radic;-5).
+     * + b&radic;&minus;5. It is not an Euclidean domain, since, for example, 
+     * the Euclidean GCD algorithm fails for gcd(2, 1 + &radic;&minus;5).
      */
     public static final ImaginaryQuadraticRing RING_ZI5 = new ImaginaryQuadraticRing(-5);
     
     /**
-     * The ring <i>O</i><sub><b>Q</b>(&radic;-19)</sub>, famous for being a 
+     * The ring <i>O</i><sub><b>Q</b>(&radic;&minus;19)</sub>, famous for being a 
      * principal ideal domain but not Euclidean.
      */
     public static final ImaginaryQuadraticRing RING_OQI19 = new ImaginaryQuadraticRing(-19);
@@ -69,7 +70,7 @@ public class NonEuclideanDomainExceptionTest {
     public static final RealQuadraticRing RING_OQ69 = new RealQuadraticRing(69);
     
     /**
-     * Just the number &radic;-5.
+     * Just the number &radic;&minus;5.
      */
     public static final ImaginaryQuadraticInteger ZI5_RAMIFIER = new ImaginaryQuadraticInteger(0, 1, RING_ZI5);
     
