@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -14,8 +14,11 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package arithmetic;
 
+import algebraics.AlgebraicInteger;
+import algebraics.IntegerRing;
+import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
@@ -378,8 +381,10 @@ public class NotDivisibleException extends Exception {
      * @throws IllegalArgumentException If the length of the array of fractions
      * does not match the algebraic degree of the ring.
      */
-    public NotDivisibleException(AlgebraicInteger dividend, AlgebraicInteger divisor, Fraction[] fractions) {
-        this(dividend.toASCIIString() + " is not divisible by " + divisor.toASCIIString(), dividend, divisor, fractions);
+    public NotDivisibleException(AlgebraicInteger dividend, 
+            AlgebraicInteger divisor, Fraction[] fractions) {
+        this(dividend.toASCIIString() + " is not divisible by " 
+                + divisor.toASCIIString(), dividend, divisor, fractions);
     }
 
     /**
@@ -402,10 +407,14 @@ public class NotDivisibleException extends Exception {
      * @throws IllegalArgumentException If the length of the array of fractions
      * does not match the algebraic degree of the ring.
      */
-    public NotDivisibleException(String message, AlgebraicInteger dividend, AlgebraicInteger divisor, Fraction[] fractions) {
+    public NotDivisibleException(String message, AlgebraicInteger dividend, 
+            AlgebraicInteger divisor, Fraction[] fractions) {
         super(message);
-        boolean ringNotSupportedFlag = !(dividend.getRing() instanceof QuadraticRing && divisor.getRing() instanceof QuadraticRing);
-        if (dividend.getRing().equals(divisor.getRing()) || ringNotSupportedFlag) {
+        boolean ringNotSupportedFlag 
+                = !(dividend.getRing() instanceof QuadraticRing 
+                && divisor.getRing() instanceof QuadraticRing);
+        if (dividend.getRing().equals(divisor.getRing()) 
+                || ringNotSupportedFlag) {
             this.initRing = dividend.getRing();
         } else {
             int dividendRingRadicand = ((QuadraticRing) dividend.getRing()).getRadicand();
@@ -424,8 +433,12 @@ public class NotDivisibleException extends Exception {
             }
         }
         if (fractions.length != this.initRing.getMaxAlgebraicDegree()) {
-            String exceptionMessage = "Numbers of class " + this.initRing.getClass().getName() + " can have a maximum algebraic degree of " + this.initRing.getMaxAlgebraicDegree() + " but an array of " + fractions.length + " was passed in.";
-            throw new IllegalArgumentException(exceptionMessage);
+            String excMsg = "Numbers of class " 
+                    + this.initRing.getClass().getName() 
+                    + " can have a maximum algebraic degree of " 
+                    + this.initRing.getMaxAlgebraicDegree() 
+                    + " but an array of " + fractions.length + " was passed in";
+            throw new IllegalArgumentException(excMsg);
         }
         this.fractions = fractions;
         double numRe = this.fractions[0].getNumericApproximation();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package arithmetic;
 
-//import algebraics.quadratics.ImaginaryQuadraticInteger;
-//import algebraics.quadratics.ImaginaryQuadraticRing;
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.AlgebraicInteger;
+import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.QuadraticInteger;
-//import algebraics.quadratics.RealQuadraticInteger;
 
 /**
  * This checked exception is to be thrown when an Euclidean GCD function is 
@@ -69,16 +69,21 @@ public class NonEuclideanDomainException extends Exception {
      */
     public AlgebraicInteger tryEuclideanGCDAnyway() {
         if (!this.attemptedA.getRing().equals(this.attemptedB.getRing())) {
-            String exceptionMessage = "euclideanGCD should have thrown AlgebraicDegreeOverflowException, not NonEuclideanDomainException, for one number from " + this.attemptedA.getRing().toASCIIString() + " and another from " + this.attemptedB.getRing().toASCIIString() + ".";
+            String excMsg = "AlgebraicDegreeOverflowException for one number from " 
+                    + this.attemptedA.getRing().toASCIIString() 
+                    + " and another from " 
+                    + this.attemptedB.getRing().toASCIIString();
             int deg = this.attemptedA.algebraicDegree();
             if (this.attemptedB.algebraicDegree() > deg) {
                 deg = this.attemptedB.algebraicDegree();
             }
-            throw new AlgebraicDegreeOverflowException(exceptionMessage, deg, this.attemptedA, this.attemptedB);
+            throw new AlgebraicDegreeOverflowException(excMsg, deg, 
+                    this.attemptedA, this.attemptedB);
         }
         if (this.attemptedA instanceof QuadraticInteger) {
             QuadraticInteger currA, currB, tempMultiple, currRemainder;
-            if (Math.abs(this.attemptedA.norm()) < Math.abs(this.attemptedB.norm())) {
+            if (Math.abs(this.attemptedA.norm()) 
+                    < Math.abs(this.attemptedB.norm())) {
                 currA = (QuadraticInteger) this.attemptedB;
                 currB = (QuadraticInteger) this.attemptedA;
             } else {
@@ -102,7 +107,8 @@ public class NonEuclideanDomainException extends Exception {
                         currQI = (QuadraticInteger) bounds[counter];
                         tempMultiple = currQI.times(currB);
                         currRemainder = currA.minus(tempMultiple);
-                        notFound = Math.abs(currRemainder.norm()) >= Math.abs(currB.norm());
+                        notFound = Math.abs(currRemainder.norm()) 
+                                >= Math.abs(currB.norm());
                         counter++;
                     }
                     troubleFlag = notFound;
@@ -110,12 +116,14 @@ public class NonEuclideanDomainException extends Exception {
                 currA = currB;
                 currB = currRemainder;
             }
-            if ((currA.getRegPartMult() < 0 && !troubleFlag) || (currA.getRegPartMult() > 0 && troubleFlag)) {
+            if ((currA.getRegPartMult() < 0 && !troubleFlag) 
+                    || (currA.getRegPartMult() > 0 && troubleFlag)) {
                 currA = currA.times(-1);
             }
             return currA;
         }
-        throw new UnsupportedNumberDomainException("not supported yet, sorry", this.attemptedA, this.attemptedB);
+        throw new UnsupportedNumberDomainException("not supported yet, sorry", 
+                this.attemptedA, this.attemptedB);
     }
 
     /**
@@ -136,7 +144,8 @@ public class NonEuclideanDomainException extends Exception {
      * required. However, b and a ought to be in the same ring, otherwise 
      * {@link AlgebraicDegreeOverflowException} should have been used instead.
      */
-    public NonEuclideanDomainException(String message, AlgebraicInteger a, AlgebraicInteger b) {
+    public NonEuclideanDomainException(String message, AlgebraicInteger a, 
+            AlgebraicInteger b) {
         super(message);
         this.attemptedA = a;
         this.attemptedB = b;

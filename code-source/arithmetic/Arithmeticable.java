@@ -14,7 +14,10 @@
  * You should have received a copy of the GNU General Public License along with 
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package algebraics;
+package arithmetic;
+
+import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.AlgebraicInteger;
 
 /**
  * This interface indicates that the implementing concrete class provides the 
