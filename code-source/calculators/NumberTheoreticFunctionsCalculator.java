@@ -19,10 +19,6 @@ package calculators;
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
-import algebraics.NonEuclideanDomainException;
-import algebraics.NonUniqueFactorizationDomainException;
-import algebraics.NormAbsoluteComparator;
-import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
@@ -32,6 +28,10 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
+import arithmetic.NonEuclideanDomainException;
+import arithmetic.NonUniqueFactorizationDomainException;
+import arithmetic.NotDivisibleException;
+import arithmetic.comparators.NormAbsoluteComparator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -637,6 +637,126 @@ public class NumberTheoreticFunctionsCalculator {
                 + " is not yet supported for UFD determination";
         throw new UnsupportedNumberDomainException(excMsg, ring);
     }
+    
+    private static List<AlgebraicInteger> factorize(QuadraticInteger number) {
+        ArrayList<AlgebraicInteger> factors = new ArrayList<>();
+        QuadraticInteger unity = number.minus(number).plus(1);
+        int d = number.getRing().getRadicand();
+        if ((d < 0) && (number.norm() < 0)) {
+            String excMsg = "A norm computation error occurred for " 
+                    + number.toASCIIString() + ", which should not have norm " 
+                    + number.norm();
+            throw new ArithmeticException(excMsg);
+        }
+        if (Math.abs(number.norm()) < 2) {
+            factors.add(number);
+            return factors;
+        }
+        if (isPrime(number)) {
+            factors.add(unity);
+            factors.add(number);
+            number = unity; // Prime divided by itself is 1
+        } else {
+            QuadraticInteger testDivisor = unity.plus(1); // Should be 2
+            boolean keepGoing = true;
+            if (isPrime(testDivisor)) {
+                while (number.norm() % 4 == 0) {
+                    try {
+                        number = number.divides(testDivisor);
+                        factors.add(testDivisor);
+                    } catch (NotDivisibleException nde) {
+                        keepGoing = ((Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1));
+                    }
+                }
+            }
+            testDivisor = testDivisor.plus(1);
+            while (Math.abs(number.norm()) > Math.abs(testDivisor.norm()) 
+                    && keepGoing) {
+                if (isPrime(testDivisor)) {
+                    while (number.norm() % testDivisor.norm() == 0) {
+                        try {
+                            number = number.divides(testDivisor);
+                            factors.add(testDivisor);
+                        } catch (NotDivisibleException nde) {
+                            if (d < 0) {
+                                keepGoing = ((Math.abs(nde.getNumericRealPart()) > 1) 
+                                        || (Math.abs(nde.getNumericImagPart()) > 1));
+                            } else {
+                                keepGoing = (Math.abs(testDivisor.norm()) <= Math.abs(number.norm()));
+                            }
+                        }
+                    }
+                }
+                testDivisor = testDivisor.plus(2);
+            }
+            int testDivRegPartMult = 0;
+            int testDivSurdPartMult = 2; // These will be divided by 2 regardless of d = 1 mod 4 or not
+            if (number.getRing().hasHalfIntegers()) {
+                testDivRegPartMult = 1;
+                testDivSurdPartMult = 1;
+            }
+            boolean withinRange;
+            while (Math.abs(number.norm()) > 1) {
+                if (d < 0) {
+                    testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, number.getRing(), 2);
+                } else {
+                    testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, number.getRing(), 2);
+                }
+                if (d < 0) {
+                    withinRange = (testDivisor.norm() <= number.norm());
+                } else {
+                    withinRange = (testDivisor.norm() <= Math.abs(number.norm()));
+                }
+                if (isPrime(testDivisor)) {
+                    while (number.norm() % testDivisor.norm() == 0) {
+                        try {
+                            number = number.divides(testDivisor.conjugate());
+                            factors.add(testDivisor.conjugate());
+                        } catch (NotDivisibleException nde) {
+                            // withinRange = withinRange && ((Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1));
+                        }
+                        try {
+                            number = number.divides(testDivisor);
+                            factors.add(testDivisor);
+                        } catch (NotDivisibleException nde) {
+                            // withinRange = withinRange && ((Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1));
+                        }
+                    }
+                }
+                if (withinRange) {
+                    testDivRegPartMult += 2;
+                } else {
+                    if (!number.getRing().hasHalfIntegers()) {
+                        testDivRegPartMult = 0;
+                        testDivSurdPartMult += 2;
+                    } else {
+                        if (testDivSurdPartMult % 2 == 0) {
+                            testDivRegPartMult = 1;
+                        } else {
+                            testDivRegPartMult = 0;
+                        }
+                        testDivSurdPartMult++;
+                    }
+                }
+            }
+            factors.add(number); // This should be a unit, most likely -1 or 1
+        }
+        factors.sort(COMPARATOR);
+        QuadraticInteger currFac;
+        QuadraticInteger currFirstUnit = number;
+        for (int i = 1; i < factors.size(); i++) {
+            currFac = (QuadraticInteger) factors.get(i);
+            if (currFac.getRegPartMult() < 0 || ((currFac.getRegPartMult() == 0 && currFac.getSurdPartMult() < 0))) {
+                factors.set(i, currFac.times(-1));
+                currFirstUnit = currFirstUnit.times(-1);
+                factors.set(0, currFirstUnit);
+            }
+        }
+        if (unity.equals(factors.get(0))) {
+            factors.remove(0);
+        }
+        return factors;
+    }
         
     /**
      * Computes the prime factors, and nontrivial unit factors if needed, of an 
@@ -649,6 +769,8 @@ public class NumberTheoreticFunctionsCalculator {
      * &radic;(&minus;19)/2, 7/2 &minus; &radic;(&minus;19)/2, which multiply to 
      * &minus;4 + 3&radic;(&minus;19). The only time this should return 0 is in 
      * a list by itself when the input number is 0.
+     * @throws ArithmeticException If an overflow occurred trying to determine 
+     * whether or not the pertinent ring is a unique factorization domain.
      * @throws NonUniqueFactorizationDomainException This checked exception will 
      * be thrown if this function is called upon to compute the prime factors of 
      * a number from a non-UFD, even if a complete factorization into primes is 
@@ -657,9 +779,11 @@ public class NumberTheoreticFunctionsCalculator {
      * @throws NullPointerException If <code>num</code> is null.
      * @throws UnsupportedNumberDomainException Thrown when called upon a number
      * from a type of ring that is not fully supported yet. For example, as of 
-     * 2021, this program hardly has any support for cubic integers, so asking 
+     * 2021, this program really has no support for cubic integers, so asking 
      * for the prime factorization of &minus;15 + 2&#8731;2 + 
-     * (&#8731;2)<sup>2</sup> would probably trigger this exception.
+     * (&#8731;2)<sup>2</sup> would probably trigger this exception. Though at 
+     * this point I haven't even thought about how such a number would be 
+     * represented in this program.
      * @since Version 0.3
      */
     public static List<AlgebraicInteger> primeFactors(AlgebraicInteger num) 
@@ -670,127 +794,15 @@ public class NumberTheoreticFunctionsCalculator {
         }
         if (!isUFD(num.getRing())) {
             String excMsg = num.getRing().toASCIIString() 
-                    + " is not a unique factorization domain.";
+                    + " is not a unique factorization domain";
             throw new NonUniqueFactorizationDomainException(excMsg, num);
         }
         if (num instanceof QuadraticInteger) {
             QuadraticInteger number = (QuadraticInteger) num;
-            QuadraticInteger unity = number.minus(number).plus(1);
-            int d = number.getRing().getRadicand();
-            if ((d < 0) && (num.norm() < 0)) {
-                String exceptionMessage = "A norm computation error occurred for " + num.toASCIIString() + ", which should not have norm " + num.norm();
-                throw new ArithmeticException(exceptionMessage);
-            }
-            List<AlgebraicInteger> factors = new ArrayList<>();
-            if (Math.abs(number.norm()) < 2) {
-                factors.add(number);
-                return factors;
-            }
-            if (isPrime(number)) {
-                factors.add(unity);
-                factors.add(number);
-                number = unity; // Prime divided by itself is 1
-            } else {
-                QuadraticInteger testDivisor = unity.plus(1); // This should be 2
-                boolean keepGoing = true;
-                if (isPrime(testDivisor)) {
-                    while (number.norm() % 4 == 0) {
-                        try {
-                            number = number.divides(testDivisor);
-                            factors.add(testDivisor);
-                        } catch (NotDivisibleException nde) {
-                            keepGoing = ((Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1));
-                        }
-                    }
-                }
-                testDivisor = testDivisor.plus(1);
-                while (Math.abs(number.norm()) > Math.abs(testDivisor.norm()) && keepGoing) {
-                    if (isPrime(testDivisor)) {
-                        while (number.norm() % testDivisor.norm() == 0) {
-                            try {
-                                number = number.divides(testDivisor);
-                                factors.add(testDivisor);
-                            } catch (NotDivisibleException nde) {
-                                if (d < 0) {
-                                    keepGoing = ((Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1));
-                                } else {
-                                    keepGoing = (Math.abs(testDivisor.norm()) <= Math.abs(number.norm()));
-                                }
-                            }
-                        }
-                    }
-                    testDivisor = testDivisor.plus(2);
-                }
-                int testDivRegPartMult = 0;
-                int testDivSurdPartMult = 2; // These will be divided by 2 regardless of d = 1 mod 4 or not
-                if (number.getRing().hasHalfIntegers()) {
-                    testDivRegPartMult = 1;
-                    testDivSurdPartMult = 1;
-                }
-                boolean withinRange;
-                while (Math.abs(number.norm()) > 1) {
-                    if (d < 0) {
-                        testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, number.getRing(), 2);
-                    } else {
-                        testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, number.getRing(), 2);
-                    }
-                    if (d < 0) {
-                        withinRange = (testDivisor.norm() <= number.norm());
-                    } else {
-                        withinRange = (testDivisor.norm() <= Math.abs(number.norm()));
-                    }
-                    if (isPrime(testDivisor)) {
-                        while (number.norm() % testDivisor.norm() == 0) {
-                            try {
-                                number = number.divides(testDivisor.conjugate());
-                                factors.add(testDivisor.conjugate());
-                            } catch (NotDivisibleException nde) {
-                                // withinRange = withinRange && ((Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1));
-                            }
-                            try {
-                                number = number.divides(testDivisor);
-                                factors.add(testDivisor);
-                            } catch (NotDivisibleException nde) {
-                                // withinRange = withinRange && ((Math.abs(nde.getNumericRealPart()) > 1) || (Math.abs(nde.getNumericImagPart()) > 1));
-                            }
-                        }
-                    }
-                    if (withinRange) {
-                        testDivRegPartMult += 2;
-                    } else {
-                        if (!number.getRing().hasHalfIntegers()) {
-                            testDivRegPartMult = 0;
-                            testDivSurdPartMult += 2;
-                        } else {
-                            if (testDivSurdPartMult % 2 == 0) {
-                                testDivRegPartMult = 1;
-                            } else {
-                                testDivRegPartMult = 0;
-                            }
-                            testDivSurdPartMult++;
-                        }
-                    }
-                }
-                factors.add(number); // This should be a unit, most likely -1 or 1
-            }
-            factors.sort(COMPARATOR);
-            QuadraticInteger currFac;
-            QuadraticInteger currFirstUnit = number;
-            for (int i = 1; i < factors.size(); i++) {
-                currFac = (QuadraticInteger) factors.get(i);
-                if (currFac.getRegPartMult() < 0 || ((currFac.getRegPartMult() == 0 && currFac.getSurdPartMult() < 0))) {
-                    factors.set(i, currFac.times(-1));
-                    currFirstUnit = currFirstUnit.times(-1);
-                    factors.set(0, currFirstUnit);
-                }
-            }
-            if (unity.equals(factors.get(0))) {
-                factors.remove(0);
-            }
-            return factors;
+            return factorize(number);
         }
         String excMsg = "At this time, " + num.getRing().getClass().getName() 
-                + " is not supported for this factorization operation.";
+                + " is not supported for this factorization operation";
         throw new UnsupportedNumberDomainException(excMsg, num);
     }
     
@@ -815,10 +827,12 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.2
      */
     public static boolean isIrreducible(AlgebraicInteger num) {
-        if (num instanceof ImaginaryQuadraticInteger || num instanceof RealQuadraticInteger) {
+        if (num instanceof ImaginaryQuadraticInteger 
+                || num instanceof RealQuadraticInteger) {
             if (num instanceof ImaginaryQuadraticInteger && num.norm() < 0) {
-                String exceptionMessage = "Overflow has occurred for the computation of the norm of " + num.toASCIIString();
-                throw new ArithmeticException(exceptionMessage);
+                String msg = "Overflow for the computation of the norm of " 
+                        + num.toASCIIString();
+                throw new ArithmeticException(msg);
             }
             if (isPrime(num.norm())) {
                 return true;
@@ -907,163 +921,165 @@ public class NumberTheoreticFunctionsCalculator {
         boolean realFlag = n instanceof RealQuadraticInteger;
         QuadraticRing r = n.getRing();
         if (r == null) {
-            String excMsg = "Ring of " + n.toASCIIString() + " should not be null";
+            String excMsg = "Ring of " + n.toASCIIString() 
+                    + " should not be null";
             throw new NullPointerException(excMsg);
         }
-        QuadraticInteger unity = (QuadraticInteger) NumberTheoreticFunctionsCalculator.getOneInRing(r);
+        QuadraticInteger unity = (QuadraticInteger) getOneInRing(r);
         QuadraticInteger negOne = unity.times(-1);
         List<AlgebraicInteger> factors = new ArrayList<>();
-        if (Math.abs(n.norm()) < 2) {
-            factors.add(n);
-            return factors;
-        }
-        boolean keepGoing = true;
-        if (NumberTheoreticFunctionsCalculator.isIrreducible(n)) {
-            factors.add(unity);
-            factors.add(n);
-            if (!NumberTheoreticFunctionsCalculator.isPrime(n)) {
-                factors.add(negOne);
-                factors.add(negOne);
-            }
-        } else {
-            QuadraticInteger testDivisor = unity.plus(1); // Should be 2
-            if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor)) {
-                while (n.norm() % 4 == 0 && keepGoing) {
-                    try {
-                        n = n.divides(testDivisor);
-                        factors.add(testDivisor);
-                        if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
-                            factors.add(negOne);
-                            factors.add(negOne);
-                        }
-                    } catch (NotDivisibleException nde) {
-                        keepGoing = false;
-                    }
-                }
-            }
-            testDivisor = testDivisor.plus(1); // Now 3
-            keepGoing = true;
-            while (Math.abs(n.norm()) >= Math.abs(testDivisor.norm()) && keepGoing) {
-                if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor)) {
-                    while (n.norm() % testDivisor.norm() == 0 && keepGoing) {
-                        try {
-                            n = n.divides(testDivisor);
-                            factors.add(testDivisor);
-                            if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
-                                factors.add(negOne);
-                                factors.add(negOne);
-                            }
-                        } catch (NotDivisibleException nde) {
-                            keepGoing = false;
-                        }
-                    }
-                }
-                testDivisor = testDivisor.plus(2); // Next odd integer
-            }
-            int testDivRegPartMult = 0;
-            int testDivSurdPartMult = 2;
-            if (n.getRing().hasHalfIntegers()) {
-                testDivRegPartMult = 1;
-                testDivSurdPartMult = 1;
-            }
-            boolean withinRange;
-            while (Math.abs(n.norm()) > 1) {
-                if (r instanceof ImaginaryQuadraticRing) {
-                    testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
-                }
-                if (r instanceof RealQuadraticRing) {
-                    testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
-                }
-                withinRange = (testDivisor.norm() <= n.norm());
-                if (NumberTheoreticFunctionsCalculator.isIrreducible(testDivisor) && Math.abs(testDivisor.norm()) != 1) {
-                    keepGoing = true;
-                    while (n.norm() % testDivisor.norm() == 0 && keepGoing) {
-                        try {
-                            n = n.divides(testDivisor.conjugate());
-                            factors.add(testDivisor.conjugate());
-                            if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
-                                factors.add(negOne);
-                                factors.add(negOne);
-                            }
-                        } catch (NotDivisibleException nde) {
-                            // We just ignore the exception when it pertains 
-                            // to the conjugate 
-                        }
-                        try {
-                            n = n.divides(testDivisor);
-                            factors.add(testDivisor);
-                            if (!NumberTheoreticFunctionsCalculator.isPrime(testDivisor)) {
-                                factors.add(negOne);
-                                factors.add(negOne);
-                            }
-                        } catch (NotDivisibleException nde) {
-                            if (realFlag) {
-                                withinRange = Math.abs(testDivisor.getRealPartNumeric()) <= Math.abs(n.getRealPartNumeric());
-                            } else {
-                                withinRange = ((Math.abs(nde.getNumericRealPart()) >= 1) || (Math.abs(nde.getNumericImagPart()) >= 1));
-                            }
-                            keepGoing = false;
-                        }
-                    }
-                }
-                if (withinRange) {
-                    testDivRegPartMult += 2;
-                } else {
-                    if (!r.hasHalfIntegers()) {
-                        testDivRegPartMult = 0;
-                        testDivSurdPartMult += 2;
-                    } else {
-                        if (testDivSurdPartMult % 2 == 0) {
-                            testDivRegPartMult = 1;
-                        } else {
-                            testDivRegPartMult = 0;
-                        }
-                        testDivSurdPartMult++;
-                    }
-                }
-            }
-            factors.add(n); // This should be a unit, most likely -1 or 1
-        }
-        factors.sort(COMPARATOR);
-        int quadrantAdjustStart = 1;
-        keepGoing = true;
-        while (quadrantAdjustStart < factors.size() && keepGoing) {
-            if (Math.abs(factors.get(quadrantAdjustStart).norm()) == 1) {
-                quadrantAdjustStart++;
-            } else {
-                keepGoing = false;
-            }
-        }
-        QuadraticInteger currFac;
-        QuadraticInteger currFirstUnit = (QuadraticInteger) factors.get(0);
-        int unitAdjustCount = 0;
-        for (int i = quadrantAdjustStart; i < factors.size(); i++) {
-            currFac = (QuadraticInteger) factors.get(i);
-            if (currFac.getRegPartMult() < 0 || ((currFac.getRegPartMult() == 0 && currFac.getSurdPartMult() < 0))) {
-                factors.set(i, currFac.times(-1));
-                currFirstUnit = currFirstUnit.times(-1);
-                factors.set(0, currFirstUnit);
-                unitAdjustCount++;
-            }
-        }
-        int removalIndex = 0;
-        int unitRemovalCount = 0;
-        while (removalIndex < factors.size()) {
-            if (unity.equals(factors.get(removalIndex))) {
-                factors.remove(removalIndex);
-                unitRemovalCount++;
-            }
-            removalIndex++;
-        }
+//        if (Math.abs(n.norm()) < 2) {
+//            factors.add(n);
+//            return factors;
+//        }
+//        boolean keepGoing = true;
+//        if (NumberTheoreticFunctionsCalculator.isIrreducible(n)) {
+//            factors.add(unity);
+//            factors.add(n);
+//            if (!NumberTheoreticFunctionsCalculator.isPrime(n)) {
+//                factors.add(negOne);
+//                factors.add(negOne);
+//            }
+//        } else {
+//            QuadraticInteger testDivisor = unity.plus(1); // Should be 2
+//            if (isIrreducible(testDivisor)) {
+//                while (n.norm() % 4 == 0 && keepGoing) {
+//                    try {
+//                        n = n.divides(testDivisor);
+//                        factors.add(testDivisor);
+//                        if (!isPrime(testDivisor)) {
+//                            factors.add(negOne);
+//                            factors.add(negOne);
+//                        }
+//                    } catch (NotDivisibleException nde) {
+//                        keepGoing = false;
+//                    }
+//                }
+//            }
+//            testDivisor = testDivisor.plus(1); // Now 3
+//            keepGoing = true;
+//            while (Math.abs(n.norm()) >= Math.abs(testDivisor.norm()) && keepGoing) {
+//                if (isIrreducible(testDivisor)) {
+//                    while (n.norm() % testDivisor.norm() == 0 && keepGoing) {
+//                        try {
+//                            n = n.divides(testDivisor);
+//                            factors.add(testDivisor);
+//                            if (!isPrime(testDivisor)) {
+//                                factors.add(negOne);
+//                                factors.add(negOne);
+//                            }
+//                        } catch (NotDivisibleException nde) {
+//                            keepGoing = false;
+//                        }
+//                    }
+//                }
+//                testDivisor = testDivisor.plus(2); // Next odd integer
+//            }
+//            int testDivRegPartMult = 0;
+//            int testDivSurdPartMult = 2;
+//            if (n.getRing().hasHalfIntegers()) {
+//                testDivRegPartMult = 1;
+//                testDivSurdPartMult = 1;
+//            }
+//            boolean withinRange;
+//            while (Math.abs(n.norm()) > 1) {
+//                if (r instanceof ImaginaryQuadraticRing) {
+//                    testDivisor = new ImaginaryQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+//                }
+//                if (r instanceof RealQuadraticRing) {
+//                    testDivisor = new RealQuadraticInteger(testDivRegPartMult, testDivSurdPartMult, r, 2);
+//                }
+//                withinRange = (testDivisor.norm() <= n.norm());
+//                if (isIrreducible(testDivisor) && Math.abs(testDivisor.norm()) != 1) {
+//                    keepGoing = true;
+//                    while (n.norm() % testDivisor.norm() == 0 && keepGoing) {
+//                        try {
+//                            n = n.divides(testDivisor.conjugate());
+//                            factors.add(testDivisor.conjugate());
+//                            if (!isPrime(testDivisor)) {
+//                                factors.add(negOne);
+//                                factors.add(negOne);
+//                            }
+//                        } catch (NotDivisibleException nde) {
+//                            // We just ignore the exception when it pertains 
+//                            // to the conjugate 
+//                        }
+//                        try {
+//                            n = n.divides(testDivisor);
+//                            factors.add(testDivisor);
+//                            if (!isPrime(testDivisor)) {
+//                                factors.add(negOne);
+//                                factors.add(negOne);
+//                            }
+//                        } catch (NotDivisibleException nde) {
+//                            if (realFlag) {
+//                                withinRange = Math.abs(testDivisor.getRealPartNumeric()) <= Math.abs(n.getRealPartNumeric());
+//                            } else {
+//                                withinRange = ((Math.abs(nde.getNumericRealPart()) >= 1) || (Math.abs(nde.getNumericImagPart()) >= 1));
+//                            }
+//                            keepGoing = false;
+//                        }
+//                    }
+//                }
+//                if (withinRange) {
+//                    testDivRegPartMult += 2;
+//                } else {
+//                    if (!r.hasHalfIntegers()) {
+//                        testDivRegPartMult = 0;
+//                        testDivSurdPartMult += 2;
+//                    } else {
+//                        if (testDivSurdPartMult % 2 == 0) {
+//                            testDivRegPartMult = 1;
+//                        } else {
+//                            testDivRegPartMult = 0;
+//                        }
+//                        testDivSurdPartMult++;
+//                    }
+//                }
+//            }
+//            factors.add(n); // This should be a unit, most likely -1 or 1
+//        }
+//        factors.sort(COMPARATOR);
+//        int quadrantAdjustStart = 1;
+//        keepGoing = true;
+//        while (quadrantAdjustStart < factors.size() && keepGoing) {
+//            if (Math.abs(factors.get(quadrantAdjustStart).norm()) == 1) {
+//                quadrantAdjustStart++;
+//            } else {
+//                keepGoing = false;
+//            }
+//        }
+//        QuadraticInteger currFac;
+//        QuadraticInteger currFirstUnit = (QuadraticInteger) factors.get(0);
+//        int unitAdjustCount = 0;
+//        for (int i = quadrantAdjustStart; i < factors.size(); i++) {
+//            currFac = (QuadraticInteger) factors.get(i);
+//            if (currFac.getRegPartMult() < 0 || ((currFac.getRegPartMult() == 0 && currFac.getSurdPartMult() < 0))) {
+//                factors.set(i, currFac.times(-1));
+//                currFirstUnit = currFirstUnit.times(-1);
+//                factors.set(0, currFirstUnit);
+//                unitAdjustCount++;
+//            }
+//        }
+//        int removalIndex = 0;
+//        int unitRemovalCount = 0;
+//        while (removalIndex < factors.size()) {
+//            if (unity.equals(factors.get(removalIndex))) {
+//                factors.remove(removalIndex);
+//                unitRemovalCount++;
+//            }
+//            removalIndex++;
+//        }
         return factors;
     }
     
     /**
      * Determines the irreducible factors of an algebraic integer.
-     * @param num The number to factorize into irreducibles. For example, 26 in 
-     * <b>Z</b>[&radic;26].
+     * @param num The number to factorize into irreducibles. For example, 577 in 
+     * <b>Z</b>[&radic;577].
      * @return A list of irreducible factors. No exponents are used, repeated 
-     * factors are simply repeated. For example,
+     * factors are simply repeated. For example, &radic;577 listed twice, rather 
+     * than (&radic;577)<sup>2</sup>.
      * @throws RuntimeException In the unlikely event that this function is 
      * called with a number from a unique factorization domain (UFD) but it 
      * causes a <code>NonUniqueFactorizationDomainException</code>, that 

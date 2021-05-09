@@ -22,7 +22,6 @@ import algebraics.quadratics.RealQuadraticRing;
 
 import static calculators.NumberTheoreticFunctionsCalculator.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -46,31 +45,29 @@ public class ResultsCache {
     private final HashMap<RealQuadraticInteger, List<AlgebraicInteger>> factors 
             = new HashMap<>();
     
-    private final HashMap<RealQuadraticInteger, RealQuadraticInteger> splitters 
+    private final HashMap<Integer, RealQuadraticInteger> splitters 
             = new HashMap<>();
     
-    // STUB TO FAIL THE FIRST TEST
     public Optional<RealQuadraticInteger> getUnit() {
-        RealQuadraticRing ring = new RealQuadraticRing(Integer.MAX_VALUE);
-        RealQuadraticInteger wrongNum 
-                = new RealQuadraticInteger(Integer.MIN_VALUE, 0, ring);
-        return Optional.of(wrongNum);// this.cachedUnit;
+        return this.cachedUnit;
     }
     
-    // STUB TO FAIL THE FIRST TEST
     public Optional<Integer> getClassNumber() {
-        return Optional.of(Integer.MIN_VALUE);// this.cachedClassNumber;
+        return this.cachedClassNumber;
     }
     
-    private void cacheFactors(RealQuadraticInteger num) {
-        if (!factors.containsKey(num)) {
-            List<AlgebraicInteger> value = irreducibleFactors(num);
-            factors.put(num, value);
-        }
+    private RealQuadraticInteger cacheSplitter(int num) {
+        RealQuadraticInteger number = new RealQuadraticInteger(num, 0, 
+                this.cachedRing);
+        List<AlgebraicInteger> list = irreducibleFactors(number);
+        RealQuadraticInteger splitter 
+                = (RealQuadraticInteger) list.get(list.size() - 1);
+        this.splitters.put(num, splitter);
+        return splitter;
     }
     
     // STUB TO FAIL THE FIRST TEST
-    public RealQuadraticInteger mainSplitter(RealQuadraticInteger num) {
+    public RealQuadraticInteger mainSplitter(int num) {
         RealQuadraticRing ring = new RealQuadraticRing(Integer.MAX_VALUE);
         RealQuadraticInteger wrongNum 
                 = new RealQuadraticInteger(Integer.MIN_VALUE, 0, ring);
@@ -79,8 +76,11 @@ public class ResultsCache {
     
     public ResultsCache(RealQuadraticRing ring) {
         this.cachedRing = ring;
-        Optional<RealQuadraticInteger> unitHolder = Optional.empty();
-        Optional<Integer> classNumberHolder = Optional.empty();
+        Optional<RealQuadraticInteger> unitHolder = 
+                Optional.of(new RealQuadraticInteger(-1, 0, ring));
+//Optional.empty();
+        Optional<Integer> classNumberHolder = Optional.of(-1);
+//                Optional.empty();
         try {
             AlgebraicInteger unit = fundamentalUnit(ring);
             unitHolder = Optional.of((RealQuadraticInteger) unit);
