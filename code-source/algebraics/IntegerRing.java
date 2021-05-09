@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -15,6 +15,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics;
+
+import arithmetic.PowerBasis;
 
 /**
  * This interface sets the basic requirements for objects representing rings of 
@@ -57,6 +59,17 @@ public interface IntegerRing {
      * &radic;7), this would be 12544.
      */
     int discriminant();
+    
+    /**
+     * Gives the power basis of the ring. For example, the power basis of 
+     * <i>O</i><sub><b>Q</b>(&radic;2 + &radic;7)</sub> is 1, <i>a</i>, 
+     * <i>a</i><sup>2</sup>, <sup>1</sup>&frasl;<sub>3</sub><i>a</i><sup>3</sup> 
+     * + <sup>1</sup>&frasl;<sub>3</sub><i>a</i>.
+     * @return An object that can be queried for the elements of the power 
+     * basis, which can then in turn be used to perform arithmetic on numbers 
+     * from the ring.
+     */
+    PowerBasis getPowerBasis();
     
     /**
      * Formats the ring's label as a String using ASCII characters only. It is 

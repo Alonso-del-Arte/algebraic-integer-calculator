@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,9 +20,15 @@ import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticRing;
-import calculators.NumberTheoreticFunctionsCalculator;
+import arithmetic.NonEuclideanDomainException;
+import arithmetic.NotDivisibleException;
 
 import java.util.Objects;
+
+import static calculators.NumberTheoreticFunctionsCalculator.divideOutUnits;
+import static calculators.NumberTheoreticFunctionsCalculator.euclideanGCD;
+import static calculators.NumberTheoreticFunctionsCalculator.getOneInRing;
+import static calculators.NumberTheoreticFunctionsCalculator.isPrime;
 
 /**
  * Defines objects to represents ideals of algebraic integers in a particular 
@@ -79,7 +85,7 @@ public class Ideal {
     
     public boolean isMaximal() {
         if (this.principalIdealFlag) {
-            return NumberTheoreticFunctionsCalculator.isPrime(this.idealGeneratorA);
+            return isPrime(this.idealGeneratorA);
         }
         return false;
     }
@@ -106,8 +112,9 @@ public class Ideal {
             }
             return false; // *** REMOVE WHEN FOREGOING IS COMPLETE ****
         }
-        String exceptionMessage = "Arithmetic operations are not yet supported for the domain of " + number.toASCIIString() + "; they're necessary to determine containment in this case.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, number);
+        String excMsg = "Contains function not yet supported for " 
+                + number.toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, number);
     }
     
     public boolean contains(Ideal ideal) {
@@ -122,7 +129,8 @@ public class Ideal {
             AlgebraicInteger[] gens = {this.idealGeneratorA};
             return gens;
         } else {
-            AlgebraicInteger[] gens = {this.idealGeneratorA, this.idealGeneratorB};
+            AlgebraicInteger[] gens = {this.idealGeneratorA, 
+                this.idealGeneratorB};
             return gens;
         }
     }
@@ -183,7 +191,8 @@ public class Ideal {
         }
         String idealString = "(" + this.idealGeneratorA.toASCIIString();
         if (!this.principalIdealFlag) {
-            idealString = idealString + ", " + this.idealGeneratorB.toASCIIString();
+            idealString = idealString + ", " 
+                    + this.idealGeneratorB.toASCIIString();
         }
         idealString = idealString + ")";
         return idealString;
@@ -195,7 +204,8 @@ public class Ideal {
         }
         String idealString = "\\langle" + this.idealGeneratorA.toTeXString();
         if (!this.principalIdealFlag) {
-            idealString = idealString + ", " + this.idealGeneratorB.toTeXString();
+            idealString = idealString + ", " 
+                    + this.idealGeneratorB.toTeXString();
         }
         idealString = idealString + "\\rangle";
         return idealString;
@@ -207,7 +217,8 @@ public class Ideal {
         }
         String idealString = "&#10216;" + this.idealGeneratorA.toHTMLString();
         if (!this.principalIdealFlag) {
-            idealString = idealString + ", " + this.idealGeneratorB.toHTMLString();
+            idealString = idealString + ", " 
+                    + this.idealGeneratorB.toHTMLString();
         }
         idealString = idealString + "&#10217;";
         return idealString;
@@ -217,7 +228,7 @@ public class Ideal {
         this.wholeRingFlag = true;
         this.workingRing = ring;
         this.principalIdealFlag = true;
-        this.idealGeneratorA = NumberTheoreticFunctionsCalculator.getOneInRing(ring);
+        this.idealGeneratorA = getOneInRing(ring);
         this.idealGeneratorB = null;
     }
     
@@ -226,12 +237,13 @@ public class Ideal {
         this.workingRing = generatorA.getRing();
         if (Math.abs(generatorA.norm()) == 1) {
             this.wholeRingFlag = true;
-            this.idealGeneratorA = NumberTheoreticFunctionsCalculator.getOneInRing(this.workingRing);
+            this.idealGeneratorA = getOneInRing(this.workingRing);
         } else {
             AlgebraicInteger genA = generatorA;
-            if (this.workingRing instanceof ImaginaryQuadraticRing || this.workingRing instanceof RealQuadraticRing) {
+            if (this.workingRing instanceof ImaginaryQuadraticRing 
+                    || this.workingRing instanceof RealQuadraticRing) {
                 QuadraticInteger gA = (QuadraticInteger) generatorA;
-                gA = (QuadraticInteger) NumberTheoreticFunctionsCalculator.divideOutUnits(gA);
+                gA = (QuadraticInteger) divideOutUnits(gA);
                 genA = gA;
             }
                 this.idealGeneratorA = genA;
@@ -242,21 +254,25 @@ public class Ideal {
     
     public Ideal(AlgebraicInteger generatorA, AlgebraicInteger generatorB) {
         if (!generatorA.getRing().equals(generatorB.getRing())) {
-            String exceptionMessage = generatorA.toASCIIString() + " is from " + generatorA.getRing().toASCIIString() + " but " + generatorB.toASCIIString() + " is from " + generatorB.getRing().toASCIIString() + ".";
-            throw new IllegalArgumentException(exceptionMessage);
+            String excMsg = generatorA.toASCIIString() + " is from " 
+                    + generatorA.getRing().toASCIIString() + " but " 
+                    + generatorB.toASCIIString() + " is from " 
+                    + generatorB.getRing().toASCIIString();
+            throw new IllegalArgumentException(excMsg);
         }
         AlgebraicInteger genA = generatorA;
         AlgebraicInteger genB = generatorB;
         boolean principalFlag = false;
         this.workingRing = generatorA.getRing();
-        if (this.workingRing instanceof ImaginaryQuadraticRing || this.workingRing instanceof RealQuadraticRing) {
+        if (this.workingRing instanceof ImaginaryQuadraticRing 
+                || this.workingRing instanceof RealQuadraticRing) {
             QuadraticInteger gA = (QuadraticInteger) generatorA;
             QuadraticInteger gB = (QuadraticInteger) generatorB;
             AlgebraicInteger gcd;
             try {
-                gcd = NumberTheoreticFunctionsCalculator.euclideanGCD(gA, gB);
+                gcd = euclideanGCD(gA, gB);
                 gA = (QuadraticInteger) gcd;
-                gB = gB.minus(gB); // Zero out, avoid dereferencing null pointer warning
+                gB = gB.minus(gB); // Zero out, avoid deref null pointer warning
                 principalFlag = true;
             } catch (NonEuclideanDomainException nede) {
                 gcd = nede.tryEuclideanGCDAnyway();
@@ -273,8 +289,8 @@ public class Ideal {
                     gB = swapper;
                 }
             }
-            gA = (QuadraticInteger) NumberTheoreticFunctionsCalculator.divideOutUnits(gA);
-            gB = (QuadraticInteger) NumberTheoreticFunctionsCalculator.divideOutUnits(gB);
+            gA = (QuadraticInteger) divideOutUnits(gA);
+            gB = (QuadraticInteger) divideOutUnits(gB);
             genA = gA;
             genB = gB;
         }
@@ -285,7 +301,8 @@ public class Ideal {
         } else {
             this.idealGeneratorB = genB;
         }
-        this.wholeRingFlag = ((Math.abs(this.idealGeneratorA.norm()) == 1) || (Math.abs(genB.norm()) == 1));
+        this.wholeRingFlag = ((Math.abs(this.idealGeneratorA.norm()) == 1) 
+                || (Math.abs(genB.norm()) == 1));
     }
     
 }
