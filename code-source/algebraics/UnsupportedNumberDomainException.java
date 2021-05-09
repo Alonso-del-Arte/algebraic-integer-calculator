@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,19 +19,19 @@ package algebraics;
 /**
  * A runtime exception to indicate when the result of an arithmetic operation 
  * results in an algebraic integer which no currently available implementation 
- * of {@link AlgebraicInteger} can properly represent. Or that some other 
- * operation is not yet supported for a particular kind of ring of integers. 
- * However, if the result of the arithmetic operation is an algebraic integer of 
- * higher degree than the pertinent implementations supports, {@link 
- * AlgebraicDegreeOverflowException} should be used instead.
+ * of {@link algebraics.AlgebraicInteger} can properly represent. Or that some 
+ * other operation is not yet supported for a particular kind of ring of 
+ * integers. However, if the result of the arithmetic operation is an algebraic 
+ * integer of higher degree than the pertinent implementations supports, {@link 
+ * algebraics.AlgebraicDegreeOverflowException} should be used instead.
  * @author Alonso del Arte
  */
 public class UnsupportedNumberDomainException extends RuntimeException {
     
     private static final long serialVersionUID = 1058433824;
     
-    private final AlgebraicInteger diffRingNumberA;
-    private final AlgebraicInteger diffRingNumberB;
+    private final AlgebraicInteger unsupRingNumberA;
+    private final AlgebraicInteger unsupRingNumberB;
     
     private final IntegerRing unsupDomain;
     
@@ -46,7 +46,8 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      * the exception was constructed.
      */
     public AlgebraicInteger[] getCausingNumbers() {
-        return (new AlgebraicInteger[]{this.diffRingNumberA, this.diffRingNumberB});
+        return (new AlgebraicInteger[]{this.unsupRingNumberA, 
+            this.unsupRingNumberB});
     }
     
     /**
@@ -55,70 +56,99 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      * constructed with, if it was constructed with the single {@link 
      * IntegerRing} parameter constructor, or the ring of the first algebraic 
      * integer parameter if the exception was constructed with either the 1- or 
-     * 2-number constructor.
+     * 2-number constructor. This is guaranteed to not be null.
      */
     public IntegerRing getCausingDomain() {
         return this.unsupDomain;
     }
     
     /**
-     * This exception should be thrown when a particular class does not yet have 
-     * the means for handling an algebraic integer from a specific 
-     * implementation of {@link AlgebraicInteger}.
-     * @param message A message to pass on to the {@link Exception} constructor.
+     * Constructor requiring only a ring parameter. The two numbers are filled 
+     * in as nulls. Use this constructor when no specific numbers from the 
+     * unsupported ring have been dealt with.
+     * @param message A message to pass on to the <code>Exception</code> 
+     * constructor.
      * @param ring An object representing the ring that triggered this 
      * exception. This suggests that supporting this domain may be a simple 
      * matter of adding something to a class that needs to be able to handle 
      * numbers from this domain. This constructor is to be used when the 
      * throwing function has an object for the ring but no objects for the 
-     * numbers in the ring.
+     * numbers in the ring. Must not be null.
+     * @throws NullPointerException If <code>ring</code> is null.
      */
     public UnsupportedNumberDomainException(String message, IntegerRing ring) {
         super(message);
-        this.diffRingNumberA = null;
-        this.diffRingNumberB = null;
+        if (ring == null) {
+            String excMsg = "Null ring not allowed";
+            throw new NullPointerException(excMsg);
+        }
+        this.unsupRingNumberA = null;
+        this.unsupRingNumberB = null;
         this.unsupDomain = ring;
     }
 
     /**
-     * This exception should be thrown when a particular class does not have the 
-     * means for handling an algebraic integer from a specific implementation of 
-     * {@link AlgebraicInteger}.
-     * @param message A message to pass on to the {@link Exception} constructor.
-     * @param numberA The number that caused the exception. Then numberB will be 
-     * set to null. So if the exception is caused by two different numbers, or 
-     * two numbers believed to be distinct, you should use the 2-number 
-     * constructor instead.
+     * Constructor requiring only a single number parameter. The ring is 
+     * inferred from the number parameter, and the second number is filled in as 
+     * null. Use this constructor when only one number from the unsupported ring 
+     * has been dealt with.
+     * @param message A message to pass on to the <code>Exception</code> 
+     * constructor.
+     * @param numberA The number that caused the exception. Then the second 
+     * number will be set to null. So if the exception is caused by two 
+     * different numbers, or two numbers believed to be distinct, you should use 
+     * the 2-number constructor instead.
+     * @throws NullPointerException If <code>numberA</code> is null.
      */
-    public UnsupportedNumberDomainException(String message, AlgebraicInteger numberA) {
-        super(message);
-        this.diffRingNumberA = numberA;
-        this.diffRingNumberB = null;
-        this.unsupDomain = this.diffRingNumberA.getRing();
+    public UnsupportedNumberDomainException(String message, 
+            AlgebraicInteger numberA) {
+        this(message, numberA, null);
     }
     
     /**
-     * This exception should be thrown when the result of an arithmetic 
-     * operation on two objects implementing the {@link AlgebraicInteger} 
-     * results in an algebraic integer which no currently available 
-     * implementation of AlgebraicInteger can handle.
-     * @param message A message to pass on to the {@link Exception} constructor.
+     * Primary constructor. The ring is inferred from the first number, but both 
+     * numbers should come from the same ring.
+     * @param message A message to pass on to the <code>Exception</code> 
+     * constructor.
      * @param numberA One of the two numbers that caused the exception. It need 
-     * not be smaller or larger than numberB in any sense (norm, absolute value, 
-     * etc.) but it is expected to come from the same ring of algebraic 
-     * integers. For example, 1 + &#8731;2.
+     * not be smaller or larger than <code>numberB</code> in any sense (norm, 
+     * absolute value, etc.) but it is expected to come from the same ring of 
+     * algebraic integers. For example, 1 + &#8731;2. Must not be null.
      * @param numberB One of the two numbers that caused the exception. It need 
-     * not be larger or smaller than numberA in any sense (norm, absolute value, 
-     * etc.) but it is expected to come from the same ring of algebraic 
-     * integers. For example, 7 + 5&#8731;2. If the exception is caused by a 
-     * single number (such as, for example, in a prime factorization function) 
-     * use the single-number constructor instead.
+     * not be larger or smaller than <code>numberA</code> in any sense (norm, 
+     * absolute value, etc.) but it is expected to come from the same ring of 
+     * algebraic integers. For example, 7 + 5&#8731;2. May be null. But if the 
+     * exception is caused by a single number (such as, for example, in a prime 
+     * factorization function) use the single-number constructor instead.
+     * @throws IllegalArgumentException If <code>numberA</code> and 
+     * <code>numberB</code> come from different rings. Of course the possibility 
+     * exists that once the pertinent rings are supported, trying to use them 
+     * for the operation that caused this exception will instead cause an {@link 
+     * AlgebraicDegreeOverflowException}.
+     * @throws NullPointerException If <code>numberA</code> is null. 
+     * <code>numberB</code> is allowed to be null.
      */
-    public UnsupportedNumberDomainException(String message, AlgebraicInteger numberA, AlgebraicInteger numberB) {
+    public UnsupportedNumberDomainException(String message, 
+            AlgebraicInteger numberA, AlgebraicInteger numberB) {
         super(message);
-        this.diffRingNumberA = numberA;
-        this.diffRingNumberB = numberB;
-        this.unsupDomain = this.diffRingNumberA.getRing();
+        if (numberA == null) {
+            String excMsg = "numberA parameter must not be null";
+            throw new NullPointerException(excMsg);
+        }
+        IntegerRing inferredRing = numberA.getRing();
+        if (numberB != null) {
+            IntegerRing checkRing = numberB.getRing();
+            if (!inferredRing.equals(checkRing)) {
+                String excMsg = numberA.toASCIIString() + " is from " 
+                        + inferredRing.toASCIIString() + " but " 
+                        + numberB.toASCIIString() + " is from " 
+                        + checkRing.toASCIIString();
+                throw new IllegalArgumentException(excMsg);
+            }
+        }
+        this.unsupRingNumberA = numberA;
+        this.unsupRingNumberB = numberB;
+        this.unsupDomain = inferredRing;
     }
     
 }
