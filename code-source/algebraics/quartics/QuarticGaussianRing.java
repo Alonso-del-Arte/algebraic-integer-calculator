@@ -16,7 +16,7 @@
  */
 package algebraics.quartics;
 
-import algebraics.PowerBasis;
+import arithmetic.PowerBasis;
 import fractions.Fraction;
 
 /**
@@ -31,15 +31,6 @@ import fractions.Fraction;
  * <i>a</i>, <i>a</i><sup>2</sup>, <i>a</i><sup>3</sup>.</p>
  * <p>The fundamental unit is, according to Wolfram Alpha, &minus;<i>i</i> + 
  * &radic;(&minus;1 &minus; <i>i</i>).</p>
- * <p></p>
- * <p></p>
- * <p></p>
- * <p></p>
- * <p></p>
- * <p></p>
- * <p></p>
- * <p></p>
- * <p></p>
  * @author Alonso del Arte
  */
 public class QuarticGaussianRing extends QuarticRing {

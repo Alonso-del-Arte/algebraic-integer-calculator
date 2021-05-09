@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,7 +19,9 @@ package algebraics.quartics;
 import algebraics.IntegerRing;
 
 /**
- * Provides a template for defining objects to represent quartic rings.
+ * Provides a template for defining objects to represent quartic rings. This is 
+ * a lot more "free form" than {@link algebraics.quadratics.QuadraticRing} 
+ * because quartic rings can take many more forms than quadratic rings.
  * @author Alonso del Arte
  */
 public abstract class QuarticRing implements IntegerRing {

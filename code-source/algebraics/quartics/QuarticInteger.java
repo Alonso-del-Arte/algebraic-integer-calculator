@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -35,6 +35,15 @@ public abstract class QuarticInteger implements AlgebraicInteger {
     @Override
     public QuarticRing getRing() {
         return this.quartRing;
+    }
+    
+    /**
+     * Superclass constructor. The subclass constructors should probably require 
+     * a lot more parameters.
+     * @param ring The ring this quartic integer is in.
+     */
+    public QuarticInteger(QuarticRing ring) {
+        this.quartRing = ring;
     }
     
 }

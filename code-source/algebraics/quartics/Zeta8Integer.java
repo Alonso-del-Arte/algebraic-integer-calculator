@@ -18,14 +18,14 @@
 package algebraics.quartics;
 
 import algebraics.AlgebraicDegreeOverflowException;
-import algebraics.Arithmeticable;
-import algebraics.NotDivisibleException;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import arithmetic.Arithmeticable;
+import arithmetic.NotDivisibleException;
 import fractions.Fraction;
 
 /**

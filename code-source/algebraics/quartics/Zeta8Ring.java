@@ -1,5 +1,6 @@
+// TODO: Consider deprecation
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,15 +17,49 @@
  */
 package algebraics.quartics;
 
+import arithmetic.PowerBasis;
+import fractions.Fraction;
+
 /**
  * Defines an object to represent the quartic ring 
  * <i>O</i><sub>\u211A(&zeta;<sub>8</sub>)</sub>, where &zeta;<sub>8</sub> = 
- * (&radic;2)/2 + (&radic;&minus;2)/2. There is really no point to instantiating 
- * this class more than once in a given run.
+ * (&radic;2)/2 + (&radic;&minus;2)/2, which is a fourth root of &minus;1. There 
+ * is really no point to instantiating this class more than once in a given run.
  * @author Alonso del Arte
  */
 public final class Zeta8Ring extends QuarticRing {
+    
+    private static final Fraction ONE_AS_FRACTION = new Fraction(1);
+    
+    private static final Fraction[] FOUR_ONES = {ONE_AS_FRACTION, 
+        ONE_AS_FRACTION, ONE_AS_FRACTION, ONE_AS_FRACTION};
+    
+    private static final PowerBasis POWER_BASIS = new PowerBasis(FOUR_ONES);
 
+    /**
+     * Indicates that this ring is not purely real. It contains purely imaginary 
+     * numbers as well as complex numbers.
+     * @return Always false for <i>O</i><sub>\u211A(&zeta;<sub>8</sub>)</sub>.
+     */
+    @Override
+    public final boolean isPurelyReal() {
+        return false;
+    }
+    
+    /**
+     * Gives the discriminant of <i>O</i><sub>\u211A(&zeta;<sub>8</sub>)</sub>.
+     * @return Always 256 for <i>O</i><sub>\u211A(&zeta;<sub>8</sub>)</sub>.
+     */
+    @Override
+    public int discriminant() {
+        return 256;
+    }
+    
+    @Override
+    public PowerBasis getPowerBasis() {
+        return POWER_BASIS;
+    }
+    
     /**
      * Gives the ring's label as a String using Unicode characters.
      * @return The String "O_Q(&zeta;<sub>8</sub>)".
@@ -50,7 +85,7 @@ public final class Zeta8Ring extends QuarticRing {
      */
     @Override
     public String toTeXString() {
-        if (preferenceForBlackboardBold) {
+        if (QuarticRing.preferenceForBlackboardBold) {
             return "\\mathcal O_{\\mathbb Q(\\zeta_8)}";
         } else {
             return "\\mathcal O_{\\textbf Q(\\zeta_8)}";

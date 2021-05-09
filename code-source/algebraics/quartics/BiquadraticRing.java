@@ -16,8 +16,8 @@
  */
 package algebraics.quartics;
 
-import algebraics.PowerBasis;
 import algebraics.quadratics.QuadraticRing;
+import arithmetic.PowerBasis;
 import fractions.Fraction;
 
 /**
