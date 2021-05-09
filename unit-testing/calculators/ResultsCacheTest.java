@@ -25,7 +25,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the ResultsCache class.
  * @author Alonso del Arte
  */
 public class ResultsCacheTest {
@@ -39,11 +39,11 @@ public class ResultsCacheTest {
     @Test
     public void testGetUnit() {
         System.out.println("getUnit");
-        ResultsCache instance = new ResultsCache(RING_OQ21);
+        ResultsCache cache = new ResultsCache(RING_OQ21);
         RealQuadraticInteger unit = new RealQuadraticInteger(5, 1, RING_OQ21, 
                 2);
         Optional<RealQuadraticInteger> expected = Optional.of(unit);
-        Optional<RealQuadraticInteger> actual = instance.getUnit();
+        Optional<RealQuadraticInteger> actual = cache.getUnit();
         assertEquals(expected, actual);
     }
 
@@ -53,9 +53,9 @@ public class ResultsCacheTest {
     @Test
     public void testGetClassNumber() {
         System.out.println("getClassNumber");
-        ResultsCache instance = new ResultsCache(RING_OQ21);
+        ResultsCache cache = new ResultsCache(RING_OQ21);
         Optional<Integer> expected = Optional.of(1);
-        Optional<Integer> actual = instance.getClassNumber();
+        Optional<Integer> actual = cache.getClassNumber();
         assertEquals(expected, actual);
     }
 
@@ -65,13 +65,17 @@ public class ResultsCacheTest {
     @Test
     public void testMainSplitter() {
         System.out.println("mainSplitter");
-//        RealQuadraticInteger num = null;
-//        ResultsCache instance = null;
-//        RealQuadraticInteger expResult = null;
-//        RealQuadraticInteger result = instance.mainSplitter(num);
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        RealQuadraticRing ring = new RealQuadraticRing(57);
+        ResultsCache cache = new ResultsCache(ring);
+        int num = 7;
+        RealQuadraticInteger expected = new RealQuadraticInteger(8, 1, ring);
+        RealQuadraticInteger actual = cache.mainSplitter(num);
+        assertEquals(expected, actual);
+    }
+    
+    @Test(timeout = 5000)
+    public void testSplitterGetsCached() {
+        fail("Haven't written test yet");
     }
     
 }

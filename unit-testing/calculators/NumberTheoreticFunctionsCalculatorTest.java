@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,10 +19,6 @@ package calculators;
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
-import algebraics.NonEuclideanDomainException;
-import algebraics.NonUniqueFactorizationDomainException;
-import algebraics.NormAbsoluteComparator;
-import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.cubics.BadCubicRing;
 import algebraics.quadratics.IllDefinedQuadraticInteger;
@@ -35,6 +31,10 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
+import arithmetic.NonEuclideanDomainException;
+import arithmetic.NonUniqueFactorizationDomainException;
+import arithmetic.NotDivisibleException;
+import arithmetic.comparators.NormAbsoluteComparator;
 
 import static calculators.NumberTheoreticFunctionsCalculator.*;
 
@@ -58,7 +58,7 @@ import static org.junit.Assert.*;
  * Sequences (OEIS) are:</p>
  * <ul>
  * <li><a href="http://oeis.org/A000040">A000040</a>: The prime numbers</li>
- * <li><a href="http://oeis.org/A000045">A000040</a>: The Fibonacci numbers</li>
+ * <li><a href="http://oeis.org/A000045">A000045</a>: The Fibonacci numbers</li>
  * <li><a href="http://oeis.org/A002808">A002808</a>: The composite numbers</li>
  * <li><a href="http://oeis.org/A018252">A018252</a>: 1 and the composite 
  * numbers</li>
@@ -90,14 +90,14 @@ public class NumberTheoreticFunctionsCalculatorTest {
     private static int primesListLength;
     
     /**
-     * A List of composite numbers, which may or may not include 
+     * A list of composite numbers, which may or may not include 
      * {@link #PRIME_LIST_THRESHOLD PRIME_LIST_THRESHOLD}. It will be populated 
      * during {@link #setUpClass() setUpClass()}.
      */
     private static List<Integer> compositesList;
     
     /**
-     * A List of Fibonacci numbers. It will be populated during {@link 
+     * A list of Fibonacci numbers. It will be populated during {@link 
      * #setUpClass() setUpClass()}.
      */
     private static List<Integer> fibonacciList;
@@ -113,7 +113,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     private static final int[] HEEGNER_COMPANION_PRIMES = new int[9];
     
     /**
-     * Sets up a List of the first few consecutive primes, the first few 
+     * Sets up a list of the first few consecutive primes, the first few 
      * composite numbers, the first few Fibonacci numbers and the Heegner 
      * "companion primes." This provides most of what is needed for the tests.
      */
@@ -811,6 +811,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
         checkFactorsAreIrreducible(num);
     }
     
+    @Test(timeout = 10000)
+    public void testIrreducibleFactorsOfRamifiedNumber() {
+        QuadraticRing ring = new RealQuadraticRing(1601);
+        QuadraticInteger num = new RealQuadraticInteger(1601, 0, ring);
+        QuadraticInteger root = new RealQuadraticInteger(0, 1, ring);
+        List<AlgebraicInteger> expected = new ArrayList<>();
+        expected.add(root);
+        expected.add(root);
+        List<AlgebraicInteger> actual = irreducibleFactors(num);
+        assertEquals(expected, actual);
+    }
+    
     @Test
     public void testIrreducibleFactorsForUnsupportedRing() {
         IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
@@ -832,7 +844,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             System.out.println("\"" + unde.getMessage() + "\"");
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
-                    + " is the wrong exception for trying to find irreducible factors of "
+                    + " is the wrong exception for irreducible factors of "
                     + num.toString() + " from unsupported ill-defined ring " 
                     + ring.toString();
             fail(msg);
