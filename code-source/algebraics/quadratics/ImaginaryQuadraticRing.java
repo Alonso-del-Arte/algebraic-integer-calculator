@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -25,11 +25,6 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     private static final long serialVersionUID = 4547847535800105779L;
 
     /**
-     * A convenient holder for the absolute value of radicand.
-     */
-    protected int absRadicand;
-    
-    /**
      * Indicates that this ring is not purely real. This ring contains purely 
      * imaginary numbers as well as complex numbers, in addition to purely real 
      * integers.
@@ -52,7 +47,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     @Override
     public double getRadSqrt() {
         String excMsg = "Since the radicand is negative, sqrt(" + this.radicand 
-                + ") requires an object that can represent an imaginary number.";
+                + ") requires an object that can represent an imaginary number";
         throw new UnsupportedOperationException(excMsg);
     }
     
@@ -98,8 +93,6 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
             throw new IllegalArgumentException(excMsg);
         }
         this.d1mod4 = (d % 4 == -3);
-        this.absRadicand = Math.abs(this.radicand);
-        this.realRadSqrt = Math.sqrt(this.absRadicand);
     }
     
 }

@@ -17,7 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.IntegerRing;
-import algebraics.PowerBasis;
+import arithmetic.PowerBasis;
 import fractions.Fraction;
 import calculators.NumberTheoreticFunctionsCalculator;
 
@@ -365,9 +365,8 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
                     intermediate = intermediate + "I";
                     radNum *= -1;
                 }
-                intermediate = intermediate + radNum;
+                return intermediate + radNum;
         }
-        return intermediate;
     }
     
     /**

@@ -16,7 +16,7 @@
  */
 package algebraics.quadratics;
 
-import algebraics.NotDivisibleException;
+import arithmetic.NotDivisibleException;
 
 /**
  * A data structure for imaginary quadratic integers in arithmetic progression. 

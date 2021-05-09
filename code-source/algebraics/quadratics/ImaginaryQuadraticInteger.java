@@ -17,7 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
-import algebraics.NotDivisibleException;
+import arithmetic.NotDivisibleException;
 
 import java.text.DecimalFormatSymbols;
 

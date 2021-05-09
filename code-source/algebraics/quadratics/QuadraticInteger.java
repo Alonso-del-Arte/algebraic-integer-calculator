@@ -18,9 +18,9 @@ package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
-import algebraics.Arithmeticable;
-import algebraics.NotDivisibleException;
 import algebraics.UnsupportedNumberDomainException;
+import arithmetic.Arithmeticable;
+import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
@@ -1177,6 +1177,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     }
     
     // STUB TO FAIL THE FIRST TEST
+    @Override
     public QuadraticInteger mod(int divisor) {
         return new ImaginaryQuadraticInteger(-1, -1, 
                 new ImaginaryQuadraticRing(-1));
