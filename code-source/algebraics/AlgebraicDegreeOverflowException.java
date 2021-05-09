@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -53,18 +53,19 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * exception was expecting. This is a getter for a property that was passed 
      * to the constructor.
      * @return An integer greater than 1 but less than the necessary algebraic 
-     * degree. For example, this would probably be 2 if thrown by 
-     * {@link ImaginaryQuadraticInteger#plus}.
+     * degree. For example, this would probably be 2 if thrown by the plus 
+     * function of an {@link AlgebraicInteger} implementation of quadratic 
+     * integers.
      */
     public int getMaxExpectedAlgebraicDegree() {
         return this.maxExpectedAlgebraicDegree;
     }
     
     /**
-     * Tells what is the algebraic degree an object implementing 
-     * AlgebraicInteger would need to handle to properly represent the result of 
-     * the operation. This is essentially a getter for a property calculated at 
-     * the time the exception was constructed.
+     * Tells what is the algebraic degree an object implementing {@link 
+     * AlgebraicInteger} would need to handle to properly represent the result  
+     * of the operation. This is essentially a getter for a property calculated 
+     * at the time the exception was constructed.
      * @return An integer greater than the expected algebraic degree. For 
      * example, this could be 4 if thrown by {@link 
      * algebraics.quadratics.ImaginaryQuadraticInteger#plus}.
@@ -82,7 +83,8 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * were supplied to the constructor.
      */
     public AlgebraicInteger[] getCausingNumbers() {
-        return (new AlgebraicInteger[]{this.diffRingNumberA, this.diffRingNumberB});
+        return (new AlgebraicInteger[]{this.diffRingNumberA, 
+            this.diffRingNumberB});
     }
     
     /**
@@ -95,22 +97,25 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * appropriate to throw this exception.
      * @param message A message to pass on to the {@link Exception} constructor.
      * @param maxDegree The maximum algebraic degree the object throwing the 
-     * exception can handle (e.g., 2 in the case of ImaginaryQuadraticInteger).
+     * exception can handle (e.g., 2 in the case of 
+     * <code>ImaginaryQuadraticInteger</code>).
      * @param numberA One of the two numbers that caused the exception. It need 
-     * not be smaller or larger than numberB in any sense (norm, absolute value, 
-     * etc.) but it is expected to come from a different ring of algebraic 
-     * integers. For example, 1 + &radic;2.
+     * not be smaller or larger than <code>numberB</code> in any sense (norm, 
+     * absolute value, etc.) but it is expected to come from a different ring of 
+     * algebraic integers. For example, 1 + &radic;2.
      * @param numberB One of the two numbers that caused the exception. It need 
-     * not be larger or smaller than numberA in any sense (norm, absolute value, 
-     * etc.) but it is expected to come from a different ring of algebraic 
-     * integers. For example, 1 &minus; &radic;3.
+     * not be larger or smaller than <code>numberA</code> in any sense (norm, 
+     * absolute value, etc.) but it is expected to come from a different ring of 
+     * algebraic integers. For example, 1 &minus; &radic;3.
      */
-    public AlgebraicDegreeOverflowException(String message, int maxDegree, AlgebraicInteger numberA, AlgebraicInteger numberB) {
+    public AlgebraicDegreeOverflowException(String message, int maxDegree, 
+            AlgebraicInteger numberA, AlgebraicInteger numberB) {
         super(message);
         this.maxExpectedAlgebraicDegree = maxDegree;
         this.diffRingNumberA = numberA;
         this.diffRingNumberB = numberB;
-        this.necessaryAlgebraicDegree = this.diffRingNumberA.algebraicDegree() * this.diffRingNumberB.algebraicDegree();
+        this.necessaryAlgebraicDegree = this.diffRingNumberA.algebraicDegree() 
+                * this.diffRingNumberB.algebraicDegree();
     }
     
 }
