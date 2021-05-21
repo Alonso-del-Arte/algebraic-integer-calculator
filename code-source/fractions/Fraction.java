@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2021 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -70,7 +70,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     }
     
     /**
-     * Adds a fraction to this fraction.
+     * Adds a fraction to this fraction. There is no overflow checking, but this 
+     * shouldn't be a problem as long as all numerators and denominators are 
+     * well within the range of <code>int</code>.
      * @param addend The fraction to add. For example, 
      * <sup>1</sup>&frasl;<sub>7</sub>.
      * @return A new <code>Fraction</code> object with the sum. For example, if 
@@ -99,7 +101,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     }
     
     /**
-     * Subtracts a fraction from this fraction.
+     * Subtracts a fraction from this fraction. There is no overflow checking, 
+     * but this shouldn't be a problem as long as all numerators and 
+     * denominators are well within the range of <code>int</code>.
      * @param subtrahend The fraction to subtract. For example, 
      * <sup>1</sup>&frasl;<sub>7</sub>.
      * @return A new <code>Fraction</code> object with the subtraction. For 
@@ -124,7 +128,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     }
     
     /**
-     * Multiplies this fraction by another fraction.
+     * Multiplies this fraction by another fraction. There is no overflow 
+     * checking, but this shouldn't be a problem as long as all numerators and 
+     * denominators are well within the range of <code>short</code>.
      * @param multiplicand The fraction to multiply by. For example, 
      * <sup>1</sup>&frasl;<sub>7</sub>.
      * @return A new <code>Fraction</code> object with the product. For example, 
@@ -150,7 +156,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     }
     
     /**
-     * Divides this fraction by another fraction.
+     * Divides this fraction by another fraction.  There is no overflow 
+     * checking, but this shouldn't be a problem as long as all numerators and 
+     * denominators are well within the range of <code>short</code>.
      * @param divisor The fraction to divide by. For example, 
      * <sup>1</sup>&frasl;<sub>7</sub>.
      * @return A new <code>Fraction</code> object with the division. For 
@@ -209,6 +217,26 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         return new Fraction(this.denominator, this.numerator);
     }
     
+    // STUB TO FAIL THE FIRST TEST
+    public Fraction roundDown(Fraction interval) {
+        return this.reciprocal();
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public Fraction roundUp(Fraction interval) {
+        return this.reciprocal();
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public Fraction conformDown(Fraction interval) {
+        return this.reciprocal();
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public Fraction conformUp(Fraction interval) {
+        return this.reciprocal();
+    }
+    
     /**
      * Gives a text representation of this fraction, using ASCII characters 
      * only.
@@ -248,7 +276,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      */
     public String toHTMLString() {
         if (this.denominator == 1) {
-            return Long.toString(this.numerator);
+            return Long.toString(this.numerator).replace("-", "&minus;");
         } else {
             String str = "<sup>";
             if (this.numerator < 0) {
@@ -320,7 +348,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         final Fraction other = (Fraction) obj;
@@ -465,7 +493,8 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * integer 7.
      */
     public Fraction(long numer) {
-        this(numer, 1);
+        this.numerator = numer;
+        this.denominator = 1;
     }
     
     /**
