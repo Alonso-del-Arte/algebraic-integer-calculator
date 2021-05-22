@@ -228,12 +228,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     }
     
     // STUB TO FAIL THE FIRST TEST
-    public Fraction conformDown(Fraction interval) {
+    public Fraction conformDown(long denom) {
         return this.reciprocal();
     }
     
     // STUB TO FAIL THE FIRST TEST
-    public Fraction conformUp(Fraction interval) {
+    public Fraction conformUp(long denom) {
         return this.reciprocal();
     }
     
