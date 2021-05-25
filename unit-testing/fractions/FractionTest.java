@@ -19,6 +19,7 @@ package fractions;
 import calculators.NumberTheoreticFunctionsCalculator;
 import clipboardops.TestImagePanel;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,7 +30,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests for the Fraction class.
+ * Tests of the Fraction class. When I started working on this test class in 
+ * late 2018, I was still new to test-driven development (TDD). Also, I did not 
+ * realize how important the Fraction class would become to the whole project. 
+ * In 2020, or perhaps earlier, I had become dissatisfied with this test class, 
+ * but I was hesitant to make any big changes. I finally undertook the task of 
+ * making all the changes I wanted in 2021. I will almost certainly still make 
+ * changes in the future, but they will probably be much smaller changes.
  * @author Alonso del Arte
  */
 public class FractionTest {
@@ -389,6 +396,367 @@ public class FractionTest {
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
                     + " is not appropriate for reciprocal(0)";
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of the roundDown function, of the Fraction class.
+     */
+    @Test
+    public void testRoundDown() {
+        System.out.println("roundDown");
+        int multiplier = RANDOM.nextInt(14) + 2;
+        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int numer = 3 * denom / 2 + 1;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction oneHalf = new Fraction(1, 2);
+        Fraction expected = new Fraction(3, 2);
+        Fraction actual = fract.roundDown(oneHalf);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the roundDown function, of the Fraction class. If a 
+     * fraction is negative, rounding down should not bring the fraction closer 
+     * to 0. For example, given a rounding interval of 1/7, -47/70 should round 
+     * down to -5/7, not -4/7.
+     */
+    @Test
+    public void testRoundDownNegative() {
+        int multiplier = RANDOM.nextInt(14) + 2;
+        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int numer = -5 * denom / 7 + 1;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction oneSeventh = new Fraction(1, 7);
+        Fraction expected = new Fraction(-5, 7);
+        Fraction actual = fract.roundDown(oneSeventh);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the roundDown function, of the Fraction class. If the 
+     * fraction to be rounded by a given interval is already an integer multiple 
+     * of that interval, it should be unchanged (though it is acceptable if a 
+     * new object is created). For example, 5/8 rounded down by 1/8 should 
+     * remain 5/8.
+     */
+    @Test
+    public void testRoundDownNotNeeded() {
+        int denom = 40 * (RANDOM.nextInt(60) + 4);
+        int numer = 5 * denom / 8;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction oneEighth = new Fraction(1, 8);
+        Fraction expected = new Fraction(5, 8);
+        Fraction actual = fract.roundDown(oneEighth);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the roundDown function, of the Fraction class. Trying to 
+     * use 0 for the rounding interval should cause an exception.
+     */
+    @Test
+    public void testRoundDownByZeroCausesException() {
+        int multiplier = RANDOM.nextInt(14) + 2;
+        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int numer = 3 * denom / 2 + 1;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction zero = new Fraction(0);
+        try {
+            Fraction badRound = fract.roundDown(zero);
+            String msg = "Trying to round " + fract.toString() + " down by " 
+                    + zero.toString() + " should not have given result " 
+                    + badRound.toString();
+            fail(msg);
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to round " + fract.toString() + " by " 
+                    + zero.toString() + " correctly caused ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to round " + fract.toString() + " by " 
+                    + zero.toString() 
+                    + " correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to round " 
+                    + fract.toString() + " by " + zero.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of the roundUp function, of the Fraction class.
+     */
+    @Test
+    public void testRoundup() {
+        System.out.println("roundUp");
+        int multiplier = RANDOM.nextInt(14) + 2;
+        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int numer = 3 * denom / 2 - 1;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction oneHalf = new Fraction(1, 2);
+        Fraction expected = new Fraction(3, 2);
+        Fraction actual = fract.roundUp(oneHalf);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the roundUp function, of the Fraction class. Trying to 
+     * round up a negative fraction should bring it closer to 0. For example, 
+     * -47/70 should round up to -4/7, not -5/7.
+     */
+    @Test
+    public void testRoundUpNegative() {
+        int multiplier = RANDOM.nextInt(14) + 2;
+        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int numer = -5 * denom / 7 - 1;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction oneSeventh = new Fraction(1, 7);
+        Fraction expected = new Fraction(-5, 7);
+        Fraction actual = fract.roundUp(oneSeventh);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the roundUp function, of the Fraction class. If the 
+     * fraction to be rounded by a given interval is already an integer multiple 
+     * of that interval, it should be unchanged (though it is acceptable if a 
+     * new object is created). For example, 5/8 rounded down by 1/8 should 
+     * remain 5/8.
+     */
+    @Test
+    public void testRoundUpNotNeeded() {
+        int denom = 40 * (RANDOM.nextInt(60) + 4);
+        int numer = 5 * denom / 8;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction oneEighth = new Fraction(1, 8);
+        Fraction expected = new Fraction(5, 8);
+        Fraction actual = fract.roundUp(oneEighth);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the roundUp function, of the Fraction class. Trying to 
+     * use 0 for the rounding interval should cause an exception.
+     */
+    @Test
+    public void testRoundUpByZeroCausesException() {
+        int multiplier = RANDOM.nextInt(14) + 2;
+        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int numer = 3 * denom / 2 + 1;
+        Fraction fract = new Fraction(numer, denom);
+        Fraction zero = new Fraction(0);
+        try {
+            Fraction badRound = fract.roundUp(zero);
+            String msg = "Trying to round " + fract.toString() + " up by " 
+                    + zero.toString() + " should not have given result " 
+                    + badRound.toString();
+            fail(msg);
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to round " + fract.toString() + " by " 
+                    + zero.toString() + " correctly caused ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to round " + fract.toString() + " by " 
+                    + zero.toString() 
+                    + " correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to round " 
+                    + fract.toString() + " by " + zero.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of the conformDown function, of the Fraction class.
+     */
+    @Test
+    public void testConformDown() {
+        System.out.println("conformDown");
+        Fraction fraction = new Fraction(513, 50);
+        Fraction expected = new Fraction(41, 4);
+        Fraction actual = fraction.conformDown(4);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the conformDown function, of the Fraction class. If the 
+     * fraction to be conformed is negative, the resulting fraction should still 
+     * not be greater than the original fraction.
+     */
+    @Test
+    public void testConformDownNegative() {
+        Fraction fraction = new Fraction(-513, 50);
+        Fraction expected = new Fraction(-43, 4);
+        Fraction actual = fraction.conformDown(4);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the conformDown function, of the Fraction class. If the 
+     * fraction to be conformed is already conformed, the result should be the 
+     * same as the original fraction. Whether or not a new object is created 
+     * does not affect whether or not this test passes.
+     */
+    @Test
+    public void testConformDownNotNeeded() {
+        Fraction expected = new Fraction(7, 8);
+        Fraction actual = expected.conformDown(8);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the conformDown function, of the Fraction class. If the 
+     * denominator to be conformed to is negative, a result should be given, but 
+     * at this point I'm not terribly concerned about what that result should 
+     * be.
+     */
+    @Test
+    public void testConformDownAcceptsNegativeParameter() {
+        Fraction fraction = new Fraction(7, 8);
+        Fraction[] acceptables = new Fraction[]{new Fraction(-15, 16), 
+            new Fraction(-13, 16), new Fraction(13, 16), new Fraction(15, 16)};
+        int param = -16;
+        try {
+            Fraction result = fraction.conformDown(param);
+            List<Fraction> fractions = Arrays.asList(acceptables);
+            boolean accepted = fractions.contains(result);
+            String msg = "Result " + result.toString() + " should be one of " 
+                    + fractions.toString();
+            assert accepted : msg;
+        } catch (RuntimeException re) {
+            String msg = "Trying to conform " + fraction.toString() + " to " 
+                    + param + " should not have caused " 
+                    + re.getClass().getName();
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Another test of the conformDown function, of the Fraction class. If the 
+     * denominator to be conformed to is 0, an exception should occur. Either 
+     * ArithmeticException or IllegalArgumentException is acceptable.
+     */
+    @Test
+    public void testConformDownRejectsParameterZero() {
+        Fraction fraction = new Fraction(7, 8);
+        try {
+            Fraction result = fraction.conformDown(0);
+            String msg = "Trying to conform " + fraction.toString() 
+                    + " to denominator 0 should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to conform " + fraction.toString() 
+                    + " to denominator 0 caused ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to conform " + fraction.toString() 
+                    + " to denominator 0 caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to conform " 
+                    + fraction.toString() + " to 0"; 
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Test of the conformUp function, of the Fraction class.
+     */
+    @Test
+    public void testConformUp() {
+        System.out.println("conformUp");
+        Fraction fraction = new Fraction(513, 50);
+        Fraction expected = new Fraction(43, 4);
+        Fraction actual = fraction.conformUp(4);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the conformUp function, of the Fraction class. If the 
+     * fraction to be conformed is negative, the resulting fraction should still 
+     * not be less than the original fraction.
+     */
+    @Test
+    public void testConformUpNegative() {
+        Fraction fraction = new Fraction(-513, 50);
+        Fraction expected = new Fraction(-41, 4);
+        Fraction actual = fraction.conformUp(4);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the conformUp function, of the Fraction class. If the 
+     * fraction to be conformed is already conformed, the result should be the 
+     * same as the original fraction. Whether or not a new object is created 
+     * does not affect whether or not this test passes.
+     */
+    @Test
+    public void testConformUpNotNeeded() {
+        Fraction expected = new Fraction(7, 8);
+        Fraction actual = expected.conformUp(8);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the conformUp function, of the Fraction class. If the 
+     * denominator to be conformed to is negative, a result should be given, but 
+     * at this point I'm not terribly concerned about what that result should  
+     * be.
+     */
+    @Test
+    public void testConformUpAcceptsNegativeParameter() {
+        Fraction fraction = new Fraction(7, 8);
+        Fraction[] acceptables = new Fraction[]{new Fraction(-15, 16), 
+            new Fraction(-13, 16), new Fraction(13, 16), new Fraction(15, 16)};
+        int param = -16;
+        try {
+            Fraction result = fraction.conformUp(param);
+            List<Fraction> fractions = Arrays.asList(acceptables);
+            boolean accepted = fractions.contains(result);
+            String msg = "Result " + result.toString() + " should be one of " 
+                    + fractions.toString();
+            assert accepted : msg;
+        } catch (RuntimeException re) {
+            String msg = "Trying to conform " + fraction.toString() + " to " 
+                    + param + " should not have caused " 
+                    + re.getClass().getName();
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Another test of the conformUp function, of the Fraction class. If the 
+     * denominator to be conformed to is 0, an exception should occur. Either 
+     * ArithmeticException or IllegalArgumentException is acceptable.
+     */
+    @Test
+    public void testConformUpRejectsParameterZero() {
+        Fraction fraction = new Fraction(7, 8);
+        try {
+            Fraction result = fraction.conformUp(0);
+            String msg = "Trying to conform " + fraction.toString() 
+                    + " to denominator 0 should not have given result " 
+                    + result.toString();
+            fail(msg);
+        } catch (ArithmeticException ae) {
+            System.out.println("Trying to conform " + fraction.toString() 
+                    + " to denominator 0 caused ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to conform " + fraction.toString() 
+                    + " to denominator 0 caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to conform " 
+                    + fraction.toString() + " to 0"; 
             fail(msg);
         }
     }
