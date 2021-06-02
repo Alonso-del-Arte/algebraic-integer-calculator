@@ -2073,22 +2073,101 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testDividesAlgebraicDegreeOverflow() {
-        String failMessage;
+        String msg;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
-            failMessage = "Dividing " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " should not have";
+            msg = "Dividing " + testIntegers.get(j).toASCIIString() + " by " 
+                    + testIntegers.get(j + 1).toASCIIString() 
+                    + " should not have";
             try {
-                QuadraticInteger result = testIntegers.get(j).divides(testIntegers.get(j + 1));
-                failMessage = failMessage + " resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
-                fail(failMessage);
+                QuadraticInteger result 
+                        = testIntegers.get(j).divides(testIntegers.get(j + 1));
+                msg = msg + " resulted in " + result.toASCIIString() 
+                        + " without triggering AlgebraicDegreeOverflowException";
+                fail(msg);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "Necessary degree should be 4, not " + adoe.getNecessaryAlgebraicDegree() + ", for multiplying " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + ".";
-                assertEquals(failMessage, 4, adoe.getNecessaryAlgebraicDegree());
-                System.out.println("Dividing " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
+                msg = "Necessary degree should be 4, not " 
+                        + adoe.getNecessaryAlgebraicDegree() 
+                        + ", for multiplying " 
+                        + testIntegers.get(j).toASCIIString() + " by " 
+                        + testIntegers.get(j + 1).toASCIIString();
+                assertEquals(msg, 4, adoe.getNecessaryAlgebraicDegree());
+                System.out.println("Dividing " 
+                        + testIntegers.get(j).toASCIIString() + " by " 
+                        + testIntegers.get(j + 1).toASCIIString() 
+                        + " correctly triggered exception for algebraic degree " 
+                        + adoe.getNecessaryAlgebraicDegree());
             } catch (NotDivisibleException nde) {
-                failMessage = failMessage + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
-                fail(failMessage);
+                msg = msg + " triggered NotDivisibleException \"" 
+                        + nde.getMessage() + "\"";
+                fail(msg);
             }
         }
+    }
+    
+    /**
+     * Test of the mod function, of the QuadraticInteger class. The number 112 + 
+     * 11sqrt(5) modulo 21/2 + sqrt(5)/2 should be 1/2 + sqrt(5)/2, the golden 
+     * ratio.
+     */
+    @Test
+    public void testMod() {
+        System.out.println("mod");
+        RealQuadraticInteger dividend = new RealQuadraticInteger(112, 11,  
+                RING_ZPHI);
+        RealQuadraticInteger divisor = new RealQuadraticInteger(21, 1, 
+                RING_ZPHI, 2);
+        RealQuadraticInteger expected = new RealQuadraticInteger(1, 1,  
+                RING_ZPHI, 2);
+        QuadraticInteger actual = dividend.mod(divisor);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the mod function, of the QuadraticInteger class. If m is 
+     * divisible by n, m mod n should be 0.
+     */
+    @Test
+    public void testModZero() {
+        int a = 2 * RANDOM.nextInt(128) + 1;
+        int b = 2 * RANDOM.nextInt(a) + 1;
+        RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, RING_OQ13, 
+                2);
+        RealQuadraticInteger division = new RealQuadraticInteger(b, -a, 
+                RING_OQ13, 2);
+        QuadraticInteger dividend = division.times(divisor);
+        RealQuadraticInteger expected = new RealQuadraticInteger(0, 0, 
+                RING_OQ13);
+        QuadraticInteger actual = dividend.mod(divisor);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the mod function, of the QuadraticInteger class. One 
+     * pseudorandom quadratic integer is divided by another and the remainder is 
+     * taken. That remainder is not checked directly. Instead, it is subtracted 
+     * from the dividend, resulting in a number which divided by the divisor 
+     * should give 0.
+     */
+    @Test
+    public void testOtherMod() {
+        int a = 2 * RANDOM.nextInt(224) + 33;
+        int b = 2 * RANDOM.nextInt(a) + 1;
+        RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, 
+                RING_OQ13, 2);
+        int multiplier = RANDOM.nextInt(21) + 3;
+        RealQuadraticInteger dividend 
+                = new RealQuadraticInteger(multiplier * a, multiplier * b 
+                        - b, RING_OQ13);
+        QuadraticInteger remainder = dividend.mod(divisor);
+        QuadraticInteger roundedDividend = dividend.minus(remainder);
+        String msg = "Since " + dividend.toString() + " mod " 
+                + divisor.toString() + " is said to be " + remainder.toString() 
+                + ", " + roundedDividend.toString() 
+                + " should be a multiple of " + divisor.toString();
+        RealQuadraticInteger expected = new RealQuadraticInteger(0, 0, 
+                RING_OQ13);
+        QuadraticInteger actual = roundedDividend.mod(divisor);
+        assertEquals(msg, expected, actual);
     }
     
     /**

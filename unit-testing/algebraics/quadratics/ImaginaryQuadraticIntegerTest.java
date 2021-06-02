@@ -453,45 +453,51 @@ public class ImaginaryQuadraticIntegerTest {
      * and therefore "+0x" and "&minus;0x" should both be excluded from the 
      * output.
      */
+// TODO: Break this test up into smaller tests
     @Test
     public void testMinPolynomialString() {
         System.out.println("minPolynomialString");
-        String expResult, result;
+        String expected, actual;
         for (int i = 0; i < totalTestIntegers; i++) {
-            expResult = "x\u00B2";
+            expected = "x\u00B2";
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 if (randomRealForHalfInts < 0) {
-                    expResult = expResult + "+" + ((-1) * randomRealForHalfInts);
+                    expected = expected + "+" + ((-1) * randomRealForHalfInts);
                 } else {
-                    expResult = expResult + "\u2212" + randomRealForHalfInts;
+                    expected = expected + "\u2212" + randomRealForHalfInts;
                 }
-                expResult = expResult + "x+" + ((randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4);
+                expected = expected + "x+" + ((randomRealForHalfInts 
+                        * randomRealForHalfInts + randomImagForHalfInts 
+                        * randomImagForHalfInts 
+                        * testIntegers.get(i).getRing().getAbsNegRad()) / 4);
             } else {
                 if (randomRealPart < 0) {
-                    expResult = expResult + "+" + ((-2) * randomRealPart);
+                    expected = expected + "+" + ((-2) * randomRealPart);
                 } else {
-                    expResult = expResult + "\u2212" + (2 * randomRealPart);
+                    expected = expected + "\u2212" + (2 * randomRealPart);
                 }
-                expResult = expResult + "x+" + (randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad());
+                expected = expected + "x+" + (randomRealPart * randomRealPart 
+                        + randomImagPart * randomImagPart 
+                        * testIntegers.get(i).getRing().getAbsNegRad());
             }
-            expResult = expResult.replace("+1x", "+x");
-            expResult = expResult.replace("\u22121x", "\u2212x");
-            expResult = expResult.replace("+0x", "");
-            expResult = expResult.replace("\u22120x", "");
-            result = testIntegers.get(i).minPolynomialString().replace(" ", ""); // Strip out spaces
-            assertEquals(expResult, result);
+            expected = expected.replace("+1x", "+x");
+            expected = expected.replace("\u22121x", "\u2212x");
+            expected = expected.replace("+0x", "");
+            expected = expected.replace("\u22120x", "");
+            actual = testIntegers.get(i).minPolynomialString().replace(" ", "");
+            assertEquals(expected, actual);
         }
         // Now to test the polynomial strings of a few purely real integers
         ImaginaryQuadraticInteger degreeOneInt;
         for (int j = 1; j < 8; j++) {
             degreeOneInt = new ImaginaryQuadraticInteger(j, 0, ringRandom);
-            expResult = "x\u2212" + j;
-            result = degreeOneInt.minPolynomialString().replace(" ", "");
-            assertEquals(expResult, result);
+            expected = "x\u2212" + j;
+            actual = degreeOneInt.minPolynomialString().replace(" ", "");
+            assertEquals(expected, actual);
             degreeOneInt = new ImaginaryQuadraticInteger(-j, 0, ringRandom);
-            expResult = "x+" + j;
-            result = degreeOneInt.minPolynomialString().replace(" ", "");
-            assertEquals(expResult, result);
+            expected = "x+" + j;
+            actual = degreeOneInt.minPolynomialString().replace(" ", "");
+            assertEquals(expected, actual);
         }
         /* I'm not terribly concerned about this one, so it's here more for the 
            sake of completeness than anything else. Feel free to delete if 
@@ -2861,35 +2867,55 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testDividesAlgebraicDegreeOverflow() {
         QuadraticInteger result, temp;
-        String failMessage;
+        String msg;
         for (int j = 0; j < totalTestIntegers - 1; j++) {
-            failMessage = "Dividing " + testIntegers.get(j).toString() + " by " + testIntegers.get(j + 1).toString() + " should not have";
+            msg = "Dividing " + testIntegers.get(j).toString() + " by " 
+                    + testIntegers.get(j + 1).toString() + " should not have";
             try {
                 result = testIntegers.get(j).divides(testIntegers.get(j + 1));
-                failMessage = failMessage + " resulted in " + result.toString() + " without triggering AlgebraicDegreeOverflowException.";
-                fail(failMessage);
+                msg = msg + " resulted in " + result.toString() 
+                        + " without triggering AlgebraicDegreeOverflowException";
+                fail(msg);
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = "Necessary degree should be 4, not " + adoe.getNecessaryAlgebraicDegree() + ", for multiplying " + testIntegers.get(j).toString() + " by " + testIntegers.get(j + 1).toString() + ".";
-                assertEquals(failMessage, 4, adoe.getNecessaryAlgebraicDegree());
-                System.out.println("Dividing " + testIntegers.get(j).toASCIIString() + " by " + testIntegers.get(j + 1).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
+                msg = "Necessary degree should be 4, not " 
+                        + adoe.getNecessaryAlgebraicDegree() 
+                        + ", for multiplying " + testIntegers.get(j).toString() 
+                        + " by " + testIntegers.get(j + 1).toString();
+                assertEquals(msg, 4, adoe.getNecessaryAlgebraicDegree());
+                System.out.println("Dividing " 
+                        + testIntegers.get(j).toASCIIString() + " by " 
+                        + testIntegers.get(j + 1).toASCIIString() 
+                        + " correctly triggered exception for algebraic degree " 
+                        + adoe.getNecessaryAlgebraicDegree());
             } catch (NotDivisibleException nde) {
-                failMessage = failMessage + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
-                fail(failMessage);
+                msg = msg + " triggered NotDivisibleException \"" 
+                        + nde.getMessage() + "\"";
+                fail(msg);
             }
             temp = testIntegers.get(j + 1).times(testNorms.get(j));
-            failMessage = "Dividing " + temp.toString() + " from " + temp.getRing().toString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toString() + " should not have caused";
+            msg = "Dividing " + temp.toString() + " from " 
+                    + temp.getRing().toString() + " by " 
+                    + testNorms.get(j).toASCIIString() + " from " 
+                    + testNorms.get(j).getRing().toString() 
+                    + " should not have caused";
             try {
                 result = temp.divides(testNorms.get(j));
-                System.out.println("Dividing " + temp.toASCIIString() + " from " + temp.getRing().toASCIIString() + " by " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " gives result " + result.toASCIIString());
+                System.out.println("Dividing " + temp.toASCIIString() + " from " 
+                        + temp.getRing().toASCIIString() + " by " 
+                        + testNorms.get(j).toASCIIString() + " from " 
+                        + testNorms.get(j).getRing().toASCIIString() 
+                        + " gives result " + result.toASCIIString());
             } catch (AlgebraicDegreeOverflowException adoe) {
-                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
-                fail(failMessage);
+                msg = msg + " AlgebraicDegreeOverflowException \"" 
+                        + adoe.getMessage() + "\"";
+                fail(msg);
             } catch (NotDivisibleException nde) {
-                failMessage = failMessage + " NotDivisibleException \"" + nde.getMessage() + "\"";
-                fail(failMessage);
+                msg = msg + " NotDivisibleException \"" + nde.getMessage() 
+                        + "\"";
+                fail(msg);
             } catch (Exception e) {
-                failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
-                fail(failMessage);
+                msg = msg + " Exception \"" + e.getMessage() + "\"";
+                fail(msg);
             }
         }
     }
@@ -2905,50 +2931,116 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testDividesCrossDomainResult() {
-        QuadraticInteger testDividend = new ImaginaryQuadraticInteger(0, 1, new ImaginaryQuadraticRing(-10));
-        QuadraticInteger testDivisor = new ImaginaryQuadraticInteger(0, 1, RING_ZI2);
-        RealQuadraticRing expResultRingRe = new RealQuadraticRing(5);
-        QuadraticInteger expResult = new RealQuadraticInteger(0, 1, expResultRingRe);
-        String msg = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should not have";
+        QuadraticInteger testDividend = new ImaginaryQuadraticInteger(0, 1, 
+                new ImaginaryQuadraticRing(-10));
+        QuadraticInteger testDivisor = new ImaginaryQuadraticInteger(0, 1, 
+                RING_ZI2);
+        RealQuadraticRing expectedRingRe = new RealQuadraticRing(5);
+        QuadraticInteger expected = new RealQuadraticInteger(0, 1, 
+                expectedRingRe);
+        String msgPart = "Dividing " + testDividend.toString() + " by " 
+                + testDivisor.toString() + " should not have";
         try {
-            QuadraticInteger result = testDividend.divides(testDivisor);
-            String assertionMessage = "Dividing " + testDividend.toString() + " by " + testDivisor.toString() + " should result in " + expResult.toString() + ".";
-            assertEquals(assertionMessage, expResult, result);
+            QuadraticInteger actual = testDividend.divides(testDivisor);
+            String msg = "Dividing " + testDividend.toString() + " by " 
+                    + testDivisor.toString() + " should result in " + expected.toString() + ".";
+            assertEquals(msg, expected, actual);
         } catch (UnsupportedNumberDomainException unde) {
-            double realNumericApprox = Math.sqrt(5);
-            System.out.println("Dividing " + testDividend.toASCIIString() + " by " + testDivisor.toASCIIString() + " triggered UnsupportedNumberDomainException \"" + unde.getMessage() + "\"");
-            System.out.println("This is perhaps the best solution if the source package lacks a way to represent the real number sqrt(5), approximately " + realNumericApprox + "...");
+            System.out.println("Dividing " + testDividend.toASCIIString() 
+                    + " by " + testDivisor.toASCIIString() 
+                    + " triggered UnsupportedNumberDomainException \"" 
+                    + unde.getMessage() + "\"");
         } catch (AlgebraicDegreeOverflowException adoe) {
-            msg = msg + " triggered AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
+            String msg = msgPart + " triggered AlgebraicDegreeOverflowException \"" 
+                    + adoe.getMessage() + "\"";
             fail(msg);
         } catch(NotDivisibleException nde) {
-            msg = msg + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
+            String msg = msgPart + " triggered NotDivisibleException \"" + nde.getMessage() + "\"";
             fail(msg);
-        } catch (Exception e) {
-            msg = msg + " caused" + e.getClass().getName() + "\"" + e.getMessage() + "\"";
+        } catch (RuntimeException re) {
+            String msg = msgPart + " caused" + re.getClass().getName() + "\"" 
+                    + re.getMessage() + "\"";
             fail(msg);
         }
     }
     
+    /**
+     * Test of the mod function, of the QuadraticInteger class. The number 14 + 
+     * sqrt(-2) modulo 14 should be sqrt(-2).
+     */
     @Test
     public void testMod() {
         System.out.println("mod");
-        int d = -randomSquarefreeNumber(4096);
-        ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(d);
-        fail("Finish writing test");
+        ImaginaryQuadraticInteger dividend = new ImaginaryQuadraticInteger(14, 
+                1, RING_ZI2);
+        ImaginaryQuadraticInteger divisor = new ImaginaryQuadraticInteger(14, 0, 
+                RING_ZI2);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(0, 1, 
+                RING_ZI2);
+        QuadraticInteger actual = dividend.mod(divisor);
+        assertEquals(expected, actual);
     }
     
     /**
-     * Test of the times, norm and abs methods, simultaneously, of class 
+     * Another test of the mod function, of the QuadraticInteger class. If m is 
+     * divisible by n, m mod n should be 0.
+     */
+    @Test
+    public void testModZero() {
+        int a = 2 * RANDOM.nextInt(128) + 1;
+        int b = 2 * RANDOM.nextInt(a) + 1;
+        ImaginaryQuadraticInteger divisor = new ImaginaryQuadraticInteger(a, b, 
+                RING_EISENSTEIN, 2);
+        ImaginaryQuadraticInteger division = new ImaginaryQuadraticInteger(b, 
+                -a, RING_EISENSTEIN, 2);
+        QuadraticInteger dividend = division.times(divisor);
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(0, 0, 
+                RING_EISENSTEIN);
+        QuadraticInteger actual = dividend.mod(divisor);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the mod function, of the QuadraticInteger class. One 
+     * pseudorandom quadratic integer is divided by another and the remainder is 
+     * taken. That remainder is not checked directly. Instead, it is subtracted 
+     * from the dividend, resulting in a number which divided by the divisor 
+     * should give 0.
+     */
+    @Test
+    public void testOtherMod() {
+        int a = 2 * RANDOM.nextInt(224) + 33;
+        int b = 2 * RANDOM.nextInt(a) + 1;
+        ImaginaryQuadraticInteger divisor = new ImaginaryQuadraticInteger(a, b, 
+                RING_OQI7, 2);
+        int multiplier = RANDOM.nextInt(21) + 3;
+        ImaginaryQuadraticInteger dividend 
+                = new ImaginaryQuadraticInteger(multiplier * a, multiplier * b 
+                        - b, RING_OQI7);
+        QuadraticInteger remainder = dividend.mod(divisor);
+        QuadraticInteger roundedDividend = dividend.minus(remainder);
+        String msg = "Since " + dividend.toString() + " mod " 
+                + divisor.toString() + " is said to be " + remainder.toString() 
+                + ", " + roundedDividend.toString() 
+                + " should be a multiple of " + divisor.toString();
+        ImaginaryQuadraticInteger expected = new ImaginaryQuadraticInteger(0, 0, 
+                RING_OQI7);
+        QuadraticInteger actual = roundedDividend.mod(divisor);
+        assertEquals(msg, expected, actual);
+    }
+    
+    /**
+     * Test of the times, norm and abs functions, simultaneously, of class 
      * ImaginaryQuadraticInteger. This test also does a little bit with 
      * getRealPartNumeric and getImagPartNumeric. So if the independent tests 
      * for any of those are failing, the result of this test is meaningless.
      */
     @Test
     public void testSimultTimesAndNormAndAbs() {
-        System.out.println("times and norm and abs, simultaneously");
-        QuadraticInteger gauInt = new ImaginaryQuadraticInteger(0, 0, RING_GAUSSIAN);
-        QuadraticInteger eisenInt = new ImaginaryQuadraticInteger(0, 0, RING_EISENSTEIN);
+        QuadraticInteger gauInt = new ImaginaryQuadraticInteger(0, 0, 
+                RING_GAUSSIAN);
+        QuadraticInteger eisenInt = new ImaginaryQuadraticInteger(0, 0, 
+                RING_EISENSTEIN);
         long normResult, currSquare;
         double absResult;
         for (int n = 1; n < 25; n++) {
