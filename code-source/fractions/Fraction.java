@@ -16,7 +16,7 @@
  */
 package fractions;
 
-import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.euclideanGCD;
 
 import java.io.Serializable;
 
@@ -217,24 +217,118 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         return new Fraction(this.denominator, this.numerator);
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Rounds a fraction down to an integer multiple of a given interval. No 
+     * overflow checking is provided. Therefore it's best to limit denominators 
+     * to the range of <code>int</code>.
+     * @param interval The interval to round down by. Preferably a unit 
+     * fraction, but this is not required. For example, 
+     * <sup>1</sup>&frasl;<sub>10</sub>.
+     * @return The fraction rounded down. For example, 
+     * <sup>73</sup>&frasl;<sub>100</sub> rounded down to the nearest tenth 
+     * would be <sup>7</sup>&frasl;<sub>10</sub>.
+     * @throws ArithmeticException If <code>interval</code> is 0, depending on 
+     * the implementation.
+     * @throws IllegalArgumentException If <code>interval</code> is 0, depending 
+     * on the implementation.
+     */
     public Fraction roundDown(Fraction interval) {
-        return this.reciprocal();
+        Fraction division = this.dividedBy(interval);
+        long roundedNumer 
+                = (long) Math.floor(division.getNumericApproximation());
+        Fraction adjustedDivision = new Fraction(roundedNumer);
+        return adjustedDivision.times(interval);
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Rounds a fraction up to an integer multiple of a given interval. No 
+     * overflow checking is provided. Therefore it's best to limit denominators 
+     * to the range of <code>int</code>.
+     * @param interval The interval to round up by. Preferably a unit fraction,  
+     * but this is not required. For example, <sup>1</sup>&frasl;<sub>10</sub>.
+     * @return The fraction rounded up. For example, 
+     * <sup>73</sup>&frasl;<sub>100</sub> rounded up to the nearest tenth 
+     * would be <sup>8</sup>&frasl;<sub>10</sub> = 
+     * <sup>4</sup>&frasl;<sub>5</sub>.
+     * @throws ArithmeticException If <code>interval</code> is 0, depending on 
+     * the implementation.
+     * @throws IllegalArgumentException If <code>interval</code> is 0, depending 
+     * on the implementation.
+     */
     public Fraction roundUp(Fraction interval) {
-        return this.reciprocal();
+        Fraction division = this.dividedBy(interval);
+        long roundedNumer 
+                = (long) Math.ceil(division.getNumericApproximation());
+        Fraction adjustedDivision = new Fraction(roundedNumer);
+        return adjustedDivision.times(interval);
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Rounds this fraction down to a fraction with the specified numerator. 
+     * This could be useful for rounding algebraic numbers to algebraic 
+     * integers. For example, <sup>1</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;19</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;361</sup>&frasl;<sub>2</sub> is not an algebraic integer, but 
+     * it can be rounded down to <sup>1</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;19</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;361</sup>&frasl;<sub>3</sub>, which is an algebraic integer.
+     * @param denom The denominator for this fraction to conform to. For 
+     * example, 32. Should not be 0. May be negative, but the behavior for 
+     * negative parameters is subject to change in later versions of this 
+     * program.
+     * @return The conformed fraction. For example, if this fraction is 
+     * <sup>5</sup>&frasl;<sub>8</sub>, conformed to denominator 32 the result 
+     * would be <sup>19</sup>&frasl;<sub>32</sub>.
+     * @throws ArithmeticException If <code>denom</code> is 0, depending on the 
+     * implementation.
+     * @throws IllegalArgumentException If <code>denom</code> is 0, depending on 
+     * the implementation.
+     */
     public Fraction conformDown(long denom) {
-        return this.reciprocal();
+        if (this.denominator == denom) {
+            return this;
+        }
+        Fraction unitFraction = new Fraction(1, denom);
+        Fraction division = this.dividedBy(unitFraction);
+        long propNumer = (long) Math.floor(division.getNumericApproximation());
+        while (euclideanGCD(propNumer, denom) > 1) {
+            propNumer--;
+        }
+        return new Fraction(propNumer, denom);
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Rounds this fraction up to a fraction with the specified numerator. This 
+     * could be useful for rounding algebraic numbers to algebraic integers. For 
+     * example, <sup>1</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;19</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;361</sup>&frasl;<sub>4</sub> is not an algebraic integer, but 
+     * it can be rounded up to <sup>1</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;19</sup>&frasl;<sub>3</sub> + 
+     * <sup>&#8731;361</sup>&frasl;<sub>3</sub>, which is an algebraic integer.
+     * @param denom The denominator for this fraction to conform to. For 
+     * example, 32. Should not be 0. May be negative, but the behavior for 
+     * negative parameters is subject to change in later versions of this 
+     * program.
+     * @return The conformed fraction. For example, if this fraction is 
+     * <sup>5</sup>&frasl;<sub>8</sub>, conformed to denominator 32 the result 
+     * would be <sup>19</sup>&frasl;<sub>32</sub>.
+     * @throws ArithmeticException If <code>denom</code> is 0, depending on the 
+     * implementation.
+     * @throws IllegalArgumentException If <code>denom</code> is 0, depending on 
+     * the implementation.
+     */
     public Fraction conformUp(long denom) {
-        return this.reciprocal();
+        if (this.denominator == denom) {
+            return this;
+        }
+        Fraction unitFraction = new Fraction(1, denom);
+        Fraction division = this.dividedBy(unitFraction);
+        long propNumer = (long) Math.ceil(division.getNumericApproximation());
+        while (euclideanGCD(propNumer, denom) > 1) {
+            propNumer++;
+        }
+        return new Fraction(propNumer, denom);
     }
     
     /**
@@ -485,9 +579,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     
     /**
      * Implicit denominator constructor for integers. Denominator is filled in 
-     * as 1. Note that this is a chained constructor. I figure it will be much 
-     * more useful to someone using this class on a REPL (like the Scala REPL) 
-     * than to other classes or to interfaces.
+     * as 1. Note that this is <em>not</em> a chained constructor. I figure it 
+     * will be much more useful to someone using this class on a REPL (like the 
+     * Scala REPL) than to other classes or to interfaces.
      * @param numer The numerator of the fraction. For example, 7. Then the 
      * fraction <sup>7</sup>&frasl;<sub>1</sub> is arithmetically equal to the 
      * integer 7.
@@ -527,8 +621,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
                     + " is invalid or unavailable";
             throw new ArithmeticException(excMsg);
         }
-        long adjustment = NumberTheoreticFunctionsCalculator.euclideanGCD(numer, 
-                denom);
+        long adjustment = euclideanGCD(numer, denom);
         adjustment *= Long.signum(denom);
         this.numerator = numer / adjustment;
         this.denominator = denom / adjustment;
