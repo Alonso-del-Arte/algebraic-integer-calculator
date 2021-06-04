@@ -43,6 +43,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -111,6 +112,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * populated during setUpClass().
      */
     private static final int[] HEEGNER_COMPANION_PRIMES = new int[9];
+    
+    private static final Random RANDOM = new Random();
     
     /**
      * Sets up a list of the first few consecutive primes, the first few 
@@ -1336,54 +1339,86 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testKroneckerSymbolM70Cases() {
-        assertEquals(-1, NumberTheoreticFunctionsCalculator.symbolKronecker(31, 70));
-        assertEquals(0, NumberTheoreticFunctionsCalculator.symbolKronecker(32, 70));
-        assertEquals(1, NumberTheoreticFunctionsCalculator.symbolKronecker(33, 70));
+        assertEquals(-1, symbolKronecker(31, 70));
+        assertEquals(0, symbolKronecker(32, 70));
+        assertEquals(1, symbolKronecker(33, 70));
     }
     
     /**
-     * Test of isDivisibleBy method, of class 
-     * NumberTheoreticFunctionsCalculator. 
+     * Test of the isDivisibleBy function, of the 
+     * NumberTheoreticFunctionsCalculator class.
      */
     @Test
     public void testIsDivisibleBy() {
         System.out.println("isDivisibleBy");
+        int d = randomSquarefreeNumber(128);
+        if (RANDOM.nextBoolean()) d *= -1;
+        if (d == 1) d = -1;
+        QuadraticRing r = QuadraticRing.apply(d);
+        int a = RANDOM.nextInt(64) - 32;
+        int b = 2 * RANDOM.nextInt(32) + 1;
+        QuadraticInteger division = QuadraticInteger.apply(a, b, r);
+        QuadraticInteger divisor = QuadraticInteger.apply(b, -a, r);
+        QuadraticInteger dividend = division.times(divisor);
+        String msg = dividend.toString() + " should be divisible by " 
+                + divisor.toString();
+        assert isDivisibleBy(dividend, divisor) : msg;
+    }
+    
+    /**
+     * Another test of the isDivisibleBy function, of the 
+     * NumberTheoreticFunctionsCalculator class.
+     */
+    @Test
+    public void testIsNotDivisibleBy() {
+        int d = randomSquarefreeNumber(128);
+        if (RANDOM.nextBoolean()) d *= -1;
+        if (d == 1) d = -1;
+        QuadraticRing r = QuadraticRing.apply(d);
+        int a = RANDOM.nextInt(64) - 32;
+        int b = 2 * RANDOM.nextInt(32) + 3;
+        QuadraticInteger division = QuadraticInteger.apply(a, -b, r);
+        QuadraticInteger divisor = QuadraticInteger.apply(b, a, r);
+        QuadraticInteger dividend = division.times(divisor).plus(1);
+        String msg = dividend.toString() + " should not be divisible by " 
+                + divisor.toString();
+        assert !isDivisibleBy(dividend, divisor) : msg;
+    }
+    
+    /**
+     * Another test of the isDivisibleBy function, of the 
+     * NumberTheoreticFunctionsCalculator class. If the dividend and the divisor 
+     * come from different rings, an {@link AlgebraicDegreeOverflowException} 
+     * should occur.
+     */
+    @Test
+    public void testIsNotDivisbleByAlgebraicDegreeOverflow() {
         QuadraticRing r = new RealQuadraticRing(14);
-        QuadraticInteger a = new RealQuadraticInteger(0, -1, r);
-        QuadraticInteger b = new RealQuadraticInteger(4, 1, r);
-        String assertionMessage = a.toString() + " should be found to be divisible by " + b.toString() + ".";
-        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
-        assertionMessage = b.toString() + " should not be found to be divisible by " + a.toString() + ".";
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
-        b = new RealQuadraticInteger(7, -2, r);
-        assertionMessage = a.toString() + " should be found to be divisible by " + b.toString() + ".";
-        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
-        assertionMessage = b.toString() + " should not be found to be divisible by " + a.toString() + ".";
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
-        b = new RealQuadraticInteger(0, 0, r); // Zero
-        assertionMessage = a.toString() + " should not be found to be divisible by " + b.toString() + ".";
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b));
-        assertionMessage = b.toString() + " should be found to be divisible by " + a.toString() + ".";
-        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isDivisibleBy(b, a));
-        a = new RealQuadraticInteger(7, 1, r);
-        r = new ImaginaryQuadraticRing(-7); // Making sure a and b are from different rings now
-        b = new ImaginaryQuadraticInteger(0, 1, r);
+        QuadraticInteger a = new RealQuadraticInteger(7, 1, r);
+        r = new ImaginaryQuadraticRing(-7);
+        QuadraticInteger b = new ImaginaryQuadraticInteger(0, 1, r);
         try {
-            boolean divisibleFlag = NumberTheoreticFunctionsCalculator.isDivisibleBy(a, b);
-            String failMessage = "Trying to ascertain the divisibility of " + a.toString() + " by " + b.toString() + " should have caused an exception, not given the result that it is";
+            boolean divisibleFlag = isDivisibleBy(a, b);
+            String msg = "Trying to ascertain the divisibility of " 
+                    + a.toString() + " by " + b.toString() 
+                    + " should not have given the result that it is is ";
             if (!divisibleFlag) {
-                failMessage = failMessage + " not";
+                msg = msg + "not ";
             }
-            failMessage = failMessage + " divisible.";
-            fail(failMessage);
+            msg = msg + "divisible";
+            fail(msg);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            System.out.println("Trying to ascertain the divisibility of " + a.toASCIIString() + " by " + b.toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException.");
+            System.out.println("Trying to ascertain the divisibility of " 
+                    + a.toASCIIString() + " by " + b.toASCIIString() 
+                    + " correctly triggered AlgebraicDegreeOverflowException");
             System.out.println("\"" + adoe.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMessage = "Trying to ascertain the divisibility of " + a.toString() + " by " + b.toString() + " should have caused AlgebraicDegreeOverflowException, not " + e.getClass().getName() + ".";
-            System.out.println(failMessage);
-            System.out.println("\"" + e.getMessage() + "\"");
-            fail(failMessage);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName()
+                    + " is the wrong exception for divisibility of " 
+                    + a.toString() + " by " + b.toString();
+            System.out.println(msg);
+            System.out.println("\"" + re.getMessage() + "\"");
+            fail(msg);
         }
     }
     
@@ -2586,14 +2621,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Test of randomSquarefreeNumber method, of class 
-     * NumberTheoreticFunctionsCalculator. This test doesn't check whether the 
-     * distribution is random enough, only that the numbers produced are indeed 
-     * squarefree, that they don't have repeated prime factors. The test will 
-     * keep going until either an assertion fails or a number is produced with 9 
-     * for a least significant digit, whichever happens first.
+     * Test of the randomSquarefreeNumber function, of the  
+     * NumberTheoreticFunctionsCalculator class. This test doesn't check whether  
+     * the distribution is random enough, only that the numbers produced are  
+     * indeed squarefree, that they don't have repeated prime factors. The test  
+     * will keep going until either an assertion fails or a number is produced 
+     * with 9 for a least significant digit, whichever happens first.
      */
-    @org.junit.Ignore
     @Test
     public void testRandomSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
