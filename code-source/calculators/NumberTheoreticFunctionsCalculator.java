@@ -28,6 +28,7 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
+import arithmetic.Arithmeticable;
 import arithmetic.NonEuclideanDomainException;
 import arithmetic.NonUniqueFactorizationDomainException;
 import arithmetic.NotDivisibleException;
@@ -1110,9 +1111,9 @@ public class NumberTheoreticFunctionsCalculator {
     
     /**
      * Tests whether one algebraic integer is divisible by another.
-     * @param a The number to test for divisibility by another. For example, 
+     * @param dividend The number to test for divisibility by another. For example, 
      * &radic;14.
-     * @param b The number to test as a potential divisor of the first number. 
+     * @param divisor The number to test as a potential divisor of the first number. 
      * For example, 4 + &radic;14.
      * @return True if a is divisible by b, false otherwise. For example, it 
      * should return true that &radic;14 is indeed divisible by 4 + &radic;14, 
@@ -1134,35 +1135,37 @@ public class NumberTheoreticFunctionsCalculator {
      * probably trigger this exception.
      * @since Version 0.4
      */
-    public static boolean isDivisibleBy(AlgebraicInteger a, AlgebraicInteger b) {
-        if (!a.getRing().equals(b.getRing())) {
-            String exceptionMessage = "Ring mismatch: " + a.toASCIIString() + " is from " + a.getRing().toASCIIString() + " but " + b.toASCIIString() + " is from " + b.getRing().toASCIIString() + ".";
+    public static boolean isDivisibleBy(AlgebraicInteger dividend, 
+            AlgebraicInteger divisor) {
+        if (!dividend.getRing().equals(divisor.getRing())) {
+            String excMsg = "Ring mismatch: " + dividend.toASCIIString() 
+                    + " is from " + dividend.getRing().toASCIIString() + " but " 
+                    + divisor.toASCIIString() + " is from " 
+                    + divisor.getRing().toASCIIString();
             int deg;
-            if (a.algebraicDegree() > b.algebraicDegree()) {
-                deg = a.algebraicDegree();
+            if (dividend.algebraicDegree() > divisor.algebraicDegree()) {
+                deg = dividend.algebraicDegree();
             } else {
-                deg = b.algebraicDegree();
+                deg = divisor.algebraicDegree();
             }
-            throw new AlgebraicDegreeOverflowException(exceptionMessage, deg, a, b);
+            throw new AlgebraicDegreeOverflowException(excMsg, deg, dividend, 
+                    divisor);
         }
-        if (b.norm() == 0) {
+        if (divisor.norm() == 0) {
             return false;
         }
-        if (a.norm() == 0) {
+        if (dividend.norm() == 0) {
             return true;
         }
-        if (a instanceof QuadraticInteger) {
-            QuadraticInteger divA = (QuadraticInteger) a;
-            QuadraticInteger divB = (QuadraticInteger) b;
-            try {
-                divA.divides(divB);
-                return true;
-            } catch (NotDivisibleException nde) {
-                return false;
-            }
+        if (dividend instanceof QuadraticInteger) {
+            QuadraticInteger divA = (QuadraticInteger) dividend;
+            QuadraticInteger divB = (QuadraticInteger) divisor;
+            QuadraticInteger remainder = divA.mod(divB);
+            return remainder.norm() == 0;
         }
-        String exceptionMessage = "Testing divisibility in the domain of the number " + a.toASCIIString() + " is not yet supported.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, a, b);
+        String excMsg = "Testing divisibility in the domain of the number " 
+                + dividend.toASCIIString() + " is not yet supported";
+        throw new UnsupportedNumberDomainException(excMsg, dividend, divisor);
     }
         
     /**
@@ -1733,7 +1736,7 @@ public class NumberTheoreticFunctionsCalculator {
             } while (n.equals(nextN));
             return n;
         }
-        String exceptionMessage = "Place in primary section function not yet supported for " + num.getRing().toASCIIString() + ".";
+        String exceptionMessage = "Place in primary section function not yet supported for " + num.getRing().toASCIIString();
         throw new UnsupportedNumberDomainException(exceptionMessage, num);
     }
 

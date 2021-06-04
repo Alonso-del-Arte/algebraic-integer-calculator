@@ -67,11 +67,11 @@ public class ResultsCache {
     }
     
     // STUB TO FAIL THE FIRST TEST
-    public RealQuadraticInteger mainSplitter(int num) {
+    public Optional<RealQuadraticInteger> mainSplitter(int num) {
         RealQuadraticRing ring = new RealQuadraticRing(Integer.MAX_VALUE);
         RealQuadraticInteger wrongNum 
                 = new RealQuadraticInteger(Integer.MIN_VALUE, 0, ring);
-        return wrongNum;
+        return Optional.of(wrongNum);
     }
     
     public ResultsCache(RealQuadraticRing ring) {
