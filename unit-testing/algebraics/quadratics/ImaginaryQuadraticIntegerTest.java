@@ -3030,6 +3030,38 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
+     * Another test of the mod function, of the QuadraticInteger class. If the 
+     * dividend and the divisor are from different imaginary rings, an {@link 
+     * AlgebraicDegreeOverflowException} should occur.
+     */
+    @Test
+    public void testModCrossDomain() {
+        int a = RANDOM.nextInt(2048) + 1;
+        int b = RANDOM.nextInt(a) | a;
+        a -= 1024;
+        ImaginaryQuadraticInteger dividend = new ImaginaryQuadraticInteger(a, b, 
+                RING_ZI2);
+        ImaginaryQuadraticInteger divisor = new ImaginaryQuadraticInteger(a, b, 
+                RING_OQI7);
+        try {
+            QuadraticInteger result = dividend.mod(divisor);
+            String msg = dividend.toString() + " mod " + divisor.toString() 
+                    + " should not have given result " + result.toString();
+            fail(msg);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println(dividend.toString() + " mod " 
+                    + divisor.toString() 
+                    + " correctly caused AlgebraicDegreeOverflowException");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for " 
+                    + dividend.toString() + " mod " + divisor.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
      * Test of the times, norm and abs functions, simultaneously, of class 
      * ImaginaryQuadraticInteger. This test also does a little bit with 
      * getRealPartNumeric and getImagPartNumeric. So if the independent tests 

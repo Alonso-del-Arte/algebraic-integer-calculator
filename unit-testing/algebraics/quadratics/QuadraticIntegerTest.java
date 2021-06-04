@@ -20,6 +20,8 @@ import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.UnsupportedNumberDomainException;
 import arithmetic.NotDivisibleException;
 
+import java.util.Random;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -32,6 +34,8 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class QuadraticIntegerTest {
+    
+    private static final Random RANDOM = new Random();
     
     // TODO: Write arithmetic overflow tests
     
@@ -1187,6 +1191,72 @@ public class QuadraticIntegerTest {
             System.out.println(failMessage);
             System.out.println("\"" + e.getMessage() + "\"");
             fail(failMessage);
+        }
+    }
+    
+    /**
+     * Another test of the mod function, of the QuadraticInteger class. If the 
+     * dividend and the divisor are from different rings, an {@link 
+     * AlgebraicDegreeOverflowException} should occur.
+     */
+    @Test
+    public void testModCrossDomainImagDivisor() {
+        int a = RANDOM.nextInt(2048) + 1;
+        int b = RANDOM.nextInt(a) + 127;
+        a -= 1024;
+        ImaginaryQuadraticRing imagRing = new ImaginaryQuadraticRing(-47);
+        RealQuadraticRing realRing = new RealQuadraticRing(47);
+        RealQuadraticInteger dividend = new RealQuadraticInteger(a, b, realRing);
+        ImaginaryQuadraticInteger divisor = new ImaginaryQuadraticInteger(a, b, 
+                imagRing);
+        try {
+            QuadraticInteger result = dividend.mod(divisor);
+            String msg = dividend.toString() + " mod " + divisor.toString() 
+                    + " should not have given result " + result.toString();
+            fail(msg);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println(dividend.toASCIIString() + " mod " 
+                    + divisor.toASCIIString()
+                    + " correctly caused AlgebraicDegreeOverflowException");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for " 
+                    + dividend.toString() + " mod " + divisor.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Another test of the mod function, of the QuadraticInteger class. If the 
+     * dividend and the divisor are from different rings, an {@link 
+     * AlgebraicDegreeOverflowException} should occur.
+     */
+    @Test
+    public void testModCrossDomainRealDivisor() {
+        int a = RANDOM.nextInt(2048) + 1;
+        int b = RANDOM.nextInt(a) + 127;
+        a -= 1024;
+        ImaginaryQuadraticRing imagRing = new ImaginaryQuadraticRing(-53);
+        RealQuadraticRing realRing = new RealQuadraticRing(53);
+        ImaginaryQuadraticInteger dividend = new ImaginaryQuadraticInteger(a, b, 
+                imagRing);
+        RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, realRing);
+        try {
+            QuadraticInteger result = dividend.mod(divisor);
+            String msg = dividend.toString() + " mod " + divisor.toString() 
+                    + " should not have given result " + result.toString();
+            fail(msg);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println(dividend.toASCIIString() + " mod " 
+                    + divisor.toASCIIString()
+                    + " correctly caused AlgebraicDegreeOverflowException");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for " 
+                    + dividend.toString() + " mod " + divisor.toString();
+            fail(msg);
         }
     }
     

@@ -2171,6 +2171,36 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
+     * Another test of the mod function, of the QuadraticInteger class. If the 
+     * dividend and the divisor are from different real rings, an {@link 
+     * AlgebraicDegreeOverflowException} should occur.
+     */
+    @Test
+    public void testModCrossDomain() {
+        int a = RANDOM.nextInt(2048) + 1;
+        int b = RANDOM.nextInt(a) + 127;
+        a -= 1024;
+        RealQuadraticInteger dividend = new RealQuadraticInteger(a, b, RING_Z2);
+        RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, RING_OQ13);
+        try {
+            QuadraticInteger result = dividend.mod(divisor);
+            String msg = dividend.toString() + " mod " + divisor.toString() 
+                    + " should not have given result " + result.toString();
+            fail(msg);
+        } catch (AlgebraicDegreeOverflowException adoe) {
+            System.out.println(dividend.toASCIIString() + " mod " 
+                    + divisor.toASCIIString()
+                    + " correctly caused AlgebraicDegreeOverflowException");
+            System.out.println("\"" + adoe.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception to throw for " 
+                    + dividend.toString() + " mod " + divisor.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
      * Test of the times, norm and abs methods, simultaneously, of class 
      * RealQuadraticInteger. If the independent tests for any of those are 
      * failing, the result of this test is meaningless.
