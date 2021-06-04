@@ -39,11 +39,13 @@ import arithmetic.comparators.NormAbsoluteComparator;
 import static calculators.NumberTheoreticFunctionsCalculator.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -1423,25 +1425,90 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Test of isSquareFree method, of class NumberTheoreticFunctionsCalculator. 
-     * Prime numbers should be found to be squarefree, squares of primes should 
-     * not.
+     * Test of the isSquareFree function, of the 
+     * NumberTheoreticFunctionsCalculator class. Prime numbers should be found 
+     * to be squarefree, squares of primes should not.
      */
     @Test
     public void testIsSquareFree() {
         System.out.println("isSquareFree");
-        String assertionMessage;
+        String msg;
+        String shouldBeMsg = " should have been found to be squarefree";
+        String shouldNotBeMsg = " should NOT have been found to be squarefree";
         int number;
         for (int i = 0; i < primesListLength - 1; i++) {
-            number = primesList.get(i) * primesList.get(i + 1); // A squarefree semiprime, pq
-            assertionMessage = number + " should have been found to be squarefree";
-            assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isSquareFree(number));
-            number *= primesList.get(i); // Repeat one prime factor, (p^2)q
-            assertionMessage = number + " should not have been found to be squarefree";
-            assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isSquareFree(number));
-            number /= primesList.get(i + 1); // Now this should be p^2
-            assertionMessage = number + " should not have been found to be squarefree";
-            assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isSquareFree(number));
+            number = primesList.get(i) * primesList.get(i + 1); // pq
+            msg = number + shouldBeMsg;
+            assert isSquareFree(number) : msg;
+            number *= primesList.get(i); // (p^2)q
+            msg = number + shouldNotBeMsg;
+            assert !isSquareFree(number) : msg;
+            number /= primesList.get(i + 1); // p^2
+            msg = number + shouldNotBeMsg;
+            assert !isSquareFree(number) : msg;
+        }
+    }
+    
+    /**
+     * Test of the isPerfectSquare function, of the 
+     * NumberTheoreticFunctionsCalculator class. A number like 81 should be 
+     * found to be a perfect square.
+     */
+    @Test
+    public void testIsPerfectSquare() {
+        System.out.println("isPerfectSquare");
+        int min = RANDOM.nextInt(128);
+        int max = min + RANDOM.nextInt(128) + 1;
+        int nSquared;
+        String msgPart = " should be found to be a perfect square";
+        String msg;
+        for (int n = min; n < max; n++) {
+            nSquared = n * n;
+            msg = nSquared + msgPart;
+            assert isPerfectSquare(nSquared) : msg;
+        }
+    }
+    
+    /**
+     * Another test of the isPerfectSquare function, of the 
+     * NumberTheoreticFunctionsCalculator class. Numbers like 26 and 27 should 
+     * not be found to be perfect squares, even if they are perfect powers.
+     */
+    @Test
+    public void testIsNotPerfectSquare() {
+        Integer[] numbers = new Integer[1000];
+        for (int fill = 0; fill < 1000; fill++) {
+            numbers[fill] = fill;
+        }
+        int mSquared;
+        for (int m = 0; m < 32; m++) {
+            mSquared = m * m;
+            numbers[mSquared] = 2;
+        }
+        Set<Integer> notSquares = new HashSet<>(Arrays.asList(numbers));
+        String msgPart = " should NOT be found to be a perfect square";
+        String msg;
+        for (int notSquare : notSquares) {
+            msg = notSquare + msgPart;
+            assert !isPerfectSquare(notSquare) : msg;
+        }
+    }
+    
+    /**
+     * Another test of the isPerfectSquare function, of the 
+     * NumberTheoreticFunctionsCalculator class. Numbers like -4 and -9 should 
+     * not be found to be perfect squares, even if they are perfect squares 
+     * times -1.
+     */
+    @Test
+    public void testNegativeIsNotPerfectSquare() {
+        int max = -RANDOM.nextInt(128);
+        int min = max - RANDOM.nextInt(128) - 1;
+        String msgPart = " should NOT be found to be a perfect square";
+        String msg;
+        for (int n = min; n < max; n++) {
+            msg = n + msgPart;
+            assert !isPerfectSquare(n) : msg;
         }
     }
     
