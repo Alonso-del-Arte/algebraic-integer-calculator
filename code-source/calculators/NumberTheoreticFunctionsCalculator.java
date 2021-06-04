@@ -28,7 +28,6 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
-import arithmetic.Arithmeticable;
 import arithmetic.NonEuclideanDomainException;
 import arithmetic.NonUniqueFactorizationDomainException;
 import arithmetic.NotDivisibleException;
@@ -1202,6 +1201,11 @@ public class NumberTheoreticFunctionsCalculator {
                 }
                 return noDupFactorFound;
         }
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public static boolean isPerfectSquare(int num) {
+        return false;
     }
     
     /**
