@@ -68,8 +68,9 @@ public class ResultsCacheTest {
         RealQuadraticRing ring = new RealQuadraticRing(57);
         ResultsCache cache = new ResultsCache(ring);
         int num = 7;
-        RealQuadraticInteger expected = new RealQuadraticInteger(8, 1, ring);
-        RealQuadraticInteger actual = cache.mainSplitter(num);
+        RealQuadraticInteger splitter = new RealQuadraticInteger(8, 1, ring);
+        Optional<RealQuadraticInteger> expected = Optional.of(splitter);
+        Optional<RealQuadraticInteger> actual = cache.mainSplitter(num);
         assertEquals(expected, actual);
     }
     
