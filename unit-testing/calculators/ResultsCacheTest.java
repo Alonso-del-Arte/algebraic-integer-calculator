@@ -32,6 +32,8 @@ public class ResultsCacheTest {
     
     private static final RealQuadraticRing RING_OQ21 
             = new RealQuadraticRing(21);
+    private static final RealQuadraticRing RING_Z199 
+            = new RealQuadraticRing(199);
     
     /**
      * Test of the getUnit function, of the ResultsCache class.
@@ -43,6 +45,19 @@ public class ResultsCacheTest {
         RealQuadraticInteger unit = new RealQuadraticInteger(5, 1, RING_OQ21, 
                 2);
         Optional<RealQuadraticInteger> expected = Optional.of(unit);
+        Optional<RealQuadraticInteger> actual = cache.getUnit();
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Another test of the getUnit function, of the ResultsCache class. If the 
+     * unit is not available due to overflow, the function should return an 
+     * empty Optional.
+     */
+    @Test
+    public void testUnitNotAvailable() {
+        ResultsCache cache = new ResultsCache(RING_Z199);
+        Optional<RealQuadraticInteger> expected = Optional.empty();
         Optional<RealQuadraticInteger> actual = cache.getUnit();
         assertEquals(expected, actual);
     }
@@ -60,7 +75,22 @@ public class ResultsCacheTest {
     }
 
     /**
-     * Test of the mainSplitter function, of the ResultsCache class.
+     * Another test of the getClassNumber function, of the ResultsCache class. 
+     * If the class number is not available due to an overflow, the function 
+     * should return an empty Optional.
+     */
+    @Test
+    public void testClassNumberNotAvailable() {
+        ResultsCache cache = new ResultsCache(RING_Z199);
+        Optional<Integer> expected = Optional.empty();
+        Optional<Integer> actual = cache.getClassNumber();
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the mainSplitter function, of the ResultsCache class. Although 7 
+     * is prime in Z, in O(Q(sqrt(57))) it splits as (8 - sqrt(57))(8 + 
+     * sqrt(57)). Therefore this function should return 8 + sqrt(57).
      */
     @Test
     public void testMainSplitter() {
@@ -74,6 +104,55 @@ public class ResultsCacheTest {
         assertEquals(expected, actual);
     }
     
+    /**
+     * Another test of the mainSplitter function, of the ResultsCache class. 
+     * Given that 59 = (-1)(5 - 2sqrt(21))(5 + 2sqrt(21)), the function should 
+     * return 5 + 2sqrt(21).
+     */
+    @Test
+    public void testOtherMainSplitter() {
+        ResultsCache cache = new ResultsCache(RING_OQ21);
+        int num = 59;
+        RealQuadraticInteger splitter 
+                = new RealQuadraticInteger(5, 2, RING_OQ21);
+        Optional<RealQuadraticInteger> expected = Optional.of(splitter);
+        Optional<RealQuadraticInteger> actual = cache.mainSplitter(num);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the mainSplitter function, of the ResultsCache class. 
+     * Given that 47 = (-1)(1/2 - 3sqrt(21)/2)(1/2 + 3sqrt(21)/2), the function 
+     * should return 1/2 - 3sqrt(21)/2.
+     */
+    @Test
+    public void testHalfIntMainSplitterNegativeNorm() {
+        ResultsCache cache = new ResultsCache(RING_OQ21);
+        int num = 47;
+        RealQuadraticInteger splitter 
+                = new RealQuadraticInteger(1, 3, RING_OQ21, 2);
+        Optional<RealQuadraticInteger> expected = Optional.of(splitter);
+        Optional<RealQuadraticInteger> actual = cache.mainSplitter(num);
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the mainSplitter function, of the ResultsCache class. 
+     * Given that 7 = (7/2 - sqrt(21)/2)(7/2 + sqrt(21)/2), the function should 
+     * return 7/2 - sqrt(21)/2.
+     */
+    @Test
+    public void testHalfIntMainSplitter() {
+        ResultsCache cache = new ResultsCache(RING_OQ21);
+        int num = 7;
+        RealQuadraticInteger splitter 
+                = new RealQuadraticInteger(7, 1, RING_OQ21, 2);
+        Optional<RealQuadraticInteger> expected = Optional.of(splitter);
+        Optional<RealQuadraticInteger> actual = cache.mainSplitter(num);
+        assertEquals(expected, actual);
+    }
+    
+    @org.junit.Ignore
     @Test(timeout = 5000)
     public void testSplitterGetsCached() {
         fail("Haven't written test yet");
