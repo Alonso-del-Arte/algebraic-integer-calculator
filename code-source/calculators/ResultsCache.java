@@ -38,6 +38,10 @@ public class ResultsCache {
     
     private final RealQuadraticRing cachedRing;
     
+    private final int radicand;
+    
+    private final boolean halfIntFlag;
+    
     private final Optional<RealQuadraticInteger> cachedUnit;
     
     private final Optional<Integer> cachedClassNumber;
@@ -66,21 +70,87 @@ public class ResultsCache {
         return splitter;
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    private Optional<RealQuadraticInteger> wrap(long trialReg, int trialSurd, 
+            int denom) {
+        int reg = (int) Math.floor(Math.sqrt(trialReg));
+        RealQuadraticInteger number = new RealQuadraticInteger(reg, trialSurd, 
+                this.cachedRing, denom);
+        return Optional.of(number);
+    }
+    
+    private Optional<RealQuadraticInteger> lookForSplitterHalfInt(int num) {
+        Optional<RealQuadraticInteger> option = Optional.empty();
+        int quadrupled = 4 * num;
+        int trialSurd = 1;
+        long xd, trialReg;
+        boolean notFound = true;
+        while (notFound) {
+            xd = trialSurd * trialSurd * this.radicand;
+            trialReg = xd - quadrupled;
+            if ((trialReg % 2 == xd % 2) && isPerfectSquare(trialReg)) {
+                option = wrap(trialReg, trialSurd, 2);
+                notFound = false;
+            } else {
+                trialReg = xd - num;
+                if (isPerfectSquare(trialReg)) {
+                    option = wrap(trialReg, trialSurd, 1);
+                    notFound = false;
+                } else {
+                    trialReg = xd + quadrupled;
+                    if ((trialReg % 2 == xd % 2) && isPerfectSquare(trialReg)) {
+                        option = wrap(trialReg, trialSurd, 2);
+                        notFound = false;
+                    } else {
+                        trialReg = xd + num;
+                        if (isPerfectSquare(trialReg)) {
+                            option = wrap(trialReg, trialSurd, 1);
+                            notFound = false;
+                        }
+                    }
+                }
+            }
+            trialSurd++;
+        }
+        return option;
+    }
+    
+    private Optional<RealQuadraticInteger> lookForSplitter(int num) {
+        Optional<RealQuadraticInteger> option = Optional.empty();
+        int trialSurd = 1;
+        long xd, trialReg;
+        boolean notFound = true;
+        while (notFound) {
+            xd = trialSurd * trialSurd * this.radicand;
+            trialReg = xd - num;
+            if (isPerfectSquare(trialReg)) {
+                option = wrap(trialReg, trialSurd, 1);
+                notFound = false;
+            } else {
+                trialReg = xd + num;
+                if (isPerfectSquare(trialReg)) {
+                    option = wrap(trialReg, trialSurd, 1);
+                    notFound = false;
+                }
+            }
+            trialSurd++;
+        }
+        return option;
+    }
+    
     public Optional<RealQuadraticInteger> mainSplitter(int num) {
-        RealQuadraticRing ring = new RealQuadraticRing(Integer.MAX_VALUE);
-        RealQuadraticInteger wrongNum 
-                = new RealQuadraticInteger(Integer.MIN_VALUE, 0, ring);
-        return Optional.of(wrongNum);
+        if (this.halfIntFlag) {
+            return lookForSplitterHalfInt(num);
+        } else {
+            return lookForSplitter(num);
+        }
     }
     
     public ResultsCache(RealQuadraticRing ring) {
         this.cachedRing = ring;
-        Optional<RealQuadraticInteger> unitHolder = 
-                Optional.of(new RealQuadraticInteger(-1, 0, ring));
-//Optional.empty();
-        Optional<Integer> classNumberHolder = Optional.of(-1);
-//                Optional.empty();
+        this.radicand = this.cachedRing.getRadicand();
+        this.halfIntFlag = this.cachedRing.hasHalfIntegers();
+        Optional<RealQuadraticInteger> unitHolder = Optional.empty();
+        Optional<Integer> classNumberHolder = Optional.empty();
         try {
             AlgebraicInteger unit = fundamentalUnit(ring);
             unitHolder = Optional.of((RealQuadraticInteger) unit);

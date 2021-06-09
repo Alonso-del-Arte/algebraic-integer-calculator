@@ -325,8 +325,9 @@ public class NumberTheoreticFunctionsCalculator {
         }
         if (num instanceof ImaginaryQuadraticInteger) {
             if (num.norm() < 0) {
-                String exceptionMessage = "Overflow has occurred for the computation of the norm of " + num.toASCIIString();
-                throw  new ArithmeticException(exceptionMessage);
+                String excMsg = "Overflow has occurred for the computation of the norm of " 
+                        + num.toASCIIString();
+                throw  new ArithmeticException(excMsg);
             }
         }
         if (num instanceof ImaginaryQuadraticInteger || num instanceof RealQuadraticInteger) {
@@ -391,8 +392,9 @@ public class NumberTheoreticFunctionsCalculator {
                 return false;
             }
         }
-        String exceptionMessage = "The domain of the number " + num.toASCIIString() + " is not yet supported.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, num);
+        String excMsg = "The domain of the number " + num.toASCIIString() 
+                + " is not yet supported";
+        throw new UnsupportedNumberDomainException(excMsg, num);
     }
     
     /**
@@ -913,8 +915,9 @@ public class NumberTheoreticFunctionsCalculator {
             String excMsg = "Null is not an algebraic integer, neither reducible nor irreducible";
             throw new NullPointerException(excMsg);
         }
-        String exceptionMessage = "The domain of the number " + num.toASCIIString() + " is not yet supported.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, num);
+        String excMsg = "The domain of the number " + num.toASCIIString() 
+                + " is not yet supported";
+        throw new UnsupportedNumberDomainException(excMsg, num);
     }
     
     private static List<AlgebraicInteger> findIrreducibleFactorsOf(QuadraticInteger n) {
@@ -1203,9 +1206,25 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
-    // STUB TO FAIL THE FIRST TEST
-    public static boolean isPerfectSquare(int num) {
-        return false;
+    /**
+     * Determines whether or not an integer is a perfect square. Note that 
+     * although 1 is considered by this program to be squarefree, it is also 
+     * considered to be a perfect square.
+     * <p>Be aware that since this function uses floating point operations, 
+     * results are not guaranteed to be correct for integers greater than 
+     * 2<sup>53</sup>.</p>
+     * @param num The number to be tested. Examples: 81, &minus;81, 82.
+     * @return True if the number is 0 or a square of a nonzero integer, false 
+     * in any other case. For example, 81 is a perfect square since &minus;9 
+     * &times; &minus;9 = 9 &times; 9 = 81. But &minus;81 is not a perfect 
+     * square since its square root is imaginary. And 82 is not a perfect square 
+     * either since it is 2 &times; 41.
+     */
+    public static boolean isPerfectSquare(long num) {
+        if (num < 0) return false;
+        double sqrt = Math.sqrt(num);
+        double flooredRoot = Math.floor(sqrt);
+        return sqrt == flooredRoot;
     }
     
     /**
@@ -1332,8 +1351,9 @@ public class NumberTheoreticFunctionsCalculator {
                             if (currB instanceof RealQuadraticInteger) {
                                 currA = new RealQuadraticInteger(currA.getRegPartMult(), 0, currB.getRing());
                             } else {
-                                String exceptionMessage = currB.getClass().getName() + " is not currently supported for this Euclidean GCD operation.";
-                                throw new UnsupportedNumberDomainException(exceptionMessage, currB.getRing());
+                                String excMsg = currB.getClass().getName() 
+                                        + " is not currently supported for this Euclidean GCD operation";
+                                throw new UnsupportedNumberDomainException(excMsg, currB.getRing());
                             }
                         }
                     }
@@ -1344,14 +1364,18 @@ public class NumberTheoreticFunctionsCalculator {
                             if (currA instanceof RealQuadraticInteger) {
                                 currB = new RealQuadraticInteger(currB.getRegPartMult(), 0, currA.getRing());
                             } else {
-                                String exceptionMessage = currA.getClass().getName() + " is not currently supported for this Euclidean GCD operation.";
-                                throw new UnsupportedNumberDomainException(exceptionMessage, currA.getRing());
+                                String excMsg = currA.getClass().getName() 
+                                        + " is not currently supported for this Euclidean GCD operation";
+                                throw new UnsupportedNumberDomainException(excMsg, currA.getRing());
                             }
                         }
                     }
                 } else {
-                    String exceptionMessage = a.toASCIIString() + " is from " + currA.getRing().toASCIIString() + " but " + b.toASCIIString() + " is from " + currB.getRing().toASCIIString() + "\"";
-                    throw new AlgebraicDegreeOverflowException(exceptionMessage, 2, a, b);
+                    String excMsg = a.toASCIIString() + " is from " 
+                            + currA.getRing().toASCIIString() + " but " 
+                            + b.toASCIIString() + " is from " 
+                            + currB.getRing().toASCIIString();
+                    throw new AlgebraicDegreeOverflowException(excMsg, 2, a, b);
                 }
             }
             boolean nonNormEuclFlag = true;
@@ -1362,8 +1386,9 @@ public class NumberTheoreticFunctionsCalculator {
                 counter++;
             }
             if (nonNormEuclFlag) {
-                String exceptionMessage = currA.getRing().toASCIIString() + " is not a norm-Euclidean domain.";
-                throw new NonEuclideanDomainException(exceptionMessage, currA, currB);
+                String excMsg = currA.getRing().toASCIIString() 
+                        + " is not a norm-Euclidean domain";
+                throw new NonEuclideanDomainException(excMsg, currA, currB);
             }
             if (Math.abs(currA.norm()) < Math.abs(currB.norm())) {
                 QuadraticInteger swapper = currA;
@@ -1686,8 +1711,9 @@ public class NumberTheoreticFunctionsCalculator {
             }
             return n;
         }
-        String exceptionMessage = "Place in primary sector function not yet supported for " + num.getRing().toASCIIString();
-        throw new UnsupportedNumberDomainException(exceptionMessage, num);
+        String excMsg = "Place in primary sector function not yet supported for " 
+                + num.getRing().toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, num);
     }
 
     /**
@@ -1740,8 +1766,9 @@ public class NumberTheoreticFunctionsCalculator {
             } while (n.equals(nextN));
             return n;
         }
-        String exceptionMessage = "Place in primary section function not yet supported for " + num.getRing().toASCIIString();
-        throw new UnsupportedNumberDomainException(exceptionMessage, num);
+        String excMsg = "Place in primary section function not yet supported for " 
+                + num.getRing().toASCIIString();
+        throw new UnsupportedNumberDomainException(excMsg, num);
     }
 
     public static AlgebraicInteger getNegOneInRing(IntegerRing ring) {
