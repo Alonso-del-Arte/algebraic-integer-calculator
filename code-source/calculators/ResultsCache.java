@@ -32,8 +32,10 @@ import java.util.Optional;
  * viewers.RealQuadRingDisplay}.
  * <p>I might generalize this to other kinds of rings. I'll cross that bridge 
  * when I get to it.</p>
+ * @deprecated Will delete before Version 1.0.
  * @author Alonso del Arte
  */
+@Deprecated
 public class ResultsCache {
     
     private final RealQuadraticRing cachedRing;
