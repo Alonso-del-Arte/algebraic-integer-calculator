@@ -17,11 +17,14 @@
 package calculators;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Sieve of Eratosthenes to list prime numbers up to a given threshold. Primes 
- * will be cached. They're not expensive to calculate, but having to recalculate 
- * the same primes over and over might slow things down unacceptably.
+ * will be cached. They're not expensive to calculate, at least not in the range 
+ * of primes that can fit in an <code>int</code> or even a <code>byte</code>, 
+ * but having to recalculate the same primes over and over might slow things 
+ * down unacceptably.
  * @author Alonso del Arte
  */
 public class EratosthenesSieve {
@@ -31,6 +34,11 @@ public class EratosthenesSieve {
     private static final int[] FIRST_25_PRIMES = {2, 3, 5, 7, 11, 13, 17, 19, 
         23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
     
+    /**
+     * The list of prime numbers that have been stored so far during the current 
+     * session. This is initialized with the first 25 positive primes: 2, 3, 5, 
+     * 7, ..., 97.
+     */
     private static final ArrayList<Integer> PRIMES = new ArrayList<>();
     
     static {
@@ -39,8 +47,24 @@ public class EratosthenesSieve {
         }
     }
     
-    public static ArrayList<Integer> listPrimes(int threshold) {
+    /**
+     * Gives a list of prime numbers up to a given threshold. If the threshold 
+     * is below what has already been calculated, this function will simply 
+     * return a sublist. Otherwise it will look for more primes to meet the 
+     * specified threshold.
+     * @param threshold The number to go up to, possibly including that number 
+     * (if it is itself prime). For example, 50. May be negative, in which case 
+     * it will be multiplied by &minus;1; e.g., &minus;50.
+     * @return A list of primes, starting with 2 and ending with the largest 
+     * prime not greater than the absolute value of <code>threshold</code>. For 
+     * example, 2, 3, 5, 7, ..., 47. If <code>threshold</code> is &minus;1, 0 or 
+     * 1, the returned list will be an empty list.
+     */
+    public static List<Integer> listPrimes(int threshold) {
         int thresh = Math.abs(threshold);
+        if (thresh < 2) {
+            return new ArrayList<>();
+        }
         if (thresh < currThresh) {
             int trimIndex = PRIMES.size();
             int p;
@@ -66,6 +90,15 @@ public class EratosthenesSieve {
             currThresh = thresh;
         }
         return new ArrayList<>(PRIMES);
+    }
+    
+    public static List<Integer> listPrimes(int start, int threshold) {
+        List<Integer> primes = listPrimes(threshold);
+        int index = 0;
+        while (primes.get(index) < start) {
+            index++;
+        }
+        return primes.subList(index, primes.size());
     }
     
 }
