@@ -57,7 +57,7 @@ public abstract class ResultsGrouping<T extends AlgebraicInteger> {
     }
     
     // STUB TO FAIL THE FIRST TEST
-    public void raisePrimePi() {
+    public void raisePrimePi(int increment) {
         //
     }
 
