@@ -134,7 +134,7 @@ public final class RealQuadResultsGrouping
         // LINES TO ENSURE INITIAL TEST FAILURES
         RealQuadraticInteger four = new RealQuadraticInteger(4, 0, ring);
         this.inertialPrimes.add(four);
-        this.ramifiedPrimes.put(four, Optional.empty());
-            }
+        this.splitPrimes.put(four, Optional.empty());
+    }
 
 }
