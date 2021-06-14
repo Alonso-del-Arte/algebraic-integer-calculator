@@ -37,7 +37,7 @@ public abstract class ResultsGrouping<T extends AlgebraicInteger> {
      */
     public static final int DEFAULT_PRIME_PI = 720;
     
-    private int primePi;
+    int primePi;
 
     private final IntegerRing domain;
     
@@ -47,18 +47,41 @@ public abstract class ResultsGrouping<T extends AlgebraicInteger> {
     
     HashMap<T, Optional<T>> ramifiedPrimes = new HashMap<>();
     
+    /**
+     * Retrieves the ring object with which this results grouping object was 
+     * created.
+     * @return The same ring object that was passed to the constructor.
+     */
     public IntegerRing getRing() {
         return this.domain;
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Retrieves the current <code>primePi</code> setting. This setting 
+     * determines how far to look for inert primes.
+     * @return The current <code>primePi</code> setting. If there have been no 
+     * calls to {@link #raisePrimePi(int)}, this should be {@link 
+     * #DEFAULT_PRIME_PI}.
+     */
     public int getPrimePi() {
-        return -1;
+        return this.primePi;
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Raises the current <code>primePi</code> setting. Note that there is no 
+     * checking for overflows (e.g., if the setting is currently 2<sup>16</sup> 
+     * and a caller tries to raise it by another 2<sup>16</sup>).
+     * @param increment An integer that is not negative, preferably positive. If 
+     * 0, nothing happens.
+     * @throws IllegalArgumentException If <code>increment</code> is negative.
+     */
     public void raisePrimePi(int increment) {
-        //
+        if (increment < 0) {
+            String excMsg = "Increment should be positive but " + increment 
+                    + " is negative";
+            throw new IllegalArgumentException(excMsg);
+        }
+        this.primePi += increment;
     }
 
     public abstract HashSet<T> inerts();
@@ -67,6 +90,12 @@ public abstract class ResultsGrouping<T extends AlgebraicInteger> {
     
     public abstract HashMap<T, Optional<T>> ramifieds();
     
+    /**
+     * Sole constructor. The <code>primePi</code> setting is initialized to 
+     * {@link #DEFAULT_PRIME_PI}.
+     * @param ring A ring object, preferably related to the generic type 
+     * parameter <code>T</code>.
+     */
     public ResultsGrouping(IntegerRing ring) {
         this.domain = ring;
         this.primePi = DEFAULT_PRIME_PI;

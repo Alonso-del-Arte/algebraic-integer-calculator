@@ -23,9 +23,12 @@ import algebraics.quadratics.RealQuadraticRing;
 import static calculators.NumberTheoreticFunctionsCalculator.fieldClassNumber;
 import static calculators.NumberTheoreticFunctionsCalculator.fundamentalUnit;
 import static calculators.NumberTheoreticFunctionsCalculator.isPerfectSquare;
+import static calculators.NumberTheoreticFunctionsCalculator.symbolKronecker;
+import static calculators.NumberTheoreticFunctionsCalculator.symbolLegendre;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -112,6 +115,38 @@ public final class RealQuadResultsGrouping
             return new HashMap<>(this.ramifiedPrimes);
     }
     
+    private void processEvenPrime() {
+        byte symbol = symbolKronecker(this.radicand, 2);
+        RealQuadraticInteger two = new RealQuadraticInteger(2, 0, 
+                this.cachedRing);
+        if (symbol == -1) {
+            this.inertialPrimes.add(two);
+        } else {
+            Optional<RealQuadraticInteger> factor = findSplitter(2);
+            if (symbol == 0) {
+                this.ramifiedPrimes.put(two, factor);
+            } else {
+                this.splitPrimes.put(two, factor);
+            }
+        }
+    }
+    
+    private void processOddPrime(int p) {
+        byte symbol = symbolLegendre(this.radicand, p);
+        RealQuadraticInteger prime = new RealQuadraticInteger(p, 0, 
+                this.cachedRing);
+        if (symbol == -1) {
+            this.inertialPrimes.add(prime);
+        } else {
+            Optional<RealQuadraticInteger> factor = findSplitter(p);
+            if (symbol == 0) {
+                this.ramifiedPrimes.put(prime, factor);
+            } else {
+                this.splitPrimes.put(prime, factor);
+            }
+        }
+    }
+    
     public RealQuadResultsGrouping(RealQuadraticRing ring) {
         super(ring);
         this.cachedRing = ring;
@@ -131,10 +166,13 @@ public final class RealQuadResultsGrouping
         }
         this.cachedUnit = unitHolder;
         this.cachedClassNumber = classNumberHolder;
-        // LINES TO ENSURE INITIAL TEST FAILURES
-        RealQuadraticInteger four = new RealQuadraticInteger(4, 0, ring);
-        this.inertialPrimes.add(four);
-        this.splitPrimes.put(four, Optional.empty());
+        this.surdPartSearchThreshold = DEFAULT_SURD_PART_SEARCH_THRESHOLD;
+        this.processEvenPrime();
+        List<Integer> primes = EratosthenesSieve.listPrimes(this.primePi);
+        List<Integer> oddPrimes = primes.subList(1, primes.size());
+        oddPrimes.forEach((oddPrime) -> {
+            this.processOddPrime(oddPrime);
+        });
     }
 
 }
