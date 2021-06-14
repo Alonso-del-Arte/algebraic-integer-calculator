@@ -26,8 +26,6 @@ import static calculators.NumberTheoreticFunctionsCalculator.isPerfectSquare;
 import static calculators.NumberTheoreticFunctionsCalculator.symbolKronecker;
 import static calculators.NumberTheoreticFunctionsCalculator.symbolLegendre;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,23 +94,6 @@ public final class RealQuadResultsGrouping
         } else {
             return lookForSplitter(num, 1);
         }
-    }
-    
-    @Override
-    public HashSet<RealQuadraticInteger> inerts() {
-        return new HashSet(this.inertialPrimes);
-    }
-
-    @Override
-    public HashMap<RealQuadraticInteger, Optional<RealQuadraticInteger>> 
-        splits() {
-            return new HashMap<>(this.splitPrimes);
-    }
-
-    @Override
-    public HashMap<RealQuadraticInteger, Optional<RealQuadraticInteger>> 
-        ramifieds() {
-            return new HashMap<>(this.ramifiedPrimes);
     }
     
     private void processEvenPrime() {

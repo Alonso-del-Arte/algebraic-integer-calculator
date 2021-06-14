@@ -84,11 +84,67 @@ public abstract class ResultsGrouping<T extends AlgebraicInteger> {
         this.primePi += increment;
     }
 
-    public abstract HashSet<T> inerts();
+    /**
+     * Returns the set of inert primes, starting with 2 (when applicable) and 
+     * going up to the <code>primePi</code> setting. If a subclass simply places 
+     * the inert primes in the appropriate internal set, there is no need to 
+     * override this function.
+     * @return A set of inert primes. For example, for <b>Z</b>[&radic;7], the  
+     * set should include 5, 11, 13, 17, 23, 41, 43, etc., as those are all 
+     * inert in <b>Z</b>[&radic;7]. In other words, for those numbers <i>p</i>, 
+     * the equation <i>x</i><sup>2</sup> &minus; 7<i>y</i><sup>2</sup> = 
+     * <i>p</i> has no solution in integers. The set is a new copy of the 
+     * internally held values, so the caller is free to modify it as needed.
+     */
+    public HashSet<T> inerts() {
+        return new HashSet(this.inertialPrimes);
+    }
     
-    public abstract HashMap<T, Optional<T>> splits();
+    /**
+     * Returns the map of split primes, starting with 2 (when applicable) and 
+     * going up to the <code>primePi</code> setting, and their corresponding 
+     * splitters. If a subclass simply places the split primes and their 
+     * splitters in the appropriate internal map, there is no need to override 
+     * this function.
+     * @return A map of split primes and their splitters. For example, for 
+     * <b>Z</b>[&radic;7], the map should include 3, since 3 splits as 
+     * (&minus;1)(2 &minus; &radic;7)(2 + &radic;7). The key 3 should correspond 
+     * to an <code>Optional</code> holding the value 2 + &radic;7. The map is a 
+     * new copy of the internally held keys and values, so the caller is free to 
+     * modify it as needed. 
+     * <p>Note that in the case of domains without unique factorization, a prime 
+     * might be listed among the split primes with an empty 
+     * <code>Optional</code> for the splitter. Even with a unique factorization 
+     * domain there is the possibility of an empty <code>Optional</code> if the 
+     * calculation could not be performed in a timely manner or an overflow 
+     * would have resulted.</p>
+     */
+    public HashMap<T, Optional<T>> splits() {
+            return new HashMap<>(this.splitPrimes);
+    }
     
-    public abstract HashMap<T, Optional<T>> ramifieds();
+    /**
+     * Returns the map of ramified primes, starting with 2 (when applicable) and 
+     * going up to the <code>primePi</code> setting, and their corresponding 
+     * ramifiers. If a subclass simply places the ramified primes and their 
+     * ramifiers in the appropriate internal map, there is no need to override 
+     * this function.
+     * @return A map of ramified primes and their ramifiers. For example, for 
+     * <b>Z</b>[&radic;7], the map should definitely include 7, since 7 ramifies  
+     * as (&radic;7)<sup>2</sup>. The key 7 should correspond to an 
+     * <code>Optional</code> holding the value &radic;7. The map is a new copy 
+     * of the internally held keys and values, so the caller is free to modify 
+     * it as needed.
+     * <p>Note that in the case of domains without unique factorization, a prime 
+     * might be listed among the ramified primes with an empty 
+     * <code>Optional</code> for the ramifier. Even with a unique factorization 
+     * domain there is the possibility of an empty <code>Optional</code> if the 
+     * calculation could not be performed in a timely manner or an overflow 
+     * would have resulted.</p>
+     */
+    public HashMap<T, Optional<T>> ramifieds() {
+            return new HashMap<>(this.ramifiedPrimes);
+    }
     
     /**
      * Sole constructor. The <code>primePi</code> setting is initialized to 
