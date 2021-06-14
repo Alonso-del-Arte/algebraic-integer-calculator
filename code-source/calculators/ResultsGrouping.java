@@ -29,6 +29,15 @@ import java.util.Optional;
  * @author Alonso del Arte
  */
 public abstract class ResultsGrouping<T extends AlgebraicInteger> {
+    
+    /**
+     * The default threshold for which to look for integers that are prime in 
+     * <b>Z</b> but split or ramify in the ring for which this grouping holds 
+     * results. This is hopefully sufficient for most purposes.
+     */
+    public static final int DEFAULT_PRIME_PI = 720;
+    
+    private int primePi;
 
     private final IntegerRing domain;
     
@@ -42,6 +51,16 @@ public abstract class ResultsGrouping<T extends AlgebraicInteger> {
         return this.domain;
     }
     
+    // STUB TO FAIL THE FIRST TEST
+    public int getPrimePi() {
+        return -1;
+    }
+    
+    // STUB TO FAIL THE FIRST TEST
+    public void raisePrimePi() {
+        //
+    }
+
     public abstract HashSet<T> inerts();
     
     public abstract HashMap<T, Optional<T>> splits();
@@ -50,6 +69,7 @@ public abstract class ResultsGrouping<T extends AlgebraicInteger> {
     
     public ResultsGrouping(IntegerRing ring) {
         this.domain = ring;
+        this.primePi = DEFAULT_PRIME_PI;
     }
     
 }
