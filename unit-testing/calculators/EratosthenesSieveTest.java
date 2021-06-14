@@ -18,6 +18,7 @@ package calculators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -38,7 +39,7 @@ public class EratosthenesSieveTest {
         Integer[] smallPrimes = {2, 3, 5, 7};
         ArrayList<Integer> expected 
                 = new ArrayList<>(Arrays.asList(smallPrimes));
-        ArrayList<Integer> actual = EratosthenesSieve.listPrimes(threshold);
+        List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
         assertEquals(expected, actual);
     }
     
@@ -53,7 +54,7 @@ public class EratosthenesSieveTest {
             43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
         ArrayList<Integer> expected 
                 = new ArrayList<>(Arrays.asList(smallPrimes));
-        ArrayList<Integer> actual = EratosthenesSieve.listPrimes(threshold);
+        List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
         assertEquals(expected, actual);
     }
     
@@ -66,7 +67,7 @@ public class EratosthenesSieveTest {
     @Test
     public void testEratosthenesSieveCanTrim() {
         int threshold = 80;
-        ArrayList<Integer> actual = EratosthenesSieve.listPrimes(threshold);
+        List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
         System.out.println("EratosthenesSieve reports " + actual.size() 
                 + " primes between 1 and " + threshold);
         threshold = 20;
@@ -85,7 +86,7 @@ public class EratosthenesSieveTest {
     @Test
     public void testModifyPrimeSubset() {
         int threshold = 20;
-        ArrayList<Integer> subset = EratosthenesSieve.listPrimes(threshold);
+        List<Integer> subset = EratosthenesSieve.listPrimes(threshold);
         for (int i = 0; i < subset.size(); i++) {
             int p = -subset.get(i);
             subset.set(i, p);
@@ -94,7 +95,7 @@ public class EratosthenesSieveTest {
         Integer[] smallPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
         ArrayList<Integer> expected 
                 = new ArrayList<>(Arrays.asList(smallPrimes));
-        ArrayList<Integer> actual = EratosthenesSieve.listPrimes(threshold);
+        List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
         assertEquals(expected, actual);
         subset.clear();
         threshold = 139;
@@ -117,7 +118,7 @@ public class EratosthenesSieveTest {
         Integer[] smallPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
         ArrayList<Integer> expected 
                 = new ArrayList<>(Arrays.asList(smallPrimes));
-        ArrayList<Integer> actual = EratosthenesSieve.listPrimes(threshold);
+        List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
         assertEquals(expected, actual);
     }
     
@@ -130,7 +131,7 @@ public class EratosthenesSieveTest {
         int threshold = 0;
         ArrayList<Integer> expected = new ArrayList<>();
         try {
-            ArrayList<Integer> actual = EratosthenesSieve.listPrimes(threshold);
+            List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
             assertEquals(expected, actual);
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
@@ -148,13 +149,24 @@ public class EratosthenesSieveTest {
         int threshold = 1;
         ArrayList<Integer> expected = new ArrayList<>();
         try {
-            ArrayList<Integer> actual = EratosthenesSieve.listPrimes(threshold);
+            List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
             assertEquals(expected, actual);
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
                     + " should not have occurred for threshold " + threshold;
             fail(msg);
         }
+    }
+    
+    @Test
+    public void testListPrimesFromRange() {
+        int start = 100;
+        int threshold = 110;
+        Integer[] primeQuadruplet = {101, 103, 107, 109};
+        ArrayList<Integer> expected 
+                = new ArrayList<>(Arrays.asList(primeQuadruplet));
+        List<Integer> actual = EratosthenesSieve.listPrimes(start, threshold);
+        assertEquals(expected, actual);
     }
     
 }
