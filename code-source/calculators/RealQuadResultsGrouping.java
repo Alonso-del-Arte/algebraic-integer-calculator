@@ -131,6 +131,10 @@ public final class RealQuadResultsGrouping
         }
         this.cachedUnit = unitHolder;
         this.cachedClassNumber = classNumberHolder;
-    }
+        // LINES TO ENSURE INITIAL TEST FAILURES
+        RealQuadraticInteger four = new RealQuadraticInteger(4, 0, ring);
+        this.inertialPrimes.add(four);
+        this.ramifiedPrimes.put(four, Optional.empty());
+            }
 
 }
