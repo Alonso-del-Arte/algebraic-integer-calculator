@@ -132,7 +132,8 @@ public abstract class RingDisplay extends JPanel
     public static final int PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX = 180;
         
     /**
-     * The default pixel radius for the dots in the diagram.
+     * The default pixel radius for the dots in the diagram. Or half the line 
+     * thickness when applicable.
      */
     public static final int DEFAULT_DOT_RADIUS = 5;
     
@@ -256,9 +257,11 @@ public abstract class RingDisplay extends JPanel
             = new Color(65376);
     
     /**
-     * How wide to make the readouts.
+     * How wide to make the readouts. Originally this was called "default" 
+     * rather than "baseline." Some readout fields can use this value without 
+     * any adjustment, others might need to tweak it.
      */
-    public static final int DEFAULT_READOUT_FIELD_COLUMNS = 20;
+    public static final int BASELINE_READOUT_FIELD_COLUMNS = 10;
     
     /**
      * The maximum number of previous rings the program will remember for 
@@ -408,8 +411,8 @@ public abstract class RingDisplay extends JPanel
     protected JCheckBoxMenuItem preferThetaNotationMenuItem;
     protected JCheckBoxMenuItem toggleReadOutsEnabledMenuItem;
     
-    protected JTextField algIntReadOut, algIntTraceReadOut, algIntNormReadOut;
-    protected JTextField algIntPolReadOut;
+    protected JTextField algIntReadOut, traceReadOut, normReadOut;
+    protected JTextField polynomialReadOut, unitReadOut;
     
     /**
      * Keeps track of whether or not the user has saved a diagram before. 
@@ -445,7 +448,7 @@ public abstract class RingDisplay extends JPanel
      * {@link #setPixelsPerUnitInterval(int)}. If you don't actually need to use 
      * basic imaginary intervals, implement as a do-nothing procedure. 
      * Regardless, this should never be called by a class outside the 
-     * RingDisplay class hierarchy.
+     * <code>RingDisplay</code> class hierarchy.
      */
     protected abstract void setPixelsPerBasicImaginaryInterval();
         
@@ -606,15 +609,14 @@ public abstract class RingDisplay extends JPanel
     }
     
     /**
-     * Function to change the coordinates of the point 0. I have not yet 
-     * implemented a meaningful use for this proposedCoordX.
+     * Procedure to change the coordinates of the point 0. I have not yet 
+     * implemented a meaningful use for this procedure.
      * @param proposedCoordX The new x-coordinate for 0.
      * @param proposedCoordY The new y-coordinate for 0.
      */
     public void changeZeroCoords(int proposedCoordX, int proposedCoordY) {
         this.zeroCoordX = proposedCoordX;
         this.zeroCoordY = proposedCoordY;
-        // TODO: check if 0 is at the center of the diagram
     }
     
     /**
@@ -734,6 +736,11 @@ public abstract class RingDisplay extends JPanel
         this.setRing(ring);
         if (this.unitApplicable) {
             this.findUnit();
+            if (this.unitAvailable) {
+                this.unitReadOut.setText(this.fundamentalUnit.toString());
+            } else {
+                this.unitReadOut.setText("???");
+            }
         }
         this.repaint();
     }
@@ -786,7 +793,7 @@ public abstract class RingDisplay extends JPanel
      */
     public void previousDiscriminant() {
         currHistoryIndex--;
-        switchToRing(discrHistory.get(currHistoryIndex));
+        this.switchToRing(discrHistory.get(currHistoryIndex));
         if (currHistoryIndex == 0) {
             prevDMenuItem.setEnabled(false);
         }
@@ -800,7 +807,7 @@ public abstract class RingDisplay extends JPanel
      */
     public void nextDiscriminant() {
         currHistoryIndex++;
-        switchToRing(discrHistory.get(currHistoryIndex));
+        this.switchToRing(discrHistory.get(currHistoryIndex));
         if (currHistoryIndex == discrHistory.size() - 1) {
             nextDMenuItem.setEnabled(false);
         }
@@ -814,11 +821,20 @@ public abstract class RingDisplay extends JPanel
      * to the clipboard.
      */
     public void copyReadoutsToClipboard() {
-        String agregReadouts = this.mouseAlgInt.toString();
-        agregReadouts = agregReadouts + ", Trace: " + this.mouseAlgInt.trace() 
+        String aggregReadouts = this.mouseAlgInt.toString();
+        aggregReadouts = aggregReadouts + ", Trace: " + this.mouseAlgInt.trace() 
                 + ", Norm: " + this.mouseAlgInt.norm() + ", Polynomial: " 
                 + this.mouseAlgInt.minPolynomialString();
-        StringSelection ss = new StringSelection(agregReadouts);
+        if (this.unitApplicable) {
+            aggregReadouts = aggregReadouts + ", Fundamental unit: ";
+            if (this.unitAvailable) {
+                aggregReadouts = aggregReadouts 
+                        + this.fundamentalUnit.toString();
+            } else {
+                aggregReadouts = aggregReadouts + "???";
+            }
+        }
+        StringSelection ss = new StringSelection(aggregReadouts);
         this.getToolkit().getSystemClipboard().setContents(ss, ss);
     }
     
@@ -871,6 +887,7 @@ public abstract class RingDisplay extends JPanel
     public void zoomIn() {
         int pixels = this.pixelsPerUnitInterval + this.zoomStep;
         this.setPixelsPerUnitInterval(pixels);
+        this.updateBoundaryNumber();
         this.repaint();
         this.checkZoomInOutEnablements();
     }
@@ -882,6 +899,7 @@ public abstract class RingDisplay extends JPanel
     public void zoomOut() {
         int pixels = this.pixelsPerUnitInterval - this.zoomStep;
         this.setPixelsPerUnitInterval(pixels);
+        this.updateBoundaryNumber();
         this.repaint();
         this.checkZoomInOutEnablements();
     }
@@ -989,6 +1007,18 @@ public abstract class RingDisplay extends JPanel
     }
     
     /**
+     * Gives the preferred dot radius or line thickness. Override only if a dot 
+     * radius or line thickness other than {@link #DEFAULT_DOT_RADIUS} is 
+     * necessary.
+     * @return The preferred dot radius or line thickness. If this hasn't been 
+     * overridden by a subclass, this returned value will be exactly the same as 
+     * {@link #DEFAULT_DOT_RADIUS}.
+     */
+    protected int getPreferredDotRadius() {
+        return DEFAULT_DOT_RADIUS;
+    }
+    
+    /**
      * Resets pixels per unit interval, dot radius and zoom interval. This does 
      * not change the discriminant, nor whether or not readouts are updated, nor 
      * the preference for theta notation.
@@ -1005,7 +1035,7 @@ public abstract class RingDisplay extends JPanel
          */
         this.setPixelsPerUnitInterval(DEFAULT_PIXELS_PER_UNIT_INTERVAL);
         this.changeZoomStep(DEFAULT_ZOOM_INTERVAL);
-        this.changeDotRadius(DEFAULT_DOT_RADIUS);
+        this.changeDotRadius(this.getPreferredDotRadius());
         this.repaint();
         this.checkZoomInOutEnablements();
         this.checkZoomStepEnablements();
@@ -1161,13 +1191,14 @@ public abstract class RingDisplay extends JPanel
                 this.increaseDotRadius();
                 break;
             case "defaultView":
-                String msg 
-                        = "This will reset pixels per unit interval, dot radius only";
+                String msg = "This will reset pixels per unit interval and " 
+                        + this.dotRadiusOrLineThicknessText
+                        + " only";
                 String title = "Reset view defaults?";
                 int reply = JOptionPane.showConfirmDialog(ringFrame, msg, title, 
                         JOptionPane.OK_CANCEL_OPTION);
                 if (reply == JOptionPane.OK_OPTION) {
-                    resetViewDefaults();
+                    this.resetViewDefaults();
                 }
                 break;
             case "toggleTheta":
@@ -1461,25 +1492,35 @@ public abstract class RingDisplay extends JPanel
     
     private JPanel setUpReadOuts() {
         JPanel readOutsPane = new JPanel();
-        this.algIntReadOut = new JTextField(DEFAULT_READOUT_FIELD_COLUMNS);
+        this.algIntReadOut = new JTextField(BASELINE_READOUT_FIELD_COLUMNS + 3);
         this.algIntReadOut.setText("0");
         this.algIntReadOut.setEditable(false);
         readOutsPane.add(this.algIntReadOut);
-        readOutsPane.add(new JLabel("Trace: "));
-        this.algIntTraceReadOut = new JTextField(DEFAULT_READOUT_FIELD_COLUMNS);
-        this.algIntTraceReadOut.setText("0");
-        this.algIntTraceReadOut.setEditable(false);
-        readOutsPane.add(this.algIntTraceReadOut);
-        readOutsPane.add(new JLabel("Norm: "));
-        this.algIntNormReadOut = new JTextField(DEFAULT_READOUT_FIELD_COLUMNS);
-        this.algIntNormReadOut.setText("0");
-        this.algIntNormReadOut.setEditable(false);
-        readOutsPane.add(algIntNormReadOut);
-        readOutsPane.add(new JLabel("Polynomial: "));
-        this.algIntPolReadOut = new JTextField(DEFAULT_READOUT_FIELD_COLUMNS);
-        this.algIntPolReadOut.setText("x");
-        this.algIntPolReadOut.setEditable(false);
-        readOutsPane.add(algIntPolReadOut);
+        readOutsPane.add(new JLabel(" Trace: "));
+        this.traceReadOut = new JTextField(BASELINE_READOUT_FIELD_COLUMNS - 6);
+        this.traceReadOut.setText("0");
+        this.traceReadOut.setEditable(false);
+        readOutsPane.add(this.traceReadOut);
+        readOutsPane.add(new JLabel(" Norm: "));
+        this.normReadOut = new JTextField(BASELINE_READOUT_FIELD_COLUMNS - 4);
+        this.normReadOut.setText("0");
+        this.normReadOut.setEditable(false);
+        readOutsPane.add(this.normReadOut);
+        readOutsPane.add(new JLabel(" Polynomial: "));
+        this.polynomialReadOut = new JTextField(BASELINE_READOUT_FIELD_COLUMNS);
+        this.polynomialReadOut.setText("x");
+        this.polynomialReadOut.setEditable(false);
+        readOutsPane.add(this.polynomialReadOut);
+        this.unitReadOut = new JTextField(BASELINE_READOUT_FIELD_COLUMNS + 4);
+        this.unitReadOut.setText("???");
+        this.unitReadOut.setEditable(false);
+        if (this.unitApplicable) {
+            readOutsPane.add(new JLabel("Fundamental unit: "));
+            if (this.unitAvailable) {
+                this.unitReadOut.setText(this.fundamentalUnit.toString());
+            }
+            readOutsPane.add(this.unitReadOut);
+        }
         return readOutsPane;
     }
    
@@ -1516,8 +1557,11 @@ public abstract class RingDisplay extends JPanel
      * subclass constructor.
      */
     public void startRingDisplay() {
-        this.setPixelsPerBasicImaginaryInterval();
+        if (this.includeImaginary) {
+            this.setPixelsPerBasicImaginaryInterval();
+        }
         this.setUpRingFrame();
+        this.updateBoundaryNumber();
         RingDisplay.windowCount++;
     }
     
@@ -1545,9 +1589,10 @@ public abstract class RingDisplay extends JPanel
         this.splitPrimeColor = DEFAULT_SPLIT_PRIME_COLOR;
         this.splitPrimeMidDegreeColor = DEFAULT_SPLIT_MID_DEGREE_PRIME_COLOR;
         this.ramifiedPrimeColor = DEFAULT_RAMIFIED_PRIME_COLOR;
-        this.ramifiedPrimeMidDegreeColor = DEFAULT_RAMIFIED_MID_DEGREE_PRIME_COLOR;
-        this.zeroCoordX = (int) Math.floor(this.ringCanvasHorizMax/2);
-        this.zeroCoordY = (int) Math.floor(this.ringCanvasVerticMax/2);
+        this.ramifiedPrimeMidDegreeColor 
+                = DEFAULT_RAMIFIED_MID_DEGREE_PRIME_COLOR;
+        this.zeroCoordX = (int) Math.floor(this.ringCanvasHorizMax / 2);
+        this.zeroCoordY = (int) Math.floor(this.ringCanvasVerticMax / 2);
         // this.zeroCentered = true;
         // this.zeroInView = true;
         this.dotRadius = DEFAULT_DOT_RADIUS;

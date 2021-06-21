@@ -21,16 +21,23 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
+import cacheops.LRUCache;
+import calculators.RealQuadResultsGrouping;
+
+import static calculators.NumberTheoreticFunctionsCalculator.fieldClassNumber;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
+import static viewers.RingDisplay.PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX;
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
-
-import static calculators.NumberTheoreticFunctionsCalculator.*;
-import static viewers.RingDisplay.PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX;
 
 /**
  * A Swing component in which to display diagrams of prime numbers in various 
@@ -42,10 +49,23 @@ public final class RealQuadRingDisplay extends RingDisplay {
     public static final int DEFAULT_RING_D = 2;
     
     /**
-     * This is a PROVISIONAL value while I work out the problem with the 
-     * fundamental unit function (it doesn't work correctly for d = 103).
+     * The maximum value of <i>d</i> that will be allowed for choosing the ring 
+     * <b>Z</b>[&radic<i>d</i>] or <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub>. 
+     * This was originally 102, a provisional value while I worked out the 
+     * problem with the fundamental unit function (it didn't work correctly for 
+     * <i>d</i> = 103).
      */
-    public static final int MAXIMUM_RING_D = 102;
+    public static final int MAXIMUM_RING_D = 8191;
+    
+    public static final int SPECIFIC_PREFERRED_DOT_RADIUS = 1;
+    
+    /**
+     * Gives the class number of the currently displayed ring. That is unless 
+     * there was a problem calculating the class number, in which case this will 
+     * be set to 2, as the presumption is that the ring is not an unique 
+     * factorization domain (UFD).
+     */
+    private int classNumber;
     
     private RealQuadraticInteger diagRingMainUnit;
     
@@ -53,6 +73,28 @@ public final class RealQuadRingDisplay extends RingDisplay {
      * The number 1 + 0&radic;<i>d</i>.
      */
     private RealQuadraticInteger diagRingOne;
+    
+    private final LRUCache<RealQuadraticRing, RealQuadResultsGrouping> cache 
+            = new LRUCache<RealQuadraticRing, RealQuadResultsGrouping>(32) {
+                
+        @Override
+        protected RealQuadResultsGrouping create(RealQuadraticRing name) {
+            return new RealQuadResultsGrouping(name);
+        }
+        
+    };
+    
+    private RealQuadResultsGrouping resGroup;
+    
+    HashSet<RealQuadraticInteger> inertials;
+    
+    Set<RealQuadraticInteger> splitteds;
+    
+    HashMap<RealQuadraticInteger, Optional<RealQuadraticInteger>> splitters;
+    
+    Set<RealQuadraticInteger> ramifieds;
+    
+    HashMap<RealQuadraticInteger, Optional<RealQuadraticInteger>> ramifiers;
     
     private static final String MANUAL_URL_TOP_LEVEL = "https://github.com/";
     
@@ -78,6 +120,16 @@ public final class RealQuadRingDisplay extends RingDisplay {
     private static final String ABOUT_BOX_COPYRIGHT_NOTICE 
             = "\u00A9 2021 Alonso del Arte_";
     
+    private void drawOneLine(Graphics g, int coordX) {
+        g.fillRect(coordX - this.dotRadius, 0, this.dotDiameter, 
+                this.ringCanvasVerticMax);
+    }
+    
+    private void outlineOneLine(Graphics g, int coordX) {
+        g.drawRect(coordX - this.dotRadius, 0, this.dotDiameter, 
+                this.ringCanvasVerticMax);
+    }
+    
     /**
      * Draws two lines, corresponding to the specified real quadratic integer 
      * and its additive inverse. It is assumed the caller has already specified 
@@ -91,8 +143,17 @@ public final class RealQuadRingDisplay extends RingDisplay {
         int coordAdjust = (int) Math.round(distance);
         int coordX = this.zeroCoordX + coordAdjust;
         int coordNegativeX = this.zeroCoordX - coordAdjust;
-        g.drawLine(coordX, 0, coordX, this.ringCanvasVerticMax);
-        g.drawLine(coordNegativeX, 0, coordNegativeX, this.ringCanvasVerticMax);
+        this.drawOneLine(g, coordX);
+        this.drawOneLine(g, coordNegativeX);
+    }
+    
+    private void outlineTwoLines(Graphics g, QuadraticInteger x) {
+        double distance = x.getRealPartNumeric() * this.pixelsPerUnitInterval;
+        int coordAdjust = (int) Math.round(distance);
+        int coordX = this.zeroCoordX + coordAdjust;
+        int coordNegativeX = this.zeroCoordX - coordAdjust;
+        this.outlineOneLine(g, coordX);
+        this.outlineOneLine(g, coordNegativeX);
     }
     
     private void drawFourLines(Graphics g, RealQuadraticInteger x) {
@@ -100,28 +161,121 @@ public final class RealQuadRingDisplay extends RingDisplay {
         this.drawTwoLines(g, x.conjugate());
     }
     
+    private void outlineFourLines(Graphics g, RealQuadraticInteger x) {
+        this.outlineTwoLines(g, x);
+        this.outlineTwoLines(g, x.conjugate());
+    }
+    
     private void drawLinesMultByUnit(Graphics g, RealQuadraticInteger x) {
-        this.drawFourLines(g, x);
+        while (x.abs() <= this.boundaryRe) {
+            this.drawFourLines(g, x);
+            x = (RealQuadraticInteger) x.times(this.diagRingMainUnit);
+        }
+    }
+    
+    private void outlineLinesMultByUnit(Graphics g, RealQuadraticInteger x) {
+        while (x.abs() <= this.boundaryRe) {
+            this.outlineFourLines(g, x);
+            x = (RealQuadraticInteger) x.times(this.diagRingMainUnit);
+        }
     }
     
     private void drawUnits(Graphics g) {
         g.setColor(this.unitColor);
         this.drawTwoLines(g, this.diagRingOne);
         if (this.unitAvailable) {
-            this.drawLinesMultByUnit(g, this.diagRingOne);
+            this.drawLinesMultByUnit(g, this.diagRingMainUnit);
         }
     }
     
     private void drawInerts(Graphics g) {
-        //
+        g.setColor(this.inertPrimeColor);
+        this.inertials.forEach((inert) -> {
+            this.drawTwoLines(g, inert);
+            if (this.unitAvailable) {
+                this.drawLinesMultByUnit(g, inert);
+            }
+        });
     }
     
     private void drawRamifieds(Graphics g) {
-        //
+        Optional<RealQuadraticInteger> ramifierHolder;
+        RealQuadraticInteger ramifier, ramMult;
+        g.setColor(this.ramifiedPrimeColor);
+        for (RealQuadraticInteger ramified : this.ramifieds) {
+            ramifierHolder = this.ramifiers.get(ramified);
+            if (ramifierHolder.isPresent()) {
+                ramifier = ramifierHolder.get();
+                this.drawFourLines(g, ramifier);
+                if (this.unitAvailable) {
+                    ramMult = (RealQuadraticInteger) 
+                            ramifier.times(this.diagRingMainUnit);
+                    this.drawLinesMultByUnit(g, ramMult);
+                }
+                this.drawTwoLines(g, ramified);
+                if (this.unitAvailable) {
+                    ramMult = (RealQuadraticInteger) 
+                            ramified.times(this.diagRingMainUnit);
+                    this.drawLinesMultByUnit(g, ramMult);
+                }
+            } else {
+                if (this.classNumber == 1) {
+                    this.drawTwoLines(g, ramified);
+                    if (this.unitAvailable) {
+                        ramMult = (RealQuadraticInteger) ramified
+                                .times(this.diagRingMainUnit);
+                        this.drawLinesMultByUnit(g, ramMult);
+                    }
+                } else {
+                    this.outlineTwoLines(g, ramified);
+                    if (this.unitAvailable) {
+                        ramMult = (RealQuadraticInteger) ramified
+                                .times(this.diagRingMainUnit);
+                        this.outlineLinesMultByUnit(g, ramMult);
+                    }
+                }
+            }
+        }
     }
     
     private void drawSplits(Graphics g) {
-        //
+        Optional<RealQuadraticInteger> splitterHolder;
+        RealQuadraticInteger splitter, splitMult;
+        g.setColor(this.splitPrimeColor);
+        for (RealQuadraticInteger splitted : this.splitteds) {
+            splitterHolder = this.splitters.get(splitted);
+            if (splitterHolder.isPresent()) {
+                splitter = splitterHolder.get();
+                this.drawFourLines(g, splitter);
+                if (this.unitAvailable) {
+                    splitMult = (RealQuadraticInteger) 
+                            splitter.times(this.diagRingMainUnit);
+                    this.drawLinesMultByUnit(g, splitMult);
+                }
+                this.drawTwoLines(g, splitted);
+                if (this.unitAvailable) {
+                    splitMult = (RealQuadraticInteger) 
+                            splitted.times(this.diagRingMainUnit);
+                    this.drawLinesMultByUnit(g, splitMult);
+                }
+            } else {
+                if (this.classNumber == 1) {
+                    this.drawTwoLines(g, splitted);
+                    if (this.unitAvailable) {
+                        splitMult = (RealQuadraticInteger) splitted
+                                .times(this.diagRingMainUnit);
+                        this.drawLinesMultByUnit(g, splitMult);
+                    }
+                } else {
+                    this.outlineTwoLines(g, splitted);
+                    if (this.unitAvailable) {
+                        splitMult = (RealQuadraticInteger) splitted
+                                .times(this.diagRingMainUnit);
+                        this.outlineLinesMultByUnit(g, splitMult);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -132,10 +286,12 @@ public final class RealQuadRingDisplay extends RingDisplay {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.drawSplits(g);
+        g.setColor(this.zeroColor);
+        this.drawOneLine(g, this.zeroCoordX);
+        this.drawUnits(g);
         this.drawRamifieds(g);
         this.drawInerts(g);
-        this.drawUnits(g);
+        this.drawSplits(g);
     }
     
     /**
@@ -151,7 +307,28 @@ public final class RealQuadRingDisplay extends RingDisplay {
         super.findUnit();
         if (this.unitAvailable) {
             this.diagRingMainUnit = (RealQuadraticInteger) this.fundamentalUnit;
+            try {
+                this.classNumber = fieldClassNumber(this.diagramRing);
+            } catch (ArithmeticException ae) {
+                System.err.println(ae.getMessage());
+                this.classNumber = 2;
+            }
         }
+    }
+    
+    private void fillPrimeLists() {
+        this.inertials = this.resGroup.inerts();
+        this.splitters = this.resGroup.splits();
+        this.splitteds = this.splitters.keySet();
+        this.ramifiers = this.resGroup.ramifieds();
+        this.ramifieds = this.ramifiers.keySet();
+    }
+    
+    @Override
+    protected void validateRing(IntegerRing ring) {
+        super.validateRing(ring);
+        this.resGroup = this.cache.forName((RealQuadraticRing) ring);
+        this.fillPrimeLists();
     }
     
     @Override
@@ -192,7 +369,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
             if (discr < MAXIMUM_RING_D && !this.increaseDMenuItem.isEnabled()) {
                 this.increaseDMenuItem.setEnabled(true);
             }
-            QuadraticRing ring = new RealQuadraticRing(discr);
+            RealQuadraticRing ring = new RealQuadraticRing(discr);
             this.switchToRing(ring);
             this.updateRingHistory(ring);
         }
@@ -219,8 +396,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
     @Override
     public void decrementDiscriminant() {
         int discr = ((QuadraticRing) this.diagramRing).getRadicand() - 1;
-        while (!isSquareFree(discr) 
-                && discr > (Integer.MIN_VALUE + 1)) {
+        while (!isSquareFree(discr) && discr > 2) {
             discr--;
         }
         if (discr == 2) {
@@ -229,27 +405,49 @@ public final class RealQuadRingDisplay extends RingDisplay {
         if (discr == (MAXIMUM_RING_D - 1)) {
             this.increaseDMenuItem.setEnabled(true);
         }
-        RealQuadraticRing ring = new RealQuadraticRing(discr);
-        this.switchToRing(ring);
-        this.updateRingHistory(ring);
+        if (discr > 1) {
+            RealQuadraticRing ring = new RealQuadraticRing(discr);
+            this.switchToRing(ring);
+            this.updateRingHistory(ring);
+        }
     }
 
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Updates the <code>boundaryRe</code> field. Since the 
+     * <code>boundaryIm</code> field is always 0, there is no need to do 
+     * anything about it.
+     */
     @Override
     protected void updateBoundaryNumber() {
-        //
+        double pixelLength = this.ringCanvasHorizMax - this.zeroCoordX;
+        this.boundaryRe = pixelLength / this.pixelsPerUnitInterval;
     }
     
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Retries the real part of the boundary number. This is the farthest right 
+     * number that can be currently displayed. Negate for the farthest left 
+     * number.
+     * @return A positive floating point number. For example, 16.0.
+     */
     @Override
     protected double getBoundaryRe() {
-        return -1.0;
+        return this.boundaryRe;
     }
 
-    // STUB TO FAIL THE FIRST TEST
+    /**
+     * Retrieves the imaginary part of the boundary number. A correct but not 
+     * very useful number.
+     * @return Always 0, since this <code>RingDisplay</code> implementation only 
+     * deals with purely real numbers.
+     */
     @Override
     protected double getBoundaryIm() {
         return 0.0;
+    }
+    
+    @Override
+    protected int getPreferredDotRadius() {
+        return SPECIFIC_PREFERRED_DOT_RADIUS;
     }
 
     @Override
@@ -283,10 +481,15 @@ public final class RealQuadRingDisplay extends RingDisplay {
     public RealQuadRingDisplay(RealQuadraticRing ring) {
         super(ring);
         this.ringCanvasVerticMax = PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX;
+        this.dotRadius = SPECIFIC_PREFERRED_DOT_RADIUS;
+        this.dotDiameter = 2 * this.dotRadius;
         this.unitApplicable = true;
+        this.findUnit();
         this.mouseAlgInt = new RealQuadraticInteger(0, 0, ring);
         this.diagRingOne = new RealQuadraticInteger(1, 0, ring);
         this.findUnit();
+        this.resGroup = this.cache.forName(ring);
+        this.fillPrimeLists();
     }
     
 }

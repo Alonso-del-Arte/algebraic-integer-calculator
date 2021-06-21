@@ -16,7 +16,6 @@
  */
 package viewers;
 
-import algebraics.IntegerRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
@@ -545,7 +544,8 @@ public final class ImagQuadRingDisplay extends RingDisplay {
      */
     @Override
     protected void setPixelsPerBasicImaginaryInterval() {
-        double imagInterval = this.pixelsPerUnitInterval * Math.sqrt(-((QuadraticRing) this.diagramRing).getRadicand());
+        double imagInterval = this.pixelsPerUnitInterval 
+                * Math.sqrt(-((QuadraticRing) this.diagramRing).getRadicand());
         if (((QuadraticRing) this.diagramRing).hasHalfIntegers()) {
             imagInterval /= 2;
         }
@@ -561,7 +561,8 @@ public final class ImagQuadRingDisplay extends RingDisplay {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (this.pixelsPerUnitInterval > MINIMUM_PIXELS_PER_UNIT_INTERVAL_TO_DRAW_GRIDS) {
+        if (this.pixelsPerUnitInterval 
+                > MINIMUM_PIXELS_PER_UNIT_INTERVAL_TO_DRAW_GRIDS) {
             this.drawGrids(g);
         }
         this.drawPoints(g);
@@ -579,29 +580,37 @@ public final class ImagQuadRingDisplay extends RingDisplay {
         String stringForAlgIntReadOut;
         QuadraticRing ring = (QuadraticRing) this.diagramRing;
         if (ring.hasHalfIntegers()) {
-            double horizIntermediate = 4 * (mauv.getX() - this.zeroCoordX)/this.pixelsPerUnitInterval;
-            horizCoord = (int) Math.round(horizIntermediate/2);
-            verticCoord = (int) Math.round((-mauv.getY() + this.zeroCoordY)/this.pixelsPerBasicImaginaryInterval);
-            algIntFound = (Math.abs(horizCoord % 2) == Math.abs(verticCoord % 2));
+            double horizIntermediate = 4 * (mauv.getX() - this.zeroCoordX) 
+                    / this.pixelsPerUnitInterval;
+            horizCoord = (int) Math.round(horizIntermediate / 2);
+            verticCoord = (int) Math.round((-mauv.getY() + this.zeroCoordY) 
+                    / this.pixelsPerBasicImaginaryInterval);
+            algIntFound = (Math.abs(horizCoord % 2) 
+                    == Math.abs(verticCoord % 2));
             if (algIntFound) {
-                this.mouseAlgInt = new ImaginaryQuadraticInteger(horizCoord, verticCoord, ring, 2);
+                this.mouseAlgInt = new ImaginaryQuadraticInteger(horizCoord, 
+                        verticCoord, ring, 2);
             }
         } else {
-            horizCoord = (int) Math.round((mauv.getX() - this.zeroCoordX)/this.pixelsPerUnitInterval);
-            verticCoord = (int) Math.round((-mauv.getY() + this.zeroCoordY)/this.pixelsPerBasicImaginaryInterval);
-            this.mouseAlgInt = new ImaginaryQuadraticInteger(horizCoord, verticCoord, ring);
+            horizCoord = (int) Math.round((mauv.getX() - this.zeroCoordX) 
+                    / this.pixelsPerUnitInterval);
+            verticCoord = (int) Math.round((-mauv.getY() + this.zeroCoordY) 
+                    / this.pixelsPerBasicImaginaryInterval);
+            this.mouseAlgInt = new ImaginaryQuadraticInteger(horizCoord, 
+                    verticCoord, ring);
             algIntFound = true;
         }
         if (algIntFound) {
             if (this.preferenceForThetaNotation) {
-                stringForAlgIntReadOut = ((QuadraticInteger) this.mouseAlgInt).toStringAlt();
+                stringForAlgIntReadOut = ((QuadraticInteger) this.mouseAlgInt)
+                        .toStringAlt();
             } else {
                 stringForAlgIntReadOut = this.mouseAlgInt.toString();
             }
             this.algIntReadOut.setText(stringForAlgIntReadOut);
-            this.algIntTraceReadOut.setText(Long.toString(this.mouseAlgInt.trace()));
-            this.algIntNormReadOut.setText(Long.toString(this.mouseAlgInt.norm()));
-            this.algIntPolReadOut.setText(this.mouseAlgInt.minPolynomialString());
+            this.traceReadOut.setText(Long.toString(this.mouseAlgInt.trace()));
+            this.normReadOut.setText(Long.toString(this.mouseAlgInt.norm()));
+            this.polynomialReadOut.setText(this.mouseAlgInt.minPolynomialString());
         }
     }
     
