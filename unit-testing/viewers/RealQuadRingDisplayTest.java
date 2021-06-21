@@ -18,12 +18,14 @@ package viewers;
 
 import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
+import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 
 import java.awt.Graphics;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -55,22 +57,21 @@ public class RealQuadRingDisplayTest {
         this.ringDisplay.startRingDisplay();
     }
     
-    @After
-    public void tearDown() {
-        this.ringDisplay.actionPerformed(this.closeEvent);
+    private void setUpClipboard() {
+        StringSelection ss 
+                = new StringSelection(RingDisplayTest.TEST_CLIPBOARD_TEXT);
+        this.ringDisplay.getToolkit().getSystemClipboard().setContents(ss, ss);
     }
-
+    
     /**
-     * Test of the setPixelsPerBasicImaginaryInterval function, of the 
-     * RealQuadRingDisplay class.
+     * Test of the setPixelsPerBasicImaginaryInterval procedure, of the 
+     * RealQuadRingDisplay class. As long as this call doesn't cause an 
+     * exception, the test will pass.
      */
     @Test
     public void testSetPixelsPerBasicImaginaryInterval() {
         System.out.println("setPixelsPerBasicImaginaryInterval");
-//        RealQuadRingDisplay instance = null;
-//        instance.setPixelsPerBasicImaginaryInterval();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        this.ringDisplay.setPixelsPerBasicImaginaryInterval();
     }
 
     /**
@@ -79,11 +80,7 @@ public class RealQuadRingDisplayTest {
     @Test
     public void testPaintComponent() {
         System.out.println("paintComponent");
-//        Graphics g = null;
-//        RealQuadRingDisplay instance = null;
-//        instance.paintComponent(g);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("Haven't written test yet");
     }
     
     /**
@@ -92,16 +89,84 @@ public class RealQuadRingDisplayTest {
      */
     @Test
     public void testGetFundamentalUnit() {
-        System.out.println("");
+        System.out.println("getFundamentalUnit");
         RealQuadraticInteger expected = new RealQuadraticInteger(3, 1, 
                 RING_OQ13, 2);
         AlgebraicInteger actual = this.ringDisplay.getFundamentalUnit();
         assertEquals(expected, actual);
     }
+    
+    /**
+     * Test of the validateRing procedure, of the RealQuadRingDisplay class.
+     */
+    @Test
+    public void testValidateRing() {
+        System.out.println("validateRing");
+        RealQuadraticRing ring = new RealQuadraticRing(499);
+        try {
+            this.ringDisplay.validateRing(ring);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " should not have occurred trying to validate " 
+                    + ring.toString();
+            fail(msg);
+        }
+    }
+    
+    /**
+     * Another test of the validateRing procedure, of the RealQuadRingDisplay 
+     * class. If the ring to switch to is not of type RealQuadraticRing, it 
+     * should be rejected.
+     */
+    @Test
+    public void testValidateRingRejectsOnType() {
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(499);
+        try {
+            this.ringDisplay.validateRing(ring);
+            String msg = "Should not have validated " + ring.toString() 
+                    + ", which is of type " + ring.getClass().getName() 
+                    + ", not " + RealQuadraticRing.class.getName();
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to validate " + ring.toASCIIString() 
+                    + ", which is of type " + ring.getClass().getName() 
+                    + " correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for trying to validate " 
+                    + ring.toString() + ", which is of type " 
+                    + ring.getClass().getName();
+            fail(msg);
+        }
+    }
+
+    /**
+     * Another test of the validateRing procedure, of the RealQuadRingDisplay 
+     * class. If the ring to switch to null, it should be rejected.
+     */
+    @Test
+    public void testValidateRingRejectsNull() {
+        try {
+            this.ringDisplay.validateRing(null);
+            String msg = "Should not have validated null ring";
+            fail(msg);
+        } catch (NullPointerException npe) {
+            System.out.println("NullPointerException is correct for null ring");
+            String excMsg = npe.getMessage();
+            String msg = "Exception message must not be null";
+            assert excMsg != null : msg;
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for validate null ring attempt"; 
+            fail(msg);
+        }
+    }
 
     /**
      * Test of the switchToRing procedure, of the RealQuadRingDisplay class.
-     */
+     */@org.junit.Ignore
     @Test
     public void testSwitchToRing() {
         System.out.println("switchToRing");
@@ -125,6 +190,32 @@ public class RealQuadRingDisplayTest {
         RealQuadraticInteger expected = new RealQuadraticInteger(1, 1, ring);
         AlgebraicInteger actual = this.ringDisplay.getFundamentalUnit();
         assertEquals(expected, actual);
+    }
+
+    /**
+     * Another test of the switchToRing procedure, of the RealQuadRingDisplay 
+     * class.
+     */
+    @Test
+    public void testSwitchToRingRejectsWrongTypeRing() {
+        IllDefinedQuadraticRing badRing = new IllDefinedQuadraticRing(13);
+        try {
+            this.ringDisplay.switchToRing(badRing);
+            String msg = "Trying to switch to ring of type " 
+                    + badRing.getClass().getName() 
+                    + " should have caused an exception";
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to switch to ring of type " 
+                    + badRing.getClass().getName() 
+                    + " correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + "is wrong exception to throw to switch to ring of type " 
+                    + badRing.getClass().getName();
+            fail(msg);
+        }
     }
 
     /**
@@ -162,6 +253,24 @@ public class RealQuadRingDisplayTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    
+    @Test
+    public void testCanNotDecrementToOQSqrt1() {
+        RealQuadraticRing expected = new RealQuadraticRing(2);
+        this.ringDisplay.switchToRing(expected);
+        try {
+            this.ringDisplay.decrementDiscriminant();
+            IntegerRing actual = this.ringDisplay.getRing();
+            String msg = "Should not have been able to decrement from " 
+                    + expected.toString();
+            assertEquals(msg, expected, actual);
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + " should not have occurred for trying to decrement from " 
+                    + expected.toString();
+            fail(msg);
+        }
+    }
 
     /**
      * Test of the copyReadoutsToClipboard procedure, of the RealQuadRingDisplay 
@@ -170,11 +279,15 @@ public class RealQuadRingDisplayTest {
     @Test
     public void testCopyReadoutsToClipboard() {
         System.out.println("copyReadoutsToClipboard");
+        this.setUpClipboard();
         this.ringDisplay.copyReadoutsToClipboard();
         Clipboard clipboard = this.ringDisplay.getToolkit().getSystemClipboard();
         String msg = "System clipboard should have plain text data flavor";
         assert clipboard.isDataFlavorAvailable(DataFlavor.stringFlavor) : msg;
-        String expected = "0, Trace: 0, Norm: 0, Polynomial: x";
+        RealQuadraticInteger unit = new RealQuadraticInteger(3, 1, RING_OQ13, 2);
+        String expected 
+                = "0, Trace: 0, Norm: 0, Polynomial: x, Fundamental unit: " 
+                + unit.toString();
         try {
             String actual = (String) clipboard.getData(DataFlavor.stringFlavor);
             assertEquals(expected, actual);
@@ -191,12 +304,9 @@ public class RealQuadRingDisplayTest {
     @Test
     public void testGetBoundaryRe() {
         System.out.println("getBoundaryRe");
-//        RealQuadRingDisplay instance = null;
-//        double expResult = 0.0;
-//        double result = instance.getBoundaryRe();
-//        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        double expected = 16.0;
+        double actual = this.ringDisplay.getBoundaryRe();
+        assertEquals(expected, actual, RingDisplayTest.TEST_DELTA);
     }
 
     /**
@@ -208,7 +318,27 @@ public class RealQuadRingDisplayTest {
         System.out.println("getBoundaryIm");
         double expected = 0.0;
         double actual = this.ringDisplay.getBoundaryIm();
-        assertEquals(expected, actual, 0.0);
+        assertEquals(expected, actual, RingDisplayTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testZoomInDecreasesBoundaryRe() {
+        double initial = this.ringDisplay.getBoundaryRe();
+        this.ringDisplay.zoomIn();
+        double updated = this.ringDisplay.getBoundaryRe();
+        String msg = "Zooming in should decrease boundaryRe (from " + initial 
+                + " to " + updated + ")";
+        assert initial > updated : msg;
+    }
+
+    @Test
+    public void testZoomOutIncreasesBoundaryRe() {
+        double initial = this.ringDisplay.getBoundaryRe();
+        this.ringDisplay.zoomOut();
+        double updated = this.ringDisplay.getBoundaryRe();
+        String msg = "Zooming out should increase boundaryRe (from " + initial 
+                + " to " + updated + ")";
+        assert initial < updated : msg;
     }
 
     /**
@@ -272,4 +402,9 @@ public class RealQuadRingDisplayTest {
         fail("The test case is a prototype.");
     }
     
+    @After
+    public void tearDown() {
+        this.ringDisplay.actionPerformed(this.closeEvent);
+    }
+
 }

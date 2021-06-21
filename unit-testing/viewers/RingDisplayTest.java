@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2021 Alonso del Arte
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under 
+ * the terms of the GNU General Public License as published by the Free Software 
+ * Foundation, either version 3 of the License, or (at your option) any later 
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT 
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with 
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package viewers;
 
@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -34,33 +35,33 @@ import static org.junit.Assert.*;
  */
 public class RingDisplayTest {
     
+    static final double TEST_DELTA = 0.0001;
+    
+    static final String TEST_CLIPBOARD_TEXT 
+            = "This text was placed by a setup procedure";
+    
     /**
-     * Test of setPixelsPerBasicImaginaryInterval method, of class RingDisplay.
+     * Test of the setPixelsPerBasicImaginaryInterval procedure, of the 
+     * RingDisplay class.
      */
     @Test
     public void testSetPixelsPerBasicImaginaryInterval() {
         System.out.println("setPixelsPerBasicImaginaryInterval");
-//        RingDisplay instance = null;
-//        instance.setPixelsPerBasicImaginaryInterval();
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setPixelsPerUnitInterval method, of class RingDisplay.
+     * Test of the setPixelsPerUnitInterval procedure, of the RingDisplay class.
      */
     @Test
     public void testSetPixelsPerUnitInterval() {
         System.out.println("setPixelsPerUnitInterval");
-//        int pixelLength = 0;
-//        RingDisplay instance = null;
-//        instance.setPixelsPerUnitInterval(pixelLength);
-        // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of changeRingWindowDimensions method, of class RingDisplay.
+     * Test of the changeRingWindowDimensions procedure, of the RingDisplay 
+     * class.
      */
     @Test
     public void testChangeRingWindowDimensions() {
@@ -74,7 +75,7 @@ public class RingDisplayTest {
     }
 
     /**
-     * Test of changeBackgroundColor method, of class RingDisplay.
+     * Test of the changeBackgroundColor procedure, of the RingDisplay class.
      */
     @Test
     public void testChangeBackgroundColor() {
@@ -87,7 +88,7 @@ public class RingDisplayTest {
     }
 
     /**
-     * Test of changeGridColors method, of class RingDisplay.
+     * Test of the changeGridColors procedure, of the RingDisplay class.
      */
     @Test
     public void testChangeGridColors() {
@@ -507,58 +508,6 @@ public class RingDisplayTest {
     }
 
     /**
-     * Test of getUserManualURL method, of class RingDisplay.
-     */
-    @Test
-    public void testGetUserManualURL() {
-        System.out.println("getUserManualURL");
-//        RingDisplay instance = null;
-//        URI expResult = null;
-//        URI result = instance.getUserManualURL();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showUserManual method, of class RingDisplay.
-     */
-    @Test
-    public void testShowUserManual() {
-        System.out.println("showUserManual");
-//        RingDisplay instance = null;
-//        instance.showUserManual();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getAboutBoxMessage method, of class RingDisplay.
-     */
-    @Test
-    public void testGetAboutBoxMessage() {
-        System.out.println("getAboutBoxMessage");
-//        RingDisplay instance = null;
-//        String expResult = "";
-//        String result = instance.getAboutBoxMessage();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showAboutBox method, of class RingDisplay.
-     */
-    @Test
-    public void testShowAboutBox() {
-        System.out.println("showAboutBox");
-//        RingDisplay instance = null;
-//        instance.showAboutBox();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of actionPerformed method, of class RingDisplay.
      */
     @Test
@@ -572,7 +521,7 @@ public class RingDisplayTest {
     }
 
     /**
-     * Test of getRing method, of class RingDisplay.
+     * Test of the getRing function, of the RingDisplay class.
      */
     @Test
     public void testGetRing() {
@@ -654,7 +603,13 @@ public class RingDisplayTest {
 
         @Override
         public URI getUserManualURL() {
-            return null;
+            String urlStr = "http://example.com/NoManual.md";
+            try {
+                URI url = new URI(urlStr);
+                return url;
+            } catch (URISyntaxException urise) {
+                throw new RuntimeException(urise);
+            }
         }
 
         @Override
@@ -664,12 +619,12 @@ public class RingDisplayTest {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet");
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet");
         }
         
         public RingDisplayImpl(IllDefinedQuadraticRing ring) {

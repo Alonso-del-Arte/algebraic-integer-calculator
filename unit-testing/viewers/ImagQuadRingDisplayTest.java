@@ -36,7 +36,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the ImagQuadRingDisplay class.
  * @author Alonso del Arte
  */
 public class ImagQuadRingDisplayTest {
@@ -59,69 +59,6 @@ public class ImagQuadRingDisplayTest {
     public void tearDown() {
         this.ringDisplay.actionPerformed(this.closeEvent);
     }
-
-    /* (NO TEST YET) *
-     * Test of setPixelsPerBasicImaginaryInterval method, of class ImagQuadRingDisplay.
-     */
-//    (AT)Test
-//    public void testSetPixelsPerBasicImaginaryInterval() {
-//        System.out.println("setPixelsPerBasicImaginaryInterval");
-//        ImagQuadRingDisplay instance = null;
-//        instance.setPixelsPerBasicImaginaryInterval();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /* (NO TEST YET) *
-     * Test of paintComponent method, of class ImagQuadRingDisplay.
-     */
-//    (AT)Test
-//    public void testPaintComponent() {
-//        System.out.println("paintComponent");
-//        Graphics g = null;
-//        ImagQuadRingDisplay instance = null;
-//        instance.paintComponent(g);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /* (NO TEST YET) *
-     * Test of mouseMoved method, of class ImagQuadRingDisplay.
-     */
-//    (AT)Test
-//    public void testMouseMoved() {
-//        System.out.println("mouseMoved");
-//        MouseEvent mauv = null;
-//        ImagQuadRingDisplay instance = null;
-//        instance.mouseMoved(mauv);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /* (NO TEST YET) *
-     * Test of mouseDragged method, of class ImagQuadRingDisplay.
-     */
-//    (AT)Test
-//    public void testMouseDragged() {
-//        System.out.println("mouseDragged");
-//        MouseEvent mauv = null;
-//        ImagQuadRingDisplay instance = null;
-//        instance.mouseDragged(mauv);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-    /* (NO TEST YET) *
-     * Test of chooseDiscriminant method, of class ImagQuadRingDisplay.
-     */
-//    (AT)Test
-//    public void testChooseDiscriminant() {
-//        System.out.println("chooseDiscriminant");
-//        ImagQuadRingDisplay instance = null;
-//        instance.chooseDiscriminant();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
 
     /**
      * Test of incrementDiscriminant method, of class ImagQuadRingDisplay.
@@ -157,6 +94,32 @@ public class ImagQuadRingDisplayTest {
         this.ringDisplay.switchToRing(expected);
         IntegerRing actual = this.ringDisplay.getRing();
         assertEquals(expected, actual);
+    }
+    
+    /**
+     * Another test of the switchToRing procedure, of the ImagQuadRingDisplay 
+     * class.
+     */
+    @Test
+    public void testSwitchToRingRejectsWrongTypeRing() {
+        IllDefinedQuadraticRing badRing = new IllDefinedQuadraticRing(-14);
+        try {
+            this.ringDisplay.switchToRing(badRing);
+            String msg = "Trying to switch to ring of type " 
+                    + badRing.getClass().getName() 
+                    + " should have caused an exception";
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            System.out.println("Trying to switch to ring of type " 
+                    + badRing.getClass().getName() 
+                    + " correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = re.getClass().getName() 
+                    + "is wrong exception to throw to switch to ring of type " 
+                    + badRing.getClass().getName();
+            fail(msg);
+        }
     }
 
     /**
