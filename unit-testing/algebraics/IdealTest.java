@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -23,254 +23,339 @@ import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests for the Ideal class. In setup, five ideals from quadratic integer rings 
- * are constructed. Perhaps a future version of this test class will also use 
- * ideals from rings of higher degree. As support for those is added, in their 
- * respective classes, tests will need to be added to this test class, so as to 
- * develop Ideal accordingly.
+ * Tests for the Ideal class. Five ideals from two quadratic integer rings are 
+ * used here. Rings that are not unique factorization domains were chosen 
+ * precisely because they contain ideals that are not principal ideals.
+ * <p>Perhaps a future version of this test class will also use ideals from 
+ * rings of higher degree. As support for those is added, in their respective 
+ * classes, tests will need to be added to this test class, so as to develop 
+ * Ideal accordingly.</p>
  * @author Alonso del Arte
  */
 public class IdealTest {
     
-    private static final QuadraticRing RING_ZI5 = new ImaginaryQuadraticRing(-5);
+    /**
+     * The ring <b>Z</b>[&radic;&minus;5]. It is not a unique factorization 
+     * domain for its numbers, but all ideals can be factored uniquely into 
+     * ideals.
+     */
+    private static final QuadraticRing RING_ZI5 
+            = new ImaginaryQuadraticRing(-5);
+    
+    /**
+     * The ring <b>Z</b>[&radic;10]. It is not a unique factorization domain for 
+     * its numbers, but all ideals can be factored uniquely into ideals.
+     */
     private static final QuadraticRing RING_Z10 = new RealQuadraticRing(10);
     
-    private static final QuadraticInteger ALG_INT_2_IN_ZI5 = new ImaginaryQuadraticInteger(2, 0, RING_ZI5);
-    private static final QuadraticInteger ALG_INT_1PLUSSQRTNEG5 = new ImaginaryQuadraticInteger(1, 1, RING_ZI5);
-    private static final QuadraticInteger ALG_INT_2_IN_Z10 = new RealQuadraticInteger(2, 0, RING_Z10);
-    private static final QuadraticInteger ALG_INT_SQRT10 = new RealQuadraticInteger(0, 1, RING_Z10);
-    
     /**
-     * In setUpClass, this will be initialized to &#10216;3 + &radic;10&#10217;. 
-     * Since the generating number is a unit (the fundamental unit, no less), 
-     * this ideal should be found to be the whole of <b>Z</b>[&radic;10].
+     * The irreducible number 2 in <b>Z</b>[&radic;&minus;5]. Except for units 
+     * and associates, 2 is not divisible by any other number in this ring. 
+     * However, there are several pairs of numbers <i>a</i> and <i>b</i> such 
+     * that <i>ab</i> is divisible by 2 but neither <i>a</i> nor <i>b</i> are, 
+     * the most famous example being (1 &minus; &radic;&minus;5)(1 + 
+     * &radic;&minus;5) = 6.
      */
-    private static Ideal idealWholeRing;
+    private static final QuadraticInteger ALG_INT_2_IN_ZI5 
+            = new ImaginaryQuadraticInteger(2, 0, RING_ZI5);
     
     /**
-     * An ideal that will be initialized to &#10216;2&#10217; from 
-     * <b>Z</b>[&radic;&minus;5] in setUpClass.
+     * The irreducible number 1 + &radic;&minus;5 in <b>Z</b>[&radic;&minus;5]. 
+     * Except for units and associates, this number is not divisible by any 
+     * other number in this ring.
      */
-    private static Ideal idealPrincipalZi5;
-    
+    private static final QuadraticInteger ALG_INT_1PLUSSQRTNEG5 
+            = new ImaginaryQuadraticInteger(1, 1, RING_ZI5);
+
     /**
-     * An ideal that will be initialized to &#10216;&radic;10&#10217; in 
-     * setUpClass.
+     * The irreducible number 2 in <b>Z</b>[&radic;10]. Except for units and 
+     * associates, 2 is not divisible by any other number in this ring. However, 
+     * there are several pairs of numbers <i>a</i> and <i>b</i> such that 
+     * <i>ab</i> is divisible by 2 but neither <i>a</i> nor <i>b</i> are, the 
+     * most famous example being (&radic;10)<sup>2</sup> = 10.
      */
-    private static Ideal idealPrincipalZ10;
+    private static final QuadraticInteger ALG_INT_2_IN_Z10 
+            = new RealQuadraticInteger(2, 0, RING_Z10);
     
     /**
-     * An ideal that will be initialized to &#10216;2, 1 + 
-     * &radic;&minus;5&#10217; in setUpClass.
+     * The irreducible number &radic;10 in <b>Z</b>[&radic;10]. Except for units 
+     * and associates, this number is not divisible by any other number in this 
+     * ring.
      */
-    private static Ideal idealSecondaryZi5;
+    private static final QuadraticInteger ALG_INT_SQRT10 
+            = new RealQuadraticInteger(0, 1, RING_Z10);
     
     /**
-     * An ideal that will be initialized to &#10216;2, &radic;10&#10217; in 
-     * setUpClass.
+     * The number 3 + &radic;10 in <b>Z</b>[&radic;10]. This number of norm 
+     * &minus;1 is the fundamental unit of <b>Z</b>[&radic;10].
      */
-    private static Ideal idealSecondaryZ10;
-    
-    @BeforeClass
-    public static void setUpClass() {
-        QuadraticInteger unit = new RealQuadraticInteger(3, 1, RING_Z10);
-        idealWholeRing = new Ideal(unit);
-        idealPrincipalZi5 = new Ideal(ALG_INT_2_IN_ZI5);
-        idealPrincipalZ10 = new Ideal(ALG_INT_SQRT10);
-        idealSecondaryZi5 = new Ideal(ALG_INT_2_IN_ZI5, ALG_INT_1PLUSSQRTNEG5);
-        idealSecondaryZ10 = new Ideal(ALG_INT_2_IN_Z10, ALG_INT_SQRT10);
-    }
+    private static final QuadraticInteger ALG_INT_Z10_FUNDAMENTAL_UNIT 
+            = new RealQuadraticInteger(3, 1, RING_Z10);
     
     /**
-     * Test of norm method, of class Ideal.
+     * The ideal &#10216;3 + &radic;10&#10217;. Since the generating number is a 
+     * unit (the fundamental unit, no less), this ideal should be found to be 
+     * the whole of <b>Z</b>[&radic;10].
+     */
+    private static final Ideal IDEAL_WHOLE_RING 
+            = new Ideal(ALG_INT_Z10_FUNDAMENTAL_UNIT);
+    
+    /**
+     * The ideal &#10216;2&#10217; from <b>Z</b>[&radic;&minus;5]. Although 2 is 
+     * irreducible in this ring, the ideal is not maximal because it is 
+     * contained in &#10216;2, 1 + &radic;&minus;5&#10217;. The ideal is a 
+     * principal, however.
+     */
+    private static final Ideal IDEAL_PRINCIPAL_ZI5 
+            = new Ideal(ALG_INT_2_IN_ZI5);
+    
+    /**
+     * The ideal &#10216;&radic;10&#10217; from <b>Z</b>[&radic;10]. Although 
+     * &radic;10 is irreducible in this ring, the ideal is not maximal because 
+     * it is contained in &#10216;2, &radic;10&#10217;. The ideal is a principal
+     * ideal, however.
+     */
+    private static final Ideal IDEAL_PRINCIPAL_Z10 = new Ideal(ALG_INT_SQRT10);
+    
+    /**
+     * The ideal &#10216;2, 1 + &radic;&minus;5&#10217; from 
+     * <b>Z</b>[&radic;&minus;5]. This is clearly not a principal ideal, but it 
+     * is a maximal ideal.
+     */
+    private static final Ideal IDEAL_SECONDARY_ZI5 
+            = new Ideal(ALG_INT_2_IN_ZI5, ALG_INT_1PLUSSQRTNEG5);
+    
+    /**
+     * The ideal &#10216;2, &radic;10&#10217; from <b>Z</b>[&radic;10]. This is 
+     * clearly not a principal ideal, but it is a maximal ideal.
+     */
+    private static final Ideal IDEAL_SECONDARY_Z10 
+            = new Ideal(ALG_INT_2_IN_Z10, ALG_INT_SQRT10);
+    
+    /**
+     * Test of the norm function, of the Ideal class.
      */
     @Test
     public void testNorm() {
         System.out.println("norm");
-        long expResult = 1L;
-        long result = idealWholeRing.norm();
-        assertEquals(expResult, result);
-        expResult = 2L;
-        result = idealSecondaryZi5.norm();
-        assertEquals(expResult, result);
-        result = idealSecondaryZ10.norm();
-        assertEquals(expResult, result);
-        expResult = 4L;
-        result = idealPrincipalZi5.norm();
-        assertEquals(expResult, result);
-        expResult = 10L;
-        result = idealPrincipalZ10.norm();
-        assertEquals(expResult, result);
+        long expected = 1L;
+        long actual = IDEAL_WHOLE_RING.norm();
+        assertEquals(expected, actual);
+        expected = 2L;
+        actual = IDEAL_SECONDARY_ZI5.norm();
+        assertEquals(expected, actual);
+        actual = IDEAL_SECONDARY_Z10.norm();
+        assertEquals(expected, actual);
+        expected = 4L;
+        actual = IDEAL_PRINCIPAL_ZI5.norm();
+        assertEquals(expected, actual);
+        expected = 10L;
+        actual = IDEAL_PRINCIPAL_Z10.norm();
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of isPrincipal method, of class Ideal.
+     * Test of the isPrincipal function, of the Ideal class.
      */
     @Test
     public void testIsPrincipal() {
         System.out.println("isPrincipal");
-        String assertionMessage = idealPrincipalZi5.toString() + " should be found to be a principal ideal.";
-        assertTrue(assertionMessage, idealPrincipalZi5.isPrincipal());
-        assertionMessage = idealPrincipalZ10.toString() + " should be found to be a principal ideal.";
-        assertTrue(assertionMessage, idealPrincipalZ10.isPrincipal());
-        assertionMessage = idealSecondaryZi5.toString() + " should not be found to be a principal ideal.";
-        assertFalse(assertionMessage, idealSecondaryZi5.isPrincipal());
-        assertionMessage = idealSecondaryZ10.toString() + " should not be found to be a principal ideal.";
-        assertFalse(assertionMessage, idealSecondaryZ10.isPrincipal());
-        QuadraticInteger ramified = new ImaginaryQuadraticInteger(5, 0, RING_ZI5);
-        QuadraticInteger ramifier = new ImaginaryQuadraticInteger(0, 1, RING_ZI5);
+        String affirmativeMsgPart = " should be found to be a principal ideal";
+        String msg = IDEAL_PRINCIPAL_ZI5.toString() + affirmativeMsgPart;
+        assert IDEAL_PRINCIPAL_ZI5.isPrincipal() : msg;
+        msg = IDEAL_PRINCIPAL_Z10.toString() + affirmativeMsgPart;
+        assert IDEAL_PRINCIPAL_Z10.isPrincipal() : msg;
+        String negativeMsgPart = " should not be found to be a principal ideal";
+        msg = IDEAL_SECONDARY_ZI5.toString() + negativeMsgPart;
+        assert !IDEAL_SECONDARY_ZI5.isPrincipal() : msg;
+        msg = IDEAL_SECONDARY_Z10.toString() + negativeMsgPart;
+        assert !IDEAL_SECONDARY_Z10.isPrincipal() : msg;
+        QuadraticInteger ramified = new ImaginaryQuadraticInteger(5, 0, 
+                RING_ZI5);
+        QuadraticInteger ramifier = new ImaginaryQuadraticInteger(0, 1, 
+                RING_ZI5);
         Ideal testIdeal = new Ideal(ramified, ramifier);
-        assertionMessage = testIdeal.toString() + " should be found to be a principal ideal.";
-        assertTrue(assertionMessage, testIdeal.isPrincipal());
+        msg = testIdeal.toString() + affirmativeMsgPart;
+        assert testIdeal.isPrincipal() : msg;
         ramified = new RealQuadraticInteger(10, 0, RING_Z10);
         ramifier = new RealQuadraticInteger(0, 1, RING_Z10);
         testIdeal = new Ideal(ramified, ramifier);
-        assertionMessage = testIdeal.toString() + " should be found to be a principal ideal.";
-        assertTrue(assertionMessage, testIdeal.isPrincipal());
+        msg = testIdeal.toString() + affirmativeMsgPart;
+        assert testIdeal.isPrincipal() : msg;
     }
 
     /**
-     * Test of isMaximal method, of class Ideal.
+     * Test of the isMaximal function, of the Ideal class.
      */
     @Test
     public void testIsMaximal() {
         System.out.println("isMaximal");
-        String assertionMessage = idealSecondaryZi5.toString() + " should be found to be a maximal ideal.";
-        assertTrue(assertionMessage, idealSecondaryZi5.isMaximal());
+        String affirmativeMsgPart = " should be found to be a maximal ideal";
+        String msg = IDEAL_SECONDARY_ZI5.toString() + affirmativeMsgPart;
+        assert IDEAL_SECONDARY_ZI5.isMaximal() : msg;
         QuadraticInteger num = new ImaginaryQuadraticInteger(11, 0, RING_ZI5);
         Ideal testIdeal = new Ideal(num);
-        assertionMessage = testIdeal.toString() + " in " + RING_ZI5.toString() + " should be found to be a maximal ideal.";
-        assertTrue(assertionMessage, testIdeal.isMaximal());
+        msg = testIdeal.toString() + " in " + RING_ZI5.toString() 
+                + affirmativeMsgPart;
+        assert testIdeal.isMaximal() : msg;
         num = new RealQuadraticInteger(11, 0, RING_Z10);
         testIdeal = new Ideal(num);
-        assertionMessage = testIdeal.toString() + " in " + RING_Z10.toString() + " should be found to be a maximal ideal.";
-        assertTrue(assertionMessage, testIdeal.isMaximal());
-        assertionMessage = idealSecondaryZ10.toString() + " should be found to be a maximal ideal.";
-        assertTrue(assertionMessage, idealSecondaryZ10.isMaximal());
-        assertionMessage = idealPrincipalZi5.toString() + " should not be found to be a maximal ideal.";
-        assertFalse(assertionMessage, idealPrincipalZi5.isMaximal());
-        assertionMessage = idealPrincipalZi5.toString() + " should not be found to be a maximal ideal.";
-        assertFalse(assertionMessage, idealPrincipalZ10.isMaximal());
+        msg = testIdeal.toString() + " in " + RING_Z10.toString() 
+                + affirmativeMsgPart;
+        assert testIdeal.isMaximal() : msg;
+        msg = IDEAL_SECONDARY_Z10.toString() + affirmativeMsgPart;
+        assert IDEAL_SECONDARY_Z10.isMaximal() : msg;
+        String negativeMsgPart = " should not be found to be a maximal ideal";
+        msg = IDEAL_PRINCIPAL_ZI5.toString() + negativeMsgPart;
+        assert !IDEAL_PRINCIPAL_ZI5.isMaximal() : msg;
+        msg = IDEAL_PRINCIPAL_ZI5.toString() + negativeMsgPart;
+        assert !IDEAL_PRINCIPAL_Z10.isMaximal() : msg;
         num = new ImaginaryQuadraticInteger(3, 0, RING_ZI5);
         testIdeal = new Ideal(num);
-        assertionMessage = testIdeal.toString() + " in " + RING_ZI5.toString() + " should not be found to be a maximal ideal.";
-        assertTrue(assertionMessage, testIdeal.isMaximal());
+        msg = testIdeal.toString() + " in " + RING_ZI5.toString() 
+                + negativeMsgPart;
+        assert !testIdeal.isMaximal() : msg;
         num = new RealQuadraticInteger(3, 0, RING_Z10);
         testIdeal = new Ideal(num);
-        assertionMessage = testIdeal.toString() + " in " + RING_Z10.toString() + " should not be found to be a maximal ideal.";
-        assertTrue(assertionMessage, testIdeal.isMaximal());    }
-
-    /**
-     * Test of contains method, of class Ideal.
-     */
-    @Test
+        msg = testIdeal.toString() + " in " + RING_Z10.toString() 
+                + negativeMsgPart;
+        assert !testIdeal.isMaximal() : msg;
+    }
+    
+    // TODO: Finish writing this test
+//    @Test
     public void testContains() {
-        System.out.println("contains(AlgebraicInteger)");
-        QuadraticInteger num = new ImaginaryQuadraticInteger(3, 0, RING_ZI5);
-        String assertionMessage = idealSecondaryZi5.toString() + " should be found to contain " + num.toString() + ".";
-        assertTrue(assertionMessage, idealSecondaryZi5.contains(num));
-        num = new ImaginaryQuadraticInteger(7, 0, RING_ZI5);
-        assertionMessage = idealSecondaryZi5.toString() + " should not be found to contain " + num.toString() + ".";
-        assertFalse(assertionMessage, idealSecondaryZi5.contains(num));
-        num = new RealQuadraticInteger(10, 3, RING_Z10);
-        assertionMessage = idealSecondaryZ10.toString() + " should be found to contain " + num.toString() + ".";
-        assertTrue(assertionMessage, idealSecondaryZ10.contains(num));
-        num = new RealQuadraticInteger(3, 1, RING_Z10);
-        assertionMessage = idealSecondaryZ10.toString() + " should not be found to contain " + num.toString() + ".";
-        assertFalse(assertionMessage, idealSecondaryZ10.contains(num));
-        QuadraticRing nonContainingRing = new ImaginaryQuadraticRing(-10);
-        num = new ImaginaryQuadraticInteger(1, 1, nonContainingRing);
-        assertionMessage = idealSecondaryZi5.toString() + " should not be found to contain " + num.toString() + " from " + nonContainingRing.toString() + ".";
-        assertFalse(assertionMessage, idealSecondaryZi5.contains(num));
-        nonContainingRing = new RealQuadraticRing(5);
-        num = new RealQuadraticInteger(1, 1, nonContainingRing);
-        assertionMessage = idealSecondaryZ10.toString() + " should not be found to contain " + num.toString() + " from " + nonContainingRing.toString() + ".";
-        assertFalse(assertionMessage, idealSecondaryZ10.contains(num));
-        System.out.println("contains(Ideal)");
-        assertionMessage = idealSecondaryZi5.toString() + " should be found to contain " + idealPrincipalZi5.toString() + ".";
-        assertTrue(assertionMessage, idealSecondaryZi5.contains(idealPrincipalZi5));
-        assertionMessage = idealPrincipalZi5.toString() + " should not be found to contain " + idealSecondaryZi5.toString() + ".";
-        assertFalse(assertionMessage, idealPrincipalZi5.contains(idealSecondaryZi5));
+        System.out.println("contains");
+        fail("Haven't finished writing test");
     }
 
     /**
-     * Test of getGenerators method, of class Ideal.
+     * Test of the contains function, of the Ideal class.
+     */
+    @Test
+    public void testContainsAlgebraicInteger() {
+        QuadraticInteger num = new ImaginaryQuadraticInteger(3, 0, RING_ZI5);
+        String affirmativeMsgPart = " should be found to contain ";
+        String msg = IDEAL_SECONDARY_ZI5.toString() + affirmativeMsgPart 
+                + num.toString();
+        assert IDEAL_SECONDARY_ZI5.contains(num) : msg;
+        num = new ImaginaryQuadraticInteger(7, 0, RING_ZI5);
+        String negativeMsgPart = " should not be found to contain ";
+        msg = IDEAL_SECONDARY_ZI5.toString() + negativeMsgPart 
+                + num.toString();
+        assert !IDEAL_SECONDARY_ZI5.contains(num) : msg;
+        num = new RealQuadraticInteger(10, 3, RING_Z10);
+        msg = IDEAL_SECONDARY_Z10.toString() + affirmativeMsgPart 
+                + num.toString();
+        assert IDEAL_SECONDARY_Z10.contains(num) : msg;
+        num = new RealQuadraticInteger(3, 1, RING_Z10);
+        msg = IDEAL_SECONDARY_Z10.toString() + negativeMsgPart + num.toString();
+        assert !IDEAL_SECONDARY_Z10.contains(num) : msg;
+        QuadraticRing nonContainingRing = new ImaginaryQuadraticRing(-10);
+        num = new ImaginaryQuadraticInteger(1, 1, nonContainingRing);
+        msg = IDEAL_SECONDARY_ZI5.toString() + negativeMsgPart + num.toString() 
+                + " from " + nonContainingRing.toString();
+        assert !IDEAL_SECONDARY_ZI5.contains(num) : msg;
+        nonContainingRing = new RealQuadraticRing(5);
+        num = new RealQuadraticInteger(1, 1, nonContainingRing);
+        msg = IDEAL_SECONDARY_Z10.toString() + negativeMsgPart + num.toString() 
+                + " from " + nonContainingRing.toString();
+        assert !IDEAL_SECONDARY_Z10.contains(num) : msg;
+        System.out.println("contains(Ideal)");
+        msg = IDEAL_SECONDARY_ZI5.toString() + affirmativeMsgPart 
+                + IDEAL_PRINCIPAL_ZI5.toString();
+        assert IDEAL_SECONDARY_ZI5.contains(IDEAL_PRINCIPAL_ZI5) : msg;
+        msg = IDEAL_PRINCIPAL_ZI5.toString() + negativeMsgPart 
+                + IDEAL_SECONDARY_ZI5.toString();
+        assert !IDEAL_PRINCIPAL_ZI5.contains(IDEAL_SECONDARY_ZI5) : msg;
+    }
+
+    /**
+     * Test of the getGenerators function, of the Ideal class.
      */
     @Test
     public void testGetGenerators() {
         System.out.println("getGenerators");
-        AlgebraicInteger[] expResultTwoGens = {ALG_INT_2_IN_ZI5, ALG_INT_1PLUSSQRTNEG5};
-        AlgebraicInteger[] result = idealSecondaryZi5.getGenerators();
+        AlgebraicInteger[] expResultTwoGens = {ALG_INT_2_IN_ZI5, 
+            ALG_INT_1PLUSSQRTNEG5};
+        AlgebraicInteger[] result = IDEAL_SECONDARY_ZI5.getGenerators();
         assertArrayEquals(expResultTwoGens, result);
         expResultTwoGens[0] = ALG_INT_2_IN_Z10;
         expResultTwoGens[1] = ALG_INT_SQRT10;
-        result = idealSecondaryZ10.getGenerators();
+        result = IDEAL_SECONDARY_Z10.getGenerators();
         assertArrayEquals(expResultTwoGens, result);
         AlgebraicInteger[] expResultOneGen = {ALG_INT_2_IN_ZI5};
-        result = idealPrincipalZi5.getGenerators();
+        result = IDEAL_PRINCIPAL_ZI5.getGenerators();
         assertArrayEquals(expResultOneGen, result);
         expResultOneGen[0] = ALG_INT_SQRT10;
-        result = idealPrincipalZ10.getGenerators();
+        result = IDEAL_PRINCIPAL_Z10.getGenerators();
         assertArrayEquals(expResultOneGen, result);
         expResultOneGen[0] = new RealQuadraticInteger(1, 0, RING_Z10);
-        result = idealWholeRing.getGenerators();
+        result = IDEAL_WHOLE_RING.getGenerators();
         assertArrayEquals(expResultOneGen, result);
     }
     
     /**
-     * Test of hashCode method, of class Ideal. The main requirement is that two 
-     * distinct ideals from the same ring hash differently. If an ideal from one 
-     * ring hashes the same as another from a different ring, that's acceptable. 
-     * Lastly, an ideal equal to a whole ring should hash the same as that ring.
+     * Test of the hashCode function, of the Ideal class. The main requirement 
+     * is that two distinct ideals from the same ring hash differently. If an 
+     * ideal from one ring hashes the same as another from a different ring, 
+     * that's acceptable. Lastly, an ideal equal to a whole ring should hash the 
+     * same as that ring.
      */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        System.out.println(idealWholeRing.toASCIIString() + " hashed as " + idealWholeRing.hashCode());
-        System.out.println(idealPrincipalZi5.toASCIIString() + " hashed as " + idealPrincipalZi5.hashCode());
-        System.out.println(idealSecondaryZi5.toASCIIString() + " hashed as " + idealSecondaryZi5.hashCode());
-        System.out.println(idealPrincipalZ10.toASCIIString() + " hashed as " + idealPrincipalZ10.hashCode());
-        System.out.println(idealSecondaryZ10.toASCIIString() + " hashed as " + idealSecondaryZ10.hashCode());
-        assertNotEquals(idealPrincipalZi5.hashCode(), idealSecondaryZi5.hashCode());
-        assertNotEquals(idealPrincipalZ10.hashCode(), idealSecondaryZ10.hashCode());
-        assertEquals(idealWholeRing.hashCode(), RING_Z10.hashCode());
+        System.out.println(IDEAL_WHOLE_RING.toASCIIString() + " hashed as " 
+                + IDEAL_WHOLE_RING.hashCode());
+        System.out.println(IDEAL_PRINCIPAL_ZI5.toASCIIString() + " hashed as " 
+                + IDEAL_PRINCIPAL_ZI5.hashCode());
+        System.out.println(IDEAL_SECONDARY_ZI5.toASCIIString() + " hashed as " 
+                + IDEAL_SECONDARY_ZI5.hashCode());
+        System.out.println(IDEAL_PRINCIPAL_Z10.toASCIIString() + " hashed as " 
+                + IDEAL_PRINCIPAL_Z10.hashCode());
+        System.out.println(IDEAL_SECONDARY_Z10.toASCIIString() + " hashed as " 
+                + IDEAL_SECONDARY_Z10.hashCode());
+        assertNotEquals(IDEAL_PRINCIPAL_ZI5.hashCode(), 
+                IDEAL_SECONDARY_ZI5.hashCode());
+        assertNotEquals(IDEAL_PRINCIPAL_Z10.hashCode(), 
+                IDEAL_SECONDARY_Z10.hashCode());
+        assertEquals(IDEAL_WHOLE_RING.hashCode(), RING_Z10.hashCode());
     }
     
     /**
-     * Test of equals method, of class Ideal. After some obvious equalities, the 
-     * commutativity of the generators will be tested. This means that 
-     * &#10216;2, 1 + &radic;&minus;5&#10217; = &#10216;1 + &radic;&minus;5, 
-     * 2&#10217; and &#10216;2, &radic;10&#10217; = &#10216;&radic;10, 
-     * 2&#10217;.
+     * Test of the equals function, of the Ideal class. After some obvious 
+     * equalities, the commutativity of the generators will be tested. This 
+     * means that &#10216;2, 1 + &radic;&minus;5&#10217; = &#10216;1 + 
+     * &radic;&minus;5, 2&#10217; and &#10216;2, &radic;10&#10217; = 
+     * &#10216;&radic;10, 2&#10217;.
      */
     @Test
     public void testEquals() {
         System.out.println("equals");
-        assertEquals(idealPrincipalZi5, idealPrincipalZi5);
-        assertEquals(idealPrincipalZ10, idealPrincipalZ10);
-        assertNotEquals(idealPrincipalZi5, idealPrincipalZ10);
-        assertNotEquals(idealPrincipalZ10, idealPrincipalZi5);
-        assertEquals(idealSecondaryZi5, idealSecondaryZi5);
-        assertEquals(idealSecondaryZ10, idealSecondaryZ10);
-        assertNotEquals(idealSecondaryZi5, idealSecondaryZ10);
-        assertNotEquals(idealSecondaryZ10, idealSecondaryZi5);
-        assertNotEquals(idealPrincipalZi5, idealSecondaryZi5);
-        assertNotEquals(idealPrincipalZ10, idealSecondaryZ10);
-        assertNotEquals(idealPrincipalZi5, idealSecondaryZ10);
-        assertNotEquals(idealPrincipalZ10, idealSecondaryZi5);
-        assertNotEquals(idealSecondaryZi5, idealPrincipalZi5);
-        assertNotEquals(idealSecondaryZ10, idealPrincipalZ10);
-        assertNotEquals(idealSecondaryZi5, idealPrincipalZ10);
-        assertNotEquals(idealSecondaryZ10, idealPrincipalZi5);
+        assertEquals(IDEAL_PRINCIPAL_ZI5, IDEAL_PRINCIPAL_ZI5);
+        assertEquals(IDEAL_PRINCIPAL_Z10, IDEAL_PRINCIPAL_Z10);
+        assertNotEquals(IDEAL_PRINCIPAL_ZI5, IDEAL_PRINCIPAL_Z10);
+        assertNotEquals(IDEAL_PRINCIPAL_Z10, IDEAL_PRINCIPAL_ZI5);
+        assertEquals(IDEAL_SECONDARY_ZI5, IDEAL_SECONDARY_ZI5);
+        assertEquals(IDEAL_SECONDARY_Z10, IDEAL_SECONDARY_Z10);
+        assertNotEquals(IDEAL_SECONDARY_ZI5, IDEAL_SECONDARY_Z10);
+        assertNotEquals(IDEAL_SECONDARY_Z10, IDEAL_SECONDARY_ZI5);
+        assertNotEquals(IDEAL_PRINCIPAL_ZI5, IDEAL_SECONDARY_ZI5);
+        assertNotEquals(IDEAL_PRINCIPAL_Z10, IDEAL_SECONDARY_Z10);
+        assertNotEquals(IDEAL_PRINCIPAL_ZI5, IDEAL_SECONDARY_Z10);
+        assertNotEquals(IDEAL_PRINCIPAL_Z10, IDEAL_SECONDARY_ZI5);
+        assertNotEquals(IDEAL_SECONDARY_ZI5, IDEAL_PRINCIPAL_ZI5);
+        assertNotEquals(IDEAL_SECONDARY_Z10, IDEAL_PRINCIPAL_Z10);
+        assertNotEquals(IDEAL_SECONDARY_ZI5, IDEAL_PRINCIPAL_Z10);
+        assertNotEquals(IDEAL_SECONDARY_Z10, IDEAL_PRINCIPAL_ZI5);
         Ideal testIdealP = new Ideal(ALG_INT_1PLUSSQRTNEG5, ALG_INT_2_IN_ZI5);
-        assertEquals(idealSecondaryZi5, testIdealP);
+        assertEquals(IDEAL_SECONDARY_ZI5, testIdealP);
         testIdealP = new Ideal(ALG_INT_SQRT10, ALG_INT_2_IN_Z10);
-        assertEquals(idealSecondaryZ10, testIdealP);
+        assertEquals(IDEAL_SECONDARY_Z10, testIdealP);
         // TODO: Write tests like for <3omega> == <3 + 3omega>
         QuadraticRing r = new ImaginaryQuadraticRing(-3);
         QuadraticInteger norm7Int = new ImaginaryQuadraticInteger(5, 1, r, 2);
@@ -288,63 +373,68 @@ public class IdealTest {
     }
 
     /**
-     * Test of toString method, of class Ideal. Spaces are desirable but not 
-     * required, so the test will strip them out before the equality assertion.
+     * Test of the toString function, of the Ideal class. Spaces are desirable 
+     * but not required, so the test will strip them out before the equality 
+     * assertion.
      */
     @Test
     public void testToString() {
         System.out.println("toString");
-        String expResult = "\u27E82,1+\u221A(-5)\u27E9";
-        String result = idealSecondaryZi5.toString().replace(" ", "");
-        assertEquals(expResult, result);
-        expResult = RING_Z10.toString().replace(" ", "");
-        result = idealWholeRing.toString().replace(" ", "");
-        assertEquals(expResult, result);
+        String expected = "\u27E82," 
+                + ALG_INT_1PLUSSQRTNEG5.toString().replace(" ", "") 
+                + "\u27E9";
+        String actual = IDEAL_SECONDARY_ZI5.toString().replace(" ", "");
+        assertEquals(expected, actual);
+        expected = RING_Z10.toString().replace(" ", "");
+        actual = IDEAL_WHOLE_RING.toString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
-     * Test of toASCIIString method, of class Ideal. Spaces are desirable but 
-     * not required, so the test will strip them out before the equality 
-     * assertion.
+     * Test of the toASCIIString function, of the Ideal class. Spaces are 
+     * desirable but not required, so the test will strip them out before the 
+     * equality assertion.
      */
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
         String expResult = "(2,1+sqrt(-5))";
-        String result = idealSecondaryZi5.toASCIIString().replace(" ", "");
+        String result = IDEAL_SECONDARY_ZI5.toASCIIString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = RING_Z10.toASCIIString().replace(" ", "");
-        result = idealWholeRing.toASCIIString().replace(" ", "");
+        result = IDEAL_WHOLE_RING.toASCIIString().replace(" ", "");
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of toTeXString method, of class Ideal. Spaces are desirable but not 
-     * required, so the test will strip them out before the equality assertion.
+     * Test of the toTeXString function, of the Ideal class. Spaces are 
+     * desirable but not required, so the test will strip them out before the 
+     * equality assertion.
      */
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
         String expResult = "\\langle2,1+\\sqrt{-5}\\rangle";
-        String result = idealSecondaryZi5.toTeXString().replace(" ", "");
+        String result = IDEAL_SECONDARY_ZI5.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = RING_Z10.toTeXString().replace(" ", "");
-        result = idealWholeRing.toTeXString().replace(" ", "");
+        result = IDEAL_WHOLE_RING.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of toHTMLString method, of class Ideal. Spaces are desirable but not 
-     * required, so the test will strip them out before the equality assertion.
+     * Test of the toHTMLString function, of the Ideal class. Spaces are 
+     * desirable but not required, so the test will strip them out before the 
+     * equality assertion.
      */
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
         String expResult = "&#10216;2,1+&radic;(&minus;5)&#10217;";
-        String result = idealSecondaryZi5.toHTMLString().replace(" ", "");
+        String result = IDEAL_SECONDARY_ZI5.toHTMLString().replace(" ", "");
         assertEquals(expResult, result);
         expResult = RING_Z10.toHTMLString().replace(" ", "");
-        result = idealWholeRing.toHTMLString().replace(" ", "");
+        result = IDEAL_WHOLE_RING.toHTMLString().replace(" ", "");
         assertEquals(expResult, result);
     }
     
@@ -356,18 +446,23 @@ public class IdealTest {
     public void testConstructor() {
         System.out.println("Ideal (constructor)");
         Ideal testIdeal = new Ideal(ALG_INT_1PLUSSQRTNEG5);
-        System.out.println("Created the ideal " + testIdeal.toASCIIString() + " without problem.");
+        System.out.println("Created the ideal " + testIdeal.toASCIIString() 
+                + " without problem.");
         try {
             testIdeal = new Ideal(ALG_INT_1PLUSSQRTNEG5, ALG_INT_SQRT10);
-            System.out.println("Somehow created " + testIdeal.toASCIIString() + " without problem.");
-            fail("Attempting to create ideal generated from numbers of different rings should have triggered IllegalArgumentException.");
+            System.out.println("Somehow created " + testIdeal.toASCIIString() 
+                    + " without problem.");
+            String msg = "Ideal from diff ring numbers needs exception";
+            fail(msg);
         } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to create ideal generated from numbers of different rings correctly triggered IllegalArgumentException.");
+            System.out.println("Ideal from diff rings caused exception");
             System.out.println("\"" + iae.getMessage() + "\"");
         }
         RealQuadraticRing ring = new RealQuadraticRing(29);
         testIdeal = new Ideal(ring);
-        System.out.println("Created an ideal, " + testIdeal.toASCIIString() + " mathematically equal to the ring " + ring.toASCIIString() + " without problem.");
+        System.out.println("Created an ideal, " + testIdeal.toASCIIString() 
+                + " mathematically equal to the ring " + ring.toASCIIString() 
+                + " without problem");
     }
     
 }
