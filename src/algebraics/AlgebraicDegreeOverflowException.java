@@ -1,0 +1,121 @@
+/*
+ * Copyright (C) 2021 Alonso del Arte
+ *
+ * This program is free software: you can redistribute it and/or modify it under 
+ * the terms of the GNU General Public License as published by the Free Software 
+ * Foundation, either version 3 of the License, or (at your option) any later 
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT 
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with 
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package algebraics;
+
+/**
+ * A runtime exception to indicate when the result of an arithmetic operation 
+ * results in an algebraic integer of higher algebraic degree than the 
+ * implementation of {@link AlgebraicInteger} was designed for.
+ * <p>For example, the square root of 2 times the fifth root of 3 is an 
+ * algebraic integer with minimal polynomial <i>x</i><sup>10</sup> &minus; 288. 
+ * So an AlgebraicInteger implementation for quadratic integers would be 
+ * ill-suited to hold the result of the operation, as would an implementation 
+ * that can handle algebraic integers up to algebraic degree 5. In such a case, 
+ * it is appropriate to throw this exception.</p>
+ * <p>If the result of an arithmetic operation is an algebraic integer of the 
+ * same degree as the implementation can handle but the implementation can't 
+ * represent that result for some other reason, {@link 
+ * UnsupportedNumberDomainException} should be used instead; for example, in a 
+ * package that can handle imaginary quadratic integers but not real quadratic 
+ * integers, such as &radic;(&minus;2) &times; &radic;(&minus;5) = &radic;(10) 
+ * &mdash; these three numbers are all of algebraic degree 2 but the result is a 
+ * real quadratic integer rather than an imaginary quadratic integer.</p>
+ * <p>Note that this was originally a checked exception; later on I decided it 
+ * made more sense as a runtime exception.</p>
+ * @author Alonso del Arte
+ */
+public class AlgebraicDegreeOverflowException extends RuntimeException {
+    
+    private static final long serialVersionUID = 1058267018;
+    
+    private final int maxExpectedAlgebraicDegree;
+    private final int necessaryAlgebraicDegree;
+    
+    private final AlgebraicInteger diffRingNumberA;
+    private final AlgebraicInteger diffRingNumberB;
+    
+    /**
+     * Tells what is the maximum algebraic degree the function that threw the 
+     * exception was expecting. This is a getter for a property that was passed 
+     * to the constructor.
+     * @return An integer greater than 1 but less than the necessary algebraic 
+     * degree. For example, this would probably be 2 if thrown by the plus 
+     * function of an {@link AlgebraicInteger} implementation of quadratic 
+     * integers.
+     */
+    public int getMaxExpectedAlgebraicDegree() {
+        return this.maxExpectedAlgebraicDegree;
+    }
+    
+    /**
+     * Tells what is the algebraic degree an object implementing {@link 
+     * AlgebraicInteger} would need to handle to properly represent the result  
+     * of the operation. This is essentially a getter for a property calculated 
+     * at the time the exception was constructed.
+     * @return An integer greater than the expected algebraic degree. For 
+     * example, this could be 4 if thrown by {@link 
+     * algebraics.quadratics.ImaginaryQuadraticInteger#plus}.
+     */
+    public int getNecessaryAlgebraicDegree() {
+        return this.necessaryAlgebraicDegree;
+    }
+    
+    /**
+     * Retrieves the two numbers that triggered this exception.
+     * @return An array of two objects implementing the {@link AlgebraicInteger} 
+     * interface. They could very well both be instances of the same class 
+     * (e.g., both {@link algebraics.quadratics.ImaginaryQuadraticInteger}), but 
+     * they should come from different rings. These are just the numbers that 
+     * were supplied to the constructor.
+     */
+    public AlgebraicInteger[] getCausingNumbers() {
+        return (new AlgebraicInteger[]{this.diffRingNumberA, 
+            this.diffRingNumberB});
+    }
+    
+    /**
+     * This exception should be thrown when the result of an arithmetic 
+     * operation on two objects implementing the {@link AlgebraicInteger} 
+     * interface results in an algebraic integer of higher algebraic degree than 
+     * either object can represent. For instance, if the multiplication of two 
+     * quadratic integers represented by the {@link ImaginaryQuadraticInteger} 
+     * class results in an algebraic integer of degree 4, it would be 
+     * appropriate to throw this exception.
+     * @param message A message to pass on to the {@link Exception} constructor.
+     * @param maxDegree The maximum algebraic degree the object throwing the 
+     * exception can handle (e.g., 2 in the case of 
+     * <code>ImaginaryQuadraticInteger</code>).
+     * @param numberA One of the two numbers that caused the exception. It need 
+     * not be smaller or larger than <code>numberB</code> in any sense (norm, 
+     * absolute value, etc.) but it is expected to come from a different ring of 
+     * algebraic integers. For example, 1 + &radic;2.
+     * @param numberB One of the two numbers that caused the exception. It need 
+     * not be larger or smaller than <code>numberA</code> in any sense (norm, 
+     * absolute value, etc.) but it is expected to come from a different ring of 
+     * algebraic integers. For example, 1 &minus; &radic;3.
+     */
+    public AlgebraicDegreeOverflowException(String message, int maxDegree, 
+            AlgebraicInteger numberA, AlgebraicInteger numberB) {
+        super(message);
+        this.maxExpectedAlgebraicDegree = maxDegree;
+        this.diffRingNumberA = numberA;
+        this.diffRingNumberB = numberB;
+        this.necessaryAlgebraicDegree = this.diffRingNumberA.algebraicDegree() 
+                * this.diffRingNumberB.algebraicDegree();
+    }
+    
+}
