@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -34,7 +34,7 @@ public abstract class CubicRing implements IntegerRing {
     
     /**
      * Query the setting of the preference for blackboard bold.
-     * @return true if blackboard bold is preferred, false if plain bold is 
+     * @return True if blackboard bold is preferred, false if plain bold is 
      * preferred.
      */
     public static boolean preferBlackboardBold() {
@@ -43,7 +43,7 @@ public abstract class CubicRing implements IntegerRing {
     
     /**
      * Set preference for blackboard bold or plain bold. This is only relevant 
-     * for the functions toTeXString() and toHTMLString().
+     * for the functions {@link #toHTMLString()} and {@link #toTeXString()}.
      * @param preferenceForBB true if blackboard bold is preferred, false if 
      * plain bold is preferred.
      */

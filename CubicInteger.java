@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,7 +19,9 @@ package algebraics.cubics;
 import algebraics.AlgebraicInteger;
 
 /**
- * Defines a template for objects to represent algebraic integers of degree 3.
+ * Defines a template for objects to represent algebraic integers of degree 3. 
+ * Integers that may be represented include integers of degree 1 in the context 
+ * of a cubic ring.
  * @author Alonso del Arte
  */
 public abstract class CubicInteger implements AlgebraicInteger {
