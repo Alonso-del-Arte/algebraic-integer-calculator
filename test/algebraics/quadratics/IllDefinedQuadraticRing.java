@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -58,7 +58,6 @@ public class IllDefinedQuadraticRing extends QuadraticRing {
     public IllDefinedQuadraticRing(int d) {
         super(d);
         this.d1mod4 = false;
-        this.radicand = 4 * d;
         this.radSqrt = Math.sqrt(Math.abs(this.radicand));
     }
     
