@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -2687,6 +2687,24 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @Test
+    public void testRandomNumber() {
+        System.out.println("randomNumber");
+        int capacity = 100;
+        Set<Integer> numbers = new HashSet<>(capacity);
+        int bound = capacity * capacity;
+        for (int i = 0; i < capacity; i++) {
+            numbers.add(NumberTheoreticFunctionsCalculator
+                    .randomNumber(bound));
+        }
+        int expected = 7 * capacity / 10;
+        int actual = numbers.size();
+        String msg = "Given " + capacity 
+                + " random number calls, there should be more than " + expected 
+                + " distinct, got " + actual + " distinct";
+        assert expected < actual : msg;
+    }
+    
     /**
      * Test of the randomSquarefreeNumber function, of the  
      * NumberTheoreticFunctionsCalculator class. This test doesn't check whether  
@@ -2720,6 +2738,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
             msg = "The number " + potentialRanSqFreeNum + " is greater than 0";
             assert potentialRanSqFreeNum > 0 : msg;
         } while (potentialRanSqFreeNum % 10 != 9);
+    }
+    
+    @Test
+    public void testRandomSquarefreeNumberOtherThan() {
+        fail();
     }
     
 }
