@@ -1947,4 +1947,9 @@ public class NumberTheoreticFunctionsCalculator {
         return randomNumber;
     }
     
+    // TODO: Write tests for this
+    public static int randomSquarefreeNumberOtherThan(int n, int bound) {
+        return n;
+    }
+    
 }
