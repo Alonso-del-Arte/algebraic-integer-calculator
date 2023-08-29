@@ -1926,6 +1926,10 @@ public class NumberTheoreticFunctionsCalculator {
                 + ring.toASCIIString();
         throw new UnsupportedNumberDomainException(excMsg, ring);
     }
+    
+    public static int randomNumber(int bound) {
+        return 0;
+    }
 
     /**
      * Provides a pseudorandom positive squarefree integer.
