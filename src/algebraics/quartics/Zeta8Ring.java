@@ -1,6 +1,5 @@
-// TODO: Consider deprecation
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -25,8 +24,10 @@ import fractions.Fraction;
  * <i>O</i><sub>\u211A(&zeta;<sub>8</sub>)</sub>, where &zeta;<sub>8</sub> = 
  * (&radic;2)/2 + (&radic;&minus;2)/2, which is a fourth root of &minus;1. There 
  * is really no point to instantiating this class more than once in a given run.
+ * @deprecated Use {@link ComplexBiquadraticRing} instead.
  * @author Alonso del Arte
  */
+@Deprecated
 public final class Zeta8Ring extends QuarticRing {
     
     private static final Fraction ONE_AS_FRACTION = new Fraction(1);

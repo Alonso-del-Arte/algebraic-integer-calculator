@@ -1,6 +1,5 @@
-// TODO: Consider deprecation
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -35,8 +34,11 @@ import fractions.Fraction;
  * <i>b</i>&zeta;<sub>8</sub> + <i>ci</i> + 
  * <i>d</i>(&zeta;<sub>8</sub>)<sup>3</sup>, where <i>i</i> is the imaginary 
  * unit, the principal square root of &minus;1.
+ * @deprecated Use a class to represent integers from a ring represented by an 
+ * instance of {@link ComplexBiquadraticRing} instead.
  * @author Alonso del Arte
  */
+@Deprecated
 public final class Zeta8Integer extends QuarticInteger 
         implements Arithmeticable<Zeta8Integer> {
     

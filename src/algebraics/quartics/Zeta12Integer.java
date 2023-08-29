@@ -1,4 +1,3 @@
-// TODO: Consider deprecation
 /*
  * Copyright (C) 2023 Alonso del Arte
  *
@@ -18,9 +17,13 @@
 package algebraics.quartics;
 
 /**
- *
+ * Represents an algebraic integer from the ring of <b>Z</b> adjoining the 
+ * twelfth complex root of unity.
+ * @deprecated Use a class to represent integers from a ring represented by an 
+ * instance of {@link ComplexBiquadraticRing} instead.
  * @author Alonso del Arte
  */
+@Deprecated
 public class Zeta12Integer extends QuarticInteger {
     
     public static final Zeta12Ring ZETA12RING = new Zeta12Ring();
