@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -58,7 +58,7 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * integers.
      */
     public int getMaxExpectedAlgebraicDegree() {
-        return this.maxExpectedAlgebraicDegree;
+        return -1; // this.maxExpectedAlgebraicDegree;
     }
     
     /**
@@ -71,7 +71,7 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * algebraics.quadratics.ImaginaryQuadraticInteger#plus}.
      */
     public int getNecessaryAlgebraicDegree() {
-        return this.necessaryAlgebraicDegree;
+        return -1; // this.necessaryAlgebraicDegree;
     }
     
     /**
@@ -83,8 +83,8 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * were supplied to the constructor.
      */
     public AlgebraicInteger[] getCausingNumbers() {
-        return (new AlgebraicInteger[]{this.diffRingNumberA, 
-            this.diffRingNumberB});
+        return (new AlgebraicInteger[]{this.diffRingNumberA});//, 
+//            this.diffRingNumberB});
     }
     
     /**
@@ -92,10 +92,12 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * operation on two objects implementing the {@link AlgebraicInteger} 
      * interface results in an algebraic integer of higher algebraic degree than 
      * either object can represent. For instance, if the multiplication of two 
-     * quadratic integers represented by the {@link ImaginaryQuadraticInteger} 
-     * class results in an algebraic integer of degree 4, it would be 
-     * appropriate to throw this exception.
-     * @param message A message to pass on to the {@link Exception} constructor.
+     * quadratic integers represented by the {@link 
+     * algebraics.quadratics.ImaginaryQuadraticInteger 
+     * ImaginaryQuadraticInteger} class results in an algebraic integer of 
+     * degree 4, it would be appropriate to throw this exception.
+     * @param message A message to pass on to the <code>Exception</code> 
+     * constructor.
      * @param maxDegree The maximum algebraic degree the object throwing the 
      * exception can handle (e.g., 2 in the case of 
      * <code>ImaginaryQuadraticInteger</code>).
