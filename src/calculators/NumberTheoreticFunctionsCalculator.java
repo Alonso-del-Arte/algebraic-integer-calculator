@@ -1928,7 +1928,8 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     public static int randomNumber(int bound) {
-        return 0;
+        Random ranNumGen = new Random();
+        return ranNumGen.nextInt(bound);
     }
 
     /**
