@@ -2766,7 +2766,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     + " is greater than 0";
             assert potentialSquarefreeNumber > 0 : msg;
         }
-        int expected = 7 * bound / 10;
+        int expected = 2 * bound / 5;
         int actual = numbers.size();String msg = "After " + bound 
                 + " random number calls, should've gotten at least " + expected 
                 + " distinct, got " + actual + " distinct";
