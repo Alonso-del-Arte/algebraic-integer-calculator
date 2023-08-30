@@ -35,9 +35,11 @@ public class BadRing implements IntegerRing {
     private static final PowerBasis UNARY_POWER_BASIS 
             = new PowerBasis(ONE_ARRAY);
     
+    private final int maximumDegree;
+    
     @Override
     public int getMaxAlgebraicDegree() {
-        return 1;
+        return this.maximumDegree;
     }
     
     @Override
@@ -86,7 +88,7 @@ public class BadRing implements IntegerRing {
     }
     
     public BadRing(int maxDegree) {
-        //
+        this.maximumDegree = maxDegree;
     }
     
 }
