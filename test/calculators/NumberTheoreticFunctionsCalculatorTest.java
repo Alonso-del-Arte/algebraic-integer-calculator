@@ -2716,33 +2716,62 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testRandomSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
-        int testBound = primesList.get(primesListLength - 1) 
+        int bound = primesList.get(primesListLength - 1) 
                 * primesList.get(primesListLength - 1);
-        int potentialRanSqFreeNum, squaredPrime, remainder;
-        String msg;
+        boolean keepGoing;
         do {
-            potentialRanSqFreeNum = randomSquarefreeNumber(testBound);
-            System.out.println("Function came up with this pseudorandom squarefree number: " 
-                    + potentialRanSqFreeNum);
-            for (int i = 0; i < primesListLength; i++) {
-                squaredPrime = primesList.get(i) * primesList.get(i);
-                remainder = potentialRanSqFreeNum % squaredPrime;
-                msg = "Since " + potentialRanSqFreeNum 
-                        + " is said to be squarefree, it should not be divisible by " 
+            int potentialSquarefreeNumber = randomSquarefreeNumber(bound);
+            for (int p : primesList) {
+                int squaredPrime = p * p;
+                int remainder = potentialSquarefreeNumber % squaredPrime;
+                String msg = "Number " + potentialSquarefreeNumber 
+                        + " said to be squarefree shouldn't be divisible by " 
                         + squaredPrime;
                 assertNotEquals(msg, 0, remainder);
             }
-            msg = "The number " + potentialRanSqFreeNum 
-                    + " is not greater than the bound " + testBound;
-            assert potentialRanSqFreeNum < testBound : msg;
-            msg = "The number " + potentialRanSqFreeNum + " is greater than 0";
-            assert potentialRanSqFreeNum > 0 : msg;
-        } while (potentialRanSqFreeNum % 10 != 9);
+            String msg = "The number " + potentialSquarefreeNumber 
+                    + " is not greater than the bound " + bound;
+            assert potentialSquarefreeNumber < bound : msg;
+            msg = "The number " + potentialSquarefreeNumber 
+                    + " is greater than 0";
+            assert potentialSquarefreeNumber > 0 : msg;
+            keepGoing = potentialSquarefreeNumber % 10 != 9;
+        } while (keepGoing);
     }
     
     @Test
     public void testRandomSquarefreeNumberOtherThan() {
-        fail();
+        System.out.println("randomSquarefreeNumberOtherThan");
+        int bound = primesList.get(primesListLength - 1) 
+                * primesList.get(primesListLength - 1);
+        Set<Integer> numbers = new HashSet<>(bound);
+        for (int n = 0; n < bound; n++) {
+            int potentialSquarefreeNumber 
+                    = randomSquarefreeNumberOtherThan(n, bound);
+            numbers.add(potentialSquarefreeNumber);
+            String msg = "Asking for squarefree number other than " + n 
+                    + " should not have given that number";
+            assertNotEquals(msg, n, potentialSquarefreeNumber);
+            for (int p : primesList) {
+                int squaredPrime = p * p;
+                int remainder = potentialSquarefreeNumber % squaredPrime;
+                String divMsg = "Number " + potentialSquarefreeNumber 
+                        + " said to be squarefree shouldn't be divisible by " 
+                        + squaredPrime;
+                assertNotEquals(divMsg, 0, remainder);
+            }
+            msg = "The number " + potentialSquarefreeNumber 
+                    + " is not greater than the bound " + bound;
+            assert potentialSquarefreeNumber < bound : msg;
+            msg = "The number " + potentialSquarefreeNumber 
+                    + " is greater than 0";
+            assert potentialSquarefreeNumber > 0 : msg;
+        }
+        int expected = 7 * bound / 10;
+        int actual = numbers.size();String msg = "After " + bound 
+                + " random number calls, should've gotten at least " + expected 
+                + " distinct, got " + actual + " distinct";
+        assert expected < actual : msg;
     }
     
 }
