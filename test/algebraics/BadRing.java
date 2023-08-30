@@ -26,7 +26,7 @@ import fractions.Fraction;
  * rather than {@link AlgebraicDegreeOverflowException}.
  * @author Alonso del Arte
  */
-class BadRing implements IntegerRing {
+public class BadRing implements IntegerRing {
     
     private static final Fraction ONE = new Fraction(1);
     
@@ -80,8 +80,12 @@ class BadRing implements IntegerRing {
     public String toFilenameString() {
         return "BAD_RING";
     }
+
+    public BadRing() {
+        this(1);
+    }
     
-    BadRing(int maxDegree) {
+    public BadRing(int maxDegree) {
         //
     }
     
