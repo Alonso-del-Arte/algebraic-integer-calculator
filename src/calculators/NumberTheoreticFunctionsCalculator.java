@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -194,6 +194,8 @@ public class NumberTheoreticFunctionsCalculator {
         RealQuadraticRing ring = new RealQuadraticRing(199);
         CLASS_NUMBERS_CACHE.put(ring, 1);
     }
+    
+    private static final Random RANDOM = new Random();
 
     /**
      * Determines the prime factors of a given number. Uses simple trial 
@@ -1928,26 +1930,34 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     public static int randomNumber(int bound) {
-        Random ranNumGen = new Random();
-        return ranNumGen.nextInt(bound);
+        return RANDOM.nextInt(bound);
     }
 
     /**
-     * Provides a pseudorandom positive squarefree integer.
-     * @param bound The limiting number, the returned number must not be higher 
-     * than this number &mdash; but a negative integer may be used, in which 
-     * case it will be multiplied by &minus;1. 
-     * For example, for a pseudorandom squarefree number between 1 and 97, you 
-     * can pass &minus;100 or 100.
-     * @return A pseudorandom positive squarefree integer. For example, given a 
-     * bound of 100, this might return 91.
+     * Provides a pseudorandom positive squarefree integer. A pseudorandom 
+     * number generator is queried for a pseudorandom integer between 0 and a 
+     * specified bound. If that number is not squarefree, this function adds 1 
+     * to that number as many times as needed to reach a squarefree number, even 
+     * if that number is beyond the specified bound.
+     * @param bound The limiting number, the returned number ought not be equal 
+     * to or higher than this number &mdash; but a negative integer may be used, 
+     * in which case it will be multiplied by &minus;1. For example, for a 
+     * pseudorandom squarefree number between 1 and 97, either &minus;100 or 100 
+     * can be passed in. However, if this parameter is a number that is not 
+     * squarefree and in the middle of or at the end of a range of consecutive 
+     * numbers that are not squarefree either, the result can potentially be the 
+     * lowest squarefree number greater than this parameter.
+     * @return A pseudorandom positive squarefree integer that will usually be 
+     * less than the absolute value of <code>bound</code>. For example, given a 
+     * bound of 100, this might return 91. However, it's also possible that this 
+     * function might return 101 if the first choice was 98 = 2 &times; 
+     * 7<sup>2</sup> or 99 = 3<sup>2</sup> &times; 11.
      */
     public static int randomSquarefreeNumber(int bound) {
         if (bound < 0) {
             bound *= -1;
         }
-        Random ranNumGen = new Random();
-        int randomNumber = ranNumGen.nextInt(bound);
+        int randomNumber = RANDOM.nextInt(bound);
         while (!isSquareFree(randomNumber)) {
             randomNumber++;
         }
@@ -1960,15 +1970,16 @@ public class NumberTheoreticFunctionsCalculator {
      * @param n The number not to return. For example, 133.
      * @param bound The limiting number, which the returned number must not be 
      * equal nor greater to. For example, 200. This parameter ought to be 
-     * greater than <code>n</code>, but this is not actually checked. 
+     * greater than <code>n</code>, but this is not actually checked. If this 
+     * parameter is less than <code>n</code>, then the effect will be much the 
+     * same as using {@link #randomSquarefreeNumber(int)} instead.
      * @return A positive squarefree number other than <code>n</code> that is 
      * less than <code>bound</code>. For example, 105.
      */
     public static int randomSquarefreeNumberOtherThan(int n, int bound) {
-        Random ranNumGen = new Random();
         int choice;
         do {
-            choice = ranNumGen.nextInt(bound);
+            choice = RANDOM.nextInt(bound);
         } while (choice == n || !isSquareFree(choice));
         return choice;
     }
