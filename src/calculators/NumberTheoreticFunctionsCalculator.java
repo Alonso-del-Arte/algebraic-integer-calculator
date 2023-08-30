@@ -1934,9 +1934,11 @@ public class NumberTheoreticFunctionsCalculator {
 
     /**
      * Provides a pseudorandom positive squarefree integer.
-     * @param bound The lowest number desired (but may use a negative integer). 
+     * @param bound The limiting number, the returned number must not be higher 
+     * than this number &mdash; but a negative integer may be used, in which 
+     * case it will be multiplied by &minus;1. 
      * For example, for a pseudorandom squarefree number between 1 and 97, you 
-     * can pass -100 or 100.
+     * can pass &minus;100 or 100.
      * @return A pseudorandom positive squarefree integer. For example, given a 
      * bound of 100, this might return 91.
      */
@@ -1952,9 +1954,23 @@ public class NumberTheoreticFunctionsCalculator {
         return randomNumber;
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a pseudorandom positive squarefree integer other than the one 
+     * specified.
+     * @param n The number not to return. For example, 133.
+     * @param bound The limiting number, which the returned number must not be 
+     * equal nor greater to. For example, 200. This parameter ought to be 
+     * greater than <code>n</code>, but this is not actually checked. 
+     * @return A positive squarefree number other than <code>n</code> that is 
+     * less than <code>bound</code>. For example, 105.
+     */
     public static int randomSquarefreeNumberOtherThan(int n, int bound) {
-        return n;
+        Random ranNumGen = new Random();
+        int choice;
+        do {
+            choice = ranNumGen.nextInt(bound);
+        } while (choice == n || !isSquareFree(choice));
+        return choice;
     }
     
 }
