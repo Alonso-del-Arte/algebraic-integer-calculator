@@ -2742,8 +2742,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testRandomSquarefreeNumberOtherThan() {
         System.out.println("randomSquarefreeNumberOtherThan");
-        int bound = primesList.get(primesListLength - 1) 
-                * primesList.get(primesListLength - 1);
+        int bound = primesList.get(primesListLength - 1);
         Set<Integer> numbers = new HashSet<>(bound);
         for (int n = 0; n < bound; n++) {
             int potentialSquarefreeNumber 
