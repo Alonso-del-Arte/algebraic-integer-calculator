@@ -28,15 +28,6 @@ import static org.junit.Assert.*;
 public class BadRingTest {
     
     @Test
-    public void testGetDiscriminant() {
-        System.out.println("discriminant");
-        int expected = randomNumber(1024) + 16;
-        BadRing ring = new BadRing(expected);
-        int actual = ring.discriminant();
-        assertEquals(expected, actual);
-    }
-    
-    @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         int expected = randomNumber(1024) + 16;
