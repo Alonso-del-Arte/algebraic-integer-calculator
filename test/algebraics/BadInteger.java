@@ -60,7 +60,7 @@ public class BadInteger implements AlgebraicInteger {
 
     // TODO: Write tests for this
     @Override
-    public IntegerRing getRing() {
+    public BadRing getRing() {
         return new BadRing();
     }
 
