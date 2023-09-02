@@ -28,8 +28,13 @@ import static org.junit.Assert.*;
 public class BadIntegerTest {
     
     @Test
-    public void placeholder() {
-        fail("PLACEHOLDER FOR TEST");
-    } 
+    public void testGetRing() {
+        System.out.println("getRing");
+        int maxDegree = randomNumber(2048) + 32;
+        BadRing expected = new BadRing(maxDegree);
+        BadInteger integer = new BadInteger(expected);
+        BadRing actual = integer.getRing();
+        assertEquals(expected, actual);
+    }
     
 }
