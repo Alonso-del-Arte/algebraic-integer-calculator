@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,18 +19,22 @@ package algebraics.cubics;
 import algebraics.IntegerRing;
 
 /**
- *
+ * Provides a template for defining objects to represent cubic rings.
  * @author Alonso del Arte
  */
 public abstract class CubicRing implements IntegerRing {
         
+    /**
+     * The maximum possible algebraic degree of an algebraic integer in a cubic 
+     * ring.
+     */
     public static final int MAX_ALGEBRAIC_DEGREE = 3;
     
     protected static boolean preferenceForBlackboardBold = true;
     
     /**
      * Query the setting of the preference for blackboard bold.
-     * @return true if blackboard bold is preferred, false if plain bold is 
+     * @return True if blackboard bold is preferred, false if plain bold is 
      * preferred.
      */
     public static boolean preferBlackboardBold() {
@@ -39,7 +43,7 @@ public abstract class CubicRing implements IntegerRing {
     
     /**
      * Set preference for blackboard bold or plain bold. This is only relevant 
-     * for the functions toTeXString() and toHTMLString().
+     * for the functions {@link #toHTMLString()} and {@link #toTeXString()}.
      * @param preferenceForBB true if blackboard bold is preferred, false if 
      * plain bold is preferred.
      */
@@ -47,6 +51,12 @@ public abstract class CubicRing implements IntegerRing {
         preferenceForBlackboardBold = preferenceForBB;
     }
     
+    /**
+     * Gives the maximum algebraic degree an algebraic integer in a cubic ring 
+     * can have.
+     * @return Always 3 in the case of a cubic ring. This value is also 
+     * available as the constant {@link #MAX_ALGEBRAIC_DEGREE}.
+     */
     @Override
     public final int getMaxAlgebraicDegree() {
         return MAX_ALGEBRAIC_DEGREE;
