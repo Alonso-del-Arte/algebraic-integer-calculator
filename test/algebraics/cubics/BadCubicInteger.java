@@ -106,4 +106,8 @@ public class BadCubicInteger extends CubicInteger {
         return 361.2;
     }
     
+    public BadCubicInteger(CubicRing ring) {
+        super(ring);
+    }
+    
 }
