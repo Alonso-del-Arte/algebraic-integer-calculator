@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -23,17 +23,18 @@ package algebraics;
  * both as an integer array of coefficients and as a <code>String</code>.
  * <p>Almost from the beginning, {@link 
  * algebraics.quadratics.ImaginaryQuadraticInteger}, an implementation of 
- * this interface, had some variants of {@link Object#toString()} specifically 
- * for ASCII plaintext, TeX documents and HTML pages, but it wasn't until July 
- * 2018 that I decided that some of those should be required by this 
- * interface.</p>
+ * this interface, had some variants of <code>Object</code>'s 
+ * <code>toString()</code> specifically for ASCII plaintext, TeX documents and 
+ * HTML pages, but it wasn't until July 2018 that I decided that some of those 
+ * should be required by this interface.</p>
  * <p>Basic arithmetic functions (addition, subtraction, multiplication and 
  * division) would be nice but are not explicitly required by this interface. It 
  * is then up to the implementer to define basic arithmetic methods as static or 
  * instance functions, or both, or not at all. Other specifics are also left to 
  * the implementer.</p>
  * <p>Those wishing to implement the basic arithmetic functions as instance 
- * functions should consider using the {@link Arithmeticable} interface.</p>
+ * functions should consider using the {@link arithmetic.Arithmeticable} 
+ * interface.</p>
  * @author Alonso del Arte
  */
 public interface AlgebraicInteger {
@@ -52,8 +53,8 @@ public interface AlgebraicInteger {
      * was a 32-bit integer, but due to many overflow problems, I changed it to 
      * a 64-bit integer. Overflow problems can still occur, but they're 
      * hopefully less frequent now.
-     * @return The trace. For example, given 5/2 + (&radic;&minus;7)/2, the 
-     * trace would be 5.
+     * @return The trace. For example, given <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub>, the trace would be 5.
      */
     long trace();
     
@@ -63,21 +64,27 @@ public interface AlgebraicInteger {
      * integer, but due to many overflow problems, I changed it to a 64-bit 
      * integer. Overflow problems can still occur, but they're hopefully less 
      * frequent now.
-     * @return The norm. For example, given 5/2 + (&radic;&minus;7)/2, the norm 
+     * @return The norm. For example, given <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub>, the norm 
      * would be 8.
      */
     long norm();
     
     /**
      * Gives the coefficients for the minimal polynomial of the algebraic 
-     * integer, in the reverse order of the normal expression of the minimal 
-     * polynomial.
+     * integer. They are given in the reverse order of the normal expression of 
+     * the minimal polynomial.
      * @return An array of 64-bit integers, in total one more than the maximum 
      * possible algebraic degree in the applicable ring. If the algebraic degree 
-     * of this integer is equal to that maximum possible algebraic degree in the 
+     * of this integer is equal to the maximum possible algebraic degree in the 
      * given ring, then the element at position <code>length</code> &minus; 1 in 
-     * the array ought to be 1. For example, if the algebraic integer is 1 + 
-     * &#8731;2, the result would be {3, 3, 3, 1}.
+     * the array ought to be 1, otherwise it might be 0. For example, if the 
+     * algebraic integer is 1 + &#8731;2 in <b>Z</b>[&#8731;2], which has 
+     * minimal polynomial <i>x</i><sup>3</sup> &minus; 3<i>x</i><sup>2</sup> + 
+     * 3<i>x</i> &minus; 3, this function would give {&minus;3, 3, &minus;3, 1}. 
+     * However, that same algebraic integer in a ring of higher degree that has 
+     * <b>Z</b>[&#8731;2] as an intermediate field might give for this function 
+     * instead {&minus;3, 3, &minus;3, 1, 0, 0, 0}, for example.
      */
     long[] minPolynomialCoeffs();
     
@@ -145,7 +152,7 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer using only ASCII 
      * characters. It is strongly recommended that any implementations of 
-     * this interface also override <code>Object.toString</code>.
+     * this interface also override <code>Object</code>'s <code>toString</code>.
      * @return Text using only ASCII characters. For example, for 
      * &omega;\u221B2, this might be "omega cbrt(2)". Spaces are very desirable 
      * but not strictly required. However, if spaces are omitted in certain 
@@ -158,9 +165,9 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer suitable for use in a TeX 
      * document. It is strongly recommended that any implementations of 
-     * this interface also override <code>Object.toString</code>. For square 
-     * roots, it is acceptable to use "\sqrt", but for cube roots and others, 
-     * the "\root m \of n" syntax should be used, and not "\sqrt[m]{n}".
+     * this interface also override <code>Object</code>'s <code>toString</code>. 
+     * For square roots, it is acceptable to use "\sqrt", but for cube roots and 
+     * others, the "\root m \of n" syntax should be used, and not "\sqrt[m]{n}".
      * @return Text suitable for use in a TeX document. For example, for 1 + 
      * \u221B2, the result might be "1 + \root 3 \of 2".
      */
@@ -169,7 +176,7 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer suitable for use in an 
      * HTML page. It is strongly recommended that any implementations of 
-     * this interface also override <code>Object.toString</code>.
+     * this interface also override <code>Object</code>'s <code>toString</code>.
      * @return Text suitable for use in an HTML page. For example, for 1 + 
      * \u221B2, the result might be "1 + &amp;#8731;2", which should then render 
      * as "1 + &#8731;2".
@@ -180,9 +187,12 @@ public interface AlgebraicInteger {
      * Gives the absolute value of the algebraic integer, essentially its 
      * distance from 0. Sometimes called "radius" in the context of polar 
      * coordinates.
-     * @return The absolute value in double precision, in many cases a rational 
-     * approximation. For example, for &minus;1 + <i>i</i>, this would be 
-     * roughly 1.4142. For 1 &minus; &#8731;5, this would be roughly &minus;0.7.
+     * @return The absolute value in 64-bit floating point precision, in many 
+     * cases a rational approximation. For example, for &minus;1 + <i>i</i>, 
+     * this would be 1.4142135623730951, which is &radic;2 correct to all but 
+     * the last decimal place quoted. For 1 &minus; &#8731;5, this would be 
+     * 0.7099759466766971, which is correct for all but the last two decimal 
+     * places quoted.
      */
     double abs();
     
@@ -193,8 +203,8 @@ public interface AlgebraicInteger {
      * to use floating point numbers, which bring with them all manner of vexing 
      * problems.
      * @return The real part, which may be a rational approximation in some 
-     * cases. For example, for 1 + &#8731;2, this might be 2.259921049894873. 
-     * For 3/2 + (&radic;&minus;19)/2, this should be exactly 1.5.
+     * cases. For example, for 1 + &#8731;2, this might be 2.2599210498948734. 
+     * For <sup>3</sup>&frasl;<sub>2</sub> + <sup>&radic;&minus;19</sup>&frasl;<sub>2</sub>, this should be exactly 1.5.
      */
     double getRealPartNumeric();
     
@@ -203,11 +213,13 @@ public interface AlgebraicInteger {
      * or &minus;<i>i</i> as needed. It is strongly recommended that the author 
      * of an implementation write documentation clarifying this and other 
      * points. However, in the case of algebraic integers from purely real 
-     * rings, this issue is moot, since the result should always be 0.
+     * rings, this issue is moot, since the result should always be 0.0.
      * @return The imaginary part, divided by <i>i</i> or &minus;<i>i</i>. In 
-     * some cases may be 0, in others it may be a rational approximation. For 
-     * example, for 1 + &#8731;2, this should be exactly 0. For 3/2 + 
-     * (&radic;&minus;19)/2, this would be roughly 2.17944947177.
+     * some cases may be 0.0, in others it may be a rational approximation. For 
+     * example, for 1 + &#8731;2, this should be exactly 0.0. For 
+     * <sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;19</sup>&frasl;<sub>2</sub>, this would probably be 
+     * 2.179449471770337. For &minus;1 + <i>i</i>, this should be exactly 1.0.
      */
     double getImagPartNumeric();
     
@@ -249,12 +261,11 @@ public interface AlgebraicInteger {
      * negative. Other terms for this angle include "argument," "phase" and 
      * "amplitude."
      * @return The angle expressed in radians, ranging from &minus;&pi; radians 
-     * to &pi; radians. For example, the angle of <i>i</i> should be roughly 
-     * 1.57 radians (90 degrees) and the angle of &minus;<i>i</i> should be 
-     * roughly &minus;1.57 radians (&minus;90 degrees). The numerical precision 
-     * should generally be better than two decimal places. If you need this 
-     * angle in degrees, you can use <code>Math.toDegrees(double)</code> to make 
-     * the conversion.
+     * to &pi; radians. For example, the angle of <i>i</i> should be given as  
+     * 1.5707963267948966 radians (90 degrees) and the angle of &minus;<i>i</i> 
+     * should be given as &minus;1.5707963267948966 radians (&minus;90 degrees). 
+     * If you need this angle in degrees, you can use 
+     * <code>Math.toDegrees(double)</code> to make the conversion.
      */
     double angle();
     
