@@ -21,6 +21,8 @@ package algebraics;
  * @author Alonso del Arte
  */
 public class BadInteger implements AlgebraicInteger {
+    
+    private final BadRing domain;
 
     @Override
     public int algebraicDegree() {
@@ -58,10 +60,9 @@ public class BadInteger implements AlgebraicInteger {
         return "NOT IMPLEMENTED YET";
     }
 
-    // TODO: Write tests for this
     @Override
     public BadRing getRing() {
-        return new BadRing();
+        return this.domain;
     }
 
     @Override
@@ -110,6 +111,7 @@ public class BadInteger implements AlgebraicInteger {
     }
 
     BadInteger(BadRing ring) {
+        this.domain = ring;
     }
     
 }
