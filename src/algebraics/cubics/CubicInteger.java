@@ -28,14 +28,13 @@ public abstract class CubicInteger implements AlgebraicInteger {
     
     protected final CubicRing cubicRing;
     
-    /* *
+    /**
      * Retrieves an object representing the ring this cubic integer belongs to.
      * @return An object of type {@link CubicRing}.
      */
-    // TODO: Write tests for this, reactivate Javadoc
     @Override
     public CubicRing getRing() {
-        return null;// this.cubicRing;
+        return this.cubicRing;
     }
     
     public CubicInteger(CubicRing ring) {
