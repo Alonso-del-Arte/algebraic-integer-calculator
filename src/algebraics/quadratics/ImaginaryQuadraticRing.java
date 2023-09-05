@@ -24,15 +24,15 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     private static final long serialVersionUID = 4547847535800105779L;
 
-    /**
+    /* *
      * Indicates that this ring is not purely real. This ring contains purely 
      * imaginary numbers as well as complex numbers, in addition to purely real 
      * integers.
      * @return Always false, since this is an imaginary quadratic ring.
      */
-    @Override
+    @Override // TODO: Rewrite test
     public final boolean isPurelyReal() {
-        return false;
+        return true;// false;
     }
     
     /**
