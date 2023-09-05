@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -78,23 +78,18 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of isPurelyReal method, of class ImaginaryQuadraticRing. Asserting 
-     * false for all the test rings in this test class.
+     * Test of the isPurelyReal function, of the ImaginaryQuadraticRing class. 
+     * Asserting false for all the test rings in this test class.
      */
     @Test
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
-        String msgPart = " should not be said to be a purely real ring.";
-        String assertionMessage = RING_GAUSSIAN.toString() + msgPart;
-        assertFalse(assertionMessage, RING_GAUSSIAN.isPurelyReal());
-        assertionMessage = RING_ZI2.toString() + msgPart;
-        assertFalse(assertionMessage, RING_ZI2.isPurelyReal());
-        assertionMessage = RING_EISENSTEIN.toString() + msgPart;
-        assertFalse(assertionMessage, RING_EISENSTEIN.isPurelyReal());
-        assertionMessage = RING_OQI7.toString() + msgPart;
-        assertFalse(assertionMessage, RING_OQI7.isPurelyReal());
-        assertionMessage = ringRandom.toString() + msgPart;
-        assertFalse(assertionMessage, ringRandom.isPurelyReal());
+        int d = -NumberTheoreticFunctionsCalculator
+                .randomSquarefreeNumber(4096);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String msg = ring.toString() 
+                + " should not be said to be a purely real ring";
+        assert !ring.isPurelyReal() : msg;
     }
     
     /**
