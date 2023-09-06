@@ -1964,6 +1964,11 @@ public class NumberTheoreticFunctionsCalculator {
         return randomNumber;
     }
     
+    // TODO: Write tests for this
+    public static int randomSquarefreeNumberMod(int n, int m) {
+        return -100;
+    }
+    
     /**
      * Gives a pseudorandom positive squarefree integer other than the one 
      * specified.
