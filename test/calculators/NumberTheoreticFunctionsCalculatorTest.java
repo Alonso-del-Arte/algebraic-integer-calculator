@@ -2687,6 +2687,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    /**
+     * Test of the randomNumber function, of the 
+     * NumberTheoreticFunctionsCalculator class.
+     */
     @Test
     public void testRandomNumber() {
         System.out.println("randomNumber");
@@ -2705,6 +2709,29 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assert expected < actual : msg;
     }
     
+    private static void assertSquarefreeLimited(int n) {
+        for (int p : primesList) {
+            int squaredPrime = p * p;
+            int remainder = n % squaredPrime;
+            String msg = "Number " + n  
+                    + " said to be squarefree shouldn't be divisible by " 
+                    + squaredPrime;
+            assertNotEquals(msg, 0, remainder);
+        }
+    }
+    
+    private static void assertSquarefree(int n) {
+        int root = (int) Math.ceil(Math.sqrt(Math.abs(n)));
+        for (int d = 2; d < root; d++) {
+            int dSquared = d * d;
+            int remainder = n % dSquared;
+            String msg = "Number " + n 
+                    + " said to be squarefree should not be divisible by " 
+                    + dSquared;
+            assertNotEquals(msg, 0, remainder);
+        }
+    }
+    
     /**
      * Test of the randomSquarefreeNumber function, of the  
      * NumberTheoreticFunctionsCalculator class. This test doesn't check whether  
@@ -2721,14 +2748,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         boolean keepGoing;
         do {
             int potentialSquarefreeNumber = randomSquarefreeNumber(bound);
-            for (int p : primesList) {
-                int squaredPrime = p * p;
-                int remainder = potentialSquarefreeNumber % squaredPrime;
-                String msg = "Number " + potentialSquarefreeNumber 
-                        + " said to be squarefree shouldn't be divisible by " 
-                        + squaredPrime;
-                assertNotEquals(msg, 0, remainder);
-            }
+            assertSquarefreeLimited(potentialSquarefreeNumber);
             String msg = "The number " + potentialSquarefreeNumber 
                     + " is not greater than the bound " + bound;
             assert potentialSquarefreeNumber < bound : msg;
@@ -2739,6 +2759,20 @@ public class NumberTheoreticFunctionsCalculatorTest {
         } while (keepGoing);
     }
     
+    /**
+     * Test of the randomSquarefreeNumberMod function, of the 
+     * NumberTheoreticFunctionsCalculator class.
+     */
+    @Test
+    public void testRandomSquarefreeNumberMod() {
+        System.out.println("randomSquarefreeNumberMod");
+        fail("HAVEN'T WRITTEN TEST YET");
+    }
+    
+    /**
+     * Test of the randomSquarefreeNumberOtherThan function, of the 
+     * NumberTheoreticFunctionsCalculator class.
+     */
     @Test
     public void testRandomSquarefreeNumberOtherThan() {
         System.out.println("randomSquarefreeNumberOtherThan");
@@ -2751,14 +2785,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String msg = "Asking for squarefree number other than " + n 
                     + " should not have given that number";
             assertNotEquals(msg, n, potentialSquarefreeNumber);
-            for (int p : primesList) {
-                int squaredPrime = p * p;
-                int remainder = potentialSquarefreeNumber % squaredPrime;
-                String divMsg = "Number " + potentialSquarefreeNumber 
-                        + " said to be squarefree shouldn't be divisible by " 
-                        + squaredPrime;
-                assertNotEquals(divMsg, 0, remainder);
-            }
+            assertSquarefreeLimited(potentialSquarefreeNumber);
             msg = "The number " + potentialSquarefreeNumber 
                     + " is not greater than the bound " + bound;
             assert potentialSquarefreeNumber < bound : msg;
