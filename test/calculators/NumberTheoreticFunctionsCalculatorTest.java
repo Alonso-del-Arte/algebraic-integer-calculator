@@ -2768,8 +2768,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Test of the randomSquarefreeNumberMod function, of the 
-     * NumberTheoreticFunctionsCalculator class.
+     * Another test of the randomSquarefreeNumberMod function, of the 
+     * NumberTheoreticFunctionsCalculator class. Modulus 0 should cause 
+     * ArithmeticException.
      */
     @Test
     public void testRandomSquarefreeNumberModZeroCausesException() {
@@ -2793,6 +2794,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    /**
+     * Test of the randomSquarefreeNumberMod function, of the 
+     * NumberTheoreticFunctionsCalculator class.
+     */
+    @Test
     public void testRandomSquarefreeNumberMod() {
         System.out.println("randomSquarefreeNumberMod");
         int expected = 12;
