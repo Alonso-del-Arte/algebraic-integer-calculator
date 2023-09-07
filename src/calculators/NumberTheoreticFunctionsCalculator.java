@@ -1957,20 +1957,33 @@ public class NumberTheoreticFunctionsCalculator {
         if (bound < 0) {
             bound *= -1;
         }
-        int randomNumber = RANDOM.nextInt(bound);
-        while (!isSquareFree(randomNumber)) {
-            randomNumber++;
+        int choice = RANDOM.nextInt(bound);
+        while (!isSquareFree(choice)) {
+            choice++;
         }
-        return randomNumber;
+        return choice;
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a pseudorandom positive squarefree number in a specified residue 
+     * class. This is to obtain pseudorandom numbers of the form <i>xm</i> + 
+     * <i>n</i>, where <i>x</i> is some arbitrary integer.
+     * @param n The number to add to a multiple of <code>m</code>. For example, 
+     * 29. Ought to be at least 0 and preferably less than <code>m</code>.
+     * @param m The modulus to reckon <code>n</code> against. Must not be 0.
+     * @return A pseudorandom positive squarefree integer.
+     * @throws ArithmeticException If <code>m</code> equals 0.
+     */
     public static int randomSquarefreeNumberMod(int n, int m) {
         if (m == 0) {
             String excMsg = "Modulus m must not be 0";
             throw new ArithmeticException(excMsg);
         }
-        return -100;
+        int choice = m * RANDOM.nextInt(4096) + n;
+        while (!isSquareFree(choice)) {
+            choice += m;
+        }
+        return choice;
     }
     
     // TODO: Write tests for this
