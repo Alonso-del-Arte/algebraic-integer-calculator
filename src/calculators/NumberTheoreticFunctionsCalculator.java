@@ -1966,6 +1966,10 @@ public class NumberTheoreticFunctionsCalculator {
     
     // TODO: Write tests for this
     public static int randomSquarefreeNumberMod(int n, int m) {
+        if (m == 0) {
+            String excMsg = "Modulus m must not be 0";
+            throw new ArithmeticException(excMsg);
+        }
         return -100;
     }
     
