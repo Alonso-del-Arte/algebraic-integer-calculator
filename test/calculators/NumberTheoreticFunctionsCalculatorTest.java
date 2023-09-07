@@ -2759,14 +2759,62 @@ public class NumberTheoreticFunctionsCalculatorTest {
         } while (keepGoing);
     }
     
+    private static void assertModulus(int i, int n, int m) {
+        String msg = "Number " + i + " should be congruent to " + n + " mod " 
+                + m;
+        int remainder = i % m;
+        if (remainder < 0) remainder += m;
+        assert remainder == n : msg;
+    }
+    
     /**
      * Test of the randomSquarefreeNumberMod function, of the 
      * NumberTheoreticFunctionsCalculator class.
      */
     @Test
+    public void testRandomSquarefreeNumberModZeroCausesException() {
+        int n = RANDOM.nextInt();
+        int m = 0;
+        String msgPart = "Asking for random squarefree number congruent to " + n 
+                + " modulo " + m;
+        try {
+            int badResult = NumberTheoreticFunctionsCalculator
+                    .randomSquarefreeNumberMod(n, m);
+            String msg = msgPart + " somehow gave " + badResult;
+            fail(msg);
+        } catch (ArithmeticException ae) {
+            System.out.println(msgPart 
+                    + " correctly caused ArithmeticException");
+            System.out.println("\"" + ae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String msg = msgPart + " shouldn't have caused " 
+                    + re.getClass().getName();
+            fail(msg);
+        }
+    }
+    
     public void testRandomSquarefreeNumberMod() {
         System.out.println("randomSquarefreeNumberMod");
-        fail("HAVEN'T WRITTEN TEST YET");
+        int expected = 12;
+        int numberOfCalls = 3 * expected / 2;
+        int m = RANDOM.nextInt(Byte.MAX_VALUE) + 3;
+        for (int n = 0; n < m; n++) {
+            Set<Integer> numbers = new HashSet<>(expected);
+            for (int i = 0; i < numberOfCalls; i++) {
+                int number = NumberTheoreticFunctionsCalculator
+                        .randomSquarefreeNumberMod(n, m);
+                assertSquarefree(number);
+                assertModulus(number, n, m);
+                String msg = "Number " + number + " should be greater than 0";
+                assert number > 0 : msg;
+                numbers.add(number);
+            }
+            int actual = numbers.size();
+            String msg = "Calling randomSquarefreeNumberMod() " + numberOfCalls 
+                    + " times should've given at least " + expected 
+                    + " distinct numbers";
+            assert expected < actual : msg;
+        }
     }
     
     /**
