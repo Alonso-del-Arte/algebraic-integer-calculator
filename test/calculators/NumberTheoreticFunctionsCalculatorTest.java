@@ -2796,21 +2796,22 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     /**
      * Test of the randomSquarefreeNumberMod function, of the 
-     * NumberTheoreticFunctionsCalculator class.
+     * NumberTheoreticFunctionsCalculator class. This test chooses a small prime 
+     * number for the modulus.
      */
     @Test
     public void testRandomSquarefreeNumberMod() {
         System.out.println("randomSquarefreeNumberMod");
         int expected = 12;
         int numberOfCalls = 3 * expected / 2;
-        int m = RANDOM.nextInt(Byte.MAX_VALUE) + 3;
-        for (int n = 0; n < m; n++) {
+        int p = primesList.get(RANDOM.nextInt(primesListLength));
+        for (int n = 0; n < p; n++) {
             Set<Integer> numbers = new HashSet<>(expected);
             for (int i = 0; i < numberOfCalls; i++) {
                 int number = NumberTheoreticFunctionsCalculator
-                        .randomSquarefreeNumberMod(n, m);
+                        .randomSquarefreeNumberMod(n, p);
                 assertSquarefree(number);
-                assertModulus(number, n, m);
+                assertModulus(number, n, p);
                 String msg = "Number " + number + " should be greater than 0";
                 assert number > 0 : msg;
                 numbers.add(number);
@@ -2821,6 +2822,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     + " distinct numbers";
             assert expected < actual : msg;
         }
+    }
+    
+    public void testRandomSquarefreeNumberModSquare() {
+        fail("HAVEN'T WRITTEN TEST YET");
     }
     
     /**
