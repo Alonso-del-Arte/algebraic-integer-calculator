@@ -2824,7 +2824,31 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
-    public void testRandomSquarefreeNumberModSquare() {
+    /**
+     * Another test of the randomSquarefreeNumberMod function, of the 
+     * NumberTheoreticFunctionsCalculator class. This test chooses the cube of a 
+     * prime and tries to use a remainder for which it is impossible to get a 
+     * squarefree number. For example, x = 4 mod 8 has infinitely many solutions 
+     * but none of them are squarefree numbers.
+     */
+    @Test(timeout = 10000)
+    public void testRandomSquarefreeNumberSquareModuloCube() {
+        int prime = primesList.get(RANDOM.nextInt(primesListLength));
+        int square = prime * prime;
+        int cube = prime * square;
+        System.out.println("Asking for number x = " + square + " mod " + cube);
+        try {
+            int badResult = NumberTheoreticFunctionsCalculator
+                    .randomSquarefreeNumberMod(square, cube);
+            String msg = "Number " + badResult 
+                    + " is said to be a squarefree number congruent to "  
+                    + square + " mod " + cube;
+            fail(msg);
+        } catch (IllegalArgumentException iae) {
+            //
+        } catch (RuntimeException re) {
+            //
+        }
         fail("HAVEN'T WRITTEN TEST YET");
     }
     
