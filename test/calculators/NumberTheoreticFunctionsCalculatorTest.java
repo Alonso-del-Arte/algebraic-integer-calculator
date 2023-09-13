@@ -2853,6 +2853,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String msg = re.getClass().getName() 
                     + " is the wrong exception for squarefree congruent to " 
                     + square + " mod " + cube;
+            fail(msg);
         }
     }
     
