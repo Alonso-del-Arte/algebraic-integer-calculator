@@ -2845,11 +2845,15 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     + square + " mod " + cube;
             fail(msg);
         } catch (IllegalArgumentException iae) {
-            //
+            System.out.println("Asking for squarefree number congruent to " 
+                    + square + " mod " + cube 
+                    + " correctly caused IllegalArgumentException");
+            System.out.println("\"" + iae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            //
+            String msg = re.getClass().getName() 
+                    + " is the wrong exception for squarefree congruent to " 
+                    + square + " mod " + cube;
         }
-        fail("HAVEN'T WRITTEN TEST YET");
     }
     
     /**
