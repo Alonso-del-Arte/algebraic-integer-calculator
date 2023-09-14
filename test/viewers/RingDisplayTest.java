@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,6 +19,7 @@ package viewers;
 import algebraics.IntegerRing;
 import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.RealQuadraticRing;
+import calculators.NumberTheoreticFunctionsCalculator;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,29 @@ public class RingDisplayTest {
     
     static final String TEST_CLIPBOARD_TEXT 
             = "This text was placed by a setup procedure";
+    
+    @Test
+    public void testAppleMenuBarWhenApplicable() {
+        final boolean isMacOS = System.getProperty("os.name")
+                .startsWith("Mac OS");
+        int d = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(8192);
+        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(d);
+        RingDisplay display = new RingDisplayImpl(ring);
+        display.startRingDisplay();
+        String key = "apple.laf.useScreenMenuBar";
+        String value = System.getProperty(key);
+        String expected = Boolean.toString(isMacOS);
+        String actual = (value == null) ? "null" : value.toLowerCase();
+        String msg = "Property \"" + key 
+                + "\" should be true on Mac OS, false or null otherwise";
+        if (actual == null) {
+            if (isMacOS) {
+                fail(msg);
+            }
+        } else {
+            assertEquals(msg, expected, actual);
+        }
+    }
     
     /**
      * Test of the setPixelsPerBasicImaginaryInterval procedure, of the 
@@ -619,12 +643,10 @@ public class RingDisplayTest {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet");
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            throw new UnsupportedOperationException("Not supported yet");
         }
         
         public RingDisplayImpl(IllDefinedQuadraticRing ring) {
