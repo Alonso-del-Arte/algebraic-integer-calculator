@@ -1979,6 +1979,15 @@ public class NumberTheoreticFunctionsCalculator {
             String excMsg = "Modulus m must not be 0";
             throw new ArithmeticException(excMsg);
         }
+        if (!isSquareFree(m)) {
+            int gcd = (int) euclideanGCD(m, n);
+            if (!isSquareFree(gcd)) {
+                String excMsg = "Given that gcd(" + m + ", " + n + ") = " + gcd 
+                        + ", there is no squarefree number congruent to " + n 
+                        + " mod " + m;
+                throw new IllegalArgumentException(excMsg);
+            }
+        }
         int choice = m * RANDOM.nextInt(4096) + n;
         while (!isSquareFree(choice)) {
             choice += m;
