@@ -73,7 +73,7 @@ public abstract class RingDisplay extends JPanel
     
     /**
      * The default number of pixels per unit interval. The protected variable 
-     * pixelsPerUnitInterval is initialized to this value.
+     * <code>pixelsPerUnitInterval</code> is initialized to this value.
      */
     public static final int DEFAULT_PIXELS_PER_UNIT_INTERVAL = 40;
     
@@ -462,8 +462,8 @@ public abstract class RingDisplay extends JPanel
      * @param pixelLength An integer greater than or equal to 
      * {@link #MINIMUM_PIXELS_PER_UNIT_INTERVAL} but less than or equal to 
      * {@link #MAXIMUM_PIXELS_PER_UNIT_INTERVAL}.
-     * @throws IllegalArgumentException If pixelLength is outside the range 
-     * specified above.
+     * @throws IllegalArgumentException If <code>pixelLength</code> is outside 
+     * the range specified above.
      */
     public void setPixelsPerUnitInterval(int pixelLength) {
         if (pixelLength < MINIMUM_PIXELS_PER_UNIT_INTERVAL) {
@@ -510,8 +510,8 @@ public abstract class RingDisplay extends JPanel
     
     /**
      * Changes the background color. I have not tested this one yet.
-     * @param proposedBackgroundColor Preferably a color that will contrast nicely 
-     * with the foreground points but which the grids can blend into.
+     * @param proposedBackgroundColor Preferably a color that will contrast 
+     * nicely with the foreground points but which the grids can blend into.
      */
     public void changeBackgroundColor(Color proposedBackgroundColor) {
         this.backgroundColor = proposedBackgroundColor;
@@ -590,7 +590,8 @@ public abstract class RingDisplay extends JPanel
     /**
      * Changes the zoom step.
      * @param step Needs to be at least {@link #MINIMUM_ZOOM_STEP 
-     * MINIMUM_ZOOM_STEP} pixels. 
+     * MINIMUM_ZOOM_STEP} pixels. Nothing happens if it's the same as the 
+     * current zoom step.
      * @throws IllegalArgumentException If <code>step</code> is less than 
      * <code>MINIMUM_ZOOM_STEP</code>.
      */
@@ -931,8 +932,7 @@ public abstract class RingDisplay extends JPanel
     }
     
     /**
-     * Informs the user about the zoom interval.
-     * is now.
+     * Informs the user about the zoom interval. May be overridden as necessary.
      */
     protected void informZoomStepChange() {
         String msg = "Zoom step is now " + this.zoomStep + "\nThere are " 
@@ -1044,7 +1044,8 @@ public abstract class RingDisplay extends JPanel
     /**
      * Enables or disables the use of theta notation in the readout field for 
      * integer when applicable. Of course the updating of readouts has to be 
-     * enabled for this to be any of consequence.
+     * enabled for this to be any of consequence, see {@link 
+     * #toggleReadOutsEnabledMenuItem}.
      */
     public void toggleThetaNotation() {
         this.preferenceForThetaNotation 
@@ -1053,7 +1054,8 @@ public abstract class RingDisplay extends JPanel
     
     /**
      * Enables or disables updating of the readout fields for integer, trace, 
-     * norm and polynomial.
+     * norm and polynomial. If enabled, the mouse position will be used to 
+     * determine what the readouts will contain.
      */
     public void toggleReadOutsEnabled() {
         if (this.toggleReadOutsEnabledMenuItem.isSelected()) {
@@ -1113,9 +1115,10 @@ public abstract class RingDisplay extends JPanel
     }
     
     /**
-     * Retrieves the message for the About box.
+     * Retrieves the message for the About box. This is used by {@link 
+     * #showAboutBox()}.
      * @return A message with the name of the program, version number, copyright 
-     * date and author name.
+     * date and author name. May include linebreaks.
      */
     public abstract String getAboutBoxMessage();
     
@@ -1525,7 +1528,8 @@ public abstract class RingDisplay extends JPanel
     }
    
     /**
-     * Sets up the JFrame in which the various ring diagrams will be drawn.
+     * Sets up the <code>JFrame</code> in which the various ring diagrams will 
+     * be drawn. May be overridden as necessary.
      */
     protected void setUpRingFrame() {
         if (this.alreadySetUp) {
@@ -1551,12 +1555,21 @@ public abstract class RingDisplay extends JPanel
         this.alreadySetUp = true;
     }
     
+    private static void checkAppleMenuBarProperty() {
+        if (MAC_OS_FLAG) {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+        }
+    }
+    
     /**
-     * Starts up a JFrame in which to display the ring diagram. Many details 
-     * should have already been set in the RingDisplay constructor if not the 
-     * subclass constructor.
+     * Starts up a <code>JFrame</code> in which to display the ring diagram. 
+     * Many details should have already been set in this class's constructor if 
+     * not the subclass constructor.
      */
     public void startRingDisplay() {
+        if (RingDisplay.windowCount == 0) {
+            RingDisplay.checkAppleMenuBarProperty();
+        }
         if (this.includeImaginary) {
             this.setPixelsPerBasicImaginaryInterval();
         }
@@ -1571,8 +1584,8 @@ public abstract class RingDisplay extends JPanel
      * added to this program, this constructor will be rewritten to look up 
      * those preferences and fill them in.
      * @param ring The ring to first display. Subclasses will pass up (through a 
-     * super call) a ring of the appropriate class from an algebraics 
-     * subpackage.
+     * super call) a ring of the appropriate class from a subpackage of {@link 
+     * algebraics}.
      */
     public RingDisplay(IntegerRing ring) {
         this.includeImaginary = !ring.isPurelyReal();
