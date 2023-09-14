@@ -26,11 +26,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Event;
 import java.awt.Graphics2D;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
@@ -1262,7 +1262,7 @@ public abstract class RingDisplay extends JPanel
                 .setAccessibleDescription("Menu for file operations");
         String accDescr = "Save currently displayed diagram to a PNG file";
         KeyStroke accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, 
-                maskCtrlCommand + Event.SHIFT_MASK);
+                maskCtrlCommand + InputEvent.SHIFT_DOWN_MASK);
         JMenuItem menuItem = this.makeMenuItem("Save diagram as...", 
                 accDescr, "saveDiagramAs", accelerator);
         menu.add(menuItem);
@@ -1321,13 +1321,13 @@ public abstract class RingDisplay extends JPanel
         }
         accDescr = "Copy the readouts to the clipboard";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand 
-                + Event.SHIFT_MASK);
+                + InputEvent.SHIFT_DOWN_MASK);
         menuItem = this.makeMenuItem("Copy readouts to clipboard", accDescr, 
                 "copyReadouts", accelerator);
         menu.add(menuItem);
         accDescr = "Copy the currently displayed diagram to the clipboard";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand 
-                + Event.ALT_MASK);
+                + InputEvent.ALT_DOWN_MASK);
         menuItem = this.makeMenuItem("Copy diagram to clipboard", accDescr, 
                 "copyDiagram", accelerator);
         menu.add(menuItem);
@@ -1368,10 +1368,10 @@ public abstract class RingDisplay extends JPanel
         accDescr = "Zoom in, by increasing pixels per unit interval";
         if (MAC_OS_FLAG) {
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, 
-                    Event.SHIFT_MASK);
+                    InputEvent.SHIFT_DOWN_MASK);
         } else {
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 
-                    Event.CTRL_MASK);
+                    InputEvent.CTRL_DOWN_MASK);
         }
         ringWindowMenuItem = this.makeMenuItem("Zoom in", accDescr, "zoomIn", 
                 accelerator);
@@ -1385,7 +1385,7 @@ public abstract class RingDisplay extends JPanel
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0);
         } else {
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 
-                    Event.CTRL_MASK);
+                    InputEvent.CTRL_DOWN_MASK);
         }
         ringWindowMenuItem = this.makeMenuItem("Zoom out", accDescr, "zoomOut", 
                 accelerator);
@@ -1397,7 +1397,7 @@ public abstract class RingDisplay extends JPanel
         ringWindowMenu.addSeparator();
         accDescr = "Decrease the zoom step used for zoom in, zoom out";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand 
-                + Event.SHIFT_MASK);
+                + InputEvent.SHIFT_DOWN_MASK);
         ringWindowMenuItem = this.makeMenuItem("Decrease zoom step", accDescr, 
                 "decrZoomStep", accelerator);
         this.decreaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
@@ -1406,7 +1406,7 @@ public abstract class RingDisplay extends JPanel
         }
         accDescr = "Increase the zoom step used for zoom in, zoom out";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand 
-                + Event.SHIFT_MASK);
+                + InputEvent.SHIFT_DOWN_MASK);
         ringWindowMenuItem = this.makeMenuItem("Increase zoom step", accDescr, 
                 "incrZoomStep", accelerator);
         this.increaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
@@ -1537,9 +1537,9 @@ public abstract class RingDisplay extends JPanel
             throw new RuntimeException(excMsg);
         }
         if (MAC_OS_FLAG) {
-            maskCtrlCommand = Event.META_MASK;
+            maskCtrlCommand = InputEvent.META_DOWN_MASK;
         } else {
-            maskCtrlCommand = Event.CTRL_MASK;
+            maskCtrlCommand = InputEvent.CTRL_DOWN_MASK;
         }
         this.ringFrame = new JFrame("Ring Diagram for " 
                 + this.diagramRing.toString());
