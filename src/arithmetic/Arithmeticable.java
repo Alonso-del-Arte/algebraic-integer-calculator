@@ -32,7 +32,7 @@ import algebraics.AlgebraicInteger;
  * <i>ba</i>.</p>
  * <p>In a computer algebra system like Wolfram Mathematica, it would be a given 
  * that any algebraic number can be added to, subtracted from, multiplied by or 
- * divided by any other algebraic number.</p>
+ * divided by any other algebraic number (except for division by zero).</p>
  * <p>However, given that the focus of this Java package is on algebraic 
  * integers, combined with the fact that infinitely many algebraic integers of 
  * degree 3 and higher have very complicated representations, and that algebraic 
@@ -55,16 +55,17 @@ import algebraics.AlgebraicInteger;
  * degree. Though how exactly that is implemented will of course depend on the 
  * implementing classes.</p>
  * <p>Therefore, this interface contains the basic operations for both operands 
- * being of type <code>T</code> and the result also of that type and for one 
- * operand being of type <code>T</code> and the other of type <code>int</code>, 
- * with the result being of type <code>T</code> even if it can be represented by 
- * <code>int</code>.</p>
+ * being of a type <code>T</code> and the result also of that type and for one 
+ * operand being of that type <code>T</code> and the other of type 
+ * <code>int</code>, with the result being of type <code>T</code> even if it can 
+ * be represented by <code>int</code>.</p>
  * <p>This interface contains default implementations. These are indicated in 
  * the pertinent documentation.</p>
  * @author Alonso del Arte
  * @param <T> Must implement the {@link AlgebraicInteger} interface.
  */
-public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> {
+public interface Arithmeticable<T extends AlgebraicInteger 
+        & Arithmeticable<T>> {
     
     /**
      * Adds an algebraic integer of type <code>T</code> to this one. 
@@ -76,12 +77,13 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * @param addend The algebraic integer to add. For example, either &alpha; 
      * or &beta;.
      * @return The result, ought to be a newly constructed instance of 
-     * <code>T</code>. For the examples, this would be one of &alpha; + &beta, 
+     * <code>T</code>. For the examples, this would be one of &alpha; + &beta;, 
      * 2&alpha; or 2&beta;. Also, <code>alpha.plus(beta)</code> should give the 
      * same result as <code>beta.plus(alpha)</code>.
      * @throws AlgebraicDegreeOverflowException This unchecked exception may be 
      * thrown if the result is of higher algebraic degree than the class can 
      * represent.
+     * @throws ArithmeticException If an overflow or underflow occurs.
      */
     T plus(T addend);
     
@@ -93,6 +95,7 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * <code>T</code>, perhaps even if <code>addend</code> is 0. If this 
      * algebraic integer is &alpha; and <code>addend</code> is 7, the result 
      * should be 7 + &alpha;.
+     * @throws ArithmeticException If an overflow or underflow occurs.
      */
     T plus(int addend);
     
@@ -105,16 +108,25 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * @return The result, ought to be a newly constructed instance of 
      * <code>T</code>. If this algebraic integer is &alpha;, the result should 
      * be &minus;&alpha;.
+     * @throws ArithmeticException If an overflow or underflow occurs. That is 
+     * extremely unlikely for this function.
      */
     default T negate() {
         return this.times(-1);
     }
     
     /**
-     * Subtracts an algebraic integer of type <code>T</code> from this one. I 
-     * thought of providing a default implementation for this function, but ran 
-     * into several problems. I might return to this later. Implementations may 
-     * include overflow checking, but are not required to.
+     * Subtracts an algebraic integer of type <code>T</code> from this one. 
+     * Implementations may include overflow checking, but are not required to.
+     * <p>A default implementation is provided, it relies on 
+     * <code>plus(T)</code> and {@link #negate()}. It may be worthwhile to 
+     * override if the operation is a simple matter of lining up the primitive 
+     * number fields of this number to the fields of the subtrahend and 
+     * subtracting one by one. It is not worth overriding if that requires 
+     * repeating many lines from <code>plus()</code> and/or the creation of 
+     * several intermediate result objects. For example, it may be worthwhile to 
+     * override for quadratic integers, it may not be worthwhile for cubic 
+     * integers.</p>
      * <p>For the examples in the following explanations, suppose that this 
      * object is either &alpha; or &beta;, which are algebraic integers in the 
      * same ring, represented by <code>alpha</code> and <code>beta</code>, 
@@ -127,6 +139,7 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * @throws AlgebraicDegreeOverflowException This unchecked exception may be 
      * thrown if the result is of higher algebraic degree than the class can 
      * represent.
+     * @throws ArithmeticException If an overflow or underflow occurs.
      */
     default T minus(T subtrahend) {
         return this.plus(subtrahend.negate());
@@ -135,11 +148,16 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
     /**
      * Subtracts an integer of <b>Z</b> from this algebraic integer. 
      * Implementations may include overflow checking, but are not required to.
-     * @param subtrahend The integer to subtract. For example, 8.
+     * <p>A default implementation is provided, it relies on 
+     * <code>plus(T)</code>. It may be worthwhile to override if the operation 
+     * is a simple matter of subtracting the integer from a single primitive 
+     * number field of this object.</p>
+     * @param subtrahend The integer to subtract. For example, 5.
      * @return The result, ought to be a newly constructed instance of 
      * <code>T</code>, perhaps even if <code>subtrahend</code> is 0. If this 
-     * algebraic integer is &alpha; and <code>subtrahend</code> is 8, the result 
-     * should be &alpha; &minus; 8.
+     * algebraic integer is &alpha; and <code>subtrahend</code> is 5, the result 
+     * should be &alpha; &minus; 5.
+     * @throws ArithmeticException If an overflow or underflow occurs.
      */
     default T minus(int subtrahend) {
         return this.plus(-subtrahend);
@@ -163,6 +181,7 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * @throws AlgebraicDegreeOverflowException This unchecked exception may be 
      * thrown if the result is of higher algebraic degree than the class can 
      * represent.
+     * @throws ArithmeticException If an overflow or underflow occurs.
      */
     T times(T multiplicand);
     
@@ -174,6 +193,7 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * <code>T</code>, perhaps even if <code>multiplicand</code> is 1. For 
      * example, if this algebraic integer is &alpha; and 
      * <code>multiplicand</code> is 9, the result should be 9&alpha;.
+     * @throws ArithmeticException If an overflow or underflow occurs.
      */
     T times(int multiplicand);
     
@@ -195,11 +215,12 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * @throws AlgebraicDegreeOverflowException This unchecked exception may be 
      * thrown if the result is of higher algebraic degree than the class can 
      * represent.
-     * @throws ArithmeticException This unchecked exception may be thrown if the 
-     * divisor is 0. Actually, this is just a suggestion. Any unchecked 
-     * exception may be used for this purpose, but this one makes sense because 
-     * it's the same exception that is thrown for trying to divide an integer in 
-     * a primitive data type by 0.
+     * @throws ArithmeticException This unchecked exception may be thrown if an 
+     * overflow or underflow occurs, or if the divisor is 0. The latter is just 
+     * a suggestion. Some other unchecked exception may be used for the purpose 
+     * of indicating division by zero, but this one makes sense because it's the 
+     * same exception that is thrown for trying to divide an integer in a 
+     * primitive data type by 0.
      * @throws IllegalArgumentException This unchecked exception may be thrown 
      * if the divisor is 0. Actually, this is just a suggestion. Any unchecked 
      * exception may be used for this purpose, but most other unchecked 
@@ -239,11 +260,12 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * <code>T</code>, perhaps even if <code>divisor</code> is 1. For example, 
      * for <sup>(30 + 20&alpha;)</sup>&frasl;<sub>10</sub>, this would be 3 + 
      * 2&alpha;.
-     * @throws ArithmeticException This unchecked exception may be thrown if the 
-     * divisor is 0. Actually, this is just a suggestion. Any unchecked 
-     * exception may be used for this purpose, but this one makes sense because 
-     * it's the same exception that is thrown for trying to divide an integer in 
-     * a primitive data type by 0.
+     * @throws ArithmeticException This unchecked exception may be thrown if an 
+     * overflow or underflow occurs, or if the divisor is 0. The latter is just 
+     * a suggestion. Some other unchecked exception may be used for the purpose 
+     * of indicating division by zero, but this one makes sense because it's the 
+     * same exception that is thrown for trying to divide an integer in a 
+     * primitive data type by 0.
      * @throws IllegalArgumentException This unchecked exception may be thrown 
      * if the divisor is 0. Actually, this is just a suggestion. Any unchecked 
      * exception may be used for this purpose, but most other unchecked 
@@ -254,7 +276,9 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * and <code>divisor != 0</code>, since this exception suggests that the  
      * division is an algebraic number that can be meaningfully rounded to an 
      * algebraic integer. For example, <sup>19&alpha;</sup>&frasl;<sub>10</sub> 
-     * can be meaningfully rounded to 2&alpha;.
+     * can be meaningfully rounded to 2&alpha;, whereas 
+     * <sup>19&alpha;</sup>&frasl;<sub>10</sub> can't be meaningfully rounded to 
+     * an algebraic integer.
      */
     T divides(int divisor) throws NotDivisibleException;
     
@@ -271,15 +295,17 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * @return The remainder of dividing this algebraic integer by the divisor. 
      * For example, &alpha; divided by &beta; is 1024 with a remainder of 1, so 
      * this function returns 1; &beta; divided by &alpha; is 0 with a remainder 
-     * of &beta;, so this function returns &beta;.
+     * of &beta;, so this function returns &beta;, though that may be in a 
+     * freshly constructed instance.
      * @throws AlgebraicDegreeOverflowException This unchecked exception may be 
      * thrown if the result is of higher algebraic degree than the class can 
      * represent.
-     * @throws ArithmeticException This unchecked exception may be thrown if the 
-     * divisor is 0. Actually, this is just a suggestion. Any unchecked 
-     * exception may be used for this purpose, but this one makes sense because 
-     * it's the same exception that is thrown for trying to divide an integer in 
-     * a primitive data type by 0.
+     * @throws ArithmeticException This unchecked exception may be thrown if an 
+     * overflow or underflow occurs, or if the divisor is 0. The latter is just 
+     * a suggestion. Some other unchecked exception may be used for the purpose 
+     * of indicating division by zero, but this one makes sense because it's the 
+     * same exception that is thrown for trying to divide an integer in a 
+     * primitive data type by 0.
      * @throws IllegalArgumentException This unchecked exception may be thrown 
      * if the divisor is 0. Actually, this is just a suggestion. Any unchecked 
      * exception may be used for this purpose, but most other unchecked 
@@ -301,11 +327,12 @@ public interface Arithmeticable<T extends AlgebraicInteger & Arithmeticable<T>> 
      * @return The remainder of dividing this algebraic integer by the divisor. 
      * For example, &alpha; divided by 1024 is &beta; with a remainder of 1, so 
      * this function returns 1.
-     * @throws ArithmeticException This unchecked exception may be thrown if the 
-     * divisor is 0. Actually, this is just a suggestion. Any unchecked 
-     * exception may be used for this purpose, but this one makes sense because 
-     * it's the same exception that is thrown for trying to divide an integer in 
-     * a primitive data type by 0.
+     * @throws ArithmeticException This unchecked exception may be thrown in the 
+     * unlikely event of an overflow or underflow occurs, or if the divisor is 
+     * 0. The latter is just a suggestion. Some other unchecked exception may be 
+     * used for the purpose of indicating division by zero, but this one makes 
+     * sense because it's the same exception that is thrown for trying to divide 
+     * an integer in a primitive data type by 0.
      * @throws IllegalArgumentException This unchecked exception may be thrown 
      * if the divisor is 0. Actually, this is just a suggestion. Any unchecked 
      * exception may be used for this purpose, but most other unchecked 
