@@ -257,52 +257,63 @@ public class NotDivisibleException extends Exception {
      * be 2 + &radic;&minus;5. Now, given, for example, 7/8 + 7<i>i</i>/8, no
      * guarantee is made as to whether this function would return <i>i</i> or 1.
      */
-    // TODO: Refactor as a call to NumberTheoreticFunctionsCalculator
+    // TODO: Write tests for this
     public AlgebraicInteger roundTowardsZero() {
-        if (this.initRing instanceof QuadraticRing) {
-            QuadraticRing workingRing = (QuadraticRing) initRing;
-            if (workingRing instanceof ImaginaryQuadraticRing && workingRing.hasHalfIntegers()) {
-                AlgebraicInteger[] bounds = this.getBoundingIntegers();
-                double currAbs = bounds[0].abs();
-                double closestSoFar = currAbs;
-                int currIndex = 1;
-                int bestIndex = 0;
-                while (currIndex < bounds.length) {
-                    currAbs = bounds[currIndex].abs();
-                    if (currAbs < closestSoFar) {
-                        closestSoFar = currAbs;
-                        bestIndex = currIndex;
-                    }
-                    currIndex++;
-                }
-                return bounds[bestIndex];
-            }
-            double intermediateRegPart = this.fractions[0].getNumericApproximation();
-            double intermediateSurdPart = this.fractions[1].getNumericApproximation();
-            if (intermediateRegPart < 0) {
-                intermediateRegPart = Math.ceil(intermediateRegPart);
-            } else {
-                intermediateRegPart = Math.floor(intermediateRegPart);
-            }
-            if (intermediateSurdPart < 0) {
-                intermediateSurdPart = Math.ceil(intermediateSurdPart);
-            } else {
-                intermediateSurdPart = Math.floor(intermediateSurdPart);
-            }
-            boolean overflowFlag = (intermediateRegPart < Integer.MIN_VALUE) || (intermediateRegPart > Integer.MAX_VALUE);
-            overflowFlag = overflowFlag || ((intermediateSurdPart < Integer.MIN_VALUE) || (intermediateSurdPart > Integer.MAX_VALUE));
-            if (overflowFlag) {
-                throw new ArithmeticException("Real part " + intermediateRegPart + ", imaginary part " + intermediateSurdPart + " times sqrt(" + workingRing.getRadicand() + ") is outside the range of this implementation of ImaginaryQuadraticInteger, which uses 32-bit signed integers.");
-            }
-            if (workingRing instanceof ImaginaryQuadraticRing) {
-                return new ImaginaryQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
-            }
-            if (workingRing instanceof RealQuadraticRing) {
-                return new RealQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
-            }
-        }
-        String exceptionMessage = "The domain " + this.initRing.toASCIIString() + " is not currently supported for this rounding operation.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
+//        if (this.initRing instanceof QuadraticRing) {
+//            QuadraticRing workingRing = (QuadraticRing) initRing;
+//            if (workingRing instanceof ImaginaryQuadraticRing 
+//                    && workingRing.hasHalfIntegers()) {
+//                AlgebraicInteger[] bounds = this.getBoundingIntegers();
+//                double currAbs = bounds[0].abs();
+//                double closestSoFar = currAbs;
+//                int currIndex = 1;
+//                int bestIndex = 0;
+//                while (currIndex < bounds.length) {
+//                    currAbs = bounds[currIndex].abs();
+//                    if (currAbs < closestSoFar) {
+//                        closestSoFar = currAbs;
+//                        bestIndex = currIndex;
+//                    }
+//                    currIndex++;
+//                }
+//                return bounds[bestIndex];
+//            }
+//            double intermediateRegPart = this.fractions[0].getNumericApproximation();
+//            double intermediateSurdPart = this.fractions[1].getNumericApproximation();
+//            if (intermediateRegPart < 0) {
+//                intermediateRegPart = Math.ceil(intermediateRegPart);
+//            } else {
+//                intermediateRegPart = Math.floor(intermediateRegPart);
+//            }
+//            if (intermediateSurdPart < 0) {
+//                intermediateSurdPart = Math.ceil(intermediateSurdPart);
+//            } else {
+//                intermediateSurdPart = Math.floor(intermediateSurdPart);
+//            }
+//            boolean overflowFlag = (intermediateRegPart < Integer.MIN_VALUE) 
+//                    || (intermediateRegPart > Integer.MAX_VALUE) 
+//                    || ((intermediateSurdPart < Integer.MIN_VALUE) 
+//                    || (intermediateSurdPart > Integer.MAX_VALUE));
+//            if (overflowFlag) {
+//                throw new ArithmeticException("Real part " + intermediateRegPart 
+//                        + ", imaginary part " + intermediateSurdPart 
+//                        + " times sqrt(" + workingRing.getRadicand() 
+//                        + ") is outside the range of this implementation of "
+//                        + "ImaginaryQuadraticInteger, which uses 32-bit integers");
+//            }
+//            if (workingRing instanceof ImaginaryQuadraticRing) {
+//                return new ImaginaryQuadraticInteger((int) intermediateRegPart, 
+//                        (int) intermediateSurdPart, workingRing);
+//            }
+//            if (workingRing instanceof RealQuadraticRing) {
+//                return new RealQuadraticInteger((int) intermediateRegPart, 
+//                        (int) intermediateSurdPart, workingRing);
+//            }
+//        }
+        String exceptionMessage = "The domain " + this.initRing.toASCIIString() 
+                + " is not currently supported for this rounding operation.";
+        throw new UnsupportedNumberDomainException(exceptionMessage, 
+                this.initRing);
     }
 
     /**
@@ -318,50 +329,61 @@ public class NotDivisibleException extends Exception {
      */
     // TODO: Refactor as a call to NumberTheoreticFunctionsCalculator
     public AlgebraicInteger roundAwayFromZero() {
-        if (this.initRing instanceof QuadraticRing) {
-            QuadraticRing workingRing = (QuadraticRing) initRing;
-            if (workingRing instanceof ImaginaryQuadraticRing && workingRing.hasHalfIntegers()) {
-                AlgebraicInteger[] bounds = this.getBoundingIntegers();
-                double currAbs = bounds[0].abs();
-                double farthestSoFar = currAbs;
-                int currIndex = 1;
-                int bestIndex = 0;
-                while (currIndex < bounds.length) {
-                    currAbs = bounds[currIndex].abs();
-                    if (currAbs > farthestSoFar) {
-                        farthestSoFar = currAbs;
-                        bestIndex = currIndex;
-                    }
-                    currIndex++;
-                }
-                return bounds[bestIndex];
-            }
-            double intermediateRegPart = this.fractions[0].getNumericApproximation();
-            double intermediateSurdPart = this.fractions[1].getNumericApproximation();
-            if (intermediateRegPart < 0) {
-                intermediateRegPart = Math.floor(intermediateRegPart);
-            } else {
-                intermediateRegPart = Math.ceil(intermediateRegPart);
-            }
-            if (intermediateSurdPart < 0) {
-                intermediateSurdPart = Math.floor(intermediateSurdPart);
-            } else {
-                intermediateSurdPart = Math.ceil(intermediateSurdPart);
-            }
-            boolean overflowFlag = (intermediateRegPart < Integer.MIN_VALUE) || (intermediateRegPart > Integer.MAX_VALUE);
-            overflowFlag = overflowFlag || ((intermediateSurdPart < Integer.MIN_VALUE) || (intermediateSurdPart > Integer.MAX_VALUE));
-            if (overflowFlag) {
-                throw new ArithmeticException("Real part " + intermediateRegPart + ", imaginary part " + intermediateSurdPart + " times sqrt(" + workingRing.getRadicand() + ") is outside the range of this implementation of ImaginaryQuadraticInteger, which uses 32-bit signed integers.");
-            }
-            if (workingRing instanceof ImaginaryQuadraticRing) {
-                return new ImaginaryQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
-            }
-            if (workingRing instanceof RealQuadraticRing) {
-                return new RealQuadraticInteger((int) intermediateRegPart, (int) intermediateSurdPart, workingRing);
-            }
-        }
-        String exceptionMessage = "The domain " + this.initRing.toASCIIString() + " is not currently supported for this rounding operation.";
-        throw new UnsupportedNumberDomainException(exceptionMessage, this.initRing);
+//        if (this.initRing instanceof QuadraticRing) {
+//            QuadraticRing workingRing = (QuadraticRing) initRing;
+//            if (workingRing instanceof ImaginaryQuadraticRing 
+//                    && workingRing.hasHalfIntegers()) {
+//                AlgebraicInteger[] bounds = this.getBoundingIntegers();
+//                double currAbs = bounds[0].abs();
+//                double farthestSoFar = currAbs;
+//                int currIndex = 1;
+//                int bestIndex = 0;
+//                while (currIndex < bounds.length) {
+//                    currAbs = bounds[currIndex].abs();
+//                    if (currAbs > farthestSoFar) {
+//                        farthestSoFar = currAbs;
+//                        bestIndex = currIndex;
+//                    }
+//                    currIndex++;
+//                }
+//                return bounds[bestIndex];
+//            }
+//            double intermediateRegPart = this.fractions[0].getNumericApproximation();
+//            double intermediateSurdPart = this.fractions[1].getNumericApproximation();
+//            if (intermediateRegPart < 0) {
+//                intermediateRegPart = Math.floor(intermediateRegPart);
+//            } else {
+//                intermediateRegPart = Math.ceil(intermediateRegPart);
+//            }
+//            if (intermediateSurdPart < 0) {
+//                intermediateSurdPart = Math.floor(intermediateSurdPart);
+//            } else {
+//                intermediateSurdPart = Math.ceil(intermediateSurdPart);
+//            }
+//            boolean overflowFlag = (intermediateRegPart < Integer.MIN_VALUE) 
+//                    || (intermediateRegPart > Integer.MAX_VALUE) 
+//                    || ((intermediateSurdPart < Integer.MIN_VALUE) 
+//                    || (intermediateSurdPart > Integer.MAX_VALUE));
+//            if (overflowFlag) {
+//                throw new ArithmeticException("Real part " + intermediateRegPart 
+//                        + ", imaginary part " + intermediateSurdPart 
+//                        + " times sqrt(" + workingRing.getRadicand() 
+//                        + ") is outside the range of this implementation of "
+//                        + "ImaginaryQuadraticInteger, which uses 32-bit integers");
+//            }
+//            if (workingRing instanceof ImaginaryQuadraticRing) {
+//                return new ImaginaryQuadraticInteger((int) intermediateRegPart, 
+//                        (int) intermediateSurdPart, workingRing);
+//            }
+//            if (workingRing instanceof RealQuadraticRing) {
+//                return new RealQuadraticInteger((int) intermediateRegPart, 
+//                        (int) intermediateSurdPart, workingRing);
+//            }
+//        }
+        String exceptionMessage = "The domain " + this.initRing.toASCIIString() 
+                + " is not currently supported for this rounding operation.";
+        throw new UnsupportedNumberDomainException(exceptionMessage, 
+                this.initRing);
     }
 
     /**
@@ -454,4 +476,5 @@ public class NotDivisibleException extends Exception {
         this.dividend = dividend;
         this.divisor = divisor;
     }
+    
 }

@@ -28,6 +28,7 @@ import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 import algebraics.quartics.Zeta8Integer;
 import algebraics.quartics.Zeta8Ring;
+import arithmetic.Arithmeticable;
 import arithmetic.NonEuclideanDomainException;
 import arithmetic.NonUniqueFactorizationDomainException;
 import arithmetic.NotDivisibleException;
@@ -1771,6 +1772,12 @@ public class NumberTheoreticFunctionsCalculator {
         String excMsg = "Place in primary section function not yet supported for " 
                 + num.getRing().toASCIIString();
         throw new UnsupportedNumberDomainException(excMsg, num);
+    }
+    
+    // TODO: Write tests for this
+    public static <T extends AlgebraicInteger & Arithmeticable<T>> T[] 
+            getBoundingIntegers(T dividend, T divisor) {
+        return null;
     }
 
     public static AlgebraicInteger getNegOneInRing(IntegerRing ring) {
