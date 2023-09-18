@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -55,7 +55,8 @@ public class NormAbsoluteComparator implements Comparator<AlgebraicInteger> {
      */
     @Override
     public int compare(AlgebraicInteger numberA, AlgebraicInteger numberB) {
-        return Long.compare(Math.abs(numberA.norm()), Math.abs(numberB.norm()));
+        return 0;
+// Long.compare(Math.abs(numberA.norm()), Math.abs(numberB.norm()));
     }
     
 }
