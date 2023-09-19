@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -100,5 +100,18 @@ public class EratosthenesSieve {
         }
         return primes.subList(index, primes.size());
     }
+
+    // TODO: Write tests for this
+    public static List<Integer> listPrimesMod(int n, int m) {
+        List<Integer> primes = new ArrayList<>();
+        return primes;
+    }
+
+    // TODO: Write tests for this
+    public static int prime(int index) {
+        return Integer.MIN_VALUE;
+    }
+    
+
     
 }

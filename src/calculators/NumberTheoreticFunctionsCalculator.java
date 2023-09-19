@@ -2027,4 +2027,14 @@ public class NumberTheoreticFunctionsCalculator {
         return choice;
     }
     
+    // TODO: Write tests for this
+    public static int randomPrime(int bound) {
+        return Integer.MIN_VALUE;
+    }
+    
+    // TODO: Write tests for this
+    public static int randomPrimeMod(int n, int m) {
+        return Integer.MIN_VALUE;
+    }
+    
 }
