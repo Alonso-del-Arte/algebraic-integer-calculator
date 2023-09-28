@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -29,6 +29,21 @@ import static org.junit.Assert.*;
  */
 public class EratosthenesSieveTest {
     
+    private static void assertContainsSame(List<Integer> expected, 
+            List<Integer> actual) {
+        int expLen = expected.size();
+        int actLen = actual.size();
+        String msgLen = "expected has " + expLen + " elements and actual has " 
+                + actLen;
+        assertEquals(msgLen, expLen, actLen);
+        for (int i = 0; i < expLen; i++) {
+            String msg = "Comparing element at position " + i;
+            int expNum = expected.get(i);
+            int actNum = actual.get(i);
+            assertEquals(msg, expNum, actNum);
+        }
+    }
+    
     /**
      * Test of the listPrimes function, of the EratosthenesSieve class.
      */
@@ -37,10 +52,9 @@ public class EratosthenesSieveTest {
         System.out.println("listPrimes");
         int threshold = 10;
         Integer[] smallPrimes = {2, 3, 5, 7};
-        ArrayList<Integer> expected 
-                = new ArrayList<>(Arrays.asList(smallPrimes));
+        List<Integer> expected = Arrays.asList(smallPrimes);
         List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
-        assertEquals(expected, actual);
+        assertContainsSame(expected, actual);
     }
     
     /**
@@ -52,10 +66,9 @@ public class EratosthenesSieveTest {
         int threshold = 100;
         Integer[] smallPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 
             43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
-        ArrayList<Integer> expected 
-                = new ArrayList<>(Arrays.asList(smallPrimes));
+        List<Integer> expected = Arrays.asList(smallPrimes);
         List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
-        assertEquals(expected, actual);
+        assertContainsSame(expected, actual);
     }
     
     /**
@@ -72,10 +85,9 @@ public class EratosthenesSieveTest {
                 + " primes between 1 and " + threshold);
         threshold = 20;
         Integer[] smallPrimes = {2, 3, 5, 7, 11, 13, 17, 19};
-        ArrayList<Integer> expected 
-                = new ArrayList<>(Arrays.asList(smallPrimes));
+        List<Integer> expected = Arrays.asList(smallPrimes);
         actual = EratosthenesSieve.listPrimes(threshold);
-        assertEquals(expected, actual);
+        assertContainsSame(expected, actual);
     }
     
     /**
@@ -93,18 +105,17 @@ public class EratosthenesSieveTest {
         }
         threshold = 40;
         Integer[] smallPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
-        ArrayList<Integer> expected 
-                = new ArrayList<>(Arrays.asList(smallPrimes));
+        List<Integer> expected = Arrays.asList(smallPrimes);
         List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
-        assertEquals(expected, actual);
+        assertContainsSame(expected, actual);
         subset.clear();
         threshold = 139;
         Integer[] fewMorePrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37,  
             41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 
             109, 113, 127, 131, 137, 139};
-        expected = new ArrayList<>(Arrays.asList(fewMorePrimes));
+        expected = Arrays.asList(fewMorePrimes);
         actual = EratosthenesSieve.listPrimes(threshold);
-        assertEquals(expected, actual);
+        assertContainsSame(expected, actual);
     }
     
     /**
@@ -116,10 +127,9 @@ public class EratosthenesSieveTest {
     public void testListPrimesTurnsNegativeToPositive() {
         int threshold = -30;
         Integer[] smallPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
-        ArrayList<Integer> expected 
-                = new ArrayList<>(Arrays.asList(smallPrimes));
+        List<Integer> expected = Arrays.asList(smallPrimes);
         List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
-        assertEquals(expected, actual);
+        assertContainsSame(expected, actual);
     }
     
     /**
@@ -129,10 +139,9 @@ public class EratosthenesSieveTest {
     @Test
     public void testThresholdZeroGivesEmptyList() {
         int threshold = 0;
-        ArrayList<Integer> expected = new ArrayList<>();
         try {
-            List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
-            assertEquals(expected, actual);
+            List<Integer> list = EratosthenesSieve.listPrimes(threshold);
+            assertEquals(0, list.size());
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
                     + " should not have occurred for threshold " + threshold;
@@ -147,10 +156,9 @@ public class EratosthenesSieveTest {
     @Test
     public void testThresholdOneGivesEmptyList() {
         int threshold = 1;
-        ArrayList<Integer> expected = new ArrayList<>();
         try {
-            List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
-            assertEquals(expected, actual);
+            List<Integer> list = EratosthenesSieve.listPrimes(threshold);
+            assertEquals(0, list.size());
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
                     + " should not have occurred for threshold " + threshold;
@@ -163,10 +171,9 @@ public class EratosthenesSieveTest {
         int start = 100;
         int threshold = 110;
         Integer[] primeQuadruplet = {101, 103, 107, 109};
-        ArrayList<Integer> expected 
-                = new ArrayList<>(Arrays.asList(primeQuadruplet));
+        List<Integer> expected = Arrays.asList(primeQuadruplet);
         List<Integer> actual = EratosthenesSieve.listPrimes(start, threshold);
-        assertEquals(expected, actual);
+        assertContainsSame(expected, actual);
     }
     
 }
