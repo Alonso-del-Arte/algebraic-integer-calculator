@@ -16,9 +16,10 @@
  */
 package calculators;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -28,6 +29,8 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class EratosthenesSieveTest {
+    
+    private static final Random RANDOM = new Random();
     
     private static void assertContainsSame(List<Integer> expected, 
             List<Integer> actual) {
@@ -174,6 +177,25 @@ public class EratosthenesSieveTest {
         List<Integer> expected = Arrays.asList(primeQuadruplet);
         List<Integer> actual = EratosthenesSieve.listPrimes(start, threshold);
         assertContainsSame(expected, actual);
+    }
+    
+    private static List<Integer> filterMod(List<Integer> list, int n, int m) {
+        return list.stream().filter(p -> p % m == n)
+                .collect(Collectors.toList());
+    }
+    
+    @Test
+    public void testListPrimesMod() {
+        int modulus = RANDOM.nextInt(64) + 36;
+        int threshold = modulus * modulus / 2;
+        List<Integer> primes = EratosthenesSieve.listPrimes(threshold);
+        for (int n = 0; n < modulus; n++) {
+            List<Integer> expected = filterMod(primes, n, modulus);
+            List<Integer> actual = EratosthenesSieve.listPrimesMod(n, modulus)
+                    .stream().filter(p -> p <= threshold)
+                    .collect(Collectors.toList());
+            assertContainsSame(expected, actual);
+        }
     }
     
 }
