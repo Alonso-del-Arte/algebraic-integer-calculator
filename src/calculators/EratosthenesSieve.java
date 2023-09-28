@@ -18,6 +18,7 @@ package calculators;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Sieve of Eratosthenes to list prime numbers up to a given threshold. Primes 
@@ -39,7 +40,7 @@ public class EratosthenesSieve {
      * session. This is initialized with the first 25 positive primes: 2, 3, 5, 
      * 7, ..., 97.
      */
-    private static final ArrayList<Integer> PRIMES = new ArrayList<>();
+    private static final List<Integer> PRIMES = new ArrayList<>();
     
     static {
         for (int p : FIRST_25_PRIMES) {
@@ -101,10 +102,21 @@ public class EratosthenesSieve {
         return primes.subList(index, primes.size());
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives primes of a specified residue class. There are of course infinitely 
+     * many primes in some residue classes, but how many primes are returned by 
+     * this function will depend on how many primes have already been calculated 
+     * prior to calling this function. This is not a pure function.
+     * @param n The number of the residue class. For example, 3.
+     * @param m The modulus. For example, 10.
+     * @return A list of primes congruent to <code>n</code> modulo 
+     * <code>m</code>. For example, 3, 13, 23, 43, 53, 73, 83, 103, 113, etc. 
+     * The list may be empty, for example, if <code>n</code> is 4 and 
+     * <code>m</code> is 8.
+     */
     public static List<Integer> listPrimesMod(int n, int m) {
-        List<Integer> primes = new ArrayList<>();
-        return primes;
+        return PRIMES.stream().filter(p -> p % m == n)
+                .collect(Collectors.toList());
     }
 
     // TODO: Write tests for this
