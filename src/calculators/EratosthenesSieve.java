@@ -61,44 +61,48 @@ public class EratosthenesSieve {
      * 1, the returned list will be an empty list.
      */
     public static List<Integer> listPrimes(int threshold) {
-        int thresh = Math.abs(threshold);
-        if (thresh < 2) {
-            return new ArrayList<>();
+        if (threshold < 2) {
+            return new ArrayList<>(PRIMES);
         }
-        if (thresh < currThresh) {
-            int trimIndex = PRIMES.size();
-            int p;
-            do {
-                trimIndex--;
-                p = PRIMES.get(trimIndex);
-            } while (p > thresh);
-            return new ArrayList<>(PRIMES.subList(0, trimIndex + 1));
-        }
-        if (thresh > currThresh) {
-            for (int n = currThresh + 1; n <= thresh; n++) {
-                double root = Math.sqrt(n);
-                boolean noDivisorFound = true;
-                int index = 0;
-                int p;
-                do {
-                    p = PRIMES.get(index);
-                    noDivisorFound = (n % p != 0);
-                    index++;
-                } while (p <= root && noDivisorFound);
-                if (noDivisorFound) PRIMES.add(n);
-            }
-            currThresh = thresh;
-        }
-        return new ArrayList<>(PRIMES);
+//        int thresh = Math.abs(threshold);
+//        if (thresh < 2) {
+//            return new ArrayList<>();
+//        }
+//        if (thresh < currThresh) {
+//            int trimIndex = PRIMES.size();
+//            int p;
+//            do {
+//                trimIndex--;
+//                p = PRIMES.get(trimIndex);
+//            } while (p > thresh);
+//            return new ArrayList<>(PRIMES.subList(0, trimIndex + 1));
+//        }
+//        if (thresh > currThresh) {
+//            for (int n = currThresh + 1; n <= thresh; n++) {
+//                double root = Math.sqrt(n);
+//                boolean noDivisorFound = true;
+//                int index = 0;
+//                int p;
+//                do {
+//                    p = PRIMES.get(index);
+//                    noDivisorFound = (n % p != 0);
+//                    index++;
+//                } while (p <= root && noDivisorFound);
+//                if (noDivisorFound) PRIMES.add(n);
+//            }
+//            currThresh = thresh;
+//        }
+        return new ArrayList<>();//(PRIMES);
     }
     
     public static List<Integer> listPrimes(int start, int threshold) {
-        List<Integer> primes = listPrimes(threshold);
-        int index = 0;
-        while (primes.get(index) < start) {
-            index++;
-        }
-        return primes.subList(index, primes.size());
+//        List<Integer> primes = listPrimes(threshold);
+//        int index = 0;
+//        while (primes.get(index) < start) {
+//            index++;
+//        }
+//        return primes.subList(index, primes.size());
+        return new ArrayList<>();
     }
 
     // TODO: Write tests for this
