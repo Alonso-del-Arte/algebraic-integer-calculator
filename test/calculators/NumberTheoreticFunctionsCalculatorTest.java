@@ -2888,4 +2888,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assert expected < actual : msg;
     }
     
+    @Test
+    public void testRandomPrime() {
+        System.out.println("randomPrime");
+        int numberOfCalls = RANDOM.nextInt(PRIME_LIST_THRESHOLD / 10);
+        for (int i = 0; i < numberOfCalls; i++) {
+            int prospectivePrime = NumberTheoreticFunctionsCalculator
+                    .randomPrime(PRIME_LIST_THRESHOLD);
+            String msg = "Number " + prospectivePrime 
+                    + " is said to be a prime bounded between 0 and " 
+                    + PRIME_LIST_THRESHOLD;
+            assert primesList.contains(prospectivePrime) : msg;
+        }
+    }
+    
 }
