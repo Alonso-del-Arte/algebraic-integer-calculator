@@ -18,8 +18,8 @@ package algebraics;
 
 /**
  * A runtime exception to indicate when the result of an arithmetic operation 
- * results in an algebraic integer of higher algebraic degree than the 
- * implementation of {@link AlgebraicInteger} was designed for.
+ * is an algebraic integer of higher algebraic degree than the implementation of 
+ * {@link AlgebraicInteger} was designed for.
  * <p>For example, the square root of 2 times the fifth root of 3 is an 
  * algebraic integer with minimal polynomial <i>x</i><sup>10</sup> &minus; 288. 
  * So an AlgebraicInteger implementation for quadratic integers would be 
@@ -52,13 +52,13 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * Tells what is the maximum algebraic degree the function that threw the 
      * exception was expecting. This is a getter for a property that was passed 
      * to the constructor.
-     * @return An integer greater than 1 but less than the necessary algebraic 
-     * degree. For example, this would probably be 2 if thrown by the plus 
-     * function of an {@link AlgebraicInteger} implementation of quadratic 
-     * integers.
+     * @return An integer at least 1 (usually greater) but less than the 
+     * necessary algebraic degree. For example, this would probably be 2 if 
+     * thrown by the addition function of an {@link AlgebraicInteger} 
+     * implementation.
      */
     public int getMaxExpectedAlgebraicDegree() {
-        return -1; // this.maxExpectedAlgebraicDegree;
+        return this.maxExpectedAlgebraicDegree;
     }
     
     /**
