@@ -50,7 +50,7 @@ public class NormAbsoluteComparatorTest {
         QuadraticRing ring = new RealQuadraticRing(d);
         QuadraticInteger root = new RealQuadraticInteger(0, 1, ring);
         QuadraticInteger curr = new RealQuadraticInteger(1, 0, ring);
-        int capacity = 4;
+        int capacity = 5;
         List<QuadraticInteger> expected = new ArrayList<>(capacity);
         while (expected.size() < capacity) {
             expected.add(curr);
