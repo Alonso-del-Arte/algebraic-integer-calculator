@@ -61,7 +61,7 @@ public class NormAbsoluteComparatorTest {
         System.out.println("Expecting norms " + expNorms.toString());
         List<QuadraticInteger> actual = new ArrayList<>(expected);
         Collections.shuffle(actual);
-        actual.sort(new NormComparator());
+        actual.sort(new NormAbsoluteComparator());
         assertEquals(expected, actual);
     }
     
