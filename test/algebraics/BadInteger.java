@@ -26,7 +26,7 @@ public class BadInteger implements AlgebraicInteger {
 
     @Override
     public int algebraicDegree() {
-        return -1;
+        return this.domain.getMaxAlgebraicDegree();
     }
 
     @Override
