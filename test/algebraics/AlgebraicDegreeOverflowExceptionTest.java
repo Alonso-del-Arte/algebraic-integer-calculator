@@ -58,16 +58,27 @@ public class AlgebraicDegreeOverflowExceptionTest {
     }
 
     /**
-     * Test of getNecessaryAlgebraicDegree method, of class 
-     * AlgebraicDegreeOverflowException.
-     */@org.junit.Ignore
+     * Test of the getNecessaryAlgebraicDegree function, of the  
+     * AlgebraicDegreeOverflowException class. The idea here is, though I 
+     * haven't verified this is mathematically correct, that the necessary 
+     * degree is the product of the maximum degrees of the classes of the 
+     * causing numbers.
+     */
     @Test
     public void testGetNecessaryAlgebraicDegree() {
         System.out.println("getNecessaryAlgebraicDegree");
-        fail("REWRITE THIS TEST");
-//        int expAlgDeg = 4;
-//        assertEquals(expAlgDeg, algDegOvflExcImag.getNecessaryAlgebraicDegree());
-//        assertEquals(expAlgDeg, algDegOvflExcReal.getNecessaryAlgebraicDegree());
+        int degreeA = randomNumber(128) + 2;
+        int degreeB = randomNumber(128) + 2;
+        BadRing ringA = new BadRing(degreeA);
+        BadRing ringB = new BadRing(degreeB);
+        BadInteger numberA = new BadInteger(ringA);
+        BadInteger numberB = new BadInteger(ringB);
+        AlgebraicDegreeOverflowException exc 
+                = new AlgebraicDegreeOverflowException(DEFAULT_MESSAGE, degreeA, 
+                        numberA, numberB);
+        int expected = degreeA * degreeB;
+        int actual = exc.getNecessaryAlgebraicDegree();
+        assertEquals(expected, actual);
     }
 
     /**
