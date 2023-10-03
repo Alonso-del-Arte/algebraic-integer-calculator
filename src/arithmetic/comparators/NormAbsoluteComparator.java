@@ -55,8 +55,7 @@ public class NormAbsoluteComparator implements Comparator<AlgebraicInteger> {
      */
     @Override
     public int compare(AlgebraicInteger numberA, AlgebraicInteger numberB) {
-        return 0;
-// Long.compare(Math.abs(numberA.norm()), Math.abs(numberB.norm()));
+        return Long.compare(Math.abs(numberA.norm()), Math.abs(numberB.norm()));
     }
     
 }

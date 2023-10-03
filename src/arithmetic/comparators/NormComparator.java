@@ -22,9 +22,9 @@ import java.util.Comparator;
 
 /**
  * A comparator for use in sorting procedures or functions from the JDK, to sort 
- * instances of {@link AlgebraicInteger} by norm. Another comparator is 
- * necessary if you need to sort algebraic instances with the same norm by some 
- * other criterion.
+ * instances of {@link algebraics.AlgebraicInteger} by norm. Another comparator 
+ * is necessary if you need to sort algebraic instances with the same norm by 
+ * some other criterion.
  * <p>An early version of {@link calculators.NumberTheoreticFunctionsCalculator} 
  * had a <code>sortListAlgebraicIntegersByNorm()</code> function that was 
  * deprecated in Version 0.9 and removed completely before Version 1.0.</p>
@@ -53,7 +53,7 @@ public class NormComparator implements Comparator<AlgebraicInteger> {
      */
     @Override
     public int compare(AlgebraicInteger numberA, AlgebraicInteger numberB) {
-        return 0;// Long.compare(numberA.norm(), numberB.norm());
+        return Long.compare(numberA.norm(), numberB.norm());
     }
     
 }
