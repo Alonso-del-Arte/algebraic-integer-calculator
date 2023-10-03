@@ -37,4 +37,13 @@ public class BadIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testAlgebraicDegree() {
+        int expected = randomNumber(2048) + 32;
+        BadRing ring = new BadRing(expected);
+        AlgebraicInteger number = new BadInteger(ring);
+        int actual = number.algebraicDegree();
+        assertEquals(expected, actual);
+    }
+    
 }
