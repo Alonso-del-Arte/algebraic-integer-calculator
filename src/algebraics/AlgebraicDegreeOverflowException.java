@@ -68,10 +68,11 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * at the time the exception was constructed.
      * @return An integer greater than the expected algebraic degree. For 
      * example, this could be 4 if thrown by {@link 
-     * algebraics.quadratics.ImaginaryQuadraticInteger#plus}.
+     * algebraics.quadratics.QuadraticInteger#plus plus()} for quadratic 
+     * integers.
      */
     public int getNecessaryAlgebraicDegree() {
-        return -1; // this.necessaryAlgebraicDegree;
+        return this.necessaryAlgebraicDegree;
     }
     
     /**
