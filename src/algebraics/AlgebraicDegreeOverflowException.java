@@ -81,11 +81,12 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * interface. They could very well both be instances of the same class 
      * (e.g., both {@link algebraics.quadratics.ImaginaryQuadraticInteger}), but 
      * they should come from different rings. These are just the numbers that 
-     * were supplied to the constructor.
+     * were supplied to the constructor, probably in the same order (but the 
+     * order is not guaranteed).
      */
     public AlgebraicInteger[] getCausingNumbers() {
-        return (new AlgebraicInteger[]{this.diffRingNumberA});//, 
-//            this.diffRingNumberB});
+        return (new AlgebraicInteger[]{this.diffRingNumberA, 
+            this.diffRingNumberB});
     }
     
     /**
@@ -97,7 +98,7 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
      * algebraics.quadratics.ImaginaryQuadraticInteger 
      * ImaginaryQuadraticInteger} class results in an algebraic integer of 
      * degree 4, it would be appropriate to throw this exception.
-     * @param message A message to pass on to the <code>Exception</code> 
+     * @param message A message to pass on to the <code>RuntimeException</code> 
      * constructor.
      * @param maxDegree The maximum algebraic degree the object throwing the 
      * exception can handle (e.g., 2 in the case of 
