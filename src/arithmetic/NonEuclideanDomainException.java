@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -30,6 +30,7 @@ import algebraics.quadratics.QuadraticInteger;
  */
 public class NonEuclideanDomainException extends Exception {
     
+    // TODO: Change serialVersionUID after removing tryToFactorizeAnyway( )
     private static final long serialVersionUID = 1058267512;
         
     private final AlgebraicInteger attemptedA, attemptedB;
@@ -40,9 +41,10 @@ public class NonEuclideanDomainException extends Exception {
      * they were passed at the time the exception was thrown.
      */
     public AlgebraicInteger[] getEuclideanGCDAttemptedNumbers() {
-        return (new AlgebraicInteger[]{attemptedA, attemptedB});
+        return (new AlgebraicInteger[]{attemptedA});//, attemptedB});
     }
     
+    // TODO: Consider deprecation
     /**
      * Attempts to apply the Euclidean GCD algorithm to the algebraic integers 
      * that triggered this exception. This will deliver some result, but with no 
