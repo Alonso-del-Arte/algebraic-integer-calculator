@@ -27,6 +27,10 @@ import algebraics.quadratics.RealQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -84,25 +88,24 @@ public class AlgebraicDegreeOverflowExceptionTest {
     /**
      * Test of getCausingNumbers method, of class 
      * AlgebraicDegreeOverflowException.
-     */@org.junit.Ignore
+     */
     @Test
     public void testGetCausingNumbers() {
         System.out.println("getCausingNumbers");
-        fail("REWRITE THIS TEST");
-//        QuadraticRing ring = new ImaginaryQuadraticRing(-2);
-//        QuadraticInteger numberA = new ImaginaryQuadraticInteger(14, 7, ring);
-//        ring = new ImaginaryQuadraticRing(-7);
-//        QuadraticInteger numberB = new ImaginaryQuadraticInteger(7, 1, ring);
-//        AlgebraicInteger[] expResult = new AlgebraicInteger[]{numberA, numberB};
-//        AlgebraicInteger[] result = algDegOvflExcImag.getCausingNumbers();
-//        assertArrayEquals(expResult, result);
-//        ring = new RealQuadraticRing(3);
-//        numberA = new RealQuadraticInteger(14, 7, ring);
-//        ring = new RealQuadraticRing(10);
-//        numberB = new RealQuadraticInteger(7, 1, ring);
-//        expResult = new AlgebraicInteger[]{numberA, numberB};
-//        result = algDegOvflExcReal.getCausingNumbers();
-//        assertArrayEquals(expResult, result);
+        int degreeA = randomNumber(128) + 2;
+        int degreeB = randomNumber(128) + 2;
+        BadRing ringA = new BadRing(degreeA);
+        BadRing ringB = new BadRing(degreeB);
+        BadInteger numberA = new BadInteger(ringA);
+        BadInteger numberB = new BadInteger(ringB);
+        AlgebraicDegreeOverflowException exc 
+                = new AlgebraicDegreeOverflowException(DEFAULT_MESSAGE, degreeA, 
+                        numberA, numberB);
+        AlgebraicInteger[] array = {numberA, numberB};
+        Set<AlgebraicInteger> expected = new HashSet<>(Arrays.asList(array));
+        Set<AlgebraicInteger> actual 
+                = new HashSet<>(Arrays.asList(exc.getCausingNumbers()));
+        assertEquals(expected, actual);
     }
     
 }
