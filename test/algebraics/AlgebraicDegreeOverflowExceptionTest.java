@@ -16,22 +16,12 @@
  */
 package algebraics;
 
-import algebraics.quadratics.IllDefinedQuadraticInteger;
-import algebraics.quadratics.IllDefinedQuadraticRing;
-import algebraics.quadratics.ImaginaryQuadraticInteger;
-import algebraics.quadratics.ImaginaryQuadraticRing;
-import algebraics.quadratics.QuadraticInteger;
-import algebraics.quadratics.QuadraticRing;
-import algebraics.quadratics.RealQuadraticInteger;
-import algebraics.quadratics.RealQuadraticRing;
-import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
