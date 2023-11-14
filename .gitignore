@@ -157,3 +157,7 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+
+# General
+src/draft/
+test/draft/
