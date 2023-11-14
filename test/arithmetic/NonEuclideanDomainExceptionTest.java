@@ -23,7 +23,10 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
-import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,58 +42,24 @@ import static org.junit.Assert.*;
 public class NonEuclideanDomainExceptionTest {
     
     /**
-     * Test of getEuclideanGCDAttemptedNumbers method, of class 
-     * NonEuclideanDomainException.
+     * Test of the getEuclideanGCDAttemptedNumbers function, of the 
+     * NonEuclideanDomainException class.
      */
     @Test
     public void testGetEuclideanGCDAttemptedNumbers() {
         System.out.println("getEuclideanGCDAttemptedNumbers");
-        fail("REWRITE THIS TEST");
-//        QuadraticInteger iqia = new ImaginaryQuadraticInteger(2, 0, RING_ZI5);
-//        QuadraticInteger iqib = new ImaginaryQuadraticInteger(1, 1, RING_ZI5);
-//        QuadraticInteger[] expResult = new QuadraticInteger[]{iqia, iqib};
-//        AlgebraicInteger[] result = nonEuclExc6.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
-//        iqia = new ImaginaryQuadraticInteger(29, 0, RING_ZI5);
-//        iqib = new ImaginaryQuadraticInteger(-7, 5, RING_ZI5);
-//        expResult = new QuadraticInteger[]{iqia, iqib};
-//        result = nonEuclExc29.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
-//        iqia = new ImaginaryQuadraticInteger(0, 11, RING_ZI5);
-//        iqib = new ImaginaryQuadraticInteger(0, 13, RING_ZI5);
-//        expResult = new QuadraticInteger[]{iqia, iqib};
-//        result = nonEuclExc143A.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
-//        iqia = new ImaginaryQuadraticInteger(0, 11, RING_ZI5);
-//        try {
-//            iqib = iqib.divides(ZI5_RAMIFIER);
-//        } catch (NotDivisibleException nde) {
-//            System.out.println("NotDivisibleException \"" + nde.getMessage() + "\" should not have occurred.");
-//            fail("Tests for NotDivisibleException may need review.");
-//        }
-//        expResult = new QuadraticInteger[]{iqia, iqib};
-//        result = nonEuclExc143B.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
-//        iqia = new ImaginaryQuadraticInteger(10, 0, RING_OQI19);
-//        iqib = new ImaginaryQuadraticInteger(3, 1, RING_OQI19, 2);
-//        expResult = new QuadraticInteger[]{iqia, iqib};
-//        result = nonEuclExc700.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
-//        iqia = new RealQuadraticInteger(2, 0, RING_Z14);
-//        iqib = new RealQuadraticInteger(1, 1, RING_Z14);
-//        expResult = new QuadraticInteger[]{iqia, iqib};
-//        result = nonEuclExc13.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
-//        iqia = new RealQuadraticInteger(0, 39, RING_Z14);
-//        iqib = new RealQuadraticInteger(-40, 12, RING_Z14);
-//        expResult = new QuadraticInteger[]{iqia, iqib};
-//        result = nonEuclExc39.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
-//        iqia = new RealQuadraticInteger(18, 2, RING_OQ69);
-//        iqib = new RealQuadraticInteger(23, 3, RING_OQ69, 2);
-//        expResult = new QuadraticInteger[]{iqia, iqib};
-//        result = nonEuclExc48.getEuclideanGCDAttemptedNumbers();
-//        assertArrayEquals(expResult, result);
+        QuadraticRing ring = new ImaginaryQuadraticRing(-5);
+        QuadraticInteger a = new ImaginaryQuadraticInteger(randomNumber(128), 1, 
+                ring);
+        QuadraticInteger b = a.times(a).plus(1);
+        String message = "FOR TESTING PURPOSES ONLY";
+        NonEuclideanDomainException exc 
+                = new NonEuclideanDomainException(message, a, b);
+        AlgebraicInteger[] expNumbers = {a, b};
+        Set<AlgebraicInteger> expected = Set.of(expNumbers);
+        Set<AlgebraicInteger> actual 
+                = Set.of(exc.getEuclideanGCDAttemptedNumbers());
+        assertEquals(expected, actual);
     }
     
 }
