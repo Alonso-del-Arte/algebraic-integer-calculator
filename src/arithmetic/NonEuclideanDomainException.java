@@ -37,11 +37,12 @@ public class NonEuclideanDomainException extends Exception {
     
     /**
      * Simply returns the algebraic integers that caused this exception.
-     * @return An array of two AlgebraicInteger objects, in the same order that 
-     * they were passed at the time the exception was thrown.
+     * @return An array of two <code>AlgebraicInteger</code> objects, most 
+     * likely in the same order that they were passed to the exception 
+     * constructor.
      */
     public AlgebraicInteger[] getEuclideanGCDAttemptedNumbers() {
-        return (new AlgebraicInteger[]{attemptedA});//, attemptedB});
+        return (new AlgebraicInteger[]{attemptedA, attemptedB});
     }
     
     // TODO: Consider deprecation
