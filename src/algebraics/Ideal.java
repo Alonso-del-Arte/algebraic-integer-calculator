@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -79,42 +79,45 @@ public class Ideal {
         return 0L;
     }
     
+    // TODO: Rewrite tests for this
     public boolean isPrincipal() {
-        return this.principalIdealFlag;
+        return false;// this.principalIdealFlag;
     } 
     
+    // TODO: Rewrite tests for this
     public boolean isMaximal() {
-        if (this.principalIdealFlag) {
-            return isPrime(this.idealGeneratorA);
-        }
+//        if (this.principalIdealFlag) {
+//            return isPrime(this.idealGeneratorA);
+//        }
         return false;
     }
     
+    // TODO: Rewrite tests for this
     public boolean contains(AlgebraicInteger number) {
-        if (!number.getRing().equals(this.workingRing)) {
+//        if (!number.getRing().equals(this.workingRing)) {
             return false;
-        }
-        if (this.wholeRingFlag) {
-            return true;
-        }
-        if (this.workingRing instanceof QuadraticRing) {
-            QuadraticInteger n = (QuadraticInteger) number;
-            QuadraticInteger a = (QuadraticInteger) this.idealGeneratorA;
-            if (this.principalIdealFlag) {
-                try {
-                    n.divides(a);
-                    return true;
-                } catch (NotDivisibleException nde) {
-                    return false;
-                }
-            } else {
-                QuadraticInteger b = (QuadraticInteger) this.idealGeneratorB;
-            }
-            return false; // *** REMOVE WHEN FOREGOING IS COMPLETE ****
-        }
-        String excMsg = "Contains function not yet supported for " 
-                + number.toASCIIString();
-        throw new UnsupportedNumberDomainException(excMsg, number);
+//        }
+//        if (this.wholeRingFlag) {
+//            return true;
+//        }
+//        if (this.workingRing instanceof QuadraticRing) {
+//            QuadraticInteger n = (QuadraticInteger) number;
+//            QuadraticInteger a = (QuadraticInteger) this.idealGeneratorA;
+//            if (this.principalIdealFlag) {
+//                try {
+//                    n.divides(a);
+//                    return true;
+//                } catch (NotDivisibleException nde) {
+//                    return false;
+//                }
+//            } else {
+//                QuadraticInteger b = (QuadraticInteger) this.idealGeneratorB;
+//            }
+//            return false; // *** REMOVE WHEN FOREGOING IS COMPLETE ****
+//        }
+//        String excMsg = "Contains function not yet supported for " 
+//                + number.toASCIIString();
+//        throw new UnsupportedNumberDomainException(excMsg, number);
     }
     
     public boolean contains(Ideal ideal) {
@@ -124,15 +127,18 @@ public class Ideal {
         return false;
     }
     
+    // TODO: Rewrite tests for this
     public AlgebraicInteger[] getGenerators() {
-        if (this.principalIdealFlag) {
-            AlgebraicInteger[] gens = {this.idealGeneratorA};
-            return gens;
-        } else {
-            AlgebraicInteger[] gens = {this.idealGeneratorA, 
-                this.idealGeneratorB};
-            return gens;
-        }
+        AlgebraicInteger[] empty = {};
+        return empty;
+//        if (this.principalIdealFlag) {
+//            AlgebraicInteger[] gens = {this.idealGeneratorA};
+//            return gens;
+//        } else {
+//            AlgebraicInteger[] gens = {this.idealGeneratorA, 
+//                this.idealGeneratorB};
+//            return gens;
+//        }
     }
 
     /**
@@ -141,87 +147,93 @@ public class Ideal {
      * be different for two ideals that are different.
      * @return A 32-bit integer hash code. For example, if this ideal is 
      * &#10216;2, &radic;10&#10217;, it might be hashed as &minus;1212580032.
-     */
+     */    
+// TODO: Rewrite tests for this
     @Override
     public int hashCode() {
         int hash = this.workingRing.hashCode();
-        if (!this.wholeRingFlag) {
-            hash *= this.idealGeneratorA.hashCode();
-            if (!this.principalIdealFlag) {
-                hash *= this.idealGeneratorB.hashCode();
-            }
-        }
+//        if (!this.wholeRingFlag) {
+//            hash *= this.idealGeneratorA.hashCode();
+//            if (!this.principalIdealFlag) {
+//                hash *= this.idealGeneratorB.hashCode();
+//            }
+//        }
         return hash;
     }
     
+    // TODO: Rewrite tests for this
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (obj == null) {
             return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Ideal other = (Ideal) obj;
-        if (!Objects.equals(this.idealGeneratorA, other.idealGeneratorA)) {
-            return false;
-        }
-        return (Objects.equals(this.idealGeneratorB, other.idealGeneratorB));
+//        }
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        final Ideal other = (Ideal) obj;
+//        if (!Objects.equals(this.idealGeneratorA, other.idealGeneratorA)) {
+//            return false;
+//        }
+//        return (Objects.equals(this.idealGeneratorB, other.idealGeneratorB));
     }
     
+    // TODO: Rewrite tests for this
     @Override
-    public String toString() {
-        if (this.wholeRingFlag) {
-            return this.workingRing.toString();
-        }
-        String idealString = "\u27E8" + this.idealGeneratorA.toString();
-        if (!this.principalIdealFlag) {
-            idealString = idealString + ", " + this.idealGeneratorB.toString();
-        }
-        idealString = idealString + "\u27E9";
-        return idealString;
+    public String toString() {return "SORRY, NOT IMPLEMENTED YET";
+//        if (this.wholeRingFlag) {
+//            return this.workingRing.toString();
+//        }
+//        String idealString = "\u27E8" + this.idealGeneratorA.toString();
+//        if (!this.principalIdealFlag) {
+//            idealString = idealString + ", " + this.idealGeneratorB.toString();
+//        }
+//        idealString = idealString + "\u27E9";
+//        return idealString;
     }
     
-    public String toASCIIString() {
-        if (this.wholeRingFlag) {
-            return this.workingRing.toASCIIString();
-        }
-        String idealString = "(" + this.idealGeneratorA.toASCIIString();
-        if (!this.principalIdealFlag) {
-            idealString = idealString + ", " 
-                    + this.idealGeneratorB.toASCIIString();
-        }
-        idealString = idealString + ")";
-        return idealString;
+    // TODO: Rewrite tests for this
+    public String toASCIIString() {return "SORRY";
+//        if (this.wholeRingFlag) {
+//            return this.workingRing.toASCIIString();
+//        }
+//        String idealString = "(" + this.idealGeneratorA.toASCIIString();
+//        if (!this.principalIdealFlag) {
+//            idealString = idealString + ", " 
+//                    + this.idealGeneratorB.toASCIIString();
+//        }
+//        idealString = idealString + ")";
+//        return idealString;
     }
     
-    public String toTeXString() {
-        if (this.wholeRingFlag) {
-            return this.workingRing.toTeXString();
-        }
-        String idealString = "\\langle" + this.idealGeneratorA.toTeXString();
-        if (!this.principalIdealFlag) {
-            idealString = idealString + ", " 
-                    + this.idealGeneratorB.toTeXString();
-        }
-        idealString = idealString + "\\rangle";
-        return idealString;
+    // TODO: Rewrite tests for this
+    public String toTeXString() {return "SORRY";
+//        if (this.wholeRingFlag) {
+//            return this.workingRing.toTeXString();
+//        }
+//        String idealString = "\\langle" + this.idealGeneratorA.toTeXString();
+//        if (!this.principalIdealFlag) {
+//            idealString = idealString + ", " 
+//                    + this.idealGeneratorB.toTeXString();
+//        }
+//        idealString = idealString + "\\rangle";
+//        return idealString;
     }
     
-    public String toHTMLString() {
-        if (this.wholeRingFlag) {
-            return this.workingRing.toHTMLString();
-        }
-        String idealString = "&#10216;" + this.idealGeneratorA.toHTMLString();
-        if (!this.principalIdealFlag) {
-            idealString = idealString + ", " 
-                    + this.idealGeneratorB.toHTMLString();
-        }
-        idealString = idealString + "&#10217;";
-        return idealString;
+    // TODO: Rewrite tests for this
+    public String toHTMLString() {return "SORRY";
+//        if (this.wholeRingFlag) {
+//            return this.workingRing.toHTMLString();
+//        }
+//        String idealString = "&#10216;" + this.idealGeneratorA.toHTMLString();
+//        if (!this.principalIdealFlag) {
+//            idealString = idealString + ", " 
+//                    + this.idealGeneratorB.toHTMLString();
+//        }
+//        idealString = idealString + "&#10217;";
+//        return idealString;
     }
     
     public Ideal(IntegerRing ring) {
@@ -253,13 +265,13 @@ public class Ideal {
     }
     
     public Ideal(AlgebraicInteger generatorA, AlgebraicInteger generatorB) {
-        if (!generatorA.getRing().equals(generatorB.getRing())) {
-            String excMsg = generatorA.toASCIIString() + " is from " 
-                    + generatorA.getRing().toASCIIString() + " but " 
-                    + generatorB.toASCIIString() + " is from " 
-                    + generatorB.getRing().toASCIIString();
-            throw new IllegalArgumentException(excMsg);
-        }
+//        if (!generatorA.getRing().equals(generatorB.getRing())) {
+//            String excMsg = generatorA.toASCIIString() + " is from " 
+//                    + generatorA.getRing().toASCIIString() + " but " 
+//                    + generatorB.toASCIIString() + " is from " 
+//                    + generatorB.getRing().toASCIIString();
+//            throw new IllegalArgumentException(excMsg);
+//        }
         AlgebraicInteger genA = generatorA;
         AlgebraicInteger genB = generatorB;
         boolean principalFlag = false;
