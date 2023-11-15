@@ -45,7 +45,6 @@ public class NonEuclideanDomainException extends Exception {
         return (new AlgebraicInteger[]{attemptedA, attemptedB});
     }
     
-    // TODO: Consider deprecation
     /**
      * Attempts to apply the Euclidean GCD algorithm to the algebraic integers 
      * that triggered this exception. This will deliver some result, but with no 
@@ -69,7 +68,10 @@ public class NonEuclideanDomainException extends Exception {
      * same quartic ring.
      * @throws UnsupportedNumberDomainException If the particular implementation 
      * of {@link AlgebraicInteger} is not yet supported for this function.
+     * @deprecated A function in {@link 
+     * calculators.NumberTheoreticFunctionsCalculator} will be provided.
      */
+    @Deprecated
     public AlgebraicInteger tryEuclideanGCDAnyway() {
         if (!this.attemptedA.getRing().equals(this.attemptedB.getRing())) {
             String excMsg = "AlgebraicDegreeOverflowException for one number from " 
