@@ -457,6 +457,11 @@ public class IdealTest {
         } catch (IllegalArgumentException iae) {
             System.out.println("Ideal from diff rings caused exception");
             System.out.println("\"" + iae.getMessage() + "\"");
+        } catch (RuntimeException re) {
+            String message = "Generators from different rings caused " 
+                    + re.getClass().getName() 
+                    + " rather than IllegalArgumentException";
+            fail(message);
         }
         RealQuadraticRing ring = new RealQuadraticRing(29);
         testIdeal = new Ideal(ring);
