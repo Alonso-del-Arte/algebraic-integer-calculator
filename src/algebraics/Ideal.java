@@ -265,13 +265,13 @@ public class Ideal {
     }
     
     public Ideal(AlgebraicInteger generatorA, AlgebraicInteger generatorB) {
-//        if (!generatorA.getRing().equals(generatorB.getRing())) {
-//            String excMsg = generatorA.toASCIIString() + " is from " 
-//                    + generatorA.getRing().toASCIIString() + " but " 
-//                    + generatorB.toASCIIString() + " is from " 
-//                    + generatorB.getRing().toASCIIString();
-//            throw new IllegalArgumentException(excMsg);
-//        }
+        if (!generatorA.getRing().equals(generatorB.getRing())) {
+            String excMsg = generatorA.toASCIIString() + " is from " 
+                    + generatorA.getRing().toASCIIString() + " but " 
+                    + generatorB.toASCIIString() + " is from " 
+                    + generatorB.getRing().toASCIIString();
+            throw new RuntimeException(excMsg);
+        }
         AlgebraicInteger genA = generatorA;
         AlgebraicInteger genB = generatorB;
         boolean principalFlag = false;
