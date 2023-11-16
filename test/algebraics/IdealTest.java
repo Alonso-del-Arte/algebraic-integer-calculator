@@ -23,6 +23,12 @@ import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -137,28 +143,107 @@ public class IdealTest {
             = new Ideal(ALG_INT_2_IN_Z10, ALG_INT_SQRT10);
     
     /**
+     * Test of the toString function, of the Ideal class. Spaces are desirable 
+     * but not required, so the test will strip them out before the equality 
+     * assertion.
+     */
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        fail("NEED TO REWRITE THIS TEST");
+        String expected = "\u27E82," 
+                + ALG_INT_1PLUSSQRTNEG5.toString().replace(" ", "") 
+                + "\u27E9";
+        String actual = IDEAL_SECONDARY_ZI5.toString().replace(" ", "");
+        assertEquals(expected, actual);
+        expected = RING_Z10.toString().replace(" ", "");
+        actual = IDEAL_WHOLE_RING.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the toASCIIString function, of the Ideal class. Spaces are 
+     * desirable but not required, so the test will strip them out before the 
+     * equality assertion.
+     */
+    @Test
+    public void testToASCIIString() {
+        System.out.println("toASCIIString");
+        fail("NEED TO REWRITE THIS TEST");
+        String expResult = "(2,1+sqrt(-5))";
+        String result = IDEAL_SECONDARY_ZI5.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = RING_Z10.toASCIIString().replace(" ", "");
+        result = IDEAL_WHOLE_RING.toASCIIString().replace(" ", "");
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of the toTeXString function, of the Ideal class. Spaces are 
+     * desirable but not required, so the test will strip them out before the 
+     * equality assertion.
+     */
+    @Test
+    public void testToTeXString() {
+        System.out.println("toTeXString");
+        fail("NEED TO REWRITE THIS TEST");
+        String expResult = "\\langle2,1+\\sqrt{-5}\\rangle";
+        String result = IDEAL_SECONDARY_ZI5.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = RING_Z10.toTeXString().replace(" ", "");
+        result = IDEAL_WHOLE_RING.toTeXString().replace(" ", "");
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of the toHTMLString function, of the Ideal class. Spaces are 
+     * desirable but not required, so the test will strip them out before the 
+     * equality assertion.
+     */
+    @Test
+    public void testToHTMLString() {
+        System.out.println("toHTMLString");
+        fail("NEED TO REWRITE THIS TEST");
+        String expResult = "&#10216;2,1+&radic;(&minus;5)&#10217;";
+        String result = IDEAL_SECONDARY_ZI5.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+        expResult = RING_Z10.toHTMLString().replace(" ", "");
+        result = IDEAL_WHOLE_RING.toHTMLString().replace(" ", "");
+        assertEquals(expResult, result);
+    }
+    
+    /**
      * Test of the norm function, of the Ideal class.
      */
     @Test
     public void testNorm() {
-        System.out.println("norm");
-        fail("NEED TO REWRITE THIS TEST");
-        long expected = 1L;
-        long actual = IDEAL_WHOLE_RING.norm();
-        assertEquals(expected, actual);
-        expected = 2L;
-        actual = IDEAL_SECONDARY_ZI5.norm();
-        assertEquals(expected, actual);
-        actual = IDEAL_SECONDARY_Z10.norm();
-        assertEquals(expected, actual);
-        expected = 4L;
-        actual = IDEAL_PRINCIPAL_ZI5.norm();
-        assertEquals(expected, actual);
-        expected = 10L;
-        actual = IDEAL_PRINCIPAL_Z10.norm();
-        assertEquals(expected, actual);
+        System.out.println("norm");fail("REWRITE?");
+//        int a = randomNumber(128) - 64;
+//        int b = randomNumber(128) + 64;
+//        int d = randomSquarefreeNumber(100);
+//        QuadraticRing ring = new RealQuadraticRing(d);
+//        AlgebraicInteger number = new RealQuadraticInteger(a, b, ring);
+//        Ideal ideal = new Ideal(number);
+//        long expected = Math.abs(number.norm());
+//        long actual = ideal.norm();
+//        assertEquals(expected, actual);
     }
 
+//            long expected = 1L;
+//        long actual = IDEAL_WHOLE_RING.norm();
+//        assertEquals(expected, actual);
+//        expected = 2L;
+//        actual = IDEAL_SECONDARY_ZI5.norm();
+//        assertEquals(expected, actual);
+//        actual = IDEAL_SECONDARY_Z10.norm();
+//        assertEquals(expected, actual);
+//        expected = 4L;
+//        actual = IDEAL_PRINCIPAL_ZI5.norm();
+//        assertEquals(expected, actual);
+//        expected = 10L;
+//        actual = IDEAL_PRINCIPAL_Z10.norm();
+//        assertEquals(expected, actual);
+    
     /**
      * Test of the isPrincipal function, of the Ideal class.
      */
@@ -380,76 +465,6 @@ public class IdealTest {
         assertEquals(testIdealP, testIdealQ);
     }
 
-    /**
-     * Test of the toString function, of the Ideal class. Spaces are desirable 
-     * but not required, so the test will strip them out before the equality 
-     * assertion.
-     */
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        fail("NEED TO REWRITE THIS TEST");
-        String expected = "\u27E82," 
-                + ALG_INT_1PLUSSQRTNEG5.toString().replace(" ", "") 
-                + "\u27E9";
-        String actual = IDEAL_SECONDARY_ZI5.toString().replace(" ", "");
-        assertEquals(expected, actual);
-        expected = RING_Z10.toString().replace(" ", "");
-        actual = IDEAL_WHOLE_RING.toString().replace(" ", "");
-        assertEquals(expected, actual);
-    }
-
-    /**
-     * Test of the toASCIIString function, of the Ideal class. Spaces are 
-     * desirable but not required, so the test will strip them out before the 
-     * equality assertion.
-     */
-    @Test
-    public void testToASCIIString() {
-        System.out.println("toASCIIString");
-        fail("NEED TO REWRITE THIS TEST");
-        String expResult = "(2,1+sqrt(-5))";
-        String result = IDEAL_SECONDARY_ZI5.toASCIIString().replace(" ", "");
-        assertEquals(expResult, result);
-        expResult = RING_Z10.toASCIIString().replace(" ", "");
-        result = IDEAL_WHOLE_RING.toASCIIString().replace(" ", "");
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of the toTeXString function, of the Ideal class. Spaces are 
-     * desirable but not required, so the test will strip them out before the 
-     * equality assertion.
-     */
-    @Test
-    public void testToTeXString() {
-        System.out.println("toTeXString");
-        fail("NEED TO REWRITE THIS TEST");
-        String expResult = "\\langle2,1+\\sqrt{-5}\\rangle";
-        String result = IDEAL_SECONDARY_ZI5.toTeXString().replace(" ", "");
-        assertEquals(expResult, result);
-        expResult = RING_Z10.toTeXString().replace(" ", "");
-        result = IDEAL_WHOLE_RING.toTeXString().replace(" ", "");
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of the toHTMLString function, of the Ideal class. Spaces are 
-     * desirable but not required, so the test will strip them out before the 
-     * equality assertion.
-     */
-    @Test
-    public void testToHTMLString() {
-        System.out.println("toHTMLString");
-        fail("NEED TO REWRITE THIS TEST");
-        String expResult = "&#10216;2,1+&radic;(&minus;5)&#10217;";
-        String result = IDEAL_SECONDARY_ZI5.toHTMLString().replace(" ", "");
-        assertEquals(expResult, result);
-        expResult = RING_Z10.toHTMLString().replace(" ", "");
-        result = IDEAL_WHOLE_RING.toHTMLString().replace(" ", "");
-        assertEquals(expResult, result);
-    }
-    
     /**
      * Test of Ideal constructor. The main thing we're testing here is that an 
      * invalid argument triggers an {@link IllegalArgumentException}.
