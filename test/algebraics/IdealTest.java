@@ -142,6 +142,19 @@ public class IdealTest {
     private static final Ideal IDEAL_SECONDARY_Z10 
             = new Ideal(ALG_INT_2_IN_Z10, ALG_INT_SQRT10);
     
+    private static AlgebraicInteger[] chooseGenPair(QuadraticRing ring) {
+        QuadraticInteger numberA, numberB;
+        AlgebraicInteger[] pair = new AlgebraicInteger[2];
+        do {
+// TODO: Rewrite this to choose something like <2, 1 + sqrt(-5)>
+            numberA = QuadraticInteger.apply(1, 1, ring);
+            numberB = numberA.times(1).plus(1);
+            pair[0] = numberA;
+            pair[1] = numberB;
+        } while (pair[0] == null || pair[1] == null);
+        return pair;
+    }
+    
     /**
      * Test of the toString function, of the Ideal class. Spaces are desirable 
      * but not required, so the test will strip them out before the equality 
