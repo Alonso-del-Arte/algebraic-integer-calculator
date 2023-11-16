@@ -142,6 +142,7 @@ public class IdealTest {
     @Test
     public void testNorm() {
         System.out.println("norm");
+        fail("NEED TO REWRITE THIS TEST");
         long expected = 1L;
         long actual = IDEAL_WHOLE_RING.norm();
         assertEquals(expected, actual);
@@ -164,6 +165,7 @@ public class IdealTest {
     @Test
     public void testIsPrincipal() {
         System.out.println("isPrincipal");
+        fail("NEED TO REWRITE THIS TEST");
         String affirmativeMsgPart = " should be found to be a principal ideal";
         String msg = IDEAL_PRINCIPAL_ZI5.toString() + affirmativeMsgPart;
         assert IDEAL_PRINCIPAL_ZI5.isPrincipal() : msg;
@@ -194,6 +196,7 @@ public class IdealTest {
     @Test
     public void testIsMaximal() {
         System.out.println("isMaximal");
+        fail("NEED TO REWRITE THIS TEST");
         String affirmativeMsgPart = " should be found to be a maximal ideal";
         String msg = IDEAL_SECONDARY_ZI5.toString() + affirmativeMsgPart;
         assert IDEAL_SECONDARY_ZI5.isMaximal() : msg;
@@ -227,7 +230,8 @@ public class IdealTest {
     }
     
     // TODO: Finish writing this test
-//    @Test
+    @org.junit.Ignore
+    @Test
     public void testContains() {
         System.out.println("contains");
         fail("Haven't finished writing test");
@@ -239,6 +243,7 @@ public class IdealTest {
     @Test
     public void testContainsAlgebraicInteger() {
         QuadraticInteger num = new ImaginaryQuadraticInteger(3, 0, RING_ZI5);
+        fail("NEED TO REWRITE THIS TEST");
         String affirmativeMsgPart = " should be found to contain ";
         String msg = IDEAL_SECONDARY_ZI5.toString() + affirmativeMsgPart 
                 + num.toString();
@@ -280,6 +285,7 @@ public class IdealTest {
     @Test
     public void testGetGenerators() {
         System.out.println("getGenerators");
+        fail("NEED TO REWRITE THIS TEST");
         AlgebraicInteger[] expResultTwoGens = {ALG_INT_2_IN_ZI5, 
             ALG_INT_1PLUSSQRTNEG5};
         AlgebraicInteger[] result = IDEAL_SECONDARY_ZI5.getGenerators();
@@ -309,6 +315,7 @@ public class IdealTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
+        fail("NEED TO REWRITE THIS TEST");
         System.out.println(IDEAL_WHOLE_RING.toASCIIString() + " hashed as " 
                 + IDEAL_WHOLE_RING.hashCode());
         System.out.println(IDEAL_PRINCIPAL_ZI5.toASCIIString() + " hashed as " 
@@ -336,6 +343,7 @@ public class IdealTest {
     @Test
     public void testEquals() {
         System.out.println("equals");
+        fail("NEED TO REWRITE THIS TEST");
         assertEquals(IDEAL_PRINCIPAL_ZI5, IDEAL_PRINCIPAL_ZI5);
         assertEquals(IDEAL_PRINCIPAL_Z10, IDEAL_PRINCIPAL_Z10);
         assertNotEquals(IDEAL_PRINCIPAL_ZI5, IDEAL_PRINCIPAL_Z10);
@@ -380,6 +388,7 @@ public class IdealTest {
     @Test
     public void testToString() {
         System.out.println("toString");
+        fail("NEED TO REWRITE THIS TEST");
         String expected = "\u27E82," 
                 + ALG_INT_1PLUSSQRTNEG5.toString().replace(" ", "") 
                 + "\u27E9";
@@ -398,6 +407,7 @@ public class IdealTest {
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
+        fail("NEED TO REWRITE THIS TEST");
         String expResult = "(2,1+sqrt(-5))";
         String result = IDEAL_SECONDARY_ZI5.toASCIIString().replace(" ", "");
         assertEquals(expResult, result);
@@ -414,6 +424,7 @@ public class IdealTest {
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
+        fail("NEED TO REWRITE THIS TEST");
         String expResult = "\\langle2,1+\\sqrt{-5}\\rangle";
         String result = IDEAL_SECONDARY_ZI5.toTeXString().replace(" ", "");
         assertEquals(expResult, result);
@@ -430,6 +441,7 @@ public class IdealTest {
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
+        fail("NEED TO REWRITE THIS TEST");
         String expResult = "&#10216;2,1+&radic;(&minus;5)&#10217;";
         String result = IDEAL_SECONDARY_ZI5.toHTMLString().replace(" ", "");
         assertEquals(expResult, result);
@@ -445,6 +457,7 @@ public class IdealTest {
     @Test
     public void testConstructor() {
         System.out.println("Ideal (constructor)");
+        fail("NEED TO REWRITE THIS TEST");
         Ideal testIdeal = new Ideal(ALG_INT_1PLUSSQRTNEG5);
         System.out.println("Created the ideal " + testIdeal.toASCIIString() 
                 + " without problem.");
