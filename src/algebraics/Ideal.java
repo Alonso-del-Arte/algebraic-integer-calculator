@@ -71,11 +71,10 @@ public class Ideal {
     
     private final IntegerRing workingRing;
     
-    // THIS SHOULD PASS FOR PRINCIPAL IDEALS BUT FAIL FOR SECONDARY IDEALS
     public long norm() {
-        if (this.principalIdealFlag) {
-            return Math.abs(this.idealGeneratorA.norm());
-        }
+//        if (this.principalIdealFlag) {
+//            return Math.abs(this.idealGeneratorA.norm());
+//        }
         return 0L;
     }
     
