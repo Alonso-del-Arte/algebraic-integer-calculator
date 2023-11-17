@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -272,7 +272,6 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusUnsupportedCausesException() {
-        System.out.println("Testing that plus on unsupported quadratic integers causes the appropriate exception");
         try {
             QuadraticInteger sum = ILL_DEF_INT_A.plus(ILL_DEF_INT_B);
             String msg = "Trying to add " + ILL_DEF_INT_A.toString() + " to " 
@@ -281,7 +280,7 @@ public class QuadraticIntegerTest {
                     + sum.toString() + ".";
             fail(msg);
         } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException correctly triggered for attempted addition.");
+            System.out.println("Exception triggered for attempted addition");
             System.out.println("\"" + unde.getMessage() + "\"");
         } catch (RuntimeException re) {
             String msg = re.getClass().getName() 
@@ -301,21 +300,21 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusUnaryAsQuadGivesResult() {
-        System.out.println("Testing that adding to an unary integer presented as a quadratic integer gives correct result even if invoked ring is different");
         QuadraticRing ring = new ImaginaryQuadraticRing(-15);
         ImaginaryQuadraticInteger unaryAddend = new ImaginaryQuadraticInteger(3, 
                 0, ring);
         ring = new RealQuadraticRing(97);
         QuadraticInteger quadraticAddend = new RealQuadraticInteger(5, 1, ring, 
                 2);
-        QuadraticInteger expResult = new RealQuadraticInteger(11, 1, ring, 2);
-        QuadraticInteger result;
+        QuadraticInteger expected = new RealQuadraticInteger(11, 1, ring, 2);
+        QuadraticInteger actual;
         try {
-            result = unaryAddend.plus(quadraticAddend);
-            assertEquals(expResult, result);
+            actual = unaryAddend.plus(quadraticAddend);
+            assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
             String msg = "Exception should not have occurred for trying to add " 
-                    + unaryAddend.toString() + " to " + quadraticAddend.toString();
+                    + unaryAddend.toString() + " to " 
+                    + quadraticAddend.toString();
             System.out.println(unaryAddend.toASCIIString() 
                     + " is of algebraic degree " 
                     + unaryAddend.algebraicDegree() + " and " 
@@ -333,19 +332,26 @@ public class QuadraticIntegerTest {
         }
         ring = new ImaginaryQuadraticRing(-2);
         quadraticAddend = new ImaginaryQuadraticInteger(5, 2, ring);
-        expResult = new ImaginaryQuadraticInteger(8, 2, ring);
+        expected = new ImaginaryQuadraticInteger(8, 2, ring);
         try {
-            result = unaryAddend.plus(quadraticAddend);
-            assertEquals(expResult, result);
+            actual = unaryAddend.plus(quadraticAddend);
+            assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to add 3 to " + quadraticAddend.toASCIIString();
-            System.out.println(failMessage);
-            System.out.println("3 is of algebraic degree " + unaryAddend.algebraicDegree() + " and " + quadraticAddend.toASCIIString() + " is of algebraic degree " + quadraticAddend.algebraicDegree());
+            String message = "Exception shouldn't've occurred for adding 3 to " 
+                    + quadraticAddend.toASCIIString();
+            System.out.println(message);
+            System.out.println("3 is of algebraic degree " 
+                    + unaryAddend.algebraicDegree() + " and " 
+                    + quadraticAddend.toASCIIString() 
+                    + " is of algebraic degree " 
+                    + quadraticAddend.algebraicDegree());
             System.out.println("\"" + adoe.getMessage() + "\"");
-            fail(failMessage);
-        } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " should not have occurred for trying to add 3 to " + quadraticAddend.toASCIIString();
-            fail(failMessage);
+            fail(message);
+        } catch (RuntimeException e) {
+            String message = e.getClass().getName() 
+                    + " shouldn't've occurred for trying to add 3 to " 
+                    + quadraticAddend.toASCIIString();
+            fail(message);
         }
     }
     
@@ -357,11 +363,13 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testMinusUnsupportedCausesException() {
-        System.out.println("Testing that minus on unsupported quadratic integers causes the appropriate exception");
         QuadraticInteger subtraction;
         try {
             subtraction = ILL_DEF_INT_A.minus(ILL_DEF_INT_B);
-            System.out.println("Trying to subtract " + ILL_DEF_INT_B.toASCIIString() + " from " + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " + subtraction.toASCIIString() + ".");
+            System.out.println("Trying to subtract " 
+                    + ILL_DEF_INT_B.toASCIIString() + " from " 
+                    + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " 
+                    + subtraction.toASCIIString());
             fail("Trying to subtract one ill-defined quadratic integer from another should have caused UnsupportedNumberDomainException.");
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("UnsupportedNumberDomainException correctly triggered for attempted subtraction.");
