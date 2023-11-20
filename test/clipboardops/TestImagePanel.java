@@ -71,7 +71,7 @@ public final class TestImagePanel extends JPanel {
     }
     
     private void showPanel() {
-        this.frame = new JFrame("Test Image");
+        this.frame = new JFrame("Test Image Panel");
         this.frame.add(this);
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.frame.pack();
@@ -93,7 +93,7 @@ public final class TestImagePanel extends JPanel {
         this.setBackground(BACKGROUND_COLOR);
         Dimension prefDim = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
         this.setPreferredSize(prefDim);
-        showPanel();
+        this.showPanel();
     }
     
 }
