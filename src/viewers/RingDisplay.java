@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -27,7 +27,10 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -62,8 +65,8 @@ import static calculators.NumberTheoreticFunctionsCalculator.fundamentalUnit;
  * logic, that's for the subclasses to take care of.
  * @author Alonso del Arte
  */
-public abstract class RingDisplay extends JPanel 
-        implements ActionListener, MouseMotionListener {
+public abstract class RingDisplay extends JPanel implements ActionListener, 
+        ClipboardOwner, MouseMotionListener {
     
     /**
      * How many <code>RingDisplay</code> windows are open during the current JVM 
@@ -237,7 +240,8 @@ public abstract class RingDisplay extends JPanel
      * diagram. This color will probably not be used in diagrams of quadratic 
      * rings, but should be used in diagrams of quartic rings.
      */
-    public static final Color DEFAULT_SPLIT_MID_DEGREE_PRIME_COLOR = new Color(24831);
+    public static final Color DEFAULT_SPLIT_MID_DEGREE_PRIME_COLOR 
+            = new Color(24831);
     
     /**
      * The default color for primes that are ramified. Regardless of the current 
@@ -436,6 +440,12 @@ public abstract class RingDisplay extends JPanel
      * Where we are at in the history list.
      */
     protected short currHistoryIndex;
+    
+    /**
+     * Whether or not this ring display owns the system clipboard. By default it 
+     * doesn't at first.
+     */
+    protected boolean ownsClipboard = false;
     
     private static final boolean MAC_OS_FLAG = System.getProperty("os.name")
             .equals("Mac OS X");
@@ -647,7 +657,7 @@ public abstract class RingDisplay extends JPanel
         }
         fileChooser.setSelectedFile(diagramFile);
         int fcRet = fileChooser.showSaveDialog(this);
-        String msg;
+        String message;
         switch (fcRet) {
             case JFileChooser.APPROVE_OPTION:
                 diagramFile = fileChooser.getSelectedFile();
@@ -658,22 +668,22 @@ public abstract class RingDisplay extends JPanel
                 try {
                     ImageIO.write(diagram, "PNG", diagramFile);
                 } catch (IOException ioe) {
-                    msg = "Image input/output exception occurred:\n " 
+                    message = "Image input/output exception occurred:\n " 
                             + ioe.getMessage();
-                    JOptionPane.showMessageDialog(this.ringFrame, msg);
+                    JOptionPane.showMessageDialog(this.ringFrame, message);
                 }
                 break;
             case JFileChooser.CANCEL_OPTION:
-                msg = "File save canceled";
-                JOptionPane.showMessageDialog(ringFrame, msg);
+                message = "File save canceled";
+                JOptionPane.showMessageDialog(ringFrame, message);
                 break;
             case JFileChooser.ERROR_OPTION:
-                msg = "An error occurred trying to choose a file to save to";
-                JOptionPane.showMessageDialog(ringFrame, msg);
+                message = "Error occurred trying to choose a file to save to";
+                JOptionPane.showMessageDialog(ringFrame, message);
                 break;
             default:
-                msg = "Unexpected option " + fcRet + " from file chooser";
-                JOptionPane.showMessageDialog(ringFrame, msg);
+                message = "Unexpected option " + fcRet + " from file chooser";
+                JOptionPane.showMessageDialog(ringFrame, message);
         }
     }
     
@@ -836,7 +846,8 @@ public abstract class RingDisplay extends JPanel
             }
         }
         StringSelection ss = new StringSelection(aggregReadouts);
-        this.getToolkit().getSystemClipboard().setContents(ss, ss);
+        this.getToolkit().getSystemClipboard().setContents(ss, this);
+        this.ownsClipboard = true;
     }
     
     /**
@@ -849,7 +860,8 @@ public abstract class RingDisplay extends JPanel
         Graphics2D graph = diagram.createGraphics();
         this.paint(graph);
         ImageSelection imgSel = new ImageSelection(diagram);
-        this.getToolkit().getSystemClipboard().setContents(imgSel, imgSel);
+        this.getToolkit().getSystemClipboard().setContents(imgSel, this);
+        this.ownsClipboard = true;
     }
     
     /**
@@ -1101,16 +1113,16 @@ public abstract class RingDisplay extends JPanel
                 Desktop desktop = Desktop.getDesktop();
                 desktop.browse(url);
             } catch (IOException ioe) {
-                String msg = "Sorry, unable to open URL\n<" + urlStr + ">\n\"" 
-                        + ioe.getMessage() + "\"";
-                JOptionPane.showMessageDialog(this.ringFrame, msg);
-                System.err.println(msg);
+                String message = "Sorry, unable to open URL\n<" + urlStr 
+                        + ">\n\"" + ioe.getMessage() + "\"";
+                JOptionPane.showMessageDialog(this.ringFrame, message);
+                System.err.println(message);
             }
         } else {
-            String msg = "Sorry, unable to open URL\n<" + urlStr 
+            String message = "Sorry, unable to open URL\n<" + urlStr 
                     + ">\nNo default Web browser is not available";
-            JOptionPane.showMessageDialog(this.ringFrame, msg);
-            System.err.println(msg);
+            JOptionPane.showMessageDialog(this.ringFrame, message);
+            System.err.println(message);
         }
     }
     
@@ -1129,10 +1141,10 @@ public abstract class RingDisplay extends JPanel
      */
     public void showAboutBox() {
         String title = "About";
-        String msg = this.getAboutBoxMessage();
-        JOptionPane.showMessageDialog(this.ringFrame, msg, title, 
+        String message = this.getAboutBoxMessage();
+        JOptionPane.showMessageDialog(this.ringFrame, message, title, 
                 JOptionPane.PLAIN_MESSAGE);
-        System.out.println(msg);
+        System.out.println(message);
     }
 
     /**
@@ -1194,12 +1206,12 @@ public abstract class RingDisplay extends JPanel
                 this.increaseDotRadius();
                 break;
             case "defaultView":
-                String msg = "This will reset pixels per unit interval and " 
+                String message = "This will reset pixels per unit interval and " 
                         + this.dotRadiusOrLineThicknessText
                         + " only";
                 String title = "Reset view defaults?";
-                int reply = JOptionPane.showConfirmDialog(ringFrame, msg, title, 
-                        JOptionPane.OK_CANCEL_OPTION);
+                int reply = JOptionPane.showConfirmDialog(ringFrame, message, 
+                        title, JOptionPane.OK_CANCEL_OPTION);
                 if (reply == JOptionPane.OK_OPTION) {
                     this.resetViewDefaults();
                 }
@@ -1219,6 +1231,11 @@ public abstract class RingDisplay extends JPanel
             default:
                 System.out.println("Command " + cmd + " not recognized");
         }
+    }
+    
+    @Override
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
+        this.ownsClipboard = false;
     }
     
     /**
@@ -1260,21 +1277,25 @@ public abstract class RingDisplay extends JPanel
         menu.setMnemonic(KeyEvent.VK_F);
         menu.getAccessibleContext()
                 .setAccessibleDescription("Menu for file operations");
-        String accDescr = "Save currently displayed diagram to a PNG file";
+        String accessibleDescription 
+                = "Save currently displayed diagram to a PNG file";
         KeyStroke accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_S, 
                 maskCtrlCommand + InputEvent.SHIFT_DOWN_MASK);
         JMenuItem menuItem = this.makeMenuItem("Save diagram as...", 
-                accDescr, "saveDiagramAs", accelerator);
+                accessibleDescription, "saveDiagramAs", accelerator);
         menu.add(menuItem);
         menu.addSeparator();
-        accDescr = "Close the window";
+        accessibleDescription = "Close the window";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_W, maskCtrlCommand);
-        menuItem = this.makeMenuItem("Close", accDescr, "close", accelerator);
+        menuItem = this.makeMenuItem("Close", accessibleDescription, "close", 
+                accelerator);
         menu.add(menuItem);
         if (!MAC_OS_FLAG) {
-            accDescr = "Exit the program";
-            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, maskCtrlCommand);
-            menuItem = this.makeMenuItem("Exit", accDescr, "exit", accelerator);
+            accessibleDescription = "Exit the program";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Q, 
+                    maskCtrlCommand);
+            menuItem = this.makeMenuItem("Exit", accessibleDescription, "exit", 
+                    accelerator);
             menu.add(menuItem);
         }
         return menu;
@@ -1286,16 +1307,19 @@ public abstract class RingDisplay extends JPanel
         menu.getAccessibleContext()
                 .setAccessibleDescription("Menu to change certain parameters");
         JMenuItem menuItem;
-        String accDescr;
+        String accessibleDescription;
         KeyStroke accelerator;
         if (this.includeRingChoice) {
-            accDescr = "Let user enter new choice for ring discriminant";
-            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_D, maskCtrlCommand);
-            menuItem = this.makeMenuItem("Choose parameter d...", accDescr, 
-                    "chooseD", accelerator);
+            accessibleDescription 
+                    = "Let user enter new choice for ring discriminant";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_D, 
+                    maskCtrlCommand);
+            menuItem = this.makeMenuItem("Choose parameter d...", 
+                    accessibleDescription, "chooseD", accelerator);
             menu.add(menuItem);
             menu.addSeparator();
-            accDescr = "Increment the discriminant to choose another ring";
+            accessibleDescription 
+                    = "Increment the discriminant to choose another ring";
             if (MAC_OS_FLAG) {
                 accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_Y, 
                         maskCtrlCommand);
@@ -1305,8 +1329,9 @@ public abstract class RingDisplay extends JPanel
             }
             this.increaseDMenuItem 
                     = menu.add(this.makeMenuItem("Increment parameter d", 
-                            accDescr, "incrD", accelerator));
-            accDescr = "Decrement the discriminant to choose another ring";
+                            accessibleDescription, "incrD", accelerator));
+            accessibleDescription 
+                    = "Decrement the discriminant to choose another ring";
             if (MAC_OS_FLAG) {
                 accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_B, 
                         maskCtrlCommand);
@@ -1316,20 +1341,21 @@ public abstract class RingDisplay extends JPanel
             }
             this.decreaseDMenuItem 
                     = menu.add(this.makeMenuItem("Decrement parameter d", 
-                            accDescr, "decrD", accelerator));
+                            accessibleDescription, "decrD", accelerator));
             menu.addSeparator();
         }
-        accDescr = "Copy the readouts to the clipboard";
+        accessibleDescription = "Copy the readouts to the clipboard";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand 
                 + InputEvent.SHIFT_DOWN_MASK);
-        menuItem = this.makeMenuItem("Copy readouts to clipboard", accDescr, 
-                "copyReadouts", accelerator);
+        menuItem = this.makeMenuItem("Copy readouts to clipboard", 
+                accessibleDescription, "copyReadouts", accelerator);
         menu.add(menuItem);
-        accDescr = "Copy the currently displayed diagram to the clipboard";
+        accessibleDescription 
+                = "Copy the currently displayed diagram to the clipboard";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_C, maskCtrlCommand 
                 + InputEvent.ALT_DOWN_MASK);
-        menuItem = this.makeMenuItem("Copy diagram to clipboard", accDescr, 
-                "copyDiagram", accelerator);
+        menuItem = this.makeMenuItem("Copy diagram to clipboard", 
+                accessibleDescription, "copyDiagram", accelerator);
         menu.add(menuItem);
 //        menu.addSeparator();
 //        // THIS IS FOR WHEN I GET AROUND TO ADDING THE CAPABILITY TO CHANGE 
@@ -1348,24 +1374,28 @@ public abstract class RingDisplay extends JPanel
         ringWindowMenu.getAccessibleContext()
                 .setAccessibleDescription("Menu to zoom in or zoom out");
         JMenuItem ringWindowMenuItem;
-        String accDescr;
+        String accessibleDescription;
         KeyStroke accelerator;
         if (this.includeRingChoice) {
-            accDescr = "View the diagram for the previous parameter d";
-            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_G, maskCtrlCommand);
+            accessibleDescription 
+                    = "View the diagram for the previous parameter d";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_G, 
+                    maskCtrlCommand);
             ringWindowMenuItem = this.makeMenuItem("Previous parameter d", 
-                    accDescr, "prevD", accelerator);
+                    accessibleDescription, "prevD", accelerator);
             this.prevDMenuItem = ringWindowMenu.add(ringWindowMenuItem);
             this.prevDMenuItem.setEnabled(false);
-            accDescr = "View the diagram for the next discriminant";
-            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_J, maskCtrlCommand);
-            ringWindowMenuItem = this.makeMenuItem("Next parameter d", accDescr, 
-                    "nextD", accelerator);
+            accessibleDescription = "View the diagram for the next discriminant";
+            accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_J, 
+                    maskCtrlCommand);
+            ringWindowMenuItem = this.makeMenuItem("Next parameter d", 
+                    accessibleDescription, "nextD", accelerator);
             this.nextDMenuItem = ringWindowMenu.add(ringWindowMenuItem);
             this.nextDMenuItem.setEnabled(false);
             ringWindowMenu.addSeparator();
         }
-        accDescr = "Zoom in, by increasing pixels per unit interval";
+        accessibleDescription 
+                = "Zoom in, by increasing pixels per unit interval";
         if (MAC_OS_FLAG) {
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, 
                     InputEvent.SHIFT_DOWN_MASK);
@@ -1373,80 +1403,91 @@ public abstract class RingDisplay extends JPanel
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_ADD, 
                     InputEvent.CTRL_DOWN_MASK);
         }
-        ringWindowMenuItem = this.makeMenuItem("Zoom in", accDescr, "zoomIn", 
-                accelerator);
+        ringWindowMenuItem = this.makeMenuItem("Zoom in", accessibleDescription, 
+                "zoomIn", accelerator);
         this.zoomInMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL 
                 - zoomStep)) {
             this.zoomInMenuItem.setEnabled(false);
         }
-        accDescr = "Zoom out, by decreasing pixels per unit interval";
+        accessibleDescription 
+                = "Zoom out, by decreasing pixels per unit interval";
         if (MAC_OS_FLAG) {
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, 0);
         } else {
             accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, 
                     InputEvent.CTRL_DOWN_MASK);
         }
-        ringWindowMenuItem = this.makeMenuItem("Zoom out", accDescr, "zoomOut", 
-                accelerator);
+        ringWindowMenuItem = this.makeMenuItem("Zoom out", 
+                accessibleDescription, "zoomOut", accelerator);
         this.zoomOutMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.pixelsPerUnitInterval < (MINIMUM_PIXELS_PER_UNIT_INTERVAL 
                 + zoomStep)) {
             this.zoomInMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
-        accDescr = "Decrease the zoom step used for zoom in, zoom out";
+        accessibleDescription 
+                = "Decrease the zoom step used for zoom in, zoom out";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand 
                 + InputEvent.SHIFT_DOWN_MASK);
-        ringWindowMenuItem = this.makeMenuItem("Decrease zoom step", accDescr, 
-                "decrZoomStep", accelerator);
+        ringWindowMenuItem = this.makeMenuItem("Decrease zoom step", 
+                accessibleDescription, "decrZoomStep", accelerator);
         this.decreaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.zoomStep == MINIMUM_ZOOM_STEP) {
             this.decreaseZoomStepMenuItem.setEnabled(false);
         }
-        accDescr = "Increase the zoom step used for zoom in, zoom out";
+        accessibleDescription 
+                = "Increase the zoom step used for zoom in, zoom out";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, maskCtrlCommand 
                 + InputEvent.SHIFT_DOWN_MASK);
-        ringWindowMenuItem = this.makeMenuItem("Increase zoom step", accDescr, 
-                "incrZoomStep", accelerator);
+        ringWindowMenuItem = this.makeMenuItem("Increase zoom step", 
+                accessibleDescription, "incrZoomStep", accelerator);
         this.increaseZoomStepMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.zoomStep == MAXIMUM_ZOOM_STEP) {
             increaseZoomStepMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
         String menuItemText = "Decrease " + this.dotRadiusOrLineThicknessText;
-        accDescr = "Decrease the " + this.dotRadiusOrLineThicknessText 
-                + " used to draw the " + this.pointsOrLinesText;
-        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, maskCtrlCommand);
-        ringWindowMenuItem = this.makeMenuItem(menuItemText, accDescr, 
-                "decrDotRadius", accelerator);
+        accessibleDescription = "Decrease the " 
+                + this.dotRadiusOrLineThicknessText + " used to draw the " 
+                + this.pointsOrLinesText;
+        accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, 
+                maskCtrlCommand);
+        ringWindowMenuItem = this.makeMenuItem(menuItemText, 
+                accessibleDescription, "decrDotRadius", accelerator);
         this.decreaseDotRadiusMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.dotRadius == MINIMUM_DOT_RADIUS) {
             this.decreaseDotRadiusMenuItem.setEnabled(false);
         }
         menuItemText = "Increase " + this.dotRadiusOrLineThicknessText;
-        accDescr = "Increase the dot radius used to draw the " 
+        accessibleDescription = "Increase the dot radius used to draw the " 
                 + this.pointsOrLinesText;
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, 
                 maskCtrlCommand);
-        ringWindowMenuItem = this.makeMenuItem(menuItemText, accDescr, 
-                "incrDotRadius", accelerator);
+        ringWindowMenuItem = this.makeMenuItem(menuItemText, 
+                accessibleDescription, "incrDotRadius", accelerator);
         this.increaseDotRadiusMenuItem = ringWindowMenu.add(ringWindowMenuItem);
         if (this.dotRadius == MAXIMUM_DOT_RADIUS) {
             this.increaseDotRadiusMenuItem.setEnabled(false);
         }
         ringWindowMenu.addSeparator();
-        accDescr = "Reset defaults for zoom level, zoom interval and dot radius";
+        accessibleDescription 
+                = "Reset defaults for zoom level, zoom interval and dot radius";
         accelerator = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
-        ringWindowMenuItem = this.makeMenuItem("Reset view defaults", accDescr, 
-                "defaultView", accelerator);
+        ringWindowMenuItem = this.makeMenuItem("Reset view defaults", 
+                accessibleDescription, "defaultView", accelerator);
         ringWindowMenu.add(ringWindowMenuItem);
         ringWindowMenu.addSeparator();
         if (this.includeThetaToggle) {
-            this.preferThetaNotationMenuItem = new JCheckBoxMenuItem("Use theta notation in readouts", false);
-            this.preferThetaNotationMenuItem.getAccessibleContext().setAccessibleDescription("Toggle whether theta notation is used or not in the integer readout.");
+            this.preferThetaNotationMenuItem 
+                    = new JCheckBoxMenuItem("Use theta notation in readouts", 
+                            false);
+            this.preferThetaNotationMenuItem.getAccessibleContext()
+                    .setAccessibleDescription(
+                            "Toggle theta notation in the integer readout");
             this.preferThetaNotationMenuItem.setActionCommand("toggleTheta");
-            this.preferThetaNotationMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0));
+            this.preferThetaNotationMenuItem.setAccelerator(KeyStroke
+                    .getKeyStroke(KeyEvent.VK_T, 0));
             this.preferThetaNotationMenuItem.addActionListener(this);
             ringWindowMenu.add(this.preferThetaNotationMenuItem);
         }
@@ -1454,14 +1495,18 @@ public abstract class RingDisplay extends JPanel
             this.toggleReadOutsEnabledMenuItem 
                     = new JCheckBoxMenuItem("Update readouts", false);
             this.toggleReadOutsEnabledMenuItem.getAccessibleContext()
-                    .setAccessibleDescription("Toggle whether the trace, norm and polynomial readouts are updated.");
-            this.toggleReadOutsEnabledMenuItem.setActionCommand("toggleReadOuts");
+                    .setAccessibleDescription(
+                            "Toggle updating trace, norm, polynomial readouts");
+            this.toggleReadOutsEnabledMenuItem.setActionCommand(
+                    "toggleReadOuts");
             if (MAC_OS_FLAG) {
                 this.toggleReadOutsEnabledMenuItem
-                        .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0));
+                        .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 
+                                0));
             } else {
                 this.toggleReadOutsEnabledMenuItem
-                        .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+                        .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 
+                                0));
             }
             this.toggleReadOutsEnabledMenuItem.addActionListener(this);
             ringWindowMenu.add(this.toggleReadOutsEnabledMenuItem);
@@ -1473,13 +1518,16 @@ public abstract class RingDisplay extends JPanel
         JMenu menu = new JMenu("Help");
         menu.setMnemonic(KeyEvent.VK_H);
         menu.getAccessibleContext()
-                .setAccessibleDescription("Menu to provide help and documentation");
-        String accDescr = "Use default Web browser to show user manual";
-        JMenuItem menuItem = this.makeMenuItem("User Manual...", accDescr, 
-                "showUserManual", null);
+                .setAccessibleDescription(
+                        "Menu to provide help, documentation");
+        String accessibleDescription 
+                = "Use default Web browser to show user manual";
+        JMenuItem menuItem = this.makeMenuItem("User Manual...", 
+                accessibleDescription, "showUserManual", null);
         menu.add(menuItem);
-        accDescr = "Display information about this program";
-        menuItem = this.makeMenuItem("About...", accDescr, "about", null);
+        accessibleDescription = "Display information about this program";
+        menuItem = this.makeMenuItem("About...", accessibleDescription, "about", 
+                null);
         menu.add(menuItem);
         return menu;
     }
