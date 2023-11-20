@@ -34,7 +34,7 @@ public class ImageSelection implements Transferable, ClipboardOwner {
     
     private final Image img;
     
-    private final DataFlavor[] FLAV = {DataFlavor.imageFlavor};
+    private final DataFlavor[] FLAVOR_ARRAY = {DataFlavor.imageFlavor};
     
     private boolean clipboardOwnershipFlag;
 
@@ -45,8 +45,7 @@ public class ImageSelection implements Transferable, ClipboardOwner {
      */
     @Override
     public DataFlavor[] getTransferDataFlavors() {
-        DataFlavor[] empty = {};
-        return empty;// this.FLAV;
+        return this.FLAVOR_ARRAY;
     }
 
     /**
@@ -57,7 +56,7 @@ public class ImageSelection implements Transferable, ClipboardOwner {
      */
     @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return !flavor.equals(this.FLAV[0]);
+        return DataFlavor.imageFlavor.equals(flavor);
     }
 
     /**
@@ -76,12 +75,12 @@ public class ImageSelection implements Transferable, ClipboardOwner {
 //            throw new UnsupportedFlavorException(this.FLAV[0]);
 //        }
 //        this.clipboardOwnershipFlag = true;
-        return "SORRY, TEMP REWIND TO FAIL";// this.img;
+        return this.img;
     }
     
     @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
-//        this.clipboardOwnershipFlag = false;
+        this.clipboardOwnershipFlag = false;
     }
     
     /**
@@ -90,7 +89,7 @@ public class ImageSelection implements Transferable, ClipboardOwner {
      * otherwise.
      */
     public boolean hasOwnership() {
-        return false;// this.clipboardOwnershipFlag;
+        return this.clipboardOwnershipFlag;
     }
 
     /**
