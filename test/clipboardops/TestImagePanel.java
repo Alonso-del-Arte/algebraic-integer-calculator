@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,7 +20,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 /**
  * A simple JComponent that creates a window with a simple image for the purpose 
@@ -68,11 +71,11 @@ public final class TestImagePanel extends JPanel {
     }
     
     private void showPanel() {
-        frame = new JFrame("Test Image");
-        frame.add(this);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+        this.frame = new JFrame("Test Image");
+        this.frame.add(this);
+        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.frame.pack();
+        this.frame.setVisible(true);
     }
     
     /**
@@ -80,7 +83,7 @@ public final class TestImagePanel extends JPanel {
      * call this procedure in test tear down.
      */
     public void closePanel() {
-        frame.dispose();
+        this.frame.dispose();
     }
     
     /**
