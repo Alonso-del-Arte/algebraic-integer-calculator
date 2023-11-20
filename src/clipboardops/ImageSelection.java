@@ -16,8 +16,6 @@
  */
 package clipboardops;
 
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -30,14 +28,12 @@ import java.io.IOException;
  * @author Alonso del Arte, based on a tutorial at ProgramCreek.com (the 
  * specific page I was looking at seems to have been moved).
  */
-public class ImageSelection implements Transferable, ClipboardOwner {
+public class ImageSelection implements Transferable {
     
     private final Image img;
     
     private final DataFlavor[] FLAVOR_ARRAY = {DataFlavor.imageFlavor};
     
-    private boolean clipboardOwnershipFlag;
-
     /**
      * Gives a list of "data flavors" supported by this class.
      * @return An array containing just one element: {@link 
@@ -78,20 +74,6 @@ public class ImageSelection implements Transferable, ClipboardOwner {
         return this.img;
     }
     
-    @Override
-    public void lostOwnership(Clipboard clipboard, Transferable contents) {
-        this.clipboardOwnershipFlag = false;
-    }
-    
-    /**
-     * Tells whether an instance of this class has ownership of the clipboard.
-     * @return True if the instance does have ownership of the clipboard, false 
-     * otherwise.
-     */
-    public boolean hasOwnership() {
-        return this.clipboardOwnershipFlag;
-    }
-
     /**
      * Sole constructor.
      * @param image The image to be made available to the system clipboard. This 
@@ -100,7 +82,6 @@ public class ImageSelection implements Transferable, ClipboardOwner {
      */
     public ImageSelection(Image image) {
         this.img = image;
-        this.clipboardOwnershipFlag = false;
     }
     
 }
