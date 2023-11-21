@@ -1209,6 +1209,16 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
+    // TODO: Write tests for this
+    public static int nextLowestSquarefree(int n) {
+        return 0;
+    }
+    
+    // TODO: Write tests for this
+    public static int nextHighestSquarefree(int n) {
+        return 0;
+    }
+    
     /**
      * Determines whether or not an integer is a perfect square. Note that 
      * although 1 is considered by this program to be squarefree, it is also 
