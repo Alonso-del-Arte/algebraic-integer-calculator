@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -76,11 +76,12 @@ public class ImagQuadRingDisplayTest {
     }
 
     /**
-     * Test of incrementDiscriminant method, of class ImagQuadRingDisplay.
+     * Test of the incrementDiscriminant procedure, of the ImagQuadRingDisplay.
      */
     @Test
     public void testIncrementDiscriminant() {
         System.out.println("incrementDiscriminant");
+        fail("REWRITE THIS TEST");
         ImaginaryQuadraticRing expectedRing = new ImaginaryQuadraticRing(-13);
         this.ringDisplay.incrementDiscriminant();
         IntegerRing actualRing = this.ringDisplay.getRing();
@@ -93,6 +94,7 @@ public class ImagQuadRingDisplayTest {
     @Test
     public void testDecrementDiscriminant() {
         System.out.println("decrementDiscriminant");
+        fail("REWRITE THIS TEST");
         ImaginaryQuadraticRing expectedRing = new ImaginaryQuadraticRing(-15);
         this.ringDisplay.decrementDiscriminant();
         IntegerRing actualRing = this.ringDisplay.getRing();
@@ -105,6 +107,7 @@ public class ImagQuadRingDisplayTest {
     @Test
     public void testSwitchToRing() {
         System.out.println("switchToRing");
+        fail("REWRITE THIS TEST");
         ImaginaryQuadraticRing expected = new ImaginaryQuadraticRing(-330);
         this.ringDisplay.switchToRing(expected);
         IntegerRing actual = this.ringDisplay.getRing();
@@ -117,6 +120,7 @@ public class ImagQuadRingDisplayTest {
      */
     @Test
     public void testSwitchToRingRejectsWrongTypeRing() {
+        fail("REWRITE THIS TEST");
         IllDefinedQuadraticRing badRing = new IllDefinedQuadraticRing(-14);
         try {
             this.ringDisplay.switchToRing(badRing);
@@ -144,6 +148,7 @@ public class ImagQuadRingDisplayTest {
     @Test
     public void testCopyReadoutsToClipboard() {
         System.out.println("copyReadoutsToClipboard");
+        fail("REWRITE THIS TEST");
         this.ringDisplay.copyReadoutsToClipboard();
         Clipboard clipboard = this.ringDisplay.getToolkit().getSystemClipboard();
         String msg = "System clipboard should have plain text data flavor";
@@ -183,6 +188,7 @@ public class ImagQuadRingDisplayTest {
     @Test
     public void testGetUserManualURL() {
         System.out.println("getUserManualURL");
+        fail("REWRITE THIS TEST");
         String urlStr = "https://github.com/Alonso-del-Arte/" 
                 + "visualization-quadratic-imaginary-rings/blob/master/" 
                 + "dist-jar/README.md";
@@ -203,6 +209,7 @@ public class ImagQuadRingDisplayTest {
     @Test
     public void testGetAboutBoxMessage() {
         System.out.println("getAboutBoxMessage");
+        fail("REWRITE THIS TEST");
         String aboutBoxText = this.ringDisplay.getAboutBoxMessage();
         String programName = "Imaginary Quadratic Integer Ring Viewer";
         String msg = "About box message should start with program name \"" 
