@@ -41,6 +41,9 @@ import static org.junit.Assert.*;
  */
 public class ImagQuadRingDisplayTest {
     
+    private static final ImaginaryQuadraticRing RING_GAUSSIAN 
+            = new ImaginaryQuadraticRing(-1);
+    
     private static final ImaginaryQuadraticRing RING_ZI14 
             = new ImaginaryQuadraticRing(-14);
     
@@ -59,6 +62,18 @@ public class ImagQuadRingDisplayTest {
     public void tearDown() {
         this.ringDisplay.actionPerformed(this.closeEvent);
     }
+    
+    @Test
+    public void testIncrementDiscriminantDisabledAtFirstForZI() {
+        ImagQuadRingDisplay display = new ImagQuadRingDisplay(RING_GAUSSIAN);
+        display.startRingDisplay();
+        boolean increaseParamDNotEnabled 
+                = !display.increaseDMenuItem.isEnabled();
+        display.actionPerformed(this.closeEvent);
+        String msg = "Increase parameter d menu item should be disabled for " 
+                + RING_GAUSSIAN.toString();
+        assert increaseParamDNotEnabled : msg;
+    }
 
     /**
      * Test of incrementDiscriminant method, of class ImagQuadRingDisplay.
@@ -71,7 +86,7 @@ public class ImagQuadRingDisplayTest {
         IntegerRing actualRing = this.ringDisplay.getRing();
         assertEquals(expectedRing, actualRing);
     }
-
+    
     /**
      * Test of decrementDiscriminant method, of class ImagQuadRingDisplay.
      */
