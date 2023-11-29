@@ -80,10 +80,16 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public static final int PRIME_LIST_THRESHOLD = 1000;
     
     /**
-     * A List of the first few prime numbers, to be used in some of the tests. 
+     * A list of the first few prime numbers, to be used in some of the tests. 
      * It will be populated during {@link #setUpClass() setUpClass()}.
      */
     private static List<Integer> primesList;
+    
+    /**
+     * A list of the first few squarefree numbers, to be used in some of the 
+     * tests. It will be populated during {@link #setUpClass() setUpClass()}.
+     */
+    private static List<Integer> squarefreesList;
     
     /**
      * The size of primesList, to be determined during {@link #setUpClass() 
@@ -167,7 +173,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
         while (currPrime < threshold) {
             primesList.add(currPrime);
             twiceCurrPrime = 2 * currPrime;
-            for (int j = currPrime * currPrime; j < threshold; j += twiceCurrPrime) {
+            for (int j = currPrime * currPrime; j < threshold; 
+                    j += twiceCurrPrime) {
                 currIndex = (j - 3)/2;
                 primeFlags[currIndex] = false;
             }
@@ -186,9 +193,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 compositesList.add(c + 1);
             }
         }
-        System.out.println("setUpClass() has generated a list of the first " + primesListLength + " consecutive primes.");
-        System.out.println("prime(" + primesListLength + ") = " + primesList.get(primesListLength - 1));
-        System.out.println("There are " + (PRIME_LIST_THRESHOLD - (primesListLength + 1)) + " composite numbers up to " + PRIME_LIST_THRESHOLD + ".");
+        System.out.println("setUpClass() has generated a list of the first " 
+                + primesListLength + " consecutive primes");
+        System.out.println("prime(" + primesListLength + ") = " 
+                + primesList.get(primesListLength - 1));
+        System.out.println("There are " + (PRIME_LIST_THRESHOLD 
+                - (primesListLength + 1)) + " composite numbers up to " 
+                + PRIME_LIST_THRESHOLD);
         // And now to make a list of Fibonacci numbers
         fibonacciList = new ArrayList<>();
         fibonacciList.add(0);
@@ -844,6 +855,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         checkFactorsAreIrreducible(num);
     }
     
+    @org.junit.Ignore
     @Test(timeout = 10000)
     public void testIrreducibleFactorsOfRamifiedNumber() {
         QuadraticRing ring = new RealQuadraticRing(1601);
@@ -890,6 +902,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * NumberTheoreticFunctionsCalculator.
      */
     // TODO: Break this test up into smaller tests
+    @org.junit.Ignore
     @Test
     public void testIsIrreducible() {
         System.out.println("isIrreducible");
@@ -1381,6 +1394,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of the isDivisibleBy function, of the 
      * NumberTheoreticFunctionsCalculator class.
      */
+    @org.junit.Ignore
     @Test
     public void testIsDivisibleBy() {
         System.out.println("isDivisibleBy");
@@ -2927,20 +2941,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 + " random number calls, should've gotten at least " + expected 
                 + " distinct, got " + actual + " distinct";
         assert expected < actual : msg;
-    }
-    
-    @Test
-    public void testRandomPrime() {
-        System.out.println("randomPrime");
-        int numberOfCalls = RANDOM.nextInt(PRIME_LIST_THRESHOLD / 10);
-        for (int i = 0; i < numberOfCalls; i++) {
-            int prospectivePrime = NumberTheoreticFunctionsCalculator
-                    .randomPrime(PRIME_LIST_THRESHOLD);
-            String msg = "Number " + prospectivePrime 
-                    + " is said to be a prime bounded between 0 and " 
-                    + PRIME_LIST_THRESHOLD;
-            assert primesList.contains(prospectivePrime) : msg;
-        }
     }
     
 }

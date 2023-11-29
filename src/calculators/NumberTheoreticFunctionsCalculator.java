@@ -2037,23 +2037,4 @@ public class NumberTheoreticFunctionsCalculator {
         return choice;
     }
     
-    /**
-     * Gives a pseudorandom prime within a specified bound. For prime numbers in 
-     * a given residue class, use {@link #randomPrimeMod(int, int) 
-     * randomPrimeMod()}.
-     * @param bound The limit for the prime numbers, narrowing the selection of 
-     * prime numbers. For example, 100. This number may or may not be prime. If 
-     * it is prime, then it may be returned by this function.
-     * @return A prime number, at least 2, not more than <code>threshold</code>.
-     */
-    public static int randomPrime(int bound) {
-        List<Integer> primes = EratosthenesSieve.listPrimes(bound);
-        return primes.get(RANDOM.nextInt(primes.size()));
-    }
-    
-    // TODO: Write tests for this
-    public static int randomPrimeMod(int n, int m) {
-        return Integer.MIN_VALUE;
-    }
-    
 }
