@@ -135,6 +135,11 @@ public class EratosthenesSieve {
     }
     
     // TODO: Write tests for this
+    public static int randomPrimeOtherThan(int p) {
+        return 0;
+    }
+    
+    // TODO: Write tests for this
     public static int randomPrimeMod(int n, int m) {
         return Integer.MIN_VALUE;
     }
