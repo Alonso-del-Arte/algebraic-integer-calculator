@@ -47,6 +47,23 @@ public class EratosthenesSieveTest {
         }
     }
     
+    private static void assertPrime(int p) {
+        if (p == -2 || p == 2) return;
+        if (p % 2 == 0) {
+            String message = "Number " + p 
+                    + " is said to be prime but it's even and composite";
+            fail(message);
+        }
+        double squareRoot = Math.sqrt(Math.abs(p));
+        for (int d = 3; d < squareRoot; d += 2) {
+            boolean notDivisible = p % d != 0;
+            String message = "Number " + p 
+                    + " is said to be prime, it should not be divisible by " 
+                    + d;
+            assert notDivisible : message;
+        }
+    }
+    
     /**
      * Test of the listPrimes function, of the EratosthenesSieve class.
      */
@@ -195,6 +212,20 @@ public class EratosthenesSieveTest {
                     .stream().filter(p -> p <= threshold)
                     .collect(Collectors.toList());
             assertContainsSame(expected, actual);
+        }
+    }
+    
+    @Test
+    public void testRandomPrime() {
+        System.out.println("randomPrime");
+        int bound = 1000;
+        int numberOfCalls = RANDOM.nextInt(bound / 10);
+        for (int i = 0; i < numberOfCalls; i++) {
+            int prospectivePrime = EratosthenesSieve.randomPrime(bound);
+            String msg = "Number " + prospectivePrime 
+                    + " is said to be a prime bounded between 0 and " + bound;
+            assert prospectivePrime > 0 && prospectivePrime < bound : msg;
+            assertPrime(prospectivePrime);
         }
     }
     
