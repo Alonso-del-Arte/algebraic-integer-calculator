@@ -140,16 +140,16 @@ public class EratosthenesSieveTest {
     
     /**
      * Another test of the listPrimes function, of the EratosthenesSieve class. 
-     * Negative threshold should be turned to positive threshold, e.g., -30 
-     * should be understood as +30.
+     * Negative threshold should give negative prime numbers, in order from 
+     * closest to zero to farthest from zero.
      */
     @Test
     public void testListPrimesTurnsNegativeToPositive() {
         int threshold = -30;
-        Integer[] smallPrimes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+        Integer[] smallPrimes = {-2, -3, -5, -7, -11, -13, -17, -19, -23, -29};
         List<Integer> expected = Arrays.asList(smallPrimes);
         List<Integer> actual = EratosthenesSieve.listPrimes(threshold);
-        assertContainsSame(expected, actual);
+        assertEquals(expected, actual);
     }
     
     /**
