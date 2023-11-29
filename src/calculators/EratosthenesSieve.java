@@ -70,6 +70,7 @@ public class EratosthenesSieve {
         if (thresh < 2) {
             return new ArrayList<>();
         }
+        boolean signChangeNeeded = threshold < 0;
         if (thresh < currThresh) {
             int trimIndex = PRIMES.size();
             int p;
@@ -77,7 +78,14 @@ public class EratosthenesSieve {
                 trimIndex--;
                 p = PRIMES.get(trimIndex);
             } while (p > thresh);
-            return new ArrayList<>(PRIMES.subList(0, trimIndex + 1));
+            List<Integer> trimmedList = new ArrayList<>(PRIMES.subList(0, 
+                    trimIndex + 1));
+            if (signChangeNeeded) {
+                for (int i = 0; i < trimmedList.size(); i++) {
+                    trimmedList.set(i, -trimmedList.get(i));
+                }
+            }
+            return trimmedList;
         }
         if (thresh > currThresh) {
             for (int n = currThresh + 1; n <= thresh; n++) {
@@ -94,7 +102,13 @@ public class EratosthenesSieve {
             }
             currThresh = thresh;
         }
-        return new ArrayList<>(PRIMES);
+        List<Integer> list = new ArrayList<>(PRIMES);
+        if (signChangeNeeded) {
+            for (int i = 0; i < list.size(); i++) {
+                list.set(i, -list.get(i));
+            }
+        }
+        return list;
     }
     
     public static List<Integer> listPrimes(int start, int threshold) {
