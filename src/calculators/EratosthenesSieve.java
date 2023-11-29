@@ -18,6 +18,7 @@ package calculators;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +48,9 @@ public class EratosthenesSieve {
             PRIMES.add(p);
         }
     }
+    
+    private static final Random RANDOM = new Random(-System.currentTimeMillis() 
+            * 127 + 1);
     
     /**
      * Gives a list of prime numbers up to a given threshold. If the threshold 
@@ -126,7 +130,9 @@ public class EratosthenesSieve {
     
     // TODO: Write tests for this
     public static int randomPrime(int bound) {
-        return 0;
+        List<Integer> candidates = listPrimes(bound);
+        int index = RANDOM.nextInt(candidates.size());
+        return candidates.get(index);
     }
     
     // TODO: Write tests for this
