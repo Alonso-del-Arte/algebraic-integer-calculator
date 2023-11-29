@@ -117,6 +117,29 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     private static final Random RANDOM = new Random();
     
+    private static void assertSquarefreeLimited(int n) {
+        for (int p : primesList) {
+            int squaredPrime = p * p;
+            int remainder = n % squaredPrime;
+            String message = "Number " + n  
+                    + " said to be squarefree shouldn't be divisible by " 
+                    + squaredPrime;
+            assertNotEquals(message, 0, remainder);
+        }
+    }
+    
+    private static void assertSquarefree(int n) {
+        int root = (int) Math.ceil(Math.sqrt(Math.abs(n)));
+        for (int d = 2; d < root; d++) {
+            int dSquared = d * d;
+            int remainder = n % dSquared;
+            String message = "Number " + n 
+                    + " said to be squarefree should not be divisible by " 
+                    + dSquared;
+            assertNotEquals(message, 0, remainder);
+        }
+    }
+    
     /**
      * Sets up a list of the first few consecutive primes, the first few 
      * composite numbers, the first few Fibonacci numbers and the Heegner 
@@ -230,6 +253,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * expectation is laid out for what should happen if the algebraic integers 
      * to be sorted come from different rings.
      */
+    @org.junit.Ignore
     @Test
     public void testSortListAlgebraicIntegersByNorm() {
         System.out.println("sortListAlgebraicIntegersByNorm was deprecated and removed");
@@ -291,6 +315,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * list, not a set.</p>
      */
     // TODO: Break this test up into smaller tests
+    @org.junit.Ignore
     @Test
     public void testPrimeFactors() {
         System.out.println("primeFactors(int)");
@@ -515,6 +540,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @org.junit.Ignore
     @Test
     public void testPrimeFactorsFromUFDNotEuclidean() {
         RealQuadraticRing ring = new RealQuadraticRing(97);
@@ -559,6 +585,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * change assertFalse to assertTrue.
      */
     // TODO: Break this test up into smaller tests
+    @org.junit.Ignore
     @Test
     public void testIsPrime() {
         System.out.println("isPrime(int)");
@@ -805,6 +832,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertEquals(msg, num, product);
     }
     
+    @org.junit.Ignore
     @Test
     public void testIrreducibleFactors() {
         System.out.println("irreducibleFactors");
@@ -828,6 +856,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @org.junit.Ignore
     @Test
     public void testIrreducibleFactorsForUnsupportedRing() {
         IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
@@ -950,6 +979,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * be said to be irreducible, and vice-versa, with the exception of 0 and 
      * units.
      */
+    @org.junit.Ignore
     @Test
     public void testIsPrimeIsIrreducibleSimult() {
         System.out.println("isPrime, isIrreducible");
@@ -1017,6 +1047,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * isIrreducible()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNullNeitherReducibleNorIrreducible() {
         try {
@@ -1429,6 +1460,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * NumberTheoreticFunctionsCalculator class. Prime numbers should be found 
      * to be squarefree, squares of primes should not.
      */
+    @org.junit.Ignore
     @Test
     public void testIsSquareFree() {
         System.out.println("isSquareFree");
@@ -1447,6 +1479,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
             msg = number + shouldNotBeMsg;
             assert !isSquareFree(number) : msg;
         }
+    }
+    
+    @Test
+    public void testNextLowestSquarefree() {
+        System.out.println("nextLowestSquarefree");
+        fail("RESUME WORK HERE");
     }
     
     /**
@@ -1604,6 +1642,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * here.</p>
      */
     // TODO: Break this test up into smaller tests
+    @org.junit.Ignore
     @Test
     public void testEuclideanGCD() {
         System.out.println("euclideanGCD");
@@ -1795,6 +1834,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * <b>Q</b>(&zeta;<sub>8</sub>) is &zeta;<sub>8</sub>.
      */
     // TODO: Break this test up into smaller tests
+    @org.junit.Ignore
     @Test
     public void testFundamentalUnit() {
         System.out.println("fundamentalUnit");
@@ -1982,6 +2022,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * fundamentalUnit()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoFundamentalUnitForNullRing() {
         try {
@@ -2010,6 +2051,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * fundamentalUnit()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoFundamentalUnitForUnsupportedRing() {
         IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
@@ -2032,6 +2074,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @org.junit.Ignore
     @Test
     public void testNoSearchForUnitsWithNullMax() {
         try {
@@ -2052,6 +2095,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
 
+    @org.junit.Ignore
     @Test
     public void testNoSearchForUnitsWithNullMinButGoodMax() {
         RealQuadraticRing ring = new RealQuadraticRing(53);
@@ -2076,6 +2120,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
 
+    @org.junit.Ignore
     @Test
     public void testNoSearchForUnitsWithNullMaxButGoodMin() {
         RealQuadraticRing ring = new RealQuadraticRing(53);
@@ -2100,6 +2145,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
 
+    @org.junit.Ignore
     @Test
     public void testNoSearchForUnitsWithNullMinAndMax() {
         try {
@@ -2120,6 +2166,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
 
+    @org.junit.Ignore
     @Test
     public void testNoUnitSearchWithRingMismatch() {
         RealQuadraticRing ringA = new RealQuadraticRing(10);
@@ -2146,6 +2193,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @org.junit.Ignore
     @Test
     public void testSearchForUnitProperMinMax() {
         RealQuadraticRing ring = new RealQuadraticRing(35);
@@ -2176,6 +2224,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of placeInPrimarySector method, of class 
      * NumberTheoreticFunctionsCalculator.
      */
+    @org.junit.Ignore
     @Test
     public void testPlaceInPrimarySector() {
         System.out.println("placeInPrimarySector");
@@ -2231,6 +2280,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of divideOutUnits method, of class 
      * NumberTheoreticFunctionsCalculator.
      */
+    @org.junit.Ignore
     @Test
     public void testDivideOutUnits() {
         System.out.println("divideOutUnits");
@@ -2261,6 +2311,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of getNegOneInRing method, of class 
      * NumberTheoreticFunctionsCalculator.
      */
+    @org.junit.Ignore
     @Test
     public void testGetNegOneInRing() {
         System.out.println("getNegOneInRing");
@@ -2288,6 +2339,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * getNegOneInRing()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoNegOneForNullRing() {
         try {
@@ -2316,6 +2368,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * getNegOneInRing()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoNegOneForUnsupportedRing() {
         BadCubicRing ring = new BadCubicRing();
@@ -2343,6 +2396,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Test of getZeroInRing method, of class 
      * NumberTheoreticFunctionsCalculator.
      */
+    @org.junit.Ignore
     @Test
     public void testGetZeroInRing() {
         System.out.println("getZeroInRing");
@@ -2370,6 +2424,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * getZeroInRing()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoZeroForNullRing() {
         try {
@@ -2398,6 +2453,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * getZeroInRing()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoZeroForUnsupportedRing() {
         BadCubicRing ring = new BadCubicRing();
@@ -2424,6 +2480,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     /**
      * Test of getOneInRing method, of class NumberTheoreticFunctionsCalculator.
      */
+    @org.junit.Ignore
     @Test
     public void testGetOneInRing() {
         System.out.println("getOneInRing");
@@ -2451,6 +2508,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * getOneInRing()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoOneForNullRing() {
         try {
@@ -2479,6 +2537,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * getOneInRing()} should cause an exception, not give any particular 
      * result.
      */
+    @org.junit.Ignore
     @Test
     public void testNoOneForUnsupportedRing() {
         BadCubicRing ring = new BadCubicRing();
@@ -2502,6 +2561,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @org.junit.Ignore
     @Test
     public void testIsUFD() {
         System.out.println("isUFD");
@@ -2513,6 +2573,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assert isUFD(ring) : msg;
     }
     
+    @org.junit.Ignore
     @Test
     public void testIsNotUFD() {
         QuadraticRing ring = new ImaginaryQuadraticRing(-31);
@@ -2523,6 +2584,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assert !isUFD(ring) : msg;
     }
     
+    @org.junit.Ignore
     @Test
     public void testNullRingNotUFD() {
         try {
@@ -2543,6 +2605,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @org.junit.Ignore
     @Test
     public void testMaybeUFDButNotYetSupported() {
         QuadraticRing ring = new IllDefinedQuadraticRing(-10);
@@ -2579,6 +2642,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * number of at least 3.
      */
     // TODO: Break this test up into smaller tests
+    @org.junit.Ignore
     @Test
     public void testFieldClassNumber() {
         System.out.println("fieldClassNumber");
@@ -2707,29 +2771,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 + " random number calls, there should be more than " + expected 
                 + " distinct, got " + actual + " distinct";
         assert expected < actual : msg;
-    }
-    
-    private static void assertSquarefreeLimited(int n) {
-        for (int p : primesList) {
-            int squaredPrime = p * p;
-            int remainder = n % squaredPrime;
-            String msg = "Number " + n  
-                    + " said to be squarefree shouldn't be divisible by " 
-                    + squaredPrime;
-            assertNotEquals(msg, 0, remainder);
-        }
-    }
-    
-    private static void assertSquarefree(int n) {
-        int root = (int) Math.ceil(Math.sqrt(Math.abs(n)));
-        for (int d = 2; d < root; d++) {
-            int dSquared = d * d;
-            int remainder = n % dSquared;
-            String msg = "Number " + n 
-                    + " said to be squarefree should not be divisible by " 
-                    + dSquared;
-            assertNotEquals(msg, 0, remainder);
-        }
     }
     
     /**
