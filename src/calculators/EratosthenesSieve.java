@@ -155,10 +155,10 @@ public class EratosthenesSieve {
         if (Math.abs(bound) < 2) {
             String excMsg = "There are no primes between 0 and " + bound;
             throw new NoSuchElementException(excMsg);
-        }return 3;
-//        List<Integer> candidates = listPrimes(bound);
-//        int index = RANDOM.nextInt(candidates.size());
-//        return candidates.get(index);
+        }
+        List<Integer> candidates = listPrimes(bound);
+        int index = RANDOM.nextInt(candidates.size());
+        return candidates.get(index);
     }
     
     // TODO: Write tests for this
