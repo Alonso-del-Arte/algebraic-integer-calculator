@@ -18,6 +18,7 @@ package calculators;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -226,6 +227,30 @@ public class EratosthenesSieveTest {
                     + " is said to be a prime bounded between 0 and " + bound;
             assert prospectivePrime > 0 && prospectivePrime < bound : msg;
             assertPrime(prospectivePrime);
+        }
+    }
+    
+    @Test
+    public void testRandomPrimeBadBoundCausesException() {
+        int bound = 1;
+        try {
+            int badPrime = EratosthenesSieve.randomPrime(bound);
+            String message = "Bad bound " + bound 
+                    + " should've caused exception, not given result " 
+                    + badPrime;
+            fail(message);
+        } catch (NoSuchElementException nsee) {
+            System.out.println("Bad bound " + bound 
+                    + " correctly caused NoSuchElementException");
+            String excMsg = nsee.getMessage();
+            assert excMsg != null : "Exception message should not be null";
+            assert !(excMsg.isBlank() || excMsg.isEmpty()) 
+                    : "Exception message should not be blank nor empty";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String message = re.getClass().getName() 
+                    + " is the wrong exception for bad bound " + bound;
+            fail(message);
         }
     }
     
