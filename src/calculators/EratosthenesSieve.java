@@ -52,6 +52,22 @@ public class EratosthenesSieve {
     private static final Random RANDOM = new Random(-System.currentTimeMillis() 
             * 127 + 1);
     
+    private static void increaseListLength(int target) {
+        for (int n = currThresh + 1; n <= target; n++) {
+            double root = Math.sqrt(n);
+            boolean noDivisorFound = true;
+            int index = 0;
+            int p;
+            do {
+                p = PRIMES.get(index);
+                noDivisorFound = (n % p != 0);
+                index++;
+            } while (p <= root && noDivisorFound);
+            if (noDivisorFound) PRIMES.add(n);
+        }
+        currThresh = target;
+    }
+    
     /**
      * Gives a list of prime numbers up to a given threshold. If the threshold 
      * is below what has already been calculated, this function will simply 
@@ -71,42 +87,23 @@ public class EratosthenesSieve {
             return new ArrayList<>();
         }
         boolean signChangeNeeded = threshold < 0;
+        if (thresh > currThresh) {
+            increaseListLength(thresh);
+        }
+        List<Integer> list = new ArrayList<>(PRIMES);
         if (thresh < currThresh) {
-            int trimIndex = PRIMES.size();
+            int trimIndex = list.size();
             int p;
             do {
                 trimIndex--;
                 p = PRIMES.get(trimIndex);
             } while (p > thresh);
-            List<Integer> trimmedList = new ArrayList<>(PRIMES.subList(0, 
-                    trimIndex + 1));
-            if (signChangeNeeded) {
-                for (int i = 0; i < trimmedList.size(); i++) {
-                    trimmedList.set(i, -trimmedList.get(i));
-                }
-            }
-            return trimmedList;
+            list.subList(trimIndex + 1, PRIMES.size()).clear();
         }
-        if (thresh > currThresh) {
-            for (int n = currThresh + 1; n <= thresh; n++) {
-                double root = Math.sqrt(n);
-                boolean noDivisorFound = true;
-                int index = 0;
-                int p;
-                do {
-                    p = PRIMES.get(index);
-                    noDivisorFound = (n % p != 0);
-                    index++;
-                } while (p <= root && noDivisorFound);
-                if (noDivisorFound) PRIMES.add(n);
-            }
-            currThresh = thresh;
-        }
-        List<Integer> list = new ArrayList<>(PRIMES);
         if (signChangeNeeded) {
-            for (int i = 0; i < list.size(); i++) {
-                list.set(i, -list.get(i));
-            }
+            List<Integer> negated = list.stream().map(n -> -n)
+                    .collect(Collectors.toList());
+            list = negated;
         }
         return list;
     }
