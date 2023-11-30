@@ -263,4 +263,27 @@ public class EratosthenesSieveTest {
         }
     }
     
+    @Test
+    public void testRandomOddPrime() {
+        System.out.println("randomOddPrime");
+        int bound = 1000;
+        int numberOfCalls = RANDOM.nextInt(bound / 10) + 100;
+        Set<Integer> primes = new HashSet<>();
+        for (int i = 0; i < numberOfCalls; i++) {
+            int prospectivePrime = EratosthenesSieve.randomOddPrime(bound);
+            String msg = "Number " + prospectivePrime 
+                    + " is said to be an odd prime bounded between 0 and " 
+                    + bound;
+            assert prospectivePrime % 2 != 0 : msg;
+            assert prospectivePrime > 0 && prospectivePrime < bound : msg;
+            assertPrime(prospectivePrime);
+            primes.add(prospectivePrime);
+        }
+        int expected = 3 * numberOfCalls / 5;
+        int actual = primes.size();
+        String msg = "Expected at least " + expected 
+                + " distinct odd primes, got " + actual;
+        assert expected < actual : msg;
+    }
+    
 }
