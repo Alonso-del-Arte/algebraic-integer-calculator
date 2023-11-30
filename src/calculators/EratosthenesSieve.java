@@ -18,6 +18,7 @@ package calculators;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -139,8 +140,22 @@ public class EratosthenesSieve {
         return Integer.MIN_VALUE;
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a pseudorandom prime for a given bound. This is not a pure 
+     * function, a bound beyond the previous highest bound in a given session 
+     * could cause some extra calculations to take place.
+     * @param bound The bound. May be negative. Examples: 1000, &minus;1000.
+     * @return A pseudorandom prime between 0 and <code>bound</code>. For 
+     * example, for a bound of 1000, this function might give 883 or 617, etc.  
+     * For a bound of &minus;1000, this function might give &minus;157 or 
+     * &minus;991, etc.
+     * @throws NoSuchElementException If <code>bound</code> is &minus;1, 0 or 1.
+     */
     public static int randomPrime(int bound) {
+        if (Math.abs(bound) < 2) {
+            String excMsg = "There are no primes between 0 and " + bound;
+            throw new NoSuchElementException(excMsg);
+        }
         List<Integer> candidates = listPrimes(bound);
         int index = RANDOM.nextInt(candidates.size());
         return candidates.get(index);
