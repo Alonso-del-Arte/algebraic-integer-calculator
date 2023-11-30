@@ -17,9 +17,11 @@
 package calculators;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -220,14 +222,21 @@ public class EratosthenesSieveTest {
     public void testRandomPrime() {
         System.out.println("randomPrime");
         int bound = 1000;
-        int numberOfCalls = RANDOM.nextInt(bound / 10);
+        int numberOfCalls = RANDOM.nextInt(bound / 10) + 100;
+        Set<Integer> primes = new HashSet<>();
         for (int i = 0; i < numberOfCalls; i++) {
             int prospectivePrime = EratosthenesSieve.randomPrime(bound);
             String msg = "Number " + prospectivePrime 
                     + " is said to be a prime bounded between 0 and " + bound;
             assert prospectivePrime > 0 && prospectivePrime < bound : msg;
             assertPrime(prospectivePrime);
+            primes.add(prospectivePrime);
         }
+        int expected = 3 * numberOfCalls / 5;
+        int actual = primes.size();
+        String msg = "Expected at least " + expected + " distinct primes, got " 
+                + actual;
+        assert expected < actual : msg;
     }
     
     @Test
