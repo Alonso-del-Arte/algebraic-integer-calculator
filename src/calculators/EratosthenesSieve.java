@@ -163,7 +163,9 @@ public class EratosthenesSieve {
     
     // TODO: Write tests for this
     public static int randomOddPrime(int bound) {
-        return 0;
+        List<Integer> candidates = listPrimes(bound);
+        int index = RANDOM.nextInt(candidates.size() - 1) + 1;
+        return candidates.get(index);
     }
     
     // TODO: Write tests for this
