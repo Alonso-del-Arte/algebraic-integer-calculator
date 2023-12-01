@@ -241,7 +241,7 @@ public class EratosthenesSieveTest {
     
     @Test
     public void testRandomPrimeBadBoundCausesException() {
-        int bound = 1;
+        int bound = RANDOM.nextInt(3) - 1;
         try {
             int badPrime = EratosthenesSieve.randomPrime(bound);
             String message = "Bad bound " + bound 
@@ -285,6 +285,30 @@ public class EratosthenesSieveTest {
                 + " distinct odd primes for " + numberOfCalls + " calls, got " 
                 + actual;
         assert expected < actual : msg;
+    }
+    
+    @Test
+    public void testRandomOddPrimeBadBoundCausesException() {
+        int bound = RANDOM.nextInt(5) - 2;
+        try {
+            int badPrime = EratosthenesSieve.randomOddPrime(bound);
+            String message = "Bad bound " + bound 
+                    + " should've caused exception, not given result " 
+                    + badPrime;
+            fail(message);
+        } catch (NoSuchElementException nsee) {
+            System.out.println("Bad bound " + bound 
+                    + " correctly caused NoSuchElementException");
+            String excMsg = nsee.getMessage();
+            assert excMsg != null : "Exception message should not be null";
+            assert !(excMsg.isBlank() || excMsg.isEmpty()) 
+                    : "Exception message should not be blank nor empty";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String message = re.getClass().getName() 
+                    + " is the wrong exception for bad bound " + bound;
+            fail(message);
+        }
     }
     
 }
