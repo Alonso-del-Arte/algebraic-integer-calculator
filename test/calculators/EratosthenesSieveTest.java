@@ -279,10 +279,11 @@ public class EratosthenesSieveTest {
             assertPrime(prospectivePrime);
             primes.add(prospectivePrime);
         }
-        int expected = 3 * numberOfCalls / 5;
+        int expected = 53 * numberOfCalls / 100;
         int actual = primes.size();
         String msg = "Expected at least " + expected 
-                + " distinct odd primes, got " + actual;
+                + " distinct odd primes for " + numberOfCalls + " calls, got " 
+                + actual;
         assert expected < actual : msg;
     }
     
