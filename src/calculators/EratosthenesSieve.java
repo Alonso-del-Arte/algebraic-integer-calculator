@@ -211,7 +211,8 @@ public class EratosthenesSieve {
     
     // TODO: Write tests for this
     public static int randomPrimeMod(int n, int m) {
-        return Integer.MIN_VALUE;
+        List<Integer> candidates = listPrimesMod(n, m);
+        return candidates.get(RANDOM.nextInt(candidates.size()));
     }
     
 }
