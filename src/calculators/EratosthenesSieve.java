@@ -161,8 +161,23 @@ public class EratosthenesSieve {
         return candidates.get(index);
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a pseudorandom odd prime for a given bound. This is not a pure 
+     * function, a bound beyond the previous highest bound in a given session 
+     * could cause some extra calculations to take place.
+     * @param bound The bound. May be negative. Examples: 1000, &minus;1000.
+     * @return A pseudorandom prime between 0 and <code>bound</code>. For 
+     * example, for a bound of 1000, this function might give 47 or 599, etc.  
+     * For a bound of &minus;1000, this function might give &minus;797 or 
+     * &minus;131, etc.
+     * @throws NoSuchElementException If <code>bound</code> is &minus;2, 
+     * &minus;1, 0, 1 or 2, given that none of those numbers are odd primes.
+     */
     public static int randomOddPrime(int bound) {
+        if (Math.abs(bound) < 3) {
+            String excMsg = "There are no odd primes between 0 and " + bound;
+            throw new NoSuchElementException(excMsg);
+        }
         List<Integer> candidates = listPrimes(bound);
         int index = RANDOM.nextInt(candidates.size() - 1) + 1;
         return candidates.get(index);
