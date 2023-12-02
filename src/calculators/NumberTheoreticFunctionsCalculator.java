@@ -197,6 +197,11 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     private static final Random RANDOM = new Random();
+    
+    // TODO: Write tests for this
+    public static int mod(int n, int m) {
+        return n % m;
+    }
 
     /**
      * Determines the prime factors of a given number. Uses simple trial 
