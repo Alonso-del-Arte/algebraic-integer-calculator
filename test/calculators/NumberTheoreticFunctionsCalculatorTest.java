@@ -300,6 +300,23 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testMod() {
+        System.out.println("mod");
+        int m = RANDOM.nextInt(256) + 4;
+        int numberOfSpans = 12;
+        int stop = numberOfSpans * m;
+        for (int i = -stop; i < stop; i += m) {
+            for (int expected = 0; expected < m; expected++) {
+                int n = i + expected;
+                int actual = mod(n, m);
+                String message = "Expecting " + n + " modulo " + m + " to be " 
+                        + expected;
+                assertEquals(message, expected, actual);
+            }
+        }
+    }
+    
     /**
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
      * This test uses squares of primorials (4, 36, 900, 44100, etc.) and 
