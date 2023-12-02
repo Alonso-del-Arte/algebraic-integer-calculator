@@ -349,4 +349,20 @@ public class EratosthenesSieveTest {
         }
     }
     
+    @Test
+    public void testRandomPrimeOtherThanNegativePDoesNotMatchP() {
+        int threshold = 200;
+        List<Integer> pooledPrimes = EratosthenesSieve.listPrimes(threshold);
+        int numberOfCalls = 200;
+        for (int p : pooledPrimes) {
+            for (int i = 0; i < numberOfCalls; i++) {
+                int otherNegativePrime 
+                        = EratosthenesSieve.randomPrimeOtherThan(-p);
+                String msg = "Prime " + otherNegativePrime + " other than -" + p 
+                        + " should not be -" + p;
+                assert otherNegativePrime != -p : msg;
+            }
+        }
+    }
+    
 }
