@@ -365,4 +365,21 @@ public class EratosthenesSieveTest {
         }
     }
     
+    @Test
+    public void testRandomPrimeMod() {
+        int m = RANDOM.nextInt(128) + 2;
+        int n = RANDOM.nextInt(m);
+        int numberOfCalls = 16 * m;
+        for (int i = 0; i < numberOfCalls; i++) {
+            int prospectivePrime = EratosthenesSieve.randomPrimeMod(n, m);
+            assertPrime(prospectivePrime);
+            String msg = "Prime " + prospectivePrime 
+                    + " should be congruent to " + n + " modulo " + m;
+            assert NumberTheoreticFunctionsCalculator
+                    .mod(prospectivePrime, m) == n : msg;
+        }
+    }
+    
+    // TODO: Test randomPrimeMod with negative n
+    
 }
