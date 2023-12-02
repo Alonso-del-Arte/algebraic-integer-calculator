@@ -188,16 +188,18 @@ public class EratosthenesSieve {
      * potential prime numbers is limited to those that have been calculated in 
      * the session so far.
      * @param p A prime number. However, this number is <em>not</em> checked for 
-     * primality. For example, 47.
-     * @return A prime number other than <code>p</code>.
+     * primality. For example, 47. May be negative. For example, &minus;59.
+     * @return A prime number other than <code>p</code>, but of the same sign as 
+     * <code>p</code>.
      */
     public static int randomPrimeOtherThan(int p) {
+        int signum = (p < 0) ? -1 : 1;
         int curr = p;
         int bound = PRIMES.size();
         do {
             curr = PRIMES.get(RANDOM.nextInt(bound));
         } while (curr == p);
-        return curr;
+        return curr * signum;
     }
     
     // TODO: Write tests for this
