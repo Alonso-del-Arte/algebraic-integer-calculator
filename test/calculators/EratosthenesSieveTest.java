@@ -369,6 +369,9 @@ public class EratosthenesSieveTest {
     public void testRandomPrimeMod() {
         int m = RANDOM.nextInt(128) + 2;
         int n = RANDOM.nextInt(m);
+        if (NumberTheoreticFunctionsCalculator.euclideanGCD(m, n) > 1) {
+            n++;
+        }
         int numberOfCalls = 16 * m;
         for (int i = 0; i < numberOfCalls; i++) {
             int prospectivePrime = EratosthenesSieve.randomPrimeMod(n, m);
