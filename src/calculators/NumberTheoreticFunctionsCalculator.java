@@ -198,8 +198,31 @@ public class NumberTheoreticFunctionsCalculator {
     
     private static final Random RANDOM = new Random();
     
-    // TODO: Write tests for this
+    /**
+     * Calculates the remainder of the division of <i>n</i> by <i>m</i>. This 
+     * function gives the same result as the <code>%</code> operator if <i>n</i> 
+     * and <i>m</i> are both positive. But if <i>n</i> is negative and <i>m</i> 
+     * is positive, this function will return either 0 or a positive integer, 
+     * whereas the <code>%</code> operator returns a negative number. Both 
+     * values, and infinitely many others, are mathematically correct, but our 
+     * expectation is for the return value to be at least 0 and less than the 
+     * modulo.
+     * @param n The number to be divided by the modulo. For example, &minus;118.
+     * @param m The modulo. For example, 30.
+     * @return Given positive <code>m</code>, either 0 or a positive integer 
+     * less than <code>m</code> according to whether or not <code>n</code> 
+     * divides <code>m</code> evenly. For example, 2, since &minus;4 &times; 30 
+     * + 2 = &minus;118. This function has not yet been tested for negative 
+     * <code>m</code>.
+     * @throws ArithmeticException If <code>m</code> equals 0, as the 
+     * calculation involves division by 0.
+     */
     public static int mod(int n, int m) {
+        if (m == 0) {
+            String excMsg = "Calculating " + n 
+                    + " modulo 0 involves division by 0";
+            throw new ArithmeticException(excMsg);
+        }
         int intermediate = n % m;
         if (intermediate < 0) {
             return m + intermediate;
