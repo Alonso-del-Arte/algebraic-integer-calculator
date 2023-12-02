@@ -317,6 +317,26 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @Test
+    public void testModZero() {
+        int n = RANDOM.nextInt();
+        try {
+            int badResidue = mod(n, 0);
+            String message = "Trying to calculate " + n 
+                    + " modulo 0 should not have given " + badResidue;
+            fail(message);
+        } catch (ArithmeticException ae) {
+            String excMsg = ae.getMessage();
+            assert excMsg != null : "Exception message should not be null";
+            String msg = "Exception message should contain parameter n = " + n;
+            assert excMsg.contains(Integer.toString(n)) : msg;
+        } catch (RuntimeException re) {
+            String message = re.getClass().getName() 
+                    + " is the wrong exception for " + n + " modulo 0";
+            fail(message);
+        }
+    }
+    
     /**
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
      * This test uses squares of primorials (4, 36, 900, 44100, etc.) and 
