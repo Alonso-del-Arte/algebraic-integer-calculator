@@ -200,7 +200,12 @@ public class NumberTheoreticFunctionsCalculator {
     
     // TODO: Write tests for this
     public static int mod(int n, int m) {
-        return n % m;
+        int intermediate = n % m;
+        if (intermediate < 0) {
+            return m + intermediate;
+        } else {
+            return intermediate;
+        }
     }
 
     /**
