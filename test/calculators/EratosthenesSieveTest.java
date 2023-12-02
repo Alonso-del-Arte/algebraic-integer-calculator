@@ -333,4 +333,20 @@ public class EratosthenesSieveTest {
         assert expected < actual : msg;
     }
     
+    @Test
+    public void testRandomPrimeOtherThanMatchesSignOfP() {
+        int threshold = 500;
+        List<Integer> pooledPrimes = EratosthenesSieve.listPrimes(threshold);
+        for (int p : pooledPrimes) {
+            int otherPositivePrime = EratosthenesSieve.randomPrimeOtherThan(p);
+            String msg = "Both " + p + " and " + otherPositivePrime 
+                    + " should be positive";
+            assert p > 0 && otherPositivePrime > 0 : msg;
+            int otherNegativePrime = EratosthenesSieve.randomPrimeOtherThan(-p);
+            msg = "Both -" + p + " and " + otherNegativePrime 
+                    + " should be negative";
+            assert otherNegativePrime < 0 : msg;
+        }
+    }
+    
 }
