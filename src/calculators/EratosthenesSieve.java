@@ -183,9 +183,21 @@ public class EratosthenesSieve {
         return candidates.get(index);
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a pseudorandom prime other than a specified prime. The pool of 
+     * potential prime numbers is limited to those that have been calculated in 
+     * the session so far.
+     * @param p A prime number. However, this number is <em>not</em> checked for 
+     * primality. For example, 47.
+     * @return A prime number other than <code>p</code>.
+     */
     public static int randomPrimeOtherThan(int p) {
-        return 0;
+        int curr = p;
+        int bound = PRIMES.size();
+        do {
+            curr = PRIMES.get(RANDOM.nextInt(bound));
+        } while (curr == p);
+        return curr;
     }
     
     // TODO: Write tests for this
