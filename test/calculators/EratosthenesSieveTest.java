@@ -311,4 +311,26 @@ public class EratosthenesSieveTest {
         }
     }
     
+    @Test
+    public void testRandomPrimeOtherThan() {
+        System.out.println("randomPrimeOtherThan");
+        int numberOfCalls = 200;
+        Set<Integer> primes = new HashSet<>();
+        int currPrime = 2;
+        for (int i = 0; i < numberOfCalls; i++) {
+            int otherPrime = EratosthenesSieve.randomPrimeOtherThan(currPrime);
+            assertPrime(otherPrime);
+            String msg = "Prime " + otherPrime + " should be prime other than " 
+                    + currPrime;
+            assert otherPrime != currPrime : msg;
+            primes.add(otherPrime);
+            currPrime = otherPrime;
+        }
+        int expected = 53 * numberOfCalls / 100;
+        int actual = primes.size();
+        String msg = "Expected at least " + expected + " distinct primes for " 
+                + numberOfCalls + " calls, got " + actual;
+        assert expected < actual : msg;
+    }
+    
 }
