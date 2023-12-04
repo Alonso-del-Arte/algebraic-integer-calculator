@@ -404,7 +404,6 @@ public class EratosthenesSieveTest {
         assertEquals(expected, actual);
     }
     
-    @org.junit.Ignore
     @Test
     public void testRandomPrimeMod() {
         int start = 100;
