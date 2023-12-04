@@ -365,24 +365,50 @@ public class EratosthenesSieveTest {
         }
     }
     
+    
     @Test
-    public void testRandomPrimeMod() {
-        int m = RANDOM.nextInt(128) + 2;
-        int n = RANDOM.nextInt(m);
-        if (NumberTheoreticFunctionsCalculator.euclideanGCD(m, n) > 1) {
-            n++;
-        }
-        int numberOfCalls = 16 * m;
+    public void testRandomPrime1Mod4() {
+        int n = 1;
+        int m = 4;
+        Set<Integer> expected = new HashSet<>(EratosthenesSieve
+                .listPrimesMod(n, m));
+        Set<Integer> actual = new HashSet<>();
+        int numberOfCalls = 20 * expected.size();
         for (int i = 0; i < numberOfCalls; i++) {
             int prospectivePrime = EratosthenesSieve.randomPrimeMod(n, m);
             assertPrime(prospectivePrime);
-            String msg = "Prime " + prospectivePrime 
+            String message = "Prime " + prospectivePrime 
                     + " should be congruent to " + n + " modulo " + m;
-            assert NumberTheoreticFunctionsCalculator
-                    .mod(prospectivePrime, m) == n : msg;
+            assertEquals(message, n, prospectivePrime % m);
+            actual.add(prospectivePrime);
         }
+        assertEquals(expected, actual);
+    }
+
+    @org.junit.Ignore
+    @Test
+    public void testRandomPrime3Mod4() {
+        fail();
     }
     
-    // TODO: Test randomPrimeMod with negative n
+    @org.junit.Ignore
+    @Test
+    public void testRandomPrimeMod() {
+        int start = 100;
+        int threshold = start * start;
+        int m = start + RANDOM.nextInt(start);
+        List<Integer> somePrimes = EratosthenesSieve.listPrimes(threshold);
+        for (int n = 1; n < m; n++) {
+            List<Integer> filtered = filterMod(somePrimes, n, m);
+            if (!filtered.isEmpty()) {
+                int prospectivePrime = EratosthenesSieve.randomPrimeMod(n, m);
+                assertPrime(prospectivePrime);
+                String msg = "Prime " + prospectivePrime 
+                        + " should be congruent to " + n + " modulo " + m;
+                assert NumberTheoreticFunctionsCalculator
+                        .mod(prospectivePrime, m) == n : msg;
+            }
+        }
+    }
     
 }
