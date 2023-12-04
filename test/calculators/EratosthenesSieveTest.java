@@ -385,10 +385,23 @@ public class EratosthenesSieveTest {
         assertEquals(expected, actual);
     }
 
-    @org.junit.Ignore
     @Test
     public void testRandomPrime3Mod4() {
-        fail();
+        int n = 3;
+        int m = 4;
+        Set<Integer> expected = new HashSet<>(EratosthenesSieve
+                .listPrimesMod(n, m));
+        Set<Integer> actual = new HashSet<>();
+        int numberOfCalls = 20 * expected.size();
+        for (int i = 0; i < numberOfCalls; i++) {
+            int prospectivePrime = EratosthenesSieve.randomPrimeMod(n, m);
+            assertPrime(prospectivePrime);
+            String message = "Prime " + prospectivePrime 
+                    + " should be congruent to " + n + " modulo " + m;
+            assertEquals(message, n, prospectivePrime % m);
+            actual.add(prospectivePrime);
+        }
+        assertEquals(expected, actual);
     }
     
     @org.junit.Ignore
