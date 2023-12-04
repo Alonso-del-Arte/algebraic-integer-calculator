@@ -210,9 +210,9 @@ public class EratosthenesSieve {
     }
     
     // TODO: Write tests for this
-    public static int randomPrimeMod(int n, int m) {
-        List<Integer> candidates = listPrimesMod(n, m);
-        return candidates.get(RANDOM.nextInt(candidates.size()));
+    public static int randomPrimeMod(int n, int m) {return -7;
+//        List<Integer> candidates = listPrimesMod(n, m);
+//        return candidates.get(RANDOM.nextInt(candidates.size()));
     }
     
 }
