@@ -423,4 +423,35 @@ public class EratosthenesSieveTest {
         }
     }
     
+    @Test
+    public void testRandomPrimeModForNoneAvailable() {
+        int root = RANDOM.nextInt(128) + 2;
+        int n = root * root;
+        int m = n * root * (RANDOM.nextInt(4) + 1);
+        String msgPart = "Trying to get a prime congruent to " + n + " modulo " 
+                + m + ' ';
+        try {
+            int badPrime = EratosthenesSieve.randomPrimeMod(n, m);
+            String message = msgPart 
+                    + "should have caused an exception, not given result " 
+                    + badPrime;
+            fail(message);
+        } catch (NoSuchElementException nsee) {
+            System.out.println(msgPart 
+                    + "correctly caused NoSuchElementException");
+            String excMsg = nsee.getMessage();
+            String msg = "Exception message should contain parameters n = " + n 
+                    + " and m = " + m;
+            String nStr = Integer.toString(n);
+            String mStr = Integer.toString(m);
+            assert excMsg.contains(nStr) : msg;
+            assert excMsg.contains(mStr) : msg;
+            System.out.println("\"" + excMsg + "\"");            
+        } catch (RuntimeException re) {
+            String message = msgPart + "caused " + re.getClass().getName() 
+                    + " instead of NoSuchElementException";
+            fail(message);
+        }
+    }
+    
 }
