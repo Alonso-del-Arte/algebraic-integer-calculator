@@ -209,9 +209,34 @@ public class EratosthenesSieve {
         return curr * signum;
     }
     
+    /**
+     * Gives a pseudorandom positive prime number from a residue class for a 
+     * given modulus. For example, to get a pseudorandom prime congruent to 7 
+     * modulo 8, this is the function to use. The pool of potential prime 
+     * numbers is limited to those that have been calculated in the session so 
+     * far.
+     * @param n The number specifying the residue class. For example, 7.
+     * @param m The modulus. For example, 8.
+     * @return A prime number for the specified residue class and modulus. For 
+     * example, 8951 = 8 &times; 1118 + 7.
+     * @throws NoSuchElementException If there are no primes satisfying the 
+     * congruence relation among those that have been computed so far. When this 
+     * class is initially loaded, there might be no primes congruent to 99 
+     * modulo 103 available, for example. Thus this function would throw this 
+     * exception rather give a prime like 6691 or 4013. However, for some 
+     * congruence relations, there are no solutions in primes at all whatsoever, 
+     * such as 8 modulo 16.
+     */
     public static int randomPrimeMod(int n, int m) {
         List<Integer> candidates = listPrimesMod(n, m);
-        return candidates.get(RANDOM.nextInt(candidates.size()));
+        int bound = candidates.size();
+        if (bound == 0) {
+            String excMsg = "There are no available primes congruent to " + n 
+                    + " modulo " + m 
+                    + " amond those that have been computed so far";
+            throw new NoSuchElementException(excMsg);
+        }
+        return candidates.get(RANDOM.nextInt(bound));
     }
     
 }
