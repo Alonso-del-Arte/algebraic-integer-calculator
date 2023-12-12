@@ -811,7 +811,7 @@ public class QuadraticIntegerTest {
         int p = randomOddPrime(100);
         int q = randomOddPrime(-100);
         if (p == -q) {
-            q = 101;
+            q = -101;
         }
         QuadraticRing dividendRing = new RealQuadraticRing(2 * p);
         QuadraticInteger dividend = new RealQuadraticInteger(0, q, 
