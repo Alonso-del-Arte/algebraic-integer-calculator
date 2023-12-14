@@ -1176,8 +1176,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
             String excMsg = "STUB TO FAIL THE FIRST CROSS DOMAIN TEST";
             throw new ArrayIndexOutOfBoundsException(excMsg);
         }
-        return new ImaginaryQuadraticInteger(-1, -1, 
-                new ImaginaryQuadraticRing(-1));
+        return new ImaginaryQuadraticInteger(0, 0, this.quadRing);
     }
     
     // STUB TO FAIL THE FIRST TEST
