@@ -1172,6 +1172,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     // STUB TO FAIL THE FIRST TEST
     @Override
     public QuadraticInteger mod(QuadraticInteger divisor) {
+        if (!this.quadRing.equals(divisor.quadRing)) {
+            String excMsg = "STUB TO FAIL THE FIRST CROSS DOMAIN TEST";
+            throw new ArrayIndexOutOfBoundsException(excMsg);
+        }
         return new ImaginaryQuadraticInteger(-1, -1, 
                 new ImaginaryQuadraticRing(-1));
     }

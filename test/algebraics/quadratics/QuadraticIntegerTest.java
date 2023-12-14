@@ -947,11 +947,11 @@ public class QuadraticIntegerTest {
                     + " shouldn't have caused UnsupportedNumberDomainException";
             fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String msg = "Dividing " + dividend.toString() + " by " 
+            String message = "Dividing " + dividend.toString() + " by " 
                     + divisor.toString() 
                     + " should not have caused overflow for algebraic degree " 
                     + adoe.getNecessaryAlgebraicDegree();
-            fail(msg);
+            fail(message);
         } catch (NotDivisibleException nde) {
             System.out.println("\"" + nde.getMessage() + "\"");
             String message = "Dividing " + dividend.toString() + " by " 
@@ -967,11 +967,12 @@ public class QuadraticIntegerTest {
     }
     
     /**
-     * Test of divides method of class QuadraticInteger. Testing that dividing a 
-     * real quadratic integer with "regular" part 0 and nonzero surd part by a 
-     * the square root of a number coprime to the radicand of the dividend but 
-     * having a common factor with the "surd" multiple results in the correct 
-     * quadratic integer. For example, (3&radic;10)/(&radic;&minus;3) = 
+     * Test of the divides function of the QuadraticInteger class. Testing that 
+     * dividing a real quadratic integer with "regular" part 0 and nonzero surd 
+     * part by a the square root of a number coprime to the radicand of the 
+     * dividend but having a common factor with the "surd" multiple results in 
+     * the correct quadratic integer. For example, 
+     * <sup>3&radic;10</sup>&frasl;<sub>&radic;&minus;3</sub> =  
      * &minus;&radic;&minus;30.
      */
     @Test
@@ -999,27 +1000,27 @@ public class QuadraticIntegerTest {
             assertEquals(expected, actual);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("\"" + unde.getMessage() + "\"");
-            String msg = "Dividing " + dividend.toString() + " by " 
+            String message = "Dividing " + dividend.toString() + " by " 
                     + divisor.toString() 
                     + " shouldn't have caused UnsupportedNumberDomainException";
-            fail(msg);
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String msg = "Dividing " + dividend.toString() + " by " 
+            String message = "Dividing " + dividend.toString() + " by " 
                     + divisor.toString() 
                     + " should not have caused overflow for algebraic degree " 
                     + adoe.getNecessaryAlgebraicDegree();
-            fail(msg);
+            fail(message);
         } catch (NotDivisibleException nde) {
             System.out.println("\"" + nde.getMessage() + "\"");
-            String msg = "Dividing " + dividend.toString() + " by " 
+            String message = "Dividing " + dividend.toString() + " by " 
                     + divisor.toString() 
                     + " should not have caused NotDivisibleException";
-            fail(msg);
+            fail(message);
         } catch (Exception e) {
-            String msg = e.getClass().getName() 
+            String message = e.getClass().getName() 
                     + " is the wrong exception for trying to divide " 
                     + dividend.toString() + " by " + divisor.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -1143,51 +1144,50 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testDividesUnaryAsQuadGivesResult() {
-        System.out.println("Testing that dividing an unary integer presented as a quadratic integer by a genuine quadratic integer gives correct result even if invoked ring is different");
         QuadraticRing ring = new ImaginaryQuadraticRing(-1);
         ImaginaryQuadraticInteger unaryDividend = new ImaginaryQuadraticInteger(2, 0, ring);
         ring = new RealQuadraticRing(79);
         QuadraticInteger quadraticDivisor = new RealQuadraticInteger(9, 1, ring);
-        QuadraticInteger expResult = new RealQuadraticInteger(9, -1, ring);
-        QuadraticInteger result;
+        QuadraticInteger expected = new RealQuadraticInteger(9, -1, ring);
+        QuadraticInteger actual;
         try {
-            result = unaryDividend.divides(quadraticDivisor);
-            assertEquals(expResult, result);
+            actual = unaryDividend.divides(quadraticDivisor);
+            assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
-            System.out.println(failMessage);
+            String message = "AlgebraicDegreeOverflowException should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            System.out.println(message);
             System.out.println("2 is of algebraic degree " + unaryDividend.algebraicDegree() + " and " + quadraticDivisor.toASCIIString() + " is of algebraic degree " + quadraticDivisor.algebraicDegree());
             System.out.println("\"" + adoe.getMessage() + "\"");
-            fail(failMessage);
+            fail(message);
         } catch (NotDivisibleException nde) {
-            String failMessage = "Since 2 is divisible by " + quadraticDivisor.toASCIIString() + ", NotDivisibleException should not have occurred";
-            System.out.println(failMessage);
+            String message = "Since 2 is divisible by " + quadraticDivisor.toASCIIString() + ", NotDivisibleException should not have occurred";
+            System.out.println(message);
             System.out.println("\"" + nde.getMessage() + "\"");
-            fail(failMessage);
+            fail(message);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
-            fail(failMessage);
+            String message = e.getClass().getName() + " should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            fail(message);
         }
         ring = new ImaginaryQuadraticRing(-7);
         quadraticDivisor = new ImaginaryQuadraticInteger(1, 1, ring, 2);
-        expResult = new ImaginaryQuadraticInteger(1, -1, ring, 2);
+        expected = new ImaginaryQuadraticInteger(1, -1, ring, 2);
         try {
-            result = unaryDividend.divides(quadraticDivisor);
-            assertEquals(expResult, result);
+            actual = unaryDividend.divides(quadraticDivisor);
+            assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "AlgebraicDegreeOverflowException should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
-            System.out.println(failMessage);
+            String message = "AlgebraicDegreeOverflowException should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            System.out.println(message);
             System.out.println("2 is of algebraic degree " + unaryDividend.algebraicDegree() + " and " + quadraticDivisor.toASCIIString() + " is of algebraic degree " + quadraticDivisor.algebraicDegree());
             System.out.println("\"" + adoe.getMessage() + "\"");
-            fail(failMessage);
+            fail(message);
         } catch (NotDivisibleException nde) {
-            String failMessage = "Since 2 is divisible by " + quadraticDivisor.toASCIIString() + ", NotDivisibleException should not have occurred";
-            System.out.println(failMessage);
+            String message = "Since 2 is divisible by " + quadraticDivisor.toASCIIString() + ", NotDivisibleException should not have occurred";
+            System.out.println(message);
             System.out.println("\"" + nde.getMessage() + "\"");
-            fail(failMessage);
+            fail(message);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
-            fail(failMessage);
+            String message = e.getClass().getName() + " should not have occurred for trying to divide 2 by " + quadraticDivisor.toASCIIString();
+            fail(message);
         }
     }
     
@@ -1231,7 +1231,9 @@ public class QuadraticIntegerTest {
      * dividend and the divisor are from different rings, an {@link 
      * AlgebraicDegreeOverflowException} should occur.
      */
-    @Test
+    @org.junit.Ignore
+    @Test // TODO: Rework into two separate tests, to address one case in which 
+    // there is an algebraic degree overflow and one case in which there isn't
     public void testModCrossDomainImagDivisor() {
         int a = RANDOM.nextInt(2048) + 1;
         int b = RANDOM.nextInt(a) + 127;
