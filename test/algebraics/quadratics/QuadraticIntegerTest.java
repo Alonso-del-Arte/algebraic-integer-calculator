@@ -23,6 +23,7 @@ import arithmetic.NotDivisibleException;
 import static calculators.EratosthenesSieve.listPrimes;
 import static calculators.EratosthenesSieve.randomOddPrime;
 import static calculators.EratosthenesSieve.randomPrimeOtherThan;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
@@ -1310,8 +1311,27 @@ public class QuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    private int chooseSquarefree1Mod4() {
+        int choice = 4 * (randomNumber(512) + 8) + 1;
+        while (!isSquareFree(choice)) choice += 4;
+        return choice;
+    }
+    
+    @Test
     public void testMod() {
         System.out.println("mod");
+        int d = chooseSquarefree1Mod4();
+        QuadraticRing ring = new RealQuadraticRing(d);
+        int expReg = 2 * randomNumber(5) + 1;
+        int a = 2 * d * d + expReg;
+        QuadraticInteger dividend = new RealQuadraticInteger(a, 1, ring, 2);
+        QuadraticInteger divisor = new RealQuadraticInteger(0, 1, ring);
+        QuadraticInteger expected = new RealQuadraticInteger(expReg, 1, ring, 
+                2);
+        QuadraticInteger actual = dividend.mod(divisor);
+        String message = dividend.toString() + " modulo " + divisor.toString() 
+                + " should be " + expected.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
