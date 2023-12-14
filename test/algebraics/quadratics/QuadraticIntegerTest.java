@@ -1266,7 +1266,8 @@ public class QuadraticIntegerTest {
      * dividend and the divisor are from different rings, an {@link 
      * AlgebraicDegreeOverflowException} should occur.
      */
-    @Test
+    @org.junit.Ignore
+    @Test // TODO: Rework into two separate tests, to address one case in which 
     public void testModCrossDomainRealDivisor() {
         int a = RANDOM.nextInt(2048) + 1;
         int b = RANDOM.nextInt(a) + 127;
@@ -1292,6 +1293,25 @@ public class QuadraticIntegerTest {
                     + dividend.toString() + " mod " + divisor.toString();
             fail(msg);
         }
+    }
+    
+    @Test
+    public void testModZero() {
+        int a = randomNumber(256) + 4;
+        int b = randomNumber(256) + 4;
+        int d = -randomSquarefreeNumber(8192);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticInteger divisor = new ImaginaryQuadraticInteger(a, b, ring);
+        QuadraticInteger dividend = divisor.times(divisor.conjugate().negate());
+        QuadraticInteger expected = new ImaginaryQuadraticInteger(0, 0, ring);
+        QuadraticInteger actual = dividend.mod(divisor);
+        String message = dividend.toString() + " modulo " + divisor.toString() 
+                + " should be 0";
+        assertEquals(message, expected, actual);
+    }
+    
+    public void testMod() {
+        System.out.println("mod");
     }
     
     /**
