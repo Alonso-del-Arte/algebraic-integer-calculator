@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -32,7 +32,7 @@ import java.io.Serializable;
  */
 public class Fraction implements Comparable<Fraction>, Serializable {
     
-    private static final long serialVersionUID = 4547844323164568371L;
+    private static final long serialVersionUID = 4547844323164568372L;
     
     private final long numerator;
     private final long denominator;
@@ -216,7 +216,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     public Fraction reciprocal() {
         return new Fraction(this.denominator, this.numerator);
     }
-    
+
+//TODO: Write tests for this
+    public Fraction roundDown() {
+        return this.negate();
+    }
+
     /**
      * Rounds a fraction down to an integer multiple of a given interval. No 
      * overflow checking is provided. Therefore it's best to limit denominators 
@@ -240,6 +245,11 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         return adjustedDivision.times(interval);
     }
     
+//TODO: Write tests for this
+    public Fraction roundUp() {
+        return this.negate();
+    }
+
     /**
      * Rounds a fraction up to an integer multiple of a given interval. No 
      * overflow checking is provided. Therefore it's best to limit denominators 
