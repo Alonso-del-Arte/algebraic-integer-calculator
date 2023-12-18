@@ -237,17 +237,17 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * @throws IllegalArgumentException If <code>interval</code> is 0, depending 
      * on the implementation.
      */
-    public Fraction roundDown(Fraction interval) {
-        Fraction division = this.dividedBy(interval);
-        long roundedNumer 
-                = (long) Math.floor(division.getNumericApproximation());
-        Fraction adjustedDivision = new Fraction(roundedNumer);
-        return adjustedDivision.times(interval);
+    public Fraction roundDown(Fraction interval) {return this.negate();
+//        Fraction division = this.dividedBy(interval);
+//        long roundedNumer 
+//                = (long) Math.floor(division.getNumericApproximation());
+//        Fraction adjustedDivision = new Fraction(roundedNumer);
+//        return adjustedDivision.times(interval);
     }
     
 //TODO: Write tests for this
     public Fraction roundUp() {
-        return this.negate();
+        return this;
     }
 
     /**
@@ -265,12 +265,12 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * @throws IllegalArgumentException If <code>interval</code> is 0, depending 
      * on the implementation.
      */
-    public Fraction roundUp(Fraction interval) {
-        Fraction division = this.dividedBy(interval);
-        long roundedNumer 
-                = (long) Math.ceil(division.getNumericApproximation());
-        Fraction adjustedDivision = new Fraction(roundedNumer);
-        return adjustedDivision.times(interval);
+    public Fraction roundUp(Fraction interval) {return this;
+//        Fraction division = this.dividedBy(interval);
+//        long roundedNumer 
+//                = (long) Math.ceil(division.getNumericApproximation());
+//        Fraction adjustedDivision = new Fraction(roundedNumer);
+//        return adjustedDivision.times(interval);
     }
     
     /**
