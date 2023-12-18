@@ -488,6 +488,31 @@ public class FractionTest {
         }
     }
     
+    @Test
+    public void testRoundDownTacitParam() {
+        int denom = randomPrime(10000);
+        int numer = randomNumber(denom) * denom;
+        Fraction expected = new Fraction(numer, denom);
+        Fraction fraction = new Fraction(numer + randomNumber(denom), denom);
+        Fraction actual = fraction.roundDown();
+        String message = fraction.toString() + " should round down to " 
+                + expected.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testRoundDownNegativeTacitParam() {
+        int denom = randomPrime(10000);
+        int numer = -randomNumber(denom) * denom;
+        Fraction expected = new Fraction(numer, denom);
+        Fraction fraction = new Fraction(numer + randomNumber(denom - 1) + 1, 
+                denom);
+        Fraction actual = fraction.roundDown();
+        String message = fraction.toString() + " should round down to " 
+                + expected.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the roundUp function, of the Fraction class.
      */
