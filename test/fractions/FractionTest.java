@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,7 +16,10 @@
  */
 package fractions;
 
-import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.euclideanGCD;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.EratosthenesSieve.randomPrime;
+
 import clipboardops.TestImagePanel;
 
 import java.util.Arrays;
@@ -54,7 +57,7 @@ public class FractionTest {
     public void testGetNumerator() {
         System.out.println("getNumerator");
         int denominator = 1033;
-        int expected = RANDOM.nextInt(denominator - 2) + 1;
+        int expected = randomNumber(denominator - 2) + 1;
         Fraction fraction = new Fraction(expected, denominator);
         long actual = fraction.getNumerator();
         assertEquals(expected, actual);
@@ -68,7 +71,7 @@ public class FractionTest {
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
-        int expected = RANDOM.nextInt(32768) + 16384;
+        int expected = randomNumber(32768) + 16384;
         Fraction fraction = new Fraction(1, expected);
         long actual = fraction.getDenominator();
         assertEquals(expected, actual);
@@ -163,7 +166,7 @@ public class FractionTest {
         if (numerator == Integer.MAX_VALUE) {
             numerator--;
         }
-        int denominator = RANDOM.nextInt(Math.abs(numerator)) + 1;
+        int denominator = randomNumber(Math.abs(numerator)) + 1;
         Fraction addendA = new Fraction(numerator, denominator);
         Fraction addendB = new Fraction(numerator + 1, denominator);
         Fraction expected = addendA.plus(addendB);
@@ -281,7 +284,7 @@ public class FractionTest {
      */
     @Test
     public void testDivisionByZeroCausesException() {
-        int numerator = RANDOM.nextInt(392);
+        int numerator = randomNumber(392);
         int denominator = numerator + 1;
         Fraction fraction = new Fraction(numerator, denominator);
         Fraction zero = new Fraction(0, 1);
@@ -366,8 +369,8 @@ public class FractionTest {
     @Test
     public void testReciprocal() {
         System.out.println("reciprocal");
-        int numerator = RANDOM.nextInt(8192) + 16;
-        int denominator = 5 * RANDOM.nextInt(numerator) + 7;
+        int numerator = randomNumber(8192) + 16;
+        int denominator = 5 * randomNumber(numerator) + 7;
         Fraction fraction = new Fraction(numerator, denominator);
         Fraction expected = new Fraction(denominator, numerator);
         Fraction actual = fraction.reciprocal();
@@ -382,21 +385,20 @@ public class FractionTest {
     @Test
     public void testReciprocalOfZero() {
         Fraction zero = new Fraction(0, 1);
+        String msgPart = "Reciprocal of zero ";
         try {
             Fraction result = zero.reciprocal();
-            String msg = "Reciprocal of 0 should not have given result " 
+            String message = msgPart + "should not have given result " 
                     + result.toString();
-            fail(msg);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("reciprocal(0) caused IllegalArgumentException");
+            fail(message);
+        } catch (IllegalArgumentException | ArithmeticException iae) {
+            System.out.println(msgPart + "correctly caused " 
+                    + iae.getClass().getName());
             System.out.println("\"" + iae.getMessage() + "\"");
-        } catch (ArithmeticException ae) {
-            System.out.println("reciprocal(0) caused ArithmeticException");
-            System.out.println("\"" + ae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is not appropriate for reciprocal(0)";
-            fail(msg);
+            String message = msgPart + " should not have caused " 
+                    + re.getClass().getName();
+            fail(message);
         }
     }
     
@@ -406,8 +408,8 @@ public class FractionTest {
     @Test
     public void testRoundDown() {
         System.out.println("roundDown");
-        int multiplier = RANDOM.nextInt(14) + 2;
-        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int multiplier = randomNumber(14) + 2;
+        int denom = multiplier * (randomNumber(60) + 4);
         int numer = 3 * denom / 2 + 1;
         Fraction fract = new Fraction(numer, denom);
         Fraction oneHalf = new Fraction(1, 2);
@@ -424,8 +426,8 @@ public class FractionTest {
      */
     @Test
     public void testRoundDownNegative() {
-        int multiplier = RANDOM.nextInt(14) + 2;
-        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int multiplier = randomNumber(14) + 2;
+        int denom = multiplier * (randomNumber(60) + 4);
         int numer = -5 * denom / 7 + 1;
         Fraction fract = new Fraction(numer, denom);
         Fraction oneSeventh = new Fraction(1, 7);
@@ -443,7 +445,7 @@ public class FractionTest {
      */
     @Test
     public void testRoundDownNotNeeded() {
-        int denom = 40 * (RANDOM.nextInt(60) + 4);
+        int denom = 40 * (randomNumber(60) + 4);
         int numer = 5 * denom / 8;
         Fraction fract = new Fraction(numer, denom);
         Fraction oneEighth = new Fraction(1, 8);
@@ -458,17 +460,17 @@ public class FractionTest {
      */
     @Test
     public void testRoundDownByZeroCausesException() {
-        int multiplier = RANDOM.nextInt(14) + 2;
-        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int multiplier = randomNumber(14) + 2;
+        int denom = multiplier * (randomNumber(60) + 4);
         int numer = 3 * denom / 2 + 1;
         Fraction fract = new Fraction(numer, denom);
         Fraction zero = new Fraction(0);
         try {
             Fraction badRound = fract.roundDown(zero);
-            String msg = "Trying to round " + fract.toString() + " down by " 
+            String message = "Trying to round " + fract.toString() + " down by " 
                     + zero.toString() + " should not have given result " 
                     + badRound.toString();
-            fail(msg);
+            fail(message);
         } catch (ArithmeticException ae) {
             System.out.println("Trying to round " + fract.toString() + " by " 
                     + zero.toString() + " correctly caused ArithmeticException");
@@ -479,10 +481,10 @@ public class FractionTest {
                     + " correctly caused IllegalArgumentException");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception for trying to round " 
                     + fract.toString() + " by " + zero.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -492,8 +494,8 @@ public class FractionTest {
     @Test
     public void testRoundup() {
         System.out.println("roundUp");
-        int multiplier = RANDOM.nextInt(14) + 2;
-        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int multiplier = randomNumber(14) + 2;
+        int denom = multiplier * (randomNumber(60) + 4);
         int numer = 3 * denom / 2 - 1;
         Fraction fract = new Fraction(numer, denom);
         Fraction oneHalf = new Fraction(1, 2);
@@ -509,8 +511,8 @@ public class FractionTest {
      */
     @Test
     public void testRoundUpNegative() {
-        int multiplier = RANDOM.nextInt(14) + 2;
-        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int multiplier = randomNumber(14) + 2;
+        int denom = multiplier * (randomNumber(60) + 4);
         int numer = -5 * denom / 7 - 1;
         Fraction fract = new Fraction(numer, denom);
         Fraction oneSeventh = new Fraction(1, 7);
@@ -528,7 +530,7 @@ public class FractionTest {
      */
     @Test
     public void testRoundUpNotNeeded() {
-        int denom = 40 * (RANDOM.nextInt(60) + 4);
+        int denom = 40 * (randomNumber(60) + 4);
         int numer = 5 * denom / 8;
         Fraction fract = new Fraction(numer, denom);
         Fraction oneEighth = new Fraction(1, 8);
@@ -543,20 +545,21 @@ public class FractionTest {
      */
     @Test
     public void testRoundUpByZeroCausesException() {
-        int multiplier = RANDOM.nextInt(14) + 2;
-        int denom = multiplier * (RANDOM.nextInt(60) + 4);
+        int multiplier = randomNumber(14) + 2;
+        int denom = multiplier * (randomNumber(60) + 4);
         int numer = 3 * denom / 2 + 1;
         Fraction fract = new Fraction(numer, denom);
         Fraction zero = new Fraction(0);
         try {
             Fraction badRound = fract.roundUp(zero);
-            String msg = "Trying to round " + fract.toString() + " up by " 
+            String message = "Trying to round " + fract.toString() + " up by " 
                     + zero.toString() + " should not have given result " 
                     + badRound.toString();
-            fail(msg);
+            fail(message);
         } catch (ArithmeticException ae) {
             System.out.println("Trying to round " + fract.toString() + " by " 
-                    + zero.toString() + " correctly caused ArithmeticException");
+                    + zero.toString() 
+                    + " correctly caused ArithmeticException");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (IllegalArgumentException iae) {
             System.out.println("Trying to round " + fract.toString() + " by " 
@@ -564,10 +567,10 @@ public class FractionTest {
                     + " correctly caused IllegalArgumentException");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception for trying to round " 
                     + fract.toString() + " by " + zero.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -619,7 +622,8 @@ public class FractionTest {
     public void testConformDownAcceptsNegativeParameter() {
         Fraction fraction = new Fraction(7, 8);
         Fraction[] acceptables = new Fraction[]{new Fraction(-15, 16), 
-            new Fraction(-13, 16), new Fraction(13, 16), new Fraction(15, 16)};
+            new Fraction(-13, 16), new Fraction(13, 16), 
+            new Fraction(15, 16)};
         int param = -16;
         try {
             Fraction result = fraction.conformDown(param);
@@ -769,7 +773,7 @@ public class FractionTest {
     public void testToString() {
         System.out.println("toString");
         int denominator = 4099;
-        int numerator = RANDOM.nextInt(denominator - 2) + 1;
+        int numerator = randomNumber(denominator - 2) + 1;
         Fraction fraction = new Fraction(numerator, denominator);
         String expected = numerator + "/" + denominator;
         String actual = fraction.toString().replace(" ", "");
@@ -797,7 +801,7 @@ public class FractionTest {
     public void testToHTMLString() {
         System.out.println("toHTMLString");
         int denominator = 8419;
-        int numerator = RANDOM.nextInt(denominator - 2) + 1;
+        int numerator = randomNumber(denominator - 2) + 1;
         Fraction fraction = new Fraction(numerator, denominator);
         String expected = "<sup>" + numerator + "</sup>&frasl;<sub>" 
                 + denominator + "</sub>";
@@ -841,7 +845,7 @@ public class FractionTest {
     public void testToTeXString() {
         System.out.println("toTeXString");
         int denominator = 2503;
-        int numerator = RANDOM.nextInt(denominator - 2) + 1;
+        int numerator = randomNumber(denominator - 2) + 1;
         Fraction fraction = new Fraction(numerator, denominator);
         String expected = "\\frac{" + numerator + "}{" + denominator + "}";
         String actual = fraction.toTeXString().replace(" ", "");
@@ -868,7 +872,7 @@ public class FractionTest {
      */
     @Test
     public void testToTeXStringOmitsDenomOne() {
-        int numerator = -RANDOM.nextInt(44100);
+        int numerator = -randomNumber(44100);
         Fraction negativeInteger = new Fraction(numerator, 1);
         String expected = Integer.toString(numerator);
         String actual = negativeInteger.toTeXString().replace(" ", "");
@@ -910,7 +914,7 @@ public class FractionTest {
         assertEquals(msg, 2, fractHashes.size());
         prevSize = 2;
         for (int n = 2; n < 102; n++) {
-            if (NumberTheoreticFunctionsCalculator.euclideanGCD(n, 102) == 1) {
+            if (euclideanGCD(n, 102) == 1) {
                 currUnitFract = new Fraction(1, n);
                 currHash = currUnitFract.hashCode();
                 fractHashes.add(currHash);
