@@ -489,6 +489,15 @@ public class FractionTest {
     }
     
     @Test
+    public void testRoundDownNotNeededTacitParam() {
+        int numer = randomNumber(Short.MAX_VALUE);
+        Fraction expected = new Fraction(numer);
+        Fraction actual = expected.roundDown();
+        String message = expected.toString() + " is already rounded down";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testRoundDownTacitParam() {
         int denom = randomPrime(10000);
         int numer = randomNumber(denom) * denom;
