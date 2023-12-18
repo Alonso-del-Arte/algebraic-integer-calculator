@@ -230,6 +230,11 @@ public class NumberTheoreticFunctionsCalculator {
             return intermediate;
         }
     }
+    
+    // TODO: Write tests for this
+    public static long mod(long n, long m) {
+        return Integer.MIN_VALUE;
+    }
 
     /**
      * Determines the prime factors of a given number. Uses simple trial 
