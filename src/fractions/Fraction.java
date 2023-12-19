@@ -230,13 +230,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * implementation detail that may change without notice.
      */
     public Fraction roundDown() {
-        if (this.denominator == 1L) {
-            return this;
-        } else {
-            long remainder = mod(this.numerator, this.denominator);
-            long numer = this.numerator - remainder;
-            return new Fraction(numer, this.denominator);
-        }
+        long remainder = mod(this.numerator, this.denominator);
+        long numer = this.numerator - remainder;
+        return new Fraction(numer, this.denominator);
     }
 
     /**
