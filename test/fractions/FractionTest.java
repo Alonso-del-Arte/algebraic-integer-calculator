@@ -629,6 +629,19 @@ public class FractionTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testRoundUpNegativeTacitParam() {
+        int denom = randomPrime(10000);
+        int numer = -randomNumber(denom) * denom;
+        Fraction expected = new Fraction(numer, denom);
+        Fraction fraction = new Fraction(numer - randomNumber(denom - 1) - 1, 
+                denom);
+        Fraction actual = fraction.roundUp();
+        String message = fraction.toString() + " should round up to " 
+                + expected.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the conformDown function, of the Fraction class.
      */
