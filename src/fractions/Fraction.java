@@ -292,11 +292,8 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * on the implementation.
      */
     public Fraction roundUp(Fraction interval) {
-        Fraction division = this.dividedBy(interval);
-        long roundedNumer 
-                = (long) Math.ceil(division.getNumericApproximation());
-        Fraction adjustedDivision = new Fraction(roundedNumer);
-        return adjustedDivision.times(interval);
+        Fraction multiplicand = this.dividedBy(interval).roundUp();
+        return interval.times(multiplicand);
     }
     
     /**
