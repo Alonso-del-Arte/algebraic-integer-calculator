@@ -258,9 +258,14 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         return adjustedDivision.times(interval);
     }
     
-//TODO: Write tests for this
     public Fraction roundUp() {
-        return this;
+        if (this.denominator == 1L) {
+            return this;
+        } else {
+            long remainder = this.numerator % this.denominator;
+            long numer = this.numerator - remainder + this.denominator;
+            return new Fraction(numer, this.denominator);
+        }
     }
 
     /**
