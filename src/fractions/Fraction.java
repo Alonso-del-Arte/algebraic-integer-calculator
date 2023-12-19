@@ -260,7 +260,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     
 //TODO: Write tests for this
     public Fraction roundUp() {
-        return this.reciprocal();
+        return this;
     }
 
     /**
