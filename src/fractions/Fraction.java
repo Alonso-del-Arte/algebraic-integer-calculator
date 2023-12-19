@@ -258,6 +258,17 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         return adjustedDivision.times(interval);
     }
     
+    /**
+     * Rounds this fraction up to an integer. Note that negative numbers round 
+     * up to the floor (not the ceiling) of the absolute value multiplied by 
+     * &minus;1.
+     * @return This fraction rounded down to an integer. For example, if this 
+     * fraction is <sup>22</sup>&frasl;<sub>7</sub>, the result is 4. If this 
+     * fraction is &minus;<sup>1</sup>&frasl;<sub>2</sub>, the result is 0, not 
+     * &minus;1. If this fraction is already an integer, the result of this 
+     * function may or may not be a fresh new instance; that is an 
+     * implementation detail that may change without notice.
+     */
     public Fraction roundUp() {
         if (this.denominator == 1L) {
             return this;
