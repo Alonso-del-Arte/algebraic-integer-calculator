@@ -262,7 +262,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         if (this.denominator == 1L) {
             return this;
         } else {
-            long remainder = this.numerator % this.denominator;
+            long remainder = mod(this.numerator, this.denominator);
             long numer = this.numerator - remainder + this.denominator;
             return new Fraction(numer, this.denominator);
         }
