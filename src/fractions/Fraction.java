@@ -17,6 +17,7 @@
 package fractions;
 
 import static calculators.NumberTheoreticFunctionsCalculator.euclideanGCD;
+import static calculators.NumberTheoreticFunctionsCalculator.mod;
 
 import java.io.Serializable;
 
@@ -217,9 +218,25 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         return new Fraction(this.denominator, this.numerator);
     }
 
-//TODO: Write tests for this
+    /**
+     * Rounds this fraction down to an integer. Note that negative numbers round 
+     * down to the ceiling (not the floor) of the absolute value multiplied by 
+     * &minus;1.
+     * @return This fraction rounded down to an integer. For example, if this 
+     * fraction is <sup>22</sup>&frasl;<sub>7</sub>, the result is 3. If this 
+     * fraction is &minus;<sup>1</sup>&frasl;<sub>2</sub>, the result is 
+     * &minus;1, not 0. If this fraction is already an integer, the result of 
+     * this function may or may not be a fresh new instance; that is an 
+     * implementation detail that may change without notice.
+     */
     public Fraction roundDown() {
-        return this.negate();
+        if (this.denominator == 1L) {
+            return this;
+        } else {
+            long remainder = mod(this.numerator, this.denominator);
+            long numer = this.numerator - remainder;
+            return new Fraction(numer, this.denominator);
+        }
     }
 
     /**
@@ -247,7 +264,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     
 //TODO: Write tests for this
     public Fraction roundUp() {
-        return this;
+        return this.reciprocal();
     }
 
     /**
