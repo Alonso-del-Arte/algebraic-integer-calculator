@@ -608,6 +608,15 @@ public class FractionTest {
         }
     }
     
+    @Test
+    public void testRoundUpNotNeededTacitParam() {
+        int numer = randomNumber(Short.MAX_VALUE);
+        Fraction expected = new Fraction(numer);
+        Fraction actual = expected.roundUp();
+        String message = expected.toString() + " is already rounded up";
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the conformDown function, of the Fraction class.
      */
