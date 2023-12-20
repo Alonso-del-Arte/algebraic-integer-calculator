@@ -330,7 +330,7 @@ public class Fraction implements Comparable<Fraction>, Serializable {
         }
         Fraction unitFraction = new Fraction(1, denom);
         Fraction division = this.dividedBy(unitFraction);
-        long propNumer = (long) Math.floor(division.getNumericApproximation());
+        long propNumer = division.roundDown().numerator;
         while (euclideanGCD(propNumer, denom) > 1) {
             propNumer--;
         }
