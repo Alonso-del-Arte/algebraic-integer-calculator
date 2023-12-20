@@ -221,7 +221,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     /**
      * Rounds this fraction down to an integer. Note that negative numbers round 
      * down to the ceiling (not the floor) of the absolute value multiplied by 
-     * &minus;1.
+     * &minus;1. If you need to round down by some other interval, like halves 
+     * or quarters, use {@link #roundDown(fractions.Fraction) 
+     * roundDown(Fraction)}.
      * @return This fraction rounded down to an integer. For example, if this 
      * fraction is <sup>22</sup>&frasl;<sub>7</sub>, the result is 3. If this 
      * fraction is &minus;<sup>1</sup>&frasl;<sub>2</sub>, the result is 
@@ -241,7 +243,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * to the range of <code>int</code>.
      * @param interval The interval to round down by. Preferably a unit 
      * fraction, but this is not required. For example, 
-     * <sup>1</sup>&frasl;<sub>10</sub>.
+     * <sup>1</sup>&frasl;<sub>10</sub>. To round down to an integer, you can 
+     * use a fraction equal to 1, or better yet use {@link #roundDown()} without 
+     * a parameter.
      * @return The fraction rounded down. For example, 
      * <sup>73</sup>&frasl;<sub>100</sub> rounded down to the nearest tenth 
      * would be <sup>7</sup>&frasl;<sub>10</sub>.
@@ -258,7 +262,8 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     /**
      * Rounds this fraction up to an integer. Note that negative numbers round 
      * up to the floor (not the ceiling) of the absolute value multiplied by 
-     * &minus;1.
+     * &minus;1. To round up by some other interval, like thirds or fifths, use 
+     * {@link #roundUp(fractions.Fraction) roundUp(Fraction)}.
      * @return This fraction rounded down to an integer. For example, if this 
      * fraction is <sup>22</sup>&frasl;<sub>7</sub>, the result is 4. If this 
      * fraction is &minus;<sup>1</sup>&frasl;<sub>2</sub>, the result is 0, not 
@@ -281,7 +286,9 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * overflow checking is provided. Therefore it's best to limit denominators 
      * to the range of <code>int</code>.
      * @param interval The interval to round up by. Preferably a unit fraction,  
-     * but this is not required. For example, <sup>1</sup>&frasl;<sub>10</sub>.
+     * but this is not required. For example, <sup>1</sup>&frasl;<sub>10</sub>. 
+     * To round up to an integer, you can use a fraction equal to 1, or better 
+     * yet use {@link #roundUp()} without a parameter.
      * @return The fraction rounded up. For example, 
      * <sup>73</sup>&frasl;<sub>100</sub> rounded up to the nearest tenth 
      * would be <sup>8</sup>&frasl;<sub>10</sub> = 
