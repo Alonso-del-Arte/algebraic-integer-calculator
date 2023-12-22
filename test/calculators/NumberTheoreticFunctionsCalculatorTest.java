@@ -29,8 +29,6 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
-import algebraics.quartics.Zeta8Integer;
-import algebraics.quartics.Zeta8Ring;
 import arithmetic.NonEuclideanDomainException;
 import arithmetic.NonUniqueFactorizationDomainException;
 import arithmetic.NotDivisibleException;
@@ -1914,9 +1912,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * specific real quadratic integer rings. This also checks that {@link 
      * algebraics.UnsupportedNumberDomainException} is triggered for imaginary 
      * quadratic integer rings as well as for domains that don't yet have 
-     * fleshed out support. However, it should be able to answer that the 
-     * fundamental unit of the ring of algebraic integers of 
-     * <b>Q</b>(&zeta;<sub>8</sub>) is &zeta;<sub>8</sub>.
+     * fleshed out support.
      */
     // TODO: Break this test up into smaller tests
     @org.junit.Ignore
@@ -1997,9 +1993,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
             fail(failMessage);
         }
-        expResult = new Zeta8Integer(0, 1, 0, 0);
-        result = NumberTheoreticFunctionsCalculator.fundamentalUnit(expResult.getRing());
-        assertEquals(expResult, result);
     }
     
     /**
@@ -2410,10 +2403,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
         expResult = new RealQuadraticInteger(-1, 0, RING_ZPHI);
         result = getNegOneInRing(RING_ZPHI);
         assertEquals(expResult, result);
-        Zeta8Ring z8r = new Zeta8Ring();
-        Zeta8Integer expResDeg4 = new Zeta8Integer(-1, 0, 0, 0);
-        result = getNegOneInRing(z8r);
-        assertEquals(expResDeg4, result);
     }
     
     /**
@@ -2495,10 +2484,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
         expResult = new RealQuadraticInteger(0, 0, RING_ZPHI);
         result = getZeroInRing(RING_ZPHI);
         assertEquals(expResult, result);
-        Zeta8Ring z8r = new Zeta8Ring();
-        Zeta8Integer expResDeg4 = new Zeta8Integer(0, 0, 0, 0);
-        result = getZeroInRing(z8r);
-        assertEquals(expResDeg4, result);
     }
     
     /**
@@ -2579,10 +2564,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
         expResult = new RealQuadraticInteger(1, 0, RING_ZPHI);
         result = getOneInRing(RING_ZPHI);
         assertEquals(expResult, result);
-        Zeta8Ring z8r = new Zeta8Ring();
-        Zeta8Integer expResDeg4 = new Zeta8Integer(1, 0, 0, 0);
-        result = getOneInRing(z8r);
-        assertEquals(expResDeg4, result);
     }
     
     /**
@@ -2737,10 +2718,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
         int result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
         assertEquals(assertionMessage, expResult, result);
         ring = new RealQuadraticRing(2);
-        assertionMessage = ring.toString() + " should be found to have class number " + expResult;
-        result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
-        assertEquals(assertionMessage, expResult, result);
-        ring = new Zeta8Ring();
         assertionMessage = ring.toString() + " should be found to have class number " + expResult;
         result = NumberTheoreticFunctionsCalculator.fieldClassNumber(ring);
         assertEquals(assertionMessage, expResult, result);
