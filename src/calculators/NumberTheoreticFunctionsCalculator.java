@@ -26,8 +26,6 @@ import algebraics.quadratics.QuadraticInteger;
 import algebraics.quadratics.QuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
-import algebraics.quartics.Zeta8Integer;
-import algebraics.quartics.Zeta8Ring;
 import arithmetic.Arithmeticable;
 import arithmetic.NonEuclideanDomainException;
 import arithmetic.NonUniqueFactorizationDomainException;
@@ -150,12 +148,6 @@ public class NumberTheoreticFunctionsCalculator {
      */
     public static final RealQuadraticInteger GOLDEN_RATIO 
             = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
-    
-    /**
-     * The number &zeta;<sub>8</sub> = (&radic;2)/2 + (&radic;&minus;2)/2, 
-     * principal square root of the imaginary unit <i>i</i>.
-     */
-    public static final Zeta8Integer ZETA_8 = new Zeta8Integer(0, 1, 0, 0);
     
     // TODO: Better algorithm so as to not need units cache
     private static final HashMap<IntegerRing, AlgebraicInteger> UNITS_CACHE 
@@ -704,7 +696,6 @@ public class NumberTheoreticFunctionsCalculator {
         if (ring instanceof RealQuadraticRing) {
             return isReQuadRUFD((RealQuadraticRing) ring);
         }
-        if (ring instanceof Zeta8Ring) return true;
         String excMsg = "The domain " + ring.toASCIIString() 
                 + " is not yet supported for UFD determination";
         throw new UnsupportedNumberDomainException(excMsg, ring);
@@ -1670,9 +1661,6 @@ public class NumberTheoreticFunctionsCalculator {
                 return realQuadUnitFind((RealQuadraticRing) ring);
             }
         }
-        if (ring instanceof Zeta8Ring) {
-            return ZETA_8;
-        }
         if (ring == null) {
             String excMsg = "Null ring has no fundamental unit";
             throw new NullPointerException(excMsg);
@@ -1752,11 +1740,7 @@ public class NumberTheoreticFunctionsCalculator {
      * this would be 10 + <i>i</i>, which also has a norm of 101 but an angle of 
      * approximately 0.09966865249 (roughly 5.71 degrees).
      * @throws UnsupportedNumberDomainException Thrown when called upon a number
-     * from a type of ring that is not fully supported yet. For example, as of 
-     * 2018, this program has limited support for quartic integers such as those 
-     * of the ring of algebraic integers of <b>Q</b>(&zeta;<sub>8</sub>), so 
-     * asking to place &minus;1 + (&zeta;<sub>8</sub>)<sup>3</sup> would 
-     * probably trigger this exception.
+     * from a type of ring that is not fully supported yet.
      */
     public static AlgebraicInteger placeInPrimarySector(AlgebraicInteger num) {
         if (num.abs() == 0) {
@@ -1861,9 +1845,6 @@ public class NumberTheoreticFunctionsCalculator {
         if (ring instanceof QuadraticRing) {
             return QuadraticInteger.apply(-1, 0, (QuadraticRing) ring);
         }
-        if (ring instanceof Zeta8Ring) {
-            return new Zeta8Integer(-1, 0, 0, 0);
-        }
         if (ring == null) {
             String excMsg = "Null ring does not contain the number -1";
             throw new NullPointerException(excMsg);
@@ -1876,9 +1857,6 @@ public class NumberTheoreticFunctionsCalculator {
     public static AlgebraicInteger getZeroInRing(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
             return QuadraticInteger.apply(0, 0, (QuadraticRing) ring);
-        }
-        if (ring instanceof Zeta8Ring) {
-            return new Zeta8Integer(0, 0, 0, 0);
         }
         if (ring == null) {
             String excMsg = "Null ring does not contain the number 0";
@@ -1901,9 +1879,6 @@ public class NumberTheoreticFunctionsCalculator {
     public static AlgebraicInteger getOneInRing(IntegerRing ring) {
         if (ring instanceof QuadraticRing) {
             return QuadraticInteger.apply(1, 0, (QuadraticRing) ring);
-        }
-        if (ring instanceof Zeta8Ring) {
-            return new Zeta8Integer(1, 0, 0, 0);
         }
         if (ring == null) {
             String excMsg = "Null ring does not contain the number 1";
@@ -2004,9 +1979,6 @@ public class NumberTheoreticFunctionsCalculator {
                 CLASS_NUMBERS_CACHE.put(ring, h);
                 return h;
             }
-        }
-        if (ring instanceof Zeta8Ring) {
-            return 1;
         }
         String excMsg = "Class number function not yet supported for " 
                 + ring.toASCIIString();
