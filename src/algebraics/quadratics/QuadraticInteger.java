@@ -36,6 +36,8 @@ import java.util.Objects;
  */
 public abstract class QuadraticInteger implements AlgebraicInteger, 
         Arithmeticable<QuadraticInteger>, Serializable {
+    
+    private static final Fraction ONE_HALF = new Fraction(1, 2);
 
     protected final int regPartMult;
     protected final int surdPartMult;
@@ -1169,14 +1171,46 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                 (int) divDenom);
     }
     
-    // STUB TO FAIL THE FIRST TEST
     @Override
     public QuadraticInteger mod(QuadraticInteger divisor) {
         if (!this.quadRing.equals(divisor.quadRing)) {
             String excMsg = "STUB TO FAIL THE FIRST CROSS DOMAIN TEST";
             throw new ArrayIndexOutOfBoundsException(excMsg);
         }
-        return apply(0, 0, this.quadRing);
+        long divDenom = (long) (divisor.norm() * (long) this.denominator 
+                * (long) divisor.denominator);
+        Fraction divRegFract = new Fraction((long) this.regPartMult 
+                * (long) divisor.regPartMult - (long) this.surdPartMult 
+                * (long) divisor.surdPartMult * (long) this.quadRing.radicand, 
+                divDenom);
+        Fraction divSurdFract = new Fraction((long) this.surdPartMult 
+                * (long) divisor.regPartMult - (long) this.regPartMult 
+                        * (long) divisor.surdPartMult, divDenom);
+        boolean divisibleFlag = divRegFract.getDenominator() 
+                == divSurdFract.getDenominator();
+        int minDisallowedDenom = 2;
+        if (this.quadRing.d1mod4) {
+            minDisallowedDenom = 3;
+        }
+        divisibleFlag = divisibleFlag && (divRegFract.getDenominator() 
+                < minDisallowedDenom);
+        if (divisibleFlag) {
+            return apply(0, 0, this.quadRing);
+        } else {
+            if (minDisallowedDenom == 3) {
+                divRegFract = divRegFract.roundDown(ONE_HALF);
+                divSurdFract = divSurdFract.conformDown(divRegFract
+                        .getDenominator());
+            } else {
+                divRegFract = divRegFract.roundDown();
+                divSurdFract = divSurdFract.roundDown();
+            }
+            QuadraticInteger division = apply((int) divRegFract.getNumerator(), 
+                    (int) divSurdFract.getNumerator(), this.quadRing, 
+                    (int) divRegFract.getDenominator());
+            QuadraticInteger product = division.times(divisor);
+            return this.minus(product);
+        }
     }
     
     // STUB TO FAIL THE FIRST TEST
