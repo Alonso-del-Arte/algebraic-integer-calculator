@@ -23,7 +23,6 @@ import arithmetic.NotDivisibleException;
 import static calculators.EratosthenesSieve.listPrimes;
 import static calculators.EratosthenesSieve.randomOddPrime;
 import static calculators.EratosthenesSieve.randomPrimeOtherThan;
-import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
@@ -1311,27 +1310,26 @@ public class QuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
-    private int chooseSquarefree1Mod4() {
-        int choice = 4 * (randomNumber(512) + 8) + 1;
-        while (!isSquareFree(choice)) choice += 4;
-        return choice;
-    }
-    
     @Test
     public void testMod() {
         System.out.println("mod");
-        int d = chooseSquarefree1Mod4();
+        int propD = randomSquarefreeNumber(1024);
+        int d = (propD == 1) ? 1027 : propD;
         QuadraticRing ring = new RealQuadraticRing(d);
-        int expReg = 2 * randomNumber(5) + 1;
-        int a = 2 * d * d + expReg;
-        QuadraticInteger dividend = new RealQuadraticInteger(a, 1, ring, 2);
+        int denom = (d % 4 == 1) ? 2 : 1;
+        int potModReg = 2 * randomNumber(5) + 1;
+        int a = 2 * d * d + potModReg;
+        QuadraticInteger dividend = new RealQuadraticInteger(a, 1, ring, denom);
         QuadraticInteger divisor = new RealQuadraticInteger(0, 1, ring);
-        QuadraticInteger expected = new RealQuadraticInteger(expReg, 1, ring, 
-                2);
-        QuadraticInteger actual = dividend.mod(divisor);
+        QuadraticInteger remainder = dividend.mod(divisor);
+        QuadraticInteger multiple = dividend.minus(remainder);
+        long actual = multiple.mod(divisor).norm();
         String message = dividend.toString() + " modulo " + divisor.toString() 
-                + " should be " + expected.toString();
-        assertEquals(message, expected, actual);
+                + " is said to be " + remainder.toString() + ", hence " 
+                + dividend.toString() + " minus " + remainder.toString() 
+                + " which equals " + multiple.toString() + " should be 0 mod " 
+                + divisor.toString();
+        assertEquals(message, 0L, actual);
     }
     
     /**
