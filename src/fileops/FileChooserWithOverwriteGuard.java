@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2023 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -22,8 +22,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
- * Just a simple tweak on JFileChooser so that it asks before overwriting an 
- * existing file. This is done simply by overriding 
+ * Just a simple tweak on <code>JFileChooser</code> so that it asks before 
+ * overwriting an existing file. This is done simply by overriding 
  * <code>JFileChooser.approveSelection()</code>.
  * @author Alonso del Arte, based on the tutorial at 
  * http://www.thepcwizard.in/2013/05/complete-guide-to-jfilechooser.html
@@ -40,16 +40,17 @@ public class FileChooserWithOverwriteGuard extends JFileChooser {
                     JOptionPane.YES_NO_CANCEL_OPTION);
             switch (confResp) {
                 case JOptionPane.YES_OPTION:
-                    super.approveSelection();
+//                    super.approveSelection();
                 case JOptionPane.NO_OPTION:
-                    return;
+                    super.approveSelection();
+//                    return;
                 case JOptionPane.CLOSED_OPTION:
                 case JOptionPane.CANCEL_OPTION:
-                    this.cancelSelection();
-                    return;
+//                    this.cancelSelection();
+//                    return;
             }
         }
-        super.approveSelection();
+//        super.approveSelection();
     }
     
 }
