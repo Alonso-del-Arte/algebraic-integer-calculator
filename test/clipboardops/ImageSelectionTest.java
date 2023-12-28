@@ -132,7 +132,10 @@ public class ImageSelectionTest {
             } catch (UnsupportedFlavorException ufe) {
                 System.out.println(msgPart 
                         + " correctly caused UnsupportedFlavorException");
-                System.out.println("\"" + ufe.getMessage() + "\"");
+                String expected = flavor.getHumanPresentableName();
+                String actual = ufe.getMessage();
+                assertEquals(expected, actual);
+                System.out.println("\"" + actual + "\"");
             } catch (RuntimeException re) {
                 String message = msgPart + " should not have caused " 
                         + re.getClass().getName(); 
