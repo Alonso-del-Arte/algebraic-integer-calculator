@@ -68,7 +68,7 @@ public class ImageSelection implements Transferable {
     public Image getTransferData(DataFlavor flavor) 
             throws UnsupportedFlavorException, IOException {
         if (!flavor.equals(DataFlavor.imageFlavor)) {
-            throw new UnsupportedFlavorException(DataFlavor.allHtmlFlavor);
+            throw new UnsupportedFlavorException(flavor);
         }
         return this.img;
     }
