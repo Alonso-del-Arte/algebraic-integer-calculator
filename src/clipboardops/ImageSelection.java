@@ -71,7 +71,7 @@ public class ImageSelection implements Transferable {
 //            throw new UnsupportedFlavorException(this.FLAV[0]);
 //        }
 //        this.clipboardOwnershipFlag = true;
-        return this.img;
+        return "SORRY";// this.img;
     }
     
     /**
