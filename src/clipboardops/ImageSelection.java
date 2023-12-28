@@ -67,10 +67,9 @@ public class ImageSelection implements Transferable {
     @Override
     public Image getTransferData(DataFlavor flavor) 
             throws UnsupportedFlavorException, IOException {
-//        if (!flavor.equals(this.FLAV[0])) {
-//            throw new UnsupportedFlavorException(this.FLAV[0]);
-//        }
-//        this.clipboardOwnershipFlag = true;
+        if (!flavor.equals(DataFlavor.imageFlavor)) {
+            throw new UnsupportedFlavorException(DataFlavor.allHtmlFlavor);
+        }
         return this.img;
     }
     
