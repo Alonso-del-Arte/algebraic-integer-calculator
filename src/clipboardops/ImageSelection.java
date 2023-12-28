@@ -24,30 +24,32 @@ import java.io.IOException;
 
 /**
  * This is like <code>StringSelection</code>, but for images drawn using AWT and 
- * Swing. This class would be immutable but for the clipboard ownership status.
+ * Swing. This class is immutable, but an earlier version that also implemented 
+ * <code>ClipboardOwner</code> was not. Another caveat is that the 
+ * <code>Image</code> class is very much mutable.
  * @author Alonso del Arte, based on a tutorial at ProgramCreek.com (the 
  * specific page I was looking at seems to have been moved).
  */
 public class ImageSelection implements Transferable {
     
-    private final Image img;
+    private final Image heldImage;
     
-    private final DataFlavor[] FLAVOR_ARRAY = {DataFlavor.imageFlavor};
+    private static final DataFlavor[] FLAVOR_ARRAY = {DataFlavor.imageFlavor};
     
     /**
      * Gives a list of "data flavors" supported by this class.
-     * @return An array containing just one element: {@link 
-     * DataFlavor#imageFlavor}.
+     * @return An array containing just one element: 
+     * <code>DataFlavor.imageFlavor</code>.
      */
     @Override
     public DataFlavor[] getTransferDataFlavors() {
-        return this.FLAVOR_ARRAY;
+        return FLAVOR_ARRAY;
     }
 
     /**
      * Determines whether a given "data flavor" is supported by this class.
      * @param flavor The flavor for which a determination is needed.
-     * @return True if the flavor is {@link DataFlavor#imageFlavor}, false 
+     * @return True if the flavor is <code>DataFlavor.imageFlavor</code>, false 
      * otherwise.
      */
     @Override
@@ -56,12 +58,13 @@ public class ImageSelection implements Transferable {
     }
 
     /**
-     * Retrieves the data stored by the instance of this class.
-     * @param flavor The expected "data flavor," preferably {@link 
-     * DataFlavor#imageFlavor}.
-     * @return An {@link Image} presented as an {@link Object}.
-     * @throws UnsupportedFlavorException Thrown if the flavor is not {@link 
-     * DataFlavor#imageFlavor}.
+     * Retrieves the data stored by this image selection. It may be necessary to 
+     * cast the return value to <code>Image</code>.
+     * @param flavor The expected "data flavor," preferably 
+     * <code>DataFlavor.imageFlavor</code>.
+     * @return An <code>Image</code> presented as an <code>Object</code>.
+     * @throws UnsupportedFlavorException Thrown if the flavor is not 
+     * <code>DataFlavor.imageFlavor</code>.
      * @throws IOException Thrown if some malfunction prevents retrieval.
      */
     @Override
@@ -70,7 +73,7 @@ public class ImageSelection implements Transferable {
         if (!flavor.equals(DataFlavor.imageFlavor)) {
             throw new UnsupportedFlavorException(flavor);
         }
-        return this.img;
+        return this.heldImage;
     }
     
     /**
@@ -80,7 +83,7 @@ public class ImageSelection implements Transferable {
      * <code>ImageSelection</code> object.
      */
     public ImageSelection(Image image) {
-        this.img = image;
+        this.heldImage = image;
     }
     
 }
