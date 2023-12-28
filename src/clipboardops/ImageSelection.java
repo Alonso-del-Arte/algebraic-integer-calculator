@@ -65,13 +65,13 @@ public class ImageSelection implements Transferable {
      * @throws IOException Thrown if some malfunction prevents retrieval.
      */
     @Override
-    public Object getTransferData(DataFlavor flavor) 
+    public Image getTransferData(DataFlavor flavor) 
             throws UnsupportedFlavorException, IOException {
 //        if (!flavor.equals(this.FLAV[0])) {
 //            throw new UnsupportedFlavorException(this.FLAV[0]);
 //        }
 //        this.clipboardOwnershipFlag = true;
-        return "SORRY";// this.img;
+        return this.img;
     }
     
     /**
