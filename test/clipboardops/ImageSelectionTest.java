@@ -23,10 +23,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.swing.JPanel;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -39,12 +35,12 @@ public class ImageSelectionTest {
     private static final BufferedImage IMAGE;
     
     static {
-        TestImagePanel panel = new TestImagePanel();
+        TestImagePanel imageContainer = new TestImagePanel();
         IMAGE = new BufferedImage(TestImagePanel.PANEL_WIDTH, 
                 TestImagePanel.PANEL_HEIGHT, BufferedImage.TYPE_INT_RGB);
         final Graphics2D g = IMAGE.createGraphics();
-        panel.paint(g);
-        panel.closePanel();
+        imageContainer.paint(g);
+        imageContainer.closePanel();
     }
     
     @SuppressWarnings("deprecation")
@@ -67,8 +63,8 @@ public class ImageSelectionTest {
 
     /**
      * Test of the isDataFlavorSupported function, of the ImageSelection class. 
-     * Only {@link DataFlavor#imageFlavor} should register as supported, the 
-     * others should not.
+     * Only DataFlavor.imageFlavor should register as supported, the others 
+     * should not.
      */
     @Test
     public void testIsDataFlavorSupported() {
@@ -89,13 +85,13 @@ public class ImageSelectionTest {
     
     /**
      * Another test of the isDataFlavorSupported function, of the ImageSelection 
-     * class. Only {@link DataFlavor#imageFlavor} should register as supported,  
-     * the others should not. That includes the deprecated {@link 
-     * DataFlavor#plainTextFlavor}, which, however, has not been marked for 
+     * class. Only DataFlavor.imageFlavor should register as supported, the 
+     * others should not. That includes the deprecated 
+     * DataFlavor.plainTextFlavor, which, however, has not been marked for 
      * removal.
      */
     @Test
-    public void testDataFlavorSupportedNotSupported() {
+    public void testUnsupportedDataFlavors() {
         for (DataFlavor flavor : UNSUPPORTED_FLAVORS) {
             checkFlavorNotSupported(flavor);
         }
@@ -109,7 +105,7 @@ public class ImageSelectionTest {
         System.out.println("getTransferData");
         ImageSelection sel = new ImageSelection(IMAGE);
         try {
-            Object actual = sel.getTransferData(DataFlavor.imageFlavor);
+            Image actual = sel.getTransferData(DataFlavor.imageFlavor);
             assertEquals(IMAGE, actual);
         } catch (UnsupportedFlavorException | IOException e) {
             String message = e.getClass().getName() 
