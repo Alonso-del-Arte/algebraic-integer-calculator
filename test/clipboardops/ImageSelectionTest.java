@@ -24,6 +24,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.JPanel;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -36,11 +39,12 @@ public class ImageSelectionTest {
     private static final BufferedImage IMAGE;
     
     static {
-        JPanel panel = new TestImagePanel();
+        TestImagePanel panel = new TestImagePanel();
         IMAGE = new BufferedImage(TestImagePanel.PANEL_WIDTH, 
                 TestImagePanel.PANEL_HEIGHT, BufferedImage.TYPE_INT_RGB);
         final Graphics2D g = IMAGE.createGraphics();
         panel.paint(g);
+        panel.closePanel();
     }
     
     @SuppressWarnings("deprecation")
