@@ -18,9 +18,11 @@ package clipboardops;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import javax.swing.JPanel;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -30,7 +32,20 @@ import static org.junit.Assert.*;
  */
 public class ImageSelectionTest {
     
-    private static BufferedImage image;
+    private static final BufferedImage IMAGE;
+    
+    static {
+        JPanel panel = new TestImagePanel();
+        IMAGE = new BufferedImage(TestImagePanel.PANEL_WIDTH, 
+                TestImagePanel.PANEL_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        final Graphics2D g = IMAGE.createGraphics();
+        panel.paint(g);
+    }
+    
+    private static final DataFlavor[] UNSUPPORTED_FLAVORS 
+            = {DataFlavor.allHtmlFlavor, DataFlavor.fragmentHtmlFlavor, 
+                DataFlavor.javaFileListFlavor, DataFlavor.selectionHtmlFlavor, 
+                DataFlavor.stringFlavor, DataFlavor.plainTextFlavor};
     
     /**
      * Test of the getTransferDataFlavors function, of the ImageSelection class.
@@ -38,7 +53,7 @@ public class ImageSelectionTest {
     @Test
     public void testGetTransferDataFlavors() {
         System.out.println("getTransferDataFlavors");
-        ImageSelection sel = new ImageSelection(image);
+        ImageSelection sel = new ImageSelection(IMAGE);
         DataFlavor[] expecteds = {DataFlavor.imageFlavor};
         DataFlavor[] actuals = sel.getTransferDataFlavors();
         assertArrayEquals(expecteds, actuals);
@@ -52,7 +67,7 @@ public class ImageSelectionTest {
     @Test
     public void testIsDataFlavorSupported() {
         System.out.println("isDataFlavorSupported");
-        ImageSelection sel = new ImageSelection(image);
+        ImageSelection sel = new ImageSelection(IMAGE);
         String msg = "Data flavor " 
                 + DataFlavor.imageFlavor.getHumanPresentableName() 
                 + " should be supported";
@@ -60,7 +75,7 @@ public class ImageSelectionTest {
     }
     
     private static void checkFlavorNotSupported(DataFlavor flavor) {
-        ImageSelection sel = new ImageSelection(image);
+        ImageSelection sel = new ImageSelection(IMAGE);
         String msg = "Data flavor " + flavor.getHumanPresentableName() 
                 + " should not be supported";
         assert !sel.isDataFlavorSupported(flavor) : msg;
@@ -76,11 +91,7 @@ public class ImageSelectionTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testDataFlavorSupportedNotSupported() {
-        DataFlavor[] unsupportedFlavors = {DataFlavor.allHtmlFlavor, 
-            DataFlavor.fragmentHtmlFlavor, DataFlavor.javaFileListFlavor, 
-            DataFlavor.selectionHtmlFlavor, DataFlavor.stringFlavor, 
-            DataFlavor.plainTextFlavor};
-        for (DataFlavor flavor : unsupportedFlavors) {
+        for (DataFlavor flavor : UNSUPPORTED_FLAVORS) {
             checkFlavorNotSupported(flavor);
         }
     }
@@ -91,15 +102,15 @@ public class ImageSelectionTest {
     @Test
     public void testGetTransferData() {
         System.out.println("getTransferData");
-        ImageSelection sel = new ImageSelection(image);
+        ImageSelection sel = new ImageSelection(IMAGE);
         try {
             Object actual = sel.getTransferData(DataFlavor.imageFlavor);
-            assertEquals(image, actual);
+            assertEquals(IMAGE, actual);
         } catch (UnsupportedFlavorException | IOException e) {
             String message = e.getClass().getName() 
                     + " shouldn't have happened with image flavor";
             fail(message);
         }
     }
-
+    
 }
