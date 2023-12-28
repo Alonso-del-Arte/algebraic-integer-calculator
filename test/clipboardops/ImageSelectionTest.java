@@ -19,6 +19,7 @@ package clipboardops;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -42,6 +43,7 @@ public class ImageSelectionTest {
         panel.paint(g);
     }
     
+    @SuppressWarnings("deprecation")
     private static final DataFlavor[] UNSUPPORTED_FLAVORS 
             = {DataFlavor.allHtmlFlavor, DataFlavor.fragmentHtmlFlavor, 
                 DataFlavor.javaFileListFlavor, DataFlavor.selectionHtmlFlavor, 
@@ -88,7 +90,6 @@ public class ImageSelectionTest {
      * DataFlavor#plainTextFlavor}, which, however, has not been marked for 
      * removal.
      */
-    @SuppressWarnings("deprecation")
     @Test
     public void testDataFlavorSupportedNotSupported() {
         for (DataFlavor flavor : UNSUPPORTED_FLAVORS) {
@@ -113,4 +114,35 @@ public class ImageSelectionTest {
         }
     }
     
+    /**
+     * Another test of the getTransferData function, of the ImageSelection 
+     * class. Using the wrong data flavor should cause an exception.
+     */
+    @Test
+    public void testGetTransferDataRejectsWrongFlavor() {
+        ImageSelection sel = new ImageSelection(IMAGE);
+        for (DataFlavor flavor : UNSUPPORTED_FLAVORS) {
+            String msgPart = "Trying to get image data with flavor " 
+                    + flavor.toString();
+            try {
+                Image improper = sel.getTransferData(flavor);
+                String message = msgPart + " should not have given " 
+                        + improper.toString();
+                fail(message);
+            } catch (UnsupportedFlavorException ufe) {
+                System.out.println(msgPart 
+                        + " correctly caused UnsupportedFlavorException");
+                System.out.println("\"" + ufe.getMessage() + "\"");
+            } catch (RuntimeException re) {
+                String message = msgPart + " should not have caused " 
+                        + re.getClass().getName(); 
+                fail(message);
+            } catch (IOException ioe) {
+                String message = msgPart 
+                        + " should not have caused IOException"; 
+                fail(message);
+            }
+        }
+    }
+
 }
