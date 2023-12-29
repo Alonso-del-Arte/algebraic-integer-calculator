@@ -1561,15 +1561,15 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
 
     @Test
-    public void testNextLowestSquarefree() {
-        System.out.println("nextLowestSquarefree");
+    public void testNextHighestSquarefree() {
+        System.out.println("nextHighestSquarefree");
         int stop = squarefreesList.size() - 1;
         int n = 1;
         for (int index = 1; index < stop; index++) {
             int expected = squarefreesList.get(index);
             while (n < expected) {
-                int actual = nextLowestSquarefree(n);
-                String message = "Next lowest squarefree number after " + n 
+                int actual = nextHighestSquarefree(n);
+                String message = "Next highest squarefree number after " + n 
                         + " expected to be " + expected;
                 assertEquals(message, expected, actual);
                 n++;
