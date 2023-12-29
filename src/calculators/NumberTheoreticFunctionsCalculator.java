@@ -1272,9 +1272,28 @@ public class NumberTheoreticFunctionsCalculator {
         return 0;
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives the next lowest squarefree number after a given number. No overflow 
+     * checking is provided.
+     * @param n The number for which to get the next lowest squarefree number. 
+     * Need not itself be squarefree. Examples: 4751, 4752, 4753. These examples 
+     * factorize as 4751, 2<sup>4</sup> &times; 3<sup>3</sup> &times; 11 and 
+     * 7<sup>2</sup> &times; 97, respectively.
+     * @return The next lowest squarefree number. It will be different from 
+     * <code>n</code> if <code>n</code> happens to itself be squarefree. For the 
+     * three examples given above, the result would be 4754, which factorizes as 
+     * 2 &times; 2377. If <code>n</code> happens to be 
+     * <code>Integer.MAX_VALUE - 2</code>, <code>Integer.MAX_VALUE - 1</code> or 
+     * <code>Integer.MAX_VALUE</code>, the result will be incorrectly given as 
+     * <code>Integer.MIN_VALUE + 1</code>, which is wrong; the correct result is 
+     * just outside the range of <code>int</code> (namely 2147483649).
+     */
     public static int nextHighestSquarefree(int n) {
-        return 0;
+        int num = n;
+        do {
+            num++;
+        } while (!isSquareFree(num));
+        return num;
     }
     
     /**
