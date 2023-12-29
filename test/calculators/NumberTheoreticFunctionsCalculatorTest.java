@@ -72,8 +72,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * {@link #setUpClass() setUpClass()} will generate a List of the first few 
      * consecutive primes. This constant determines how long that list will be. 
      * For example, if it's 1000, setUpClass() will generate a list of the 
-     * primes between 1 and 1000. It should not be greater than {@link 
-     * Integer#MAX_VALUE}.
+     * primes between 1 and 1000. It should not be greater than 
+     * <code>Integer.MAX_VALUE</code>. Preferably not prime or even squarefree.
      */
     public static final int PRIME_LIST_THRESHOLD = 1000;
     
@@ -178,6 +178,23 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    private static void setUpSquarefreeList() {
+        int initialCapacity = 3 * PRIME_LIST_THRESHOLD / 4;
+        squarefreesList = new ArrayList<>(initialCapacity);
+        squarefreesList.add(1);
+        for (int n = 2; n < PRIME_LIST_THRESHOLD; n++) {
+            boolean noSquareDivisorFound = true;
+            int square = 4;
+            int increment = 5;
+            while (noSquareDivisorFound && square < PRIME_LIST_THRESHOLD) {
+                noSquareDivisorFound = n % square != 0;
+                square += increment;
+                increment += 2;
+            }
+            if (noSquareDivisorFound) squarefreesList.add(n);
+        }
+    }
+    
     private static void setUpFibonacciList() {
         int initialCapacity = 50;
         fibonacciList = new ArrayList<>(initialCapacity);
@@ -239,6 +256,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @BeforeClass
     public static void setUpClass() {
         setUpPrimeList();
+        setUpSquarefreeList();
         setUpFibonacciList();
         setUpHeegnerList();
     }
