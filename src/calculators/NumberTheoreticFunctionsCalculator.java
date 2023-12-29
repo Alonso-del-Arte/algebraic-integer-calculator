@@ -1267,6 +1267,14 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
+    private static int nextSquarefree(int n, int direction) {
+        int num = n;
+        do {
+            num += direction;
+        } while (!isSquareFree(num));
+        return num;
+    }
+    
     /**
      * Gives the next lowest squarefree number after a given number. No overflow 
      * checking is provided.
@@ -1284,11 +1292,7 @@ public class NumberTheoreticFunctionsCalculator {
      * <code>int</code> (namely &minus;2147483649).
      */
     public static int nextLowestSquarefree(int n) {
-        int num = n;
-        do {
-            num--;
-        } while (!isSquareFree(num));
-        return num;
+        return nextSquarefree(n, -1);
     }
     
     /**
@@ -1307,11 +1311,7 @@ public class NumberTheoreticFunctionsCalculator {
      * just outside the range of <code>int</code> (namely 2147483649).
      */
     public static int nextHighestSquarefree(int n) {
-        int num = n;
-        do {
-            num++;
-        } while (!isSquareFree(num));
-        return num;
+        return nextSquarefree(n, 1);
     }
     
     /**
