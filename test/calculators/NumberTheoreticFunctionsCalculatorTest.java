@@ -144,82 +144,63 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
-    /**
-     * Sets up a list of the first few consecutive primes, the first few 
-     * composite numbers, the first few Fibonacci numbers and the Heegner 
-     * "companion primes." This provides most of what is needed for the tests.
-     */
-    @BeforeClass
-    public static void setUpClass() {
-        /* First, to generate a list of the first few consecutive primes, using 
-        the sieve of Eratosthenes. */
-        int threshold, halfThreshold;
-        if (PRIME_LIST_THRESHOLD < 0) {
-            threshold = (-1) * PRIME_LIST_THRESHOLD;
-        } else {
-            threshold = PRIME_LIST_THRESHOLD;
-        }
-        halfThreshold = threshold / 2;
-        primesList = new ArrayList<>();
-        primesList.add(2); // Add 2 as a special case
+    private static void setUpPrimeList() {
+        int halfThreshold = PRIME_LIST_THRESHOLD / 2;
+        primesList = new ArrayList<>(PRIME_LIST_THRESHOLD / 5);
+        primesList.add(2);
         boolean[] primeFlags = new boolean[halfThreshold];
         for (int i = 0; i < halfThreshold; i++) {
-            primeFlags[i] = true; // Presume all odd numbers prime for now
+            primeFlags[i] = true;
         }
         int currPrime = 3;
         int twiceCurrPrime, currIndex;
-        while (currPrime < threshold) {
+        while (currPrime < PRIME_LIST_THRESHOLD) {
             primesList.add(currPrime);
             twiceCurrPrime = 2 * currPrime;
-            for (int j = currPrime * currPrime; j < threshold; 
+            for (int j = currPrime * currPrime; j < PRIME_LIST_THRESHOLD; 
                     j += twiceCurrPrime) {
-                currIndex = (j - 3)/2;
+                currIndex = (j - 3) / 2;
                 primeFlags[currIndex] = false;
             }
             do {
                 currPrime += 2;
-                currIndex = (currPrime - 3)/2;
+                currIndex = (currPrime - 3) / 2;
             } while (currIndex < (halfThreshold - 1) && !primeFlags[currIndex]);
         }
         primesListLength = primesList.size();
-        /* Now to make a list of composite numbers, from 4 up to and perhaps 
-           including PRIME_LIST_THRESHOLD. */
-        compositesList = new ArrayList<>();
+        compositesList = new ArrayList<>(PRIME_LIST_THRESHOLD 
+                - primesListLength);
         for (int c = 4; c < PRIME_LIST_THRESHOLD; c += 2) {
             compositesList.add(c);
-            if (!primeFlags[c/2 - 1]) {
+            if (!primeFlags[c / 2 - 1]) {
                 compositesList.add(c + 1);
             }
         }
-        System.out.println("setUpClass() has generated a list of the first " 
-                + primesListLength + " consecutive primes");
-        System.out.println("prime(" + primesListLength + ") = " 
-                + primesList.get(primesListLength - 1));
-        System.out.println("There are " + (PRIME_LIST_THRESHOLD 
-                - (primesListLength + 1)) + " composite numbers up to " 
-                + PRIME_LIST_THRESHOLD);
-        // And now to make a list of Fibonacci numbers
-        fibonacciList = new ArrayList<>();
+    }
+    
+    private static void setUpFibonacciList() {
+        int initialCapacity = 50;
+        fibonacciList = new ArrayList<>(initialCapacity);
         fibonacciList.add(0);
         fibonacciList.add(1);
-        threshold = (Integer.MAX_VALUE - 3)/4; // Repurposing this variable
-        currIndex = 2; // Also repurposing this one
+        int threshold = (Integer.MAX_VALUE - 3) / 4;
+        int currIndex = 2;
         int currFibo = 1;
         while (currFibo < threshold) {
-            currFibo = fibonacciList.get(currIndex - 2) + fibonacciList.get(currIndex - 1);
+            currFibo = fibonacciList.get(currIndex - 2) 
+                    + fibonacciList.get(currIndex - 1);
             fibonacciList.add(currFibo);
             currIndex++;
         }
-        currIndex--; // Step one back to index last added Fibonacci number
-        System.out.println("setUpClass() has generated a list of the first " + fibonacciList.size() + " Fibonacci numbers.");
-        System.out.println("Fibonacci(" + currIndex + ") = " + fibonacciList.get(currIndex));
-        /* And last but not least, to make what I'm calling, for lack of a 
-           better term, "the Heegner companion primes." */
-        int absD, currDiff, currCompCand, currSqrIndex, currSqrDMult;
+        currIndex--;
+    }
+    
+    private static void setUpHeegnerList() {
+        int absD, currDiff, currCompCand, currSqrIndex, currSqrDMult, currPrime;
         boolean numNotFoundYet;
         for (int d = 0; d < HEEGNER_NUMBERS.length; d++) {
             absD = (-1) * HEEGNER_NUMBERS[d];
-            currIndex = 0;
+            int currIndex = 0;
             do {
                 currPrime = primesList.get(currIndex);
                 currIndex++;
@@ -232,7 +213,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 while (currDiff > 0) {
                     currSqrDMult = absD * currSqrIndex * currSqrIndex;
                     currDiff = currCompCand - currSqrDMult;
-                    if (Math.sqrt(currDiff) == Math.floor(Math.sqrt(currDiff))) {
+                    if (Math.sqrt(currDiff) 
+                            == Math.floor(Math.sqrt(currDiff))) {
                         currDiff = 0;
                     }
                     currSqrIndex++;
@@ -246,11 +228,19 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
             HEEGNER_COMPANION_PRIMES[d] = currPrime;
         }
-        System.out.println("setUpClass() has generated a list of \"Heegner companion primes\": ");
-        for (int dReport = 0; dReport < NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS.length; dReport++) {
-            System.out.print(HEEGNER_COMPANION_PRIMES[dReport] + " for " + NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[dReport] + ", ");
-        }
-        System.out.println();
+    }
+    
+    /**
+     * Sets up a list of the first few consecutive primes, the first few 
+     * composite numbers, the first few Fibonacci numbers and the Heegner 
+     * "companion primes," for lack of a better term. This provides most of what 
+     * is needed for the tests.
+     */
+    @BeforeClass
+    public static void setUpClass() {
+        setUpPrimeList();
+        setUpFibonacciList();
+        setUpHeegnerList();
     }
     
     /**
@@ -1556,6 +1546,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public void testNextLowestSquarefree() {
         System.out.println("nextLowestSquarefree");
         fail("RESUME WORK HERE");
+        int stop = squarefreesList.size() - 1;
+        int curr;
+        int next;
+        for (int i = 0; i < stop; i++) {
+            //
+        }
     }
     
     /**
