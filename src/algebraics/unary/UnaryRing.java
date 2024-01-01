@@ -34,7 +34,7 @@ class UnaryRing implements IntegerRing {
 
     @Override
     public int getMaxAlgebraicDegree() {
-        return Integer.MIN_VALUE;
+        return 1;
     }
 
     @Override
