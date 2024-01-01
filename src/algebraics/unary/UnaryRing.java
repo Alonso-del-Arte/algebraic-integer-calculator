@@ -54,7 +54,7 @@ class UnaryRing implements IntegerRing {
 
     @Override
     public String toASCIIString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "Z";
     }
 
     @Override
