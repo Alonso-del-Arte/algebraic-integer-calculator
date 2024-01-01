@@ -862,7 +862,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
            non-UFDs */
         int re;
         for (int iterDiscr = -6; iterDiscr > -200; iterDiscr--) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 r = new ImaginaryQuadraticRing(iterDiscr);
                 re = -iterDiscr + 1;
                 z = new ImaginaryQuadraticInteger(re, 0, r);
@@ -982,7 +982,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
            domain Z[sqrt(d)] for squarefree negative d = 3 mod 4. But (1 + 
            sqrt(d))^2 should not be, nor the complexConjugate of that number. */
         for (int iterDiscr = -5; iterDiscr > -200; iterDiscr -= 4) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscr);
                 currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing);
                 assertionMessage = currQuadrInt.toString() + " should have been found to not be prime.";
@@ -1002,7 +1002,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
         }
         for (int iterDiscrOQ = -7; iterDiscrOQ > -200; iterDiscrOQ -= 4) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscrOQ)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscrOQ)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
                 currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing, 2);
                 assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
@@ -1021,7 +1021,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
         }
         for (int discrR = 10; discrR < 200; discrR += 10) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(discrR)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(discrR)) {
                 currRing = new RealQuadraticRing(discrR);
                 currQuadrInt = new RealQuadraticInteger(0, 1, currRing);
                 assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
@@ -1092,7 +1092,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
         }
         for (int discrNonUFDIm = -5; discrNonUFDIm > -200; discrNonUFDIm -= 4) {
-            if (isSquareFree(discrNonUFDIm)) {
+            if (isSquarefree(discrNonUFDIm)) {
                 currRing = new ImaginaryQuadraticRing(discrNonUFDIm);
                 currInt = new ImaginaryQuadraticInteger(2, 0, currRing);
                 assertionMessage = "2 in " + currRing.toString() + " should be found to be irreducible";
@@ -1102,7 +1102,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
         }
         for (int discrNonUFDRe = 10; discrNonUFDRe < 200; discrNonUFDRe += 5) {
-            if (isSquareFree(discrNonUFDRe)) {
+            if (isSquarefree(discrNonUFDRe)) {
                 currRing = new RealQuadraticRing(discrNonUFDRe);
                 for (int p = 3; p < 20; p += 2) {
                     if (isPrime(p)) {
@@ -1550,13 +1550,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
         for (int i = 0; i < primesListLength - 1; i++) {
             number = primesList.get(i) * primesList.get(i + 1); // pq
             msg = number + shouldBeMsg;
-            assert isSquareFree(number) : msg;
+            assert isSquarefree(number) : msg;
             number *= primesList.get(i); // (p^2)q
             msg = number + shouldNotBeMsg;
-            assert !isSquareFree(number) : msg;
+            assert !isSquarefree(number) : msg;
             number /= primesList.get(i + 1); // p^2
             msg = number + shouldNotBeMsg;
-            assert !isSquareFree(number) : msg;
+            assert !isSquarefree(number) : msg;
         }
     }
 

@@ -450,7 +450,7 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * square other than 1.
      */
     public QuadraticRing(int d) {
-        if (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) {
+        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
             String excMsg = "Squarefree integer required for parameter d, " + d 
                     + " is not squarefree";
             throw new IllegalArgumentException(excMsg);

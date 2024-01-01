@@ -1244,7 +1244,7 @@ public class NumberTheoreticFunctionsCalculator {
      * return false. Note that 1 is considered to be squarefree. Therefore, for 
      * num = 1, this function should return true.
      */
-    public static boolean isSquareFree(int num) {
+    public static boolean isSquarefree(int num) {
         switch (num) {
             case -1:
             case 1:
@@ -1271,7 +1271,7 @@ public class NumberTheoreticFunctionsCalculator {
         int num = n;
         do {
             num += direction;
-        } while (!isSquareFree(num));
+        } while (!isSquarefree(num));
         return num;
     }
     
@@ -1375,7 +1375,7 @@ public class NumberTheoreticFunctionsCalculator {
             case 1:
                 return 1;
             default:
-                if (isSquareFree(num)) {
+                if (isSquarefree(num)) {
                     List<Integer> prFacts = primeFactors(num);
                     if (prFacts.get(0) == -1) {
                         prFacts.remove(0);
@@ -2051,7 +2051,7 @@ public class NumberTheoreticFunctionsCalculator {
             bound *= -1;
         }
         int choice = RANDOM.nextInt(bound);
-        while (!isSquareFree(choice)) {
+        while (!isSquarefree(choice)) {
             choice++;
         }
         return choice;
@@ -2072,9 +2072,9 @@ public class NumberTheoreticFunctionsCalculator {
             String excMsg = "Modulus m must not be 0";
             throw new ArithmeticException(excMsg);
         }
-        if (!isSquareFree(m)) {
+        if (!isSquarefree(m)) {
             int gcd = (int) euclideanGCD(m, n);
-            if (!isSquareFree(gcd)) {
+            if (!isSquarefree(gcd)) {
                 String excMsg = "Given that gcd(" + m + ", " + n + ") = " + gcd 
                         + ", there is no squarefree number congruent to " + n 
                         + " mod " + m;
@@ -2082,7 +2082,7 @@ public class NumberTheoreticFunctionsCalculator {
             }
         }
         int choice = m * RANDOM.nextInt(4096) + n;
-        while (!isSquareFree(choice)) {
+        while (!isSquarefree(choice)) {
             choice += m;
         }
         return choice;
@@ -2104,7 +2104,7 @@ public class NumberTheoreticFunctionsCalculator {
         int choice;
         do {
             choice = RANDOM.nextInt(bound);
-        } while (choice == n || !isSquareFree(choice));
+        } while (choice == n || !isSquarefree(choice));
         return choice;
     }
     

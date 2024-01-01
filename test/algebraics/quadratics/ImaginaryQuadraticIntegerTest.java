@@ -163,7 +163,7 @@ public class ImaginaryQuadraticIntegerTest {
             int nextD = ringRandom.getRadicand();
             do {
                 nextD++;
-            } while (!(NumberTheoreticFunctionsCalculator.isSquareFree(nextD) 
+            } while (!(NumberTheoreticFunctionsCalculator.isSquarefree(nextD) 
                     && (nextD % 4 == -3)));
             ringRandomForAltTesting = new ImaginaryQuadraticRing(nextD);
             System.out.println(ringRandomForAltTesting.toASCIIString() 
@@ -2262,7 +2262,7 @@ public class ImaginaryQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = -1; iterDiscr > -200; iterDiscr--) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;
@@ -2396,7 +2396,7 @@ public class ImaginaryQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = -1; iterDiscr > -200; iterDiscr--) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;
@@ -2506,7 +2506,7 @@ public class ImaginaryQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = -1; iterDiscr > -200; iterDiscr--) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;
@@ -2620,7 +2620,7 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticInteger result;
         String failMessage;
         for (int iterDiscr = -1; iterDiscr > -100; iterDiscr--) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscr);
                 testDividend = new ImaginaryQuadraticInteger(-iterDiscr + 1, 0, currRing);
                 testDivisor = new ImaginaryQuadraticInteger(1, 1, currRing);
@@ -2655,7 +2655,7 @@ public class ImaginaryQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = -1; iterDiscr > -100; iterDiscr--) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;
@@ -2717,7 +2717,7 @@ public class ImaginaryQuadraticIntegerTest {
         int testDivRealPartMult;
         String failMessage;
         for (int iterDiscrOQ = -11; iterDiscrOQ > -84; iterDiscrOQ -= 8) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscrOQ)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscrOQ)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
                 testDivRealPartMult = (-iterDiscrOQ + 1)/4;
                 testDividend = new ImaginaryQuadraticInteger(testDivRealPartMult, 0, currRing);

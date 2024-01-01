@@ -25,7 +25,6 @@ import cacheops.LRUCache;
 import calculators.RealQuadResultsGrouping;
 
 import static calculators.NumberTheoreticFunctionsCalculator.fieldClassNumber;
-import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
 import static viewers.RingDisplay.PURELY_REAL_RING_CANVAS_DEFAULT_VERTIC_MAX;
 
 import java.awt.Graphics;
@@ -38,6 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 
 /**
  * A Swing component in which to display diagrams of prime numbers in various 
@@ -351,7 +351,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
         if (discr > MAXIMUM_RING_D) {
             discr = MAXIMUM_RING_D;
         }
-        while (!isSquareFree(discr) 
+        while (!isSquarefree(discr) 
                 && discr < MAXIMUM_RING_D) {
             discr++;
         }
@@ -378,7 +378,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
     @Override
     public void incrementDiscriminant() {
         int discr = ((QuadraticRing) this.diagramRing).getRadicand() + 1;
-        while (!isSquareFree(discr) 
+        while (!isSquarefree(discr) 
                 && discr < MAXIMUM_RING_D) {
             discr++;
         }
@@ -396,7 +396,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
     @Override
     public void decrementDiscriminant() {
         int discr = ((QuadraticRing) this.diagramRing).getRadicand() - 1;
-        while (!isSquareFree(discr) && discr > 2) {
+        while (!isSquarefree(discr) && discr > 2) {
             discr--;
         }
         if (discr == 2) {

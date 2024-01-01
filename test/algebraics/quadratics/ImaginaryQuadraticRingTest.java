@@ -360,7 +360,7 @@ public class ImaginaryQuadraticRingTest {
         double result;
         String msg;
         for (int i = startD; i % 29 != 0; i++) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(i)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(i)) {
                 ring = new ImaginaryQuadraticRing(i);
                 try {
                     result = ring.getRadSqrt();

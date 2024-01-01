@@ -21,7 +21,6 @@ import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
-import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 
@@ -35,6 +34,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 
 /**
  * Tests for the RealQuadraticInteger class, which defines objects that 
@@ -130,7 +130,7 @@ public class RealQuadraticIntegerTest {
             int nextD = ringRandom.getRadicand();
             do {
                 nextD++;
-            } while (!(isSquareFree(nextD) && (nextD % 4 == 1)));
+            } while (!(isSquarefree(nextD) && (nextD % 4 == 1)));
             ringRandomForAltTesting = new RealQuadraticRing(nextD);
             System.out.println(ringRandomForAltTesting.toASCIIString() 
                     + " has been chosen for testing alt toStrings");
@@ -1454,7 +1454,7 @@ public class RealQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new RealQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;
@@ -1628,7 +1628,7 @@ public class RealQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new RealQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;
@@ -1732,7 +1732,7 @@ public class RealQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new RealQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;
@@ -1859,7 +1859,7 @@ public class RealQuadraticIntegerTest {
         QuadraticInteger result;
         String failMessage;
         for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new RealQuadraticRing(iterDiscr);
                 testDividend = new RealQuadraticInteger(-iterDiscr + 1, 0, currRing);
                 testDivisor = new RealQuadraticInteger(1, 1, currRing);
@@ -1891,7 +1891,7 @@ public class RealQuadraticIntegerTest {
         int currDenom;
         String failMessage;
         for (int iterDiscr = 2; iterDiscr < 100; iterDiscr++) {
-            if (NumberTheoreticFunctionsCalculator.isSquareFree(iterDiscr)) {
+            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
                 currRing = new RealQuadraticRing(iterDiscr);
                 if (currRing.hasHalfIntegers()) {
                     currDenom = 2;

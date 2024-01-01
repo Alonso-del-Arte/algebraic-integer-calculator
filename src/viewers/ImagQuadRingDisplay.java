@@ -652,7 +652,7 @@ public final class ImagQuadRingDisplay extends RingDisplay {
         if (discr < MINIMUM_RING_D) {
             discr = MINIMUM_RING_D;
         }
-        while (!isSquareFree(discr) && discr > MINIMUM_RING_D) {
+        while (!isSquarefree(discr) && discr > MINIMUM_RING_D) {
             discr--;
         }
         repaintNeeded = (discr != currDiscr);
@@ -683,7 +683,7 @@ public final class ImagQuadRingDisplay extends RingDisplay {
     @Override
     public void incrementDiscriminant() {
         int discr = ((QuadraticRing) this.diagramRing).getRadicand() + 1;
-        while (!isSquareFree(discr) && discr < -1) {
+        while (!isSquarefree(discr) && discr < -1) {
             discr++;
         }
         if (discr == -1) {
@@ -705,7 +705,7 @@ public final class ImagQuadRingDisplay extends RingDisplay {
     @Override
     public void decrementDiscriminant() {
         int discr = ((QuadraticRing) this.diagramRing).getRadicand() - 1;
-        while (!isSquareFree(discr) && discr > (Integer.MIN_VALUE + 1)) {
+        while (!isSquarefree(discr) && discr > (Integer.MIN_VALUE + 1)) {
             discr--;
         }
         if (discr == MINIMUM_RING_D) {

@@ -45,7 +45,7 @@ public class QuadraticRingTest {
     public void testGetRadicand() {
         System.out.println("getRadicand");
         int d = RANDOM.nextInt();
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing ring = new QuadraticRingImpl(d);
         int expected = d;
         int actual = ring.getRadicand();
@@ -59,7 +59,7 @@ public class QuadraticRingTest {
     public void testGetAbsNegRad() {
         System.out.println("getAbsNegRad");
         int d = RANDOM.nextInt();
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing ring = new QuadraticRingImpl(d);
         int expected = Math.abs(d);
         int actual = ring.getAbsNegRad();
@@ -73,7 +73,7 @@ public class QuadraticRingTest {
     public void testGetAbsNegRadSqrt() {
         System.out.println("getAbsNegRadSqrt");
         int d = RANDOM.nextInt();
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing ring = new QuadraticRingImpl(d);
         double expected = Math.sqrt(Math.abs(d));
         double actual = ring.getAbsNegRadSqrt();
@@ -87,7 +87,7 @@ public class QuadraticRingTest {
     public void testGetPowerBasis() {
         System.out.println("getPowerBasis");
         int d = RANDOM.nextInt();
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing ring = new QuadraticRingImpl(d);
         Fraction one = new Fraction(1);
         Fraction[] ones = {one, one};
@@ -132,7 +132,7 @@ public class QuadraticRingTest {
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         int d = RANDOM.nextInt();
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing ring = new QuadraticRingImpl(d);
         assertEquals(2, ring.getMaxAlgebraicDegree());
     }
@@ -156,7 +156,7 @@ public class QuadraticRingTest {
     @Test
     public void testApplyRandomImaginary() {
         int d = -RANDOM.nextInt(4096) - 1;
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing expected = new ImaginaryQuadraticRing(d);
         QuadraticRing actual = QuadraticRing.apply(d);
         assertEquals(expected, actual);
@@ -165,7 +165,7 @@ public class QuadraticRingTest {
     @Test
     public void testApplyRandomReal() {
         int d = RANDOM.nextInt(4096) + 2;
-        while (!NumberTheoreticFunctionsCalculator.isSquareFree(d)) d++;
+        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing expected = new RealQuadraticRing(d);
         QuadraticRing actual = QuadraticRing.apply(d);
         assertEquals(expected, actual);

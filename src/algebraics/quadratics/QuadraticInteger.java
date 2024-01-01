@@ -875,7 +875,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
             }
             int prodRad = this.quadRing.radicand 
                     * multiplicand.quadRing.radicand;
-            if (!NumberTheoreticFunctionsCalculator.isSquareFree(prodRad)) {
+            if (!NumberTheoreticFunctionsCalculator.isSquarefree(prodRad)) {
                 int kernel = NumberTheoreticFunctionsCalculator.kernel(prodRad);
                 int coat = prodRad / kernel;
                 prodSurd *= coat;

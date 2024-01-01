@@ -29,7 +29,6 @@ import calculators.NumberTheoreticFunctionsCalculator;
 
 import static calculators.NumberTheoreticFunctionsCalculator.isIrreducible;
 import static calculators.NumberTheoreticFunctionsCalculator.isPrime;
-import static calculators.NumberTheoreticFunctionsCalculator.isSquareFree;
 import static calculators.NumberTheoreticFunctionsCalculator.RING_GAUSSIAN;
 import static calculators.NumberTheoreticFunctionsCalculator.primeFactors;
 
@@ -40,6 +39,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 
 /**
  * Tests for the NonUniqueFactorizationDomainException class. The purpose of 
@@ -416,7 +416,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         factorsList.add(number); // This and previous line just to avoid might not have been initialized errors
         boolean notUFDFlag;
         for (int r = -5; r > -100; r--) {
-            if (isSquareFree(r)) {
+            if (isSquarefree(r)) {
                 ring = new ImaginaryQuadraticRing(r);
                 zero = new ImaginaryQuadraticInteger(0, 0, ring);
                 negOne = new ImaginaryQuadraticInteger(-1, 0, ring);
@@ -516,7 +516,7 @@ public class NonUniqueFactorizationDomainExceptionTest {
         List<AlgebraicInteger> factorsList;
         boolean notUFDFlag;
         for (int r = 10; r < 75; r += 5) {
-            if (isSquareFree(r)) {
+            if (isSquarefree(r)) {
                 ring = new RealQuadraticRing(r);
                 zero = new RealQuadraticInteger(0, 0, ring);
                 negOne = new RealQuadraticInteger(-1, 0, ring);
