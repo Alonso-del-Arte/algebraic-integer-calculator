@@ -180,5 +180,9 @@ public class UnaryInteger implements AlgebraicInteger,
     public double angle() {
         return 0.0;
     }
+    
+    public UnaryInteger(int n) {
+        // TODO: Write tests for this
+    }
 
 }
