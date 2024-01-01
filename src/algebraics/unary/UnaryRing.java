@@ -39,7 +39,7 @@ class UnaryRing implements IntegerRing {
 
     @Override
     public boolean isPurelyReal() {
-        return false;
+        return true;
     }
 
     @Override
