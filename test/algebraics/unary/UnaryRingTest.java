@@ -31,4 +31,10 @@ public class UnaryRingTest {
         assertEquals(1, UnaryRing.Z.getMaxAlgebraicDegree());
     }
     
+    @Test
+    public void testIsPurelyReal() {
+        System.out.println("isPurelyReal");
+        assert UnaryRing.Z.isPurelyReal() : "Z should be purely real";
+    }
+    
 }
