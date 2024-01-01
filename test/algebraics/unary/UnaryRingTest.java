@@ -16,6 +16,9 @@
  */
 package algebraics.unary;
 
+import arithmetic.PowerBasis;
+import fractions.Fraction;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -35,6 +38,14 @@ public class UnaryRingTest {
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
         assert UnaryRing.Z.isPurelyReal() : "Z should be purely real";
+    }
+    
+    // TODO: Write tests for discriminant(), getPowerBasis()
+    
+    @Test
+    public void testToASCIIString() {
+        System.out.println("toASCIIString");
+        assertEquals("Z", UnaryRing.Z.toASCIIString());
     }
     
 }
