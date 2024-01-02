@@ -74,7 +74,7 @@ public interface IntegerRing {
     /**
      * Formats the ring's label as a <code>String</code> using ASCII characters 
      * only. It is strongly recommended that any implementations of this 
-     * interface also override {@link Object#toString}.
+     * interface also override <code>Object.toString()</code>.
      * @return A String. For example, for <b>Z</b>[&radic;2], this would be 
      * "Z[sqrt(2)]".
      */
@@ -85,7 +85,7 @@ public interface IntegerRing {
      * TeX document. Preferably should not use blackboard bold, for that there 
      * should be a call to {@link #toTeXStringBlackboardBold()} instead. It is 
      * strongly recommended that any implementations of this interface also 
-     * override {@link Object#toString}.
+     * override <code>Object.toString()</code>.
      * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
      * "\mathbf Z[\root 3 \of 2]".
      */
@@ -94,8 +94,8 @@ public interface IntegerRing {
     /**
      * Formats the ring's label as a <code>String</code> that can be used in a 
      * TeX document. This function should use blackboard bold whenever 
-     * applicable. It is strongly recommended that any implementations of this 
-     * interface also override {@link Object#toString}.
+     * applicable. A default implementation is provided that gives the same 
+     * result as {@link #toTeXString()}.
      * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
      * "\mathbb Z[\root 3 \of 2]".
      */
@@ -108,7 +108,7 @@ public interface IntegerRing {
      * HTML document. This should not use blackboard bold. For that, there 
      * should be a call to {@link #toHTMLStringBlackboardBold()}. It is strongly 
      * recommended that any implementations of this interface also override 
-     * {@link Object#toString}.
+     * <code>Object.toString()</code>.
      * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
      * "&lt;b&gt;Z&lt;/b&gt;[&amp;#8731;2]".
      */
@@ -117,21 +117,21 @@ public interface IntegerRing {
     /**
      * Formats the ring's label as a <code>String</code> that can be used in an 
      * HTML document. This function should use blackboard bold whenever 
-     * applicable. It is strongly recommended that any implementations of this 
-     * interface also override {@link Object#toString}.
+     * applicable. A default implementation is provided that gives the same 
+     * result as {@link #toHTMLString()}.
      * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
      * "&amp;#x2124;[&amp;#x221B;2]", which should display as 
      * "&#x2124;[&#x221B;2]".
      */
     default String toHTMLStringBlackboardBold() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return this.toHTMLString();
     }
     
     /**
      * Formats the ring's label as a <code>String</code> that could 
      * theoretically be used in an old MS-DOS file save dialog. It is strongly 
      * recommended that any implementations of this interface also override 
-     * {@link Object#toString}.
+     * <code>Object.toString()</code>.
      * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
      * "ZCBRT2".
      */
