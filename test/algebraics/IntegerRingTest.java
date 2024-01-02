@@ -42,6 +42,20 @@ public class IntegerRingTest {
         assertEquals(expected, actual);
     }
     
+    /**
+     * Test of the toHTMLStringBlackboardBold function of the IntegerRing 
+     * interface. The default implementation should give the same result as 
+     * {@link IntegerRing#toHTMLString()}.
+     */
+    @Test
+    public void testToHTMLStringBlackboardBold() {
+        System.out.println("toHTMLStringBlackboardBold");
+        IntegerRing ring = new MockRing();
+        String expected = ring.toHTMLString();
+        String actual = ring.toHTMLStringBlackboardBold();
+        assertEquals(expected, actual);
+    }
+    
     private static class MockRing implements IntegerRing {
 
         private static final Fraction[] FAKE_POWER_BASIS_FRACTIONS 
