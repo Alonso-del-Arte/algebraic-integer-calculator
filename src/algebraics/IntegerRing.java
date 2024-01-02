@@ -100,7 +100,7 @@ public interface IntegerRing {
      * "\mathbb Z[\root 3 \of 2]".
      */
     default String toTeXStringBlackboardBold() {
-        return "SORRY, NOT IMPLEMENTED YET";// this.toTeXString();
+        return this.toTeXString();
     }
     
     /**
