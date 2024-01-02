@@ -67,32 +67,6 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     public static final PowerBasis QUADRATIC_POWER_BASIS = new PowerBasis(ONES);
     
     /**
-     * Whether blackboard bold is preferred or not.
-     */
-    private static boolean preferenceForBlackboardBold = true;
-    
-    /**
-     * Query the setting of the preference for blackboard bold.
-     * @return True if blackboard bold is preferred, false if plain bold is 
-     * preferred.
-     */
-    public static boolean preferBlackboardBold() {
-        return preferenceForBlackboardBold;
-    }
-    
-    /**
-     * Set preference for blackboard bold or plain bold. This is only relevant 
-     * for the functions {@link #toTeXString() toTeXString()} and {@link 
-     * #toHTMLString() toHTMLString()}. The setting will be in effect until it 
-     * is changed or until the program ends.
-     * @param preference True if blackboard bold is preferred, false if plain 
-     * bold is preferred.
-     */
-    public static void preferBlackboardBold(boolean preference) {
-        preferenceForBlackboardBold = preference;
-    }
-    
-    /**
      * Indicates whether the ring has what are imprecisely called 
      * "half-integers," numbers like 3/2 + (&radic;&minus;19)/2.
      * @return True if the ring does have such integers, false otherwise. For 
@@ -260,13 +234,13 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     public String toTeXString() {
         String qSymbol;
         String zSymbol;
-        if (preferenceForBlackboardBold) {
+//        if (preferenceForBlackboardBold) {
             qSymbol = "\\mathbb Q";
             zSymbol = "\\mathbb Z";
-        } else {
-            qSymbol = "\\textbf Q";
-            zSymbol = "\\textbf Z";
-        }
+//        } else {
+//            qSymbol = "\\textbf Q";
+//            zSymbol = "\\textbf Z";
+//        }
         switch (this.radicand) {
             case -1:
                 return zSymbol + "[i]";
@@ -309,13 +283,13 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     public String toHTMLString() {
         String qSymbol;
         String zSymbol;
-        if (preferenceForBlackboardBold) {
+//        if (preferenceForBlackboardBold) {
             qSymbol = "\u211A"; // Double-struck capital Q
             zSymbol = "\u2124"; // Double-struck capital Z
-        } else {
-            qSymbol = "<b>Q</b>";
-            zSymbol = "<b>Z</b>";
-        }
+//        } else {
+//            qSymbol = "<b>Q</b>";
+//            zSymbol = "<b>Z</b>";
+//        }
         switch (this.radicand) {
             case -3:
                 return zSymbol + "[&omega;]";
