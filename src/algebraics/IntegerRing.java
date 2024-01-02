@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -72,37 +72,67 @@ public interface IntegerRing {
     PowerBasis getPowerBasis();
     
     /**
-     * Formats the ring's label as a String using ASCII characters only. It is 
-     * strongly recommended that any implementations of IntegerRing also 
-     * override {@link Object#toString}.
+     * Formats the ring's label as a <code>String</code> using ASCII characters 
+     * only. It is strongly recommended that any implementations of this 
+     * interface also override {@link Object#toString}.
      * @return A String. For example, for <b>Z</b>[&radic;2], this would be 
      * "Z[sqrt(2)]".
      */
     String toASCIIString();
     
     /**
-     * Formats the ring's label as a String that can be used in a TeX document. 
-     * It is strongly recommended that any implementations of IntegerRing also 
+     * Formats the ring's label as a <code>String</code> that can be used in a 
+     * TeX document. Preferably should not use blackboard bold, for that there 
+     * should be a call to {@link #toTeXStringBlackboardBold()} instead. It is 
+     * strongly recommended that any implementations of this interface also 
      * override {@link Object#toString}.
-     * @return A String. For example, for <b>Z</b>[&#8731;2], this might be 
-     * "\mathbb Z[\root 3 \of 2]".
+     * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
+     * "\mathbf Z[\root 3 \of 2]".
      */
     String toTeXString();
     
     /**
-     * Formats the ring's label as a String that can be used in an HTML 
-     * document. It is strongly recommended that any implementations of 
-     * IntegerRing also override {@link Object#toString}.
-     * @return A String. For example, for <b>Z</b>[&#8731;2], this might be 
-     * "<b>Z</b>[&#8731;2]".
+     * Formats the ring's label as a <code>String</code> that can be used in a 
+     * TeX document. This function should use blackboard bold whenever 
+     * applicable. It is strongly recommended that any implementations of this 
+     * interface also override {@link Object#toString}.
+     * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
+     * "\mathbb Z[\root 3 \of 2]".
+     */
+    default String toTeXStringBlackboardBold() {
+        return "SORRY, NOT IMPLEMENTED YET";// this.toTeXString();
+    }
+    
+    /**
+     * Formats the ring's label as a <code>String</code> that can be used in an 
+     * HTML document. This should not use blackboard bold. For that, there 
+     * should be a call to {@link #toHTMLStringBlackboardBold()}. It is strongly 
+     * recommended that any implementations of this interface also override 
+     * {@link Object#toString}.
+     * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
+     * "&lt;b&gt;Z&lt;/b&gt;[&amp;#8731;2]".
      */
     String toHTMLString();
     
     /**
-     * Formats the ring's label as a String that could theoretically be used in 
-     * an old MS-DOS file save dialog. It is strongly recommended that any 
-     * implementations of IntegerRing also override {@link Object#toString}.
-     * @return A String. For example, for <b>Z</b>[&#8731;2], this might be 
+     * Formats the ring's label as a <code>String</code> that can be used in an 
+     * HTML document. This function should use blackboard bold whenever 
+     * applicable. It is strongly recommended that any implementations of this 
+     * interface also override {@link Object#toString}.
+     * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
+     * "&amp;#x2124;[&amp;#x221B;2]", which should display as 
+     * "&#x2124;[&#x221B;2]".
+     */
+    default String toHTMLStringBlackboardBold() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    /**
+     * Formats the ring's label as a <code>String</code> that could 
+     * theoretically be used in an old MS-DOS file save dialog. It is strongly 
+     * recommended that any implementations of this interface also override 
+     * {@link Object#toString}.
+     * @return A symbol. For example, for <b>Z</b>[&#8731;2], this might be 
      * "ZCBRT2".
      */
     String toFilenameString();
