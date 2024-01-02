@@ -76,6 +76,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     public double getAbsNegRadSqrt() {
         return this.realRadSqrt;
     }
+    
+    @Override
+    public String toTeXString() {
+        return "\\mathbf Z[i]";
+    }
    
     /**
      * Constructs a new object representing an imaginary quadratic ring.
