@@ -18,6 +18,8 @@ package algebraics.quadratics;
 
 import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
 import fileops.PNGFileFilter;
 import fractions.Fraction;
 import viewers.ImagQuadRingDisplay;
@@ -148,54 +150,59 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of toTeXString method, of class ImaginaryQuadraticRing, inherited 
-     * from {@link QuadraticRing}. Note that the blackboard preference has an 
-     * effect on the output.
-     */@org.junit.Ignore//TODO: Rewrite this test
+     * Test of the toTeXString function, of the ImaginaryQuadraticRing class.
+     */
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-//        QuadraticRing.preferBlackboardBold(true);
-        String expected = "\\mathbb Z[i]";
-        String actual = RING_GAUSSIAN.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\mathbb Z[\\sqrt{-2}]";
-        actual = RING_ZI2.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\mathbb Z[\\omega]";
-        actual = RING_EISENSTEIN.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\mathcal O_{\\mathbb Q(\\sqrt{-7})}";
-        actual = RING_OQI7.toTeXString();
-        assertEquals(expected, actual);
-        if (ringRandomd1mod4) {
-            expected = "\\mathcal O_{\\mathbb Q(\\sqrt{" + randomDiscr + "})}";
-        } else {
-            expected = "\\mathbb Z[\\sqrt{" + randomDiscr + "}]";
-        }
-        actual = ringRandom.toTeXString();
-        assertEquals(expected, actual);
-//        QuadraticRing.preferBlackboardBold(false);
-        expected = "\\textbf Z[i]";
-        actual = RING_GAUSSIAN.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\textbf Z[\\sqrt{-2}]";
-        actual = RING_ZI2.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\textbf Z[\\omega]";
-        actual = RING_EISENSTEIN.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\mathcal O_{\\textbf Q(\\sqrt{-7})}";
-        actual = RING_OQI7.toTeXString();
-        assertEquals(expected, actual);
-        if (ringRandomd1mod4) {
-            expected = "\\mathcal O_{\\textbf Q(\\sqrt{" + randomDiscr + "})}";
-        } else {
-            expected = "\\textbf Z[\\sqrt{" + randomDiscr + "}]";
-        }
-        actual = ringRandom.toTeXString();
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "\\mathbf Z[" + d + "]";
+        String actual = ring.toTeXString();
         assertEquals(expected, actual);
     }
+    
+////        QuadraticRing.preferBlackboardBold(true);
+//        String expected = "\\mathbb Z[i]";
+//        String actual = RING_GAUSSIAN.toTeXString();
+//        assertEquals(expected, actual);
+//        expected = "\\mathbb Z[\\sqrt{-2}]";
+//        actual = RING_ZI2.toTeXString();
+//        assertEquals(expected, actual);
+//        expected = "\\mathbb Z[\\omega]";
+//        actual = RING_EISENSTEIN.toTeXString();
+//        assertEquals(expected, actual);
+//        expected = "\\mathcal O_{\\mathbb Q(\\sqrt{-7})}";
+//        actual = RING_OQI7.toTeXString();
+//        assertEquals(expected, actual);
+//        if (ringRandomd1mod4) {
+//            expected = "\\mathcal O_{\\mathbb Q(\\sqrt{" + randomDiscr + "})}";
+//        } else {
+//            expected = "\\mathbb Z[\\sqrt{" + randomDiscr + "}]";
+//        }
+//        actual = ringRandom.toTeXString();
+//        assertEquals(expected, actual);
+////        QuadraticRing.preferBlackboardBold(false);
+//        expected = "\\textbf Z[i]";
+//        actual = RING_GAUSSIAN.toTeXString();
+//        assertEquals(expected, actual);
+//        expected = "\\textbf Z[\\sqrt{-2}]";
+//        actual = RING_ZI2.toTeXString();
+//        assertEquals(expected, actual);
+//        expected = "\\textbf Z[\\omega]";
+//        actual = RING_EISENSTEIN.toTeXString();
+//        assertEquals(expected, actual);
+//        expected = "\\mathcal O_{\\textbf Q(\\sqrt{-7})}";
+//        actual = RING_OQI7.toTeXString();
+//        assertEquals(expected, actual);
+//        if (ringRandomd1mod4) {
+//            expected = "\\mathcal O_{\\textbf Q(\\sqrt{" + randomDiscr + "})}";
+//        } else {
+//            expected = "\\textbf Z[\\sqrt{" + randomDiscr + "}]";
+//        }
+//        actual = ringRandom.toTeXString();
+//        assertEquals(expected, actual);
+//    }
 
     /**
      * Test of toHTMLString method, of class ImaginaryQuadraticRing, inherited 
