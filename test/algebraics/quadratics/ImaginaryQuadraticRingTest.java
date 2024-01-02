@@ -133,6 +133,14 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expResult, result);
     }
     
+    @Test
+    public void testToTeXStringZI() {
+        System.out.println("toTeXString");
+        String expected = "\\mathbf Z[i]";
+        String actual = RING_GAUSSIAN.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toTeXString method, of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}. Note that the blackboard preference has an 
