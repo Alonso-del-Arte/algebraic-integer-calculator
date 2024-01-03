@@ -63,6 +63,11 @@ class UnaryRing implements IntegerRing {
     }
 
     @Override
+    public String toTeXStringBlackboardBold() {
+        return "\\mathbb Z";
+    }
+
+    @Override
     public String toHTMLString() {
         return "<b>SORRY, NOT IMPLEMENTED YET</b>";
     }
