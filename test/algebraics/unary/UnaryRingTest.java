@@ -66,4 +66,16 @@ public class UnaryRingTest {
         assertEquals("\\mathbb Z", UnaryRing.Z.toTeXStringBlackboardBold());
     }
     
+    @Test
+    public void testToHTMLString() {
+        System.out.println("toHTMLString");
+        assertEquals("<b>Z</b>", UnaryRing.Z.toHTMLString());
+    }
+    
+//    @Test
+//    public void testToTeXStringBlackboardBold() {
+//        System.out.println("toTeXStringBlackboardBold");
+//        assertEquals("\\mathbb Z", UnaryRing.Z.toTeXStringBlackboardBold());
+//    }
+    
 }
