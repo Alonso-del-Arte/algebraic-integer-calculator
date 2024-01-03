@@ -69,7 +69,7 @@ class UnaryRing implements IntegerRing {
 
     @Override
     public String toHTMLString() {
-        return "<b>SORRY, NOT IMPLEMENTED YET</b>";
+        return "<b>Z</b>";
     }
 
     @Override
