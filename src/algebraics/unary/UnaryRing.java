@@ -59,7 +59,7 @@ class UnaryRing implements IntegerRing {
 
     @Override
     public String toTeXString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "\\mathbf Z";
     }
 
     @Override
