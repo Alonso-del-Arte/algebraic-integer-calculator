@@ -54,4 +54,10 @@ public class UnaryRingTest {
         assertEquals("Z", UnaryRing.Z.toASCIIString());
     }
     
+    @Test
+    public void testToTeXString() {
+        System.out.println("toTeXString");
+        assertEquals("\\mathbf Z", UnaryRing.Z.toTeXString());
+    }
+    
 }
