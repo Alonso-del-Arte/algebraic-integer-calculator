@@ -60,4 +60,10 @@ public class UnaryRingTest {
         assertEquals("\\mathbf Z", UnaryRing.Z.toTeXString());
     }
     
+    @Test
+    public void testToTeXStringBlackboardBold() {
+        System.out.println("toTeXStringBlackboardBold");
+        assertEquals("\\mathbb Z", UnaryRing.Z.toTeXStringBlackboardBold());
+    }
+    
 }
