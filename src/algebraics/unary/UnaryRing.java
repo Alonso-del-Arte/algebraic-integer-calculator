@@ -21,8 +21,8 @@ import arithmetic.PowerBasis;
 import fractions.Fraction;
 
 /**
- * Represents the ring of integers of degree 1. Essentially this is another 
- * wrapper for <code>int</code> primitives.
+ * Represents the ring of integers of degree 1. Mathematicians notate this ring 
+ * as &#x2124; or <b>Z</b>.
  * @author Alonso del Arte
  */
 class UnaryRing implements IntegerRing {
@@ -44,7 +44,7 @@ class UnaryRing implements IntegerRing {
 
     @Override
     public int discriminant() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -64,7 +64,7 @@ class UnaryRing implements IntegerRing {
 
     @Override
     public String toHTMLString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "<b>SORRY, NOT IMPLEMENTED YET</b>";
     }
 
     @Override
