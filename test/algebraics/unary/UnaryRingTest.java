@@ -40,6 +40,12 @@ public class UnaryRingTest {
         assert UnaryRing.Z.isPurelyReal() : "Z should be purely real";
     }
     
+    @Test
+    public void testDiscriminant() {
+        System.out.println("discriminant");
+        assertEquals(1, UnaryRing.Z.discriminant());
+    }
+    
     // TODO: Write tests for discriminant(), getPowerBasis()
     
     @Test
