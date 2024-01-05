@@ -229,55 +229,62 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
-    /**
-     * Test of toHTMLString method, of class ImaginaryQuadraticRing, inherited 
-     * from {@link QuadraticRing}. Note that the blackboard preference has an 
-     * effect on the output.
-     */@org.junit.Ignore
     @Test
-    public void testToHTMLString() {
-        System.out.println("toHTMLString");
-//        QuadraticRing.preferBlackboardBold(true);
-        String expResult = "\u2124[<i>i</i>]";
-        String result = RING_GAUSSIAN.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "\u2124[&radic;-2]";
-        result = RING_ZI2.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "\u2124[&omega;]";
-        result = RING_EISENSTEIN.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "<i>O</i><sub>\u211A(&radic;(-7))</sub>";
-        result = RING_OQI7.toHTMLString();
-        assertEquals(expResult, result);
-        if (ringRandomd1mod4) {
-            expResult = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr + "))</sub>";
-        } else {
-            expResult = "\u2124[&radic;" + randomDiscr + "]";
-        }
-        result = ringRandom.toHTMLString();
-        assertEquals(expResult, result);
-//        QuadraticRing.preferBlackboardBold(false);
-        expResult = "<b>Z</b>[<i>i</i>]";
-        result = RING_GAUSSIAN.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "<b>Z</b>[&radic;-2]";
-        result = RING_ZI2.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "<b>Z</b>[&omega;]";
-        result = RING_EISENSTEIN.toHTMLString();
-        assertEquals(expResult, result);
-        expResult = "<i>O</i><sub><b>Q</b>(&radic;(-7))</sub>";
-        result = RING_OQI7.toHTMLString();
-        assertEquals(expResult, result);
-        if (ringRandomd1mod4) {
-            expResult = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr + "))</sub>";
-        } else {
-            expResult = "<b>Z</b>[&radic;" + randomDiscr + "]";
-        }
-        result = ringRandom.toHTMLString();
-        assertEquals(expResult, result);
+    public void testToHTMLStringZI() {
+        String expected = "<b>Z</b>[<i>i</i>]";
+        String actual = RING_GAUSSIAN.toHTMLString();
+        assertEquals(expected, actual);
     }
+    
+    //
+//     * Test of toHTMLString method, of class ImaginaryQuadraticRing, inherited 
+//     * from {@link QuadraticRing}. Note that the blackboard preference has an 
+//     * effect on the output.
+//     */@org.junit.Ignore
+//    @Test
+//    public void testToHTMLString() {
+//        System.out.println("toHTMLString");
+////        QuadraticRing.preferBlackboardBold(true);
+//        String expResult = "\u2124[<i>i</i>]";
+//        String result = RING_GAUSSIAN.toHTMLString();
+//        assertEquals(expResult, result);
+//        expResult = "\u2124[&radic;-2]";
+//        result = RING_ZI2.toHTMLString();
+//        assertEquals(expResult, result);
+//        expResult = "\u2124[&omega;]";
+//        result = RING_EISENSTEIN.toHTMLString();
+//        assertEquals(expResult, result);
+//        expResult = "<i>O</i><sub>\u211A(&radic;(-7))</sub>";
+//        result = RING_OQI7.toHTMLString();
+//        assertEquals(expResult, result);
+//        if (ringRandomd1mod4) {
+//            expResult = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr + "))</sub>";
+//        } else {
+//            expResult = "\u2124[&radic;" + randomDiscr + "]";
+//        }
+//        result = ringRandom.toHTMLString();
+//        assertEquals(expResult, result);
+////        QuadraticRing.preferBlackboardBold(false);
+//        expResult = "<b>Z</b>[<i>i</i>]";
+//        result = RING_GAUSSIAN.toHTMLString();
+//        assertEquals(expResult, result);
+//        expResult = "<b>Z</b>[&radic;-2]";
+//        result = RING_ZI2.toHTMLString();
+//        assertEquals(expResult, result);
+//        expResult = "<b>Z</b>[&omega;]";
+//        result = RING_EISENSTEIN.toHTMLString();
+//        assertEquals(expResult, result);
+//        expResult = "<i>O</i><sub><b>Q</b>(&radic;(-7))</sub>";
+//        result = RING_OQI7.toHTMLString();
+//        assertEquals(expResult, result);
+//        if (ringRandomd1mod4) {
+//            expResult = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr + "))</sub>";
+//        } else {
+//            expResult = "<b>Z</b>[&radic;" + randomDiscr + "]";
+//        }
+//        result = ringRandom.toHTMLString();
+//        assertEquals(expResult, result);
+//    }
 
     /**
      * Test of toFilenameString method, of class ImaginaryQuadraticRing, 
