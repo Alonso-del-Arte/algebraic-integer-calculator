@@ -110,6 +110,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
                 }
         }
     }
+    
+    @Override
+    public String toHTMLString() {
+        return "<b>Z</b>[<i>i</i>]";
+    }
    
     /**
      * Constructs a new object representing an imaginary quadratic ring.
