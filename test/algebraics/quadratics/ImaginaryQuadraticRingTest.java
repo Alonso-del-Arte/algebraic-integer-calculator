@@ -189,12 +189,12 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
-//    @Test
-//    public void testToTeXStringZOmega() {
-//        String expected = "\\mathbf Z[\\omega]";
-//        String actual = RING_EISENSTEIN.toTeXString();
-//        assertEquals(expected, actual);
-//    }
+    @Test
+    public void testToTeXStringBlackboardBoldZOmega() {
+        String expected = "\\mathbb Z[\\omega]";
+        String actual = RING_EISENSTEIN.toTeXStringBlackboardBold();
+        assertEquals(expected, actual);
+    }
     
     /**
      * Test of the toTeXString function, of the ImaginaryQuadraticRing class.
