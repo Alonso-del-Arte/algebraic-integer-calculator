@@ -85,7 +85,12 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
             case -3:
                 return "\\mathbf Z[\\omega]";
             default:
-                return "\\mathbf Z[" + this.radicand + "]";
+                if (this.radicand % 2 == 0) {
+                    return "\\mathbf Z[" + this.radicand + "]";
+                } else {
+                    return "\\mathcal O_{\\mathbf Q(\\sqrt{" + this.radicand 
+                            + "})}";
+                }
         }
     }
    
