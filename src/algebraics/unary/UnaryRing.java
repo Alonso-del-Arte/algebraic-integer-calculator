@@ -35,6 +35,12 @@ class UnaryRing implements IntegerRing {
     
     private static final Fraction[] DRAFT_POWER_BASIS_FRACTIONS 
             = {new Fraction(1, 2), new Fraction(1, 3)};
+    
+    private static final Fraction ONE = new Fraction(1);
+    
+    private static final Fraction[] MULTIPLICAND = {ONE};
+    
+    private static final PowerBasis BASIS = new PowerBasis(MULTIPLICAND);
 
     /**
      * Gives the maximum algebraic degree of numbers in this ring. For a nonzero 
@@ -67,10 +73,13 @@ class UnaryRing implements IntegerRing {
         return 1;
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives the power basis of the ring.
+     * @return Always 1.
+     */
     @Override
-    public PowerBasis getPowerBasis() {
-        return new PowerBasis(DRAFT_POWER_BASIS_FRACTIONS);
+    public final PowerBasis getPowerBasis() {
+        return BASIS;
     }
 
     /**
