@@ -93,6 +93,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
                 }
         }
     }
+    
+    @Override
+    public String toTeXStringBlackboardBold() {
+        return "\\mathbb Z[" + this.radicand + "]";
+    }
    
     /**
      * Constructs a new object representing an imaginary quadratic ring.
