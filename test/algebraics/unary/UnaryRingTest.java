@@ -46,7 +46,15 @@ public class UnaryRingTest {
         assertEquals(1, UnaryRing.Z.discriminant());
     }
     
-    // TODO: Write tests for discriminant(), getPowerBasis()
+    @Test
+    public void testGetPowerBasis() {
+        System.out.println("getPowerBasis");
+        Fraction one = new Fraction(1);
+        Fraction[] powerMultiplicands = {one};
+        PowerBasis expected = new PowerBasis(powerMultiplicands);
+        PowerBasis actual = UnaryRing.Z.getPowerBasis();
+        assertEquals(expected, actual);
+    }
     
     @Test
     public void testToASCIIString() {
