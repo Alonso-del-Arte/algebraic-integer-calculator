@@ -182,6 +182,19 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    /**
+     * Test of the toTeXString function, of the ImaginaryQuadraticRing class.
+     */
+    @Test
+    public void testToTeXStringBlackboardBold() {
+        System.out.println("toTeXStringBlackboardBold");
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "\\mathbb Z[" + d + "]";
+        String actual = ring.toTeXStringBlackboardBold();
+        assertEquals(expected, actual);
+    }
+    
 ////        QuadraticRing.preferBlackboardBold(true);
 //        String expected = "\\mathbb Z[i]";
 //        String actual = RING_GAUSSIAN.toTeXString();
