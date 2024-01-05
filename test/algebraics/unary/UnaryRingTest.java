@@ -80,6 +80,17 @@ public class UnaryRingTest {
         assertEquals("<b>Z</b>", UnaryRing.Z.toHTMLString());
     }
     
+    @Test
+    public void testToHTMLStringBlackboardBold() {
+        System.out.println("toHTMLStringBlackboardBold");
+        String expectedA = "&#x2124";
+        String expectedB = "&#8484";
+        String actual = UnaryRing.Z.toHTMLStringBlackboardBold();
+        String msg = "Function should give either \"" + expectedA + "\" or \"" 
+                + expectedB + "\", was \"" + actual + "\"";
+        assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
+    }
+    
 //    @Test
 //    public void testToTeXStringBlackboardBold() {
 //        System.out.println("toTeXStringBlackboardBold");
