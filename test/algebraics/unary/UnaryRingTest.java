@@ -91,10 +91,12 @@ public class UnaryRingTest {
         assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
     }
     
-//    @Test
-//    public void testToTeXStringBlackboardBold() {
-//        System.out.println("toTeXStringBlackboardBold");
-//        assertEquals("\\mathbb Z", UnaryRing.Z.toTeXStringBlackboardBold());
-//    }
+    @Test
+    public void testToFilenameString() {
+        System.out.println("toFilenameString");
+        String expected = UnaryRing.Z.toASCIIString();
+        String actual = UnaryRing.Z.toFilenameString();
+        assertEquals(expected, actual);
+    }
     
 }
