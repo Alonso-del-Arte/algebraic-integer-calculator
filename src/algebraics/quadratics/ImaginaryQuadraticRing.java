@@ -97,6 +97,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     @Override
     public String toTeXStringBlackboardBold() {
         if (this.radicand == -1) return "\\mathbb Z[i]";
+        if (this.radicand == -3) return "\\mathbb Z[\\omega]";
         return "\\mathbb Z[" + this.radicand + "]";
     }
    
