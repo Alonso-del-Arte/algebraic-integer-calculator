@@ -83,8 +83,8 @@ public class UnaryRingTest {
     @Test
     public void testToHTMLStringBlackboardBold() {
         System.out.println("toHTMLStringBlackboardBold");
-        String expectedA = "&#x2124";
-        String expectedB = "&#8484";
+        String expectedA = "&#x2124;";
+        String expectedB = "&#8484;";
         String actual = UnaryRing.Z.toHTMLStringBlackboardBold();
         String msg = "Function should give either \"" + expectedA + "\" or \"" 
                 + expectedB + "\", was \"" + actual + "\"";
