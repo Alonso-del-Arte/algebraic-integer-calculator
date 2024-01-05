@@ -127,6 +127,17 @@ class UnaryRing implements IntegerRing {
         return "<b>Z</b>";
     }
 
+    /**
+     * Formats the ring's label as a <code>String</code> that can be used in an 
+     * HTML document. Uses blackboard bold.
+     * @return Either "&amp;#x2124;" or "&amp;#8484;", both of which display as 
+     * "&#x2124;" in a Web browser.
+     */
+    @Override
+    public final String toHTMLStringBlackboardBold() {
+        return "&#x2124;";
+    }
+
     @Override
     public String toFilenameString() {
         return "NOT_IMPL.YET";
