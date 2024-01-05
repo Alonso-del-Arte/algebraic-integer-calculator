@@ -22,53 +22,99 @@ import fractions.Fraction;
 
 /**
  * Represents the ring of integers of degree 1. Mathematicians notate this ring 
- * as &#x2124; or <b>Z</b>.
+ * as &#x2124; or <b>Z</b>. This class has only one instance, {@link #Z}, and 
+ * the only constructor is class private. Almost all the functions are final.
  * @author Alonso del Arte
  */
 class UnaryRing implements IntegerRing {
     
+    /**
+     * The ring of algebraic integers of degree 1, notated <b>Z</b> or &#x2124;.
+     */
     public static final UnaryRing Z = new UnaryRing();
     
     private static final Fraction[] DRAFT_POWER_BASIS_FRACTIONS 
             = {new Fraction(1, 2), new Fraction(1, 3)};
 
+    /**
+     * Gives the maximum algebraic degree of numbers in this ring. For a nonzero 
+     * integer <i>n</i>, the minimum polynomial is <i>x</i> &minus; <i>n</i>, 
+     * and for 0 it's just <i>x</i>.
+     * @return Always 1.
+     */
     @Override
-    public int getMaxAlgebraicDegree() {
+    public final int getMaxAlgebraicDegree() {
         return 1;
     }
 
+    /**
+     * Indicates that this ring is purely real. There is only one purely 
+     * imaginary number in this ring, and that's 0, which is also technically 
+     * purely real.
+     * @return Always true.
+     */
     @Override
-    public boolean isPurelyReal() {
+    public final boolean isPurelyReal() {
         return true;
     }
 
+    /**
+     * Gives the discriminant of this ring.
+     * @return Always 1.
+     */
     @Override
-    public int discriminant() {
+    public final int discriminant() {
         return 1;
     }
 
+    // TODO: Write tests for this
     @Override
     public PowerBasis getPowerBasis() {
         return new PowerBasis(DRAFT_POWER_BASIS_FRACTIONS);
     }
 
+    /**
+     * Formats the ring's label as a <code>String</code> using ASCII characters 
+     * only.
+     * @return Always just "Z". 
+     */
     @Override
-    public String toASCIIString() {
+    public final String toASCIIString() {
         return "Z";
     }
 
+    /**
+     * Formats the ring's label as a <code>String</code> that can be used in a 
+     * TeX document. Does not use blackboard bold.
+     * @return Either "\mathbf Z" or "\mathbf{Z}", which should display as 
+     * "<b>Z</b>" in the output document, provided the TeX printer is configured 
+     * correctly.
+     */
     @Override
-    public String toTeXString() {
+    public final String toTeXString() {
         return "\\mathbf Z";
     }
 
+    /**
+     * Formats the ring's label as a <code>String</code> that can be used in a 
+     * TeX document. Uses blackboard bold.
+     * @return Either "\mathbb Z" or "\mathbb{Z}", which should display as 
+     * "&#x2124;" in the output document, provided the TeX printer is configured 
+     * correctly.
+     */
     @Override
-    public String toTeXStringBlackboardBold() {
+    public final String toTeXStringBlackboardBold() {
         return "\\mathbb Z";
     }
 
+    /**
+     * Formats the ring's label as a <code>String</code> that can be used in an 
+     * HTML document. Does not use blackboard bold.
+     * @return Something like "&lt;b&gt;Z&lt;/b&gt;", which should display as 
+     * "<b>Z</b>" in a Web browser.
+     */
     @Override
-    public String toHTMLString() {
+    public final String toHTMLString() {
         return "<b>Z</b>";
     }
 
