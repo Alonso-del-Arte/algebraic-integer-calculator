@@ -172,6 +172,16 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringD3Mod4() {
+        int propD = -randomSquarefreeNumberMod(1, 4);
+        int d = (propD == -1) ? -5 : propD;
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "\\mathbf Z[" + d + "]";
+        String actual = ring.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
 ////        QuadraticRing.preferBlackboardBold(true);
 //        String expected = "\\mathbb Z[i]";
 //        String actual = RING_GAUSSIAN.toTeXString();
