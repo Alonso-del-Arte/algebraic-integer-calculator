@@ -23,18 +23,16 @@ import fractions.Fraction;
 /**
  * Represents the ring of integers of degree 1. Mathematicians notate this ring 
  * as &#x2124; or <b>Z</b>. This class has only one instance, {@link #Z}, and 
- * the only constructor is class private. Almost all the functions are final.
+ * the only constructor is class private. All the functions are final, but this 
+ * is more for the sake of symbolism, since subclasses are not allowed.
  * @author Alonso del Arte
  */
-class UnaryRing implements IntegerRing {
+final class UnaryRing implements IntegerRing {
     
     /**
      * The ring of algebraic integers of degree 1, notated <b>Z</b> or &#x2124;.
      */
     public static final UnaryRing Z = new UnaryRing();
-    
-    private static final Fraction[] DRAFT_POWER_BASIS_FRACTIONS 
-            = {new Fraction(1, 2), new Fraction(1, 3)};
     
     private static final Fraction ONE = new Fraction(1);
     
@@ -138,9 +136,14 @@ class UnaryRing implements IntegerRing {
         return "&#x2124;";
     }
 
+    /**
+     * Formats the ring's label as a <code>String</code> that could 
+     * theoretically be used in an old MS-DOS file save dialog. 
+     * @return Always "Z", the same as {@link #toASCIIString()}.
+     */
     @Override
-    public String toFilenameString() {
-        return "NOT_IMPL.YET";
+    public final String toFilenameString() {
+        return this.toASCIIString();
     }
     
     private UnaryRing() {
