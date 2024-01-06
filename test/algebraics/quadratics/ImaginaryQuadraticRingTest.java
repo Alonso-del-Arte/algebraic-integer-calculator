@@ -287,6 +287,16 @@ public class ImaginaryQuadraticRingTest {
         assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
     }
     
+    @Test
+    public void testToHTMLStringBlackboardBoldZOmega() {
+        String expectedA = "&#x2124;[&omega;]";
+        String expectedB = "&#8484;[&omega;]";
+        String actual = RING_EISENSTEIN.toHTMLStringBlackboardBold();
+        String msg = "Function should give \"" + expectedA + "\" or \"" 
+                + expectedB + "\", was \"" + actual + "\"";
+        assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
+    }
+    
     // blackboard bold Q \u211A
 //     * Test of toHTMLString method, of class ImaginaryQuadraticRing, inherited 
 //     * from {@link QuadraticRing}. Note that the blackboard preference has an 
