@@ -243,6 +243,19 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    /**
+     * Test of the toHTMLString function, of the ImaginaryQuadraticRing class.
+     */
+    @Test
+    public void testToHTMLString() {
+        System.out.println("toHTMLString");
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "<b>Z</b>[&radic;" + d + "]";
+        String actual = ring.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
     //
 //     * Test of toHTMLString method, of class ImaginaryQuadraticRing, inherited 
 //     * from {@link QuadraticRing}. Note that the blackboard preference has an 
