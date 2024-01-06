@@ -119,11 +119,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
             case -3:
                 return "<b>Z</b>[&omega;]";
             default:
-                if (this.radicand % 2 == 0) {
-                    return "<b>Z</b>[&radic;&minus;" + this.absRadicand + "]";
-                } else {
+                if (this.d1mod4) {
                     return "<i>O</i><sub><b>Q</b>(&radic;(&minus;" 
                             + this.absRadicand + "))</sub>";
+                } else {
+                    return "<b>Z</b>[&radic;&minus;" + this.absRadicand + "]";
                 }
         }
     }
