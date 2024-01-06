@@ -27,7 +27,7 @@ import arithmetic.NotDivisibleException;
  * @author Alonso del Arte
  */
 public class UnaryInteger implements AlgebraicInteger, 
-        Arithmeticable<UnaryInteger> {
+        Arithmeticable<UnaryInteger>, Comparable<UnaryInteger> {
     
     // TODO: Write tests for this
     @Override
@@ -38,6 +38,18 @@ public class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public UnaryInteger plus(int addend) {
+        return this;
+    }
+
+    // TODO: Write tests for this
+    @Override
+    public UnaryInteger minus(UnaryInteger subtrahend) {
+        return this;
+    }
+
+    // TODO: Write tests for this
+    @Override
+    public UnaryInteger minus(int subtrahend) {
         return this;
     }
 
@@ -76,6 +88,12 @@ public class UnaryInteger implements AlgebraicInteger,
     @Override
     public UnaryInteger mod(int divisor) {
         return this;
+    }
+    
+    // TODO: Write tests for this
+    @Override
+    public int compareTo(UnaryInteger other) {
+        return 0;
     }
     
     // TODO: Write tests for this
@@ -148,19 +166,19 @@ public class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public double abs() {
-        return 0.0;
+        return Double.NaN;
     }
 
     // TODO: Write tests for this
     @Override
     public double getRealPartNumeric() {
-        return 0.0;
+        return Double.NEGATIVE_INFINITY;
     }
 
     // TODO: Write tests for this
     @Override
     public double getImagPartNumeric() {
-        return 0.0;
+        return Double.POSITIVE_INFINITY;
     }
 
     // TODO: Write tests for this
@@ -172,13 +190,13 @@ public class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public boolean isImApprox() {
-        return false;
+        return true;
     }
 
     // TODO: Write tests for this
     @Override
     public double angle() {
-        return 0.0;
+        return Math.PI / 128;
     }
     
     public UnaryInteger(int n) {
