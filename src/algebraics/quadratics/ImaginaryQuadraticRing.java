@@ -89,7 +89,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
                     return "\\mathcal O_{\\mathbf Q(\\sqrt{" + this.radicand 
                             + "})}";
                 } else {
-                    return "\\mathbf Z[" + this.radicand + "]";
+                    return "\\mathbf Z[\\sqrt{" + this.radicand + "}]";
                 }
         }
     }
@@ -106,7 +106,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
                     return "\\mathcal O_{\\mathbb Q(\\sqrt{" + this.radicand 
                             + "})}";
                 } else {
-                    return "\\mathbb Z[" + this.radicand + "]";
+                    return "\\mathbb Z[\\sqrt{" + this.radicand + "}]";
                 }
         }
     }
