@@ -130,6 +130,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toHTMLStringBlackboardBold() {
+        if (this.radicand == -3) return "&#x2124;[&omega;]";
         return "&#x2124;[<i>i</i>]";
     }
    
