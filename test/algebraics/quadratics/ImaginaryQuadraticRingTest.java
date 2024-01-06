@@ -236,6 +236,13 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringZOmega() {
+        String expected = "<b>Z</b>[&omega;]";
+        String actual = RING_EISENSTEIN.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
     //
 //     * Test of toHTMLString method, of class ImaginaryQuadraticRing, inherited 
 //     * from {@link QuadraticRing}. Note that the blackboard preference has an 
