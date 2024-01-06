@@ -251,7 +251,7 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("toHTMLString");
         int d = -randomSquarefreeNumberMod(2, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
-        String expected = "<b>Z</b>[&radic;" + d + "]";
+        String expected = "<b>Z</b>[&radic;&minus;" + (-d) + "]";
         String actual = ring.toHTMLString();
         assertEquals(expected, actual);
     }
