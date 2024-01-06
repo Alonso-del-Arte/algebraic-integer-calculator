@@ -157,7 +157,7 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("toTeXString");
         int d = -randomSquarefreeNumberMod(2, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
-        String expected = "\\mathbf Z[" + d + "]";
+        String expected = "\\mathbf Z[\\sqrt" + d + "]";
         String actual = ring.toTeXString();
         assertEquals(expected, actual);
     }
@@ -177,7 +177,7 @@ public class ImaginaryQuadraticRingTest {
         int propD = -randomSquarefreeNumberMod(1, 4);
         int d = (propD == -1) ? -5 : propD;
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
-        String expected = "\\mathbf Z[" + d + "]";
+        String expected = "\\mathbf Z[\\sqrt{" + d + "}]";
         String actual = ring.toTeXString();
         assertEquals(expected, actual);
     }
@@ -204,7 +204,7 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("toTeXStringBlackboardBold");
         int d = -randomSquarefreeNumberMod(2, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
-        String expected = "\\mathbb Z[" + d + "]";
+        String expected = "\\mathbb Z[\\sqrt{" + d + "}]";
         String actual = ring.toTeXStringBlackboardBold();
         assertEquals(expected, actual);
     }
@@ -224,7 +224,7 @@ public class ImaginaryQuadraticRingTest {
         int propD = -randomSquarefreeNumberMod(1, 4);
         int d = (propD == -1) ? -5 : propD;
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
-        String expected = "\\mathbb Z[" + d + "]";
+        String expected = "\\mathbb Z[\\sqrt{" + d + "}]";
         String actual = ring.toTeXStringBlackboardBold();
         assertEquals(expected, actual);
     }
