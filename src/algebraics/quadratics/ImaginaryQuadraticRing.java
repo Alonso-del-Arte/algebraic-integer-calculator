@@ -127,6 +127,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
                 }
         }
     }
+    
+    @Override
+    public String toHTMLStringBlackboardBold() {
+        return "&#x2124;[<i>i</i>]";
+    }
    
     /**
      * Constructs a new object representing an imaginary quadratic ring.
