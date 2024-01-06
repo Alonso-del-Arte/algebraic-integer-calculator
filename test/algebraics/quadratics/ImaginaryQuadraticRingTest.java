@@ -157,7 +157,7 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("toTeXString");
         int d = -randomSquarefreeNumberMod(2, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
-        String expected = "\\mathbf Z[\\sqrt" + d + "]";
+        String expected = "\\mathbf Z[\\sqrt{" + d + "}]";
         String actual = ring.toTeXString();
         assertEquals(expected, actual);
     }
