@@ -256,7 +256,18 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
-    //
+    @Test
+    public void testToHTMLStringD1Mod4() {
+        int propD = -randomSquarefreeNumberMod(3, 4);
+        int d = (propD == -3) ? -7 : propD;
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "<i>O</i><sub><b>Q</b>(&radic;(&minus;" + (-d) 
+                + "))</sub>";
+        String actual = ring.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
+    // blackboard bold Q \u211A
 //     * Test of toHTMLString method, of class ImaginaryQuadraticRing, inherited 
 //     * from {@link QuadraticRing}. Note that the blackboard preference has an 
 //     * effect on the output.
