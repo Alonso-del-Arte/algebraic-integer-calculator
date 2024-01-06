@@ -113,8 +113,9 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toHTMLString() {
+        if (this.radicand == -1) return "<b>Z</b>[<i>i</i>]";
         if (this.radicand == -3) return "<b>Z</b>[&omega;]";
-        return "<b>Z</b>[<i>i</i>]";
+        return "<b>Z</b>[&radic;&minus;" + (-this.radicand) + "]";
     }
    
     /**
