@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -283,14 +283,14 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testTrace() {
         System.out.println("trace");
-        long expResult = 2L * randomRegPart;
-        long result;
+        long expected = 2L * randomRegPart;
+        long actual;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).trace();
+            actual = testIntegers.get(i).trace();
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                assertEquals(randomRegForHalfInts, result);
+                assertEquals(randomRegForHalfInts, actual);
             } else {
-                assertEquals(expResult, result);
+                assertEquals(expected, actual);
             }
         }
     }
@@ -320,9 +320,9 @@ public class RealQuadraticIntegerTest {
         RealQuadraticInteger x = new RealQuadraticInteger(0, 2, r);
         expected = -4L * Integer.MAX_VALUE;
         actual = x.norm();
-        String msg = "Norm computation for " + x.toString() 
+        String message = "Norm computation for " + x.toString() 
                 + " should not overflow to 4.";
-        assertEquals(msg, expected, actual);
+        assertEquals(message, expected, actual);
     }
 
     /**
@@ -332,44 +332,50 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testMinPolynomialCoeffs() {
         System.out.println("minPolynomialCoeffs");
-        long[] expResult = {0, 0, 1};
-        long[] result;
+        long[] expecteds = {0, 0, 1};
+        long[] actuals;
         RealQuadraticInteger baseSurdDist, rationalInt;
         for (int i = 0; i < totalTestIntegers; i++) {
-            System.out.println("Minimal polynomial for " + testIntegers.get(i).toASCIIString() + " is said to be " + testIntegers.get(i).minPolynomialStringTeX());
+            System.out.println("Minimal polynomial for " + testIntegers.get(i)
+                    .toASCIIString() + " is said to be " + testIntegers.get(i)
+                            .minPolynomialStringTeX());
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult[1] = -randomRegForHalfInts;
-                expResult[0] = (randomRegForHalfInts * randomRegForHalfInts - randomSurdForHalfInts * randomSurdForHalfInts * testIntegers.get(i).getRing().getRadicand())/4;
+                expecteds[1] = -randomRegForHalfInts;
+                expecteds[0] = (randomRegForHalfInts * randomRegForHalfInts 
+                        - randomSurdForHalfInts * randomSurdForHalfInts 
+                        * testIntegers.get(i).getRing().getRadicand()) / 4;
             } else {
-                expResult[1] = (-2) * randomRegPart;
-                expResult[0] = randomRegPart * randomRegPart - randomSurdPart * randomSurdPart * testIntegers.get(i).getRing().getRadicand();
+                expecteds[1] = (-2) * randomRegPart;
+                expecteds[0] = randomRegPart * randomRegPart - randomSurdPart 
+                        * randomSurdPart * testIntegers.get(i).getRing()
+                                .getRadicand();
             }
-            result = testIntegers.get(i).minPolynomialCoeffs();
-            assertArrayEquals(expResult, result);
+            actuals = testIntegers.get(i).minPolynomialCoeffs();
+            assertArrayEquals(expecteds, actuals);
             /* Now to test the mimimal polymomial of the integer sqrt(d) */
-            expResult[1] = 0;
-            expResult[0] = -testIntegers.get(i).getRing().getRadicand();
+            expecteds[1] = 0;
+            expecteds[0] = -testIntegers.get(i).getRing().getRadicand();
             baseSurdDist = new RealQuadraticInteger(0, 1, testIntegers.get(i).getRing());
             System.out.println("Minimal polynomial of " + baseSurdDist.toASCIIString() + " is said to be " + baseSurdDist.minPolynomialStringTeX());
-            result = baseSurdDist.minPolynomialCoeffs();
-            assertArrayEquals(expResult, result);
+            actuals = baseSurdDist.minPolynomialCoeffs();
+            assertArrayEquals(expecteds, actuals);
         }
         // Next, some rational integers
-        expResult[2] = 0;
-        expResult[1] = 1;
+        expecteds[2] = 0;
+        expecteds[1] = 1;
         for (int i = 1; i < 10; i++) {
-            expResult[0] = -i;
+            expecteds[0] = -i;
             rationalInt = new RealQuadraticInteger(i, 0, ringRandom);
-            result = rationalInt.minPolynomialCoeffs();
-            assertArrayEquals(expResult, result);
+            actuals = rationalInt.minPolynomialCoeffs();
+            assertArrayEquals(expecteds, actuals);
         }
         // And last but not least, 0
-        expResult[0] = 0;
-        result = zeroRQI.minPolynomialCoeffs();
-        assertArrayEquals(expResult, result);
+        expecteds[0] = 0;
+        actuals = zeroRQI.minPolynomialCoeffs();
+        assertArrayEquals(expecteds, actuals);
         zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-        result = zeroRQI.minPolynomialCoeffs();
-        assertArrayEquals(expResult, result);
+        actuals = zeroRQI.minPolynomialCoeffs();
+        assertArrayEquals(expecteds, actuals);
     }
 
     /**
