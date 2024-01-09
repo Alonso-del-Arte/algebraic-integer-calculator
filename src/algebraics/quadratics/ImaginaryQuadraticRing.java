@@ -136,7 +136,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
             case -3:
                 return "&#x2124;[&omega;]";
             default:
-                if (this.radicand % 2 != 0) {
+                if (this.d1mod4) {
                     return "<i>O</i><sub>&#x211A;(&radic;(&minus;" 
                             + this.absRadicand + "))</sub>";
                 } else {
