@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -130,8 +130,19 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toHTMLStringBlackboardBold() {
-        if (this.radicand == -3) return "&#x2124;[&omega;]";
-        return "&#x2124;[<i>i</i>]";
+        switch (this.radicand) {
+            case -1:
+                return "&#x2124;[<i>i</i>]";
+            case -3:
+                return "&#x2124;[&omega;]";
+            default:
+//                if (this.d1mod4) {
+//                    return "<i>O</i><sub><b>Q</b>(&radic;(&minus;" 
+//                            + this.absRadicand + "))</sub>";
+//                } else {
+                    return "&#x2124;[&radic;&minus;" + this.absRadicand + "]";
+//                }
+        }
     }
    
     /**
