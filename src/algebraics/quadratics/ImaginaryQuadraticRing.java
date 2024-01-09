@@ -147,7 +147,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toFilenameString() {
-        return "SORRY";
+        return "ZI";
     }
    
     /**
