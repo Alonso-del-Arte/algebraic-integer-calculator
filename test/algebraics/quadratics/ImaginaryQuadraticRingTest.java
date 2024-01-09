@@ -349,6 +349,13 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToFilenameStringZOmega() {
+        String expected = "ZW";
+        String actual = RING_EISENSTEIN.toFilenameString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toFilenameString function, of the ImaginaryQuadraticRing 
      * class, inherited from {@link QuadraticRing}.
