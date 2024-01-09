@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,6 +20,8 @@ import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.UnsupportedNumberDomainException;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
 import fractions.Fraction;
 
 import static calculators.NumberTheoreticFunctionsCalculator
@@ -326,7 +328,6 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testAlgebraicDegreeZero() {
-        /* And last but not least, 0  */
         int expected = 0;
         int actual = zeroIQI.algebraicDegree();
         assertEquals(expected, actual);
@@ -336,68 +337,74 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     /**
-     * Test of trace method, of class ImaginaryQuadraticInteger.
+     * Test of the trace function, of the ImaginaryQuadraticInteger class.
      */
     @Test
     public void testTrace() {
         System.out.println("trace");
-        long expResult = 2L * randomRealPart;
-        long result;
+        long expected = 2L * randomRealPart;
+        long actual;
         for (int i = 0; i < totalTestIntegers; i++) {
-            result = testIntegers.get(i).trace();
+            actual = testIntegers.get(i).trace();
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                assertEquals(randomRealForHalfInts, result);
+                assertEquals(randomRealForHalfInts, actual);
             } else {
-                assertEquals(expResult, result);
+                assertEquals(expected, actual);
             }
         }
     }
     
     /**
-     * Test of norm method, of class ImaginaryQuadraticInteger.
+     * Test of the norm function, of the ImaginaryQuadraticInteger class.
      */
     @Test
     public void testNorm() {
         System.out.println("norm");
         // Norm of 0 should be 0
-        long expResult = 0L;
-        long result = zeroIQI.norm();
-        assertEquals(expResult, result);
+        long expected = 0L;
+        long actual = zeroIQI.norm();
+        assertEquals(expected, actual);
         // Norm of a unit should be 1
-        expResult = 1L;
-        ImaginaryQuadraticInteger complexUnit = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
-        result = complexUnit.norm();
-        assertEquals(expResult, result);
+        expected = 1L;
+        ImaginaryQuadraticInteger complexUnit 
+                = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
+        actual = complexUnit.norm();
+        assertEquals(expected, actual);
         complexUnit = new ImaginaryQuadraticInteger(0, -1, RING_GAUSSIAN);
-        result = complexUnit.norm();
-        assertEquals(expResult, result);
+        actual = complexUnit.norm();
+        assertEquals(expected, actual);
         complexUnit = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
-        result = complexUnit.norm();
-        assertEquals(expResult, result);
+        actual = complexUnit.norm();
+        assertEquals(expected, actual);
         complexUnit = new ImaginaryQuadraticInteger(1, 1, RING_EISENSTEIN, 2);
-        result = complexUnit.norm();
-        assertEquals(expResult, result);
+        actual = complexUnit.norm();
+        assertEquals(expected, actual);
         complexUnit = new ImaginaryQuadraticInteger(1, -1, RING_EISENSTEIN, 2);
-        result = complexUnit.norm();
-        assertEquals(expResult, result);
+        actual = complexUnit.norm();
+        assertEquals(expected, actual);
         complexUnit = new ImaginaryQuadraticInteger(-1, -1, RING_EISENSTEIN, 2);
-        result = complexUnit.norm();
-        assertEquals(expResult, result);
+        actual = complexUnit.norm();
+        assertEquals(expected, actual);
         for (int i = 0; i < totalTestIntegers; i++) {
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = (randomRealForHalfInts * randomRealForHalfInts - testIntegers.get(i).getRing().getRadicand() * randomImagForHalfInts * randomImagForHalfInts)/4;
+                expected = (randomRealForHalfInts * randomRealForHalfInts 
+                        - testIntegers.get(i).getRing().getRadicand() 
+                        * randomImagForHalfInts * randomImagForHalfInts) / 4;
             } else {
-                expResult = randomRealPart * randomRealPart - testIntegers.get(i).getRing().getRadicand() * randomImagPart * randomImagPart;
+                expected = randomRealPart * randomRealPart 
+                        - testIntegers.get(i).getRing().getRadicand() 
+                        * randomImagPart * randomImagPart;
             }
-            result = testIntegers.get(i).norm();
-            assertEquals(expResult, result);
+            actual = testIntegers.get(i).norm();
+            assertEquals(expected, actual);
         }
-        ImaginaryQuadraticRing r = new ImaginaryQuadraticRing(-Integer.MAX_VALUE);
-        ImaginaryQuadraticInteger z = new ImaginaryQuadraticInteger(1, 1, r);
-        expResult = -1L * Integer.MIN_VALUE;
-        result = z.norm();
-        String assertionMessage = "Norm computation for " + z.toString() + " should not overflow to " + Integer.MIN_VALUE + ".";
-        assertEquals(assertionMessage, expResult, result);
+        QuadraticRing ring = new ImaginaryQuadraticRing(-Integer.MAX_VALUE);
+        QuadraticInteger z = new ImaginaryQuadraticInteger(1, 1, ring);
+        expected = -1L * Integer.MIN_VALUE;
+        actual = z.norm();
+        String message = "Norm computation for " + z.toString() 
+                + " should not overflow to " + Integer.MIN_VALUE;
+        assertEquals(message, expected, actual);
     }
 
     /**
@@ -406,43 +413,43 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testMinPolynomialCoeffs() {
         System.out.println("minPolynomialCoeffs");
-        long[] expResult = {0, 0, 1};
-        long[] result;
+        long[] expecteds = {0, 0, 1};
+        long[] actuals;
         ImaginaryQuadraticInteger baseImagDist, purelyRealInt;
         for (int i = 0; i < totalTestIntegers; i++) {
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult[1] = -randomRealForHalfInts;
-                expResult[0] = (randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4;
+                expecteds[1] = -randomRealForHalfInts;
+                expecteds[0] = (randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4;
             } else {
-                expResult[1] = (-2) * randomRealPart;
-                expResult[0] = randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad();
+                expecteds[1] = (-2) * randomRealPart;
+                expecteds[0] = randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad();
             }
-            result = testIntegers.get(i).minPolynomialCoeffs();
-            assertArrayEquals(expResult, result);
+            actuals = testIntegers.get(i).minPolynomialCoeffs();
+            assertArrayEquals(expecteds, actuals);
             /* Now to test the mimimal polymomial of the purely imaginary 
                integer sqrt(d) */
-            expResult[1] = 0;
-            expResult[0] = testIntegers.get(i).getRing().getAbsNegRad();
+            expecteds[1] = 0;
+            expecteds[0] = testIntegers.get(i).getRing().getAbsNegRad();
             baseImagDist = new ImaginaryQuadraticInteger(0, 1, testIntegers.get(i).getRing());
-            result = baseImagDist.minPolynomialCoeffs();
-            assertArrayEquals(expResult, result);
+            actuals = baseImagDist.minPolynomialCoeffs();
+            assertArrayEquals(expecteds, actuals);
         }
         // Next, some purely real integers
-        expResult[2] = 0;
-        expResult[1] = 1;
+        expecteds[2] = 0;
+        expecteds[1] = 1;
         for (int i = 1; i < 10; i++) {
-            expResult[0] = -i;
+            expecteds[0] = -i;
             purelyRealInt = new ImaginaryQuadraticInteger(i, 0, ringRandom);
-            result = purelyRealInt.minPolynomialCoeffs();
-            assertArrayEquals(expResult, result);
+            actuals = purelyRealInt.minPolynomialCoeffs();
+            assertArrayEquals(expecteds, actuals);
         }
         // And last but not least, 0
-        expResult[0] = 0;
-        result = zeroIQI.minPolynomialCoeffs();
-        assertArrayEquals(expResult, result);
+        expecteds[0] = 0;
+        actuals = zeroIQI.minPolynomialCoeffs();
+        assertArrayEquals(expecteds, actuals);
         zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
-        result = zeroIQI.minPolynomialCoeffs();
-        assertArrayEquals(expResult, result);
+        actuals = zeroIQI.minPolynomialCoeffs();
+        assertArrayEquals(expecteds, actuals);
     }
 
     /**
@@ -514,42 +521,49 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testMinPolynomialStringTeX() {
         System.out.println("minPolynomialStringTeX");
-        String expResult, result;
+        String expected, actual;
         for (int i = 0; i < totalTestIntegers; i++) {
-            expResult = "x^2";
+            expected = "x^2";
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 if (randomRealForHalfInts < 0) {
-                    expResult = expResult + "+" + ((-1) * randomRealForHalfInts);
+                    expected = expected + "+" + ((-1) * randomRealForHalfInts);
                 } else {
-                    expResult = expResult + "-" + randomRealForHalfInts;
+                    expected = expected + "-" + randomRealForHalfInts;
                 }
-                expResult = expResult + "x+" + ((randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4);
+                expected = expected + "x+" + ((randomRealForHalfInts 
+                        * randomRealForHalfInts + randomImagForHalfInts 
+                        * randomImagForHalfInts 
+                        * testIntegers.get(i).getRing().getAbsNegRad()) 
+                        / 4);
             } else {
                 if (randomRealPart < 0) {
-                    expResult = expResult + "+" + ((-2) * randomRealPart);
+                    expected = expected + "+" + ((-2) * randomRealPart);
                 } else {
-                    expResult = expResult + "-" + (2 * randomRealPart);
+                    expected = expected + "-" + (2 * randomRealPart);
                 }
-                expResult = expResult + "x+" + (randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad());
+                expected = expected + "x+" + (randomRealPart * randomRealPart 
+                        + randomImagPart * randomImagPart 
+                        * testIntegers.get(i).getRing().getAbsNegRad());
             }
-            expResult = expResult.replace("+1x", "+x");
-            expResult = expResult.replace("-1x", "-x");
-            expResult = expResult.replace("+0x", "");
-            expResult = expResult.replace("-0x", "");
-            result = testIntegers.get(i).minPolynomialStringTeX().replace(" ", ""); // Strip out spaces
-            assertEquals(expResult, result);
+            expected = expected.replace("+1x", "+x");
+            expected = expected.replace("-1x", "-x");
+            expected = expected.replace("+0x", "");
+            expected = expected.replace("-0x", "");
+            actual = testIntegers.get(i).minPolynomialStringTeX()
+                    .replace(" ", ""); // Strip out spaces
+            assertEquals(expected, actual);
         }
         // Now to test the polynomial strings of a few purely real integers
         ImaginaryQuadraticInteger degreeOneInt;
         for (int j = 1; j < 8; j++) {
             degreeOneInt = new ImaginaryQuadraticInteger(j, 0, ringRandom);
-            expResult = "x-" + j;
-            result = degreeOneInt.minPolynomialStringTeX().replace(" ", "");
-            assertEquals(expResult, result);
+            expected = "x-" + j;
+            actual = degreeOneInt.minPolynomialStringTeX().replace(" ", "");
+            assertEquals(expected, actual);
             degreeOneInt = new ImaginaryQuadraticInteger(-j, 0, ringRandom);
-            expResult = "x+" + j;
-            result = degreeOneInt.minPolynomialStringTeX().replace(" ", "");
-            assertEquals(expResult, result);
+            expected = "x+" + j;
+            actual = degreeOneInt.minPolynomialStringTeX().replace(" ", "");
+            assertEquals(expected, actual);
         }
         // For the sake of completeness
         assertEquals("x", zeroIQI.minPolynomialStringTeX());
@@ -564,42 +578,47 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testMinPolynomialStringHTML() {
         System.out.println("minPolynomialStringHTML");
-        String expResult, result;
+        String expected, actual;
         for (int i = 0; i < totalTestIntegers; i++) {
-            expResult = "<i>x</i><sup>2</sup>";
+            expected = "<i>x</i><sup>2</sup>";
             if (testIntegers.get(i).getRing().hasHalfIntegers()) {
                 if (randomRealForHalfInts < 0) {
-                    expResult = expResult + "+" + ((-1) * randomRealForHalfInts);
+                    expected = expected + "+" + ((-1) * randomRealForHalfInts);
                 } else {
-                    expResult = expResult + "&minus;" + randomRealForHalfInts;
+                    expected = expected + "&minus;" + randomRealForHalfInts;
                 }
-                expResult = expResult + "<i>x</i>+" + ((randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4);
+                expected = expected + "<i>x</i>+" + ((randomRealForHalfInts 
+                        * randomRealForHalfInts + randomImagForHalfInts 
+                        * randomImagForHalfInts * testIntegers.get(i)
+                                .getRing().getAbsNegRad()) / 4);
             } else {
                 if (randomRealPart < 0) {
-                    expResult = expResult + "+" + ((-2) * randomRealPart);
+                    expected = expected + "+" + ((-2) * randomRealPart);
                 } else {
-                    expResult = expResult + "&minus;" + (2 * randomRealPart);
+                    expected = expected + "&minus;" + (2 * randomRealPart);
                 }
-                expResult = expResult + "<i>x</i>+" + (randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad());
+                expected = expected + "<i>x</i>+" + (randomRealPart 
+                        * randomRealPart + randomImagPart * randomImagPart 
+                        * testIntegers.get(i).getRing().getAbsNegRad());
             }
-            expResult = expResult.replace("+1<i>x</i>", "+<i>x</i>");
-            expResult = expResult.replace("&minus;1<i>x</i>", "&minus;<i>x</i>");
-            expResult = expResult.replace("+0<i>x</i>", "");
-            expResult = expResult.replace("&minus;0<i>x</i>", "");
-            result = testIntegers.get(i).minPolynomialStringHTML().replace(" ", ""); // Strip out spaces
-            assertEquals(expResult, result);
+            expected = expected.replace("+1<i>x</i>", "+<i>x</i>");
+            expected = expected.replace("&minus;1<i>x</i>", "&minus;<i>x</i>");
+            expected = expected.replace("+0<i>x</i>", "");
+            expected = expected.replace("&minus;0<i>x</i>", "");
+            actual = testIntegers.get(i).minPolynomialStringHTML().replace(" ", ""); // Strip out spaces
+            assertEquals(expected, actual);
         }
         // Now to test the polynomial strings of a few purely real integers
         ImaginaryQuadraticInteger degreeOneInt;
         for (int j = 1; j < 8; j++) {
             degreeOneInt = new ImaginaryQuadraticInteger(j, 0, ringRandom);
-            expResult = "<i>x</i>&minus;" + j;
-            result = degreeOneInt.minPolynomialStringHTML().replace(" ", "");
-            assertEquals(expResult, result);
+            expected = "<i>x</i>&minus;" + j;
+            actual = degreeOneInt.minPolynomialStringHTML().replace(" ", "");
+            assertEquals(expected, actual);
             degreeOneInt = new ImaginaryQuadraticInteger(-j, 0, ringRandom);
-            expResult = "<i>x</i>+" + j;
-            result = degreeOneInt.minPolynomialStringHTML().replace(" ", "");
-            assertEquals(expResult, result);
+            expected = "<i>x</i>+" + j;
+            actual = degreeOneInt.minPolynomialStringHTML().replace(" ", "");
+            assertEquals(expected, actual);
         }
         // For the sake of completeness
         assertEquals("<i>x</i>", zeroIQI.minPolynomialStringHTML());
