@@ -329,6 +329,19 @@ public class ImaginaryQuadraticRingTest {
         assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
     }
     
+    @Test
+    public void testToHTMLStringBlackboardBoldD3Mod4() {
+        int propD = -randomSquarefreeNumberMod(1, 4);
+        int d = (propD == -1) ? -5 : propD;
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expectedA = "&#x2124;[&radic;&minus;" + (-d) + "]";
+        String expectedB = "&#8484;[&radic;&minus;" + (-d) + "]";
+        String actual = ring.toHTMLStringBlackboardBold();
+        String msg = "Function should give \"" + expectedA + "\" or \"" 
+                + expectedB + "\", was \"" + actual + "\"";
+        assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
+    }
+    
     /**
      * Test of the toFilenameString function, of the ImaginaryQuadraticRing 
      * class, inherited from {@link QuadraticRing}.
