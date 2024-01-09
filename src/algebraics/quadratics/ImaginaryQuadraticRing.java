@@ -144,6 +144,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
                 }
         }
     }
+    
+    @Override
+    public String toFilenameString() {
+        return "SORRY";
+    }
    
     /**
      * Constructs a new object representing an imaginary quadratic ring.
