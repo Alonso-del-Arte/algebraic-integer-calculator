@@ -342,6 +342,13 @@ public class ImaginaryQuadraticRingTest {
         assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
     }
     
+    @Test
+    public void testToFilenameStringZI() {
+        String expected = "ZI";
+        String actual = RING_GAUSSIAN.toFilenameString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toFilenameString function, of the ImaginaryQuadraticRing 
      * class, inherited from {@link QuadraticRing}.
