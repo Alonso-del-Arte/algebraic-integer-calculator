@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -292,6 +292,23 @@ public class ImaginaryQuadraticRingTest {
         String expectedA = "&#x2124;[&omega;]";
         String expectedB = "&#8484;[&omega;]";
         String actual = RING_EISENSTEIN.toHTMLStringBlackboardBold();
+        String msg = "Function should give \"" + expectedA + "\" or \"" 
+                + expectedB + "\", was \"" + actual + "\"";
+        assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
+    }
+    
+    /**
+     * Test of the toHTMLStringBlackboardBold function, of the 
+     * ImaginaryQuadraticRing class.
+     */
+    @Test
+    public void testToHTMLStringBlackboardBold() {
+        System.out.println("toHTMLStringBlackboardBold");
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expectedA = "&#x2124;[&radic;&minus;" + (-d) + "]";
+        String expectedB = "&#8484;[&radic;&minus;" + (-d) + "]";
+        String actual = ring.toHTMLStringBlackboardBold();
         String msg = "Function should give \"" + expectedA + "\" or \"" 
                 + expectedB + "\", was \"" + actual + "\"";
         assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
