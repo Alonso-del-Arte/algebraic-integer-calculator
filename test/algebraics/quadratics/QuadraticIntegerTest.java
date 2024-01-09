@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -154,11 +154,11 @@ public class QuadraticIntegerTest {
         QuadraticInteger result;
         try {
             result = addendA.plus(addendB);
-            String msg = "Trying to add " + addendA.toString() + " to " 
+            String message = "Trying to add " + addendA.toString() + " to " 
                     + addendB.toString() 
                     + " should've caused arithmetic overflow, not given result " 
                     + result.toString();
-            fail(msg);
+            fail(message);
         } catch (ArithmeticException ae) {
             System.out.println("Trying to add " + addendA.toASCIIString() 
                     + " to " + addendB.toASCIIString() 
@@ -187,21 +187,21 @@ public class QuadraticIntegerTest {
         QuadraticInteger result;
         try {
             result = addendA.plus(addendB);
-            String msg = "Trying to add " + addendA.toString() + " to " 
+            String message = "Trying to add " + addendA.toString() + " to " 
                     + addendB.toString() 
                     + " should've caused arithmetic overflow, not given result " 
                     + result.toString();
-            fail(msg);
+            fail(message);
         } catch (ArithmeticException ae) {
             System.out.println("Trying to add " + addendA.toASCIIString() 
                     + " to " + addendB.toASCIIString() 
                     + " correctly triggered ArithmeticException");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to add " 
                     + addendA.toString() + " to " + addendB.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -221,21 +221,21 @@ public class QuadraticIntegerTest {
         int rationalAddend = 8;
         try {
             QuadraticInteger result = addendA.plus(rationalAddend);
-            String msg = "Trying to add " + addendA.toString() + " to " 
+            String message = "Trying to add " + addendA.toString() + " to " 
                     + rationalAddend 
                     + " should've caused arithmetic overflow, not given result " 
                     + result.toString();
-            fail(msg);
+            fail(message);
         } catch (ArithmeticException ae) {
             System.out.println("Trying to add " + addendA.toASCIIString() 
                     + " to " + rationalAddend 
                     + " correctly triggered ArithmeticException");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to add " 
                     + addendA.toString() + " to " + rationalAddend;
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -255,21 +255,21 @@ public class QuadraticIntegerTest {
         int rationalAddend = -8;
         try {
             QuadraticInteger result = addendA.plus(rationalAddend);
-            String msg = "Trying to add " + addendA.toString() + " to " 
+            String message = "Trying to add " + addendA.toString() + " to " 
                     + rationalAddend 
                     + " should've caused arithmetic overflow, not given result " 
                     + result.toString();
-            fail(msg);
+            fail(message);
         } catch (ArithmeticException ae) {
             System.out.println("Trying to add " + addendA.toASCIIString() 
                     + " to " + rationalAddend 
                     + " correctly triggered ArithmeticException");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to add " 
                     + addendA.toString() + " to " + rationalAddend;
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -282,20 +282,20 @@ public class QuadraticIntegerTest {
     public void testPlusUnsupportedCausesException() {
         try {
             QuadraticInteger sum = ILL_DEF_INT_A.plus(ILL_DEF_INT_B);
-            String msg = "Trying to add " + ILL_DEF_INT_A.toString() + " to " 
-                    + ILL_DEF_INT_B.toString() 
+            String message = "Trying to add " + ILL_DEF_INT_A.toString() 
+                    + " to " + ILL_DEF_INT_B.toString() 
                     + " should have caused an exception, not given result " 
-                    + sum.toString() + ".";
-            fail(msg);
+                    + sum.toString();
+            fail(message);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("Exception triggered for attempted addition");
             System.out.println("\"" + unde.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to add " 
                     + ILL_DEF_INT_A.toString() + " to " 
                     + ILL_DEF_INT_B.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -320,7 +320,7 @@ public class QuadraticIntegerTest {
             actual = unaryAddend.plus(quadraticAddend);
             assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String msg = "Exception should not have occurred for trying to add " 
+            String message = "Exception should not have occurred for trying to add " 
                     + unaryAddend.toString() + " to " 
                     + quadraticAddend.toString();
             System.out.println(unaryAddend.toASCIIString() 
@@ -330,13 +330,13 @@ public class QuadraticIntegerTest {
                     + " is of algebraic degree " 
                     + quadraticAddend.algebraicDegree());
             System.out.println("\"" + adoe.getMessage() + "\"");
-            fail(msg);
+            fail(message);
         } catch (Exception e) {
-            String msg = e.getClass().getName() 
+            String message = e.getClass().getName() 
                     + " should not have occurred for trying to add " 
                     + unaryAddend.toString() + " to " 
                     + quadraticAddend.toString();
-            fail(msg);
+            fail(message);
         }
         ring = new ImaginaryQuadraticRing(-2);
         quadraticAddend = new ImaginaryQuadraticInteger(5, 2, ring);
