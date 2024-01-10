@@ -381,6 +381,16 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToFilenameStringD3Mod4() {
+        int propD = -randomSquarefreeNumberMod(1, 4);
+        int d = (propD == -1) ? -5 : propD;
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "ZI" + (-d);
+        String actual = ring.toFilenameString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the isPurelyReal function, of the ImaginaryQuadraticRing class. 
      * Asserting false for all the test rings in this test class.
