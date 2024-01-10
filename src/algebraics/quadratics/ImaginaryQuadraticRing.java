@@ -147,8 +147,14 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toFilenameString() {
-        if (this.radicand == -3) return "ZW";
-        return "ZI";
+        switch (this.radicand) {
+            case -1:
+                return "ZI";
+            case -3:
+                return "ZW";
+            default:
+                return "ZI" + this.absRadicand;
+        }
     }
    
     /**
