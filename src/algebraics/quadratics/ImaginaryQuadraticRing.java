@@ -153,10 +153,10 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
             case -3:
                 return "ZW";
             default:
-                if (this.radicand % 2 == 0) {
-                    return "ZI" + this.absRadicand;
-                } else {
+                if (this.d1mod4) {
                     return "OQI" + this.absRadicand;
+                } else {
+                    return "ZI" + this.absRadicand;
                 }
         }
     }
