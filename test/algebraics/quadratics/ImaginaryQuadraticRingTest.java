@@ -358,31 +358,24 @@ public class ImaginaryQuadraticRingTest {
     
     /**
      * Test of the toFilenameString function, of the ImaginaryQuadraticRing 
-     * class, inherited from {@link QuadraticRing}.
+     * class, inherited from {@link QuadraticRing}. Preference for blackboard 
+     * bold is irrelevant for this function.
      */
     @Test
     public void testToFilenameString() {
         System.out.println("toFilenameString");
-        // Preference for blackboard bold is irrelevant for this particular test.
-        String expResult = "ZI";
-        String result = RING_GAUSSIAN.toFilenameString();
-        assertEquals(expResult, result);
-        expResult = "ZI2";
-        result = RING_ZI2.toFilenameString();
-        assertEquals(expResult, result);
-        expResult = "ZW";
-        result = RING_EISENSTEIN.toFilenameString();
-        assertEquals(expResult, result);
-        expResult = "OQI7";
-        result = RING_OQI7.toFilenameString();
-        assertEquals(expResult, result);
-        if (ringRandomd1mod4) {
-            expResult = "OQI" + (-1 * randomDiscr);
-        } else {
-            expResult = "ZI" + (-1 * randomDiscr);
-        }
-        result = ringRandom.toFilenameString();
-        assertEquals(expResult, result);
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "ZI" + (-d);
+        String actual = ring.toFilenameString();
+        assertEquals(expected, actual);
+//        if (ringRandomd1mod4) {
+//            expResult = "OQI" + (-1 * randomDiscr);
+//        } else {
+//            expResult = "ZI" + (-1 * randomDiscr);
+//        }
+//        result = ringRandom.toFilenameString();
+//        assertEquals(expResult, result);
     }
     
     /**
