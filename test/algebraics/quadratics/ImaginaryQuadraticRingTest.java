@@ -369,13 +369,16 @@ public class ImaginaryQuadraticRingTest {
         String expected = "ZI" + (-d);
         String actual = ring.toFilenameString();
         assertEquals(expected, actual);
-//        if (ringRandomd1mod4) {
-//            expResult = "OQI" + (-1 * randomDiscr);
-//        } else {
-//            expResult = "ZI" + (-1 * randomDiscr);
-//        }
-//        result = ringRandom.toFilenameString();
-//        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testToFilenameStringD1Mod4() {
+        int propD = -randomSquarefreeNumberMod(3, 4);
+        int d = (propD == -3) ? -7 : propD;
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "OQI" + (-d);
+        String actual = ring.toFilenameString();
+        assertEquals(expected, actual);
     }
     
     /**
