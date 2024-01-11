@@ -147,10 +147,28 @@ public class UnaryInteger implements AlgebraicInteger,
         return new algebraics.quadratics.ImaginaryQuadraticRing(-1);
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives a text representation of this integer using some or all of the 
+     * digits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 and the minus sign when applicable.
+     * @return A text representation. Examples: "&minus;28", "0", "1729".
+     */
+    @Override
+    public String toString() {
+        if (this.number < 0) {
+            return "\u2212" + (-this.number);
+        } else {
+            return Integer.toString(this.number);
+        }
+    }
+    
+    /**
+     * Gives a text representation of this integer using only ASCII characters.
+     * @return A text representation. Examples: "-28" for &minus;28, "0", 
+     * "1729".
+     */
     @Override
     public String toASCIIString() {
-        return this.toString();
+        return Integer.toString(this.number);
     }
 
     // TODO: Write tests for this
@@ -199,15 +217,6 @@ public class UnaryInteger implements AlgebraicInteger,
     @Override
     public double angle() {
         return Math.PI / 128;
-    }
-    
-    @Override
-    public String toString() {
-        if (this.number < 0) {
-            return "\u2212" + (-this.number);
-        } else {
-            return Integer.toString(this.number);
-        }
     }
     
     public UnaryInteger(int n) {
