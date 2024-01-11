@@ -46,4 +46,23 @@ public class UnaryIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIString() {
+        System.out.println("toASCIIString");
+        int n = randomNumber(Short.MAX_VALUE);
+        UnaryInteger number = new UnaryInteger(n);
+        String expected = Integer.toString(n);
+        String actual = number.toASCIIString();
+        assertEquals(expected, actual);
+    }
+    
+//    @Test
+//    public void testToStringNegative() {
+//        int n = randomNumber(Short.MAX_VALUE);
+//        UnaryInteger number = new UnaryInteger(-n);
+//        String expected = "\u2212" + n;
+//        String actual = number.toString();
+//        assertEquals(expected, actual);
+//    }
+    
 }
