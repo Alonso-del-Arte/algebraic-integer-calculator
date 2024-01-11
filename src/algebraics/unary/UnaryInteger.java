@@ -150,7 +150,7 @@ public class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public String toASCIIString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return this.toString();
     }
 
     // TODO: Write tests for this
