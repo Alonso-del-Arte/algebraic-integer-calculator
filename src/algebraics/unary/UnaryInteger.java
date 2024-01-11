@@ -203,7 +203,11 @@ public class UnaryInteger implements AlgebraicInteger,
     
     @Override
     public String toString() {
-        return Integer.toString(this.number);
+        if (this.number < 0) {
+            return "\u2212" + (-this.number);
+        } else {
+            return Integer.toString(this.number);
+        }
     }
     
     public UnaryInteger(int n) {
