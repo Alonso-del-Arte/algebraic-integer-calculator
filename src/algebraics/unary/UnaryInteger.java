@@ -29,6 +29,8 @@ import arithmetic.NotDivisibleException;
 public class UnaryInteger implements AlgebraicInteger, 
         Arithmeticable<UnaryInteger>, Comparable<UnaryInteger> {
     
+    private final int number;
+    
     // TODO: Write tests for this
     @Override
     public UnaryInteger plus(UnaryInteger addend) {
@@ -199,8 +201,13 @@ public class UnaryInteger implements AlgebraicInteger,
         return Math.PI / 128;
     }
     
+    @Override
+    public String toString() {
+        return Integer.toString(this.number);
+    }
+    
     public UnaryInteger(int n) {
-        // TODO: Write tests for this
+        this.number = n;
     }
 
 }
