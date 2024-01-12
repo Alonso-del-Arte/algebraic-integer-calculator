@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -1216,6 +1216,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     // STUB TO FAIL THE FIRST TEST
     @Override
     public QuadraticInteger mod(int divisor) {
+        if (divisor == 0) return this;
         return new ImaginaryQuadraticInteger(-1, -1, 
                 new ImaginaryQuadraticRing(-1));
     }
