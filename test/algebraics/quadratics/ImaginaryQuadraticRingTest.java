@@ -127,6 +127,13 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringZI() {
+        String expected = "Z[i]";
+        String actual = RING_GAUSSIAN.toASCIIString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}.
