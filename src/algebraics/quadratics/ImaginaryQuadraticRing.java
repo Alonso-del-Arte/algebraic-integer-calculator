@@ -95,7 +95,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toASCIIString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "Z[i]";
     }
     
     @Override
