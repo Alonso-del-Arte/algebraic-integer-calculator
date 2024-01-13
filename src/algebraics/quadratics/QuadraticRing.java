@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -33,6 +33,37 @@ import java.io.Serializable;
 public abstract class QuadraticRing implements IntegerRing, Serializable {
     
     /**
+     * The maximum possible algebraic degree of an algebraic integer in a 
+     * quadratic integer ring.
+     */
+    public static final int MAX_ALGEBRAIC_DEGREE = 2;
+    
+    private static final Fraction ONE_FRACT = new Fraction(1);
+    
+    private static final Fraction[] ONES = {ONE_FRACT, ONE_FRACT};
+    
+    /**
+     * The power basis for any quadratic integer ring is 1, <i>a</i>.
+     */
+    public static final PowerBasis QUADRATIC_POWER_BASIS = new PowerBasis(ONES);
+    
+    private static final String Q_SYMBOL_TEX = "\\mathbf Q";
+    
+    private static final String Z_SYMBOL_TEX = "\\mathbf Z";
+    
+    private static final String Q_SYMBOL_TEX_BLACKBOARD_BOLD = "\\mathbb Q";
+    
+    private static final String Z_SYMBOL_TEX_BLACKBOARD_BOLD = "\\mathbb Z";
+    
+    private static final String Q_SYMBOL_HTML = "<b>Q</b>";
+    
+    private static final String Z_SYMBOL_HTML = "<b>Z</b>";
+    
+    private static final String Q_SYMBOL_HTML_BLACKBOARD_BOLD = "&#x211A;";
+    
+    private static final String Z_SYMBOL_HTML_BLACKBOARD_BOLD = "&#x2124;";
+    
+    /**
      * Ought to be a squarefree integer.
      */
     protected final int radicand;
@@ -50,21 +81,6 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * &minus;3 &equiv; 1 mod 4; Java needs a little nudge on this.
      */
     protected boolean d1mod4;
-    
-    /**
-     * The maximum possible algebraic degree of an algebraic integer in a 
-     * quadratic integer ring.
-     */
-    public static final int MAX_ALGEBRAIC_DEGREE = 2;
-    
-    private static final Fraction ONE_FRACT = new Fraction(1);
-    
-    private static final Fraction[] ONES = {ONE_FRACT, ONE_FRACT};
-    
-    /**
-     * The power basis for any quadratic integer ring is 1, <i>a</i>.
-     */
-    public static final PowerBasis QUADRATIC_POWER_BASIS = new PowerBasis(ONES);
     
     /**
      * Indicates whether the ring has what are imprecisely called 
@@ -215,32 +231,17 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
                 }
         }
     }
-
-    /**
-     * A text representation of the ring's label suitable for use in a TeX 
-     * document. The representation uses blackboard bold unless 
-     * <code>preferBlackboardBold(false)</code> is in effect.
-     * I have not tested this function in the context of outputting to a TeX 
-     * document.
-     * @return A String suitable for use in a TeX document, if I haven't made 
-     * any mistakes. Examples: assuming the default preference for blackboard 
-     * bold, for <i>d</i> = &minus;7, the result is "\mathcal 
-     * O_{\mathbb Q(\sqrt{-7})}"; for <i>d</i> = &minus;5, the result is 
-     * "\mathbb Z[\sqrt{-5}]"; for <i>d</i> = &minus;3, the result is "\mathbb 
-     * Z[\omega]"; for <i>d</i> = 2, the result is "\mathbb Z[\sqrt{2}]"; for 
-     * <i>d</i> = 5, the result is "\mathbb Z[\phi]".
-     */
-    @Override
-    public String toTeXString() {
+    
+    private String toTeXString(boolean preferBlackboardBold) {
         String qSymbol;
         String zSymbol;
-//        if (preferenceForBlackboardBold) {
-            qSymbol = "\\mathbb Q";
-            zSymbol = "\\mathbb Z";
-//        } else {
-//            qSymbol = "\\textbf Q";
-//            zSymbol = "\\textbf Z";
-//        }
+        if (preferBlackboardBold) {
+            qSymbol = Q_SYMBOL_TEX_BLACKBOARD_BOLD;
+            zSymbol = Z_SYMBOL_TEX_BLACKBOARD_BOLD;
+        } else {
+            qSymbol = Q_SYMBOL_TEX;
+            zSymbol = Z_SYMBOL_TEX;
+        }
         switch (this.radicand) {
             case -1:
                 return zSymbol + "[i]";
@@ -259,37 +260,51 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     }
     
     /**
-     * A text representation of the ring's label suitable for use in an HTML 
-     * document. The representation uses blackboard bold unless 
-     * <code>preferBlackboardBold(false)</code> is in effect. I have not tested 
-     * this function in the context of outputting to an HTML document.
-     * @return A String suitable for use in an HTML document, if I haven't made 
-     * any mistakes. If preferenceForBlackboardBold is true, this also assumes 
-     * the font chosen by the browser has the relevant Unicode characters. 
-     * Examples: with preference for blackboard bold on, we should get 
-     * "<i>O</i><sub>\u211A(&radic;-7)</sub>" for <i>d</i> = &minus;7; for 
-     * <i>d</i> = &minus;5, the result is "\u2124[&radic;-5]"; for <i>d</i> = 
-     * &minus;3, the result is "\u2124[&omega;]"; for <i>d</i> = 2, the result 
-     * should be "\u2124[&radic;2]"; for <i>d</i> = 5, the result should be 
-     * "\u2124[&phi;]". If instead preference for blackboard bold is off, we 
-     * should get "<i>O</i><sub><b>Q</b>(&radic;-7)</sub>" for <i>d</i> = 
-     * &minus;7; for <i>d</i> = &minus;5, the result is "<b>Z</b>[&radic;-5]"; 
-     * for <i>d</i> = &minus;3, the result is "<b>Z</b>[&omega;]", for <i>d</i> 
-     * = 2, result is "<b>Z</b>[&radic;2]"; for <i>d</i> = 5, the result is 
-     * "<b>Z</b>[&phi;]". In either case I have assumed that the "mathcal O" of 
-     * TeX is unavailable to an HTML browser.
+     * A text representation of this ring's label suitable for use in a TeX 
+     * document. The representation does not use blackboard bold. Use {@link 
+     * #toTeXStringBlackboardBold()} if you need TeX with blackboard bold.
+     * <p>I have not tested this function in the context of outputting to a TeX 
+     * document.</p>
+     * @return TeX suitable for display style. For example, for <i>d</i> = 
+     * &minus;7, this function gives "\mathcal O_{\mathbf Q(\sqrt{-7})}"; for 
+     * <i>d</i> = &minus;5, the result is "\mathbf Z[\sqrt{-5}]"; for <i>d</i> = 
+     * &minus;3, the result is "\mathbf Z[\omega]"; for <i>d</i> = 2, the result 
+     * is "\mathbf Z[\sqrt{2}]"; for <i>d</i> = 5, the result is "\mathbf 
+     * Z[\phi]".
      */
     @Override
-    public String toHTMLString() {
+    public String toTeXString() {
+        return this.toTeXString(false);
+    }
+
+    /**
+     * A text representation of this ring's label suitable for use in a TeX 
+     * document. The representation uses blackboard bold. Use {@link 
+     * #toTeXString()} if you want TeX without blackboard bold.
+     * <p>I have not tested this function in the context of outputting to a TeX 
+     * document.</p>
+     * @return TeX suitable for display style. For example, for <i>d</i> = 
+     * &minus;7, this function gives "\mathcal O_{\mathbb Q(\sqrt{-7})}"; for 
+     * <i>d</i> = &minus;5, the result is "\mathbb Z[\sqrt{-5}]"; for <i>d</i> = 
+     * &minus;3, the result is "\mathbb Z[\omega]"; for <i>d</i> = 2, the result 
+     * is "\mathbb Z[\sqrt{2}]"; for <i>d</i> = 5, the result is "\mathbb 
+     * Z[\phi]".
+     */
+    @Override
+    public String toTeXStringBlackboardBold() {
+        return this.toTeXString(true);
+    }
+
+    private String toHTMLString(boolean preferBlackboardBold) {
         String qSymbol;
         String zSymbol;
-//        if (preferenceForBlackboardBold) {
-            qSymbol = "\u211A"; // Double-struck capital Q
-            zSymbol = "\u2124"; // Double-struck capital Z
-//        } else {
-//            qSymbol = "<b>Q</b>";
-//            zSymbol = "<b>Z</b>";
-//        }
+        if (preferBlackboardBold) {
+            qSymbol = Q_SYMBOL_HTML_BLACKBOARD_BOLD;
+            zSymbol = Z_SYMBOL_HTML_BLACKBOARD_BOLD;
+        } else {
+            qSymbol = Q_SYMBOL_HTML;
+            zSymbol = Z_SYMBOL_HTML;
+        }
         switch (this.radicand) {
             case -3:
                 return zSymbol + "[&omega;]";
@@ -305,6 +320,36 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
                     return zSymbol + "[&radic;" + this.radicand + "]";
                 }
         }
+    }
+    
+    /**
+     * A text representation of this ring's label suitable for use in an HTML 
+     * document. The representation does not use blackboard bold. Use {@link 
+     * #toHTMLStringBlackboardBold()} if you need HTML with blackboard bold. In 
+     * both of these I have assumed that the "mathcal O" from TeX is 
+     * inconsistently available or completely unavailable.
+     * @return Text suitable for an HTML element's inner HTML property. For 
+     * example, "&lt;b&gt;Z&lt;/b&gt;[&lt;i&gt;i&lt;/i&gt;]" for <i>d</i> = 
+     * &minus;1, which should render as "<b>Z</b>[<i>i</i>]".
+     */
+    @Override
+    public String toHTMLString() {
+        return this.toHTMLString(false);
+    }
+    
+    /**
+     * A text representation of this ring's label suitable for use in an HTML 
+     * document. The representation uses blackboard bold. Use {@link 
+     * #toHTMLString()} if you need HTML with blackboard bold. In both of these 
+     * I have assumed that the "mathcal O" from TeX is inconsistently available 
+     * or completely unavailable.
+     * @return Text suitable for an HTML element's inner HTML property. For 
+     * example, "&amp;#x2124;[&lt;i&gt;i&lt;/i&gt;]" for <i>d</i> = &minus;1, 
+     * which should render as "&#x2124;[<i>i</i>]".
+     */
+    @Override
+    public String toHTMLStringBlackboardBold() {
+        return this.toHTMLString(true);
     }
     
     /**
