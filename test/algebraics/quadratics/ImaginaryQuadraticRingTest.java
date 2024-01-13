@@ -107,6 +107,16 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringD1Mod4() {
+        int propD = -randomSquarefreeNumberMod(3, 4);
+        int d = (propD == -3) ? -7 : propD;
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "O_(Q(\u221A\u2212" + (-d) + "))";
+        String actual = ring.toString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}.
