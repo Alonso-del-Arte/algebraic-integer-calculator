@@ -80,12 +80,16 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     @Override
     public String toString() {
         switch (this.radicand) {
-            case -1: 
+            case -1:
                 return "Z[i]";
-            case -3: 
+            case -3:
                 return "Z[\u03C9]";
-            default: 
-                return "Z[\u221A\u2212" + this.absRadicand + "]";
+            default:
+                if (this.radicand % 2 != 0) {
+                    return "O_(Q(\u221A\u2212" + this.absRadicand + "))";
+                } else {
+                    return "Z[\u221A\u2212" + this.absRadicand + "]";
+                }
         }
     }
     
