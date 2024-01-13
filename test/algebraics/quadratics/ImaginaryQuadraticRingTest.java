@@ -156,6 +156,16 @@ public class ImaginaryQuadraticRingTest {
     }
     
     @Test
+    public void testToASCIIStringD1Mod4() {
+        int propD = -randomSquarefreeNumberMod(3, 4);
+        int d = (propD == -3) ? -7 : propD;
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "O_(Q(sqrt(" + d + ")))";
+        String actual = ring.toASCIIString();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testToTeXStringZI() {
         String expected = "\\mathbf Z[i]";
         String actual = RING_GAUSSIAN.toTeXString();
