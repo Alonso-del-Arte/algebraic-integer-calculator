@@ -95,8 +95,18 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toASCIIString() {
-        if (this.radicand == -3) return "Z[omega]";
-        return "Z[i]";
+        switch (this.radicand) {
+            case -1:
+                return "Z[i]";
+            case -3:
+                return "Z[omega]";
+            default:
+//                if (this.radicand % 2 != 0) {
+//                    return "O_(Q(\u221A\u2212" + this.absRadicand + "))";
+//                } else {
+                    return "Z[sqrt(" + this.radicand + ")]";
+//                }
+        }
     }
     
     @Override
