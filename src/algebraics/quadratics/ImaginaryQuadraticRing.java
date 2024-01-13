@@ -79,8 +79,14 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toString() {
-        if (this.radicand == -3) return "Z[\u03C9]";
-        return "Z[i]";
+        switch (this.radicand) {
+            case -1: 
+                return "Z[i]";
+            case -3: 
+                return "Z[\u03C9]";
+            default: 
+                return "Z[\u221A\u2212" + this.absRadicand + "]";
+        }
     }
     
     @Override
