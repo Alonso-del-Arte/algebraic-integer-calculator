@@ -79,7 +79,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "Z[i]";
     }
     
     @Override
