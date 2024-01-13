@@ -142,31 +142,17 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of toASCIIString method, of class ImaginaryQuadraticRing, inherited 
-     * from {@link QuadraticRing}.
+     * Test of the toASCIIString function, of the ImaginaryQuadraticRing class, 
+     * inherited from {@link QuadraticRing}.
      */
-//    @Test
+    @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        String expResult = "Z[i]";
-        String result = RING_GAUSSIAN.toASCIIString();
-        assertEquals(expResult, result);
-        expResult = "Z[sqrt(-2)]";
-        result = RING_ZI2.toASCIIString();
-        assertEquals(expResult, result);
-        expResult = "Z[omega]";
-        result = RING_EISENSTEIN.toASCIIString();
-        assertEquals(expResult, result);
-        expResult = "O_(Q(sqrt(-7)))";
-        result = RING_OQI7.toASCIIString();
-        assertEquals(expResult, result);
-        if (ringRandomd1mod4) {
-            expResult = "O_(Q(sqrt(" + randomDiscr + ")))";
-        } else {
-            expResult = "Z[sqrt(" + randomDiscr + ")]";
-        }
-        result = ringRandom.toASCIIString();
-        assertEquals(expResult, result);
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "Z[sqrt(" + d + ")]";
+        String actual = ring.toASCIIString();
+        assertEquals(expected, actual);
     }
     
     @Test
