@@ -85,7 +85,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
             case -3:
                 return "Z[\u03C9]";
             default:
-                if (this.radicand % 2 != 0) {
+                if (this.d1mod4) {
                     return "O_(Q(\u221A\u2212" + this.absRadicand + "))";
                 } else {
                     return "Z[\u221A\u2212" + this.absRadicand + "]";
