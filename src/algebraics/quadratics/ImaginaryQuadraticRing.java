@@ -78,6 +78,16 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     }
     
     @Override
+    public String toString() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
+    public String toASCIIString() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
     public String toTeXString() {
         switch (this.radicand) {
             case -1:
