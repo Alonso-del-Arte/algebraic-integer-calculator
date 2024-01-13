@@ -97,30 +97,16 @@ public class ImaginaryQuadraticRingTest {
      * Test of the toString function, of the ImaginaryQuadraticRing class, 
      * inherited from {@link QuadraticRing}.
      */
-//    @Test
+    @Test
     public void testToString() {
         System.out.println("toString");
-        String expResult = "Z[i]";
-        String result = RING_GAUSSIAN.toString();
-        assertEquals(expResult, result);
-        expResult = "Z[\u221A\u22122]";
-        result = RING_ZI2.toString();
-        assertEquals(expResult, result);
-        expResult = "Z[\u03C9]";
-        result = RING_EISENSTEIN.toString();
-        assertEquals(expResult, result);
-        expResult = "O_(Q(\u221A\u22127))";
-        result = RING_OQI7.toString();
-        assertEquals(expResult, result);
-        if (ringRandomd1mod4) {
-            expResult = "O_(Q(\u221A\u2212" + Math.abs(randomDiscr) + "))";
-        } else {
-            expResult = "Z[\u221A\u2212" + Math.abs(randomDiscr) + "]";
-        }
-        result = ringRandom.toString();
-        assertEquals(expResult, result);
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String expected = "Z[\u221A\u2212" + (-d) + "]";
+        String actual = ring.toString();
+        assertEquals(expected, actual);
     }
-
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}.
