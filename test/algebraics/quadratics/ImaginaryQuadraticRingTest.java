@@ -134,6 +134,13 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringZOmega() {
+        String expected = "Z[omega]";
+        String actual = RING_EISENSTEIN.toASCIIString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}.
