@@ -86,6 +86,13 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringZOmega() {
+        String expected = "Z[\u03C9]";
+        String actual = RING_EISENSTEIN.toString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function, of the ImaginaryQuadraticRing class, 
      * inherited from {@link QuadraticRing}.
