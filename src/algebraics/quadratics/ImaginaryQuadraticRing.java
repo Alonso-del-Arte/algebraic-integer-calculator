@@ -95,6 +95,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public String toASCIIString() {
+        if (this.radicand == -3) return "Z[omega]";
         return "Z[i]";
     }
     
