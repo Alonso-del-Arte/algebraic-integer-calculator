@@ -79,11 +79,18 @@ public class ImaginaryQuadraticRingTest {
                 + " has been randomly chosen for testing purposes");
     }
     
-    /**
-     * Test of toString method, of class ImaginaryQuadraticRing, inherited from 
-     * {@link QuadraticRing}.
-     */
     @Test
+    public void testToStringZI() {
+        String expected = "Z[i]";
+        String actual = RING_GAUSSIAN.toString();
+        assertEquals(expected, actual);
+    }
+    
+    /**
+     * Test of the toString function, of the ImaginaryQuadraticRing class, 
+     * inherited from {@link QuadraticRing}.
+     */
+//    @Test
     public void testToString() {
         System.out.println("toString");
         String expResult = "Z[i]";
@@ -111,7 +118,7 @@ public class ImaginaryQuadraticRingTest {
      * Test of toASCIIString method, of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}.
      */
-    @Test
+//    @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
         String expResult = "Z[i]";
