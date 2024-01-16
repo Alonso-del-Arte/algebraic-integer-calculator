@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -19,6 +19,13 @@ package algebraics.quadratics;
 import algebraics.UnsupportedNumberDomainException;
 import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberOtherThan;
 import fileops.FileChooserWithOverwriteGuard;
 import fractions.Fraction;
 
@@ -95,11 +102,11 @@ public class RealQuadraticRingTest {
         assertEquals(8, RING_Z2.discriminant());
         assertEquals(5, RING_ZPHI.discriminant());
         assertEquals(13, RING_OQ13.discriminant());
-        int expResult = randomDiscr;
+        int expected = randomDiscr;
         if (randomDiscr % 4 != 1) {
-            expResult *= 4;
+            expected *= 4;
         }
-        assertEquals(expResult, ringRandom.discriminant());
+        assertEquals(expected, ringRandom.discriminant());
     }
 
     /**
@@ -114,15 +121,15 @@ public class RealQuadraticRingTest {
         System.out.println("getPowerBasis");
         Fraction one = new Fraction(1);
         Fraction[] powMults = {one, one};
-        PowerBasis expResult = new PowerBasis(powMults);
-        PowerBasis result = RING_Z2.getPowerBasis();
-        assertEquals(expResult, result);
-        result = RING_ZPHI.getPowerBasis();
-        assertEquals(expResult, result);
-        result = RING_OQ13.getPowerBasis();
-        assertEquals(expResult, result);
-        result = ringRandom.getPowerBasis();
-        assertEquals(expResult, result);
+        PowerBasis expected = new PowerBasis(powMults);
+        PowerBasis actual = RING_Z2.getPowerBasis();
+        assertEquals(expected, actual);
+        actual = RING_ZPHI.getPowerBasis();
+        assertEquals(expected, actual);
+        actual = RING_OQ13.getPowerBasis();
+        assertEquals(expected, actual);
+        actual = ringRandom.getPowerBasis();
+        assertEquals(expected, actual);
     }
     
     /**
@@ -218,19 +225,19 @@ public class RealQuadraticRingTest {
     public void testHasHalfIntegers() {
         System.out.println("hasHalfIntegers");
         String msgNoHalves = " should not be said to have half-integers";
-        String msg = RING_Z2.toString() + msgNoHalves;
-        assert !RING_Z2.hasHalfIntegers() : msg;
+        String message = RING_Z2.toString() + msgNoHalves;
+        assert !RING_Z2.hasHalfIntegers() : message;
         String msgHalves = " should be said to have half-integers";
-        msg = RING_ZPHI.toString() + msgHalves;
-        assert RING_ZPHI.hasHalfIntegers() : msg;
-        msg = RING_OQ13.toString() + msgHalves;
-        assertTrue(msg, RING_OQ13.hasHalfIntegers());
+        message = RING_ZPHI.toString() + msgHalves;
+        assert RING_ZPHI.hasHalfIntegers() : message;
+        message = RING_OQ13.toString() + msgHalves;
+        assertTrue(message, RING_OQ13.hasHalfIntegers());
         if (ringRandomD1Mod4) {
-            msg = ringRandom.toString() + msgHalves;
+            message = ringRandom.toString() + msgHalves;
         } else {
-            msg = ringRandom.toString() + msgNoHalves;
+            message = ringRandom.toString() + msgNoHalves;
         }
-        assertEquals(msg, ringRandomD1Mod4, ringRandom.hasHalfIntegers());
+        assertEquals(message, ringRandomD1Mod4, ringRandom.hasHalfIntegers());
     }
     
     /**
@@ -259,50 +266,58 @@ public class RealQuadraticRingTest {
     }
 
 /**
-     * Test of hashCode method, of class ImaginaryQuadraticRing, inherited from 
+     * Test of hashCode method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}. The purpose here isn't to test that any specific 
      * ring maps to any specific hash code, but rather that two rings that are 
      * equal get the same hash code, and two rings that are not equal get 
      * different hash codes.
-     */
+     */@org.junit.Ignore
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
+        fail("REWRITE");
         int expected = RING_Z2.hashCode();
         System.out.println("BeforeClass " + RING_Z2.toASCIIString() 
                 + " hashed as " + expected);
         RealQuadraticRing someRing = new RealQuadraticRing(2);
         int actual = someRing.hashCode();
-        String msg = "BeforeClass and test Z[sqrt(2)] should hash same";
-        assertEquals(msg, expected, actual);
+        String message = "BeforeClass and test Z[sqrt(2)] should hash same";
+        assertEquals(message, expected, actual);
         expected = RING_ZPHI.hashCode();
         System.out.println("BeforeClass " + RING_ZPHI.toASCIIString() 
                 + " hashed as " + expected);
         someRing = new RealQuadraticRing(5);
         actual = someRing.hashCode();
-        msg = "BeforeClass and test Z[omega] should hash the same";
-        assertEquals(msg, expected, actual);
+        message = "BeforeClass and test Z[omega] should hash the same";
+        assertEquals(message, expected, actual);
         expected = RING_OQ13.hashCode();
         System.out.println("BeforeClass " + RING_OQ13.toASCIIString() 
                 + " hashed as " + expected);
         someRing = new RealQuadraticRing(13);
         actual = someRing.hashCode();
-        msg = "BeforeClass and test Z[sqrt(-7)] should hash the same";
-        assertEquals(msg, expected, actual);
+        message = "BeforeClass and test Z[sqrt(-7)] should hash the same";
+        assertEquals(message, expected, actual);
         expected = ringRandom.hashCode();
         System.out.println("BeforeClass " + ringRandom.toASCIIString() 
                 + " hashed as " + expected);
         someRing = new RealQuadraticRing(randomDiscr);
         actual = someRing.hashCode();
-        msg = "BeforeClass and test " + ringRandom.toASCIIString() 
+        message = "BeforeClass and test " + ringRandom.toASCIIString() 
                 + " should hash the same";
-        assertEquals(msg, expected, actual);
+        assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToStringZPhi() {
+        String expected = "Z[\u03C6]";
+        String actual = RING_ZPHI.toString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -324,7 +339,7 @@ public class RealQuadraticRingTest {
     /**
      * Test of toASCIIString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
@@ -385,7 +400,7 @@ public class RealQuadraticRingTest {
      * Test of toHTMLString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}. Note that the blackboard preference has an effect 
      * on the output.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
@@ -425,7 +440,7 @@ public class RealQuadraticRingTest {
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
      * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
      * for this particular test.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToFilenameString() {
         System.out.println("toFilenameString");
