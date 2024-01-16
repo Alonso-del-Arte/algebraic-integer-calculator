@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -67,6 +67,41 @@ public class RealQuadraticRing extends QuadraticRing {
     @Override
     public double getAbsNegRadSqrt() {
         return this.realRadSqrt;
+    }
+    
+    @Override
+    public String toString() {
+        return "Z[\u03C6]";
+    }
+    
+    @Override
+    public String toASCIIString() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
+    public String toTeXString() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
+    public String toTeXStringBlackboardBold() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
+    public String toHTMLString() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
+    public String toHTMLStringBlackboardBold() {
+        return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
+    public String toFilenameString() {
+        return "NOT_IMPL.YET";
     }
     
     /**
