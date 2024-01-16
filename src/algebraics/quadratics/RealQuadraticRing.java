@@ -71,7 +71,8 @@ public class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public String toString() {
-        return "Z[\u03C6]";
+        if (this.radicand == 5) return "Z[\u03C6]";
+        return "Z[\u221A" + this.radicand + "]";
     }
     
     @Override
