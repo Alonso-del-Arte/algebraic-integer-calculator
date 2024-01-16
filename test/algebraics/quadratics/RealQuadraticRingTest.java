@@ -328,6 +328,16 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringD1Mod4() {
+        int propD = randomSquarefreeNumberMod(1, 4);
+        int d = (propD < 9) ? 13 : propD;
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "O_(Q(\u221A" + d + "))";
+        String actual = ring.toString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}.
