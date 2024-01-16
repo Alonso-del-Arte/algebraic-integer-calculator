@@ -338,6 +338,15 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringD3Mod4() {
+        int d = randomSquarefreeNumberMod(3, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "Z[\u221A" + d + "]";
+        String actual = ring.toString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}.
