@@ -315,27 +315,19 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of toString method, of class RealQuadraticRing, inherited from 
-     * {@link QuadraticRing}.
-     */@org.junit.Ignore
+     * Test of the toString function, of the RealQuadraticRing class, inherited 
+     * from {@link QuadraticRing}.
+     */
     @Test
     public void testToString() {
         System.out.println("toString");
-        String expected = "Z[\u221A2]";
-        String actual = RING_Z2.toString();
-        assertEquals(expected, actual);
-        expected = "Z[\u03C6]";
-        actual = RING_ZPHI.toString();
-        assertEquals(expected, actual);
-        if (ringRandomD1Mod4) {
-            expected = "O_(Q(\u221A" + randomDiscr + "))";
-        } else {
-            expected = "Z[\u221A" + randomDiscr + "]";
-        }
-        actual = ringRandom.toString();
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "Z[\u221A" + d + "]";
+        String actual = ring.toString();
         assertEquals(expected, actual);
     }
-
+    
     /**
      * Test of toASCIIString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}.
