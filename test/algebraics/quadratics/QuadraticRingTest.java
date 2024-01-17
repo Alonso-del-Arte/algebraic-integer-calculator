@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -101,14 +101,7 @@ public class QuadraticRingTest {
      */
     @Test
     public void testEquals() {
-        System.out.println("equals");
-        Object obj = null;
-        QuadraticRing instance = null;
-        boolean expResult = false;
-//        boolean result = instance.equals(obj);
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("REWRITE THIS TEST");
     }
 
     /**
@@ -117,12 +110,7 @@ public class QuadraticRingTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-//        QuadraticRing instance = null;
-//        int expResult = 0;
-//        int result = instance.hashCode();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("REWRITE THIS TEST");
     }
 
     /**
