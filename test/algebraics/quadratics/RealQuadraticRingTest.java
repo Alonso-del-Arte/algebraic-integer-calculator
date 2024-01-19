@@ -347,6 +347,13 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringZPhi() {
+        String expected = "Z[phi]";
+        String actual = RING_ZPHI.toASCIIString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}.
