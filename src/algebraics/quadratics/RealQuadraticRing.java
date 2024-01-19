@@ -78,7 +78,7 @@ public class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public String toASCIIString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "Z[phi]";
     }
     
     @Override
