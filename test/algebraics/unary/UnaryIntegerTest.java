@@ -65,4 +65,14 @@ public class UnaryIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXString() {
+        System.out.println("toTeXString");
+        int n = randomNumber(Short.MAX_VALUE);
+        UnaryInteger number = new UnaryInteger(n);
+        String expected = Integer.toString(n);
+        String actual = number.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
 }
