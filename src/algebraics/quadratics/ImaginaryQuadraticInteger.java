@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -95,7 +95,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         }
         double realLegSquare = this.regPartMult * this.regPartMult;
         double imagLegSquare = this.surdPartMult * this.surdPartMult 
-                * (-this.quadRing.radicand);
+                * this.quadRing.absRadicand;
         double hypotenuseSquare = realLegSquare + imagLegSquare;
         if (this.denominator == 2) {
             hypotenuseSquare /= 4;
