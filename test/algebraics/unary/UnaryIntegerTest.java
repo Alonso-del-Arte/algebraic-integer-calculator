@@ -75,4 +75,13 @@ public class UnaryIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringNegative() {
+        int n = -randomNumber(Short.MAX_VALUE) - 1;
+        UnaryInteger number = new UnaryInteger(n);
+        String expected = Integer.toString(n);
+        String actual = number.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
 }
