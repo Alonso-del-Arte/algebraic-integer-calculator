@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -27,7 +27,7 @@ package algebraics.quadratics;
 public class RealQuadraticInteger extends QuadraticInteger 
         implements Comparable<RealQuadraticInteger> {
     
-    private static final long serialVersionUID =  4547847540095073075L;
+    private static final long serialVersionUID = 4547847540095073075L;
     
     private final double numVal;
     private final double absNumVal;
@@ -99,7 +99,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public double angle() {
-        if (this.numVal < 0) {
+        if (this.numVal < 0.0) {
             return Math.PI;
         } else {
             return 0.0;
@@ -138,7 +138,7 @@ public class RealQuadraticInteger extends QuadraticInteger
         } else {
             diffRe = this.numVal - other.numVal;
         }
-        if (diffRe < 0) {
+        if (diffRe < 0.0) {
             return -1;
         }
         if (diffRe > 0) {
@@ -219,7 +219,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     public RealQuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
         super(a, b, ring, denom);
         if (!(ring instanceof RealQuadraticRing)) {
-            String excMsg = "Ring is not real as needed.";
+            String excMsg = "Ring is not real as needed";
             throw new IllegalArgumentException(excMsg);
         }
         double preNumVal = this.quadRing.realRadSqrt * this.surdPartMult 
