@@ -171,10 +171,15 @@ public class UnaryInteger implements AlgebraicInteger,
         return Integer.toString(this.number);
     }
 
-    // TODO: Write tests for this
+    /**
+     * A text representation of the algebraic integer suitable for use in a TeX 
+     * document.
+     * @return The same as {@link #toASCIIString()}. Examples: "-28" for 
+     * &minus;28, "0", "1729".
+     */
     @Override
     public String toTeXString() {
-        return this.toString();
+        return this.toASCIIString();
     }
 
     // TODO: Write tests for this
