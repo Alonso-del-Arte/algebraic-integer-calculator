@@ -417,6 +417,15 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringD3Mod4() {
+        int d = randomSquarefreeNumberMod(3, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "\\mathbf Z[\\sqrt{" + d + "}]";
+        String actual = ring.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toHTMLString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}. Note that the blackboard preference has an effect 
