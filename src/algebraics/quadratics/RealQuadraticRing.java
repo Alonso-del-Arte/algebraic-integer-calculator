@@ -79,6 +79,7 @@ public class RealQuadraticRing extends QuadraticRing {
     @Override
     public String toASCIIString() {
         if (this.radicand == 5) return "Z[phi]";
+        if (this.radicand % 2 == 1) return "O_(Q(sqrt(" + this.radicand + ")))";
         return "Z[sqrt(" + this.radicand + ")]";
     }
     
