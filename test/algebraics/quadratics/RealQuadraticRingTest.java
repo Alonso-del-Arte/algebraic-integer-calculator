@@ -395,42 +395,18 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of toTeXString method, of class RealQuadraticRing, inherited from 
-     * {@link QuadraticRing}. Note that the blackboard preference has an effect 
-     * on the output.
-     */@org.junit.Ignore//TODO: Rewrite this test
+     * Test of the toTeXString function, of the RealQuadraticRing class.
+     */
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-//        QuadraticRing.preferBlackboardBold(true);
-        String expected = "\\mathbb Z[\\sqrt{2}]";
-        String actual = RING_Z2.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\mathbb Z[\\phi]";
-        actual = RING_ZPHI.toTeXString();
-        assertEquals(expected, actual);
-        if (ringRandomD1Mod4) {
-            expected = "\\mathcal O_{\\mathbb Q(\\sqrt{" + randomDiscr + "})}";
-        } else {
-            expected = "\\mathbb Z[\\sqrt{" + randomDiscr + "}]";
-        }
-        actual = ringRandom.toTeXString();
-        assertEquals(expected, actual);
-//        QuadraticRing.preferBlackboardBold(false);
-        expected = "\\textbf Z[\\sqrt{2}]";
-        actual = RING_Z2.toTeXString();
-        assertEquals(expected, actual);
-        expected = "\\textbf Z[\\phi]";
-        actual = RING_ZPHI.toTeXString();
-        assertEquals(expected, actual);
-        if (ringRandomD1Mod4) {
-            expected = "\\mathcal O_{\\textbf Q(\\sqrt{" + randomDiscr + "})}";
-        } else {
-            expected = "\\textbf Z[\\sqrt{" + randomDiscr + "}]";
-        }
-        actual = ringRandom.toTeXString();
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "\\mathbf Z[\\sqrt{" + d + "}]";
+        String actual = ring.toTeXString();
         assertEquals(expected, actual);
     }
+    
 
     /**
      * Test of toHTMLString method, of class RealQuadraticRing, inherited from 
