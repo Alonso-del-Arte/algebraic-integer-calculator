@@ -86,7 +86,7 @@ public class RealQuadraticRing extends QuadraticRing {
     @Override
     public String toTeXString() {
         if (this.radicand == 5) return "\\mathbf Z[\\phi]";
-        if (this.radicand % 2 == 1) {
+        if (this.d1mod4) {
             return "\\mathcal O_{\\mathbf Q(\\sqrt{" + this.radicand + "})}";
         }
         return "\\mathbf Z[\\sqrt{" + this.radicand + "}]";
