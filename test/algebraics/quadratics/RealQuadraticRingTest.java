@@ -387,6 +387,13 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringZPhi() {
+        String expected = "\\mathbf Z[\\phi]";
+        String actual = RING_ZPHI.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toTeXString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}. Note that the blackboard preference has an effect 
