@@ -474,45 +474,18 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of toHTMLString method, of class RealQuadraticRing, inherited from 
-     * {@link QuadraticRing}. Note that the blackboard preference has an effect 
-     * on the output.
-     */@org.junit.Ignore
+     * Test of the toHTMLString function, of the ImaginaryQuadraticRing class.
+     */
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-//        QuadraticRing.preferBlackboardBold(true);
-        String expected = "\u2124[&radic;2]";
-        String actual = RING_Z2.toHTMLString();
-        assertEquals(expected, actual);
-        expected = "\u2124[&phi;]";
-        actual = RING_ZPHI.toHTMLString();
-        assertEquals(expected, actual);
-        if (ringRandomD1Mod4) {
-            expected = "<i>O</i><sub>\u211A(&radic;(" + randomDiscr 
-                    + "))</sub>";
-        } else {
-            expected = "\u2124[&radic;" + randomDiscr + "]";
-        }
-        actual = ringRandom.toHTMLString();
-        assertEquals(expected, actual);
-//        QuadraticRing.preferBlackboardBold(false);
-        expected = "<b>Z</b>[&radic;2]";
-        actual = RING_Z2.toHTMLString();
-        assertEquals(expected, actual);
-        expected = "<b>Z</b>[&phi;]";
-        actual = RING_ZPHI.toHTMLString();
-        assertEquals(expected, actual);
-        if (ringRandomD1Mod4) {
-            expected = "<i>O</i><sub><b>Q</b>(&radic;(" + randomDiscr 
-                    + "))</sub>";
-        } else {
-            expected = "<b>Z</b>[&radic;" + randomDiscr + "]";
-        }
-        actual = ringRandom.toHTMLString();
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "<b>Z</b>[&radic;" + d + "]";
+        String actual = ring.toHTMLString();
         assertEquals(expected, actual);
     }
-
+    
     /**
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
      * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
