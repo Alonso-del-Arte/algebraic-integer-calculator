@@ -113,7 +113,7 @@ public class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public String toHTMLStringBlackboardBold() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "&#x2124;[&phi;]";
     }
     
     @Override
