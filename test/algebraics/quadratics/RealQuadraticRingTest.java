@@ -447,6 +447,16 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringBlackboardBoldD1Mod4() {
+        int propD = randomSquarefreeNumberMod(1, 4);
+        int d = (propD < 9) ? 13 : propD;
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "\\mathcal O_{\\mathbb Q(\\sqrt{" + d + "})}";
+        String actual = ring.toTeXStringBlackboardBold();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toHTMLString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}. Note that the blackboard preference has an effect 
