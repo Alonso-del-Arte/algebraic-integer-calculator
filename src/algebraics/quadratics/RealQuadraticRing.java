@@ -103,7 +103,8 @@ public class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public String toHTMLString() {
-        return "<b>Z</b>[&phi;]";
+        if (this.radicand == 5) return "<b>Z</b>[&phi;]";
+        return "<b>Z</b>[&radic;" + this.radicand + "]";
     }
     
     @Override
