@@ -466,6 +466,13 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringZPhi() {
+        String expected = "<b>Z</b>[&phi;]";
+        String actual = RING_ZPHI.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toHTMLString method, of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}. Note that the blackboard preference has an effect 
