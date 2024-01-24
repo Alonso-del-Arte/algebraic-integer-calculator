@@ -496,6 +496,15 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringD3Mod4() {
+        int d = randomSquarefreeNumberMod(3, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "<b>Z</b>[&radic;" + d + "]";
+        String actual = ring.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
      * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
