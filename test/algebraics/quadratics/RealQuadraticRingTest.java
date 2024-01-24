@@ -505,6 +505,16 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringBlackboardBoldZPhi() {
+        String expectedA = "&#x2124;[&phi;]";
+        String expectedB = "&#8484;[&phi;]";
+        String actual = RING_ZPHI.toHTMLStringBlackboardBold();
+        String msg = "Function should give \"" + expectedA + "\" or \"" 
+                + expectedB + "\", was \"" + actual + "\"";
+        assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
+    }
+    
     /**
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
      * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
