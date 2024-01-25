@@ -588,6 +588,16 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToFilenameStringD3Mod4() {
+        int propD = randomSquarefreeNumberMod(3, 4);
+        int d = (propD < 9) ? 13 : propD;
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "Z" + d;
+        String actual = ring.toFilenameString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the RealQuadraticRing constructor.
      */
