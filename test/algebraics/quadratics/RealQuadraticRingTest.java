@@ -532,6 +532,19 @@ public class RealQuadraticRingTest {
         assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
     }
     
+    @Test
+    public void testToHTMLStringBlackboardBoldD1Mod4() {
+        int propD = randomSquarefreeNumberMod(1, 4);
+        int d = (propD < 9) ? 13 : propD;
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expectedA = "<i>O</i><sub>&#x211A;(&radic;(" + d + "))</sub>";
+        String expectedB = "<i>O</i><sub>&#8474;(&radic;(" + d + "))</sub>";
+        String actual = ring.toHTMLStringBlackboardBold();
+        String msg = "Function should give \"" + expectedA + "\" or \"" 
+                + expectedB + "\", was \"" + actual + "\"";
+        assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
+    }
+    
     /**
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
      * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
