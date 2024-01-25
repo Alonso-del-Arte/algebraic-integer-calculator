@@ -557,6 +557,13 @@ public class RealQuadraticRingTest {
         assert expectedA.equals(actual) || expectedB.equals(actual) : msg;
     }
     
+    @Test
+    public void testToFilenameStringZPhi() {
+        String expected = "ZPHI";
+        String actual = RING_ZPHI.toFilenameString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toFilenameString method, of class RealQuadraticRing, inherited 
      * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
