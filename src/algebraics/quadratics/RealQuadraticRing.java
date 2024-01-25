@@ -124,6 +124,7 @@ public class RealQuadraticRing extends QuadraticRing {
     @Override
     public String toFilenameString() {
         if (this.radicand == 5) return "ZPHI";
+        if (this.radicand % 2 == 1) return "OQ" + this.radicand;
         return "Z" + this.radicand;
     }
     
