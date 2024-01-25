@@ -123,7 +123,7 @@ public class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public String toFilenameString() {
-        return "NOT_IMPL.YET";
+        return "ZPHI";
     }
     
     /**
