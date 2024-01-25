@@ -69,65 +69,6 @@ public class RealQuadraticRing extends QuadraticRing {
         return this.realRadSqrt;
     }
     
-    @Override
-    public String toString() {
-        if (this.radicand == 5) return "Z[\u03C6]";
-        if (this.d1mod4) return "O_(Q(\u221A" + this.radicand + "))";
-        return "Z[\u221A" + this.radicand + "]";
-    }
-    
-    @Override
-    public String toASCIIString() {
-        if (this.radicand == 5) return "Z[phi]";
-        if (this.d1mod4) return "O_(Q(sqrt(" + this.radicand + ")))";
-        return "Z[sqrt(" + this.radicand + ")]";
-    }
-    
-    @Override
-    public String toTeXString() {
-        if (this.radicand == 5) return "\\mathbf Z[\\phi]";
-        if (this.d1mod4) {
-            return "\\mathcal O_{\\mathbf Q(\\sqrt{" + this.radicand + "})}";
-        }
-        return "\\mathbf Z[\\sqrt{" + this.radicand + "}]";
-    }
-    
-    @Override
-    public String toTeXStringBlackboardBold() {
-        if (this.radicand == 5) return "\\mathbb Z[\\phi]";
-        if (this.d1mod4) {
-            return "\\mathcal O_{\\mathbb Q(\\sqrt{" + this.radicand + "})}";
-        }
-        return "\\mathbb Z[\\sqrt{" + this.radicand + "}]";
-    }
-    
-    @Override
-    public String toHTMLString() {
-        if (this.radicand == 5) return "<b>Z</b>[&phi;]";
-        if (this.d1mod4) {
-            return "<i>O</i><sub><b>Q</b>(&radic;(" + this.radicand 
-                    + "))</sub>";
-        }
-        return "<b>Z</b>[&radic;" + this.radicand + "]";
-    }
-    
-    @Override
-    public String toHTMLStringBlackboardBold() {
-        if (this.radicand == 5) return "&#x2124;[&phi;]";
-        if (this.d1mod4) {
-            return "<i>O</i><sub>&#x211A;(&radic;(" + this.radicand 
-                    + "))</sub>";
-        }
-        return "&#x2124;[&radic;" + this.radicand + "]";
-    }
-    
-    @Override
-    public String toFilenameString() {
-        if (this.radicand == 5) return "ZPHI";
-        if (this.d1mod4) return "OQ" + this.radicand;
-        return "Z" + this.radicand;
-    }
-    
     /**
      * Constructs a new object representing a real quadratic ring.
      * @param d A squarefree, positive integer greater than 1. Examples: 5, 21, 

@@ -77,6 +77,12 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         return this.realRadSqrt;
     }
     
+    /**
+     * Gives the ring's label, using mostly alphanumeric ASCII characters but 
+     * also often the "&radic;" character and occasionally Greek letters.
+     * @return A label for the quadratic ring. For example, 
+     * "O_(Q(&radic;&minus;19))".
+     */
     @Override
     public String toString() {
         switch (this.radicand) {
@@ -93,56 +99,16 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         }
     }
     
-    @Override
-    public String toASCIIString() {
-        switch (this.radicand) {
-            case -1:
-                return "Z[i]";
-            case -3:
-                return "Z[omega]";
-            default:
-                if (this.d1mod4) {
-                    return "O_(Q(sqrt(" + this.radicand + ")))";
-                } else {
-                    return "Z[sqrt(" + this.radicand + ")]";
-                }
-        }
-    }
-    
-    @Override
-    public String toTeXString() {
-        switch (this.radicand) {
-            case -1:
-                return "\\mathbf Z[i]";
-            case -3:
-                return "\\mathbf Z[\\omega]";
-            default:
-                if (this.d1mod4) {
-                    return "\\mathcal O_{\\mathbf Q(\\sqrt{" + this.radicand 
-                            + "})}";
-                } else {
-                    return "\\mathbf Z[\\sqrt{" + this.radicand + "}]";
-                }
-        }
-    }
-    
-    @Override
-    public String toTeXStringBlackboardBold() {
-        switch (this.radicand) {
-            case -1:
-                return "\\mathbb Z[i]";
-            case -3:
-                return "\\mathbb Z[\\omega]";
-            default:
-                if (this.d1mod4) {
-                    return "\\mathcal O_{\\mathbb Q(\\sqrt{" + this.radicand 
-                            + "})}";
-                } else {
-                    return "\\mathbb Z[\\sqrt{" + this.radicand + "}]";
-                }
-        }
-    }
-    
+    /**
+     * A text representation of this ring's label suitable for use in an HTML 
+     * document. The representation does not use blackboard bold. Use {@link 
+     * #toHTMLStringBlackboardBold()} if you need HTML with blackboard bold. In 
+     * both of these I have assumed that the "mathcal O" from TeX is 
+     * inconsistently available or completely unavailable.
+     * @return Text suitable for an HTML element's inner HTML property. For 
+     * example, "&lt;b&gt;Z&lt;/b&gt;[&lt;i&gt;i&lt;/i&gt;]" for <i>d</i> = 
+     * &minus;1, which should render as "<b>Z</b>[<i>i</i>]".
+     */
     @Override
     public String toHTMLString() {
         switch (this.radicand) {
@@ -160,6 +126,16 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         }
     }
     
+    /**
+     * A text representation of this ring's label suitable for use in an HTML 
+     * document. The representation uses blackboard bold. Use {@link 
+     * #toHTMLString()} if you need HTML with blackboard bold. In both of these 
+     * I have assumed that the "mathcal O" from TeX is inconsistently available 
+     * or completely unavailable.
+     * @return Text suitable for an HTML element's inner HTML property. For 
+     * example, "&amp;#x2124;[&lt;i&gt;i&lt;/i&gt;]" for <i>d</i> = &minus;1, 
+     * which should render as "&#x2124;[<i>i</i>]".
+     */
     @Override
     public String toHTMLStringBlackboardBold() {
         switch (this.radicand) {
@@ -177,22 +153,6 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         }
     }
     
-    @Override
-    public String toFilenameString() {
-        switch (this.radicand) {
-            case -1:
-                return "ZI";
-            case -3:
-                return "ZW";
-            default:
-                if (this.d1mod4) {
-                    return "OQI" + this.absRadicand;
-                } else {
-                    return "ZI" + this.absRadicand;
-                }
-        }
-    }
-   
     /**
      * Constructs a new object representing an imaginary quadratic ring.
      * @param d A squarefree, negative integer. Examples: &minus;3, &minus;58, 

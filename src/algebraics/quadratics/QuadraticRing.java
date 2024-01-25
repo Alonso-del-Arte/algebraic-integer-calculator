@@ -174,31 +174,19 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     }
     
     /**
-     * The ring's label, using mostly alphanumeric ASCII characters but also 
-     * often the "&radic;" character and occasionally Greek letters.
-     * @return A <code>String</code> representing the quadratic ring.
+     * Gives the ring's label, using mostly alphanumeric ASCII characters but 
+     * also often the "&radic;" character and occasionally Greek letters.
+     * @return A label for the quadratic ring. For example, "Z[&radic;83]".
      */
     @Override
     public String toString() {
-        String intermediate;
-        switch (this.radicand) {
-            case 5:
-                return "Z[\u03C6]";
-            case -1:
-                return "Z[i]";
-            case -3:
-                return "Z[\u03C9]";
-            default:
-                if (this.d1mod4) {
-                    intermediate = "O_(Q(\u221A" + this.radicand + "))";
-                } else {
-                    intermediate = "Z[\u221A" + this.radicand + "]";
-                }
+        if (this.radicand == 5) {
+            return "Z[\u03C6]";
         }
-        if (this.radicand < 0) {
-            intermediate = intermediate.replace("-", "\u2212");
+        if (this.d1mod4) {
+            return "O_(Q(\u221A" + this.radicand + "))";
         }
-        return intermediate;
+        return "Z[\u221A" + this.radicand + "]";
     }
     
     /**
@@ -329,8 +317,8 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * both of these I have assumed that the "mathcal O" from TeX is 
      * inconsistently available or completely unavailable.
      * @return Text suitable for an HTML element's inner HTML property. For 
-     * example, "&lt;b&gt;Z&lt;/b&gt;[&lt;i&gt;i&lt;/i&gt;]" for <i>d</i> = 
-     * &minus;1, which should render as "<b>Z</b>[<i>i</i>]".
+     * example, "&lt;b&gt;Z&lt;/b&gt;[&amp;phi;]" for <i>d</i> = 5, which should 
+     * render as "<b>Z</b>[&phi;]".
      */
     @Override
     public String toHTMLString() {
@@ -344,8 +332,8 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * I have assumed that the "mathcal O" from TeX is inconsistently available 
      * or completely unavailable.
      * @return Text suitable for an HTML element's inner HTML property. For 
-     * example, "&amp;#x2124;[&lt;i&gt;i&lt;/i&gt;]" for <i>d</i> = &minus;1, 
-     * which should render as "&#x2124;[<i>i</i>]".
+     * example, "&amp;#x2124;[&amp;phi;]" for <i>d</i> = 5, which should render  
+     * as "&#x2124;[&phi;]".
      */
     @Override
     public String toHTMLStringBlackboardBold() {
@@ -359,32 +347,25 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * here is a function whose output will hopefully help the calling program 
      * conform to the old MS-DOS 8.3 standard.
      * @return A string suitable for use in a filename. Examples: for <i>d</i> = 
-     * &minus;1, returns "ZI"; for <i>d</i> = &minus;2, returns "ZI2"; for 
-     * <i>d</i> = &minus;3, returns "ZW" (a horrible kludge); for <i>d</i> = 
-     * &minus;7, returns "OQI7".
+     * &minus;1, returns "ZI"; for <i>d</i> = 2, returns "Z2"; for <i>d</i> = 
+     * = &minus;3, returns "ZW" (a horrible kludge); for <i>d</i> = &minus;7, 
+     * returns "OQI7"; for <i>d</i> = 13, returns "OQ13".
      */
     @Override
     public String toFilenameString() {
-        String intermediate;
-        int radNum = this.radicand;
-        switch (radNum) {
+        switch (this.radicand) {
             case -3:
                 return "ZW";
             case -1:
                 return "ZI";
             case 5:
-                return "ZPhi";
+                return "ZPHI";
             default:
-                if (this.d1mod4) {
-                    intermediate = "OQ";
-                } else {
-                    intermediate = "Z";
-                }
+                String intermediate = this.d1mod4 ? "OQ" : "Z";
                 if (this.radicand < 0) {
                     intermediate = intermediate + "I";
-                    radNum *= -1;
                 }
-                return intermediate + radNum;
+                return intermediate + this.absRadicand;
         }
     }
     
