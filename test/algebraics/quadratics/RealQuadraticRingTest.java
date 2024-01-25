@@ -565,27 +565,18 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of toFilenameString method, of class RealQuadraticRing, inherited 
-     * from {@link QuadraticRing}. Preference for blackboard bold is irrelevant 
-     * for this particular test.
-     */@org.junit.Ignore
+     * Test of the toFilenameString function, of the RealQuadraticRing class, 
+     * inherited from {@link QuadraticRing}.
+     */
     @Test
     public void testToFilenameString() {
         System.out.println("toFilenameString");
-        String expResult = "Z2";
-        String result = RING_Z2.toFilenameString();
-        assertEquals(expResult, result);
-        expResult = "ZPhi";
-        result = RING_ZPHI.toFilenameString();
-        assertEquals(expResult, result);
-        if (ringRandomD1Mod4) {
-            expResult = "OQ" + randomDiscr;
-        } else {
-            expResult = "Z" + randomDiscr;
-        }
-        result = ringRandom.toFilenameString();
-        assertEquals(expResult, result);
-    }
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String expected = "Z" + d;
+        String actual = ring.toFilenameString();
+        assertEquals(expected, actual);
+    }    
     
     /**
      * Test of the RealQuadraticRing constructor.
