@@ -153,6 +153,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         }
     }
     
+    @Override
+    public int discriminant() {
+        return Integer.MAX_VALUE;
+    }
+    
     /**
      * Constructs a new object representing an imaginary quadratic ring.
      * @param d A squarefree, negative integer. Examples: &minus;3, &minus;58, 
