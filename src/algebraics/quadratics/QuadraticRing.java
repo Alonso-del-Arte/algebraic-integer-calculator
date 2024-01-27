@@ -149,19 +149,23 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     
     /**
      * Gives the discriminant of this ring. This number pertains to the 
-     * ramifying primes in this ring.
+     * ramifying primes in this ring. If the field is <b>Q</b>(&radic;<i>d</i>), 
+     * and <i>d</i> &equiv; 1 mod 4, then the discriminant is simply <i>d</i>, 
+     * otherwise it's 4<i>d</i>.
      * @return Same as {@link #getRadicand()} if this ring has so-called 
      * "half-integers," otherwise that number multiplied by 4. For example, for 
      * <b>Z</b>[&omega;], this would be &minus;3; for <b>Z</b>[&radic;2] this 
-     * would be 8.
+     * would be 8. Be aware that if |<i>d</i>| more than a quarter of 
+     * <code>Integer.MAX_VALUE</code>, then this function might give the wrong 
+     * result due to overflowing 32-bit integers.
      */
     @Override
-    public int discriminant() {return 0;
-//        if (this.d1mod4) {
-//            return this.radicand;
-//        } else {
-//            return 4 * this.radicand;
-//        }
+    public int discriminant() {
+        if (this.d1mod4) {
+            return this.radicand;
+        } else {
+            return 4 * this.radicand;
+        }
     }
     
     /**

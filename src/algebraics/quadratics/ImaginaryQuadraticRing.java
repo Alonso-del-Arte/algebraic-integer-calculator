@@ -153,15 +153,6 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         }
     }
     
-    @Override
-    public int discriminant() {
-        if (this.d1mod4) {
-            return this.radicand;
-        } else {
-            return 4 * this.radicand;
-        }
-    }
-    
     /**
      * Constructs a new object representing an imaginary quadratic ring.
      * @param d A squarefree, negative integer. Examples: &minus;3, &minus;58, 
