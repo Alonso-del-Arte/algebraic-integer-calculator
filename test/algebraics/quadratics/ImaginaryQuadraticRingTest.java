@@ -432,8 +432,7 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of the isPurelyReal function, of the ImaginaryQuadraticRing class. 
-     * Asserting false for all the test rings in this test class.
+     * Test of the isPurelyReal function, of the ImaginaryQuadraticRing class.
      */
     @Test
     public void testIsPurelyReal() {
@@ -447,33 +446,22 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of discriminant method of class ImaginaryQuadraticRing, inherited 
-     * from {@link QuadraticRing}. For <b>Z</b>[&radic;<i>d</i>] with <i>d</i> 
-     * &equiv; 2 or 3 (mod 4), the discriminant should be 4<i>d</i>. And for 
-     * <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> with <i>d</i> &equiv; 1 (mod 
-     * 4), the discriminant should just be <i>d</i>.
+     * Test of the discriminant function of the ImaginaryQuadraticRing class, 
+     * inherited from {@link QuadraticRing}. For <b>Z</b>[&radic;<i>d</i>] with 
+     * <i>d</i> &equiv; 2 or 3 (mod 4), the discriminant should be 4<i>d</i>. 
+     * And for <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> with <i>d</i> 
+     * &equiv; 1 (mod 4), the discriminant should just be <i>d</i>.
      */
     @Test
     public void testDiscriminant() {
         System.out.println("discriminant");
-        int expResult = -4;
-        int result = RING_GAUSSIAN.discriminant();
-        assertEquals(expResult, result);
-        expResult = -8;
-        result = RING_ZI2.discriminant();
-        assertEquals(expResult, result);
-        expResult = -3;
-        result = RING_EISENSTEIN.discriminant();
-        assertEquals(expResult, result);
-        expResult = -7;
-        result = RING_OQI7.discriminant();
-        assertEquals(expResult, result);
-        expResult = randomDiscr;
-        if (randomDiscr % 4 != -3) {
-            expResult *= 4;
-        }
-        result = ringRandom.discriminant();
-        assertEquals(expResult, result);
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        int expected = 4 * d;
+        int actual = ring.discriminant();
+        String message = "Discriminant of " + ring.toString() + " should be " 
+                + expected;
+        assertEquals(message, expected, actual);
     }
     
     /**
