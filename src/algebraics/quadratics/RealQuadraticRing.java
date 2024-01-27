@@ -71,7 +71,7 @@ public class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public int discriminant() {
-        if (this.radicand % 2 == 1) {
+        if (this.d1mod4) {
             return this.radicand;
         } else {
             return 4 * this.radicand;
