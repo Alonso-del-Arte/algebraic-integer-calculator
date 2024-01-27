@@ -71,7 +71,7 @@ public class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public int discriminant() {
-        return Integer.MIN_VALUE;
+        return 4 * this.radicand;
     }
     
     /**
