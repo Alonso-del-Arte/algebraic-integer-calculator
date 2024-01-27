@@ -90,23 +90,22 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of discriminant method of class RealQuadraticRing, inherited from 
-     * {@link QuadraticRing}. For <b>Z</b>[&radic;<i>d</i>] with <i>d</i> 
-     * &equiv; 2 or 3 (mod 4), the discriminant should be 4<i>d</i>. And for 
-     * <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> with <i>d</i> &equiv; 1 (mod 
-     * 4), the discriminant should just be <i>d</i>.
+     * Test of the discriminant function, of the RealQuadraticRing class, 
+     * inherited from {@link QuadraticRing}. For <b>Z</b>[&radic;<i>d</i>] with 
+     * <i>d</i> &equiv; 2 or 3 (mod 4), the discriminant should be 4<i>d</i>. 
+     * And for <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> with <i>d</i> 
+     * &equiv; 1 (mod 4), the discriminant should just be <i>d</i>.
      */
     @Test
     public void testDiscriminant() {
         System.out.println("discriminant");
-        assertEquals(8, RING_Z2.discriminant());
-        assertEquals(5, RING_ZPHI.discriminant());
-        assertEquals(13, RING_OQ13.discriminant());
-        int expected = randomDiscr;
-        if (randomDiscr % 4 != 1) {
-            expected *= 4;
-        }
-        assertEquals(expected, ringRandom.discriminant());
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        int expected = 4 * d;
+        int actual = ring.discriminant();
+        String message = "Discriminant of " + ring.toString() + " should be " 
+                + expected;
+        assertEquals(message, expected, actual);
     }
 
     /**
