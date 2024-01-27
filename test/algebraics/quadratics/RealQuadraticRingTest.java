@@ -118,6 +118,17 @@ public class RealQuadraticRingTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testDiscriminant3Mod4() {
+        int d = randomSquarefreeNumberMod(3, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        int expected = 4 * d;
+        int actual = ring.discriminant();
+        String message = "Discriminant of " + ring.toString() + " should be " 
+                + expected;
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of getPowerBasis method of class RealQuadraticRing, inherited from 
      * {@link QuadraticRing}. The power basis of any quadratic ring should be 1, 
