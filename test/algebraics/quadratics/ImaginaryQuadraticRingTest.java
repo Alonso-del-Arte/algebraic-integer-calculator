@@ -464,6 +464,16 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testDiscriminant1Mod4() {
+        int expected = -randomSquarefreeNumberMod(3, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(expected);
+        int actual = ring.discriminant();
+        String message = "Discriminant of " + ring.toString() + " should be " 
+                + expected;
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of getPowerBasis method of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}. The power basis of any quadratic ring should 
