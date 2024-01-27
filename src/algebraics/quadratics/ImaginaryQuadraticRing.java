@@ -155,7 +155,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public int discriminant() {
-        return Integer.MAX_VALUE;
+        return 4 * this.radicand;
     }
     
     /**
