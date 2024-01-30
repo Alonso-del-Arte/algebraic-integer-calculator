@@ -45,11 +45,12 @@ public class FileChooserWithOverwriteGuard extends JFileChooser {
                 case JOptionPane.CANCEL_OPTION:
                 case JOptionPane.CLOSED_OPTION:
                     this.cancelSelection();
-                    return;
-                default:
+                    break;
                 case JOptionPane.YES_OPTION:
                     super.approveSelection();
-//                case JOptionPane.NO_OPTION:
+                case JOptionPane.NO_OPTION:
+                    break;
+                default:
             }
         } else {
             super.approveSelection();
