@@ -189,6 +189,21 @@ public class FileChooserWithOverwriteGuardTest implements ActionListener {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testApproveSelectionNoOptionDoesNotIssueCommand() {
+        this.sendStandByEvent();
+        JFileChooser chooser = new MockFileChooser(JOptionPane.NO_OPTION);
+        chooser.addActionListener(this);
+        chooser.setSelectedFile(EXISTING_FILE);
+        chooser.approveSelection();
+        String expected = STAND_BY_COMMAND;
+        String actual = this.mostRecentEvent.getActionCommand();
+        String message = "No on dialog for selection of existing file " 
+                + EXISTING_FILE.getAbsolutePath() 
+                + " should not trigger any command";
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the getOverwriteQuestionResponse function, of the 
      * FileChooserWithOverwriteGuard class.
