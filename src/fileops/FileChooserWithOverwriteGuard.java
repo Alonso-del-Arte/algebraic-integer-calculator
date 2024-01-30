@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -37,25 +37,25 @@ public class FileChooserWithOverwriteGuard extends JFileChooser {
     
     @Override
     public void approveSelection() {
-        File file = this.getSelectedFile();
-        if (file.exists()) {
-            int confResp = 0;// JOptionPane.showConfirmDialog(this, 
-//                    "Do you want to overwrite the existing file?", 
-//                    file.getName() + " already exists", 
-//                    JOptionPane.YES_NO_CANCEL_OPTION);
-            switch (confResp) {
-                case JOptionPane.YES_OPTION:
+//        File file = this.getSelectedFile();
+//        if (file.exists()) {
+//            int confResp = 0;// JOptionPane.showConfirmDialog(this, 
+////                    "Do you want to overwrite the existing file?", 
+////                    file.getName() + " already exists", 
+////                    JOptionPane.YES_NO_CANCEL_OPTION);
+//            switch (confResp) {
+//                case JOptionPane.YES_OPTION:
+////                    super.approveSelection();
+//                case JOptionPane.NO_OPTION:
 //                    super.approveSelection();
-                case JOptionPane.NO_OPTION:
-                    super.approveSelection();
-//                    return;
-                case JOptionPane.CLOSED_OPTION:
-                case JOptionPane.CANCEL_OPTION:
-//                    this.cancelSelection();
-//                    return;
-            }
-        }
-//        super.approveSelection();
+////                    return;
+//                case JOptionPane.CLOSED_OPTION:
+//                case JOptionPane.CANCEL_OPTION:
+////                    this.cancelSelection();
+////                    return;
+//            }
+//        }
+        super.approveSelection();
     }
     
 }
