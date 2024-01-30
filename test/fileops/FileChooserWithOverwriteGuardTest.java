@@ -43,8 +43,12 @@ public class FileChooserWithOverwriteGuardTest implements ActionListener {
     private static final String TEMP_DIR_PATH 
             = System.getProperty("java.io.tmpdir");
     
-    private static final String EXAMPLE_FILE_PATH = TEMP_DIR_PATH 
-            + File.separator + "EXAMPLE" + System.currentTimeMillis() + ".txt";
+    private static final String DUP_FILE_SEPS = "" + File.separatorChar 
+            + File.separatorChar;
+    
+    private static final String EXAMPLE_FILE_PATH = (TEMP_DIR_PATH 
+            + File.separatorChar + "EXAMPLE" + System.currentTimeMillis() 
+            + ".txt").replace(DUP_FILE_SEPS, File.separator);
     
     private static final File EXISTING_FILE = new File(EXAMPLE_FILE_PATH);
     
@@ -119,11 +123,20 @@ public class FileChooserWithOverwriteGuardTest implements ActionListener {
         assertEquals(message, expected, actual);
     }
     
-//    @Test
+    @Test
     public void testApproveSelectionCallsAskToOverwriteExistingFile() {
-        MockFileChooser fileChooser 
-                = new MockFileChooser(JOptionPane.YES_OPTION);
-        fail("HAVEN'T WRITTEN TEST YET");
+        int[] responses = {JOptionPane.YES_OPTION, JOptionPane.NO_OPTION, 
+            JOptionPane.CANCEL_OPTION, JOptionPane.CLOSED_OPTION};
+        for (int responseCode : responses) {
+            MockFileChooser chooser = new MockFileChooser(responseCode);
+            chooser.setSelectedFile(EXISTING_FILE);
+            chooser.approveSelection();
+            int expected = 1;
+            int actual = chooser.askToOverwriteCallCount;
+            String message = "Since file " + EXISTING_FILE.getAbsolutePath() 
+                    + " already exists, user should have been asked";
+            assertEquals(message, expected, actual);
+        }
     }
     
     /**
@@ -151,7 +164,7 @@ public class FileChooserWithOverwriteGuardTest implements ActionListener {
             System.out.println(">> " + scanner.nextLine());
         }
         if (FILE_ALREADY_EXISTED) {
-            System.out.println("Since " + EXISTING_FILE.getCanonicalPath() 
+            System.out.println("Since " + EXISTING_FILE.getAbsolutePath() 
                     + " already existed, tearDownClass() will leave it alone");
         } else {
             if (EXISTING_FILE.delete()) {
@@ -165,13 +178,13 @@ public class FileChooserWithOverwriteGuardTest implements ActionListener {
     
     private static class MockFileChooser extends FileChooserWithOverwriteGuard {
         
-        int callCount = 0;
+        int askToOverwriteCallCount = 0;
         
         private final int responseToMock;
         
         @Override
         int getOverwriteQuestionResponse(String filename) {
-            this.callCount++;
+            this.askToOverwriteCallCount++;
             return this.responseToMock;
         }
 
