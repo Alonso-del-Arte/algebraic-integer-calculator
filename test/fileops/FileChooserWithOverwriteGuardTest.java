@@ -91,7 +91,7 @@ public class FileChooserWithOverwriteGuardTest implements ActionListener {
     }
     
     private static File inventFileWithNewFilename() {
-        int bound = Integer.MAX_VALUE / 16;
+        int bound = Integer.MAX_VALUE / 256;
         File file = EXISTING_FILE;
         while (file.exists()) {
             int number = randomNumber(bound);
@@ -152,6 +152,26 @@ public class FileChooserWithOverwriteGuardTest implements ActionListener {
                 + EXISTING_FILE.getAbsolutePath() + " should trigger command \"" 
                 + expected + "\"";
         assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testApproveSelectionCanAllowOverwrite() throws IOException {
+        this.sendStandByEvent();
+        JFileChooser chooser = new MockFileChooser(JOptionPane.YES_OPTION);
+        chooser.addActionListener(this);
+        chooser.setSelectedFile(EXISTING_FILE);
+        chooser.approveSelection();
+        String expected = JFileChooser.APPROVE_SELECTION;
+        String actual = this.mostRecentEvent.getActionCommand();
+        String message = "Approving selection of existing file " 
+                + EXISTING_FILE.getAbsolutePath() + " should trigger command \"" 
+                + expected + "\"";
+        assertEquals(message, expected, actual);
+        try (BufferedWriter writer 
+                = new BufferedWriter(new FileWriter(EXISTING_FILE, true))) {
+            String str = "This message was placed by allow overwrite test";
+            writer.write(str);
+        }
     }
     
     /**
