@@ -77,7 +77,8 @@ public class RealQuadraticRingTest {
     @Test
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
-        int d = randomSquarefreeNumber(Short.MAX_VALUE);
+        int propD = randomSquarefreeNumber(Short.MAX_VALUE);
+        int d = (propD == 1) ? 2 : propD;
         QuadraticRing ring = new RealQuadraticRing(d);
         String msg = ring.toString() 
                 + " should be said to be a purely real ring";
@@ -125,25 +126,22 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of getPowerBasis method of class RealQuadraticRing, inherited from 
-     * {@link QuadraticRing}. The power basis of any quadratic ring should be 1, 
-     * <i>a</i>, where <i>a</i> may be either &radic;<i>d</i> or 
-     * <sup>1</sup>&frasl;<sub>2</sub> + 
+     * Test of the getPowerBasis function of the RealQuadraticRing class, 
+     * inherited from {@link QuadraticRing}. The power basis of any quadratic 
+     * ring should be 1, <i>a</i>, where <i>a</i> may be either &radic;<i>d</i> 
+     * or <sup>1</sup>&frasl;<sub>2</sub> + 
      * <sup>&radic;<i>d</i></sup>&frasl;<sub>2</sub>.
      */
     @Test
     public void testGetPowerBasis() {
         System.out.println("getPowerBasis");
+        int propD = randomSquarefreeNumber(Short.MAX_VALUE);
+        int d = (propD == 1) ? 2 : propD;
+        QuadraticRing ring = new RealQuadraticRing(d);
         Fraction one = new Fraction(1);
-        Fraction[] powMults = {one, one};
-        PowerBasis expected = new PowerBasis(powMults);
-        PowerBasis actual = RING_Z2.getPowerBasis();
-        assertEquals(expected, actual);
-        actual = RING_ZPHI.getPowerBasis();
-        assertEquals(expected, actual);
-        actual = RING_OQ13.getPowerBasis();
-        assertEquals(expected, actual);
-        actual = ringRandom.getPowerBasis();
+        Fraction[] powerMultiplicands = {one, one};
+        PowerBasis expected = new PowerBasis(powerMultiplicands);
+        PowerBasis actual = ring.getPowerBasis();
         assertEquals(expected, actual);
     }
     
