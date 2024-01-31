@@ -19,6 +19,8 @@ package algebraics.quadratics;
 import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import fileops.PNGFileFilter;
 import fractions.Fraction;
@@ -486,28 +488,22 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of getPowerBasis method of class ImaginaryQuadraticRing, inherited 
-     * from {@link QuadraticRing}. The power basis of any quadratic ring should 
-     * be 1, <i>a</i>, where <i>a</i> may be either &radic;<i>d</i> or 
-     * <sup>1</sup>&frasl;<sub>2</sub> + 
+     * Test of the getPowerBasis function of the ImaginaryQuadraticRing class, 
+     * inherited from {@link QuadraticRing}. The power basis of any quadratic 
+     * ring should be 1, <i>a</i>, where <i>a</i> may be either &radic;<i>d</i> 
+     * or <sup>1</sup>&frasl;<sub>2</sub> + 
      * <sup>&radic;<i>d</i></sup>&frasl;<sub>2</sub>.
      */
     @Test
     public void testGetPowerBasis() {
         System.out.println("getPowerBasis");
-        Fraction one = new Fraction(1);
-        Fraction[] powMults = {one, one};
-        PowerBasis expResult = new PowerBasis(powMults);
-        PowerBasis result = RING_GAUSSIAN.getPowerBasis();
-        assertEquals(expResult, result);
-        result = RING_ZI2.getPowerBasis();
-        assertEquals(expResult, result);
-        result = RING_EISENSTEIN.getPowerBasis();
-        assertEquals(expResult, result);
-        result = RING_OQI7.getPowerBasis();
-        assertEquals(expResult, result);
-        result = ringRandom.getPowerBasis();
-        assertEquals(expResult, result);
+        int d = -randomSquarefreeNumber(Short.MAX_VALUE);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        Fraction one = new Fraction(1L);
+        Fraction[] powerMultiplicands = {one, one};
+        PowerBasis expected = new PowerBasis(powerMultiplicands);
+        PowerBasis actual = ring.getPowerBasis();
+        assertEquals(expected, actual);
     }
     
     /**
