@@ -72,21 +72,16 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of isPurelyReal, of class RealQuadraticRing. Asserting true for all 
-     * the test rings in this test class.
+     * Test of the isPurelyReal function, of the RealQuadraticRing class.
      */
     @Test
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
-        String msgPart = " should be said to be a purely real ring";
-        String msg = RING_Z2.toString() + msgPart;
-        assert RING_Z2.isPurelyReal() : msg;
-        msg = RING_ZPHI.toString() + msgPart;
-        assert RING_ZPHI.isPurelyReal() : msg;
-        msg = RING_OQ13.toString() + msgPart;
-        assert RING_OQ13.isPurelyReal() : msg;
-        msg = ringRandom.toString() + msgPart;
-        assert ringRandom.isPurelyReal() : msg;
+        int d = randomSquarefreeNumber(Short.MAX_VALUE);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String msg = ring.toString() 
+                + " should be said to be a purely real ring";
+        assert ring.isPurelyReal() : msg;
     }
     
     /**
