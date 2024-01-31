@@ -38,7 +38,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     @Override
     public PowerBasis getPowerBasis() {
         Fraction one = new Fraction(1L);
-        Fraction[] powerMultiplicands = {one, one, one};
+        Fraction[] powerMultiplicands = {one, one};
         return new PowerBasis(powerMultiplicands);
     }
     
