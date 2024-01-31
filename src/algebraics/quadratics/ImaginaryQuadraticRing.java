@@ -15,7 +15,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics.quadratics;
-
+import arithmetic.PowerBasis;import fractions.Fraction;
 /**
  * Defines objects to represent imaginary quadratic rings.
  * @author Alonso del Arte
@@ -33,6 +33,13 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     @Override
     public final boolean isPurelyReal() {
         return false;
+    }
+    
+    @Override
+    public PowerBasis getPowerBasis() {
+        Fraction one = new Fraction(1L);
+        Fraction[] powerMultiplicands = {one, one, one};
+        return new PowerBasis(powerMultiplicands);
     }
     
     /**

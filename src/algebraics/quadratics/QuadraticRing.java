@@ -40,7 +40,7 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     
     private static final Fraction ONE_FRACT = new Fraction(1);
     
-    private static final Fraction[] ONES = {ONE_FRACT, ONE_FRACT};
+    private static final Fraction[] ONES = {ONE_FRACT, ONE_FRACT, ONE_FRACT};
     
     /**
      * The power basis for any quadratic integer ring is 1, <i>a</i>.
