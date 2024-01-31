@@ -35,13 +35,6 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         return false;
     }
     
-    @Override
-    public PowerBasis getPowerBasis() {
-        Fraction one = new Fraction(1L);
-        Fraction[] powerMultiplicands = {one, one};
-        return new PowerBasis(powerMultiplicands);
-    }
-    
     /**
      * This function is included strictly only to simplify inheritance from 
      * {@link QuadraticRing} to {@link RealQuadraticRing}.

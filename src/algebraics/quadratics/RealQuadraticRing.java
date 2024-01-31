@@ -35,13 +35,6 @@ public class RealQuadraticRing extends QuadraticRing {
         return true;
     }
     
-    @Override
-    public PowerBasis getPowerBasis() {
-        Fraction one = new Fraction(1L);
-        Fraction[] powerMultiplicands = {one, one};
-        return new PowerBasis(powerMultiplicands);
-    }
-    
     /**
      * Gives the numeric value of the square root of the radicand.
      * @return A double with a floating point approximation of the square root 
