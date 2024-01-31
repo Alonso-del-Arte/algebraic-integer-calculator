@@ -32,7 +32,7 @@ public class RealQuadraticRing extends QuadraticRing {
      */
     @Override
     public final boolean isPurelyReal() {
-        return true;
+        return false;
     }
     
     /**
