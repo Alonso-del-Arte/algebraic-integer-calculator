@@ -197,6 +197,16 @@ public class UnaryInteger implements AlgebraicInteger,
             return Integer.toString(this.number);
         }
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Integer.MIN_VALUE;
+    }
 
     // TODO: Write tests for this
     @Override
