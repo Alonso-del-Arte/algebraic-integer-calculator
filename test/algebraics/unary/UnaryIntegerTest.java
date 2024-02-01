@@ -94,4 +94,13 @@ public class UnaryIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringNegative() {
+        int n = -randomNumber(Short.MAX_VALUE) - 1;
+        UnaryInteger number = new UnaryInteger(n);
+        String expected = "&minus;" + Integer.toString(-n);
+        String actual = number.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
 }
