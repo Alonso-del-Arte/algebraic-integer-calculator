@@ -103,4 +103,25 @@ public class UnaryIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testPlus() {
+        System.out.println("plus");
+        int a = randomNumber(Short.MAX_VALUE) + 1;
+        int b = randomNumber(Short.MAX_VALUE) + 1;
+        UnaryInteger addendA = new UnaryInteger(a);
+        UnaryInteger addendB = new UnaryInteger(b);
+        UnaryInteger expected = new UnaryInteger(a + b);
+        UnaryInteger actual = addendA.plus(addendB);
+        String message = "Adding " + addendA.toString() + " to " 
+                + addendB.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    public void testDivisionByZero() {
+        int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
+        UnaryInteger dividend = new UnaryInteger(n);
+        UnaryInteger divisor = new UnaryInteger(0);
+        fail("HAVEN'T WRITTEN TEST YET");
+    }
+    
 }
