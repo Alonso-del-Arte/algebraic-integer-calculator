@@ -104,6 +104,12 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testReferentialEquality() {
+        int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
+        UnaryInteger number = new UnaryInteger(n);
+        assertEquals(number, number);
+    }
+    
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
