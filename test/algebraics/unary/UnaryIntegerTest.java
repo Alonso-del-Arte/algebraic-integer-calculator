@@ -84,4 +84,14 @@ public class UnaryIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLString() {
+        System.out.println("toHTMLString");
+        int n = randomNumber(Short.MAX_VALUE);
+        UnaryInteger number = new UnaryInteger(n);
+        String expected = Integer.toString(n);
+        String actual = number.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
 }
