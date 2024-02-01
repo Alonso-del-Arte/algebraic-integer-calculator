@@ -182,10 +182,20 @@ public class UnaryInteger implements AlgebraicInteger,
         return this.toASCIIString();
     }
 
-    // TODO: Write tests for this
+    /**
+     * A text representation of the algebraic integer suitable for use in an 
+     * HTML page. Uses some or all of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 
+     * and when applicable the HTML entity for the minus sign.
+     * @return A text representation for an HTML page. Examples: 
+     * "&amp;minus;28", "0", "1729".
+     */
     @Override
     public String toHTMLString() {
-        return this.toASCIIString();
+        if (this.number < 0) {
+            return "&minus;" + (-this.number);
+        } else {
+            return Integer.toString(this.number);
+        }
     }
 
     // TODO: Write tests for this
