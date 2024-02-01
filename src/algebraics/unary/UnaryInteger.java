@@ -185,7 +185,7 @@ public class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public String toHTMLString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return this.toASCIIString();
     }
 
     // TODO: Write tests for this
