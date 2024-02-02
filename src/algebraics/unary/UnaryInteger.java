@@ -26,7 +26,7 @@ import arithmetic.NotDivisibleException;
  * wrapper for <code>int</code> primitives.
  * @author Alonso del Arte
  */
-public class UnaryInteger implements AlgebraicInteger, 
+public final class UnaryInteger implements AlgebraicInteger, 
         Arithmeticable<UnaryInteger>, Comparable<UnaryInteger> {
     
     private final int number;
@@ -196,6 +196,17 @@ public class UnaryInteger implements AlgebraicInteger,
         } else {
             return Integer.toString(this.number);
         }
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof UnaryInteger)) {
+            return false;
+        }
+        return this.number == ((UnaryInteger) obj).number;
     }
     
     @Override
