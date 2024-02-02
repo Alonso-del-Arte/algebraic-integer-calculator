@@ -199,6 +199,11 @@ public class UnaryInteger implements AlgebraicInteger,
     }
     
     @Override
+    public boolean equals(Object obj) {
+        return true;
+    }
+    
+    @Override
     public int hashCode() {
         return Integer.MIN_VALUE;
     }
