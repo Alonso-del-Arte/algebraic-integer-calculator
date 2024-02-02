@@ -18,6 +18,8 @@ package algebraics.unary;
 
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
+import java.time.LocalDateTime;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -115,6 +117,14 @@ public class UnaryIntegerTest {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger number = new UnaryInteger(n);
         assertNotEquals(number, null);
+    }
+    
+    @Test
+    public void testNotEqualsDiffClass() {
+        int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
+        UnaryInteger number = new UnaryInteger(n);
+        Object actual = LocalDateTime.now();
+        assertNotEquals(number, actual);
     }
     
     public void testPlus() {
