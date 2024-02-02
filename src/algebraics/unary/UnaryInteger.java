@@ -200,7 +200,7 @@ public class UnaryInteger implements AlgebraicInteger,
     
     @Override
     public boolean equals(Object obj) {
-        return obj != null;
+        return obj instanceof UnaryInteger;
     }
     
     @Override
