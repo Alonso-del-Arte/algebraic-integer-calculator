@@ -127,6 +127,14 @@ public class UnaryIntegerTest {
         assertNotEquals(number, actual);
     }
     
+    @Test
+    public void testNotEqualsDiffNum() {
+        int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
+        UnaryInteger someNumber = new UnaryInteger(n);
+        UnaryInteger otherNumber = new UnaryInteger(-n + 1);
+        assertNotEquals(someNumber, otherNumber);
+    }
+    
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
