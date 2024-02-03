@@ -47,6 +47,12 @@ public final class UnaryInteger implements AlgebraicInteger,
                     + ", it can't be represented by this class";
             throw new ArithmeticException(excMsg);
         }
+        if (Integer.signum(n) > 0 && Long.signum(check) < 0) {
+            String excMsg = "Since " + this.toASCIIString() + " + " 
+                    + addend.toASCIIString() + " overflows to " + check 
+                    + ", it can't be represented by this class";
+            throw new ArithmeticException(excMsg);
+        }
         return new UnaryInteger(n);
     }
 
