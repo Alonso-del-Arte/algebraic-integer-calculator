@@ -36,23 +36,12 @@ public final class UnaryInteger implements AlgebraicInteger,
      * 1728.
      * @param addend The unary integer to add. For example, 1.
      * @return The sum of the two unary integers. For example, 1729.
+     * @throws ArithmeticException If the result of adding this number plus 
+     * <code>addend</code> can't be represented by a 32-bit signed integer.
      */
     @Override
     public UnaryInteger plus(UnaryInteger addend) {
-        int n = this.number + addend.number;
-        long check = (long) this.number + addend.number;
-        if (Integer.signum(n) < 0 && Long.signum(check) > 0) {
-            String excMsg = "Since " + this.toASCIIString() + " + " 
-                    + addend.toASCIIString() + " overflows to " + check 
-                    + ", it can't be represented by this class";
-            throw new ArithmeticException(excMsg);
-        }
-        if (Integer.signum(n) > 0 && Long.signum(check) < 0) {
-            String excMsg = "Since " + this.toASCIIString() + " + " 
-                    + addend.toASCIIString() + " overflows to " + check 
-                    + ", it can't be represented by this class";
-            throw new ArithmeticException(excMsg);
-        }
+        int n = Math.addExact(this.number, addend.number);
         return new UnaryInteger(n);
     }
 
