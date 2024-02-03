@@ -164,6 +164,7 @@ public class UnaryIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
