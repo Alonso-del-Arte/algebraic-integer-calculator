@@ -39,14 +39,14 @@ public final class UnaryInteger implements AlgebraicInteger,
      */
     @Override
     public UnaryInteger plus(UnaryInteger addend) {
-        if (Integer.signum(this.number) < 0 
-                && Integer.signum(addend.number) < 0) {
-            long overflown = (long) this.number + addend.number;
-            String excMsg = "Since " + this.toASCIIString() + " + " 
-                    + addend.toASCIIString() + " overflows to " + overflown 
-                    + ", it can't be represented by this class";
-            throw new ArithmeticException(excMsg);
-        }
+//        if (Integer.signum(this.number) < 0 
+//                && Integer.signum(addend.number) < 0) {
+//            long overflown = (long) this.number + addend.number;
+//            String excMsg = "Since " + this.toASCIIString() + " + " 
+//                    + addend.toASCIIString() + " overflows to " + overflown 
+//                    + ", it can't be represented by this class";
+//            throw new ArithmeticException(excMsg);
+//        }
         return new UnaryInteger(this.number + addend.number);
     }
 
