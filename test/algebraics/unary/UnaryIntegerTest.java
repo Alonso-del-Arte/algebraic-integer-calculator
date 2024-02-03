@@ -201,6 +201,27 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testPlusTooPositive() {
+        int adjustment = randomNumber(Short.MAX_VALUE) + 1;
+        int n = Integer.MAX_VALUE - adjustment;
+        UnaryInteger number = new UnaryInteger(n);
+        int addN = 2 * adjustment;
+        UnaryInteger addend = new UnaryInteger(addN);
+        long overflown = (long) n + addN;
+        String msg = "Adding " + number.toString() + " and " + addend.toString() 
+                + " which overflows to " + overflown 
+                + " should have caused an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger sum = number.plus(addend);
+            System.out.println(msg + ", not given result " + sum.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
