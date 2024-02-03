@@ -19,6 +19,8 @@ package algebraics.unary;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -142,6 +144,24 @@ public class UnaryIntegerTest {
         UnaryInteger someNumber = new UnaryInteger(n);
         UnaryInteger sameNumber = new UnaryInteger(n);
         assertEquals(someNumber, sameNumber);
+    }
+    
+    @Test
+    public void testHashCode() {
+        int initialCapacity = randomNumber(64) + 16;
+        Set<UnaryInteger> integers = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            int bound = 2 * (initialCapacity + 1); 
+            int n = i * randomNumber(bound) + i + 1;
+            UnaryInteger number = new UnaryInteger(n);
+            integers.add(number);
+            hashes.add(number.hashCode());
+        }
+        int expected = integers.size();
+        int actual = hashes.size();
+        String message = "Each unique integer should have a unique hash code";
+        assertEquals(message, expected, actual);
     }
     
     public void testPlus() {
