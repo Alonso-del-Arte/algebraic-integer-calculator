@@ -36,7 +36,7 @@ public final class UnaryInteger implements AlgebraicInteger,
      * 1728.
      * @param addend The unary integer to add. For example, 1.
      * @return The sum of the two unary integers. For example, 1729.
-     * @throws ArithmeticException If the result of adding this number plus 
+     * @throws ArithmeticException If the result of adding this number to  
      * <code>addend</code> can't be represented by a 32-bit signed integer.
      */
     @Override
@@ -50,26 +50,13 @@ public final class UnaryInteger implements AlgebraicInteger,
      * 1000.
      * @param addend The unary integer to add. For example, 729.
      * @return The sum of the two unary integers. For example, 1729.
-     * @throws ArithmeticException If the result of adding this number plus 
+     * @throws ArithmeticException If the result of adding this number to 
      * <code>addend</code> can't be represented by a 32-bit signed integer.
      */
     @Override
     public UnaryInteger plus(int addend) {
-        int n = this.number + addend;
-        long check = (long) this.number + addend;
-        if (Integer.signum(n) > 0 && Long.signum(check) < 0) {
-            String excMsg = "Adding " + this.toASCIIString() + " and " + addend 
-                    + " overflows to " + check 
-                    + ", which this class can't represent";
-            throw new ArithmeticException(excMsg);
-        }
-        if (Integer.signum(n) < 0 && Long.signum(check) > 0) {
-            String excMsg = "Adding " + this.toASCIIString() + " and " + addend 
-                    + " overflows to " + check 
-                    + ", which this class can't represent";
-            throw new ArithmeticException(excMsg);
-        }
-        return new UnaryInteger(this.number + addend);
+        int n = Math.addExact(this.number, addend);
+        return new UnaryInteger(n);
     }
 
     // TODO: Write tests for this
