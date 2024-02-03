@@ -198,6 +198,19 @@ public final class UnaryInteger implements AlgebraicInteger,
         }
     }
     
+    /**
+     * Determines whether this unary integer is equal to some other object. For 
+     * the examples below, let's say this unary integer is 1729.
+     * @param obj The object to compare for equality. Examples: the number 1729 
+     * in an <code>UnaryInteger</code>, the number 1729 in an 
+     * <code>Integer</code>, the number &minus;1729 in an 
+     * <code>UnaryInteger</code>, the number 1728 in an 
+     * <code>UnaryInteger</code>.
+     * @return True if and only if <code>obj</code> is an 
+     * <code>UnaryInteger</code> object representing the same number, false in 
+     * all other cases. For the examples, this function returns true only for 
+     * the first one, false for the othre ones.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -209,9 +222,17 @@ public final class UnaryInteger implements AlgebraicInteger,
         return this.number == ((UnaryInteger) obj).number;
     }
     
+    /**
+     * Gives a hash code for this unary integer mathematically guaranteed to be 
+     * unique. This means that if two <code>UnaryInteger</code> objects are 
+     * equal according to {@link #equals(java.lang.Object) equals()}, they both 
+     * get the same hash code.
+     * @return The hash code, most likely matching this number. For example, if 
+     * this number is 1728, the hash code will almost certainly be 1728.
+     */
     @Override
     public int hashCode() {
-        return Integer.MIN_VALUE;
+        return this.number;
     }
 
     // TODO: Write tests for this
