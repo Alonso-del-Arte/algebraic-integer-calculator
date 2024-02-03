@@ -222,6 +222,17 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testPlusInt() {
+        int a = randomNumber(Short.MAX_VALUE) + 1;
+        int addend = randomNumber(Short.MAX_VALUE) + 1;
+        UnaryInteger number = new UnaryInteger(a);
+        UnaryInteger expected = new UnaryInteger(a + addend);
+        UnaryInteger actual = number.plus(addend);
+        String message = "Adding " + number.toString() + " to " + addend;
+        assertEquals(message, expected, actual);
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
