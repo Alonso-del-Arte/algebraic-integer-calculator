@@ -1,5 +1,9 @@
 # Algebraic Integer Calculator
 
+NOTE: This project uses JUnit, Hamcrest and one or two assertions from the 
+testing framework from testframe.org. This project has no other external 
+dependencies.
+
 WORK IN PROGRESS: This grew out of the visualization of imaginary quadratic 
 integer rings project.
 
