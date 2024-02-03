@@ -45,9 +45,24 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(n);
     }
 
-    // TODO: Write tests for this
+    /**
+     * Adds an unary integer to this one. For example, let's say this integer is 
+     * 1000.
+     * @param addend The unary integer to add. For example, 729.
+     * @return The sum of the two unary integers. For example, 1729.
+     * @throws ArithmeticException If the result of adding this number plus 
+     * <code>addend</code> can't be represented by a 32-bit signed integer.
+     */
     @Override
     public UnaryInteger plus(int addend) {
+        int n = this.number + addend;
+        long check = (long) this.number + addend;
+        if (Integer.signum(n) > 0 && Long.signum(check) < 0) {
+            String excMsg = "Adding " + this.toASCIIString() + " and " + addend 
+                    + " overflows to " + check 
+                    + ", which this class can't represent";
+            throw new ArithmeticException(excMsg);
+        }
         return new UnaryInteger(this.number + addend);
     }
 
