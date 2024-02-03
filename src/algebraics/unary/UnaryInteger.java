@@ -48,7 +48,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public UnaryInteger plus(int addend) {
-        return this;
+        return new UnaryInteger(this.number + addend);
     }
 
     // TODO: Write tests for this
