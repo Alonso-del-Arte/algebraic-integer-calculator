@@ -25,6 +25,8 @@ import java.util.Set;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the UnaryInteger class.
  * @author Alonso del Arte
@@ -176,6 +178,27 @@ public class UnaryIntegerTest {
         String message = "Adding " + addendA.toString() + " to " 
                 + addendB.toString();
         assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testPlusTooNegative() {
+        int adjustment = randomNumber(Short.MAX_VALUE) + 1;
+        int n = Integer.MIN_VALUE + adjustment;
+        UnaryInteger number = new UnaryInteger(n);
+        int addN = -2 * adjustment;
+        UnaryInteger addend = new UnaryInteger(addN);
+        long overflown = (long) n + addN;
+        String msg = "Adding " + number.toString() + " and " + addend.toString() 
+                + " which overflows to " + overflown 
+                + " should have caused an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger sum = number.plus(addend);
+            System.out.println(msg + ", not given result " + sum.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
     public void testDivisionByZero() {
