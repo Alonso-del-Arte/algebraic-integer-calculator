@@ -37,9 +37,10 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
         return false;
     }
     
+    // TODO: Refactor by deleting after rewriting corresponding test for RQI
     @Override
     public int getRadicand() {
-        return Integer.MAX_VALUE;
+        return this.radicand;
     }
     
     /**
