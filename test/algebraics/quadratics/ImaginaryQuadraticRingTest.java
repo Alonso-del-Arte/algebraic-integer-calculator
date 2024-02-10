@@ -513,11 +513,11 @@ public class ImaginaryQuadraticRingTest {
     @Test
     public void testGetRadicand() {
         System.out.println("getRadicand");
-        assertEquals(-1, RING_GAUSSIAN.getRadicand());
-        assertEquals(-2, RING_ZI2.getRadicand());
-        assertEquals(-3, RING_EISENSTEIN.getRadicand());
-        assertEquals(-7, RING_OQI7.getRadicand());
-        assertEquals(randomDiscr, ringRandom.getRadicand());
+        int expected = -randomSquarefreeNumber(1024);
+        QuadraticRing ring = new ImaginaryQuadraticRing(expected);
+        int actual = ring.getRadicand();
+        String message = "Inquiring for radicand of " + ring.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
