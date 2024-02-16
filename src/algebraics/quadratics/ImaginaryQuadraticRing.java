@@ -45,8 +45,10 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     /**
      * This function is included strictly only to simplify inheritance from 
-     * {@link QuadraticRing} to {@link RealQuadraticRing}.
-     * @return Nothing, ever.
+     * {@link QuadraticRing} to {@link RealQuadraticRing}. For imaginary 
+     * quadratic rings use {@link #getAbsNegRadSqrt()} instead.
+     * @return Nothing, ever, always throws an exception instead of returning a 
+     * floating point number.
      * @throws UnsupportedOperationException Always thrown, because a floating 
      * point number can't represent a purely imaginary number. If you need the 
      * square root of the radicand divided by <i>i</i>, use {@link 
@@ -56,17 +58,15 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     public double getRadSqrt() {
         String excMsg = "Since the radicand is negative, sqrt(" + this.radicand 
                 + ") requires an object that can represent an imaginary number";
-//        throw new UnsupportedOperationException(excMsg);
-throw new RuntimeException("SORRY");
+        throw new UnsupportedOperationException(excMsg);
     }
     
     /**
-     * Gives a numeric approximation of the square root of the absolute value of 
-     * the radicand. For imaginary quadratic rings, use this function instead of 
-     * {@link #getRadSqrt()}.
-     * @return A numeric approximation of &radic;<i>d</i>/<i>i</i>. For example, 
-     * for <b>Z</b>[&radic;&minus;10], we see that &radic;&minus;10 = 
-     * <i>i</i>&radic;10, so this function returns approximately 3.1622777.
+     * Gives the absolute value of the radicand. With imaginary quadratic rings, 
+     * this function gives a different result from {@link #getRadicand()}, while 
+     * for real quadratic rings both functions give the same result.
+     * @return The absolute value of the radicand. For example, for 
+     * <b>Z</b>[&radic;&minus;10], this would be 10..
      */
     @Override
     public int getAbsNegRad() {
@@ -74,12 +74,13 @@ throw new RuntimeException("SORRY");
     }
     
     /**
-     * Gives the numeric value of the square root of the radicand divided by the 
-     * imaginary unit <i>i</i>.
-     * @return A double with a rational approximation of the square root of the 
-     * radicand divided by <i>i</i>. For example, for <b>Z</b>[&radic;&minus;2], 
-     * this would be roughly 1.414213562373; for <b>Z</b>[&radic;&minus;3], this 
-     * would be roughly 1.7320508.
+     * Gives a numeric approximation of the square root of the absolute value of 
+     * the radicand. For imaginary quadratic rings, use this function instead of 
+     * {@link #getRadSqrt()}.
+     * @return The rational approximation of the square root of the radicand 
+     * divided by <i>i</i>. For example, for <b>Z</b>[&radic;&minus;2], this 
+     * would be 1.4142135623730951; for <b>Z</b>[&radic;&minus;3], this would be 
+     * 1.7320508075688772.
      */
     @Override
     public double getAbsNegRadSqrt() {
