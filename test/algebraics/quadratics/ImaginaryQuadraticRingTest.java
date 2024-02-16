@@ -521,38 +521,30 @@ public class ImaginaryQuadraticRingTest {
     }
 
     /**
-     * Test of getRadSqrt method, of class ImaginaryQuadraticRing.
+     * Test of the getRadSqrt function, of the ImaginaryQuadraticRing class.
      */
     @Test
     public void testGetRadSqrt() {
         System.out.println("getRadSqrt");
-        int startD = randomDiscr + 1;
-        if (startD % 29 == 0) {
-            startD++;
-        }
-        ImaginaryQuadraticRing ring;
-        double result;
-        String msg;
-        for (int i = startD; i % 29 != 0; i++) {
-            if (NumberTheoreticFunctionsCalculator.isSquarefree(i)) {
-                ring = new ImaginaryQuadraticRing(i);
-                try {
-                    result = ring.getRadSqrt();
-                    msg = "getRadSqrt() for " + ring.toString() 
-                            + " should not have given result " + result;
-                    fail(msg);
-                } catch (UnsupportedOperationException uoe) {
-                    System.out.println("Calling getRadSqrt() for " 
-                            + ring.toASCIIString() 
-                            + " correctly caused UnsupportedOperationException");
-                    System.out.println("\"" + uoe.getMessage() + "\"");
-                } catch (RuntimeException re) {
-                    msg = re.getClass().getName() 
-                            + " is the wrong exception for getRadSqrt() on " 
-                            + ring.toString();
-                    fail(msg);
-                }
-            }
+        int d = -randomSquarefreeNumber(2048);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String msgPart = "Calling getRadSqrt() for " + ring.toString() + ' ';
+        try {
+            double badRadSqrt = ring.getRadSqrt();
+            String message = msgPart + "should not have given result " 
+                    + badRadSqrt;
+            fail(message);
+        } catch (UnsupportedOperationException uoe) {
+            System.out.println(msgPart 
+                    + "correctly caused UnsupportedOperationException");
+            String excMsg = uoe.getMessage();
+            assert excMsg != null : "Message should not be null";
+            assert !excMsg.isBlank() : "Message should not be blank";
+            System.out.println("\"" + excMsg + "\"");
+        } catch (RuntimeException re) {
+            String message = msgPart + "should not have caused " 
+                    + re.getClass().getName();
+            fail(message);
         }
     }
 
