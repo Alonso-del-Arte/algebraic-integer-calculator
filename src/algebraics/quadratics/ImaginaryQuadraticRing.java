@@ -56,7 +56,8 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     public double getRadSqrt() {
         String excMsg = "Since the radicand is negative, sqrt(" + this.radicand 
                 + ") requires an object that can represent an imaginary number";
-        throw new UnsupportedOperationException(excMsg);
+//        throw new UnsupportedOperationException(excMsg);
+throw new RuntimeException("SORRY");
     }
     
     /**
