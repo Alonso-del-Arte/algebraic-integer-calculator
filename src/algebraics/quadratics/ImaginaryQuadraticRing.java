@@ -44,24 +44,6 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     }
     
     /**
-     * This function is included strictly only to simplify inheritance from 
-     * {@link QuadraticRing} to {@link RealQuadraticRing}. For imaginary 
-     * quadratic rings use {@link #getAbsNegRadSqrt()} instead.
-     * @return Nothing, ever, always throws an exception instead of returning a 
-     * floating point number.
-     * @throws UnsupportedOperationException Always thrown, because a floating 
-     * point number can't represent a purely imaginary number. If you need the 
-     * square root of the radicand divided by <i>i</i>, use {@link 
-     * #getAbsNegRadSqrt() getAbsNegRadSqrt()} instead.
-     */
-    @Override
-    public double getRadSqrt() {
-        String excMsg = "Since the radicand is negative, sqrt(" + this.radicand 
-                + ") requires an object that can represent an imaginary number";
-        throw new UnsupportedOperationException(excMsg);
-    }
-    
-    /**
      * Gives the absolute value of the radicand. With imaginary quadratic rings, 
      * this function gives a different result from {@link #getRadicand()}, while 
      * for real quadratic rings both functions give the same result.

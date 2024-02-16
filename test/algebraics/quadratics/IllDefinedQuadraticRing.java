@@ -34,7 +34,6 @@ public class IllDefinedQuadraticRing extends QuadraticRing {
         return (this.radicand > -1);
     }
     
-    @Override
     public double getRadSqrt() {
         return this.radSqrt;
     }

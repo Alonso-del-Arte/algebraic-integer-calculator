@@ -231,7 +231,7 @@ public class NotDivisibleException extends Exception {
                         Math.floor(this.numericRealPart), 0, workingRing);
                 algIntArray[5] = new RealQuadraticInteger((int) 
                         Math.ceil(this.numericRealPart), 0, workingRing);
-                int regForSurd = (int) Math.floor(workingRing.getRadSqrt() 
+                int regForSurd = (int) Math.floor(workingRing.getAbsNegRadSqrt() 
                         - this.numericRealPart);
                 algIntArray[6] = new RealQuadraticInteger(regForSurd, 1, 
                         workingRing);

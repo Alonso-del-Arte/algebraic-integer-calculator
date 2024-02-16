@@ -568,21 +568,22 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testAbs() {
         System.out.println("abs");
-        double expResult, result;
-        for (int i = 0; i < totalTestIntegers; i++) {
-            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
-                        * randomSurdForHalfInts + randomRegForHalfInts);
-                expResult /= 2;
-            } else {
-                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
-                        * randomSurdPart + randomRegPart);
-            }
-            result = testIntegers.get(i).abs();
-            System.out.println("|" + testIntegers.get(i).toASCIIString() 
-                    + "| = " + result);
-            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-        }
+        fail("REWRITE THIS TEST");
+//        double expResult, result;
+//        for (int i = 0; i < totalTestIntegers; i++) {
+//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+//                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
+//                        * randomSurdForHalfInts + randomRegForHalfInts);
+//                expResult /= 2;
+//            } else {
+//                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
+//                        * randomSurdPart + randomRegPart);
+//            }
+//            result = testIntegers.get(i).abs();
+//            System.out.println("|" + testIntegers.get(i).toASCIIString() 
+//                    + "| = " + result);
+//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
+//        }
     }
 
     /**
@@ -592,21 +593,22 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testGetRealPartNumeric() {
         System.out.println("getRealPartMultNumeric");
-        double expResult, result;
-        for (int i = 0; i < totalTestIntegers; i++) {
-            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expResult = testIntegers.get(i).getRing().getRadSqrt() 
-                        * randomSurdForHalfInts + randomRegForHalfInts;
-                expResult /= 2;
-            } else {
-                expResult = testIntegers.get(i).getRing().getRadSqrt() 
-                        * randomSurdPart + randomRegPart;
-            }
-            result = testIntegers.get(i).getRealPartNumeric();
-            System.out.println(testIntegers.get(i).toASCIIString() + " = " 
-                    + result);
-            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-        }
+        fail("REWRITE THIS TEST");
+//        double expResult, result;
+//        for (int i = 0; i < totalTestIntegers; i++) {
+//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
+//                expResult = testIntegers.get(i).getRing().getRadSqrt() 
+//                        * randomSurdForHalfInts + randomRegForHalfInts;
+//                expResult /= 2;
+//            } else {
+//                expResult = testIntegers.get(i).getRing().getRadSqrt() 
+//                        * randomSurdPart + randomRegPart;
+//            }
+//            result = testIntegers.get(i).getRealPartNumeric();
+//            System.out.println(testIntegers.get(i).toASCIIString() + " = " 
+//                    + result);
+//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
+//        }
     }
 
     /**

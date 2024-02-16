@@ -105,19 +105,6 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     }
     
     /**
-     * Gives the numeric value of the square root of the radicand as a double 
-     * precision floating point number, if possible.
-     * @return A rational approximation of the square root of the radicand, if 
-     * possible. For example, for <b>Z</b>[&radic;2] this would probably be 
-     * 1.4142135623730951.
-     * @throws UnsupportedOperationException If called upon an instance of 
-     * {@link ImaginaryQuadraticRing}.
-     */
-    public double getRadSqrt() {
-        return this.realRadSqrt;
-    }
-    
-    /**
      * Gives the absolute value of the radicand. This function is included 
      * merely to simplify the inheritance structure of {@link QuadraticRing} to 
      * {@link ImaginaryQuadraticRing}.

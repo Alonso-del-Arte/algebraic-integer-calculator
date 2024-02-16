@@ -521,34 +521,6 @@ public class ImaginaryQuadraticRingTest {
     }
 
     /**
-     * Test of the getRadSqrt function, of the ImaginaryQuadraticRing class.
-     */
-    @Test
-    public void testGetRadSqrt() {
-        System.out.println("getRadSqrt");
-        int d = -randomSquarefreeNumber(2048);
-        QuadraticRing ring = new ImaginaryQuadraticRing(d);
-        String msgPart = "Calling getRadSqrt() for " + ring.toString() + ' ';
-        try {
-            double badRadSqrt = ring.getRadSqrt();
-            String message = msgPart + "should not have given result " 
-                    + badRadSqrt;
-            fail(message);
-        } catch (UnsupportedOperationException uoe) {
-            System.out.println(msgPart 
-                    + "correctly caused UnsupportedOperationException");
-            String excMsg = uoe.getMessage();
-            assert excMsg != null : "Message should not be null";
-            assert !excMsg.isBlank() : "Message should not be blank";
-            System.out.println("\"" + excMsg + "\"");
-        } catch (RuntimeException re) {
-            String message = msgPart + "should not have caused " 
-                    + re.getClass().getName();
-            fail(message);
-        }
-    }
-
-    /**
      * Test of getAbsNegRad method, of class ImaginaryQuadraticRing.
      */
     @Test
