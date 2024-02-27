@@ -18,6 +18,7 @@ package algebraics.quadratics;
 
 import arithmetic.PowerBasis;
 import fractions.Fraction;
+
 /**
  * Defines objects to represent imaginary quadratic rings.
  * @author Alonso del Arte
@@ -48,11 +49,11 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
      * this function gives a different result from {@link #getRadicand()}, while 
      * for real quadratic rings both functions give the same result.
      * @return The absolute value of the radicand. For example, for 
-     * <b>Z</b>[&radic;&minus;10], this would be 10..
+     * <b>Z</b>[&radic;&minus;10], this would be 10.
      */
     @Override
     public int getAbsNegRad() {
-        return this.absRadicand;
+        return Integer.MIN_VALUE;// this.absRadicand;
     }
     
     /**
