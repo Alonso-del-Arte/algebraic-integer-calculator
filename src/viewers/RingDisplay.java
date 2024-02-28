@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
@@ -75,8 +76,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     private static int windowCount = 0;
     
     /**
-     * The default number of pixels per unit interval. The protected variable 
-     * <code>pixelsPerUnitInterval</code> is initialized to this value.
+     * The default number of pixels per unit interval. The package private 
+     * variable <code>pixelsPerUnitInterval</code> is initialized to this value.
      */
     public static final int DEFAULT_PIXELS_PER_UNIT_INTERVAL = 40;
     
@@ -90,7 +91,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * The minimum pixels per unit interval for which the program will draw 
      * grids.
      */
-    protected static final int MINIMUM_PIXELS_PER_UNIT_INTERVAL_TO_DRAW_GRIDS 
+    static final int MINIMUM_PIXELS_PER_UNIT_INTERVAL_TO_DRAW_GRIDS 
             = 5;
     
     /**
@@ -273,30 +274,30 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      */
     public static final int MAXIMUM_HISTORY_ITEMS = 128;
     
-    protected boolean alreadySetUp = false;
+    boolean alreadySetUp = false;
     
     /**
      * If the subclass can only display one ring, the subclass constructor 
-     * should set this protected flag to false. Otherwise the subclass can 
-     * simply rely on the default setting of true.
+     * should set this flag to false. Otherwise the subclass can simply rely on 
+     * the default setting of true.
      */
-    protected boolean includeRingChoice = true;
+    boolean includeRingChoice = true;
     
     /**
      * If the subclass does not include updateable readouts, the subclass 
-     * constructor should set this protected flag to false. Otherwise the 
-     * subclass can simply rely on the default setting of true.
+     * constructor should set this flag to false. Otherwise the subclass can 
+     * simply rely on the default setting of true.
      */
-    protected boolean includeReadoutsUpdate = true;
+    boolean includeReadoutsUpdate = true;
     
     /**
      * If the subclass gives the user the ability to change whether the readouts 
      * use an alternate notation or not, the subclass constructor should set 
-     * this protected flag to false. Otherwise the subclass can simply rely on 
-     * the default setting of true. However, if {@link #includeReadoutsUpdate 
+     * this flag to false. Otherwise the subclass can simply rely on the default 
+     * setting of true. However, if {@link #includeReadoutsUpdate 
      * includeReadoutsUpdate} is false, then this setting does not matter.
      */
-    protected boolean includeThetaToggle = true;
+    boolean includeThetaToggle = true;
     
     /**
      * The actual pixels per unit interval setting, should be initialized to 
@@ -305,20 +306,20 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * pixelLength is greater than or equal to MINIMUM_PIXELS_PER_UNIT_INTERVAL 
      * but less than or equal to MAXIMUM_PIXELS_PER_UNIT_INTERVAL.
      */
-    protected int pixelsPerUnitInterval;
+    int pixelsPerUnitInterval;
     
     /**
      * The actual pixels per basic imaginary interval setting. This setting 
      * depends on pixelsPerUnitInterval.
      */
-    protected int pixelsPerBasicImaginaryInterval;
+    int pixelsPerBasicImaginaryInterval;
     
     /**
      * The ring of the currently displayed diagram.
      */
-    protected IntegerRing diagramRing;
+    IntegerRing diagramRing;
     
-    protected AlgebraicInteger mouseAlgInt;
+    AlgebraicInteger mouseAlgInt;
         
     /**
      * When diagramRing.d1mod4 is true, some users may prefer to see 
@@ -327,24 +328,24 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * be used rather than theta. Remember that omega = -1/2 + sqrt(-3)/2 and 
      * theta = 1/2 + sqrt(d)/2.
      */
-    protected boolean preferenceForThetaNotation;
+    boolean preferenceForThetaNotation;
     
     /**
      * The horizontal or vertical integer for the pixel at the bottom right 
      * corner.
      */
-    protected int ringCanvasHorizMax, ringCanvasVerticMax;
+    int ringCanvasHorizMax, ringCanvasVerticMax;
     
     /**
      * The real or imaginary part of the number at the top right corner of the 
      * diagram
      */
-    protected double boundaryRe, boundaryIm;
+    double boundaryRe, boundaryIm;
     
     /**
      * Half the thickness of the lines or the radius of the dots.
      */
-    protected int dotRadius;
+    int dotRadius;
     
     private final String dotRadiusOrLineThicknessText;
     
@@ -393,36 +394,36 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * The x of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
      * diagram.
      */
-    protected int zeroCoordX;
+    int zeroCoordX;
     
     /**
      * The y of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
      * diagram.
      */
-    protected int zeroCoordY;
+    int zeroCoordY;
     
     /* For when the program has the ability to display diagrams that don't 
        necessarily have 0 in the center. */
     // private boolean zeroCentered, zeroInView;
     
-    protected JFrame ringFrame;
+    JFrame ringFrame;
     
-    protected JMenuItem increaseDMenuItem, decreaseDMenuItem;
-    protected JMenuItem prevDMenuItem, nextDMenuItem;
-    protected JMenuItem zoomInMenuItem, zoomOutMenuItem;
-    protected JMenuItem decreaseZoomStepMenuItem, increaseZoomStepMenuItem;
-    protected JMenuItem decreaseDotRadiusMenuItem, increaseDotRadiusMenuItem;
-    protected JCheckBoxMenuItem preferThetaNotationMenuItem;
-    protected JCheckBoxMenuItem toggleReadOutsEnabledMenuItem;
+    JMenuItem increaseDMenuItem, decreaseDMenuItem;
+    JMenuItem prevDMenuItem, nextDMenuItem;
+    JMenuItem zoomInMenuItem, zoomOutMenuItem;
+    JMenuItem decreaseZoomStepMenuItem, increaseZoomStepMenuItem;
+    JMenuItem decreaseDotRadiusMenuItem, increaseDotRadiusMenuItem;
+    JCheckBoxMenuItem preferThetaNotationMenuItem;
+    JCheckBoxMenuItem toggleReadOutsEnabledMenuItem;
     
-    protected JTextField algIntReadOut, traceReadOut, normReadOut;
-    protected JTextField polynomialReadOut, unitReadOut;
+    JTextField algIntReadOut, traceReadOut, normReadOut;
+    JTextField polynomialReadOut, unitReadOut;
     
     /**
      * Keeps track of whether or not the user has saved a diagram before. 
      * Applies only during the current session.
      */
-    protected static boolean haveSavedBefore = false;
+    static boolean haveSavedBefore = false;
     
     /**
      * Points to the directory where the user has previously saved a diagram to 
@@ -434,18 +435,18 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     /**
      * The history list, with which to enable to user to view previous diagrams.
      */
-    protected final ArrayList<IntegerRing> discrHistory;
+    List<IntegerRing> discrHistory;
     
     /**
      * Where we are at in the history list.
      */
-    protected short currHistoryIndex;
+    short currHistoryIndex;
     
     /**
      * Whether or not this ring display owns the system clipboard. By default it 
      * doesn't at first.
      */
-    protected boolean ownsClipboard = false;
+    boolean ownsClipboard = false;
     
     private static final boolean MAC_OS_FLAG = System.getProperty("os.name")
             .equals("Mac OS X");
@@ -460,7 +461,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * Regardless, this should never be called by a class outside the 
      * <code>RingDisplay</code> class hierarchy.
      */
-    protected abstract void setPixelsPerBasicImaginaryInterval();
+    abstract void setPixelsPerBasicImaginaryInterval();
         
     /**
      * Changes how many pixels there are per unit interval. If you also need to 
@@ -703,7 +704,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * is an instance of a type that is not currently supported, but there is a 
      * definite plan or intention to support that type in the future.
      */
-    protected void validateRing(IntegerRing ring) {
+    void validateRing(IntegerRing ring) {
         if (ring == null) {
             throw new NullPointerException("Null ring can't be validated");
         }
@@ -721,7 +722,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * need to be cast to a narrower type) and the flag {@link #unitAvailable} 
      * is set to true.
      */
-    protected void findUnit() {
+    void findUnit() {
         try {
             this.fundamentalUnit = fundamentalUnit(this.diagramRing);
             this.unitAvailable = true;
@@ -741,7 +742,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * something like a <code>ClassCastException</code> could arise at some 
      * point down the line.
      */
-    protected void switchToRing(IntegerRing ring) {
+    void switchToRing(IntegerRing ring) {
         this.validateRing(ring);
         this.ringFrame.setTitle("Ring Diagram for " + ring.toString());
         this.setRing(ring);
@@ -761,7 +762,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * enabling or disabling the previous and next menu items.
      * @param ring The ring to add to the history.
      */
-    protected void updateRingHistory(IntegerRing ring) {
+    void updateRingHistory(IntegerRing ring) {
         if (this.currHistoryIndex == this.discrHistory.size() - 1) {
             this.discrHistory.add(ring);
             this.currHistoryIndex++;
@@ -868,7 +869,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * Checks whether the Zoom in and Zoom out menu items are enabled or not, 
      * and whether they should be, enabling them or disabling them as needed.
      */
-    protected void checkZoomInOutEnablements() {
+    void checkZoomInOutEnablements() {
         if (this.zoomInMenuItem.isEnabled()) {
             if (this.pixelsPerUnitInterval > (MAXIMUM_PIXELS_PER_UNIT_INTERVAL 
                     - this.zoomStep)) {
@@ -922,7 +923,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * step are enabled or disabled, and whether or not they should be. Toggles 
      * them if necessary.
      */
-    protected void checkZoomStepEnablements() {
+    void checkZoomStepEnablements() {
         if (this.decreaseZoomStepMenuItem.isEnabled()) {
             if (this.zoomStep == MINIMUM_ZOOM_STEP) {
                 this.decreaseZoomStepMenuItem.setEnabled(false);
@@ -946,7 +947,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     /**
      * Informs the user about the zoom interval. May be overridden as necessary.
      */
-    protected void informZoomStepChange() {
+    void informZoomStepChange() {
         String msg = "Zoom step is now " + this.zoomStep + "\nThere are " 
                 + this.pixelsPerUnitInterval + " pixels per unit interval";
         JOptionPane.showMessageDialog(ringFrame, msg);
@@ -1026,7 +1027,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * overridden by a subclass, this returned value will be exactly the same as 
      * {@link #DEFAULT_DOT_RADIUS}.
      */
-    protected int getPreferredDotRadius() {
+    int getPreferredDotRadius() {
         return DEFAULT_DOT_RADIUS;
     }
     
@@ -1088,11 +1089,11 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
         return this.fundamentalUnit;
     }
     
-    protected abstract void updateBoundaryNumber();
+    abstract void updateBoundaryNumber();
     
-    protected abstract double getBoundaryRe();
+    abstract double getBoundaryRe();
 
-    protected abstract double getBoundaryIm();
+    abstract double getBoundaryIm();
 
     /**
      * Override this to set the user manual URL.
@@ -1579,7 +1580,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * Sets up the <code>JFrame</code> in which the various ring diagrams will 
      * be drawn. May be overridden as necessary.
      */
-    protected void setUpRingFrame() {
+    void setUpRingFrame() {
         if (this.alreadySetUp) {
             String excMsg = "setUpRingFrame was already called";
             throw new RuntimeException(excMsg);
