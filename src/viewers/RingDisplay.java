@@ -353,26 +353,26 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     /**
      * The thickness of the lines or the diameter of the dots.
      */
-    protected int dotDiameter;
+    int dotDiameter;
     
-    protected int zoomStep;
+    int zoomStep;
     
-    protected Color backgroundColor, halfIntegerGridColor, integerGridColor;
-    protected Color zeroColor, unitColor, inertPrimeColor, splitPrimeColor;
-    protected Color splitPrimeMidDegreeColor, ramifiedPrimeColor;
-    protected Color ramifiedPrimeMidDegreeColor;
+    Color backgroundColor, halfIntegerGridColor, integerGridColor;
+    Color zeroColor, unitColor, inertPrimeColor, splitPrimeColor;
+    Color splitPrimeMidDegreeColor, ramifiedPrimeColor;
+    Color ramifiedPrimeMidDegreeColor;
     
     /**
      * Tells whether this diagram viewer includes imaginary numbers and complex 
      * numbers with nonzero imaginary part. This is determined at the time of 
      * construction according to the ring that is passed to the constructor.
      */
-    protected final boolean includeImaginary;
+    final boolean includeImaginary;
     
     /**
      * Tells whether or not a calculation of a fundamental unit is necessary
      */
-    protected boolean unitApplicable = false;
+    boolean unitApplicable = false;
     
     /**
      * Tells whether the fundamental unit of the currently displayed ring is 
@@ -380,14 +380,14 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * number is beyond the range of the pertinent {@link 
      * algebraics.IntegerRing} implementation to represent.
      */
-    protected boolean unitAvailable = false;
+    boolean unitAvailable = false;
     
     /**
      * Potentially the fundamental unit of the currently displayed ring. The 
      * number may not be available for a variety of reasons, and this field 
      * might even be null. Be sure to check if {@link #unitAvailable} is true.
      */
-    protected AlgebraicInteger fundamentalUnit;
+    AlgebraicInteger fundamentalUnit;
     
     /**
      * The x of the coordinate pair (x, y) for 0 + 0i on the currently displayed 
