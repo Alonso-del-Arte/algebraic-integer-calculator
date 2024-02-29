@@ -72,7 +72,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public boolean hasHalfIntegers() {
-        return this.radicand % 2 == -1;
+        return this.radicand % 4 == -3;
     }
     
     /**
