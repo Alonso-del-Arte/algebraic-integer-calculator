@@ -581,6 +581,22 @@ public class ImaginaryQuadraticRingTest {
     }
 
     /**
+     * Another test of the hasHalfIntegers function, of the 
+     * ImaginaryQuadraticRing class, inherited from {@link QuadraticInteger}. If 
+     * d = 3 mod 4, or equivalently d = -1 mod 4, the ring should not be said to 
+     * have so-called "half-integers."
+     */
+    @Test
+    public void testHasHalfIntegers3Mod4() {
+        System.out.println("hasHalfIntegers");
+        int d = -randomSquarefreeNumberMod(1, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String msg = ring.toString() 
+                + " should not be said to have \"half-integers\"";
+        assert !ring.hasHalfIntegers() : msg;
+    }
+
+    /**
      * Test of hashCode method, of class ImaginaryQuadraticRing, inherited from 
      * {@link QuadraticRing}. The purpose here isn't to test that any specific 
      * ring maps to any specific hash code, but rather that two rings that are 
