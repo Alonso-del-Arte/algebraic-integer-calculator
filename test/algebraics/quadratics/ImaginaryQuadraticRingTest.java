@@ -550,7 +550,9 @@ public class ImaginaryQuadraticRingTest {
     
     /**
      * Test of the hasHalfIntegers function, of the ImaginaryQuadraticRing  
-     * class, inherited from {@link QuadraticInteger}.
+     * class, inherited from {@link QuadraticInteger}. If d = 1 mod 4 (or 
+     * equivalently d = -3 mod 4), the ring should be said to have so-called 
+     * "half-integers."
      */
     @Test
     public void testHasHalfIntegers() {
@@ -560,6 +562,22 @@ public class ImaginaryQuadraticRingTest {
         String msg = ring.toString() 
                 + " should be said to have \"half-integers\"";
         assert ring.hasHalfIntegers() : msg;
+    }
+
+    /**
+     * Another test of the hasHalfIntegers function, of the 
+     * ImaginaryQuadraticRing class, inherited from {@link QuadraticInteger}. If 
+     * d = 2 mod 4, the ring should not be said to have so-called 
+     * "half-integers."
+     */
+    @Test
+    public void testHasHalfIntegers2Mod4() {
+        System.out.println("hasHalfIntegers");
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String msg = ring.toString() 
+                + " should not be said to have \"half-integers\"";
+        assert !ring.hasHalfIntegers() : msg;
     }
 
     /**
