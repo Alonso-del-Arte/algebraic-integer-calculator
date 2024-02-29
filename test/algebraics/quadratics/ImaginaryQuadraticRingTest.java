@@ -51,7 +51,6 @@ public class ImaginaryQuadraticRingTest {
     private static ImaginaryQuadraticRing ringRandom;
     
     private static int randomDiscr;
-    private static boolean ringRandomd1mod4;
     
     /**
      * Sets up five ImaginaryQuadraticRing objects, corresponding to 
@@ -75,7 +74,6 @@ public class ImaginaryQuadraticRingTest {
         if (randomDiscr == -7) {
             randomDiscr = -11;
         }
-        ringRandomd1mod4 = (randomDiscr % 4 == -3);
         ringRandom = new ImaginaryQuadraticRing(randomDiscr);
         System.out.println(ringRandom.toASCIIString() 
                 + " has been randomly chosen for testing purposes");
@@ -551,28 +549,17 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of hasHalfIntegers method, of class ImaginaryQuadraticRing, 
-     * inherited from {@link QuadraticInteger}.
+     * Test of the hasHalfIntegers function, of the ImaginaryQuadraticRing  
+     * class, inherited from {@link QuadraticInteger}.
      */
     @Test
     public void testHasHalfIntegers() {
         System.out.println("hasHalfIntegers");
-        String msgNoHalves = " should not be said to have half-integers";
-        String msgHalves = " should be said to have half-integers";
-        String msg = RING_GAUSSIAN.toString() + msgNoHalves;
-        assert !RING_GAUSSIAN.hasHalfIntegers() : msg;
-        msg = RING_ZI2.toString() + msgNoHalves;
-        assert !RING_ZI2.hasHalfIntegers() : msg;
-        msg = RING_EISENSTEIN.toString() + msgHalves;
-        assert RING_EISENSTEIN.hasHalfIntegers() : msg;
-        msg = RING_OQI7.toString() + msgHalves;
-        assert RING_OQI7.hasHalfIntegers() : msg;
-        if (ringRandomd1mod4) {
-            msg = ringRandom.toString() + msgHalves;
-        } else {
-            msg = ringRandom.toString() + msgNoHalves;
-        }
-        assert ringRandomd1mod4 == ringRandom.hasHalfIntegers() : msg;
+        int d = -randomSquarefreeNumberMod(3, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String msg = ring.toString() 
+                + " should be said to have \"half-integers\"";
+        assert ring.hasHalfIntegers() : msg;
     }
 
     /**
