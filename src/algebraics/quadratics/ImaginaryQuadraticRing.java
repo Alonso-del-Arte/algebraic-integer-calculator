@@ -53,7 +53,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
      */
     @Override
     public int getAbsNegRad() {
-        return Integer.MIN_VALUE;// this.absRadicand;
+        return this.absRadicand;
     }
     
     /**
