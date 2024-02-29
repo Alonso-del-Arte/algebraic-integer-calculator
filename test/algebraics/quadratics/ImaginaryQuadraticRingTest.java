@@ -521,16 +521,17 @@ public class ImaginaryQuadraticRingTest {
     }
 
     /**
-     * Test of getAbsNegRad method, of class ImaginaryQuadraticRing.
+     * Test of the getAbsNegRad function, of the ImaginaryQuadraticRing class.
      */
     @Test
     public void testGetAbsNegRad() {
         System.out.println("getAbsNegRad");
-        assertEquals(1, RING_GAUSSIAN.getAbsNegRad());
-        assertEquals(2, RING_ZI2.getAbsNegRad());
-        assertEquals(3, RING_EISENSTEIN.getAbsNegRad());
-        assertEquals(7, RING_OQI7.getAbsNegRad());
-        assertEquals(-randomDiscr, ringRandom.getAbsNegRad());
+        int expected = randomSquarefreeNumber(1024);
+        QuadraticRing ring = new ImaginaryQuadraticRing(-expected);
+        int actual = ring.getAbsNegRad();
+        String message = "Inquiring as the absolute value of radicand for " 
+                + ring.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
