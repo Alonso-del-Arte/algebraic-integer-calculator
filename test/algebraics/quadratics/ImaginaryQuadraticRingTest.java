@@ -535,21 +535,19 @@ public class ImaginaryQuadraticRingTest {
     }
 
     /**
-     * Test of getAbsNegRadSqrt method, of class ImaginaryQuadraticRing.
+     * Test of the getAbsNegRadSqrt function, of the ImaginaryQuadraticRing 
+     * class.
      */
     @Test
     public void testGetAbsNegRadSqrt() {
         System.out.println("getAbsNegRadSqrt");
-        assertEquals(1.0, RING_GAUSSIAN.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(2), RING_ZI2.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(3), RING_EISENSTEIN.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(7), RING_OQI7.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(-randomDiscr), ringRandom.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
+        int d = -randomSquarefreeNumber(2048);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        double expected = Math.sqrt(-d);
+        double actual = ring.getAbsNegRadSqrt();
+        String message = "Inquiring as the absolute value of square root for " 
+                + ring.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
     /**
