@@ -67,7 +67,7 @@ public class ImaginaryQuadraticRing extends QuadraticRing {
      */
     @Override
     public double getAbsNegRadSqrt() {
-        return -Double.MAX_VALUE;// this.realRadSqrt;
+        return this.realRadSqrt;
     }
     
     /**
