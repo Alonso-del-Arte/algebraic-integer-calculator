@@ -72,7 +72,10 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
     
     @Override
     public boolean equals(Object obj) {
-        return obj != null;
+        if (obj == null) {
+            return false;
+        }
+        return this.getClass().equals(obj.getClass());
     }
     
     @Override
