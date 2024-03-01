@@ -602,6 +602,13 @@ public class ImaginaryQuadraticRingTest {
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
         assertEquals(ring, ring);
     }
+    
+    @Test
+    public void testNotEqualsNull() {
+        int d = -randomSquarefreeNumber(4096);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        assertNotEquals(ring, null);
+    }
 
     /**
      * Test of equals method, of class ImaginaryQuadraticRing, inherited from 
