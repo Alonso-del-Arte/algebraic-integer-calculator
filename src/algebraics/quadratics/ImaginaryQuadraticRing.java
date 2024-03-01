@@ -70,6 +70,16 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
         return this.realRadSqrt;
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+    
     /**
      * Gives the ring's label, using mostly alphanumeric ASCII characters but 
      * also often the "&radic;" character and occasionally Greek letters.

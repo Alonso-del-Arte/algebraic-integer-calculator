@@ -71,6 +71,16 @@ public final class RealQuadraticRing extends QuadraticRing {
         return this.realRadSqrt;
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+    
     /**
      * Constructs a new object representing a real quadratic ring.
      * @param d A squarefree, positive integer greater than 1. Examples: 5, 21, 
