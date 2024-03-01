@@ -258,8 +258,8 @@ public class RealQuadraticRingTest {
      * QuadraticRing}. The reflexive, symmetric and transitive properties are 
      * tested for rings that should register as equal. Then five different rings 
      * are tested to check that they're not registering as equal.
-     */@org.junit.Ignore
-    @Test
+     */
+//    @Test
     public void testEquals() {
         System.out.println("equals");
         RealQuadraticRing someRing = new RealQuadraticRing(2);
