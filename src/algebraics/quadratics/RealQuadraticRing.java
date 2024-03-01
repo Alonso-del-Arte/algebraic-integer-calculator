@@ -15,12 +15,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics.quadratics;
-import arithmetic.PowerBasis;import fractions.Fraction;
+
+import arithmetic.PowerBasis;
+import fractions.Fraction;
+
 /**
  * Defines objects to represent real quadratic rings.
  * @author Alonso del Arte
  */
-public class RealQuadraticRing extends QuadraticRing {
+public final class RealQuadraticRing extends QuadraticRing {
     
     private static final long serialVersionUID = 4547847540095073075L;
     

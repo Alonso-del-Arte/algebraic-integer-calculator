@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -25,7 +25,7 @@ package algebraics.quadratics;
  * and it should not be compiled to any JARs meant for public distribution.
  * @author Alonso del Arte
  */
-public class IllDefinedQuadraticRing extends QuadraticRing {
+public final class IllDefinedQuadraticRing extends QuadraticRing {
     
     private final double radSqrt;
     

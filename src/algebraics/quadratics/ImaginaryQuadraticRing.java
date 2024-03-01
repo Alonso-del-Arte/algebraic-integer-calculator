@@ -23,7 +23,7 @@ import fractions.Fraction;
  * Defines objects to represent imaginary quadratic rings.
  * @author Alonso del Arte
  */
-public class ImaginaryQuadraticRing extends QuadraticRing {
+public final class ImaginaryQuadraticRing extends QuadraticRing {
     
     private static final long serialVersionUID = 4547847535800105779L;
 
