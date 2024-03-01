@@ -70,9 +70,20 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
         return this.realRadSqrt;
     }
     
+    // TODO: Refactor after overhauling QuadraticRingTest
     @Override
     public boolean equals(Object obj) {
-        return this == obj;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        final ImaginaryQuadraticRing other = (ImaginaryQuadraticRing) obj;
+        return (this.radicand == other.radicand);
     }
     
     @Override
