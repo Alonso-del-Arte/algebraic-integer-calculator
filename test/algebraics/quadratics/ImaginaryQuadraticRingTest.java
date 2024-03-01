@@ -610,6 +610,15 @@ public class ImaginaryQuadraticRingTest {
         assertNotEquals(ring, null);
     }
 
+    @Test
+    public void testNotEqualsDiffClass() {
+        int d = -randomSquarefreeNumber(4096);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticRing diffClassRing 
+                = new QuadraticRingTest.QuadraticRingImpl(d);
+        assertNotEquals(ring, diffClassRing);
+    }
+
     /**
      * Test of equals method, of class ImaginaryQuadraticRing, inherited from 
      * {@link QuadraticRing}. The reflexive, symmetric and transitive properties 
