@@ -22,6 +22,8 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberOtherThan;
 import fileops.PNGFileFilter;
 import fractions.Fraction;
 import viewers.ImagQuadRingDisplay;
@@ -617,6 +619,18 @@ public class ImaginaryQuadraticRingTest {
         QuadraticRing diffClassRing 
                 = new QuadraticRingTest.QuadraticRingImpl(d);
         assertNotEquals(ring, diffClassRing);
+    }
+    
+    @Test
+    public void testNotEqualsDiffDiscr() {
+        int bound = 8192;
+        int paramA = -randomSquarefreeNumber(bound);
+        int paramB = -randomSquarefreeNumberOtherThan(-paramA, bound);
+        QuadraticRing ringA = new ImaginaryQuadraticRing(paramA);
+        QuadraticRing ringB = new ImaginaryQuadraticRing(paramB);
+        String message = ringA.toString() 
+                + " should not be said to be the same as " + ringB.toString();
+        assertNotEquals(message, ringA, ringB);
     }
 
     /**
