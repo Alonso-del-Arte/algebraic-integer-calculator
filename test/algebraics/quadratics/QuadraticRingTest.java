@@ -198,7 +198,7 @@ public class QuadraticRingTest {
         }
     }
 
-    public class QuadraticRingImpl extends QuadraticRing {
+    static class QuadraticRingImpl extends QuadraticRing {
 
         @Override
         public boolean isPurelyReal() {
