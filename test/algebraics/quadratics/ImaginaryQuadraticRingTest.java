@@ -634,30 +634,16 @@ public class ImaginaryQuadraticRingTest {
     }
 
     /**
-     * Test of equals method, of class ImaginaryQuadraticRing, inherited from 
-     * {@link QuadraticRing}. The reflexive, symmetric and transitive properties 
-     * are tested for rings that should register as equal. Then five different 
-     * rings are tested to check that they're not registering as equal.
+     * Test of the equals function, of the ImaginaryQuadraticRing class, 
+     * inherited from {@link QuadraticRing}.
      */
-//    @Test
+    @Test
     public void testEquals() {
         System.out.println("equals");
-        fail("THIS TEST NEEDS REWRITING");
-        ImaginaryQuadraticRing someRing = new ImaginaryQuadraticRing(-1);
-        ImaginaryQuadraticRing transitiveHold = new ImaginaryQuadraticRing(-1);
-        assertTrue(RING_GAUSSIAN.equals(RING_GAUSSIAN)); // Reflexive test
-        assertEquals(RING_GAUSSIAN, someRing);
-        assertEquals(someRing, RING_GAUSSIAN); // Symmetric test
-        assertEquals(someRing, transitiveHold);
-        assertEquals(transitiveHold, RING_GAUSSIAN); // Transitive test
-        // Now to test that rings that are not equal are reported as not equal
-        assertNotEquals(RING_GAUSSIAN, RING_ZI2);
-        assertNotEquals(RING_ZI2, RING_EISENSTEIN);
-        assertNotEquals(RING_EISENSTEIN, RING_OQI7);
-        assertNotEquals(RING_OQI7, ringRandom);
-        // Lastly, a ring should not be equal to an unrelated object
-        PNGFileFilter obj = new PNGFileFilter();
-        assertNotEquals(ringRandom, obj);
+        int d = -randomSquarefreeNumber(4096);
+        QuadraticRing someRing = new ImaginaryQuadraticRing(d);
+        QuadraticRing sameRing = new ImaginaryQuadraticRing(d);
+        assertEquals(someRing, sameRing);
     }
 
     /**
