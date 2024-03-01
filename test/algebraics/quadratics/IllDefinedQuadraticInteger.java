@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -30,6 +30,7 @@ package algebraics.quadratics;
  * <code>UnsupportedNumberDomainException</code>.
  * @author Alonso del Arte
  */
+@Deprecated
 public class IllDefinedQuadraticInteger extends QuadraticInteger {
     
     private static final long serialVersionUID = 4547543568079665971L;

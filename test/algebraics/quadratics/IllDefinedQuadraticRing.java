@@ -25,6 +25,7 @@ package algebraics.quadratics;
  * and it should not be compiled to any JARs meant for public distribution.
  * @author Alonso del Arte
  */
+@Deprecated
 public final class IllDefinedQuadraticRing extends QuadraticRing {
     
     private final double radSqrt;
