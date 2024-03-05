@@ -73,7 +73,7 @@ public final class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public boolean equals(Object obj) {
-        return obj != null;
+        return obj instanceof RealQuadraticRing;
     }
     
     @Override
