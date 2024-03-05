@@ -284,6 +284,18 @@ public class RealQuadraticRingTest {
         assertNotEquals(ring, diffClassRing);
     }
     
+    @Test
+    public void testNotEqualsDiffDiscr() {
+        int bound = 8192;
+        int paramA = randomSquarefreeNumber(bound);
+        int paramB = randomSquarefreeNumberOtherThan(paramA, bound);
+        QuadraticRing ringA = new RealQuadraticRing(paramA);
+        QuadraticRing ringB = new RealQuadraticRing(paramB);
+        String message = ringA.toString() 
+                + " should not be said to be the same as " + ringB.toString();
+        assertNotEquals(message, ringA, ringB);
+    }
+
     /**
      * Test of equals method, of class RealQuadraticRing, inherited from {@link 
      * QuadraticRing}. The reflexive, symmetric and transitive properties are 
