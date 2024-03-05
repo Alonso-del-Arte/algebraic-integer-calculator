@@ -371,9 +371,9 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) {return obj != null;
 //        if (this == obj) {
-            return true;
+//            return true;
 //        }
 //        if (obj == null) {
 //            return false;
