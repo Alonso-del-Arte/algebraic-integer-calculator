@@ -73,7 +73,16 @@ public final class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public boolean equals(Object obj) {
-        return this == obj;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        return this.radicand == ((RealQuadraticRing) obj).radicand;
     }
     
     @Override
