@@ -18,6 +18,13 @@ package algebraics.quadratics;
 
 import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberOtherThan;
 import fractions.Fraction;
 
 import java.util.Random;
@@ -94,6 +101,13 @@ public class QuadraticRingTest {
         PowerBasis expected = new PowerBasis(ones);
         PowerBasis actual = ring.getPowerBasis();
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testReferentialEquality() {
+        int d = randomSquarefreeNumber(8192);
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        assertEquals(ring, ring);
     }
 
     /**
@@ -205,7 +219,7 @@ public class QuadraticRingTest {
             return this.radicand > 0;
         }
 
-        public QuadraticRingImpl(int d) {
+        QuadraticRingImpl(int d) {
             super(d);
         }
 
