@@ -274,6 +274,15 @@ public class RealQuadraticRingTest {
         QuadraticRing ring = new RealQuadraticRing(d);
         assertNotEquals(ring, null);
     }
+
+    @Test
+    public void testNotEqualsDiffClass() {
+        int d = choosePositiveRandomSquarefreeNot1();
+        QuadraticRing ring = new RealQuadraticRing(d);
+        QuadraticRing diffClassRing 
+                = new QuadraticRingTest.QuadraticRingImpl(d);
+        assertNotEquals(ring, diffClassRing);
+    }
     
     /**
      * Test of equals method, of class RealQuadraticRing, inherited from {@link 
