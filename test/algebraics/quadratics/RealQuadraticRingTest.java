@@ -71,6 +71,14 @@ public class RealQuadraticRingTest {
                 + " has been randomly chosen for testing purposes.");
     }
     
+    private static int choosePositiveRandomSquarefreeNot1() {
+        int number;
+        do {
+            number = randomSquarefreeNumber(Short.MAX_VALUE);
+        } while (number == 1);
+        return number;
+    }
+    
     /**
      * Test of the isPurelyReal function, of the RealQuadraticRing class.
      */
@@ -251,6 +259,13 @@ public class RealQuadraticRingTest {
             message = ringRandom.toString() + msgNoHalves;
         }
         assertEquals(message, ringRandomD1Mod4, ringRandom.hasHalfIntegers());
+    }
+    
+    @Test
+    public void testReferentialEquality() {
+        int d = choosePositiveRandomSquarefreeNot1();
+        QuadraticRing ring = new RealQuadraticRing(d);
+        assertEquals(ring, ring);
     }
     
     /**
