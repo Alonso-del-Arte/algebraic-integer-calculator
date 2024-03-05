@@ -109,6 +109,13 @@ public class QuadraticRingTest {
         QuadraticRing ring = new QuadraticRingImpl(d);
         assertEquals(ring, ring);
     }
+    
+    @Test
+    public void testNotEqualsNull() {
+        int d = -randomSquarefreeNumber(8192);
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        assertNotEquals(ring, null);
+    }
 
     /**
      * Test of equals method, of class QuadraticRing.
