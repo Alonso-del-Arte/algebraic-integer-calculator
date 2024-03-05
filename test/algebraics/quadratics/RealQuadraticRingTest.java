@@ -297,28 +297,16 @@ public class RealQuadraticRingTest {
     }
 
     /**
-     * Test of equals method, of class RealQuadraticRing, inherited from {@link 
-     * QuadraticRing}. The reflexive, symmetric and transitive properties are 
-     * tested for rings that should register as equal. Then five different rings 
-     * are tested to check that they're not registering as equal.
+     * Test of the equals function, of the RealQuadraticRing class, inherited 
+     * from {@link QuadraticRing}.
      */
-//    @Test
+    @Test
     public void testEquals() {
         System.out.println("equals");
-        RealQuadraticRing someRing = new RealQuadraticRing(2);
-        RealQuadraticRing transitiveHold = new RealQuadraticRing(2);
-        assertTrue(RING_Z2.equals(RING_Z2)); // Reflexive test
-        assertEquals(RING_Z2, someRing);
-        assertEquals(someRing, RING_Z2); // Symmetric test
-        assertEquals(someRing, transitiveHold);
-        assertEquals(transitiveHold, RING_Z2); // Transitive test
-        // Now to test that rings that are not equal are reported as not equal
-        assertNotEquals(RING_Z2, RING_ZPHI);
-        assertNotEquals(RING_ZPHI, RING_OQ13);
-        assertNotEquals(RING_OQ13, ringRandom);
-        // Lastly, a ring should not be equal to an unrelated object
-        FileChooserWithOverwriteGuard obj = new FileChooserWithOverwriteGuard();
-        assertNotEquals(ringRandom, obj);
+        int d = randomSquarefreeNumber(4096);
+        QuadraticRing someRing = new RealQuadraticRing(d);
+        QuadraticRing sameRing = new RealQuadraticRing(d);
+        assertEquals(someRing, sameRing);
     }
 
 /**
