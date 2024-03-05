@@ -268,6 +268,13 @@ public class RealQuadraticRingTest {
         assertEquals(ring, ring);
     }
     
+    @Test
+    public void testNotEqualsNull() {
+        int d = choosePositiveRandomSquarefreeNot1();
+        QuadraticRing ring = new RealQuadraticRing(d);
+        assertNotEquals(ring, null);
+    }
+    
     /**
      * Test of equals method, of class RealQuadraticRing, inherited from {@link 
      * QuadraticRing}. The reflexive, symmetric and transitive properties are 
