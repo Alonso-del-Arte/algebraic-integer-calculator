@@ -29,6 +29,9 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import fileops.FileChooserWithOverwriteGuard;
 import fractions.Fraction;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -310,44 +313,25 @@ public class RealQuadraticRingTest {
     }
 
 /**
-     * Test of hashCode method, of class RealQuadraticRing, inherited from 
-     * {@link QuadraticRing}. The purpose here isn't to test that any specific 
-     * ring maps to any specific hash code, but rather that two rings that are 
-     * equal get the same hash code, and two rings that are not equal get 
-     * different hash codes.
-     */@org.junit.Ignore
+     * Test of the hashCode function, of the RealQuadraticRing class, inherited  
+     * from {@link QuadraticRing}.
+     */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        fail("REWRITE");
-        int expected = RING_Z2.hashCode();
-        System.out.println("BeforeClass " + RING_Z2.toASCIIString() 
-                + " hashed as " + expected);
-        RealQuadraticRing someRing = new RealQuadraticRing(2);
-        int actual = someRing.hashCode();
-        String message = "BeforeClass and test Z[sqrt(2)] should hash same";
-        assertEquals(message, expected, actual);
-        expected = RING_ZPHI.hashCode();
-        System.out.println("BeforeClass " + RING_ZPHI.toASCIIString() 
-                + " hashed as " + expected);
-        someRing = new RealQuadraticRing(5);
-        actual = someRing.hashCode();
-        message = "BeforeClass and test Z[omega] should hash the same";
-        assertEquals(message, expected, actual);
-        expected = RING_OQ13.hashCode();
-        System.out.println("BeforeClass " + RING_OQ13.toASCIIString() 
-                + " hashed as " + expected);
-        someRing = new RealQuadraticRing(13);
-        actual = someRing.hashCode();
-        message = "BeforeClass and test Z[sqrt(-7)] should hash the same";
-        assertEquals(message, expected, actual);
-        expected = ringRandom.hashCode();
-        System.out.println("BeforeClass " + ringRandom.toASCIIString() 
-                + " hashed as " + expected);
-        someRing = new RealQuadraticRing(randomDiscr);
-        actual = someRing.hashCode();
-        message = "BeforeClass and test " + ringRandom.toASCIIString() 
-                + " should hash the same";
+        int initialCapacity = randomNumber(64) + 16;
+        Set<QuadraticRing> rings = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            int d = choosePositiveRandomSquarefreeNot1();
+            QuadraticRing ring = new RealQuadraticRing(d);
+            rings.add(ring);
+            hashes.add(ring.hashCode());
+        }
+        int expected = rings.size();
+        int actual = hashes.size();
+        String message = "Set of " + expected 
+                + " rings should correspond to as many hashes";
         assertEquals(message, expected, actual);
     }
 
