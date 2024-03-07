@@ -16,9 +16,6 @@
  */
 package algebraics.quadratics;
 
-import arithmetic.PowerBasis;
-import fractions.Fraction;
-
 /**
  * Defines objects to represent imaginary quadratic rings.
  * @author Alonso del Arte
@@ -68,22 +65,6 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
     @Override
     public double getAbsNegRadSqrt() {
         return this.realRadSqrt;
-    }
-    
-    // TODO: Refactor after overhauling QuadraticRingTest
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        final ImaginaryQuadraticRing other = (ImaginaryQuadraticRing) obj;
-        return (this.radicand == other.radicand);
     }
     
     @Override
