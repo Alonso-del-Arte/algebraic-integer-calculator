@@ -378,9 +378,11 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
         if (obj == null) {
             return false;
         }
-//        final QuadraticRing other = (QuadraticRing) obj;
-//        return (this.radicand == other.radicand);
-        return this.getClass() == obj.getClass();
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        final QuadraticRing other = (QuadraticRing) obj;
+        return (this.radicand == other.radicand);
     }
     
     /**
