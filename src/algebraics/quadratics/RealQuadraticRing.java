@@ -73,7 +73,7 @@ public final class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public int hashCode() {
-        return 0;
+        return this.radicand;
     }
     
     /**
