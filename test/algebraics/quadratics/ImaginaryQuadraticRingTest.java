@@ -18,15 +18,18 @@ package algebraics.quadratics;
 
 import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
-import fileops.PNGFileFilter;
 import fractions.Fraction;
 import viewers.ImagQuadRingDisplay;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -647,45 +650,25 @@ public class ImaginaryQuadraticRingTest {
     }
 
     /**
-     * Test of hashCode method, of class ImaginaryQuadraticRing, inherited from 
-     * {@link QuadraticRing}. The purpose here isn't to test that any specific 
-     * ring maps to any specific hash code, but rather that two rings that are 
-     * equal get the same hash code, and two rings that are not equal get 
-     * different hash codes.
+     * Test of the hashCode function, of the ImaginaryQuadraticRing class, 
+     * inherited from {@link QuadraticRing}.
      */
-//    @Test
+    @Test
     public void testHashCode() {
-        System.out.println("hashCode");
-        int expResult = RING_GAUSSIAN.hashCode();
-        System.out.println("BeforeClass-initialized " + RING_GAUSSIAN.toASCIIString() + " hashed as " + expResult);
-        ImaginaryQuadraticRing someRing = new ImaginaryQuadraticRing(-1);
-        int result = someRing.hashCode();
-        String assertionMessage = "BeforeClass-initialized and test-initialized Z[i] should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
-        expResult = RING_ZI2.hashCode();
-        System.out.println("BeforeClass-initialized " + RING_ZI2.toASCIIString() + " hashed as " + expResult);
-        someRing = new ImaginaryQuadraticRing(-2);
-        result = someRing.hashCode();
-        assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-2)] should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
-        expResult = RING_EISENSTEIN.hashCode();
-        System.out.println("BeforeClass-initialized " + RING_EISENSTEIN.toASCIIString() + " hashed as " + expResult);
-        someRing = new ImaginaryQuadraticRing(-3);
-        result = someRing.hashCode();
-        assertionMessage = "BeforeClass-initialized and test-initialized Z[omega] should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
-        expResult = RING_OQI7.hashCode();
-        System.out.println("BeforeClass-initialized " + RING_OQI7.toASCIIString() + " hashed as " + expResult);
-        someRing = new ImaginaryQuadraticRing(-7);
-        result = someRing.hashCode();
-        assertionMessage = "BeforeClass-initialized and test-initialized Z[sqrt(-7)] should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
-        expResult = ringRandom.hashCode();
-        System.out.println("BeforeClass-initialized " + ringRandom.toASCIIString() + " hashed as " + expResult);
-        someRing = new ImaginaryQuadraticRing(randomDiscr);
-        result = someRing.hashCode();
-        assertionMessage = "BeforeClass-initialized and test-initialized " + ringRandom.toASCIIString() + " should hash the same.";
-        assertEquals(assertionMessage, expResult, result);
+        int initialCapacity = randomNumber(64) + 16;
+        Set<QuadraticRing> rings = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            int d = -randomSquarefreeNumber(8192);
+            QuadraticRing ring = new ImaginaryQuadraticRing(d);
+            rings.add(ring);
+            hashes.add(ring.hashCode());
+        }
+        int expected = rings.size();
+        int actual = hashes.size();
+        String message = "Set of " + expected 
+                + " rings should correspond to as many hashes";
+        assertEquals(message, expected, actual);
     }
     
     /**
