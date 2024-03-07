@@ -133,11 +133,15 @@ public class QuadraticRingTest {
     }
 
     /**
-     * Test of equals method, of class QuadraticRing.
+     * Test of the equals function, of the QuadraticRing class.
      */
     @Test
     public void testEquals() {
-        fail("REWRITE THIS TEST");
+        int signum = RANDOM.nextBoolean() ? 1 : -1;
+        int d = signum * randomSquarefreeNumber(8192);
+        QuadraticRing someRing = new QuadraticRingImpl(d);
+        QuadraticRing sameRing = new QuadraticRingImpl(d);
+        assertEquals(someRing, sameRing);
     }
 
     /**
