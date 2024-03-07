@@ -143,6 +143,17 @@ public class QuadraticRingTest {
         QuadraticRing sameRing = new QuadraticRingImpl(d);
         assertEquals(someRing, sameRing);
     }
+    
+    @Test
+    public void testNotEqualsDiffDiscr() {
+        int dA = -randomSquarefreeNumber(8192);
+        int dB = randomSquarefreeNumber(8192);
+        QuadraticRing ringA = new QuadraticRingImpl(dA);
+        QuadraticRing ringB = new QuadraticRingImpl(dB);
+        String message = ringA.toString() 
+                + " should not be considered equal to " + ringB.toString();
+        assertNotEquals(message, ringA, ringB);
+    }
 
     /**
      * Test of hashCode method, of class QuadraticRing.
