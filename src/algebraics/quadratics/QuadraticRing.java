@@ -402,7 +402,7 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
         } else {
             hash *= -1;
         }
-        return 0;// hash;
+        return hash;
     }
 
     /**
