@@ -116,6 +116,21 @@ public class QuadraticRingTest {
         QuadraticRing ring = new QuadraticRingImpl(d);
         assertNotEquals(ring, null);
     }
+    
+    @Test
+    public void testNotEqualsDiffClass() {
+        int d = randomSquarefreeNumber(8192);
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        QuadraticRing diffClassRing = new QuadraticRing(d) {
+            
+            @Override
+            public boolean isPurelyReal() {
+                return true;
+            }
+            
+        };
+        assertNotEquals(ring, diffClassRing);
+    }
 
     /**
      * Test of equals method, of class QuadraticRing.
