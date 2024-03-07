@@ -434,18 +434,19 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     
     /**
      * Superclass constructor for {@link ImaginaryQuadraticRing} and {@link 
-     * RealQuadraticRing}.
+     * RealQuadraticRing}. For what it's worth, this is not a sealed class, I 
+     * have no intention of sealing it.
      * @param d A squarefree integer. Subclasses can and should place further 
      * restrictions.
      * @throws IllegalArgumentException If <code>d</code> is a multiple of a 
      * square other than 1.
      */
     public QuadraticRing(int d) {
-        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
-            String excMsg = "Squarefree integer required for parameter d, " + d 
-                    + " is not squarefree";
-            throw new IllegalArgumentException(excMsg);
-        }
+//        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
+//            String excMsg = "Squarefree integer required for parameter d, " + d 
+//                    + " is not squarefree";
+//            throw new IllegalArgumentException(excMsg);
+//        }
         this.radicand = d;
         this.absRadicand = Math.abs(d);
         this.realRadSqrt = Math.sqrt(this.absRadicand);
