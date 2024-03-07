@@ -27,7 +27,9 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
 import fractions.Fraction;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -156,12 +158,25 @@ public class QuadraticRingTest {
     }
 
     /**
-     * Test of hashCode method, of class QuadraticRing.
+     * Test of the hashCode function, of the QuadraticRing class.
      */
     @Test
     public void testHashCode() {
-        System.out.println("hashCode");
-        fail("REWRITE THIS TEST");
+        int initialCapacity = randomNumber(64) + 16;
+        Set<QuadraticRing> rings = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            int signum = (i % 2 == 0) ? 1 : -1;
+            int d = signum * randomSquarefreeNumber(8192);
+            QuadraticRing ring = new QuadraticRingImpl(d);
+            rings.add(ring);
+            hashes.add(ring.hashCode());
+        }
+        int expected = rings.size();
+        int actual = hashes.size();
+        String message = "Set of " + expected 
+                + " should correspond to as many hashes";
+        assertEquals(message, expected, actual);
     }
 
     /**
