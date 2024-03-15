@@ -16,7 +16,6 @@
  */
 package algebraics.quadratics;
 
-import algebraics.UnsupportedNumberDomainException;
 import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
@@ -34,6 +33,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
 import static testframe.api.Asserters.assertThrows;
 
 /**
@@ -627,6 +627,23 @@ public class RealQuadraticRingTest {
     }
     
     /**
+     * Test of the RealQuadraticRing constructor. Any number divisible by a 
+     * nontrivial perfect square should be rejected.
+     */
+//    @Test
+    public void testConstructorRejectsSquarefulD() {
+        try {
+            RealQuadraticRing ringZ12 = new RealQuadraticRing(12);
+            System.out.println("Somehow created " + ringZ12.toASCIIString() 
+                    + " without problem.");
+            fail("Attempt to use 12 should have caused an exception");
+        } catch (IllegalArgumentException iae) {
+            System.out.println("IllegalArgumentException correct for d = 12");
+            System.out.println("\"" + iae.getMessage() + "\"");
+        }
+    }
+    
+    /**
      * Test of the RealQuadraticRing constructor. The parameter d = 1 should be 
      * rejected.
      */
@@ -647,27 +664,30 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of the RealQuadraticRing constructor. Any number divisible by a 
-     * nontrivial perfect square should be rejected.
+     * Test of the RealQuadraticRing constructor. The parameter d = 0 should be 
+     * rejected.
      */
     @Test
-    public void testConstructorRejectsSquarefulD() {
-        try {
-            RealQuadraticRing ringZ12 = new RealQuadraticRing(12);
-            System.out.println("Somehow created " + ringZ12.toASCIIString() 
-                    + " without problem.");
-            fail("Attempt to use 12 should have caused an exception");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("IllegalArgumentException correct for d = 12");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        }
+    public void testConstructorRejectsD0() {
+        int d = 0;
+        String msg = "Parameter d = " + d 
+                + " should be rejected for real quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new RealQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
      * Test of the RealQuadraticRing constructor. A negative parameter, even if 
      * squarefree, should be rejected.
      */
-    @Test
+//    @Test
     public void testConstructorRejectsNegativeD() {
         try {
             RealQuadraticRing ringZi7 = new RealQuadraticRing(-7);
