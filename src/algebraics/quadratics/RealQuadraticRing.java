@@ -86,7 +86,7 @@ public final class RealQuadraticRing extends QuadraticRing {
                     + " is not squarefree";
             throw new IllegalArgumentException(excMsg);
         }
-        if (d == 0) {
+        if (d < 1) {
             String excMsg = "Positive integer required for parameter d";
             throw new IllegalArgumentException(excMsg);
         }
