@@ -26,7 +26,6 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
-import fileops.FileChooserWithOverwriteGuard;
 import fractions.Fraction;
 
 import java.util.HashSet;
@@ -35,6 +34,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static testframe.api.Asserters.assertThrows;
 
 /**
  * Tests of the RealQuadraticRing class.
@@ -627,36 +627,23 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of the RealQuadraticRing constructor.
-     */
-    @Test
-    public void testConstructor() {
-        RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
-        System.out.println("Created " + ringZ10.toASCIIString() 
-                + " without problem");
-        RealQuadraticRing ringZ11 = new RealQuadraticRing(53);
-        System.out.println("Created " + ringZ11.toASCIIString() 
-                + " without problem");
-    }
-    
-    /**
      * Test of the RealQuadraticRing constructor. The parameter d = 1 should be 
      * rejected.
      */
     @Test
     public void testConstructorRejectsD1() {
-        try {
-            RealQuadraticRing ringZ1 = new RealQuadraticRing(1);
-            System.out.println("Somehow created " + ringZ1.toASCIIString() 
-                    + " without problem");
-            fail("Attempt to use 1 should have caused an exception");
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException for d = 1");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("IllegalArgumentException for d = 1 adequate");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        }
+        int d = 1;
+        String msg = "Parameter d = " + d 
+                + " should be rejected for real quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new RealQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
