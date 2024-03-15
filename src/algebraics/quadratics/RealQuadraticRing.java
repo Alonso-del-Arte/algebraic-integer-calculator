@@ -91,7 +91,7 @@ public final class RealQuadraticRing extends QuadraticRing {
             throw new IllegalArgumentException(excMsg);
         }
         if (d == 1) {
-            String excMsg = "Sorry, O_(Q(sqrt(1))) is not supported";
+            String excMsg = "O_(Q(sqrt(1))) is not supported";
             throw new IllegalArgumentException(excMsg);
         }
         this.d1mod4 = (d % 4 == 1);
