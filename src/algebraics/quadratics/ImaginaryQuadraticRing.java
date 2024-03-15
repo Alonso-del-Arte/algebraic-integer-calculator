@@ -154,7 +154,7 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
      */
     public ImaginaryQuadraticRing(int d) {
         super(d);
-        if (d > 0) {
+        if (d > -1) {
             String excMsg = "Negative integer required for parameter d";
             throw new IllegalArgumentException(excMsg);
         }
