@@ -690,6 +690,22 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testConstructorRejectsDZero() {
+        int d = 0;
+        String msg = "Parameter d = " + d 
+                + " should be rejected for imaginary quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new ImaginaryQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     /**
      * Test of ImaginaryQuadraticRing class constructor. The main thing we're 
      * testing here is that an invalid argument triggers an 
