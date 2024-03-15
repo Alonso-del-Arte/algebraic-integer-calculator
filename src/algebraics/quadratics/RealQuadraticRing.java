@@ -81,10 +81,10 @@ public final class RealQuadraticRing extends QuadraticRing {
      */
     public RealQuadraticRing(int d) {
         super(d);
-//        if (d < 1) {
-//            String excMsg = "Positive integer required for parameter d";
-//            throw new IllegalArgumentException(excMsg);
-//        }
+        if (d == 0) {
+            String excMsg = "Positive integer required for parameter d";
+            throw new IllegalArgumentException(excMsg);
+        }
         if (d == 1) {
             String excMsg = "Sorry, O_(Q(sqrt(1))) is not supported";
             throw new IllegalArgumentException(excMsg);
