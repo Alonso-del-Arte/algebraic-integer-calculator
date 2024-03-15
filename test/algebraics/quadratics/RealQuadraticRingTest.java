@@ -691,17 +691,20 @@ public class RealQuadraticRingTest {
      * Test of the RealQuadraticRing constructor. A negative parameter, even if 
      * squarefree, should be rejected.
      */
-//    @Test
+    @Test
     public void testConstructorRejectsNegativeD() {
-        try {
-            RealQuadraticRing ringZi7 = new RealQuadraticRing(-7);
-            System.out.println("Somehow created " + ringZi7.toASCIIString() 
-                    + " without problem");
-            fail("Attempt to use \u22127 should have caused an exception");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("IllegalArgumentException correct for d = -7");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        }
+        int d = -randomSquarefreeNumber(Short.MAX_VALUE);
+        String msg = "Parameter d = " + d 
+                + " should be rejected for real quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new RealQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
 }
