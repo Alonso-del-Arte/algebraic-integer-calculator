@@ -630,17 +630,21 @@ public class RealQuadraticRingTest {
      * Test of the RealQuadraticRing constructor. Any number divisible by a 
      * nontrivial perfect square should be rejected.
      */
-//    @Test
-    public void testConstructorRejectsSquarefulD() {
-        try {
-            RealQuadraticRing ringZ12 = new RealQuadraticRing(12);
-            System.out.println("Somehow created " + ringZ12.toASCIIString() 
-                    + " without problem.");
-            fail("Attempt to use 12 should have caused an exception");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("IllegalArgumentException correct for d = 12");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        }
+    @Test
+    public void testConstructorRejectsNonSquarefreeD() {
+        int n = randomSquarefreeNumber(Byte.MAX_VALUE);
+        int d = n * n * randomSquarefreeNumber(Short.MAX_VALUE);
+        String msg = "Parameter d = " + d 
+                + " should be rejected for real quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new RealQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
