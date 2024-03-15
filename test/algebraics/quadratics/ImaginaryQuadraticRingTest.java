@@ -706,35 +706,21 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
-    /**
-     * Test of ImaginaryQuadraticRing class constructor. The main thing we're 
-     * testing here is that an invalid argument triggers an 
-     * IllegalArgumentException. That the other tests pass makes us plenty 
-     * confident that the constructor works correctly on valid arguments.
-     */@org.junit.Ignore
     @Test
-    public void testConstructor() {
-        System.out.println("ImaginaryQuadraticRing (constructor)");
-        ImaginaryQuadraticRing ringZi10 = new ImaginaryQuadraticRing(-10); // This should work fine
-        System.out.println("Created " + ringZi10.toASCIIString() + " without problem.");
-        ImaginaryQuadraticRing ringOQi11 = new ImaginaryQuadraticRing(-11); // This should also work fine
-        System.out.println("Created " + ringOQi11.toASCIIString() + " without problem.");
-        try {
-            ImaginaryQuadraticRing ringZi12 = new ImaginaryQuadraticRing(-12);
-            System.out.println("Somehow created " + ringZi12.toASCIIString() + " without problem.");
-            fail("Attempt to use -12 should have caused an IllegalArgumentException.");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use -12 correctly triggered IllegalArgumentException");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        }
-        try {
-            ImaginaryQuadraticRing ringZ7 = new ImaginaryQuadraticRing(7);
-            System.out.println("Somehow created " + ringZ7.toASCIIString() + " without problem.");
-            fail("Attempt to use 7 should have caused an IllegalArgumentException.");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Attempt to use 7 correctly triggered IllegalArgumentException");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        }
+    public void testConstructorRejectsNonSquarefreeNegativeD() {
+        int n = randomSquarefreeNumber(Byte.MAX_VALUE);
+        int d = -n * n * randomSquarefreeNumber(Short.MAX_VALUE);
+        String msg = "Parameter d = " + d 
+                + " should be rejected for imaginary quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new ImaginaryQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
 }
