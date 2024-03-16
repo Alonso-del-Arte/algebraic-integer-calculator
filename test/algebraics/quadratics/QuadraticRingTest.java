@@ -230,17 +230,18 @@ public class QuadraticRingTest {
     public void testApplyRejectsZero() {
         try {
             QuadraticRing badRing = QuadraticRing.apply(0);
-            String msg = "apply(0) should not have given " + badRing.toString();
-            fail(msg);
+            String message = "apply(0) should not have given " 
+                    + badRing.toString();
+            fail(message);
         } catch (IllegalArgumentException iae) {
             System.out.println("apply(0) caused IllegalArgumentException");
             String excMsg = iae.getMessage();
             assert excMsg != null : "Message should not be null";
             System.out.println("\"" + excMsg + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for apply(0)";
-            fail(msg);
+            fail(message);
         }
     }
 
@@ -249,9 +250,9 @@ public class QuadraticRingTest {
         int d = RANDOM.nextInt() * 36;
         try {
             QuadraticRing badRing = QuadraticRing.apply(d);
-            String msg = "apply(" + d + ") should not have given " 
+            String message = "apply(" + d + ") should not have given " 
                     + badRing.toString();
-            fail(msg);
+            fail(message);
         } catch (IllegalArgumentException iae) {
             System.out.println("apply(" + d 
                     + ") caused IllegalArgumentException");
@@ -259,9 +260,9 @@ public class QuadraticRingTest {
             assert excMsg != null : "Message should not be null";
             System.out.println("\"" + excMsg + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for apply(" + d + ")";
-            fail(msg);
+            fail(message);
         }
     }
     
