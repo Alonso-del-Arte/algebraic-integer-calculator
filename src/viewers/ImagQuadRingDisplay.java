@@ -682,7 +682,7 @@ public final class ImagQuadRingDisplay extends RingDisplay {
      */
     @Override
     public void incrementDiscriminant() {
-        int discr = ((QuadraticRing) this.diagramRing).getRadicand() + 1;
+        int discr = ((QuadraticRing) this.diagramRing).getRadicand();
         while (!isSquarefree(discr) && discr < -1) {
             discr++;
         }
