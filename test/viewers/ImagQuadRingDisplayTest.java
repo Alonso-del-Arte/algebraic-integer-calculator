@@ -19,20 +19,24 @@ package viewers;
 import algebraics.IntegerRing;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 
-//import java.awt.Graphics;
+import java.awt.Graphics;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-//import java.awt.event.MouseEvent;
+import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import static testframe.api.Asserters.assertDoesNotThrow;
 
 /**
  * Tests of the ImagQuadRingDisplay class.
@@ -51,15 +55,13 @@ public class ImagQuadRingDisplayTest {
     private final ActionEvent closeEvent = new ActionEvent(this, 
             ActionEvent.ACTION_PERFORMED, "close");
     
+    private final List<RingDisplay> otherDisplaysToCloseLater 
+            = new ArrayList<>();
+    
     @Before
     public void setUp() {
         this.ringDisplay = new ImagQuadRingDisplay(RING_ZI14);
         this.ringDisplay.startRingDisplay();
-    }
-    
-    @After
-    public void tearDown() {
-        this.ringDisplay.actionPerformed(this.closeEvent);
     }
     
     @Test
@@ -85,6 +87,18 @@ public class ImagQuadRingDisplayTest {
         this.ringDisplay.incrementDiscriminant();
         IntegerRing actualRing = this.ringDisplay.getRing();
         assertEquals(expectedRing, actualRing);
+    }
+    
+    @Test
+    public void testIncrementDiscriminantDoesNotGoToZ0() {
+        RingDisplay display = new ImagQuadRingDisplay(RING_GAUSSIAN);
+        display.startRingDisplay();
+        this.otherDisplaysToCloseLater.add(display);
+        String msg = "Calling incrementDiscriminant() when showing " 
+                + RING_GAUSSIAN.toString() + " should not cause any exception";
+        assertDoesNotThrow(() -> {
+            display.incrementDiscriminant();
+        }, msg);
     }
     
     /**
@@ -221,6 +235,14 @@ public class ImagQuadRingDisplayTest {
         String authorsName = "Alonso del Arte";
         msg = "About box message should include author's name, " + authorsName;
         assert aboutBoxText.contains(authorsName) : msg;
+    }
+    
+    @After
+    public void tearDown() {
+        this.ringDisplay.actionPerformed(this.closeEvent);
+        for (RingDisplay display : this.otherDisplaysToCloseLater) {
+            display.actionPerformed(this.closeEvent);
+        }
     }
     
 }
