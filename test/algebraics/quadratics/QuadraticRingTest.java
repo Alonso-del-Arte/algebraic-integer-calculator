@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static testframe.api.Asserters.assertThrows;
 
 /**
  * Tests of the QuadraticRing class.
@@ -262,6 +263,26 @@ public class QuadraticRingTest {
                     + " is the wrong exception to throw for apply(" + d + ")";
             fail(msg);
         }
+    }
+    
+    @Test
+    public void testConstructorRejectsNonSquarefreeD() {
+        int n = randomSquarefreeNumber(Byte.MAX_VALUE);
+        int signum = (n % 2 == 0) ? 1 : -1;
+        int square = n * n;
+        int d = signum * square * randomSquarefreeNumber(Short.MAX_VALUE);
+        String msg = "Parameter d = " + d 
+                + " should be rejected for quadratic ring, divisible by " 
+                + square;
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new QuadraticRingImpl(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
 
     static class QuadraticRingImpl extends QuadraticRing {
