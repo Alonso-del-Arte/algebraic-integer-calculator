@@ -81,11 +81,6 @@ public final class RealQuadraticRing extends QuadraticRing {
      */
     public RealQuadraticRing(int d) {
         super(d);
-        if (!calculators.NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
-            String excMsg = "Squarefree integer required for parameter d, " + d 
-                    + " is not squarefree";
-            throw new IllegalArgumentException(excMsg);
-        }
         if (d < 1) {
             String excMsg = "Positive integer required for parameter d";
             throw new IllegalArgumentException(excMsg);
