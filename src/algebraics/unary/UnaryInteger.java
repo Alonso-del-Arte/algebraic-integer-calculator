@@ -62,7 +62,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public UnaryInteger minus(UnaryInteger subtrahend) {
-        return this;
+        return new UnaryInteger(this.number - subtrahend.number);
     }
 
     // TODO: Write tests for this
