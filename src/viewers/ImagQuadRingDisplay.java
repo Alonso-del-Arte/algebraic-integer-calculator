@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -543,7 +543,7 @@ public final class ImagQuadRingDisplay extends RingDisplay {
      * (&radic;&minus;<i>d</i>))/2) instead.
      */
     @Override
-    protected void setPixelsPerBasicImaginaryInterval() {
+    void setPixelsPerBasicImaginaryInterval() {
         double imagInterval = this.pixelsPerUnitInterval 
                 * Math.sqrt(-((QuadraticRing) this.diagramRing).getRadicand());
         if (((QuadraticRing) this.diagramRing).hasHalfIntegers()) {
@@ -736,19 +736,19 @@ public final class ImagQuadRingDisplay extends RingDisplay {
     
     // STUB TO FAIL THE FIRST TEST
     @Override
-    protected void updateBoundaryNumber() {
+    void updateBoundaryNumber() {
         //
     }
     
     // STUB TO FAIL THE FIRST TEST
     @Override
-    protected double getBoundaryRe() {
+    double getBoundaryRe() {
         return -1.0;
     }
 
     // STUB TO FAIL THE FIRST TEST
     @Override
-    protected double getBoundaryIm() {
+    double getBoundaryIm() {
         return -1.0;
     }
 

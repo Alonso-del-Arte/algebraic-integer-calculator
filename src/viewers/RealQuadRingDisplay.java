@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -279,7 +279,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
     }
 
     @Override
-    protected void setPixelsPerBasicImaginaryInterval() {
+    void setPixelsPerBasicImaginaryInterval() {
         // Not applicable
     }
     
@@ -301,7 +301,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
      * {@link algebraics.quadratics.RealQuadraticInteger}.
      */
     @Override
-    protected void findUnit() {
+    void findUnit() {
         this.diagRingOne = new RealQuadraticInteger(1, 0, 
                 (RealQuadraticRing) this.diagramRing);
         super.findUnit();
@@ -325,7 +325,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
     }
     
     @Override
-    protected void validateRing(IntegerRing ring) {
+    void validateRing(IntegerRing ring) {
         super.validateRing(ring);
         this.resGroup = this.cache.forName((RealQuadraticRing) ring);
         this.fillPrimeLists();
@@ -418,7 +418,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
      * anything about it.
      */
     @Override
-    protected void updateBoundaryNumber() {
+    void updateBoundaryNumber() {
         double pixelLength = this.ringCanvasHorizMax - this.zeroCoordX;
         this.boundaryRe = pixelLength / this.pixelsPerUnitInterval;
     }
@@ -430,7 +430,7 @@ public final class RealQuadRingDisplay extends RingDisplay {
      * @return A positive floating point number. For example, 16.0.
      */
     @Override
-    protected double getBoundaryRe() {
+    double getBoundaryRe() {
         return this.boundaryRe;
     }
 
@@ -441,12 +441,12 @@ public final class RealQuadRingDisplay extends RingDisplay {
      * deals with purely real numbers.
      */
     @Override
-    protected double getBoundaryIm() {
+    double getBoundaryIm() {
         return 0.0;
     }
     
     @Override
-    protected int getPreferredDotRadius() {
+    int getPreferredDotRadius() {
         return SPECIFIC_PREFERRED_DOT_RADIUS;
     }
 
