@@ -59,10 +59,20 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(n);
     }
 
-    // TODO: Write tests for this
+    /**
+     * Subtracts an unary integer from this one. For example, let's say this 
+     * integer is 1000.
+     * @param subtrahend The unary integer to subtract. For example, 271.
+     * @return The sum of this unary integer and the negated subtrahend. For 
+     * example, 729.
+     * @throws ArithmeticException If the result of subtracting  
+     * <code>subtrahend</code> from this integer can't be represented by a 
+     * 32-bit signed integer.
+     */
     @Override
     public UnaryInteger minus(UnaryInteger subtrahend) {
-        return new UnaryInteger(this.number - subtrahend.number);
+        int n = Math.subtractExact(this.number, subtrahend.number);
+        return new UnaryInteger(n);
     }
 
     // TODO: Write tests for this
