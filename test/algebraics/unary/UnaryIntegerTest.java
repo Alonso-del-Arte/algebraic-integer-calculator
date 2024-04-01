@@ -287,6 +287,49 @@ public class UnaryIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testMinusTooNegative() {
+        int adjustment = randomNumber(Short.MAX_VALUE) + 1;
+        int n = Integer.MAX_VALUE - adjustment;
+        UnaryInteger number = new UnaryInteger(n);
+        int subtractN = -2 * adjustment;
+        UnaryInteger subtrahend = new UnaryInteger(subtractN);
+        long overflown = (long) n - subtractN;
+        String msg = "Subtracting " + subtrahend.toString() + " from " 
+                + number.toString() + " which overflows to " + overflown 
+                + " should have caused an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger subtraction = number.minus(subtrahend);
+            System.out.println(msg + ", not given result " 
+                    + subtraction.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testMinusTooPositive() {
+        int adjustment = randomNumber(Short.MAX_VALUE) + 1;
+        int n = Integer.MIN_VALUE + adjustment;
+        UnaryInteger number = new UnaryInteger(n);
+        int subtractN = 2 * adjustment;
+        UnaryInteger subtrahend = new UnaryInteger(subtractN);
+        long overflown = (long) n - subtractN;
+        String msg = "Subtracting " + subtrahend.toString() + " from " 
+                + number.toString() + " which overflows to " + overflown 
+                + " should have caused an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger sum = number.minus(subtrahend);
+            System.out.println(msg + ", not given result " + sum.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
