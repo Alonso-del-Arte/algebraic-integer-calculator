@@ -273,6 +273,20 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testMinus() {
+        System.out.println("minus");
+        int a = randomNumber(Short.MAX_VALUE) + 1;
+        int b = randomNumber(Short.MAX_VALUE) + 1;
+        UnaryInteger minuend = new UnaryInteger(a);
+        UnaryInteger subtrahend = new UnaryInteger(b);
+        UnaryInteger expected = new UnaryInteger(a - b);
+        UnaryInteger actual = minuend.minus(subtrahend);
+        String message = "Subtracting " + subtrahend.toString() + " from " 
+                + minuend.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
