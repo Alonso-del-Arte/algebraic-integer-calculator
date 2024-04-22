@@ -599,22 +599,22 @@ public class Fraction implements Comparable<Fraction>, Serializable {
      * intended as the denominator.
      */
     public static Fraction parseFract(String s) {
-        s = s.replace(" ", "");
-        s = s.replace("\u2212", "-");
-        if (s.contains("&frasl;")) {
-            s = parseFractHTML(s);
-        }
-        if (s.contains("\\frac")) {
-            s = parseFractTeX(s);
-        }
-        int slashIndex = s.indexOf('/');
-        if (slashIndex == -1) {
-            long numer = Long.parseLong(s);
-            return new Fraction(numer);
-        }
-        long numer = Long.parseLong(s.substring(0, slashIndex));
-        long denom = Long.parseLong(s.substring(slashIndex + 1));
-        return new Fraction(numer, denom);
+//        s = s.replace(" ", "");
+//        s = s.replace("\u2212", "-");
+//        if (s.contains("&frasl;")) {
+//            s = parseFractHTML(s);
+//        }
+//        if (s.contains("\\frac")) {
+//            s = parseFractTeX(s);
+//        }
+//        int slashIndex = s.indexOf('/');
+//        if (slashIndex == -1) {
+//            long numer = Long.parseLong(s);
+//            return new Fraction(numer);
+//        }
+//        long numer = Long.parseLong(s.substring(0, slashIndex));
+//        long denom = Long.parseLong(s.substring(slashIndex + 1));
+        return new Fraction(1, 2);//numer, denom);
     }
     
     /**
