@@ -299,9 +299,9 @@ public class UnaryIntegerTest {
                 + number.toString() + " which overflows to " + overflown 
                 + " should have caused an exception";
         Throwable t = assertThrows(() -> {
-            UnaryInteger subtraction = number.minus(subtrahend);
+            UnaryInteger difference = number.minus(subtrahend);
             System.out.println(msg + ", not given result " 
-                    + subtraction.toString());
+                    + difference.toString());
         }, ArithmeticException.class, msg);
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
@@ -321,8 +321,9 @@ public class UnaryIntegerTest {
                 + number.toString() + " which overflows to " + overflown 
                 + " should have caused an exception";
         Throwable t = assertThrows(() -> {
-            UnaryInteger sum = number.minus(subtrahend);
-            System.out.println(msg + ", not given result " + sum.toString());
+            UnaryInteger difference = number.minus(subtrahend);
+            System.out.println(msg + ", not given result " 
+                    + difference.toString());
         }, ArithmeticException.class, msg);
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
@@ -353,9 +354,30 @@ public class UnaryIntegerTest {
                 + " which overflows to " + overflown 
                 + " should have caused an exception";
         Throwable t = assertThrows(() -> {
-            UnaryInteger subtraction = number.minus(subtrahend);
+            UnaryInteger difference = number.minus(subtrahend);
             System.out.println(msg + ", not given result " 
-                    + subtraction.toString());
+                    + difference.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testMinusIntTooPositive() {
+        int adjustment = randomNumber(Short.MAX_VALUE) + 1;
+        int n = Integer.MIN_VALUE + adjustment;
+        UnaryInteger number = new UnaryInteger(n);
+        int subtrahend = 2 * adjustment;
+        long overflown = (long) n - subtrahend;
+        String msg = "Subtracting " + subtrahend + " from " + number.toString() 
+                + " which overflows to " + overflown 
+                + " should have caused an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger difference = number.minus(subtrahend);
+            System.out.println(msg + ", not given result " 
+                    + difference.toString());
         }, ArithmeticException.class, msg);
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
