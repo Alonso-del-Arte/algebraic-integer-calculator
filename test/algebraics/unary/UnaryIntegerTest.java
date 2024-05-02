@@ -342,6 +342,27 @@ public class UnaryIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testMinusIntTooNegative() {
+        int adjustment = randomNumber(Short.MAX_VALUE) + 1;
+        int n = Integer.MAX_VALUE - adjustment;
+        UnaryInteger number = new UnaryInteger(n);
+        int subtrahend = -2 * adjustment;
+        long overflown = (long) n - subtrahend;
+        String msg = "Subtracting " + subtrahend + " from " + number.toString() 
+                + " which overflows to " + overflown 
+                + " should have caused an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger subtraction = number.minus(subtrahend);
+            System.out.println(msg + ", not given result " 
+                    + subtraction.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
