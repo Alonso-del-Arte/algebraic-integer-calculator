@@ -78,7 +78,8 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public UnaryInteger minus(int subtrahend) {
-        return new UnaryInteger(this.number - subtrahend);
+        int n = Math.subtractExact(this.number, subtrahend);
+        return new UnaryInteger(n);
     }
 
     // TODO: Write tests for this
