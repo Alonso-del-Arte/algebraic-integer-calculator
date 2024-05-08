@@ -24,8 +24,8 @@ import fractions.Fraction;
  * {@link algebraics.UnsupportedNumberDomainException} should arise. I had been 
  * using {@link algebraics.quadratics.IllDefinedQuadraticRing} for that purpose, 
  * but I've come to need something more generic.
- * @deprecated Marked for removal. Use 
- * <code>CubicIntegerTest.CubicIntegerImpl</code> instead.
+ * @deprecated Marked for removal. Use <code>CubicRingTest.CubicRingImpl</code> 
+ * instead.
  * @author Alonso del Arte
  */
 @Deprecated
