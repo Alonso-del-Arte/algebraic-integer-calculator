@@ -21,8 +21,11 @@ package algebraics.cubics;
  * {@link algebraics.UnsupportedNumberDomainException} should arise. I had been 
  * using {@link algebraics.quadratics.IllDefinedQuadraticInteger} for that 
  * purpose, but I've come to need something more generic.
+ * @deprecated Marked for removal. Use 
+ * <code>CubicIntegerTest.CubicIntegerImpl</code> instead.
  * @author Alonso del Arte
  */
+@Deprecated
 public class BadCubicInteger extends CubicInteger {
 
     @Override

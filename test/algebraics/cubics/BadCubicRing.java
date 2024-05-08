@@ -24,8 +24,11 @@ import fractions.Fraction;
  * {@link algebraics.UnsupportedNumberDomainException} should arise. I had been 
  * using {@link algebraics.quadratics.IllDefinedQuadraticRing} for that purpose, 
  * but I've come to need something more generic.
+ * @deprecated Marked for removal. Use 
+ * <code>CubicIntegerTest.CubicIntegerImpl</code> instead.
  * @author Alonso del Arte
  */
+@Deprecated
 public class BadCubicRing extends CubicRing {
     
     private static final Fraction ONE_HALF = new Fraction(1, 2);
