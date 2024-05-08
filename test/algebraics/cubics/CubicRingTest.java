@@ -17,6 +17,8 @@
 package algebraics.cubics;
 
 import arithmetic.PowerBasis;
+import fractions.Fraction;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -25,6 +27,12 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class CubicRingTest {
+    
+    private static final Fraction ONE = new Fraction(1);
+    
+    private static final Fraction[] THREE_ONES = {ONE, ONE, ONE};
+    
+    private static final PowerBasis DEFAULT_BASIS = new PowerBasis(THREE_ONES);
     
     /**
      * Test of preferBlackboardBold method, of class CubicRing.
@@ -69,44 +77,37 @@ public class CubicRingTest {
 
         @Override
         public boolean isPurelyReal() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return true;
         }
 
         @Override
         public int discriminant() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return -1;
         }
 
         @Override
         public PowerBasis getPowerBasis() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return CubicRingTest.DEFAULT_BASIS;
         }
 
         @Override
         public String toASCIIString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "SORRY, NOT IMPLEMENTED YET";
         }
 
         @Override
         public String toTeXString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "SORRY, NOT IMPLEMENTED YET";
         }
 
         @Override
         public String toHTMLString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "<b>SORRY, NOT IMPLEMENTED YET</b>";
         }
 
         @Override
         public String toFilenameString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "NOT_IMPL.YET";
         }
     }
     
