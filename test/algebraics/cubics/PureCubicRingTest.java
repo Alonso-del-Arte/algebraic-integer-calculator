@@ -17,21 +17,20 @@
 package algebraics.cubics;
 
 import arithmetic.PowerBasis;
-import junit.framework.TestCase;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests of the PureCubicRing class.
  * @author Alonso del Arte
  */
-public class PureCubicRingTest extends TestCase {
+public class PureCubicRingTest {
     
-    public PureCubicRingTest(String testName) {
-        super(testName);
-    }
-
     /**
      * Test of isPurelyReal method, of class PureCubicRing.
      */
+    @Test
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
         PureCubicRing instance = new PureCubicRing();
@@ -45,6 +44,7 @@ public class PureCubicRingTest extends TestCase {
     /**
      * Test of discriminant method, of class PureCubicRing.
      */
+    @Test
     public void testDiscriminant() {
         System.out.println("discriminant");
         PureCubicRing instance = new PureCubicRing();
@@ -58,6 +58,7 @@ public class PureCubicRingTest extends TestCase {
     /**
      * Test of getPowerBasis method, of class PureCubicRing.
      */
+    @Test
     public void testGetPowerBasis() {
         System.out.println("getPowerBasis");
         PureCubicRing instance = new PureCubicRing();
@@ -71,6 +72,7 @@ public class PureCubicRingTest extends TestCase {
     /**
      * Test of toASCIIString method, of class PureCubicRing.
      */
+    @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
         PureCubicRing instance = new PureCubicRing();
@@ -84,6 +86,7 @@ public class PureCubicRingTest extends TestCase {
     /**
      * Test of toTeXString method, of class PureCubicRing.
      */
+    @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
         PureCubicRing instance = new PureCubicRing();
@@ -97,6 +100,7 @@ public class PureCubicRingTest extends TestCase {
     /**
      * Test of toHTMLString method, of class PureCubicRing.
      */
+    @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
         PureCubicRing instance = new PureCubicRing();
@@ -110,6 +114,7 @@ public class PureCubicRingTest extends TestCase {
     /**
      * Test of toFilenameString method, of class PureCubicRing.
      */
+    @Test
     public void testToFilenameString() {
         System.out.println("toFilenameString");
         PureCubicRing instance = new PureCubicRing();
