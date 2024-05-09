@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -33,13 +33,13 @@ public class CubicIntegerTest {
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        CubicRing expected = new BadCubicRing();
-        CubicInteger instance = new BadCubicInteger(expected);
+        CubicRing expected = new CubicRingTest.CubicRingImpl();
+        CubicInteger instance = new CubicIntegerImpl(expected);
         CubicRing actual = instance.getRing();
         assertEquals(expected, actual);
     }
 
-    class CubicIntegerImpl extends CubicInteger {
+    static class CubicIntegerImpl extends CubicInteger {
 
         @Override
         public int algebraicDegree() {
@@ -58,74 +58,63 @@ public class CubicIntegerTest {
 
         @Override
         public long[] minPolynomialCoeffs() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            long[] coeffs = {1, 2, 3, 4};
+            return coeffs;
         }
 
         @Override
         public String minPolynomialString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "FOR TESTING PURPOSES ONLY";
         }
 
         @Override
         public String minPolynomialStringTeX() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "FOR TESTING PURPOSES ONLY";
         }
 
         @Override
         public String minPolynomialStringHTML() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "<b>FOR TESTING PURPOSES ONLY</b>";
         }
 
         @Override
         public String toASCIIString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "FOR TESTING PURPOSES ONLY";
         }
 
         @Override
         public String toTeXString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "FOR TESTING PURPOSES ONLY";
         }
 
         @Override
         public String toHTMLString() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return "FOR TESTING PURPOSES ONLY";
         }
 
         @Override
         public double abs() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return 0.0;
         }
 
         @Override
         public double getRealPartNumeric() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return 0.0;
         }
 
         @Override
         public double getImagPartNumeric() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return 0.0;
         }
 
         @Override
         public boolean isReApprox() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return true;
         }
 
         @Override
         public boolean isImApprox() {
-            throw new UnsupportedOperationException("Not supported yet."); 
-// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            return true;
         }
 
         @Override
