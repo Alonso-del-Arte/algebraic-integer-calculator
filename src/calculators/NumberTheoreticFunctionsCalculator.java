@@ -1267,6 +1267,16 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
+    // TODO: Write tests for this
+    public static boolean isCubefree(int num) {
+        return true;
+    }
+    
+    // TODO: Write tests for this
+    public static boolean isPowerfree(int num, int powerLevel) {
+        return true;
+    }
+    
     private static int nextSquarefree(int n, int direction) {
         int num = n;
         do {
