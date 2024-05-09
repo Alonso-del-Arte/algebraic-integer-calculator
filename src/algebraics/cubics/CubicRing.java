@@ -30,27 +30,6 @@ public abstract class CubicRing implements IntegerRing {
      */
     public static final int MAX_ALGEBRAIC_DEGREE = 3;
     
-    protected static boolean preferenceForBlackboardBold = true;
-    
-    /**
-     * Query the setting of the preference for blackboard bold.
-     * @return True if blackboard bold is preferred, false if plain bold is 
-     * preferred.
-     */
-    public static boolean preferBlackboardBold() {
-        return preferenceForBlackboardBold;
-    }
-    
-    /**
-     * Set preference for blackboard bold or plain bold. This is only relevant 
-     * for the functions {@link #toHTMLString()} and {@link #toTeXString()}.
-     * @param preferenceForBB true if blackboard bold is preferred, false if 
-     * plain bold is preferred.
-     */
-    public static void preferBlackboardBold(boolean preferenceForBB) {
-        preferenceForBlackboardBold = preferenceForBB;
-    }
-    
     /**
      * Gives the maximum algebraic degree an algebraic integer in a cubic ring 
      * can have.

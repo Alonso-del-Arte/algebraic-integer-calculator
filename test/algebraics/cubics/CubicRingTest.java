@@ -35,31 +35,6 @@ public class CubicRingTest {
     private static final PowerBasis DEFAULT_BASIS = new PowerBasis(THREE_ONES);
     
     /**
-     * Test of preferBlackboardBold method, of class CubicRing.
-     */
-    @Test
-    public void testPreferBlackboardBold_0args() {
-        System.out.println("preferBlackboardBold");
-        boolean expResult = false;
-        boolean result = CubicRing.preferBlackboardBold();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of preferBlackboardBold method, of class CubicRing.
-     */
-    @Test
-    public void testPreferBlackboardBold_boolean() {
-        System.out.println("preferBlackboardBold");
-        boolean preferenceForBB = false;
-        CubicRing.preferBlackboardBold(preferenceForBB);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getMaxAlgebraicDegree method, of class CubicRing.
      */
     @Test
