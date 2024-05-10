@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -1512,26 +1512,26 @@ public class NumberTheoreticFunctionsCalculatorTest {
         QuadraticInteger b = new ImaginaryQuadraticInteger(0, 1, r);
         try {
             boolean divisibleFlag = isDivisibleBy(a, b);
-            String msg = "Trying to ascertain the divisibility of " 
+            String message = "Trying to ascertain the divisibility of " 
                     + a.toString() + " by " + b.toString() 
                     + " should not have given the result that it is is ";
             if (!divisibleFlag) {
-                msg = msg + "not ";
+                message = message + "not ";
             }
-            msg = msg + "divisible";
-            fail(msg);
+            message = message + "divisible";
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.out.println("Trying to ascertain the divisibility of " 
                     + a.toASCIIString() + " by " + b.toASCIIString() 
                     + " correctly triggered AlgebraicDegreeOverflowException");
             System.out.println("\"" + adoe.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName()
+            String message = re.getClass().getName()
                     + " is the wrong exception for divisibility of " 
                     + a.toString() + " by " + b.toString();
-            System.out.println(msg);
+            System.out.println(message);
             System.out.println("\"" + re.getMessage() + "\"");
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -1557,6 +1557,16 @@ public class NumberTheoreticFunctionsCalculatorTest {
             number /= primesList.get(i + 1); // p^2
             msg = number + shouldNotBeMsg;
             assert !isSquarefree(number) : msg;
+        }
+    }
+    
+    @Test
+    public void testIsNotCubefree() {
+        int threshold = RANDOM.nextInt(64) + 16;
+        for (int root = 2; root < threshold; root++) {
+            int num = root * root * root;
+            String msg = "Number " + num + " should not be considered cubefree";
+            assert !isCubefree(num) : msg;
         }
     }
 
