@@ -1269,7 +1269,7 @@ public class NumberTheoreticFunctionsCalculator {
     
     // TODO: Write tests for this
     public static boolean isCubefree(int num) {
-        return true;
+        return false;
     }
     
     // TODO: Write tests for this
