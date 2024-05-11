@@ -1276,7 +1276,6 @@ public class NumberTheoreticFunctionsCalculator {
      * 27, &minus;64, 125. Special cases: &minus;1 and 1 are cubefree, 0 is not.
      */
     public static boolean isCubefree(int num) {
-        if (num == 0) return false;
         boolean noTripledFactorFound = (num % 8 != 0);
         if (noTripledFactorFound) {
             double threshold = Math.cbrt(Math.abs(num));
