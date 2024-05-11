@@ -69,4 +69,9 @@ public class PureCubicRing extends CubicRing {
         return "NOT_IMPL.YET";
     }
     
+    // TODO: Write tests for this
+    public PureCubicRing(int d) {
+        //
+    }
+    
 }
