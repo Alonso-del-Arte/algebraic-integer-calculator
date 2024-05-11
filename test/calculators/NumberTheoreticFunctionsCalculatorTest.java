@@ -34,6 +34,8 @@ import arithmetic.NonUniqueFactorizationDomainException;
 import arithmetic.NotDivisibleException;
 import arithmetic.comparators.NormAbsoluteComparator;
 
+import static calculators.EratosthenesSieve.randomPrime;
+import static calculators.EratosthenesSieve.randomPrimeOtherThan;
 import static calculators.NumberTheoreticFunctionsCalculator.*;
 
 import java.util.ArrayList;
@@ -1567,6 +1569,17 @@ public class NumberTheoreticFunctionsCalculatorTest {
             int num = root * root * root;
             String msg = "Number " + num + " should not be considered cubefree";
             assert !isCubefree(num) : msg;
+        }
+    }
+    
+    @Test
+    public void testIsCubefree() {
+        System.out.println("isCubefree");
+        for (int p : primesList) {
+            int q = randomPrimeOtherThan(p);
+            int num = p * p * q;
+            String msg = "Number " + num + " should be considered cubefree";
+            assert isCubefree(num) : msg;
         }
     }
 
