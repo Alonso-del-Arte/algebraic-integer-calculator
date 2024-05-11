@@ -1577,8 +1577,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public void testIsCubefree() {
         System.out.println("isCubefree");
         for (int p : primesList) {
+            int signAdjust = RANDOM.nextBoolean() ? -1 : 1;
             int q = randomPrimeOtherThan(p);
-            int num = p * p * q;
+            int num = signAdjust * p * p * q;
             String msg = "Number " + num + " should be considered cubefree";
             assert isCubefree(num) : msg;
         }
