@@ -1237,7 +1237,7 @@ public class NumberTheoreticFunctionsCalculator {
      * For version 0.95, this was optimized to try the number modulo 4, and if 
      * it's not divisible by 4, to try dividing it by odd squares. Although this 
      * includes odd squares like 9 and 81, it still makes for a performance 
-     * improvement over relying on primeFactors(int).
+     * improvement over relying on <code>primeFactors(int)</code>.
      * @param num The number to be tested for being squarefree.
      * @return True if the number is squarefree, false otherwise. For example, 
      * &minus;3 and 7 should each return true, &minus;4, 0 and 25 should each 
@@ -1267,9 +1267,26 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
-    // TODO: Write tests for this
+    /**
+     * Determines whether or not this number is cubefree.
+     * @param num The number to check for being cubefree.
+     * @return True if the number is not divisible by any nontrivial cubes, 
+     * false otherwise. Examples: true for &minus;44, 7, 82; false for &minus;8, 
+     * 27, &minus;64, 125.
+     */
     public static boolean isCubefree(int num) {
-        return false;
+        boolean noTripledFactorFound = (num % 8 != 0);
+        if (noTripledFactorFound) {
+            double threshold = Math.cbrt(Math.abs(num));
+            int currRoot = 3;
+            int currCube;
+            do {
+                currCube = currRoot * currRoot * currRoot;
+                noTripledFactorFound = (num % currCube != 0);
+                currRoot += 2;
+            } while (noTripledFactorFound && currRoot <= threshold);
+        }
+        return noTripledFactorFound;
     }
     
     // TODO: Write tests for this
