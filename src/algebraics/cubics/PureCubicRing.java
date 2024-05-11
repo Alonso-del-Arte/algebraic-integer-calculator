@@ -17,6 +17,7 @@
 package algebraics.cubics;
 
 import arithmetic.PowerBasis;
+import static calculators.NumberTheoreticFunctionsCalculator.isCubefree;
 import fractions.Fraction;
 
 /**
@@ -71,7 +72,10 @@ public class PureCubicRing extends CubicRing {
     
     // TODO: Write tests for this
     public PureCubicRing(int d) {
-        //
+        if (!isCubefree(d)) {
+            String excMsg = "Number " + d + " is not cubefree";
+            throw new IllegalArgumentException(excMsg);
+        }
     }
     
 }
