@@ -21,6 +21,8 @@ import arithmetic.PowerBasis;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the PureCubicRing class.
  * @author Alonso del Arte
@@ -33,7 +35,7 @@ public class PureCubicRingTest {
     @Test
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
-        PureCubicRing instance = new PureCubicRing();
+        PureCubicRing instance = new PureCubicRing(2);
         boolean expResult = false;
         boolean result = instance.isPurelyReal();
         assertEquals(expResult, result);
@@ -47,7 +49,7 @@ public class PureCubicRingTest {
     @Test
     public void testDiscriminant() {
         System.out.println("discriminant");
-        PureCubicRing instance = new PureCubicRing();
+        PureCubicRing instance = new PureCubicRing(3);
         int expResult = 0;
         int result = instance.discriminant();
         assertEquals(expResult, result);
@@ -61,7 +63,7 @@ public class PureCubicRingTest {
     @Test
     public void testGetPowerBasis() {
         System.out.println("getPowerBasis");
-        PureCubicRing instance = new PureCubicRing();
+        PureCubicRing instance = new PureCubicRing(5);
         PowerBasis expResult = null;
         PowerBasis result = instance.getPowerBasis();
         assertEquals(expResult, result);
@@ -75,7 +77,7 @@ public class PureCubicRingTest {
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        PureCubicRing instance = new PureCubicRing();
+        PureCubicRing instance = new PureCubicRing(6);
         String expResult = "";
         String result = instance.toASCIIString();
         assertEquals(expResult, result);
@@ -89,7 +91,7 @@ public class PureCubicRingTest {
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-        PureCubicRing instance = new PureCubicRing();
+        PureCubicRing instance = new PureCubicRing(7);
         String expResult = "";
         String result = instance.toTeXString();
         assertEquals(expResult, result);
@@ -103,7 +105,7 @@ public class PureCubicRingTest {
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        PureCubicRing instance = new PureCubicRing();
+        PureCubicRing instance = new PureCubicRing(10);
         String expResult = "";
         String result = instance.toHTMLString();
         assertEquals(expResult, result);
@@ -117,12 +119,17 @@ public class PureCubicRingTest {
     @Test
     public void testToFilenameString() {
         System.out.println("toFilenameString");
-        PureCubicRing instance = new PureCubicRing();
+        PureCubicRing instance = new PureCubicRing(11);
         String expResult = "";
         String result = instance.toFilenameString();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testConstructorRejectsCubefullNumber() {
+        fail("HAVEN'T WRITTEN TEST YET");
     }
     
 }
