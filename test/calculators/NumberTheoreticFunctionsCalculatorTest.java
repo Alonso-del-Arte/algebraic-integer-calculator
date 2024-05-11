@@ -1588,7 +1588,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testZeroIsNotCubefree() {
         String msg = "0 should not be considered cubefree";
-            assert isCubefree(0) : msg;
+        assert !isCubefree(0) : msg;
     }
 
     @Test
