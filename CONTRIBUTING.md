@@ -1,12 +1,18 @@
-This project might be open to Hacktoberfest 2023, I haven't decided yet.
+This project might be open to Hacktoberfest 2024, I haven't decided yet.
 
-# Guidelines for Hacktoberfest 2023 Contributors
+# Guidelines for Hacktoberfest 2024 Contributors
+
+Try to have your pull requests in before October 24. In my experience, pull 
+requests in the final week tend to be from people who just don't understand what 
+the project is about. I'm not going to do a charity merge and then undo the 
+whole thing in November.
 
 I will definitely consider pull requests associated with an issue and maybe 
 consider pull requests associated with a TODO (considered an Action Item in 
 NetBeans).
 
-Issues about build tools will be closed as spam or not helpful.
+Issues about build tools will be closed as spam or not helpful. Just use the 
+build tool your IDE provides by default.
 
 Contributors should have a proper Java IDE (most are available for free) and 
 JUnit. This project uses Java 8 and JUnit 4. However, I might upgrade to Java 21 
