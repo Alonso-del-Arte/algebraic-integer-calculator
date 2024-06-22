@@ -22,6 +22,8 @@ and JUnit 5.
 * Prefer spaces to tabs (this is likely to be an issue only with Eclipse, a 
 simple configuration change should take care of it).
 * Opening curly braces should not go on lines by themselves.
+* Generally use blackboard bold from LaTeX in markdown and regular bold from 
+HTML in Javadoc. TeX in markdown, at least on GitHub, renders correctly.
 * As much as is practical, each class in Source Packages should have a 
 corresponding test class in Test Packages. That includes abstract classes as 
 well as interfaces having one or more default implementations.

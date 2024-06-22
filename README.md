@@ -32,4 +32,10 @@ Z^+$. Subtracting $1$ from itself once gives $0$, and subtracting $1$ again and
 again gives us the additive inverses of the counting numbers, $-1, -2, -3, 
 \ldots$, sometimes notated $\mathbb Z^-$.
 
+Joining $\mathbb Z^-$ and $\mathbb Z^+$ with $0$ gives us $\mathbb Z$. Each $n 
+\in \mathbb Z$ is a solution to $x$ to the rather unremarkable equation $x - n = 
+0$, in which of course $x = n$.
+
+Something more interesting happens when, given some integer $n \gt 1$,
+
 (FINISH WRITING)
