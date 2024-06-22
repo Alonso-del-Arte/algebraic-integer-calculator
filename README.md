@@ -22,3 +22,14 @@ This project started out in Java 8 with JUnit 4. I have since upgraded to Java
 upgrade JUnit to JUnit 5.
 
 Regardless, I'm in no rush to use Java 9 or later features.
+
+## The concept of algebraic integers
+
+When we just refer to **integers**, we're referring to the numbers that are 
+obtained by the repeated addition or subtraction of $1$. Adding $1$ repeatedly 
+gives the **counting numbers** $1, 2, 3, \ldots$, sometimes notated $\mathbb 
+Z^+$. Subtracting $1$ from itself once gives $0$, and subtracting $1$ again and 
+again gives us the additive inverses of the counting numbers, $-1, -2, -3, 
+\ldots$, sometimes notated $\mathbb Z^-$.
+
+(FINISH WRITING)
