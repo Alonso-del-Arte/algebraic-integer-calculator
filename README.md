@@ -46,8 +46,8 @@ degree is $n$, provided it isn't also a solution to an equation with a smaller
 $n$ for the exponent of the leading $x$.
 
 For example, one solution of $x^3 - 3x^2 + 3x - 19 = 0$ is $$1 + \frac{{\root 3 
-\of {12}}^2}{2} = 0.$$ Thanks to the fundamental theorem of algebra, we know 
-that that equation has three solutions.
+\of {12}}^2}{2}.$$ Thanks to the fundamental theorem of algebra, we know that 
+that equation has three solutions.
 
 **Quadratic integers** are algebraic integers of degree 2, and they're much 
 easier to understand and reckon than algebraic integers of degree 3 or higher. 
