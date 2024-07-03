@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertContainsSame;
+
 /**
  * Tests of the EratosthenesSieve class.
  * @author Alonso del Arte
@@ -34,21 +36,6 @@ import static org.junit.Assert.*;
 public class EratosthenesSieveTest {
     
     private static final Random RANDOM = new Random();
-    
-    private static void assertContainsSame(List<Integer> expected, 
-            List<Integer> actual) {
-        int expLen = expected.size();
-        int actLen = actual.size();
-        String msgLen = "expected has " + expLen + " elements and actual has " 
-                + actLen;
-        assertEquals(msgLen, expLen, actLen);
-        for (int i = 0; i < expLen; i++) {
-            String msg = "Comparing element at position " + i;
-            int expNum = expected.get(i);
-            int actNum = actual.get(i);
-            assertEquals(msg, expNum, actNum);
-        }
-    }
     
     private static void assertPrime(int p) {
         if (p == -2 || p == 2) return;
