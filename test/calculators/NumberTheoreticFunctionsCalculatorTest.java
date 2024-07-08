@@ -2852,6 +2852,31 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testRandomNumber() {
         System.out.println("randomNumber");
+        SortedSet<Integer> set = new TreeSet<>();
+        int numberOfCalls = 128;
+        for (int i = 0; i < numberOfCalls; i++) {
+            set.add(NumberTheoreticFunctionsCalculator.randomNumber());
+        }
+        int expected = 3 * numberOfCalls / 5;
+        int actual = set.size();
+        String msg = "Expected at least " + expected + " distinct numbers, got " 
+                + actual;
+        assert actual >= expected : msg;
+        int min = set.first();
+        int max = set.last();
+        String signMsg = "Lowest number, " + min 
+                + ", should be negative, highest, " + max 
+                + ", should be positive";
+        assert min < 0 : signMsg;
+        assert max > 0 : signMsg;
+    }
+    
+    /**
+     * Another test of the randomNumber function, of the 
+     * NumberTheoreticFunctionsCalculator class.
+     */
+    @Test
+    public void testRandomNumberBounded() {
         int capacity = 100;
         Set<Integer> numbers = new HashSet<>(capacity);
         int bound = capacity * capacity;
