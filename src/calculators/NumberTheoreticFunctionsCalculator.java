@@ -2050,13 +2050,19 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a pseudorandom number. The number may be negative, 0 or positive. 
+     * If you need to bound the number more narrowly than the range of 
+     * <code>int</code>, use {@link #randomNumber(int)}.
+     * @return A pseudorandom number. Examples: 2068000921, &minus;1782689428.
+     */
     public static int randomNumber() {
-        return 0;
+        return RANDOM.nextInt();
     }
     
     /**
-     * Gives a pseudorandom positive number.
+     * Gives a pseudorandom positive number. If you need any number in the range 
+     * of <code>int</code>, use {@link #randomNumber()}.
      * @param bound The bound for the pseudorandom number. For example, 32768.
      * @return A pseudorandom number, at least 0 but not more than 
      * <code>bound</code>. For example, 19397.
