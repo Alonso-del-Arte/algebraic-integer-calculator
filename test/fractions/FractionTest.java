@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -43,8 +42,6 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class FractionTest {
-    
-    private static final Random RANDOM = new Random();
     
     /**
      * Test of the getNumerator function, of class Fraction. A separate test 
@@ -162,7 +159,7 @@ public class FractionTest {
      */
     @Test
     public void testPlusCommutative() {
-        int numerator = RANDOM.nextInt();
+        int numerator = randomNumber();
         if (numerator == Integer.MAX_VALUE) {
             numerator--;
         }
@@ -230,8 +227,8 @@ public class FractionTest {
      */
     @Test
     public void testTimesCommutative() {
-        int numerator = RANDOM.nextInt(32768);
-        int denominator = RANDOM.nextInt(Math.abs(numerator)) + 1;
+        int numerator = randomNumber(32768);
+        int denominator = randomNumber(numerator) + 1;
         Fraction multiplicandA = new Fraction(numerator, denominator);
         Fraction multiplicandB = new Fraction(numerator, denominator + 1);
         Fraction expected = multiplicandA.times(multiplicandB);
@@ -319,7 +316,7 @@ public class FractionTest {
      */
     @Test
     public void testDivisionByIntZeroCausesException() {
-        int numerator = RANDOM.nextInt(784);
+        int numerator = randomNumber(784);
         int denominator = numerator + 3;
         Fraction fraction = new Fraction(numerator, denominator);
         Fraction result;
@@ -352,7 +349,7 @@ public class FractionTest {
     @Test
     public void testNegate() {
         System.out.println("negate");
-        int numerator = RANDOM.nextInt(4096);
+        int numerator = randomNumber(4096);
         int denominator = 2 * numerator + 5;
         Fraction fraction = new Fraction(numerator, denominator);
         Fraction expected = new Fraction(-numerator, denominator);
@@ -854,7 +851,7 @@ public class FractionTest {
      */
     @Test
     public void testToStringOmitsDenomOne() {
-        int numerator = RANDOM.nextInt();
+        int numerator = randomNumber();
         Fraction fraction = new Fraction(numerator, 1);
         String expected = Integer.toString(numerator);
         String actual = fraction.toString().replace(" ", "");
@@ -1151,6 +1148,7 @@ public class FractionTest {
      */
     @Test
     public void testParseFract() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         System.out.println("parseFract");
         String s = "-4/7";
         Fraction expected = new Fraction(-4, 7);
@@ -1161,8 +1159,10 @@ public class FractionTest {
     /**
      * Another test of the parseFract function, of class Fraction.
      */
+    @org.junit.Ignore
     @Test
     public void testParseOtherFract() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         String s = "355/113";
         Fraction expected = new Fraction(355, 113);
         Fraction actual = Fraction.parseFract(s);
@@ -1174,8 +1174,10 @@ public class FractionTest {
      * represents an integer (tacit denominator 1), the parsing function should 
      * fill in the tacit denominator.
      */
+    @org.junit.Ignore
     @Test
     public void testParseInteger() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         String s = "32768";
         Fraction expected = new Fraction(32768, 1);
         Fraction actual = Fraction.parseFract(s);
@@ -1186,23 +1188,25 @@ public class FractionTest {
      * Another test of the parseFract function, of class Fraction. The parsing 
      * function should not be thrown by the proper minus sign, U+2212.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFractRecognizesProperMinusSign() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         String s = "\u22121/2";
-        try{
-            String msg = s + " should be recognized as negative one half";
+        try {
+            String message = s + " should be recognized as negative one half";
             Fraction expected = new Fraction(-1, 2);
             Fraction actual = Fraction.parseFract(s);
-            assertEquals(msg, expected, actual);
+            assertEquals(message, expected, actual);
         } catch (NumberFormatException nfe) {
-            String msg = "Parsing " + s 
+            String message = "Parsing " + s 
                     + " should not have caused NumberFormatException";
             System.out.println("\"" + nfe.getMessage() + "\"");
-            fail(msg);
+            fail(message);
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is inappropriate for parsing " + s;
-            fail(msg);
+            fail(message);
         }
     }
 
@@ -1210,28 +1214,35 @@ public class FractionTest {
      * Another test of the parseFract function, of class Fraction. Spaces should 
      * be allowed in the parsing function's input.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFractIgnoresSpaces() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         String s = "355 / 113";
         Fraction expected = new Fraction(355, 113);
         try {
             Fraction actual = Fraction.parseFract(s);
             assertEquals(expected, actual);
         } catch (NumberFormatException nfe) {
-            String msg = "NumberFormatException shouldn't occur for parsing \"" 
-                    + s + "\"";
-            System.out.println(msg);
+            String message 
+                    = "NumberFormatException shouldn't occur for parsing \"" + s 
+                    + "\"";
+            System.out.println(message);
             System.out.println("\"" + nfe.getMessage() + "\"");
-            fail(msg);
+            fail(message);
         }
     }
+    
+    // TODO: Write tests for parseFractHTML(), parseFractTeX() ignore spaces
     
     /**
      * Another test of the parseFract function, of class Fraction. The output of 
      * toHTMLString should be parseable by parseFract.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFractHTML() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         String s = "&minus;<sup>79</sup>&frasl;<sub>43</sub>";
         Fraction expected = new Fraction(-79, 43);
         Fraction actual = Fraction.parseFract(s);
@@ -1242,8 +1253,10 @@ public class FractionTest {
      * Another test of the parseFract function, of class Fraction. The output of 
      * toTeXString should be parseable by parseFract.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFractTeX() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         String s = "\\frac{79}{43}";
         Fraction expected = new Fraction(79, 43);
         Fraction actual = Fraction.parseFract(s);
@@ -1254,8 +1267,10 @@ public class FractionTest {
      * Test of the correspondence between the toString and parseFract functions 
      * of the Fraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFractToStringCorrespondence() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         Fraction expected = new Fraction(53, 40);
         Fraction actual = Fraction.parseFract(expected.toString());
         assertEquals(expected, actual);
@@ -1265,8 +1280,10 @@ public class FractionTest {
      * Test of the correspondence between the toHTMLString and parseFract 
      * functions of the Fraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFractToHTMLStringCorrespondence() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         Fraction expected = new Fraction(53, 40);
         Fraction actual = Fraction.parseFract(expected.toHTMLString());
         assertEquals(expected, actual);
@@ -1276,8 +1293,10 @@ public class FractionTest {
      * Test of the correspondence between the toTeXString and parseFract 
      * functions of the Fraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFractToTeXStringCorrespondence() {
+        fail("REWRITE TEST TO USE RANDOM FRACTION");
         Fraction expected = new Fraction(53, 40);
         Fraction actual = Fraction.parseFract(expected.toTeXString());
         assertEquals(expected, actual);
