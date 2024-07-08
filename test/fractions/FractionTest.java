@@ -43,6 +43,13 @@ import static org.junit.Assert.*;
  */
 public class FractionTest {
     
+    private static Fraction makeFraction() {
+        int bound = 32768;
+        int denom = randomNumber(bound) + 32;
+        int numer = randomNumber(denom) + 1;
+        return new Fraction(numer, denom);
+    }
+    
     /**
      * Test of the getNumerator function, of class Fraction. A separate test 
      * checks that a Fraction object expresses a fraction in lowest terms, this 
@@ -1148,23 +1155,9 @@ public class FractionTest {
      */
     @Test
     public void testParseFract() {
-        fail("REWRITE TEST TO USE RANDOM FRACTION");
         System.out.println("parseFract");
-        String s = "-4/7";
-        Fraction expected = new Fraction(-4, 7);
-        Fraction actual = Fraction.parseFract(s);
-        assertEquals(expected, actual);
-    }
-
-    /**
-     * Another test of the parseFract function, of class Fraction.
-     */
-    @org.junit.Ignore
-    @Test
-    public void testParseOtherFract() {
-        fail("REWRITE TEST TO USE RANDOM FRACTION");
-        String s = "355/113";
-        Fraction expected = new Fraction(355, 113);
+        Fraction expected = makeFraction();
+        String s = expected.toString();
         Fraction actual = Fraction.parseFract(s);
         assertEquals(expected, actual);
     }
@@ -1174,12 +1167,12 @@ public class FractionTest {
      * represents an integer (tacit denominator 1), the parsing function should 
      * fill in the tacit denominator.
      */
-    @org.junit.Ignore
     @Test
     public void testParseInteger() {
-        fail("REWRITE TEST TO USE RANDOM FRACTION");
-        String s = "32768";
-        Fraction expected = new Fraction(32768, 1);
+        int bound = 65536;
+        int numer = randomNumber(bound) + 4;
+        Fraction expected = new Fraction(numer, 1);
+        String s = expected.toString();
         Fraction actual = Fraction.parseFract(s);
         assertEquals(expected, actual);
     }
