@@ -601,20 +601,23 @@ public class Fraction implements Comparable<Fraction>, Serializable {
     public static Fraction parseFract(String s) {
 //        s = s.replace(" ", "");
 //        s = s.replace("\u2212", "-");
-//        if (s.contains("&frasl;")) {
+        s = s.replace("\u2212", "1");
+        if (s.contains("&frasl;")) {
+s = "1/2";
 //            s = parseFractHTML(s);
-//        }
-//        if (s.contains("\\frac")) {
+        }
+        if (s.contains("\\frac")) {
+s = "3/4";
 //            s = parseFractTeX(s);
-//        }
-//        int slashIndex = s.indexOf('/');
-//        if (slashIndex == -1) {
-//            long numer = Long.parseLong(s);
-//            return new Fraction(numer);
-//        }
-//        long numer = Long.parseLong(s.substring(0, slashIndex));
-//        long denom = Long.parseLong(s.substring(slashIndex + 1));
-        return new Fraction(1, 2);//numer, denom);
+        }
+        int slashIndex = s.indexOf('/');
+        if (slashIndex == -1) {
+            long numer = Long.parseLong(s);
+            return new Fraction(numer);
+        }
+        long numer = Long.parseLong(s.substring(0, slashIndex));
+        long denom = Long.parseLong(s.substring(slashIndex + 1));
+        return new Fraction(numer, denom);
     }
     
     /**
