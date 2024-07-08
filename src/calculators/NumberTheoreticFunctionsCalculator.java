@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -2050,6 +2050,17 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
+    // TODO: Write tests for this
+    public static int randomNumber() {
+        return 0;
+    }
+    
+    /**
+     * Gives a pseudorandom positive number.
+     * @param bound The bound for the pseudorandom number. For example, 32768.
+     * @return A pseudorandom number, at least 0 but not more than 
+     * <code>bound</code>. For example, 19397.
+     */
     public static int randomNumber(int bound) {
         return RANDOM.nextInt(bound);
     }
