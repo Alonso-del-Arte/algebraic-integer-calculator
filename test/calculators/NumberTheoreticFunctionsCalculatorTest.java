@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -1135,9 +1137,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public void testNullNeitherReducibleNorIrreducible() {
         try {
             boolean result = NumberTheoreticFunctionsCalculator.isIrreducible(null);
-            String failMsg = "Trying to see if null is irreducible should have caused an exception, not given result " 
+            String message = "Trying to see if null is irreducible should have caused an exception, not given result " 
                     + result;
-            fail(failMsg);
+            fail(message);
         } catch (NullPointerException npe) {
             System.out.println("Trying to see if null is irreducible correctly caused NullPointerException");
             String excMsg = npe.getMessage();
@@ -1145,9 +1147,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertNotNull("Exception message should not be null", excMsg);
             assert !excMsg.equals("") : "Exception message should not be empty";
         } catch (RuntimeException re) {
-            String failMsg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to see if null is irreducible";
-            fail(failMsg);
+            fail(message);
         }
     }
     
@@ -2158,9 +2160,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public void testNoFundamentalUnitForNullRing() {
         try {
             AlgebraicInteger result = fundamentalUnit(null);
-            String failMsg = "Trying to get fundamental unit of null ring should have caused exception, not given result " 
+            String message = "Trying to get fundamental unit of null ring should have caused exception, not given result " 
                     + result.toString();
-            fail(failMsg);
+            fail(message);
         } catch (NullPointerException npe) {
             System.out.println("Trying to get fundamental unit of null ring correctly caused NullPointerException");
             String excMsg = npe.getMessage();
@@ -2168,9 +2170,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertNotNull("Exception message should not be null", excMsg);
             assert !excMsg.equals("") : "Exception message should not be empty";
         } catch (RuntimeException re) {
-            String failMsg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to get fundamental unit of null ring";
-            fail(failMsg);
+            fail(message);
         }
     }
     
@@ -2470,9 +2472,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertNotNull("Exception message should not be null", excMsg);
             assert !excMsg.equals("") : "Exception message should not be empty";
         } catch (RuntimeException re) {
-            String failMsg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to get -1 for null ring";
-            fail(failMsg);
+            fail(message);
         }
     }
     
@@ -2548,9 +2550,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertNotNull("Exception message should not be null", excMsg);
             assert !excMsg.equals("") : "Exception message should not be empty";
         } catch (RuntimeException re) {
-            String failMsg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to get 0 for null ring";
-            fail(failMsg);
+            fail(message);
         }
     }
     
@@ -2625,9 +2627,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertNotNull("Exception message should not be null", excMsg);
             assert !excMsg.equals("") : "Exception message should not be empty";
         } catch (RuntimeException re) {
-            String failMsg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to get 1 for null ring";
-            fail(failMsg);
+            fail(message);
         }
     }
     
@@ -2827,9 +2829,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public void testNoClassNumberForNullRing() {
         try {
             int result = NumberTheoreticFunctionsCalculator.fieldClassNumber(null);
-            String failMsg = "Trying to get field class number of null ring should have caused exception, not given result " 
+            String message = "Trying to get field class number of null ring should have caused exception, not given result " 
                     + result;
-            fail(failMsg);
+            fail(message);
         } catch (NullPointerException npe) {
             System.out.println("Trying to get field class number of null ring correctly caused NullPointerException");
             String excMsg = npe.getMessage();
@@ -2837,9 +2839,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertNotNull("Exception message should not be null", excMsg);
             assert !excMsg.equals("") : "Exception message should not be empty";
         } catch (RuntimeException re) {
-            String failMsg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to get field class number of null ring";
-            fail(failMsg);
+            fail(message);
         }
     }
     
