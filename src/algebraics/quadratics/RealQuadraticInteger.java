@@ -44,6 +44,12 @@ public class RealQuadraticInteger extends QuadraticInteger
         return this.absNumVal;
     }
     
+    // TODO: Rewrite tests
+    @Override
+    public int algebraicDegree() {
+        return -1;
+    }
+    
     /**
      * Gets the real part of the real quadratic integer. May be half an 
      * integer.
