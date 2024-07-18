@@ -330,12 +330,14 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testAlgebraicDegreeZero() {
+        int d = -randomSquarefreeNumber(1024);
+        ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, ring);
         int expected = 0;
-        int actual = zeroIQI.algebraicDegree();
-        assertEquals(expected, actual);
-        zeroIQI = new ImaginaryQuadraticInteger(0, 0, RING_EISENSTEIN);
-        actual = zeroIQI.algebraicDegree();
-        assertEquals(expected, actual);
+        int actual = number.algebraicDegree();
+        String message = "Reckoning algebraic degree of " + number.toString() 
+                + " from " + ring.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
