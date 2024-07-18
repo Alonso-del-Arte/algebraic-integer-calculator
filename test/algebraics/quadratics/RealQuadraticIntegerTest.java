@@ -21,22 +21,20 @@ import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
-import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
-import static calculators.NumberTheoreticFunctionsCalculator.randomSquarefreeNumber;
 
 /**
  * Tests for the RealQuadraticInteger class, which defines objects that 
@@ -44,8 +42,6 @@ import static calculators.NumberTheoreticFunctionsCalculator.randomSquarefreeNum
  * @author Alonso del Arte
  */
 public class RealQuadraticIntegerTest {
-    
-    private static final Random RANDOM = new Random();
     
     /**
      * The ring <b>Z</b>[&radic;2], consisting of all numbers of the form 
@@ -143,8 +139,8 @@ public class RealQuadraticIntegerTest {
                 * (randomDiscr + 1))));
         System.out.println("Maximum for regular and surd parts is " + maxAB 
                 + ".");
-        randomRegPart = RANDOM.nextInt(2 * maxAB) - maxAB;
-        randomSurdPart = RANDOM.nextInt(2 * maxAB) - maxAB;
+        randomRegPart = randomNumber(2 * maxAB) - maxAB;
+        randomSurdPart = randomNumber(2 * maxAB) - maxAB;
         if (randomSurdPart == 0) {
             randomSurdPart = 1;
         }
@@ -633,8 +629,8 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testIsReApprox() {
         System.out.println("isReApprox");
-        int a = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
-        int b = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        int a = 2 * (randomNumber(32768) - 16384) + 1;
+        int b = 2 * (randomNumber(32768) - 16384) + 1;
         RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13, 
                 2);
         String msg = "Real part of " + number.toString() + " given as " 
@@ -653,7 +649,7 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testIsNotReApproxIfSurdPartZero() {
         System.out.println("isReApprox");
-        int a = RANDOM.nextInt(32768) - 16384;
+        int a = randomNumber(32768) - 16384;
         int b = 0;
         RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13);
         String msg = "Real part of " + number.toString() + " given as " 
@@ -668,8 +664,8 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testIsImApprox() {
         System.out.println("isImApprox");
-        int a = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
-        int b = 2 * (RANDOM.nextInt(32768) - 16384) + 1;
+        int a = 2 * (randomNumber(32768) - 16384) + 1;
+        int b = 2 * (randomNumber(32768) - 16384) + 1;
         RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13, 
                 2);
         String msg = "Imaginary part of " + number.toString() + " given as " 
@@ -2137,8 +2133,8 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testModZero() {
-        int a = 2 * RANDOM.nextInt(128) + 1;
-        int b = 2 * RANDOM.nextInt(a) + 1;
+        int a = 2 * randomNumber(128) + 1;
+        int b = 2 * randomNumber(a) + 1;
         RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, RING_OQ13, 
                 2);
         RealQuadraticInteger division = new RealQuadraticInteger(b, -a, 
@@ -2159,11 +2155,11 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testOtherMod() {
-        int a = 2 * RANDOM.nextInt(224) + 33;
-        int b = 2 * RANDOM.nextInt(a) + 1;
+        int a = 2 * randomNumber(224) + 33;
+        int b = 2 * randomNumber(a) + 1;
         RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, 
                 RING_OQ13, 2);
-        int multiplier = RANDOM.nextInt(21) + 3;
+        int multiplier = randomNumber(21) + 3;
         RealQuadraticInteger dividend 
                 = new RealQuadraticInteger(multiplier * a, multiplier * b 
                         - b, RING_OQ13);
@@ -2186,8 +2182,8 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testModCrossDomain() {
-        int a = RANDOM.nextInt(2048) + 1;
-        int b = RANDOM.nextInt(a) + 127;
+        int a = randomNumber(2048) + 1;
+        int b = randomNumber(a) + 127;
         a -= 1024;
         RealQuadraticInteger dividend = new RealQuadraticInteger(a, b, RING_Z2);
         RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, RING_OQ13);
