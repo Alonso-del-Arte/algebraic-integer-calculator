@@ -36,7 +36,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public int algebraicDegree() {
-        return 2;
+        return (this.surdPartMult == 0) ? 1 : 2;
     }
     
     /**
