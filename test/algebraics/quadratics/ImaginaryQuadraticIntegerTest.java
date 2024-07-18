@@ -312,12 +312,14 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testAlgebraicDegreeOrdinaryIntegers() {
+        int d = -randomSquarefreeNumber(1024);
+        ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(d);
+        int a = randomNumber();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
         int expected = 1;
-        int actual;
-        for (QuadraticInteger normIQI : testNorms) {
-            actual = normIQI.algebraicDegree();
-            assertEquals(expected, actual);
-        }
+        int actual = number.algebraicDegree();
+        String message = "Reckoning algebraic degree of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
