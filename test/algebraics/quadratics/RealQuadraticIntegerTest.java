@@ -35,6 +35,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator.randomSquarefreeNumber;
 
 /**
  * Tests for the RealQuadraticInteger class, which defines objects that 
@@ -240,16 +242,15 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
+        int d = randomSquarefreeNumber(1024);
+        RealQuadraticRing ring = new RealQuadraticRing(d);
+        int a = randomNumber();
+        int b = randomNumber() | (randomNumber(16) + 1);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
         int expected = 2;
-        int actual;
-        for (int i = 0; i < totalTestIntegers; i++) {
-            actual = testIntegers.get(i).algebraicDegree();
-            assertEquals(expected, actual);
-            actual = testAdditiveInverses.get(i).algebraicDegree();
-            assertEquals(expected, actual);
-            actual = testConjugates.get(i).algebraicDegree();
-            assertEquals(expected, actual);
-        }
+        int actual = number.algebraicDegree();
+        String message = "Reckoning algebraic degree of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
