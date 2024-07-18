@@ -47,7 +47,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     // TODO: Rewrite tests
     @Override
     public int algebraicDegree() {
-        return -1;
+        return 2;
     }
     
     /**
