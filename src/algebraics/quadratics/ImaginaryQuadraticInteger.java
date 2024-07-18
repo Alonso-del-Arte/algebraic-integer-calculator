@@ -33,6 +33,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
+    // TODO: Write tests for this
+    @Override
+    public int algebraicDegree() {
+        return -1;
+    }
+    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 
