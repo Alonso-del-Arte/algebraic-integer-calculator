@@ -44,10 +44,17 @@ public class RealQuadraticInteger extends QuadraticInteger
         return this.absNumVal;
     }
     
-    // TODO: Rewrite tests
     @Override
     public int algebraicDegree() {
-        return (this.surdPartMult == 0) ? 1 : 2;
+        if (this.surdPartMult == 0) {
+            if (this.regPartMult == 0) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            return 2;
+        }
     }
     
     /**
