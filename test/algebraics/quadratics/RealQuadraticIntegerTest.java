@@ -111,6 +111,12 @@ public class RealQuadraticIntegerTest {
     private static final RealQuadraticInteger GOLDEN_RATIO 
             = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
     
+    private static RealQuadraticRing chooseRing() {
+        int propD = randomSquarefreeNumber(256);
+        int d = (propD == 1) ? 5 : propD;
+        return new RealQuadraticRing(d);
+    }
+    
     @BeforeClass
     public static void setUpClass() {
         int randomDiscr = randomSquarefreeNumber(MAXIMUM_RING_D);
@@ -238,8 +244,7 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
-        int d = randomSquarefreeNumber(1024);
-        RealQuadraticRing ring = new RealQuadraticRing(d);
+        RealQuadraticRing ring = chooseRing();
         int a = randomNumber();
         int b = randomNumber() | (randomNumber(16) + 1);
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
@@ -256,9 +261,13 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testAlgebraicDegreeOne() {
-        testNorms.forEach((normIQI) -> {
-            assertEquals(1, normIQI.algebraicDegree());
-        });
+        RealQuadraticRing ring = chooseRing();
+        int a = randomNumber() | (randomNumber(16) + 1);
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
+        int expected = 1;
+        int actual = number.algebraicDegree();
+        String message = "Reckoning algebraic degree of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
