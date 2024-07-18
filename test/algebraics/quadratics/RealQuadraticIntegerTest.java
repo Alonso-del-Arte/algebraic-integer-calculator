@@ -277,9 +277,13 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testAlgebraicDegreeZero() {
-        assertEquals(0, zeroRQI.algebraicDegree());
-        zeroRQI = new RealQuadraticInteger(0, 0, RING_ZPHI);
-        assertEquals(0, zeroRQI.algebraicDegree());
+        RealQuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(0, 0, ring);
+        int expected = 0;
+        int actual = number.algebraicDegree();
+        String message = "Reckoning algebraic degree of " + number.toString() 
+                + " from " + ring.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
