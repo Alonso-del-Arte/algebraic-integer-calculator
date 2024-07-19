@@ -1631,12 +1631,28 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * Constructor. Most of the work is setting the various instance fields to 
      * their default values. Once the capability to add user preferences is 
      * added to this program, this constructor will be rewritten to look up 
-     * those preferences and fill them in.
+     * those preferences and fill them in. A PNG file filter is put in as a 
+     * default parameter to the primary constructor.
      * @param ring The ring to first display. Subclasses will pass up (through a 
      * super call) a ring of the appropriate class from a subpackage of {@link 
      * algebraics}.
      */
     public RingDisplay(IntegerRing ring) {
+        this(ring, new PNGFileFilter());
+    }
+    
+    /**
+     * Primary constructor. Most of the work is setting the various instance 
+     * fields to their default values. Once the capability to add user 
+     * preferences is added to this program, this constructor will be rewritten 
+     * to look up those preferences and fill them in.
+     * @param ring The ring to first display. Subclasses will pass up (through a 
+     * super call) a ring of the appropriate class from a subpackage of {@link 
+     * algebraics}.
+     * @param fileFilter A file filter to use for suitable file types. For 
+     * example, a JPEG file filter.
+     */
+    public RingDisplay(IntegerRing ring, FileFilter fileFilter) {
         this.includeImaginary = !ring.isPurelyReal();
         this.pixelsPerUnitInterval = DEFAULT_PIXELS_PER_UNIT_INTERVAL;
         this.pixelsPerBasicImaginaryInterval = this.pixelsPerUnitInterval;
