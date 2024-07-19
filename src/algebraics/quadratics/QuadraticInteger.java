@@ -109,7 +109,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * 2 otherwise.
      */
     @Override
-    public int algebraicDegree() {return -1;
+    public int algebraicDegree() {
 //        if (this.surdPartMult == 0) {
 //            if (this.regPartMult == 0) {
 //                return 0;
@@ -117,7 +117,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
 //                return 1;
 //            }
 //        } else {
-//            return 2;
+            return 2;
 //        }
     }
     
