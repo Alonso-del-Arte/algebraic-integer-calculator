@@ -91,6 +91,17 @@ public class QuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testAlgebraicDegreeZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(0, 0, ring);
+        int expected = 0;
+        int actual = number.algebraicDegree();
+        String message = "Reckoning algebraic degree of " + number.toString() 
+                + " in ring " + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Another test of the trace function of class QuadraticInteger. Although 
      * (&minus;2)<sup>31</sup> is the lowest value an <code>int</code> can have, 
