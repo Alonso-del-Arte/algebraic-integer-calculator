@@ -314,7 +314,7 @@ public class ImaginaryQuadraticIntegerTest {
     public void testAlgebraicDegreeOrdinaryIntegers() {
         int d = -randomSquarefreeNumber(1024);
         ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(d);
-        int a = randomNumber();
+        int a = randomNumber() | (randomNumber(16) + 1);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
         int expected = 1;
         int actual = number.algebraicDegree();
