@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -16,8 +16,8 @@
  */
 package viewers;
 
+import algebraics.BadRing;
 import algebraics.IntegerRing;
-import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.RealQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
 
@@ -46,7 +46,7 @@ public class RingDisplayTest {
         final boolean isMacOS = System.getProperty("os.name")
                 .startsWith("Mac OS");
         int d = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(8192);
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(d);
+        BadRing ring = new BadRing(d);
         RingDisplay display = new RingDisplayImpl(ring);
         display.startRingDisplay();
         String key = "apple.laf.useScreenMenuBar";
@@ -200,7 +200,7 @@ public class RingDisplayTest {
     @Test
     public void testValidateRing() {
         System.out.println("validateRing");
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(38);
+        BadRing ring = new BadRing(38);
         RingDisplay display = new RingDisplayImpl(ring);
         try {
             display.validateRing(ring);
@@ -218,7 +218,7 @@ public class RingDisplayTest {
      */
     @Test
     public void testValidateRingRejectsNull() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(39);
+        BadRing ring = new BadRing(39);
         RingDisplay display = new RingDisplayImpl(ring);
         try {
             display.validateRing(null);
@@ -243,7 +243,7 @@ public class RingDisplayTest {
      */
     @Test
     public void testValidateRingRejectsWrongType() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(39);
+        BadRing ring = new BadRing(39);
         RingDisplay display = new RingDisplayImpl(ring);
         RealQuadraticRing wrongTypeRing = new RealQuadraticRing(39);
         try {
@@ -277,10 +277,10 @@ public class RingDisplayTest {
     @Test
     public void testSwitchToRing() {
         System.out.println("switchToRing");
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(35);
+        BadRing ring = new BadRing(35);
         RingDisplay display = new RingDisplayImpl(ring);
         display.startRingDisplay();
-        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(449);
+        BadRing expected = new BadRing(449);
         display.switchToRing(expected);
         IntegerRing actual = display.getRing();
         assertEquals(expected, actual);
@@ -550,7 +550,7 @@ public class RingDisplayTest {
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(15);
+        BadRing expected = new BadRing(15);
         RingDisplay display = new RingDisplayImpl(expected);
         IntegerRing actual = display.getRing();
         assertEquals(expected, actual);
@@ -649,7 +649,7 @@ public class RingDisplayTest {
         public void mouseMoved(MouseEvent e) {
         }
         
-        public RingDisplayImpl(IllDefinedQuadraticRing ring) {
+        public RingDisplayImpl(BadRing ring) {
             super(ring);
         }
 
