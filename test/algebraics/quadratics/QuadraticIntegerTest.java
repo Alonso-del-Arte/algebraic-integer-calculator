@@ -59,6 +59,25 @@ public class QuadraticIntegerTest {
             = new IllDefinedQuadraticInteger(R_A, R_B, ILL_DEF_RING);
     private static final QuadraticInteger ILL_DEF_INT_B 
             = new IllDefinedQuadraticInteger(R_B, -R_A, ILL_DEF_RING);
+    
+    private static QuadraticRing chooseRing() {
+        int propD = randomSquarefreeNumber(1024);
+        int d = (randomNumber() % 2 == 0) ? propD : -propD;
+        return new QuadraticRingTest.QuadraticRingImpl(d);
+    }
+    
+    @Test
+    public void testAlgebraicDegree() {
+        System.out.println("algebraicDegree");
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber() | (randomNumber(16) + 1);
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        int expected = 2;
+        int actual = number.algebraicDegree();
+        String message = "Reckoning algebraic degree of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
 
     /**
      * Another test of the trace function of class QuadraticInteger. Although 
