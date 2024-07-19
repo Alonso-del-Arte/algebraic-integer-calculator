@@ -453,6 +453,27 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     
     private static int maskCtrlCommand;
     
+    // TODO: Write tests for this
+    public FileFilter getFileFilter() {
+        return new FileFilter() {
+
+            @Override
+            public boolean accept(File f) {
+                return true;
+            }
+
+            @Override
+            public String getDescription() {
+                return "FOR TESTING PURPOSES ONLY";
+            }
+
+        };
+    }
+    
+    public void setFileFilter(FileFilter filter) {
+        // TODO: Write tests for this
+    }
+    
     /**
      * Changes how many pixels there are per basic imaginary interval. This 
      * procedure, as implemented by a subclass, will be automatically called by 
