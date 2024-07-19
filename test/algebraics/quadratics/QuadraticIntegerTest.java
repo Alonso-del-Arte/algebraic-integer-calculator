@@ -59,8 +59,6 @@ public class QuadraticIntegerTest {
             = new IllDefinedQuadraticInteger(R_A, R_B, ILL_DEF_RING);
     private static final QuadraticInteger ILL_DEF_INT_B 
             = new IllDefinedQuadraticInteger(R_B, -R_A, ILL_DEF_RING);
-    private static final QuadraticInteger ILL_DEF_INT_C 
-            = new IllDefinedQuadraticInteger(R_C_REG, R_C_SURD, ILL_DEF_RING);
 
     /**
      * Another test of the trace function of class QuadraticInteger. Although 
@@ -1493,6 +1491,108 @@ public class QuadraticIntegerTest {
                     + ring.toString() + " for applyTheta";
             fail(msg);
         }
+    }
+    
+    static class QuadraticIntegerImpl extends QuadraticInteger {
+        
+        private static final long serialVersionUID = 4558707313363386368L;
+    
+        private final double numValRe, numValIm;
+    
+        /**
+         * This function is implemented only because it is required by the 
+         * {@link algebraics.Arithmeticable} interface. This class can't use 
+         * {@link QuadraticInteger#negate()} because that would cause {@link 
+         * algebraics.UnsupportedNumberDomainException}, perhaps resulting in 
+         * misleading test results.
+         * @return A value that is actually correct. Though I haven't actually 
+         * tested this, so I don't guarantee correctness.
+         */
+        @Override
+        public QuadraticInteger negate() {
+            return new QuadraticIntegerImpl(-this.regPartMult, 
+                    -this.regPartMult, this.quadRing);
+        }
+
+        /**
+         * Possibly the absolute value of this quadratic integer.
+         * @return A value not guaranteed to be correct.
+         */
+        @Override
+        public double abs() {
+            return Math.abs(this.numValRe + this.numValIm);
+        }
+
+        /**
+         * This function is implemented only because it is required by the 
+         * {@link algebraics.AlgebraicInteger} interface.
+         * @return A value not guaranteed to be correct, even allowing for loss 
+         * of machine precision.
+         */
+        @Override
+        public double getRealPartNumeric() {
+            return this.numValRe;
+        }
+
+        /**
+         * This function is implemented only because it is required by the 
+         * {@link algebraics.AlgebraicInteger} interface.
+         * @return A value not guaranteed to be correct, even allowing for loss 
+         * of machine precision.
+         */
+        @Override
+        public double getImagPartNumeric() {
+            return this.numValIm;
+        }
+    
+        @Override
+        public boolean isReApprox() {
+            return this.quadRing.radicand > 0;
+        }
+    
+        @Override
+        public boolean isImApprox() {
+            return this.quadRing.radicand < 0;
+        }
+    
+        /**
+         * This function is implemented here only because it is abstract in 
+         * {@link QuadraticInteger}.
+         * @return A value guaranteed to be correct only if the ill-defined 
+         * quadratic integer is purely real.
+         */
+        @Override
+        public double angle() {
+            if (this.numValRe < 0) {
+                return Math.PI;
+            } else {
+               return 0.0;
+            }
+        }
+    
+        /**
+         * Constructor.
+         * @param a The integer for the "regular" part.
+         * @param b The integer to be multiplied by the square root of the 
+         * radicand.
+         * @param ring Preferably an {@link IllDefinedQuadraticRing} object, but 
+         * any object subclassed from {@link QuadraticRing} will do; there is no 
+         * checking for the class of this parameter.
+         */
+        public QuadraticIntegerImpl(int a, int b, QuadraticRing ring) {
+            super(a, b, ring, 1);
+            double re = this.regPartMult;
+            double im = 0.0;
+            double y = this.quadRing.realRadSqrt * this.surdPartMult;
+            if (this.quadRing.radicand < 0) {
+                im += y;
+            } else {
+                re += y;
+            }
+            this.numValRe = re;
+            this.numValIm = im;
+        }
+        
     }
 
 }
