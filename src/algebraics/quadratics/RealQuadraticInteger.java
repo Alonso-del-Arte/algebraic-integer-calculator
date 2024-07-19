@@ -44,19 +44,6 @@ public class RealQuadraticInteger extends QuadraticInteger
         return this.absNumVal;
     }
     
-    @Override
-    public int algebraicDegree() {
-        if (this.surdPartMult == 0) {
-            if (this.regPartMult == 0) {
-                return 0;
-            } else {
-                return 1;
-            }
-        } else {
-            return 2;
-        }
-    }
-    
     /**
      * Gets the real part of the real quadratic integer. May be half an 
      * integer.
