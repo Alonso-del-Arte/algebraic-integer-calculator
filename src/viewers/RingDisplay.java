@@ -457,14 +457,18 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     
     /**
      * Gives the current file filter.
-     * @return The current file filter.
+     * @return The current file filter. For example, a JPEG file filter.
      */
     public FileFilter getFileFilter() {
         return this.filter;
     }
     
+    /**
+     * Sets the file filter.
+     * @param fileFilter The file filter to use. For example, a PNG file filter.
+     */
     public void setFileFilter(FileFilter fileFilter) {
-        // TODO: Write tests for this
+        this.filter = fileFilter;
     }
     
     /**
