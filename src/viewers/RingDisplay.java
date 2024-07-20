@@ -268,6 +268,8 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      */
     public static final int BASELINE_READOUT_FIELD_COLUMNS = 10;
     
+    private FileFilter filter;
+    
     /**
      * The maximum number of previous rings the program will remember for 
      * history in any given run.
@@ -453,24 +455,15 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     
     private static int maskCtrlCommand;
     
-    // TODO: Write tests for this
+    /**
+     * Gives the current file filter.
+     * @return The current file filter.
+     */
     public FileFilter getFileFilter() {
-        return new FileFilter() {
-
-            @Override
-            public boolean accept(File f) {
-                return true;
-            }
-
-            @Override
-            public String getDescription() {
-                return "FOR TESTING PURPOSES ONLY";
-            }
-
-        };
+        return this.filter;
     }
     
-    public void setFileFilter(FileFilter filter) {
+    public void setFileFilter(FileFilter fileFilter) {
         // TODO: Write tests for this
     }
     
@@ -1674,6 +1667,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
      * example, a JPEG file filter.
      */
     public RingDisplay(IntegerRing ring, FileFilter fileFilter) {
+        this.filter = fileFilter;
         this.includeImaginary = !ring.isPurelyReal();
         this.pixelsPerUnitInterval = DEFAULT_PIXELS_PER_UNIT_INTERVAL;
         this.pixelsPerBasicImaginaryInterval = this.pixelsPerUnitInterval;
