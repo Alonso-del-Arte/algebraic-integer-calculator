@@ -649,6 +649,20 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
         this.zeroCoordY = proposedCoordY;
     }
     
+    // TODO: Rewind to failing and write tests
+    public void saveDiagram(File file) {
+        BufferedImage diagram = new BufferedImage(this.ringCanvasHorizMax, 
+                this.ringCanvasVerticMax, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graph = diagram.createGraphics();
+        this.paint(graph);
+        try {
+            ImageIO.write(diagram, "PNG", file);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
+
+// TODO:     
     /**
      * Prompts the user for a filename and saves the currently displayed diagram 
      * with that filename as a Portable Network Graphics (PNG) file. The 
