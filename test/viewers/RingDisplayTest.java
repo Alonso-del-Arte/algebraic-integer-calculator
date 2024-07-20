@@ -20,12 +20,16 @@ import algebraics.BadRing;
 import algebraics.IntegerRing;
 import algebraics.quadratics.RealQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import javax.swing.filechooser.FileFilter;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -40,6 +44,21 @@ public class RingDisplayTest {
     
     static final String TEST_CLIPBOARD_TEXT 
             = "This text was placed by a setup procedure";
+    
+    private static BadRing chooseRing() {
+        int d = randomNumber(1024);
+        return new BadRing(d);
+    }
+    
+    @Test
+    public void testGetFileFilter() {
+        System.out.println("getFileFilter");
+        BadRing ring = chooseRing();
+        FileFilter expected = new ExampleFileFilter();
+        RingDisplay instance = new RingDisplayImpl(ring, expected);
+        FileFilter actual = instance.getFileFilter();
+        assertEquals(expected, actual);
+    }
     
     @Test
     public void testAppleMenuBarWhenApplicable() {
@@ -591,8 +610,22 @@ public class RingDisplayTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    
+    private static class ExampleFileFilter extends FileFilter {
+        
+        @Override
+        public boolean accept(File f) {
+            return true;
+        }
 
-    public class RingDisplayImpl extends RingDisplay {
+        @Override
+        public String getDescription() {
+            return "FOR TESTING PURPOSES ONLY";
+        }
+        
+    }
+
+    private static class RingDisplayImpl extends RingDisplay {
 
         @Override
         public void setPixelsPerBasicImaginaryInterval() {
@@ -650,6 +683,10 @@ public class RingDisplayTest {
         
         public RingDisplayImpl(BadRing ring) {
             super(ring);
+        }
+
+        public RingDisplayImpl(BadRing ring, FileFilter fileFilter) {
+            super(ring, fileFilter);
         }
 
     }
