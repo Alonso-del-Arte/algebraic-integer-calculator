@@ -61,6 +61,18 @@ public class RingDisplayTest {
     }
     
     @Test
+    public void testSetFileFilter() {
+        System.out.println("setFileFilter");
+        BadRing ring = chooseRing();
+        FileFilter fileFilter = new ExampleFileFilter();
+        RingDisplay instance = new RingDisplayImpl(ring, fileFilter);
+        FileFilter expected = new ExampleFileFilter();
+        instance.setFileFilter(expected);
+        FileFilter actual = instance.getFileFilter();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testAppleMenuBarWhenApplicable() {
         final boolean isMacOS = System.getProperty("os.name")
                 .startsWith("Mac OS");
