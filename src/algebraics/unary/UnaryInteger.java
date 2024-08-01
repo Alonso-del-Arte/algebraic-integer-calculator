@@ -59,14 +59,16 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(n);
     }
     
-    // TODO: Write tests for this
+    /**
+     * Negates this unary integer. Essentially the same as multiplying by 
+     * &minus;1.
+     * @return This unary integer negated. For example, for 3190 this returns 
+     * &minus;3190, and called on &minus;3190 this returns 3190. In the case of 
+     * 0, the result is 0. This may or may not be a fresh instance.
+     */
     @Override
     public UnaryInteger negate() {
-        if (this.number == 0) {
-            return this;
-        } else {
-            return new UnaryInteger(-this.number);
-        }
+        return new UnaryInteger(-this.number);
     }
 
     /**
