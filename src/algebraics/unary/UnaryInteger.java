@@ -63,7 +63,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     @Override
     public UnaryInteger negate() {
         if (this.number == 0) {
-            return new UnaryInteger(1);
+            return this;
         } else {
             return new UnaryInteger(-this.number);
         }
