@@ -36,4 +36,14 @@ public class BadRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testIsPurelyReal() {
+        System.out.println("isPurelyReal");
+        int maxDegree = randomNumber(1024) + 16;
+        BadRing ring = new BadRing(maxDegree, false);
+        String msg = ring.toString() 
+                + " constructed w/ incl. imaginary false should be purely real";
+        assert ring.isPurelyReal() : msg;
+    }
+    
 }
