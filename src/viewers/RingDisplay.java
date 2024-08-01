@@ -518,9 +518,9 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
             throw new IllegalArgumentException(excMsg);
         }
         this.pixelsPerUnitInterval = pixelLength;
-//        if (this.includeImaginary) {
-//            this.setPixelsPerBasicImaginaryInterval();
-//        }
+        if (this.includeImaginary) {
+            this.setPixelsPerBasicImaginaryInterval();
+        }
     }
     
     /**
