@@ -101,9 +101,7 @@ public class RingDisplayTest {
      */
     @Test
     public void testGetSetPixelsPerBasicImaginaryInterval() {
-        fail("The test case is a prototype.");
-        System.out.println("getPixelsPerBasicImaginaryInterval");
-        System.out.println("setPixelsPerBasicImaginaryInterval");
+        fail("The test case _is_ a prototype.");
         int d = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(8192);
         BadRing ring = new BadRing(d);
         RingDisplay display = new RingDisplayImpl(ring);
@@ -646,6 +644,14 @@ public class RingDisplayTest {
     }
 
     private static class RingDisplayImpl extends RingDisplay {
+        
+        int setPixelsPerBasicImaginaryIntervalCallCount = 0;
+        
+        @Override
+        void setPixelsPerBasicImaginaryInterval() {
+            super.setPixelsPerBasicImaginaryInterval();
+            this.setPixelsPerBasicImaginaryIntervalCallCount++;
+        }
 
         @Override
         public void chooseDiscriminant() {
