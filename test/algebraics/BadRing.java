@@ -37,6 +37,8 @@ public class BadRing implements IntegerRing {
     
     private final int maximumDegree;
     
+    private final boolean onlyReals;
+    
     @Override
     public int getMaxAlgebraicDegree() {
         return this.maximumDegree;
@@ -44,7 +46,7 @@ public class BadRing implements IntegerRing {
     
     @Override
     public boolean isPurelyReal() {
-        return true;
+        return this.onlyReals;
     }
     
     @Override
@@ -83,16 +85,35 @@ public class BadRing implements IntegerRing {
         return "BAD_RING";
     }
 
+    /**
+     * Auxiliary constructor. Use this constructor when it's not necessary to 
+     * specify maximum degree nor whether or not the ring includes imaginary 
+     * numbers.
+     */
     public BadRing() {
-        this(1);
+        this(1, false);
     }
     
+    /**
+     * Auxiliary constructor. Use this constructor when it's necessary to 
+     * specify maximum degree but not whether or not the ring includes imaginary 
+     * numbers.
+     * @param maxDegree The maximum degree. For example, 3.
+     */
     public BadRing(int maxDegree) {
-        this.maximumDegree = maxDegree;
+        this(maxDegree, false);
     }
     
+    /**
+     * Primary constructor. Use this constructor when it's necessary to specify 
+     * that an example ring is not purely real.
+     * @param maxDegree The maximum degree. For example, 5.
+     * @param includeImaginary Whether or not the example ring contains 
+     * imaginary numbers. For example, true.
+     */
     public BadRing(int maxDegree, boolean includeImaginary) {
         this.maximumDegree = maxDegree;
+        this.onlyReals = !includeImaginary;
     }
     
 }
