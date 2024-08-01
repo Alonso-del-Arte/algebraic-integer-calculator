@@ -68,7 +68,7 @@ public final class UnaryInteger implements AlgebraicInteger,
         if (this.number == 0) {
             return new UnaryInteger(1);
         }
-        return this;
+        return new UnaryInteger(-this.number);
     }
 
     /**
