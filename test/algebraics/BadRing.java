@@ -91,4 +91,8 @@ public class BadRing implements IntegerRing {
         this.maximumDegree = maxDegree;
     }
     
+    public BadRing(int maxDegree, boolean includeImaginary) {
+        this.maximumDegree = maxDegree;
+    }
+    
 }
