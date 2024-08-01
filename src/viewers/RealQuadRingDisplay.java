@@ -279,11 +279,6 @@ public final class RealQuadRingDisplay extends RingDisplay {
     }
 
     @Override
-    void setPixelsPerBasicImaginaryInterval() {
-        // Not applicable
-    }
-    
-    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(this.zeroColor);
