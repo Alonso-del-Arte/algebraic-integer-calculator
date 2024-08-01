@@ -95,20 +95,17 @@ public class RingDisplayTest {
         }
     }
     
-    /**
-     * Test of the setPixelsPerBasicImaginaryInterval procedure, of the 
-     * RingDisplay class.
-     */
     @Test
-    public void testGetSetPixelsPerBasicImaginaryInterval() {
-        fail("The test case _is_ a prototype.");
+    public void testSetPixelsPerUnitIntervalCallsSetForBasicImaginary() {
         int d = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(8192);
-        BadRing ring = new BadRing(d);
-        RingDisplay display = new RingDisplayImpl(ring);
-        int pixels = display.getPixelsPerBasicImaginaryInterval();
+        BadRing ring = new BadRing(d, true);
+        RingDisplayImpl display = new RingDisplayImpl(ring);
+        int pixels = display.getPixelsPerUnitInterval();
         int increment = randomNumber(16) + 4;
-        int expected = pixels + increment;
-//        display.setp
+        int pixelLength = pixels + increment;
+        display.setPixelsPerUnitInterval(pixelLength);
+        String msg = "Call to set pxui should've called set basic imag. also";
+        assert display.setPixelsPerBasicImaginaryIntervalCallCount > 0 : msg;
     }
 
     /**
