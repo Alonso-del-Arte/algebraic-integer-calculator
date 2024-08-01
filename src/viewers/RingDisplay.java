@@ -471,6 +471,11 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
         this.filter = fileFilter;
     }
     
+    // TODO: Write tests for this
+    public int getPixelsPerBasicImaginaryInterval() {
+        return -this.pixelsPerUnitInterval - 1;
+    }
+        
     /** WORK IN PROGRESS...
      * Changes how many pixels there are per basic imaginary interval. This 
      * procedure, as implemented by a subclass, will be automatically called by 
