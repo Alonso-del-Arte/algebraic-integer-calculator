@@ -471,15 +471,22 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
         this.filter = fileFilter;
     }
     
-    /**
+    /** WORK IN PROGRESS...
      * Changes how many pixels there are per basic imaginary interval. This 
      * procedure, as implemented by a subclass, will be automatically called by 
      * {@link #setPixelsPerUnitInterval(int)}. If you don't actually need to use 
      * basic imaginary intervals, implement as a do-nothing procedure. 
      * Regardless, this should never be called by a class outside the 
      * <code>RingDisplay</code> class hierarchy.
-     */
-    abstract void setPixelsPerBasicImaginaryInterval();
+     */// TODO: Write tests for this
+    void setPixelsPerBasicImaginaryInterval() {
+        //
+    }
+    
+    // TODO: Write tests for this
+    public int getPixelsPerUnitInterval() {
+        return this.pixelsPerUnitInterval - 1;
+    }
         
     /**
      * Changes how many pixels there are per unit interval. If you also need to 
