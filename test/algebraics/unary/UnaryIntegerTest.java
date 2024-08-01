@@ -395,6 +395,15 @@ public class UnaryIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testNegateTurnsNegativePositive() {
+        int n = -randomNumber(Short.MAX_VALUE) - 1;
+        UnaryInteger number = new UnaryInteger(n);
+        UnaryInteger expected = new UnaryInteger(-n);
+        UnaryInteger actual = number.negate();
+        assertEquals(expected, actual);
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
