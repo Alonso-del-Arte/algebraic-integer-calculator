@@ -117,10 +117,20 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(n);
     }
 
-    // TODO: Write tests for this
+    /**
+     * 
+     * @param multiplicand
+     * @return 
+     */
     @Override
     public UnaryInteger times(int multiplicand) {
+        long check = (long) this.number * multiplicand;
         int n = this.number * multiplicand;
+        if (check != n) {
+            String excMsg = "Multiplying " + this.toASCIIString() + " by " 
+                    + multiplicand + " overflows to " + check;
+            throw new ArithmeticException(excMsg);
+        }
         return new UnaryInteger(n);
     }
 
