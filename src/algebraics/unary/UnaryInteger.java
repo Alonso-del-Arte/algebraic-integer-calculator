@@ -120,7 +120,8 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public UnaryInteger times(int multiplicand) {
-        return this;
+        int n = this.number * multiplicand;
+        return new UnaryInteger(n);
     }
 
     // TODO: Write tests for this
