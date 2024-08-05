@@ -414,6 +414,7 @@ public class UnaryIntegerTest {
     
     @Test
     public void testTimes() {
+        System.out.println("times");
         int signAdjust = (randomNumber(128) - 64 < 0) ? -1 : 1;
         int nA = randomNumber(Short.MAX_VALUE) * signAdjust;
         UnaryInteger number = new UnaryInteger(nA);
@@ -424,6 +425,28 @@ public class UnaryIntegerTest {
         String message = "Multiplying " + number.toString() + " by " 
                 + multiplicand.toString();
         assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testTimesTooMuch() {
+        int signAdjust = (randomNumber(128) - 64 < 0) ? -1 : 1;
+        int nA = signAdjust * (Integer.MAX_VALUE - 16
+                - randomNumber(Byte.MAX_VALUE));
+        UnaryInteger number = new UnaryInteger(nA);
+        int nB = Integer.MAX_VALUE - 16 - randomNumber(Byte.MAX_VALUE);
+        UnaryInteger multiplicand = new UnaryInteger(nB);
+        long result = (long) nA * nB;
+        String msg = "Multiplying " + number.toString() + " by " 
+                + multiplicand.toString() + " should overflow to " + result;
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = number.times(multiplicand);
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
     public void testDivisionByZero() {
