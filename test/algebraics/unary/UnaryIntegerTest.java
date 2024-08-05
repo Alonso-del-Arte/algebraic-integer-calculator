@@ -462,6 +462,28 @@ public class UnaryIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testTimesIntTooMuch() {
+        int signAdjust = (randomNumber(128) - 64 < 0) ? -1 : 1;
+        int nA = signAdjust * (Integer.MAX_VALUE - 16
+                - randomNumber(Byte.MAX_VALUE));
+        UnaryInteger number = new UnaryInteger(nA);
+        int multiplicand = Integer.MAX_VALUE - 16 
+                - randomNumber(Byte.MAX_VALUE);
+        long result = (long) nA * multiplicand;
+        String msg = "Multiplying " + number.toString() + " by " + multiplicand
+                + " should overflow to " + result;
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = number.times(multiplicand);
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
