@@ -104,7 +104,7 @@ public final class UnaryInteger implements AlgebraicInteger,
 
     /**
      * Multiplies this unary integer by another. For the example, say this 
-     * number is &minus;1729;.
+     * number is &minus;1729.
      * @param multiplicand The number to multiply by. For example, 1728.
      * @return The product of this number by {@code multiplicand}. For example, 
      * &minus;2987712.
@@ -118,19 +118,17 @@ public final class UnaryInteger implements AlgebraicInteger,
     }
 
     /**
-     * 
-     * @param multiplicand
-     * @return 
+     * Multiplies this unary integer by a 32-bit integer primitive. For the 
+     * example, say this number is 1729.
+     * @param multiplicand The number to multiply by. For example, &minus;1728.
+     * @return The product of this number by {@code multiplicand}. For example, 
+     * &minus;2987712.
+     * @throws ArithmeticException If the product overflows the range of 32-bit 
+     * signed integers.
      */
     @Override
     public UnaryInteger times(int multiplicand) {
-        long check = (long) this.number * multiplicand;
-        int n = this.number * multiplicand;
-        if (check != n) {
-            String excMsg = "Multiplying " + this.toASCIIString() + " by " 
-                    + multiplicand + " overflows to " + check;
-            throw new ArithmeticException(excMsg);
-        }
+        int n = Math.multiplyExact(this.number, multiplicand);
         return new UnaryInteger(n);
     }
 
