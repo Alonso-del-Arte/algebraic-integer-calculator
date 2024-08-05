@@ -449,6 +449,19 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testTimesInt() {
+        int signAdjust = (randomNumber(128) - 64 < 0) ? -1 : 1;
+        int nA = randomNumber(Short.MAX_VALUE) * signAdjust;
+        UnaryInteger number = new UnaryInteger(nA);
+        int multiplicand = randomNumber(Short.MAX_VALUE);
+        UnaryInteger expected = new UnaryInteger(nA * multiplicand);
+        UnaryInteger actual = number.times(multiplicand);
+        String message = "Multiplying " + number.toString() + " by " 
+                + multiplicand;
+        assertEquals(message, expected, actual);
+    }
+    
     public void testDivisionByZero() {
         int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
         UnaryInteger dividend = new UnaryInteger(n);
