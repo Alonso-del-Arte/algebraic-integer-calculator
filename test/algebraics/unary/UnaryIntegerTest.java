@@ -25,6 +25,7 @@ import java.util.Set;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static testframe.api.Asserters.assertDoesNotThrow;
 import static testframe.api.Asserters.assertThrows;
 
 /**
@@ -502,7 +503,22 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
-    // TODO: Write test for divides() when divisor is divisible
+    @Test
+    public void testDivides() {
+        System.out.println("divides");
+        int n = randomNumber(Byte.MAX_VALUE) + 1;
+        UnaryInteger expected = new UnaryInteger(n);
+        int nB = randomNumber(1024) + 16;
+        UnaryInteger divisor = new UnaryInteger(nB);
+        int nA = nB * n;
+        UnaryInteger dividend = new UnaryInteger(nA);
+        String message = "Dividing " + dividend.toString() + " by " 
+                + divisor.toString();
+        assertDoesNotThrow(() -> {
+            UnaryInteger actual = dividend.divides(divisor);
+            assertEquals(message, expected, actual);
+        }, message);     
+    }
     
     // TODO: Write test for divides() when divisor is NOT divisible
     
