@@ -136,6 +136,10 @@ public final class UnaryInteger implements AlgebraicInteger,
     @Override
     public UnaryInteger divides(UnaryInteger divisor) 
             throws NotDivisibleException {
+        if (divisor.number == 0) {
+            String excMsg = "Can't divide " + this.toASCIIString() + " by 0";
+            throw new IllegalArgumentException(excMsg);
+        }
         return this;
     }
 
