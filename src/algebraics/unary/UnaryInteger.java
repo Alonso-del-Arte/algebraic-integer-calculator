@@ -140,7 +140,8 @@ public final class UnaryInteger implements AlgebraicInteger,
             String excMsg = "Can't divide " + this.toASCIIString() + " by 0";
             throw new IllegalArgumentException(excMsg);
         }
-        return this;
+        int n = this.number / divisor.number;
+        return new UnaryInteger(n);
     }
 
     // TODO: Write tests for this
