@@ -28,7 +28,7 @@ public abstract class CubicRing implements IntegerRing {
      * The maximum possible algebraic degree of an algebraic integer in a cubic 
      * ring.
      */
-    public static final int MAX_ALGEBRAIC_DEGREE = Integer.MIN_VALUE;
+    public static final int MAX_ALGEBRAIC_DEGREE = 3;
     
     /**
      * Gives the maximum algebraic degree an algebraic integer in a cubic ring 
@@ -38,7 +38,7 @@ public abstract class CubicRing implements IntegerRing {
      */
     @Override
     public final int getMaxAlgebraicDegree() {
-        return -1;// MAX_ALGEBRAIC_DEGREE;
+        return MAX_ALGEBRAIC_DEGREE;
     }
     
 }
