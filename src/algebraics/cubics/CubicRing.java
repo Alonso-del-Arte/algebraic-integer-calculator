@@ -38,7 +38,7 @@ public abstract class CubicRing implements IntegerRing {
      */
     @Override
     public final int getMaxAlgebraicDegree() {
-        return MAX_ALGEBRAIC_DEGREE;
+        return -1;// MAX_ALGEBRAIC_DEGREE;
     }
     
 }
