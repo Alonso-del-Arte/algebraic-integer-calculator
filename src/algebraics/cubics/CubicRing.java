@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -28,7 +28,7 @@ public abstract class CubicRing implements IntegerRing {
      * The maximum possible algebraic degree of an algebraic integer in a cubic 
      * ring.
      */
-    public static final int MAX_ALGEBRAIC_DEGREE = 3;
+    public static final int MAX_ALGEBRAIC_DEGREE = Integer.MIN_VALUE;
     
     /**
      * Gives the maximum algebraic degree an algebraic integer in a cubic ring 
