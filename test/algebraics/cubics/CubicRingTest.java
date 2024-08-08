@@ -42,17 +42,15 @@ public class CubicRingTest {
     }
     
     /**
-     * Test of getMaxAlgebraicDegree method, of class CubicRing.
+     * Test of the getMaxAlgebraicDegree function, of the CubicRing class.
      */
     @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         CubicRing instance = new CubicRingImpl();
-        int expResult = 0;
-        int result = instance.getMaxAlgebraicDegree();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int expected = CubicRing.MAX_ALGEBRAIC_DEGREE;
+        int actual = instance.getMaxAlgebraicDegree();
+        assertEquals(expected, actual);
     }
 
     static class CubicRingImpl extends CubicRing {
