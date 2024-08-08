@@ -34,6 +34,13 @@ public class CubicRingTest {
     
     private static final PowerBasis DEFAULT_BASIS = new PowerBasis(THREE_ONES);
     
+    @Test
+    public void testMaxAlgebraicDegreeConstant() {
+        int expected = 3;
+        int actual = CubicRing.MAX_ALGEBRAIC_DEGREE;
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of getMaxAlgebraicDegree method, of class CubicRing.
      */
