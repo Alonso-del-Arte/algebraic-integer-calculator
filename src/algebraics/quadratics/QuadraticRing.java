@@ -66,21 +66,21 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     /**
      * Ought to be a squarefree integer.
      */
-    protected final int radicand;
+    final int radicand;
     
-    protected final int absRadicand;
+    final int absRadicand;
     
     /**
      * A rational approximation of either &radic;<i>d</i> for <i>d</i> positive 
      * or (&radic;<i>d</i>)/<i>i</i> for <i>d</i> negative.
      */
-    protected final double realRadSqrt;
+    final double realRadSqrt;
 
     /**
      * Should be true only if radicand is congruent to 1 modulo 4. Remember that 
      * &minus;3 &equiv; 1 mod 4; Java needs a little nudge on this.
      */
-    protected boolean d1mod4;
+    boolean d1mod4;
     
     /**
      * Indicates whether the ring has what are imprecisely called 
