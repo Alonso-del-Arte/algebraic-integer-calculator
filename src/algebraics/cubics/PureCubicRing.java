@@ -28,10 +28,16 @@ public class PureCubicRing extends CubicRing {
     
     final int radicand;
 
-    // TODO: Write tests for this
+    /**
+     * Affirms that this is a purely real ring. Even if <i>d</i> is negative, 
+     * &#8731;<i>d</i> is a real number and the extension 
+     * <b>Q</b>(&#8731;<i>d</i>) has neither nontrivially imaginary nor 
+     * nontrivially complex numbers.
+     * @return Always true for purely cubic rings.
+     */
     @Override
     public boolean isPurelyReal() {
-        return false;
+        return true;
     }
 
     // TODO: Write tests for this
