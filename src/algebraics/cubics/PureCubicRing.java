@@ -46,12 +46,19 @@ public class PureCubicRing extends CubicRing {
         return 0;
     }
 
-    // TODO: Write tests for this
+    /** WORK IN PROGRESS...
+     * Gets the power basis of this ring.
+     * @return If <i>d</i> is squarefree and not congruent to &plusmn;1 mod 9, 
+     * then this function returns {1, <i>a</i>, <i>a</i><sup>2</sup>}, where 
+     * <i>a</i> is &#8731;<i>d</i>. It also returns that for other <i>d</i>, but 
+     * that won't be the case once I get around to writing the appropriate 
+     * tests.
+     */
     @Override
     public PowerBasis getPowerBasis() {
-        Fraction fraction = new Fraction(1, 3);
-        Fraction[] array = {fraction};
-        return new PowerBasis(array);
+        Fraction fraction = new Fraction(1);
+        Fraction[] powerMultiplicands = {fraction, fraction, fraction};
+        return new PowerBasis(powerMultiplicands);
     }
     
     @Override
