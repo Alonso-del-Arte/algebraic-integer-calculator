@@ -20,6 +20,9 @@ import arithmetic.PowerBasis;
 
 import static calculators.EratosthenesSieve.randomPrime;
 import static calculators.EratosthenesSieve.randomPrimeOtherThan;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -33,12 +36,14 @@ import static org.testframe.api.Asserters.assertThrows;
 public class PureCubicRingTest {
     
     /**
-     * Test of isPurelyReal method, of class PureCubicRing.
+     * Test of the isPurelyReal function, of the PureCubicRing class.
      */
     @Test
-    public void testIsPurelyReal() {
+    public void testIsPurelyReal() {fail();
         System.out.println("isPurelyReal");
-        PureCubicRing instance = new PureCubicRing(2);
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
         boolean expResult = false;
         boolean result = instance.isPurelyReal();
         assertEquals(expResult, result);
@@ -72,6 +77,17 @@ public class PureCubicRingTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String expected = "Z[\u221B" + d + "]";
+        String actual = instance.toString();
+        assertEquals(expected, actual);
     }
 
     /**
