@@ -39,16 +39,14 @@ public class PureCubicRingTest {
      * Test of the isPurelyReal function, of the PureCubicRing class.
      */
     @Test
-    public void testIsPurelyReal() {fail();
+    public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
         int n = randomNumber(6) + 2;
-        int d = randomSquarefreeNumberMod(n, 9);
+        int signAdjust = Integer.signum(2 * randomNumber() + 1);
+        int d = signAdjust * randomSquarefreeNumberMod(n, 9);
         PureCubicRing instance = new PureCubicRing(d);
-        boolean expResult = false;
-        boolean result = instance.isPurelyReal();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String msg = "Ring " + instance.toString() + " should be purely real";
+        assert instance.isPurelyReal() : msg;
     }
 
     /**
