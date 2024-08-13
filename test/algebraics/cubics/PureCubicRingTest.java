@@ -23,6 +23,7 @@ import static calculators.EratosthenesSieve.randomPrimeOtherThan;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
+import fractions.Fraction;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -70,12 +71,15 @@ public class PureCubicRingTest {
     @Test
     public void testGetPowerBasis() {
         System.out.println("getPowerBasis");
-        PureCubicRing instance = new PureCubicRing(5);
-        PowerBasis expResult = null;
-        PowerBasis result = instance.getPowerBasis();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int n = randomNumber(6) + 2;
+        int signAdjust = Integer.signum(2 * randomNumber() + 1);
+        int d = signAdjust * randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        Fraction one = new Fraction(1);
+        Fraction[] powerMultiplicands = {one, one, one};
+        PowerBasis expected = new PowerBasis(powerMultiplicands);
+        PowerBasis actual = instance.getPowerBasis();
+        assertEquals(expected, actual);
     }
     
     @Test
