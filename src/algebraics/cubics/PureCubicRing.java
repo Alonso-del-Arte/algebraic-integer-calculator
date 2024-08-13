@@ -25,6 +25,8 @@ import fractions.Fraction;
  * @author Alonso del Arte
  */
 public class PureCubicRing extends CubicRing {
+    
+    final int radicand;
 
     // TODO: Write tests for this
     @Override
@@ -44,6 +46,11 @@ public class PureCubicRing extends CubicRing {
         Fraction fraction = new Fraction(1, 3);
         Fraction[] array = {fraction};
         return new PowerBasis(array);
+    }
+    
+    @Override
+    public String toString() {
+        return "Z[\u221B" + this.radicand + "]";
     }
 
     // TODO: Write tests for this
@@ -76,6 +83,7 @@ public class PureCubicRing extends CubicRing {
             String excMsg = "Number " + d + " is not cubefree";
             throw new IllegalArgumentException(excMsg);
         }
+        this.radicand = d;
     }
     
 }
