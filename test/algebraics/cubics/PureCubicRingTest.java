@@ -79,7 +79,8 @@ public class PureCubicRingTest {
         Fraction[] powerMultiplicands = {one, one, one};
         PowerBasis expected = new PowerBasis(powerMultiplicands);
         PowerBasis actual = instance.getPowerBasis();
-        assertEquals(expected, actual);
+        String message = "Reckoning power basis of " + instance.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
