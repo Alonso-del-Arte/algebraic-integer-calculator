@@ -265,50 +265,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
         setUpHeegnerList();
     }
     
-    /**
-     * Originally a test of sortListAlgebraicIntegersByNorm method, of class 
-     * NumberTheoreticFunctionsCalculator, which was deprecated and then 
-     * removed. Now it's a redundant test for {@link 
-     * algebraics.NormAbsoluteComparator}. If norms may be negative, the 
-     * algebraic integers should be sorted by the absolute value of the norm. No 
-     * expectation is laid out for what should happen if the algebraic integers 
-     * to be sorted come from different rings.
-     */
-    @Test
-    public void testSortListAlgebraicIntegersByNorm() {
-        System.out.println("sortListAlgebraicIntegersByNorm was deprecated and removed");
-        System.out.println("This test actually now uses algebraics.NormAbsoluteComparator");
-        QuadraticRing ring = new ImaginaryQuadraticRing(-7);
-        QuadraticInteger numberA = new ImaginaryQuadraticInteger(1, 0, ring); // Unit
-        QuadraticInteger numberB = new ImaginaryQuadraticInteger(-1, 1, ring, 2); // -1/2 + sqrt(-7)/2, norm 2
-        QuadraticInteger numberC = new ImaginaryQuadraticInteger(1, 2, ring); // 1 + 2sqrt(-7), norm 29
-        List<AlgebraicInteger> expected = new ArrayList<>();
-        expected.add(numberA);
-        expected.add(numberB);
-        expected.add(numberC);
-        List<AlgebraicInteger> actual = new ArrayList<>();
-        actual.add(numberC);
-        actual.add(numberA);
-        actual.add(numberB);
-        Comparator comparator = new NormAbsoluteComparator();
-        actual.sort(comparator);
-        assertEquals(expected, actual);
-        ring = new RealQuadraticRing(7);
-        numberA = new RealQuadraticInteger(8, 3, ring); // Unit
-        numberB = new RealQuadraticInteger(3, -1, ring); // 3 - sqrt(-7), norm 2
-        numberC = new RealQuadraticInteger(18, 7, ring); // 18 + 7sqrt(7), norm -19
-        expected.clear();
-        expected.add(numberA);
-        expected.add(numberB);
-        expected.add(numberC);
-        actual.clear();
-        actual.add(numberC);
-        actual.add(numberA);
-        actual.add(numberB);
-        actual.sort(comparator);
-        assertEquals(expected, actual);
-    }
-    
     @Test
     public void testMod() {
         System.out.println("mod");
