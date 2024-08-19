@@ -40,7 +40,6 @@ import static calculators.NumberTheoreticFunctionsCalculator.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +52,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
+import static org.testframe.api.Asserters.assertContainsSame;
 
 /**
  * Tests for a collection of number theoretic functions, including basic 
@@ -334,6 +335,19 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     + " is the wrong exception for " + n + " modulo 0";
             fail(message);
         }
+    }
+    
+    /**
+     * A test of the primeFactors function, of the 
+     * NumberTheoreticFunctionsCalculator class. Although 0 is not prime, it 
+     * should be regarded as such by the function under test just to keep things 
+     * simple and predictable.
+     */
+    @Test
+    public void testPrimeFactorsOfZero() {
+        List<Integer> expected = List.of(0);
+        List<Integer> actual = primeFactors(0);
+        assertContainsSame(expected, actual);
     }
     
     /**
