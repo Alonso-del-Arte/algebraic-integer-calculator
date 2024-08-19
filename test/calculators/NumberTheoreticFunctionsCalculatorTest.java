@@ -361,6 +361,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
         List<Integer> expected = List.of(-1);
         List<Integer> actual = primeFactors(-1);
         assertContainsSame(expected, actual);
+        String msg = "List of prime factors of \u22121 should have odd length";
+        assert actual.size() % 2 != 0 : msg;
     }
     
 //    public void testPrimeFactorsOfPositiveOne() {
