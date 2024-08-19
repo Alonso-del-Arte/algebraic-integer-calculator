@@ -341,7 +341,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * A test of the primeFactors function, of the 
      * NumberTheoreticFunctionsCalculator class. Although 0 is not prime, it 
      * should be regarded as such by the function under test just to keep things 
-     * simple and predictable.
+     * simple.
      */
     @Test
     public void testPrimeFactorsOfZero() {
@@ -349,6 +349,26 @@ public class NumberTheoreticFunctionsCalculatorTest {
         List<Integer> actual = primeFactors(0);
         assertContainsSame(expected, actual);
     }
+    
+    /**
+     * A test of the primeFactors function, of the 
+     * NumberTheoreticFunctionsCalculator class. Although &minus;1 is not prime, 
+     * it should be regarded as such by the function under test just to keep 
+     * things consistent with the results for other negative numbers.
+     */
+    @Test
+    public void testPrimeFactorsOfNegativeOne() {
+        List<Integer> expected = List.of(-1);
+        List<Integer> actual = primeFactors(-1);
+        assertContainsSame(expected, actual);
+    }
+    
+//    public void testPrimeFactorsOfPositiveOne() {
+//        List<Integer> expected = List.of(1);
+//        List<Integer> actual = primeFactors(1);
+//        if (actual.size())
+//        assertContainsSame(expected, actual);
+//    }
     
     /**
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
