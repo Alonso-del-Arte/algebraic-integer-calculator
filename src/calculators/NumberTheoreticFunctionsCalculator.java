@@ -282,10 +282,10 @@ public class NumberTheoreticFunctionsCalculator {
         if (n == 0 || n == 1) {
             factors.add(num);
         } else {
-//            if (n < 0) {
+            if (num < 0) {return List.of(-1, n);
 //                n *= (-1);
 //                factors.add(-1);
-//            }
+            }
             while (n % 2 == 0) {
                 factors.add(2);
                 n /= 2;
