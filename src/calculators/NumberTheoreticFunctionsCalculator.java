@@ -267,13 +267,20 @@ public class NumberTheoreticFunctionsCalculator {
      * negative number, the factorization starts with -1 followed by the 
      * factorization of its positive counterpart. For example, given num = 
      * -44100, the resulting list should be -1, 2, 2, 3, 3, 5, 5, 7, 7.
+     * <p>Special cases:</p>
+     * <ul>
+     * <li></li>
+     * <li>For 0, this function returns a list of one or more zeroes. This 
+     * behavior might change in a later version.</li>
+     * <li></li>
+     * </ul>
      * @since Version 0.1
      */
     public static List<Integer> primeFactors(int num) {
 //        int n = num;
         List<Integer> factors = new ArrayList<>();
 //        if (n == 0) {
-//            factors.add(0);
+            factors.add(0);
 //        } else {
 //            if (n < 0) {
 //                n *= (-1);
