@@ -380,6 +380,45 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    private static int chooseCompositeNumber() {
+        int c = 1;
+        int primeOmega = RANDOM.nextInt(3) + 2;
+        for (int i = 0; i < primeOmega; i++) {
+            c *= primesList.get(RANDOM.nextInt(primesListLength - i));
+        }
+        return c;
+    }
+    
+    private static List<Integer> factorizeByStaticList(int num) {
+        List<Integer> list = new ArrayList<>();
+        int index = 0;
+        while (num > 1 && index < primesListLength) {
+            int p = primesList.get(index);
+            if (num % p == 0) {
+                num /= p;
+                list.add(p);
+            } else {
+                index++;
+            }
+        }
+        return list;
+    }
+    
+    private static int productOf(List<Integer> numbers) {
+        return numbers.stream().reduce(1, (acc, n) -> acc * n);
+    }
+    
+    @Test
+    public void testPrimeFactors() {
+        System.out.println("primeFactors");
+        int num = chooseCompositeNumber();
+        List<Integer> expected = factorizeByStaticList(num);
+        List<Integer> actual = primeFactors(num);
+        String msg = "Reckoning prime factors of " + num;
+        assertContainsSame(expected, actual, msg);
+        assertEquals(num, productOf(actual));
+    }
+    
     /**
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
      * This test uses squares of primorials (4, 36, 900, 44100, etc.) and 
@@ -407,7 +446,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */@org.junit.Ignore
     // TODO: Break this test up into smaller tests
     @Test
-    public void testPrimeFactors() {
+    public void testPrimeFactors_REMOVE_AFTER_ALL_ELEMENTS_ADDRESSED_BY_SMALLER_TESTS() {
         System.out.println("primeFactors(int)");
         int num = 1;
         int primeIndex = 0;
