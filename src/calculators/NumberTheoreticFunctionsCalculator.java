@@ -277,12 +277,12 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.1
      */
     public static List<Integer> primeFactors(int num) {
-        int n = num;
+//        int n = num;
         List<Integer> factors = new ArrayList<>();
-        if (n == 0) {
-            factors.add(0);
-        } else {
-            factors.add(-1);
+//        if (n == 0) {
+//            factors.add(0);
+//        } else {
+            factors.add(num);
 //            if (n < 0) {
 //                n *= (-1);
 //                factors.add(-1);
@@ -297,7 +297,7 @@ public class NumberTheoreticFunctionsCalculator {
 //                    n /= i;
 //                }
 //            }
-        }
+//        }
         return factors;
     }
     
