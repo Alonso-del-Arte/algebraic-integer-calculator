@@ -419,6 +419,25 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertEquals(num, productOf(actual));
     }
     
+    @Test
+    public void testPrimeFactorsOfNegativePrime() {
+        int prime = -primesList.get(RANDOM.nextInt(primesListLength));
+        List<Integer> expected = List.of(-1, -prime);
+        List<Integer> actual = primeFactors(prime);
+        String msg = "Reckoning prime factors of \u2212" + (-prime);
+        assertContainsSame(expected, actual, msg);
+        assertEquals(prime, productOf(actual));
+    }
+    
+    public void testPrimeFactorsOfNegativeInteger() {
+        int num = chooseCompositeNumber();
+        List<Integer> expected = factorizeByStaticList(num);
+        List<Integer> actual = primeFactors(num);
+        String msg = "Reckoning prime factors of " + num;
+        assertContainsSame(expected, actual, msg);
+        assertEquals(num, productOf(actual));
+    }
+    
     /**
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
      * This test uses squares of primorials (4, 36, 900, 44100, etc.) and 
@@ -448,55 +467,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testPrimeFactors_REMOVE_AFTER_ALL_ELEMENTS_ADDRESSED_BY_SMALLER_TESTS() {
         System.out.println("primeFactors(int)");
-        int num = 1;
-        int primeIndex = 0;
-        List<Integer> result = new ArrayList<>();
-        List<Integer> expResult = new ArrayList<>();
-        boolean withinRange = true;
-        int lastNumTested = 1;
-        while (withinRange) {
-            num *= primesList.get(primeIndex);
-            expResult.add(primesList.get(primeIndex));
-            /* Check the number has not overflown the integer data type and that
-            we're not going beyond our finite list of primes */
-            withinRange = (num > 0 && num < Integer.MAX_VALUE) 
-                    && (primeIndex < primesListLength - 1);
-            if (withinRange) {
-                result = NumberTheoreticFunctionsCalculator.primeFactors(num);
-                assertEquals(result, expResult);
-                num *= -1; // Make num negative
-                expResult.add(0, -1);
-                result = NumberTheoreticFunctionsCalculator.primeFactors(num);
-                assertEquals(result, expResult);
-                lastNumTested = num;
-                num *= -1; // And back to positive
-                expResult.remove(0);
-                // Now to test factorization on the square of a primorial
-                num *= primesList.get(primeIndex);
-                expResult.add(primesList.get(primeIndex));
-                // Checking for integer data type overflow only at this point
-                withinRange = (num > 0 && num < Integer.MAX_VALUE);
-                if (withinRange) {
-                    result = NumberTheoreticFunctionsCalculator.primeFactors(num);
-                    assertEquals(result, expResult);
-                    num *= -1; // Make num negative
-                    expResult.add(0, -1);
-                    result = NumberTheoreticFunctionsCalculator.primeFactors(num);
-                    assertEquals(result, expResult);
-                    lastNumTested = num;
-                    num *= -1; // And back to positive
-                    expResult.remove(0);
-                }
-            }
-            primeIndex++;
-        }
-        System.out.print("Last integer in Z tested was " + lastNumTested 
-                + ", which has this factorization: " + result.get(0));
-        for (int i = 1; i < result.size(); i++) {
-            System.out.print(" \u00D7 ");
-            System.out.print(result.get(i));
-        }
-        System.out.println(" ");
+        fail("REMOVED THIS WHOLE SECTION");
         // Now to test primeFactors() on imaginary quadratic integers
         System.out.println("primeFactors(ImaginaryQuadraticInteger)");
         QuadraticRing r;
