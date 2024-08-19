@@ -365,12 +365,20 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assert actual.size() % 2 != 0 : msg;
     }
     
-//    public void testPrimeFactorsOfPositiveOne() {
-//        List<Integer> expected = List.of(1);
-//        List<Integer> actual = primeFactors(1);
-//        if (actual.size())
-//        assertContainsSame(expected, actual);
-//    }
+    /**
+     * A test of the primeFactors function, of the 
+     * NumberTheoreticFunctionsCalculator class. Although 1 is not prime, it may 
+     * be regarded as such if it's preferable to returning an empty list. But 
+     * returning an empty list is acceptable for passing this test.
+     */
+    @Test
+    public void testPrimeFactorsOfPositiveOne() {
+        List<Integer> expected = List.of(1);
+        List<Integer> actual = primeFactors(1);
+        if (!actual.isEmpty()) {
+            assertContainsSame(expected, actual);
+        }
+    }
     
     /**
      * Test of primeFactors method, of class NumberTheoreticFunctionsCalculator.
