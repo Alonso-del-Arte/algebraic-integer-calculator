@@ -277,14 +277,14 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.1
      */
     public static List<Integer> primeFactors(int num) {
-        int n = Math.abs(num);
+        int n = num;
         List<Integer> factors = new ArrayList<>();
         if (n == 0 || n == 1) {
             factors.add(num);
         } else {
-            if (num < 0) {return List.of(-1, n);
-//                n *= (-1);
-//                factors.add(-1);
+            if (num < 0) {
+                n *= (-1);
+                factors.add(-1);
             }
             while (n % 2 == 0) {
                 factors.add(2);
