@@ -380,13 +380,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
-    private static int chooseCompositeNumber() {
-        int c = 1;
-        int primeOmega = RANDOM.nextInt(3) + 2;
+    public static int chooseCompositeNumber() {
+        long check = 1;
+        int primeOmega = RANDOM.nextInt(8) + 2;
         for (int i = 0; i < primeOmega; i++) {
-            c *= primesList.get(RANDOM.nextInt(primesListLength - i));
+            int factor = primesList.get(RANDOM.nextInt(primesListLength - i));
+            check *= factor;
+            if (check > Integer.MAX_VALUE) {
+                check /= factor;
+                break;
+            }
         }
-        return c;
+        return (int) check;
     }
     
     private static List<Integer> factorizeByStaticList(int num) {
@@ -430,10 +435,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     public void testPrimeFactorsOfNegativeInteger() {
-        int num = chooseCompositeNumber();
-        List<Integer> expected = factorizeByStaticList(num);
+        int num = -chooseCompositeNumber();
+        List<Integer> positivePrimes = factorizeByStaticList(-num);
+        List<Integer> expected = new ArrayList<>(positivePrimes);
+        expected.add(-1);
         List<Integer> actual = primeFactors(num);
-        String msg = "Reckoning prime factors of " + num;
+        String msg = "Reckoning prime factors of \u2212" + (-num);
         assertContainsSame(expected, actual, msg);
         assertEquals(num, productOf(actual));
     }
