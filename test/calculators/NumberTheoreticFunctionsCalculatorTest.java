@@ -434,6 +434,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertEquals(prime, productOf(actual));
     }
     
+    @Test
     public void testPrimeFactorsOfNegativeInteger() {
         int num = -chooseCompositeNumber();
         List<Integer> positivePrimes = factorizeByStaticList(-num);
