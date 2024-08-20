@@ -277,26 +277,26 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.1
      */
     public static List<Integer> primeFactors(int num) {
-        int n = Math.abs(num);
+//        int n = Math.abs(num);
         List<Integer> factors = new ArrayList<>();
-        if (n == 0 || n == 1) {
-            factors.add(num);
-        } else {
-            if (num < 0) {return List.of(-1, n);
-//                n *= (-1);
-//                factors.add(-1);
-            }
-            while (n % 2 == 0) {
-                factors.add(2);
-                n /= 2;
-            }
-            for (int i = 3; i <= n; i += 2) {
-                while (n % i == 0) {
-                    factors.add(i);
-                    n /= i;
-                }
-            }
-        }
+//        if (n == 0 || n == 1) {
+//            factors.add(num);
+//        } else {
+//            if (num < 0) {return List.of(-1, n);
+////                n *= (-1);
+////                factors.add(-1);
+//            }
+//            while (n % 2 == 0) {
+//                factors.add(2);
+//                n /= 2;
+//            }
+//            for (int i = 3; i <= n; i += 2) {
+//                while (n % i == 0) {
+//                    factors.add(i);
+//                    n /= i;
+//                }
+//            }
+//        }
         return factors;
     }
     
