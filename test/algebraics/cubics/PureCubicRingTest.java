@@ -137,18 +137,19 @@ public class PureCubicRingTest {
     }
 
     /**
-     * Test of toHTMLString method, of class PureCubicRing.
+     * Test of the toHTMLString function, of the PureCubicRing class.
      */
-    @org.junit.Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        PureCubicRing instance = new PureCubicRing(10);
-        String expResult = "";
-        String result = instance.toHTMLString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String expected = "<b>Z</b>[&#x221B;" + d + "]";
+        String actual = instance.toHTMLString()
+                .replace("&#x221b;", "&#x221B;")
+                .replace("&#8731;", "&#x221B;");
+        assertEquals(expected, actual);
     }
 
     /**
