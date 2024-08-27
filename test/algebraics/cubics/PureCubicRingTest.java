@@ -109,7 +109,7 @@ public class PureCubicRingTest {
     }
 
     /**
-     * Test of toTeXString function, of the PureCubicRing class.
+     * Test of the toTeXString function, of the PureCubicRing class.
      */
     @Test
     public void testToTeXString() {
@@ -119,6 +119,20 @@ public class PureCubicRingTest {
         PureCubicRing instance = new PureCubicRing(d);
         String expected = "\\textbf Z[\\root 3 \\of {" + d + "}]";
         String actual = instance.toTeXString();
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the toTeXString function, of the PureCubicRing class.
+     */
+    @Test
+    public void testToTeXStringBlackboardBold() {
+        System.out.println("toTeXStringBlackboardBold");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String expected = "\\mathbb Z[\\root 3 \\of {" + d + "}]";
+        String actual = instance.toTeXStringBlackboardBold();
         assertEquals(expected, actual);
     }
 
