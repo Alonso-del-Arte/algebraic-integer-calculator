@@ -93,6 +93,9 @@ public class PureCubicRingTest {
         String actual = instance.toString();
         assertEquals(expected, actual);
     }
+    
+    // TODO: Write toString() tests for d not squarefree (though still 
+    // cubefree), negative d
 
     /**
      * Test of the toASCIIString function, of the PureCubicRing class.
@@ -108,6 +111,9 @@ public class PureCubicRingTest {
         assertEquals(expected, actual);
     }
 
+    // TODO: Write toASCIIString() tests for d not squarefree (though still 
+    // cubefree), negative d
+
     /**
      * Test of the toTeXString function, of the PureCubicRing class.
      */
@@ -121,6 +127,9 @@ public class PureCubicRingTest {
         String actual = instance.toTeXString();
         assertEquals(expected, actual);
     }
+
+    // TODO: Write toTeXString() tests for d not squarefree (though still 
+    // cubefree), negative d
 
     /**
      * Test of the toTeXStringBlackboardBold function, of the PureCubicRing 
@@ -137,6 +146,9 @@ public class PureCubicRingTest {
         assertEquals(expected, actual);
     }
 
+    // TODO: Write toTeXStringBlackboardBold() tests for d not squarefree 
+    // (though still cubefree), negative d
+
     /**
      * Test of the toHTMLString function, of the PureCubicRing class.
      */
@@ -152,6 +164,9 @@ public class PureCubicRingTest {
                 .replace("&#8731;", "&#x221B;");
         assertEquals(expected, actual);
     }
+
+    // TODO: Write toHTMLString() tests for d not squarefree (though still 
+    // cubefree), negative d
 
     /**
      * Test of the toHTMLStringBlackboardBold function, of the PureCubicRing 
@@ -171,21 +186,26 @@ public class PureCubicRingTest {
         assertEquals(expected, actual);
     }
 
+    // TODO: Write toHTMLStringBlackboardBold() tests for d not squarefree 
+    // (though still cubefree), negative d
+
     /**
-     * Test of toFilenameString method, of class PureCubicRing.
+     * Test of the toFilenameString function, of the PureCubicRing class.
      */
-    @org.junit.Ignore
     @Test
     public void testToFilenameString() {
         System.out.println("toFilenameString");
-        PureCubicRing instance = new PureCubicRing(11);
-        String expResult = "";
-        String result = instance.toFilenameString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String expected = "ZCBRT" + d;
+        String actual = instance.toFilenameString();
+        assertEquals(expected, actual);
     }
     
+    // TODO: Write toFilenameString() tests for d not squarefree (though still 
+    // cubefree), negative d
+
     @Test
     public void testConstructorRejectsCubefullNumber() {
         int p = randomPrime(Byte.MAX_VALUE);
