@@ -81,10 +81,9 @@ public class PureCubicRing extends CubicRing {
         return "\\mathbb Z[\\root 3 \\of {" + this.radicand + "}]";
     }
 
-    // TODO: Write tests for this
     @Override
     public String toHTMLString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "<b>Z</b>[&#x221B;" + this.radicand + "]";
     }
 
     // TODO: Write tests for this
