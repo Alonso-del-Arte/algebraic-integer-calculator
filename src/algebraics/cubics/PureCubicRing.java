@@ -76,6 +76,11 @@ public class PureCubicRing extends CubicRing {
         return "\\textbf Z[\\root 3 \\of {" + this.radicand + "}]";
     }
 
+    @Override
+    public String toTeXStringBlackboardBold() {
+        return "\\mathbb Z[\\root 3 \\of {" + this.radicand + "}]";
+    }
+
     // TODO: Write tests for this
     @Override
     public String toHTMLString() {
