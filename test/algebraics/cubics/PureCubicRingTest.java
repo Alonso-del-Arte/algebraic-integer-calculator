@@ -123,7 +123,8 @@ public class PureCubicRingTest {
     }
 
     /**
-     * Test of the toTeXString function, of the PureCubicRing class.
+     * Test of the toTeXStringBlackboardBold function, of the PureCubicRing 
+     * class.
      */
     @Test
     public void testToTeXStringBlackboardBold() {
@@ -147,6 +148,24 @@ public class PureCubicRingTest {
         PureCubicRing instance = new PureCubicRing(d);
         String expected = "<b>Z</b>[&#x221B;" + d + "]";
         String actual = instance.toHTMLString()
+                .replace("&#x221b;", "&#x221B;")
+                .replace("&#8731;", "&#x221B;");
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Test of the toHTMLStringBlackboardBold function, of the PureCubicRing 
+     * class.
+     */
+    @Test
+    public void testToHTMLStringBlackboardBold() {
+        System.out.println("toHTMLStringBlackboardBold");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String expected = "&#x2124;[&#x221B;" + d + "]";
+        String actual = instance.toHTMLStringBlackboardBold()
+                .replace("&#8484;", "&#x2124;")
                 .replace("&#x221b;", "&#x221B;")
                 .replace("&#8731;", "&#x221B;");
         assertEquals(expected, actual);
