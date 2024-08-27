@@ -109,18 +109,17 @@ public class PureCubicRingTest {
     }
 
     /**
-     * Test of toTeXString method, of class PureCubicRing.
+     * Test of toTeXString function, of the PureCubicRing class.
      */
-    @org.junit.Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-        PureCubicRing instance = new PureCubicRing(7);
-        String expResult = "";
-        String result = instance.toTeXString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String expected = "\\textbf Z[\\root 3 \\of {" + d + "}]";
+        String actual = instance.toTeXString();
+        assertEquals(expected, actual);
     }
 
     /**
