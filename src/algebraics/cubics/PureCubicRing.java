@@ -66,10 +66,9 @@ public class PureCubicRing extends CubicRing {
         return "Z[\u221B" + this.radicand + "]";
     }
 
-    // TODO: Write tests for this
     @Override
     public String toASCIIString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "Z[cbrt(" + this.radicand + ")]";
     }
 
     // TODO: Write tests for this
