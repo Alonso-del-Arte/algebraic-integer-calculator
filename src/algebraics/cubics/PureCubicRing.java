@@ -71,10 +71,9 @@ public class PureCubicRing extends CubicRing {
         return "Z[cbrt(" + this.radicand + ")]";
     }
 
-    // TODO: Write tests for this
     @Override
     public String toTeXString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "\\textbf Z[\\root 3 \\of {" + this.radicand + "}]";
     }
 
     // TODO: Write tests for this
