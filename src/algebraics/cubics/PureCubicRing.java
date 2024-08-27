@@ -91,10 +91,9 @@ public class PureCubicRing extends CubicRing {
         return "&#x2124;[&#x221B;" + this.radicand + "]";
     }
 
-    // TODO: Write tests for this
     @Override
     public String toFilenameString() {
-        return "NOT_IMPL.YET";
+        return "ZCBRT" + this.radicand;
     }
     
     // TODO: Write tests for this
