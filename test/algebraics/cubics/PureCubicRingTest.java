@@ -66,7 +66,7 @@ public class PureCubicRingTest {
     }
 
     /**
-     * Test of getPowerBasis method, of class PureCubicRing.
+     * Test of the getPowerBasis function, of the PureCubicRing class.
      */
     @Test
     public void testGetPowerBasis() {
@@ -95,18 +95,17 @@ public class PureCubicRingTest {
     }
 
     /**
-     * Test of toASCIIString method, of class PureCubicRing.
+     * Test of the toASCIIString function, of the PureCubicRing class.
      */
-    @org.junit.Ignore
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        PureCubicRing instance = new PureCubicRing(6);
-        String expResult = "";
-        String result = instance.toASCIIString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String expected = "Z[cbrt(" + d + ")]";
+        String actual = instance.toASCIIString();
+        assertEquals(expected, actual);
     }
 
     /**
