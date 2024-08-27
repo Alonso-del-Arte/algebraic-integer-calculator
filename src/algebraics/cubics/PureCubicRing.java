@@ -86,6 +86,11 @@ public class PureCubicRing extends CubicRing {
         return "<b>Z</b>[&#x221B;" + this.radicand + "]";
     }
 
+    @Override
+    public String toHTMLStringBlackboardBold() {
+        return "&#x2124;[&#x221B;" + this.radicand + "]";
+    }
+
     // TODO: Write tests for this
     @Override
     public String toFilenameString() {
