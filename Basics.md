@@ -1,5 +1,8 @@
 # The Basics of Algebraic Number Theory
 
+In this document, I will try to explain the mathematical concepts involved in 
+this project as simply as I can. I'm not aiming for mathematical rigor.
+
 ## The concept of algebraic integers
 
 When we just refer to **integers**, we're referring to the numbers that are 
@@ -13,7 +16,13 @@ Joining $\mathbb Z^-$ and $\mathbb Z^+$ with $0$ gives us $\mathbb Z$. Each $n
 \in \mathbb Z$ is a solution to $x$ to the rather unremarkable equation $x - n = 
 0$, in which of course $x = n$.
 
-Something more interesting happens when, given some integer $n \gt 1$, we 
+This infinite collection of integers that is $\mathbb Z$ forms a ring that is 
+"closed under" addition and "closed under" multiplication. This means that if 
+$a$ and $b$ are in $\mathbb Z$, then their sum $a + b$ and their product $ab$ 
+are also in $\mathbb Z$. This might seem trivial and obvious, but it is very 
+helpful as we try to generalize the concept of integers to other domains.
+
+Something much more interesting happens when, given some integer $n \gt 1$, we 
 construct an equation $$x^n + \sum_{i = 0}^{n - 1} a_i x^i = 0,$$ where the 
 $a_i$ are regular integers, but almost certainly the solution $x$ is not a 
 regular integer or even a rational number.
@@ -26,9 +35,64 @@ For example, one solution of $x^3 - 3x^2 + 3x - 19 = 0$ is $$1 + \frac{{\root 3
 \of {12}}^2}{2}.$$ Thanks to the fundamental theorem of algebra, we know that 
 that equation has three solutions.
 
-**Quadratic integers** are algebraic integers of degree 2, and they're much 
-easier to understand and reckon than algebraic integers of degree 3 or higher. 
-For the time being, this algebraic integer calculator will be limited to unary 
-and quadratic integers.
+An algebraic integer belongs to infinitely many rings, at least one of degree 
+$n$ and infinitely many of degrees that are nontrivial positive multiples of 
+$n$. For example, the numbers of $\mathbb Z$ are also included in all other 
+rings of algebraic integers.
+
+## Rings of higher degree
+
+### Degree 2
+
+**Quadratic integers** are algebraic integers of degree 2, they're solutions to 
+equations of the form $x^2 - Tx + N = 0$. The numbers $T$ and $N$ are plain but 
+important integers that will be explained later on. Quadratic integers are much 
+easier to understand and reckon than algebraic integers of degree 3 or higher.
+
+Given a squarefree integer $d$, a number that is not divisible by any of the 
+perfect squares 4, 9, 16, 25, 36, 49, etc., the number $\sqrt d$ is an algebraic 
+integer that is a solution to the equation $x^2 - d = 0$. For example, 
+$\sqrt{14}$ is one solution to $x^2 - 14 = 0$ (the other is $-\sqrt{14}$).
+
+The number $\sqrt d$ belongs to a ring that also includes the numbers of 
+$\mathbb Z$, as for example, $d$ is as much a solution to $x^2 - d^2 = 0$ as it 
+is a solution to the lower degree equation $x - d = 0$.
+
+Therefore, if $a$ and $b$ are plain integers, all numbers of the form $a + b 
+\sqrt d$ are also in a ring that is sometimes notated as $\mathbb Z[\sqrt d]$.
+
+An algebraic integer of degree $n$ has $n - 1$ conjugates. This means that each 
+quadratic integer has precisely one conjugate.
+
+The **trace** of an algebraic integer is the sum of all the roots of the 
+characteristic polynomial, the **characteristic polynomial** being the equation, 
+without the "= 0" part, of lowest degree for which the algebraic integer is a 
+solution. In the case of quadratic integers of the form $a + b \sqrt d$, the 
+trace $T = 2a$.
+
+(FINISH WRITING)
+
+### Degree 3
+
+There are considerably many more kinds of cubic rings than there are quadratic 
+rings.
+
+First we'll deal with pure cubic rings. A **pure cubic ring** arises from 
+joining $\root 3 \of d$ to $\mathbb Z$, where $d$ is cubefree but not 
+necessarily squarefree.
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
+### Degree 4
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
+(FINISH WRITING)
 
 (FINISH WRITING)
