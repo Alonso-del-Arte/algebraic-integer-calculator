@@ -40,6 +40,21 @@ $n$ and infinitely many of degrees that are nontrivial positive multiples of
 $n$. For example, the numbers of $\mathbb Z$ are also included in all other 
 rings of algebraic integers.
 
+## Real, imaginary and complex numbers
+
+All numbers are real in the sense that they exist and we can perform 
+arithmetical operations on them. The terms "real," "imaginary" and "complex" 
+arise from misunderstandings from long ago and are now too entrenched to change.
+
+By this long-standing terminology, a **real number** is either a number from 
+$\mathbb Z$ or a number that is somewhere on a straight line between two 
+consecutive numbers from $\mathbb Z$. Every real number is a solution to an 
+equation $x^n - d = 0$ where $n$ is a positive even integer. For example, $x = 
+\root 8 \of 7$ is one solution to $x^8 - 7 = 0$.
+
+But an equation $x^n + d = 0$ with $n$ a positive even integer seems to not have 
+any solutions in real numbers. For example, $x^2 + 7$ (FINISH WRITING)
+
 ## Rings of higher degree
 
 ### Degree 2
