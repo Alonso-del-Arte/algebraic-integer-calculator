@@ -40,6 +40,15 @@ $n$ and infinitely many of degrees that are nontrivial positive multiples of
 $n$. For example, the numbers of $\mathbb Z$ are also included in all other 
 rings of algebraic integers.
 
+## Arithmetic on positive, negative integers
+
+Obviously a positive number times a positive number is also a positive number. 
+And a positive number times a negative number is a negative number. From this it 
+follows that a negative number times a negative number is a positive number, but 
+this is a conceptual hurdle to lots of people and requires a bit of explanation. 
+
+(FINISH WRITING)
+
 ## Real, imaginary and complex numbers
 
 All numbers are real in the sense that they exist and we can perform 
