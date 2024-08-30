@@ -74,6 +74,18 @@ is one solution to $x^8 - 7 = 0$.
 But an equation $x^n + d = 0$ with $n$ a positive even integer seems to not have 
 any solutions in real numbers. For example, $x^2 + 7$ (FINISH WRITING)
 
+## Divisibility
+
+Just as with $\mathbb Z$, all the rings that will be discussed below are closed 
+under addition and closed under multiplication. But they're not closed under 
+division.
+
+We can restate this thus: given a ring $R$, if $a \in R$ and $b \in R$, then $a 
++ b \in R$ and $ab \in R$, but $\frac{a}{b}$ and $\frac{b}{a}$ might be outside 
+$R$.
+
+For example, 7 and 22 are numbers in $\mathbb Z$, (FINISH WRITING)
+
 ## Rings of higher degree
 
 ### Degree 2
