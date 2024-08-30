@@ -66,9 +66,10 @@ arise from misunderstandings from long ago and are now too entrenched to change.
 
 By this long-standing terminology, a **real number** is either a number from 
 $\mathbb Z$ or a number that is somewhere on a straight line between two 
-consecutive numbers from $\mathbb Z$. Every real number is a solution to an 
-equation $x^n - d = 0$ where $n$ is a positive even integer. For example, $x = 
-\root 8 \of 7$ is one solution to $x^8 - 7 = 0$.
+consecutive numbers from $\mathbb Z$. Every integer $d$ from $\mathbb Z^+$ 
+figures in an equation of the form $x^n - d = 0$ where $n$ is a positive even 
+integer. Each such equation has $n$ solutions. For example, $x = \root 8 \of 7$ 
+is one solution to $x^8 - 7 = 0$.
 
 But an equation $x^n + d = 0$ with $n$ a positive even integer seems to not have 
 any solutions in real numbers. For example, $x^2 + 7$ (FINISH WRITING)
