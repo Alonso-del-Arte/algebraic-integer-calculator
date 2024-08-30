@@ -40,14 +40,23 @@ $n$ and infinitely many of degrees that are nontrivial positive multiples of
 $n$. For example, the numbers of $\mathbb Z$ are also included in all other 
 rings of algebraic integers.
 
-## Arithmetic on positive, negative integers
+## Arithmetic on positive, negative numbers
 
 Obviously a positive number times a positive number is also a positive number. 
 And a positive number times a negative number is a negative number. From this it 
 follows that a negative number times a negative number is a positive number, but 
-this is a conceptual hurdle to lots of people and requires a bit of explanation. 
+this is a conceptual hurdle to lots of people and requires a bit of explanation.
 
-(FINISH WRITING)
+Multiplication is repeated addition. For example, 5 &times; 7 = 35, which we can 
+verify as 0 + 5 + 5 + 5 + 5 + 5 + 5 + 5 and 0 + 7 + 7 + 7 + 7 + 7. 
+
+Likewise, both &minus;5 &times; 7 and &minus;7 &times; 5 equal &minus;35. We can 
+verify that as, for example, 0 &minus; 5 &minus; 5 &minus; 5 &minus; 5 &minus; 5 
+&minus; 5 &minus; 5. But if both multiplicands are negative, this goes in the 
+other direction, to positive numbers.
+
+I felt it necessary to go over these basic facts because they are consequential 
+for many rings of algebraic integers.
 
 ## Real, imaginary and complex numbers
 
