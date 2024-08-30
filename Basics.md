@@ -85,15 +85,15 @@ easier to understand and reckon than algebraic integers of degree 3 or higher.
 
 Given a squarefree integer $d$, a number that is not divisible by any of the 
 perfect squares 4, 9, 16, 25, 36, 49, etc., the number $\sqrt d$ is an algebraic 
-integer that is a solution to the equation $x^2 - d = 0$. For example, 
-$\sqrt{14}$ is one solution to $x^2 - 14 = 0$ (the other is $-\sqrt{14}$).
+integer that is a solution to the equation $x^2 - d = 0$, and it belongs to a 
+ring of algebraic integers that includes lots of numbers besides the numbers of 
+$\mathbb Z$. For example, $\sqrt{14}$ is one solution to $x^2 - 14 = 0$ (the 
+other is $-\sqrt{14}$).
 
-The number $\sqrt d$ belongs to a ring that also includes the numbers of 
-$\mathbb Z$, as for example, $d$ is as much a solution to $x^2 - d^2 = 0$ as it 
-is a solution to the lower degree equation $x - d = 0$.
-
-Therefore, if $a$ and $b$ are plain integers, all numbers of the form $a + b 
-\sqrt d$ are also in a ring that is sometimes notated as $\mathbb Z[\sqrt d]$.
+By adding $\sqrt d$ to itself and to the integers of $\mathbb Z$, we obtain all 
+or some of the numbers of a ring sometimes notated as $\mathbb Z[\sqrt d]$. 
+These are numbers of the form $a + b \sqrt d$, where $a$ and $b$ come from 
+$\mathbb Z$.
 
 An algebraic integer of degree $n$ has $n - 1$ conjugates. This means that each 
 quadratic integer has precisely one conjugate.
