@@ -84,7 +84,25 @@ We can restate this thus: given a ring $R$, if $a \in R$ and $b \in R$, then $a
 + b \in R$ and $ab \in R$, but $\frac{a}{b}$ and $\frac{b}{a}$ might be outside 
 $R$.
 
-For example, 7 and 22 are numbers in $\mathbb Z$, (FINISH WRITING)
+For example, 7 and 22 are numbers in $\mathbb Z$, and we see that 7 + 22 = 29 
+and 7 &times; 22 = 164 are also in $\mathbb Z$. Clearly 164 is divisible by both 
+7 and 22.
+
+But neither $\frac{7}{22}$ nor $\frac{22}{7}$ are in $\mathbb Z$. Then we say 22 
+is not divisible by 7 and 7 is not divisible by 22.
+
+### Zero and units
+
+Every ring we will be discussing in this document has the number 0. No number is 
+divisible by zero, but zero is divisible by all numbers other than itself. Zero 
+is the additive identity. Given any number $x$, we see that $x + 0 = x$.
+
+And then there are the units, which are numbers that every number in the ring is 
+divisible by. (FINISH WRITING)
+
+### Irreducible numbers and prime numbers
+
+(FINISH WRITING)
 
 ## Rings of higher degree
 
@@ -116,7 +134,7 @@ without the "= 0" part, of lowest degree for which the algebraic integer is a
 solution. In the case of quadratic integers of the form $a + b \sqrt d$, the 
 trace $T = 2a$.
 
-(FINISH WRITING)
+The **norm** of an algebraic integer (FINISH WRITING)
 
 ### Degree 3
 
