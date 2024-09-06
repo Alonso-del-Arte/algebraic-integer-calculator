@@ -134,7 +134,12 @@ without the "= 0" part, of lowest degree for which the algebraic integer is a
 solution. In the case of quadratic integers of the form $a + b \sqrt d$, the 
 trace $T = 2a$.
 
-The **norm** of an algebraic integer (FINISH WRITING)
+The **norm** of an algebraic integer is the product of itself times its 
+conjugates, which is just two numbers in the case of a quadratic integer. The 
+norm is useful for comparing numbers that might not all be on the same straight 
+line. The norm of a quadratic integer $a + b \sqrt d$ is $a^2 - db^2$.
+
+Both the trace and the norm figure in the (FINISH WRITING)
 
 ### Degree 3
 
