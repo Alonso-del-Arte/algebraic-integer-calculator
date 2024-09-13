@@ -98,7 +98,19 @@ divisible by zero, but zero is divisible by all numbers other than itself. Zero
 is the additive identity. Given any number $x$, we see that $x + 0 = x$.
 
 And then there are the units, which are numbers that every number in the ring is 
-divisible by. (FINISH WRITING)
+divisible by. In $\mathbb Z$, the units are &minus;1 and 1, which correspond to 
+the equations $x + 1 = 0$ and $x - 1 = 0$.
+
+The number 1 is the multiplicative identity. Given any number $x$, we see that 
+$x \times 1 = x$.
+
+A number multiplied by a unit is an **associate** of that number. For example, 
+47 multiplied by &minus;1 is &minus;47, and so &minus;47 is an associate of 47, 
+and vice-versa.
+
+Multiplying a nonzero number by a unit other than 1 gives a different number, 
+but the equations are similar. In the previous example, 47 is the solution to $x 
+- 47 = 0$, and &minus;47 is the solution to $x + 47 = 0$.
 
 ### Irreducible numbers and prime numbers
 
