@@ -106,13 +106,23 @@ $x \times 1 = x$.
 
 A number multiplied by a unit is an **associate** of that number. For example, 
 47 multiplied by &minus;1 is &minus;47, and so &minus;47 is an associate of 47, 
-and vice-versa.
+and vice-versa. A number is trivially its own associate.
 
 Multiplying a nonzero number by a unit other than 1 gives a different number, 
 but the equations are similar. In the previous example, 47 is the solution to $x 
 - 47 = 0$, and &minus;47 is the solution to $x + 47 = 0$.
 
 ### Irreducible numbers and prime numbers
+
+Most numbers in a ring are divisible by a few other numbers in that ring and not 
+divisible by any other numbers in that ring.
+
+If a number is divisible only by units and associates, then it is said to be 
+**irreducible**. For example, &minus;47 is irreducible, as it's divisible only 
+by itself, &minus;1, 1 and 47.
+
+The definition of irreducible might sound familiar, and you might think that 
+it's
 
 (FINISH WRITING)
 
