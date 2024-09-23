@@ -33,6 +33,8 @@ import java.util.Random;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the class QuadraticInteger. Since this is an abstract class and the 
  * test classes for the derived classes have a lot of the pertinent tests, this 
@@ -186,6 +188,7 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusArithmeticOverflowImag() {
+        fail("REWRITE USING ASSERT THROWS");
         ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(-R_D);
         ImaginaryQuadraticInteger addendA = new ImaginaryQuadraticInteger(1, 
                 Integer.MAX_VALUE, ring);
@@ -205,10 +208,10 @@ public class QuadraticIntegerTest {
                     + " correctly triggered ArithmeticException");
             System.out.println("\"" + ae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for trying to add " 
                     + addendA.toString() + " to " + addendB.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -220,6 +223,7 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusArithmeticOverflowReal() {
+        fail("REWRITE USING ASSERT THROWS");
         RealQuadraticRing ring = new RealQuadraticRing(R_D);
         RealQuadraticInteger addendA = new RealQuadraticInteger(1, 
                 Integer.MAX_VALUE, ring);
@@ -255,6 +259,7 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusIntArithmeticOverflowImag() {
+        fail("REWRITE USING ASSERT THROWS");
         ImaginaryQuadraticRing ring = new ImaginaryQuadraticRing(-7);
         ImaginaryQuadraticInteger addendA 
                 = new ImaginaryQuadraticInteger(Integer.MAX_VALUE, 13, ring, 2);
@@ -289,6 +294,7 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusIntArithmeticOverflowReal() {
+        fail("REWRITE USING ASSERT THROWS");
         RealQuadraticRing ring = new RealQuadraticRing(5);
         RealQuadraticInteger addendA 
                 = new RealQuadraticInteger(Integer.MIN_VALUE + 1, 13, ring, 2);
@@ -320,6 +326,7 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusUnsupportedCausesException() {
+        fail("REWRITE USING ASSERT THROWS");
         try {
             QuadraticInteger sum = ILL_DEF_INT_A.plus(ILL_DEF_INT_B);
             String message = "Trying to add " + ILL_DEF_INT_A.toString() 
@@ -348,6 +355,8 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testPlusUnaryAsQuadGivesResult() {
+        fail("REWRITE WITH ASSERT THROWS");
+        fail("BREAK UP INTO SMALLER TESTS");
         QuadraticRing ring = new ImaginaryQuadraticRing(-15);
         ImaginaryQuadraticInteger unaryAddend = new ImaginaryQuadraticInteger(3, 
                 0, ring);
@@ -360,8 +369,8 @@ public class QuadraticIntegerTest {
             actual = unaryAddend.plus(quadraticAddend);
             assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String message = "Exception should not have occurred for trying to add " 
-                    + unaryAddend.toString() + " to " 
+            String message = "Exception shouldn't've occurred for trying " 
+                    + unaryAddend.toString() + " plus " 
                     + quadraticAddend.toString();
             System.out.println(unaryAddend.toASCIIString() 
                     + " is of algebraic degree " 
@@ -411,6 +420,7 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testMinusUnsupportedCausesException() {
+        fail("REWRITE WITH ASSERT THROWS, and with QuadraticIntegerImpl");
         QuadraticInteger subtraction;
         try {
             subtraction = ILL_DEF_INT_A.minus(ILL_DEF_INT_B);
@@ -418,13 +428,14 @@ public class QuadraticIntegerTest {
                     + ILL_DEF_INT_B.toASCIIString() + " from " 
                     + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " 
                     + subtraction.toASCIIString());
-            fail("Trying to subtract one ill-defined quadratic integer from another should have caused UnsupportedNumberDomainException.");
+            fail("Trying to subtract one ill-defined quadratic ...");
         } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException correctly triggered for attempted subtraction.");
+            System.out.println("UnsupportedNumberDomainException ...");
             System.out.println("Message: " + unde.getMessage());
         } catch (Exception e) {
-            String msg = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(msg);
+            String message = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(message);
         }
         try {
             subtraction = ILL_DEF_INT_B.minus(ILL_DEF_INT_A);
@@ -432,13 +443,14 @@ public class QuadraticIntegerTest {
                     + ILL_DEF_INT_A.toASCIIString() + " from " 
                     + ILL_DEF_INT_B.toASCIIString() + " somehow resulted in " 
                     + subtraction.toASCIIString() + ".");
-            fail("Trying to subtract one ill-defined quadratic integer from another should have caused UnsupportedNumberDomainException.");
+            fail("Trying to subtract one ill-defined quadratic ...");
         } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException correctly triggered for attempted subtraction.");
+            System.out.println("UnsupportedNumberDomainException ...");
             System.out.println("Message: " + unde.getMessage());
         } catch (Exception e) {
-            String msg = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(msg);
+            String message = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(message);
         }
     }
 
@@ -451,18 +463,20 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testMinusUnaryAsQuadGivesResult() {
-        System.out.println("Testing that subtracting an unary integer presented as a quadratic integer gives correct result even if invoked ring is different");
+        fail("REWRITE WITH ASSERT THROWS, also more randomness; breakup");
         QuadraticRing ring = new ImaginaryQuadraticRing(-15);
-        ImaginaryQuadraticInteger unaryMinuend = new ImaginaryQuadraticInteger(3, 0, ring);
+        ImaginaryQuadraticInteger unaryMinuend 
+                = new ImaginaryQuadraticInteger(3, 0, ring);
         ring = new RealQuadraticRing(97);
-        QuadraticInteger quadraticSubtrahend = new RealQuadraticInteger(5, 1, ring, 2);
-        QuadraticInteger expResult = new RealQuadraticInteger(1, -1, ring, 2);
-        QuadraticInteger result;
+        QuadraticInteger quadraticSubtrahend = new RealQuadraticInteger(5, 1, 
+                ring, 2);
+        QuadraticInteger expected = new RealQuadraticInteger(1, -1, ring, 2);
+        QuadraticInteger actual;
         try {
-            result = unaryMinuend.minus(quadraticSubtrahend);
-            assertEquals(expResult, result);
+            actual = unaryMinuend.minus(quadraticSubtrahend);
+            assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String msg = "AlgebraicDegreeOverflowException should not have occurred for trying to subtract " 
+            String msg = "AlgDegOverExc shouldn't've occurred for subtracting " 
                     + quadraticSubtrahend.toString() + " from " 
                     + unaryMinuend.toString();
             System.out.println(msg);
@@ -483,12 +497,12 @@ public class QuadraticIntegerTest {
         }
         ring = new ImaginaryQuadraticRing(-2);
         quadraticSubtrahend = new ImaginaryQuadraticInteger(5, 2, ring);
-        expResult = new ImaginaryQuadraticInteger(-2, -2, ring);
+        expected = new ImaginaryQuadraticInteger(-2, -2, ring);
         try {
-            result = unaryMinuend.minus(quadraticSubtrahend);
-            assertEquals(expResult, result);
+            actual = unaryMinuend.minus(quadraticSubtrahend);
+            assertEquals(expected, actual);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String msg = "AlgebraicDegreeOverflowException should not have occurred for trying to subtract " 
+            String message = "AlgebraicDegreeOverflowException should not ... " 
                     + quadraticSubtrahend.toString() + " from " 
                     + unaryMinuend.toString();
             System.out.println(unaryMinuend.toASCIIString() 
@@ -498,13 +512,13 @@ public class QuadraticIntegerTest {
                     + " is of algebraic degree " 
                     + quadraticSubtrahend.algebraicDegree());
             System.out.println("\"" + adoe.getMessage() + "\"");
-            fail(msg);
+            fail(message);
         } catch (Exception e) {
-            String msg = e.getClass().getName() 
+            String message = e.getClass().getName() 
                     + " should not have occurred for trying to subtract " 
                     + quadraticSubtrahend.toString() + " from " 
                     + unaryMinuend.toString();
-            fail(msg);
+            fail(message);
         }
     }
         
@@ -515,7 +529,7 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testTimesUnsupportedCausesException() {
-        System.out.println("Testing that times on unsupported quadratic integers causes the appropriate exception");
+        fail("REWRITE WITH ASSERT THROWS");
         QuadraticInteger product;
         try {
             product = ILL_DEF_INT_A.times(ILL_DEF_INT_B);
@@ -524,12 +538,12 @@ public class QuadraticIntegerTest {
                     + " somehow resulted in " + product.toString();
             fail(msg);
         } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException correctly triggered for attempted multiplication.");
+            System.out.println("UnsupportedNumberDomainException ...");
             System.out.println("\"" + unde.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for unsupported multiplication";
-            fail(msg);
+            String message = re.getClass().getName() 
+                    + " is the wrong exception for unsupported multiplication";
+            fail(message);
         }
     }
     
@@ -542,13 +556,16 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testTimesCrossDomain() {
-        System.out.println("Testing that times can correctly go from real to imaginary domain and back when appropriate");
+        fail("REWRITE WITH ASSERT THROWS");
         ImaginaryQuadraticRing multiplicandARing = new ImaginaryQuadraticRing(-2);
-        ImaginaryQuadraticInteger multiplicandA = new ImaginaryQuadraticInteger(0, 1, multiplicandARing);
+        ImaginaryQuadraticInteger multiplicandA 
+                = new ImaginaryQuadraticInteger(0, 1, multiplicandARing);
         RealQuadraticRing multiplicandBRing = new RealQuadraticRing(5);
-        RealQuadraticInteger multiplicandB = new RealQuadraticInteger(0, 1, multiplicandBRing);
+        RealQuadraticInteger multiplicandB 
+                = new RealQuadraticInteger(0, 1, multiplicandBRing);
         ImaginaryQuadraticRing expResultRing = new ImaginaryQuadraticRing(-10);
-        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(0, 1, expResultRing);
+        ImaginaryQuadraticInteger expResult = new ImaginaryQuadraticInteger(0, 
+                1, expResultRing);
         QuadraticInteger result;
         try {
             result = multiplicandA.times(multiplicandB);
@@ -558,20 +575,20 @@ public class QuadraticIntegerTest {
             assertEquals(expResult, result);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("\"" + unde.getMessage() + "\"");
-            String msg = "Multiplying " + multiplicandA.toString() + " by " 
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
                     + multiplicandB.toString() 
                     + " should not have caused an exception";
-            fail(msg);
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.out.println("\"" + adoe.getMessage() + "\"");
-            String msg = "Multiplying " + multiplicandA.toString() + " by " 
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
                     + multiplicandB.toString() 
-                    + " should not have caused AlgebraicDegreeOverflowException.";
-            fail(msg);
+                    + " shouldn't have caused AlgebraicDegreeOverflowException";
+            fail(message);
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " should not have occurred for cross-domain multiplication";
-            fail(msg);
+            String message = re.getClass().getName() 
+                    + " shouldn't've occurred for cross-domain multiplication";
+            fail(message);
         }
         // Commutative check
         try {
@@ -582,20 +599,20 @@ public class QuadraticIntegerTest {
             assertEquals(expResult, result);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("\"" + unde.getMessage() + "\"");
-            String msg = "Multiplying " + multiplicandB.toString() + " by " 
+            String message = "Multiplying " + multiplicandB.toString() + " by " 
                     + multiplicandA.toString() 
-                    + " should not have caused UnsupportedNumberDomainException.";
-            fail(msg);
+                    + " shouldn't have caused UnsupportedNumberDomainException";
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.out.println("\"" + adoe.getMessage() + "\"");
-            String msg = "Multiplying " + multiplicandB.toString() + " by " 
+            String message = "Multiplying " + multiplicandB.toString() + " by " 
                     + multiplicandA.toString() 
-                    + " should not have caused AlgebraicDegreeOverflowException.";
-            fail(msg);
+                    + " shouldn't have caused AlgebraicDegreeOverflowException";
+            fail(message);
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " should not have occurred for cross-domain multiplicatoin";
-            fail(msg);
+            String message = re.getClass().getName() 
+                    + " shouldn't've occurred for cross-domain multiplication";
+            fail(message);
         }
     }
     
@@ -608,31 +625,45 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testTimesCrossDomainRamification() {
-        System.out.println("Testing that times can correctly go from real to imaginary domain and back when appropriate, and extract squares as needed");
+        fail("REWRITE WITH ASSERT THROWS, break up into smaller tests");
         QuadraticRing multiplicandARing = new ImaginaryQuadraticRing(-2);
-        QuadraticInteger multiplicandA = new ImaginaryQuadraticInteger(0, 1, multiplicandARing);
+        QuadraticInteger multiplicandA = new ImaginaryQuadraticInteger(0, 1, 
+                multiplicandARing);
         QuadraticRing multiplicandBRing = new ImaginaryQuadraticRing(-10);
-        QuadraticInteger multiplicandB = new ImaginaryQuadraticInteger(0, 1, multiplicandBRing);
+        QuadraticInteger multiplicandB = new ImaginaryQuadraticInteger(0, 1, 
+                multiplicandBRing);
         RealQuadraticRing expResultRing = new RealQuadraticRing(5);
-        RealQuadraticInteger expResult = new RealQuadraticInteger(0, -2, expResultRing);
-        QuadraticInteger result;
+        RealQuadraticInteger expected = new RealQuadraticInteger(0, -2, 
+                expResultRing);
+        QuadraticInteger actual;
         try {
-            result = multiplicandA.times(multiplicandB);
-            System.out.println(multiplicandA.toASCIIString() + " times " + multiplicandB.toASCIIString() + " is " + result.toASCIIString() + ".");
-            assertEquals(expResult, result);
+            actual = multiplicandA.times(multiplicandB);
+            System.out.println(multiplicandA.toASCIIString() + " times " 
+                    + multiplicandB.toASCIIString() + " is " + actual.toASCIIString() + ".");
+            assertEquals(expected, actual);
         } catch (UnsupportedNumberDomainException unde) {
-            String failMessage = "Multiplying " + multiplicandA.toString() + " by " + multiplicandB.toString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
+                    + multiplicandB.toString() 
+                    + " shouldn't've caused UnsupportedNumberDomainException.\n" 
+                    + unde.getMessage();
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "Multiplying " + multiplicandA.toString() + " by " + multiplicandB.toString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
+                    + multiplicandB.toString() 
+                    + " shouldn't've caused AlgebraicDegreeOverflowException.\n" 
+                    + adoe.getMessage();
+            fail(message);
         } catch (IllegalArgumentException iae) {
-            System.out.println("It appears that times cross-domain has not been configured to recognize radicands divisible by squares.");
-            String failMessage = "Multiplying " + multiplicandA.toString() + " by " + multiplicandB.toString() + " has caused IllegalArgumentException.\n" + iae.getMessage();
-            fail(failMessage);
-        } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            System.out.println("It appears that times cross-domain has ...");
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
+                    + multiplicandB.toString() 
+                    + " has caused IllegalArgumentException.\n" 
+                    + iae.getMessage();
+            fail(message);
+        } catch (RuntimeException re) {
+            String message = re.getClass().getName() + " triggered: " 
+                    + re.getMessage();
+            fail(message);
         }
         // Real to real
         multiplicandARing = new RealQuadraticRing(2);
@@ -640,20 +671,27 @@ public class QuadraticIntegerTest {
         multiplicandBRing = new RealQuadraticRing(10);
         multiplicandB = new RealQuadraticInteger(0, 1, multiplicandBRing);
         expResultRing = new RealQuadraticRing(5);
-        expResult = new RealQuadraticInteger(0, 2, expResultRing);
+        expected = new RealQuadraticInteger(0, 2, expResultRing);
         try {
-            result = multiplicandA.times(multiplicandB);
-            System.out.println(multiplicandA.toASCIIString() + " times " + multiplicandB.toASCIIString() + " is " + result.toASCIIString() + ".");
-            assertEquals(expResult, result);
+            actual = multiplicandA.times(multiplicandB);
+            System.out.println(multiplicandA.toASCIIString() + " times " 
+                    + multiplicandB.toASCIIString() + " is " 
+                    + actual.toASCIIString());
+            assertEquals(expected, actual);
         } catch (UnsupportedNumberDomainException unde) {
-            String failMessage = "Multiplying " + multiplicandA.toString() + " by " + multiplicandB.toString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
+                    + multiplicandB.toString() 
+                    + " shouldn't've caused UnsupportedNumberDomainException.\n" 
+                    + unde.getMessage();
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "Multiplying " + multiplicandA.toString() + " by " + multiplicandB.toString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
-            fail(failMessage);
-        } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
+                    + multiplicandB.toString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
+            fail(message);
+        } catch (RuntimeException re) {
+            String message = re.getClass().getName() + " triggered: " 
+                    + re.getMessage();
+            fail(message);
         }
     }
     
@@ -665,42 +703,60 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testTimesCrossDomainResult() {
-        System.out.println("Testing that times can correctly go from real to imaginary domain and back when appropriate for the result");
+        fail("REWRITE WITH ASSERT THROWS");
         ImaginaryQuadraticRing multiplicandARing = new ImaginaryQuadraticRing(-2);
-        ImaginaryQuadraticInteger multiplicandA = new ImaginaryQuadraticInteger(0, 1, multiplicandARing);
-        ImaginaryQuadraticRing multiplicandBRing = new ImaginaryQuadraticRing(-5);
-        ImaginaryQuadraticInteger multiplicandB = new ImaginaryQuadraticInteger(0, 1, multiplicandBRing);
+        ImaginaryQuadraticInteger multiplicandA 
+                = new ImaginaryQuadraticInteger(0, 1, multiplicandARing);
+        ImaginaryQuadraticRing multiplicandBRing 
+                = new ImaginaryQuadraticRing(-5);
+        ImaginaryQuadraticInteger multiplicandB 
+                = new ImaginaryQuadraticInteger(0, 1, multiplicandBRing);
         RealQuadraticRing expResultRing = new RealQuadraticRing(10);
-        RealQuadraticInteger expResult = new RealQuadraticInteger(0, -1, expResultRing);
-        QuadraticInteger result;
+        RealQuadraticInteger expected = new RealQuadraticInteger(0, -1, 
+                expResultRing);
+        QuadraticInteger actual;
         try {
-            result = multiplicandA.times(multiplicandB);
-            System.out.println(multiplicandA.toASCIIString() + " times " + multiplicandB.toASCIIString() + " is " + result.toASCIIString() + ".");
-            assertEquals(expResult, result);
+            actual = multiplicandA.times(multiplicandB);
+            System.out.println(multiplicandA.toASCIIString() + " times " 
+                    + multiplicandB.toASCIIString() + " is " 
+                    + actual.toASCIIString());
+            assertEquals(expected, actual);
         } catch (UnsupportedNumberDomainException unde) {
-            String failMessage = "Multiplying " + multiplicandA.toString() + " by " + multiplicandB.toString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandA.toString() 
+                    + " by " + multiplicandB.toString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "Multiplying " + multiplicandA.toString() + " by " + multiplicandB.toString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandA.toString() + " by " 
+                    + multiplicandB.toString() 
+                    + " should not have caused ADOE.\n" + adoe.getMessage();
+            fail(message);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String message = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(message);
         }
         // Commutative check
         try {
-            result = multiplicandB.times(multiplicandA);
-            System.out.println(multiplicandB.toASCIIString() + " times " + multiplicandA.toASCIIString() + " is " + result.toASCIIString() + ".");
-            assertEquals(expResult, result);
+            actual = multiplicandB.times(multiplicandA);
+            System.out.println(multiplicandB.toASCIIString() + " times " 
+                    + multiplicandA.toASCIIString() + " is " 
+                    + actual.toASCIIString());
+            assertEquals(expected, actual);
         } catch (UnsupportedNumberDomainException unde) {
-            String failMessage = "Multiplying " + multiplicandB.toString() + " by " + multiplicandA.toString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandB.toString() 
+                    + " by " + multiplicandA.toString() 
+                    + " shouldn't've caused UnsupportedNumberDomainException.\n" 
+                    + unde.getMessage();
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "Multiplying " + multiplicandB.toString() + " by " + multiplicandA.toString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
-            fail(failMessage);
+            String message = "Multiplying " + multiplicandB.toString() + " by " 
+                    + multiplicandA.toString() 
+                    + " should not have caused ADOE.\n" + adoe.getMessage();
+            fail(message);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String message = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(message);
         }
     }
     
@@ -1535,6 +1591,7 @@ public class QuadraticIntegerTest {
         }
     }
     
+    // TODO: Assess access level
     static class QuadraticIntegerImpl extends QuadraticInteger {
         
         private static final long serialVersionUID = 4558707313363386368L;
