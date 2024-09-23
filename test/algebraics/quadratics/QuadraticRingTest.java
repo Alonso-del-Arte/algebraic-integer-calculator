@@ -286,14 +286,14 @@ public class QuadraticRingTest {
         System.out.println("\"" + excMsg + "\"");
     }
 
-    static class QuadraticRingImpl extends QuadraticRing {
+    public static class QuadraticRingImpl extends QuadraticRing {
 
         @Override
         public boolean isPurelyReal() {
             return this.radicand > 0;
         }
 
-        QuadraticRingImpl(int d) {
+        public QuadraticRingImpl(int d) {
             super(d);
         }
 
