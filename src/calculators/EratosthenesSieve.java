@@ -85,7 +85,8 @@ public class EratosthenesSieve {
     public static List<Integer> listPrimes(int threshold) {
         int thresh = Math.abs(threshold);
         if (thresh < 2) {
-            return new ArrayList<>();
+            throw new RuntimeException("TEMPORARY FAIL");
+//            return new ArrayList<>();
         }
         boolean signChangeNeeded = threshold < 0;
         if (thresh > currThresh) {
