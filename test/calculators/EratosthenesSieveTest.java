@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -28,6 +28,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import static org.testframe.api.Asserters.assertContainsSame;
+import static org.testframe.api.Asserters.assertDoesNotThrow;
 
 /**
  * Tests of the EratosthenesSieve class.
@@ -149,14 +150,11 @@ public class EratosthenesSieveTest {
     @Test
     public void testThresholdZeroGivesEmptyList() {
         int threshold = 0;
-        try {
+        String msg = "Threshold 0 should not cause any exception";
+        assertDoesNotThrow(() -> {
             List<Integer> list = EratosthenesSieve.listPrimes(threshold);
             assertEquals(0, list.size());
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " should not have occurred for threshold " + threshold;
-            fail(msg);
-        }
+        }, msg);
     }
     
     /**
@@ -166,14 +164,11 @@ public class EratosthenesSieveTest {
     @Test
     public void testThresholdOneGivesEmptyList() {
         int threshold = 1;
-        try {
+        String msg = "Threshold 1 should not cause any exception";
+        assertDoesNotThrow(() -> {
             List<Integer> list = EratosthenesSieve.listPrimes(threshold);
             assertEquals(0, list.size());
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " should not have occurred for threshold " + threshold;
-            fail(msg);
-        }
+        }, msg);
     }
     
     @Test
