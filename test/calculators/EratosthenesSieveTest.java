@@ -145,6 +145,20 @@ public class EratosthenesSieveTest {
     
     /**
      * Another test of the listPrimes function, of the EratosthenesSieve class. 
+     * A threshold of -1 should give an empty list, not cause any exception.
+     */
+    @Test
+    public void testThresholdNegativeOneGivesEmptyList() {
+        int threshold = -1;
+        String msg = "Threshold \u22121 should not cause any exception";
+        assertDoesNotThrow(() -> {
+            List<Integer> list = EratosthenesSieve.listPrimes(threshold);
+            assert list.isEmpty() : "Threshold \u22121 should give empty list";
+        }, msg);
+    }
+    
+    /**
+     * Another test of the listPrimes function, of the EratosthenesSieve class. 
      * A threshold of 0 should give an empty list, not cause any exception.
      */
     @Test
