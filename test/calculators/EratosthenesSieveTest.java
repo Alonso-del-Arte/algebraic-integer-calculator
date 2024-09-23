@@ -153,7 +153,7 @@ public class EratosthenesSieveTest {
         String msg = "Threshold 0 should not cause any exception";
         assertDoesNotThrow(() -> {
             List<Integer> list = EratosthenesSieve.listPrimes(threshold);
-            assertEquals(0, list.size());
+            assert list.isEmpty() : "Threshold 0 should give empty list";
         }, msg);
     }
     
@@ -167,7 +167,7 @@ public class EratosthenesSieveTest {
         String msg = "Threshold 1 should not cause any exception";
         assertDoesNotThrow(() -> {
             List<Integer> list = EratosthenesSieve.listPrimes(threshold);
-            assertEquals(0, list.size());
+            assert list.isEmpty() : "Threshold 1 should give empty list";
         }, msg);
     }
     
