@@ -25,7 +25,7 @@ import fractions.Fraction;
  * using {@link algebraics.quadratics.IllDefinedQuadraticRing} for that purpose, 
  * but I've come to need something more generic.
  * @deprecated Marked for removal. Use <code>CubicRingTest.CubicRingImpl</code> 
- * instead.
+ * or {@link algebraics.BadRing} instead.
  * @author Alonso del Arte
  */
 @Deprecated
@@ -46,7 +46,7 @@ public class BadCubicRing extends CubicRing {
 
     @Override
     public int discriminant() {
-        return 5;
+        return 7;
     }
 
     @Override
