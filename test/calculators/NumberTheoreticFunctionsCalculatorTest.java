@@ -18,9 +18,9 @@ package calculators;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
+import algebraics.BadRing;
 import algebraics.IntegerRing;
 import algebraics.UnsupportedNumberDomainException;
-import algebraics.cubics.BadCubicRing;
 import algebraics.quadratics.IllDefinedQuadraticInteger;
 import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
@@ -54,6 +54,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import static org.testframe.api.Asserters.assertContainsSame;
+import static org.testframe.api.Asserters.assertThrows;
 
 /**
  * Tests for a collection of number theoretic functions, including basic 
@@ -2517,24 +2518,24 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoNegOneForUnsupportedRing() {
-        BadCubicRing ring = new BadCubicRing();
+        IntegerRing ring = new BadRing();
         try {
             AlgebraicInteger result = getNegOneInRing(ring);
-            String msg = "Trying to get -1 for unsupported ring " 
+            String message = "Trying to get -1 for unsupported ring " 
                     + ring.toString() 
                     + " should have caused an exception, not given result " 
                     + result.toString();
-            fail(msg);
+            fail(message);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("Trying to get -1 for unsupported ring " 
                     + ring.toString() 
                     + " correctly caused UnsupportedNumberDomainException");
             System.out.println("\"" + unde.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to get -1 for unsupported ring " 
+            String message = re.getClass().getName() 
+                    + " is wrong exception for \u22121 for unsupported ring " 
                     + ring.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -2593,26 +2594,27 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * getZeroInRing()} should cause an exception, not give any particular 
      * result.
      */
+    // TODO: Rewrite using assertThrows()
     @Test
     public void testNoZeroForUnsupportedRing() {
-        BadCubicRing ring = new BadCubicRing();
+        IntegerRing ring = new BadRing();
         try {
             AlgebraicInteger result = getZeroInRing(ring);
-            String msg = "Trying to get 0 for unsupported ring " 
+            String message = "Trying to get 0 for unsupported ring " 
                     + ring.toString() 
                     + " should have caused an exception, not given result " 
                     + result.toString();
-            fail(msg);
+            fail(message);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("Trying to get 0 for unsupported ring " 
                     + ring.toString() 
                     + " correctly caused UnsupportedNumberDomainException");
             System.out.println("\"" + unde.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to get 0 for unsupported ring " 
+            String message = re.getClass().getName() 
+                    + " is wrong exception for 0 for unsupported ring " 
                     + ring.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -2672,24 +2674,24 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoOneForUnsupportedRing() {
-        BadCubicRing ring = new BadCubicRing();
+        IntegerRing ring = new BadRing();
         try {
             AlgebraicInteger result = getOneInRing(ring);
-            String msg = "Trying to get 1 for unsupported ring " 
+            String message = "Trying to get 1 for unsupported ring " 
                     + ring.toString() 
                     + " should have caused an exception, not given result " 
                     + result.toString();
-            fail(msg);
+            fail(message);
         } catch (UnsupportedNumberDomainException unde) {
             System.out.println("Trying to get 1 for unsupported ring " 
                     + ring.toString() 
                     + " correctly caused UnsupportedNumberDomainException");
             System.out.println("\"" + unde.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to get 1 for unsupported ring " 
+            String message = re.getClass().getName() 
+                    + " is wrong exception for 1 for unsupported ring " 
                     + ring.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
