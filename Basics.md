@@ -72,7 +72,17 @@ integer. Each such equation has $n$ solutions. For example, $x = \root 8 \of 7$
 is one solution to $x^8 - 7 = 0$.
 
 But an equation $x^n + d = 0$ with $n$ a positive even integer seems to not have 
-any solutions in real numbers. For example, $x^2 + 7$ (FINISH WRITING)
+any solutions in real numbers. For example, $x^2 + 7 = 0$ has no solutions in 
+real numbers. Shifting the 7 to the right of the equals sign, we obtain the 
+equation $x^2 = -7$. Clearly $x = -\sqrt 7 \approx 2.645751311$ is not a 
+solution, since then $x^2 = 7$.
+
+Mathematicians like Girolamo Cardano resolved the quandary of equations like 
+$x^2 + 7 = 0$ by imagining that exists a number $i$ such that $i^2 = -1$. Then, 
+to solve an equation of the form $x^n = d$ where $n$ is even and $d$ is 
+negative,
+
+(FINISH WRITING)
 
 ## Divisibility
 
