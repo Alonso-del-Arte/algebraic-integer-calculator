@@ -416,20 +416,22 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
         return MAX_ALGEBRAIC_DEGREE;
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a quadratic ring object for a given integer parameter. Use this 
+     * function when you're not sure if the parameter <i>d</i> is positive or 
+     * negative.
+     * @param d A negative squarefree integer or a positive squarefree integer 
+     * other than 1. Examples: &minus;19, 103.
+     * @return A real or imaginary quadratic ring object. Examples: 
+     * <i>O</i><sub><b>Q</b>(&radic;&minus;19)</sub>, <b>Z</b>[&radic;103].
+     * @throws IllegalArgumentException If {@code d} is not squarefree or if 
+     * it's equal to 1.
+     */
     public static QuadraticRing apply(int d) {
-        String excMsg;
-        switch (Integer.signum(d)) {
-            case -1:
-                return new ImaginaryQuadraticRing(d);
-            case 0:
-                excMsg = "0 is not valid for parameter d";
-                throw new IllegalArgumentException(excMsg);
-            case 1:
-                return new RealQuadraticRing(Math.abs(d));
-            default:
-                excMsg = "Unexpected error for d = " + d;
-                throw new RuntimeException(excMsg);
+        if (d < 0) {
+            return new ImaginaryQuadraticRing(d);
+        } else {
+            return new RealQuadraticRing(d);
         }
     }
     
