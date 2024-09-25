@@ -428,12 +428,10 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * it's equal to 1.
      */
     public static QuadraticRing apply(int d) {
-        // TODO: Rewrite test for apply() rejects squareful number
-        int k = calculators.NumberTheoreticFunctionsCalculator.kernel(d);
-        if (k < 0) {
-            return new ImaginaryQuadraticRing(k);
+        if (d < 0) {
+            return new ImaginaryQuadraticRing(d);
         } else {
-            return new RealQuadraticRing(k);
+            return new RealQuadraticRing(d);
         }
     }
     
