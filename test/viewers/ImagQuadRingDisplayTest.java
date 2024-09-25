@@ -36,7 +36,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import static testframe.api.Asserters.assertDoesNotThrow;
+import static org.testframe.api.Asserters.assertDoesNotThrow;
 
 /**
  * Tests of the ImagQuadRingDisplay class.

@@ -34,7 +34,7 @@ import java.util.Set;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import static testframe.api.Asserters.assertThrows;
+import static org.testframe.api.Asserters.assertThrows;
 
 /**
  * Tests of the QuadraticRing class.
@@ -246,8 +246,7 @@ public class QuadraticRingTest {
     
     @Test
     public void testConstructorRejectsNonSquarefreeD() {
-        fail("REVIEW THIS TEST FOR BRITTLENESS");
-        int n = randomSquarefreeNumber(Byte.MAX_VALUE);
+        int n = RANDOM.nextInt(2, 128);
         int signum = (n % 2 == 0) ? 1 : -1;
         int square = n * n;
         int d = signum * square * randomSquarefreeNumber(Short.MAX_VALUE);
