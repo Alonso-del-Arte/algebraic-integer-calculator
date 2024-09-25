@@ -21,10 +21,6 @@ import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
-import static calculators.NumberTheoreticFunctionsCalculator
-        .randomSquarefreeNumberMod;
-import static calculators.NumberTheoreticFunctionsCalculator
-        .randomSquarefreeNumberOtherThan;
 import fractions.Fraction;
 
 import java.util.HashSet;
