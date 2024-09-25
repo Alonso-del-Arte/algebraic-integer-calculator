@@ -202,8 +202,8 @@ public class QuadraticRingTest {
     
     @Test
     public void testApplyReal() {
-        fail("TWEAK THIS TEST");
-        int d = RANDOM.nextInt(4096) + 2;
+        int propD = randomSquarefreeNumber(4096);
+        int d = (propD == 1) ? 2 : propD;
         while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing expected = new RealQuadraticRing(d);
         QuadraticRing actual = QuadraticRing.apply(d);
