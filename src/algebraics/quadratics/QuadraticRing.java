@@ -445,12 +445,11 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * square other than 1.
      */
     public QuadraticRing(int d) {
-        // TODO: Rewrite constructor rejects non-squarefree number
-//        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
-//            String excMsg = "Squarefree integer required for parameter d, " + d 
-//                    + " is not squarefree";
-//            throw new IllegalArgumentException(excMsg);
-//        }
+        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
+            String excMsg = "Squarefree integer required for parameter d, " + d 
+                    + " is not squarefree";
+            throw new IllegalArgumentException(excMsg);
+        }
         this.radicand = d;
         this.absRadicand = Math.abs(d);
         this.realRadSqrt = Math.sqrt(this.absRadicand);
