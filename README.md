@@ -21,7 +21,11 @@ This project started out in Java 8 with JUnit 4. I have since upgraded to Java
 21, but because I'm using NetBeans rather than IntelliJ or Eclipse, I can't 
 upgrade JUnit to JUnit 5.
 
-Regardless, I'm in no rush to use Java 9 or later features.
+Regardless, I'm in no rush to use Java 9 or later features. However, just prior 
+to Hacktoberfest 2024, I started using a few features here and there that 
+require Java 17. So, just to be on the safe side, let's say this is a Java 21 
+project. I don't intend to upgrade Java if it's not a long-term support (LTS) 
+release.
 
 I've split off information on the basics of algebraic number theory to 
 [a new page](Basics.md).

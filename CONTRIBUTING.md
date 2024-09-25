@@ -26,9 +26,11 @@ besides build.xml, nbbuild.xml and manifest.mf files, then it might be a good
 idea to add some things to the Git Ignore &mdash; I welcome such a commit.
 
 Contributors should have a proper Java IDE (most are available for free) and 
-JUnit. This project uses Java 8 and JUnit 4 as well as TestFrame from 
-[testframe.org](testframe.org), use version 0.95 or later. However, I might 
-upgrade to Java 21 and JUnit 5.
+JUnit. This project started out on Java 8 and JUnit 4 as well as TestFrame from 
+[testframe.org](testframe.org), use version 0.95 or later. However, late 
+September 2024 I've very slowly started using features from later Java versions, 
+nothing specifically from Java 21 yet but let's regard that as the baseline, 
+since that's the runtime and compiler I'm using.
 
 * Column width is 80.
 * Prefer spaces to tabs (this is likely to be an issue only with Eclipse, a 
