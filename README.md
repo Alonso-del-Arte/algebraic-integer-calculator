@@ -27,5 +27,11 @@ require Java 17. So, just to be on the safe side, let's say this is a Java 21
 project. I don't intend to upgrade Java if it's not a long-term support (LTS) 
 release.
 
+This is still a JUnit 4 project. But rather than be limited by JUnit 4 not 
+having the things from JUnit 5 that I sometimes need, like `assertThrows()`, I 
+just use the equivalents from [TestFrame](https://testframe.org). Preferably use 
+TestFrame 1.0, but for now 0.95 should also work (note that 0.9 used the 
+`testframe` namespace rather than `org.testframe`).
+
 I've split off information on the basics of algebraic number theory to 
 [a new page](Basics.md).
