@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
 import static testframe.api.Asserters.assertThrows;
 
 /**
@@ -212,21 +213,16 @@ public class QuadraticRingTest {
     
     @Test
     public void testApplyRejectsZero() {
-        try {
+        String msg = "apply(0) should cause exception";
+        Throwable t = assertThrows(() -> {
             QuadraticRing badRing = QuadraticRing.apply(0);
-            String message = "apply(0) should not have given " 
-                    + badRing.toString();
-            fail(message);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("apply(0) caused IllegalArgumentException");
-            String excMsg = iae.getMessage();
-            assert excMsg != null : "Message should not be null";
-            System.out.println("\"" + excMsg + "\"");
-        } catch (RuntimeException re) {
-            String message = re.getClass().getName() 
-                    + " is the wrong exception to throw for apply(0)";
-            fail(message);
-        }
+            System.out.println(msg + ", not created " + badRing.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        assert excMsg.contains("0") : "Exception message should contain \"0\"";
+        System.out.println("\"" + excMsg + "\"");
     }
 
     @Test
