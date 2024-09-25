@@ -27,7 +27,7 @@ idea to add some things to the Git Ignore &mdash; I welcome such a commit.
 
 Contributors should have a proper Java IDE (most are available for free) and 
 JUnit. This project started out on Java 8 and JUnit 4 as well as TestFrame from 
-[testframe.org](testframe.org), use version 0.95 or later. However, late 
+[testframe.org](https://testframe.org), use version 0.95 or later. However, late 
 September 2024 I've very slowly started using features from later Java versions, 
 nothing specifically from Java 21 yet but let's regard that as the baseline, 
 since that's the runtime and compiler I'm using.
