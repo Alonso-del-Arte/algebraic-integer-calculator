@@ -416,20 +416,21 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
         return MAX_ALGEBRAIC_DEGREE;
     }
     
+    // TODO: Write tests for this
     public static QuadraticRing apply(int d) {
-        String excMsg;
-        switch (Integer.signum(d)) {
-            case -1:
-                return new ImaginaryQuadraticRing(d);
-            case 0:
-                excMsg = "0 is not valid for parameter d";
-                throw new IllegalArgumentException(excMsg);
-            case 1:
-                return new RealQuadraticRing(d);
-            default:
-                excMsg = "Unexpected error for d = " + d;
-                throw new RuntimeException(excMsg);
-        }
+//        String excMsg;
+//        switch (Integer.signum(d)) {
+//            case -1:
+//                return new ImaginaryQuadraticRing(d);
+//            case 0:
+//                excMsg = "0 is not valid for parameter d";
+//                throw new IllegalArgumentException(excMsg);
+//            case 1:
+                return new RealQuadraticRing(Math.abs(d));
+//            default:
+//                excMsg = "Unexpected error for d = " + d;
+//                throw new RuntimeException(excMsg);
+//        }
     }
     
     /**
