@@ -246,6 +246,7 @@ public class QuadraticRingTest {
     
     @Test
     public void testConstructorRejectsNonSquarefreeD() {
+        fail("REVIEW THIS TEST FOR BRITTLENESS");
         int n = randomSquarefreeNumber(Byte.MAX_VALUE);
         int signum = (n % 2 == 0) ? 1 : -1;
         int square = n * n;
