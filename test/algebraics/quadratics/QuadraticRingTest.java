@@ -49,7 +49,7 @@ public class QuadraticRingTest {
     static final double TEST_DELTA = 0.00000001;
     
     /**
-     * Test of getRadicand method, of class QuadraticRing.
+     * Test of the getRadicand function, of the QuadraticRing class.
      */
     @Test
     public void testGetRadicand() {
@@ -63,7 +63,7 @@ public class QuadraticRingTest {
     }
 
     /**
-     * Test of getAbsNegRad method, of class QuadraticRing.
+     * Test of the getAbsNegRad function, of the QuadraticRing class.
      */
     @Test
     public void testGetAbsNegRad() {
@@ -77,7 +77,7 @@ public class QuadraticRingTest {
     }
 
     /**
-     * Test of getAbsNegRadSqrt method, of class QuadraticRing.
+     * Test of the getAbsNegRadSqrt function, of the QuadraticRing class.
      */
     @Test
     public void testGetAbsNegRadSqrt() {
@@ -91,7 +91,7 @@ public class QuadraticRingTest {
     }
 
     /**
-     * Test of getPowerBasis method, of class QuadraticRing.
+     * Test of the getPowerBasis function, of the QuadraticRing class.
      */
     @Test
     public void testGetPowerBasis() {
@@ -123,8 +123,8 @@ public class QuadraticRingTest {
     @Test
     public void testNotEqualsDiffClass() {
         int d = randomSquarefreeNumber(8192);
-        QuadraticRing ring = new QuadraticRingImpl(d);
-        QuadraticRing diffClassRing = new QuadraticRing(d) {
+        QuadraticRing unexpected = new QuadraticRingImpl(d);
+        QuadraticRing actual = new QuadraticRing(d) {
             
             @Override
             public boolean isPurelyReal() {
@@ -132,7 +132,7 @@ public class QuadraticRingTest {
             }
             
         };
-        assertNotEquals(ring, diffClassRing);
+        assertNotEquals(unexpected, actual);
     }
 
     /**
@@ -192,33 +192,17 @@ public class QuadraticRingTest {
         assertEquals(2, ring.getMaxAlgebraicDegree());
     }
 
-    /**
-     * Test of apply method, of class QuadraticRing.
-     */
     @Test
-    public void testApply() {
-        System.out.println("apply");
-        int d = -1;
-        QuadraticRing expected = new ImaginaryQuadraticRing(d);
-        QuadraticRing actual = QuadraticRing.apply(d);
-        assertEquals(expected, actual);
-        d = 2;
-        expected = new RealQuadraticRing(d);
-        actual = QuadraticRing.apply(d);
-        assertEquals(expected, actual);
-    }
-    
-    @Test
-    public void testApplyRandomImaginary() {
-        int d = -RANDOM.nextInt(4096) - 1;
-        while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
+    public void testApplyImaginary() {
+        int d = -randomSquarefreeNumber(16384);
         QuadraticRing expected = new ImaginaryQuadraticRing(d);
         QuadraticRing actual = QuadraticRing.apply(d);
         assertEquals(expected, actual);
     }
     
     @Test
-    public void testApplyRandomReal() {
+    public void testApplyReal() {
+        fail("TWEAK THIS TEST");
         int d = RANDOM.nextInt(4096) + 2;
         while (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) d++;
         QuadraticRing expected = new RealQuadraticRing(d);
