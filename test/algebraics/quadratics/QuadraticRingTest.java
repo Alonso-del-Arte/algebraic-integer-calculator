@@ -227,23 +227,21 @@ public class QuadraticRingTest {
 
     @Test
     public void testApplyRejectsSquareMultiple() {
-        int d = RANDOM.nextInt() * 36;
-        try {
+        int root = RANDOM.nextInt(2, 4096);
+        int signum = (root % 2 == 0) ? 1 : -1;
+        int d = signum * randomSquarefreeNumber(512) * root * root;
+        String msg = "apply(" + d + ") should cause exception";
+        Throwable t = assertThrows(() -> {
             QuadraticRing badRing = QuadraticRing.apply(d);
-            String message = "apply(" + d + ") should not have given " 
-                    + badRing.toString();
-            fail(message);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("apply(" + d 
-                    + ") caused IllegalArgumentException");
-            String excMsg = iae.getMessage();
-            assert excMsg != null : "Message should not be null";
-            System.out.println("\"" + excMsg + "\"");
-        } catch (RuntimeException re) {
-            String message = re.getClass().getName() 
-                    + " is the wrong exception to throw for apply(" + d + ")";
-            fail(message);
-        }
+            System.out.println(msg + ", not created " + badRing.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(d);
+        String message = "Exception message should contain \"" + numStr + "\"";
+        assert excMsg.contains(numStr) : message;
+        System.out.println("\"" + excMsg + "\"");
     }
     
     @Test
