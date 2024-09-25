@@ -153,31 +153,28 @@ public class QuadraticIntegerTest {
     }
     
     /**
-     * Test of conjugate method of class QuadraticInteger. Testing that trying 
-     * to take the conjugate of a quadratic integer from an unsupported ring 
-     * triggers {@link UnsupportedNumberDomainException}.
+     * Another test of the conjugate function of the QuadraticInteger class. 
+     * Testing that trying to take the conjugate of a quadratic integer from an 
+     * unsupported ring triggers {@link UnsupportedNumberDomainException}.
      */
     @Test
     public void testConjugateUnsupportedCausesException() {
-        QuadraticInteger conj;
-        try {
-            conj = ILL_DEF_INT_A.conjugate();
-            System.out.println("Trying to get conjugate of " 
-                    + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " 
-                    + conj.toASCIIString() + ".");
-            String msg = "Conjugate of ill-defined " + ILL_DEF_INT_A.toString() 
-                    + " should have caused an exception";
-            fail(msg);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException for conjugate of " 
-                    + ILL_DEF_INT_A.toString());
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (Exception e) {
-            String msg = e.getClass().getName() 
-                    + " is inappropriate for conjugate of ill-defined " 
-                    + ILL_DEF_INT_A.toString();
-            fail(msg);
-        }
+        int d = randomSquarefreeNumber(4096);
+        QuadraticRing ring = new QuadraticRingTest.QuadraticRingImpl(d);
+        int a = RANDOM.nextInt();
+        int b = RANDOM.nextInt();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        String msg = "Conjugate of " + number.toString() + " of class " 
+                + number.getClass().getName() + " should cause exception";
+        Throwable t = assertThrows(() -> {
+            QuadraticInteger badConjugate = number.conjugate();
+            System.out.println(msg + ", not given result " 
+                    + badConjugate.toString());
+        }, UnsupportedNumberDomainException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Message should not be null";
+        assert !excMsg.isBlank() : "Message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
 
     /**
