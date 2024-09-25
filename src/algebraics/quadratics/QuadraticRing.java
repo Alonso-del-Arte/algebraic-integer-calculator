@@ -428,10 +428,6 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * it's equal to 1.
      */
     public static QuadraticRing apply(int d) {
-        // TODO: Rewrite test for apply(0)
-        if (d == 0) {
-            return new RealQuadraticRing(2);
-        }
         if (d < 0) {
             return new ImaginaryQuadraticRing(d);
         } else {
