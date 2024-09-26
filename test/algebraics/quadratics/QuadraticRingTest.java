@@ -38,7 +38,7 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class QuadraticRingTest {
     
-    private static final Random RANDOM = new Random();
+    static final Random RANDOM = new Random();
     
     /**
      * The delta value to use when assertEquals() requires a delta value.
