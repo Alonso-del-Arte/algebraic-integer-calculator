@@ -638,22 +638,16 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testConjugate() {
         System.out.println("conjugate");
-        QuadraticInteger expResult, result;
-        for (int i = 0; i < totalTestIntegers; i++) {
-            try {
-                expResult = testNorms.get(i).divides(testIntegers.get(i));
-                result = testIntegers.get(i).conjugate();
-                System.out.println("Conjugate of " + testIntegers.get(i).toASCIIString() + " is " + result.toASCIIString());
-                assertEquals(expResult, result);
-                assertEquals(testConjugates.get(i), result);
-                result = result.conjugate();
-                assertEquals(result, testIntegers.get(i));
-            } catch (AlgebraicDegreeOverflowException adoe) {
-                fail("AlgebraicDegreeOverflowException should not have occurred during test of conjugate().\n" + adoe.getMessage() + "\nThere may be a mistake in the setup of the test.");
-            } catch (NotDivisibleException nde) {
-                fail("NotDivisibleException should not have occurred during test of conjugate().\n" + nde.getMessage() + "\nThere may be a mistake in the setup of the test.");
-            }
-        }
+        int a = RANDOM.nextInt();
+        int propB = RANDOM.nextInt();
+        int b = (propB == 0) ? 1 : propB;
+        int d = -randomSquarefreeNumber(16384);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        QuadraticInteger expected = new ImaginaryQuadraticInteger(a, -b, ring);
+        QuadraticInteger actual = number.conjugate();
+        String message = "Calculating conjugate of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
