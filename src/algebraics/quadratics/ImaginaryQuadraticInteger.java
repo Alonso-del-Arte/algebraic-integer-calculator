@@ -65,6 +65,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         }
         return twiceImagPartMult;
     }
+    
+    @Override
+    public QuadraticInteger conjugate() {
+        return new ImaginaryQuadraticInteger(this.regPartMult, 
+                -this.surdPartMult, this.quadRing, this.denominator);
+    }
 
     /**
      * Gives this imaginary quadratic integer's distance from 0 as a floating 
