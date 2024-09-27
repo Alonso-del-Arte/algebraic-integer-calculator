@@ -300,11 +300,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     public QuadraticInteger conjugate() {
         if (this instanceof ImaginaryQuadraticInteger) {
             return new ImaginaryQuadraticInteger(this.regPartMult, 
-                    ~this.surdPartMult, this.quadRing, this.denominator);
+                    ~this.surdPartMult | 1, this.quadRing, this.denominator);
         }
         if (this instanceof RealQuadraticInteger) {
             return new RealQuadraticInteger(this.regPartMult, 
-                    ~this.surdPartMult, this.quadRing, this.denominator);
+                    ~this.surdPartMult | 1, this.quadRing, this.denominator);
         }
         String excMsg = this.getClass().getName() 
                 + " is not a supported number domain for conjugate";
