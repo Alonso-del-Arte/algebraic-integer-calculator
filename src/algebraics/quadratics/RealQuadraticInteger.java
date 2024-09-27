@@ -32,12 +32,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    @Override
-    public QuadraticInteger conjugate() {
-        return new RealQuadraticInteger(this.regPartMult, -this.surdPartMult, 
-                this.quadRing, this.denominator);
-    }
-
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.

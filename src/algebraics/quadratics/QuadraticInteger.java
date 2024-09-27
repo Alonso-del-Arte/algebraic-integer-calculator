@@ -290,36 +290,28 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         return polString;
     }
 
-   /**
+    /**
      * Gives the conjugate of the quadratic integer, the number which multiplied 
      * by this number gives the norm.
      * @return This quadratic integer with the "surd" part negated. For example, 
      * the conjugate of 5/2 + (&radic;&minus;7)/2 is 5/2 &minus; 
      * (&radic;&minus;7)/2.
-     */ // TODO: Rewrite tests for this
+     */
     public QuadraticInteger conjugate() {
-        if (!(this instanceof ImaginaryQuadraticInteger 
-                || this instanceof RealQuadraticInteger)) {
-            String excMsg = "Type not supported";
-            throw new UnsupportedNumberDomainException(excMsg, this);
+        QuadraticInteger conjug;
+        if (this instanceof ImaginaryQuadraticInteger) {
+            conjug = new ImaginaryQuadraticInteger(this.regPartMult, 
+                    -this.surdPartMult, this.quadRing, this.denominator);
+            return conjug;
         }
-//        if (this.surdPartMult == 0) {
-            return this;
-//        }
-//        QuadraticInteger conjug;
-//        if (this instanceof ImaginaryQuadraticInteger) {
-//            conjug = new ImaginaryQuadraticInteger(this.regPartMult, 
-//                    -this.surdPartMult, this.quadRing, this.denominator);
-//            return conjug;
-//        }
-//        if (this instanceof RealQuadraticInteger) {
-//            conjug = new RealQuadraticInteger(this.regPartMult, 
-//                    -this.surdPartMult, this.quadRing, this.denominator);
-//            return conjug;
-//        }
-//        String excMsg = this.getClass().getName() 
-//                + " is not a supported number domain for conjugate";
-//        throw new UnsupportedNumberDomainException(excMsg, this, this);
+        if (this instanceof RealQuadraticInteger) {
+            conjug = new RealQuadraticInteger(this.regPartMult, 
+                    -this.surdPartMult, this.quadRing, this.denominator);
+            return conjug;
+        }
+        String excMsg = this.getClass().getName() 
+                + " is not a supported number domain for conjugate";
+        throw new UnsupportedNumberDomainException(excMsg, this, this);
     }
         
     /**
