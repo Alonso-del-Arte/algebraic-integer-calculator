@@ -298,16 +298,13 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * (&radic;&minus;7)/2.
      */
     public QuadraticInteger conjugate() {
-        QuadraticInteger conjug;
         if (this instanceof ImaginaryQuadraticInteger) {
-            conjug = new ImaginaryQuadraticInteger(this.regPartMult, 
+            return new ImaginaryQuadraticInteger(this.regPartMult, 
                     -this.surdPartMult, this.quadRing, this.denominator);
-            return conjug;
         }
         if (this instanceof RealQuadraticInteger) {
-            conjug = new RealQuadraticInteger(this.regPartMult, 
+            return new RealQuadraticInteger(this.regPartMult, 
                     -this.surdPartMult, this.quadRing, this.denominator);
-            return conjug;
         }
         String excMsg = this.getClass().getName() 
                 + " is not a supported number domain for conjugate";
