@@ -26,6 +26,8 @@ import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -567,6 +569,39 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    /**
+     * Another test of the conjugate function, of the RealQuadraticInteger 
+     * class.
+     */
+    @Test
+    public void testConjugateUnary() {
+        int a = RANDOM.nextInt();
+        int propD = randomSquarefreeNumber(16384);
+        int d = (propD == 1) ? 2 : propD;
+        QuadraticRing ring = new RealQuadraticRing(d);
+        QuadraticInteger expected = new RealQuadraticInteger(a, 0, ring);
+        QuadraticInteger actual = expected.conjugate();
+        String message = expected.toString() + " should be its own conjugate";
+        assertEquals(message, expected, actual);
+    }
+    
+    /**
+     * Another test of the conjugate function, of the RealQuadraticInteger 
+     * class.
+     */
+    @Test
+    public void testConjugateHalfIntegers() {
+        int a = RANDOM.nextInt() | 1;
+        int b = RANDOM.nextInt() | 1;
+        int d = randomSquarefreeNumberMod(1, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        QuadraticInteger expected = new RealQuadraticInteger(a, -b, ring, 2);
+        QuadraticInteger actual = number.conjugate();
+        String message = "Calculating conjugate of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of abs method, of class RealQuadraticInteger.
      */
