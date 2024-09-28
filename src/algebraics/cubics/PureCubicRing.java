@@ -99,7 +99,7 @@ public class PureCubicRing extends CubicRing {
     // TODO: Write tests for this
     @Override
     public boolean equals(Object obj) {
-        return obj != null;
+        return obj instanceof PureCubicRing;
     }
     
     // TODO: Write tests for this
