@@ -205,6 +205,14 @@ public class PureCubicRingTest {
     
     // TODO: Write toFilenameString() tests for d not squarefree (though still 
     // cubefree), negative d
+    
+    @Test
+    public void testReferentialEquality() {
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        assertEquals(instance, instance);
+    }
 
     @Test
     public void testConstructorRejectsCubefullNumber() {
