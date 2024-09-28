@@ -16,8 +16,17 @@
  */
 package algebraics.cubics;
 
+import static calculators.EratosthenesSieve.randomPrime;
+import static calculators.EratosthenesSieve.randomPrimeOtherThan;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
+import fractions.Fraction;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import static org.testframe.api.Asserters.assertThrows;
 
 /**
  *
@@ -31,12 +40,13 @@ public class PureCubicIntegerTest {
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        PureCubicInteger instance = null;
-        PureCubicRing expResult = null;
-        PureCubicRing result = instance.getRing();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing expected = new PureCubicRing(d);
+        PureCubicInteger number = new PureCubicInteger(randomNumber(), 
+                randomNumber(), randomNumber(), expected);
+        PureCubicRing actual = number.getRing();
+        assertEquals(expected, actual);
     }
     
 }
