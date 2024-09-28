@@ -97,6 +97,18 @@ public class PureCubicRing extends CubicRing {
     }
     
     // TODO: Write tests for this
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+    
+    // TODO: Write tests for this
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+    
+    // TODO: Write tests for this
     public PureCubicRing(int d) {
         if (!isCubefree(d)) {
             String excMsg = "Number " + d + " is not cubefree";
