@@ -16,17 +16,12 @@
  */
 package algebraics.cubics;
 
-import static calculators.EratosthenesSieve.randomPrime;
-import static calculators.EratosthenesSieve.randomPrimeOtherThan;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
-import fractions.Fraction;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-
-import static org.testframe.api.Asserters.assertThrows;
 
 /**
  *
