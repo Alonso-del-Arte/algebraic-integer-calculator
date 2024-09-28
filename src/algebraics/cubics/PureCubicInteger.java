@@ -26,7 +26,7 @@ public class PureCubicInteger {
     
     // TODO: Write tests for this
     public PureCubicRing getRing() {
-        return new PureCubicRing(3);
+        return new PureCubicRing(Integer.MAX_VALUE);
     }
     
     public PureCubicInteger(int a, int b, int c, PureCubicRing ring) {
