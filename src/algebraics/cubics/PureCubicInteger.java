@@ -24,18 +24,22 @@ import fractions.Fraction;
  */
 public class PureCubicInteger {
     
-    // TODO: Write tests for this
+    private final PureCubicRing domain;
+    
+    // TODO: Write Javadoc
     public PureCubicRing getRing() {
-        return new PureCubicRing(Integer.MAX_VALUE);
+        return this.domain;
     }
     
+    // TODO: Write tests for this
     public PureCubicInteger(int a, int b, int c, PureCubicRing ring) {
-        // TODO: Write tests for this
+        this.domain = ring;
     }
     
+    // TODO: Write tests for this
     public PureCubicInteger(Fraction a, Fraction b, Fraction c, 
             PureCubicRing ring) {
-        // TODO: Write tests for this
+        this.domain = ring;
     }
     
 }
