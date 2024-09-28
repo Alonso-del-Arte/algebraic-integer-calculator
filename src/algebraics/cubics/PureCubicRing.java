@@ -96,6 +96,33 @@ public class PureCubicRing extends CubicRing {
         return "ZCBRT" + this.radicand;
     }
     
+    /**
+     * Tests an object for equality. For the examples, suppose this ring is 
+     * <b>Z</b>[&#x221B;13].
+     * @param obj The object to test for equality. Examples: 
+     * <b>Z</b>[&#x221B;13], <i>O</i><sub><b>Q</b>(&#x221B;19)</sub>, 
+     * <b>Z</b>[<i>i</i>], null.
+     * @return True only if {@code obj} is a {@code PureCubicRing} instance 
+     * initialized with the same parameter <i>d</i>, false in all other cases. 
+     * In the examples, true for <b>Z</b>[&#x221B;13], false for 
+     * <i>O</i><sub><b>Q</b>(&#x221B;19)</sub> (different parameter <i>d</i>), 
+     * false for <b>Z</b>[<i>i</i>] (instance of {@code ImaginaryQuadraticRing}, 
+     * not {@code PureCubicRing}) and obviously false for null.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        return this.radicand == ((PureCubicRing) obj).radicand;
+    }
+
     // TODO: Write tests for this
     @Override
     public int hashCode() {
