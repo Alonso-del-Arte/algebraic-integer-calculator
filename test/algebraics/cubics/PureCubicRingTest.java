@@ -213,6 +213,15 @@ public class PureCubicRingTest {
         PureCubicRing instance = new PureCubicRing(d);
         assertEquals(instance, instance);
     }
+    
+    @Test
+    public void testNotEqualsNull() {
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        String message = instance.toString() + " should not equal null";
+        assertNotEquals(message, instance, null);
+    }
 
     @Test
     public void testConstructorRejectsCubefullNumber() {
