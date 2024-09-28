@@ -246,6 +246,16 @@ public class PureCubicRingTest {
                 + ringB.toString();
         assertNotEquals(message, ringA, ringB);
     }
+    
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing someRing = new PureCubicRing(d);
+        PureCubicRing sameRing = new PureCubicRing(d);
+        assertEquals(someRing, sameRing);
+    }
 
     @Test
     public void testConstructorRejectsCubefullNumber() {
