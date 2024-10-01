@@ -16,6 +16,7 @@
  */
 package algebraics.unary;
 
+import arithmetic.NotDivisibleException;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
 import java.time.LocalDateTime;
@@ -520,6 +521,26 @@ public class UnaryIntegerTest {
         }, message);     
     }
     
-    // TODO: Write test for divides() when divisor is NOT divisible
+    @Test
+    public void testDivideByCoprime() {
+        int signAdjust = Integer.signum(2 * randomNumber() + 1);
+        int n = signAdjust * randomNumber(Byte.MAX_VALUE) + 2;
+        UnaryInteger divisor = new UnaryInteger(n);
+        int nB = n + signAdjust;
+        int nA = nB * nB;
+        UnaryInteger dividend = new UnaryInteger(nA);
+        String msg = "Trying to divide " + dividend.toString() + " by " 
+                + divisor.toString() + " should cause NotDivisibleException";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = dividend.divides(divisor);
+            System.out.println(msg + ", not given result " + badResult);
+        }, NotDivisibleException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    // TODO: Write test for divides(int) when divisor is NOT divisible
     
 }
