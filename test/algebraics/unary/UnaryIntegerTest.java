@@ -18,6 +18,7 @@ package algebraics.unary;
 
 import arithmetic.NotDivisibleException;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import fractions.Fraction;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -531,11 +532,16 @@ public class UnaryIntegerTest {
         UnaryInteger dividend = new UnaryInteger(nA);
         String msg = "Trying to divide " + dividend.toString() + " by " 
                 + divisor.toString() + " should cause NotDivisibleException";
-        Throwable t = assertThrows(() -> {
+        NotDivisibleException nde = assertThrows(() -> {
             UnaryInteger badResult = dividend.divides(divisor);
             System.out.println(msg + ", not given result " + badResult);
         }, NotDivisibleException.class, msg);
-        String excMsg = t.getMessage();
+        Fraction division = new Fraction(nA, n);
+        Fraction[] expecteds = {division};
+        Fraction[] actuals = nde.getFractions();
+        String message = msg + " with fraction " + division.toString();
+        assertArrayEquals(message, expecteds, actuals);
+        String excMsg = nde.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
         System.out.println("\"" + excMsg + "\"");
