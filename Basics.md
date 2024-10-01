@@ -186,6 +186,17 @@ necessarily squarefree.
 
 (FINISH WRITING)
 
+The norm function is $N(a + b \root 3 \of d + c (\root 3 \of d)^2) = a^3 + b^3 d 
++ c^3 d^2 - 3abcd$.
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
 ### Degree 4
 
 (FINISH WRITING)
