@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,9 +20,9 @@ package algebraics;
  *
  * @author Alonso del Arte
  */
-public class BadInteger implements AlgebraicInteger {
+public class MockInteger implements AlgebraicInteger {
     
-    private final BadRing domain;
+    private final MockRing domain;
 
     @Override
     public int algebraicDegree() {
@@ -61,7 +61,7 @@ public class BadInteger implements AlgebraicInteger {
     }
 
     @Override
-    public BadRing getRing() {
+    public MockRing getRing() {
         return this.domain;
     }
 
@@ -110,7 +110,7 @@ public class BadInteger implements AlgebraicInteger {
         return Double.NEGATIVE_INFINITY;
     }
 
-    BadInteger(BadRing ring) {
+    MockInteger(MockRing ring) {
         this.domain = ring;
     }
     

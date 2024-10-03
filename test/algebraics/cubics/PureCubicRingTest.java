@@ -16,7 +16,7 @@
  */
 package algebraics.cubics;
 
-import algebraics.BadRing;
+import algebraics.MockRing;
 import arithmetic.PowerBasis;
 
 import static calculators.EratosthenesSieve.randomPrime;
@@ -229,7 +229,7 @@ public class PureCubicRingTest {
         int n = randomNumber(6) + 2;
         int d = randomSquarefreeNumberMod(n, 9);
         PureCubicRing cubicRing = new PureCubicRing(d);
-        BadRing testRing = new BadRing(d);
+        MockRing testRing = new MockRing(d);
         String message = cubicRing.toString() + " should not equal " 
                 + testRing.toString();
         assertNotEquals(message, cubicRing, testRing);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -22,26 +22,26 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests of the BadInteger class.
+ * Tests of the MockInteger class.
  * @author Alonso del Arte
  */
-public class BadIntegerTest {
+public class MockIntegerTest {
     
     @Test
     public void testGetRing() {
         System.out.println("getRing");
         int maxDegree = randomNumber(2048) + 32;
-        BadRing expected = new BadRing(maxDegree);
-        BadInteger integer = new BadInteger(expected);
-        BadRing actual = integer.getRing();
+        MockRing expected = new MockRing(maxDegree);
+        MockInteger integer = new MockInteger(expected);
+        MockRing actual = integer.getRing();
         assertEquals(expected, actual);
     }
     
     @Test
     public void testAlgebraicDegree() {
         int expected = randomNumber(2048) + 32;
-        BadRing ring = new BadRing(expected);
-        AlgebraicInteger number = new BadInteger(ring);
+        MockRing ring = new MockRing(expected);
+        AlgebraicInteger number = new MockInteger(ring);
         int actual = number.algebraicDegree();
         assertEquals(expected, actual);
     }

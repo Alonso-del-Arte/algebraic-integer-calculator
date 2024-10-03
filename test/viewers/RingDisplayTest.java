@@ -16,7 +16,7 @@
  */
 package viewers;
 
-import algebraics.BadRing;
+import algebraics.MockRing;
 import algebraics.IntegerRing;
 import algebraics.quadratics.RealQuadraticRing;
 import calculators.NumberTheoreticFunctionsCalculator;
@@ -45,15 +45,15 @@ public class RingDisplayTest {
     static final String TEST_CLIPBOARD_TEXT 
             = "This text was placed by a setup procedure";
     
-    private static BadRing chooseRing() {
+    private static MockRing chooseRing() {
         int d = randomNumber(1024);
-        return new BadRing(d);
+        return new MockRing(d);
     }
     
     @Test
     public void testGetFileFilter() {
         System.out.println("getFileFilter");
-        BadRing ring = chooseRing();
+        MockRing ring = chooseRing();
         FileFilter expected = new ExampleFileFilter();
         RingDisplay instance = new RingDisplayImpl(ring, expected);
         FileFilter actual = instance.getFileFilter();
@@ -63,7 +63,7 @@ public class RingDisplayTest {
     @Test
     public void testSetFileFilter() {
         System.out.println("setFileFilter");
-        BadRing ring = chooseRing();
+        MockRing ring = chooseRing();
         FileFilter fileFilter = new ExampleFileFilter();
         RingDisplay instance = new RingDisplayImpl(ring, fileFilter);
         FileFilter expected = new ExampleFileFilter();
@@ -77,7 +77,7 @@ public class RingDisplayTest {
         final boolean isMacOS = System.getProperty("os.name")
                 .startsWith("Mac OS");
         int d = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(8192);
-        BadRing ring = new BadRing(d);
+        MockRing ring = new MockRing(d);
         RingDisplay display = new RingDisplayImpl(ring);
         display.startRingDisplay();
         String key = "apple.laf.useScreenMenuBar";
@@ -98,7 +98,7 @@ public class RingDisplayTest {
     @Test
     public void testSetPixelsPerUnitIntervalCallsSetForBasicImaginary() {
         int d = NumberTheoreticFunctionsCalculator.randomSquarefreeNumber(8192);
-        BadRing ring = new BadRing(d, true);
+        MockRing ring = new MockRing(d, true);
         RingDisplayImpl display = new RingDisplayImpl(ring);
         int pixels = display.getPixelsPerUnitInterval();
         int increment = randomNumber(16) + 4;
@@ -234,7 +234,7 @@ public class RingDisplayTest {
     @Test
     public void testValidateRing() {
         System.out.println("validateRing");
-        BadRing ring = new BadRing(38);
+        MockRing ring = new MockRing(38);
         RingDisplay display = new RingDisplayImpl(ring);
         try {
             display.validateRing(ring);
@@ -252,7 +252,7 @@ public class RingDisplayTest {
      */
     @Test
     public void testValidateRingRejectsNull() {
-        BadRing ring = new BadRing(39);
+        MockRing ring = new MockRing(39);
         RingDisplay display = new RingDisplayImpl(ring);
         try {
             display.validateRing(null);
@@ -276,7 +276,7 @@ public class RingDisplayTest {
      */
     @Test
     public void testValidateRingRejectsWrongType() {
-        BadRing ring = new BadRing(39);
+        MockRing ring = new MockRing(39);
         RingDisplay display = new RingDisplayImpl(ring);
         RealQuadraticRing wrongTypeRing = new RealQuadraticRing(39);
         try {
@@ -310,10 +310,10 @@ public class RingDisplayTest {
     @Test
     public void testSwitchToRing() {
         System.out.println("switchToRing");
-        BadRing ring = new BadRing(35);
+        MockRing ring = new MockRing(35);
         RingDisplay display = new RingDisplayImpl(ring);
         display.startRingDisplay();
-        BadRing expected = new BadRing(449);
+        MockRing expected = new MockRing(449);
         display.switchToRing(expected);
         IntegerRing actual = display.getRing();
         assertEquals(expected, actual);
@@ -583,7 +583,7 @@ public class RingDisplayTest {
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        BadRing expected = new BadRing(15);
+        MockRing expected = new MockRing(15);
         RingDisplay display = new RingDisplayImpl(expected);
         IntegerRing actual = display.getRing();
         assertEquals(expected, actual);
@@ -700,11 +700,11 @@ public class RingDisplayTest {
         public void mouseMoved(MouseEvent e) {
         }
         
-        public RingDisplayImpl(BadRing ring) {
+        public RingDisplayImpl(MockRing ring) {
             super(ring);
         }
 
-        public RingDisplayImpl(BadRing ring, FileFilter fileFilter) {
+        public RingDisplayImpl(MockRing ring, FileFilter fileFilter) {
             super(ring, fileFilter);
         }
 

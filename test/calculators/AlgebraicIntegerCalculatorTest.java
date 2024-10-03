@@ -16,7 +16,7 @@
  */
 package calculators;
 
-import algebraics.BadRing;
+import algebraics.MockRing;
 import algebraics.IntegerRing;
 import algebraics.UnsupportedNumberDomainException;
 
@@ -49,7 +49,7 @@ public class AlgebraicIntegerCalculatorTest {
     
     @Test
     public void testConstructorRejectsUnsupportedRing() {
-        IntegerRing unsupRing = new BadRing();
+        IntegerRing unsupRing = new MockRing();
         try {
             AlgebraicIntegerCalculator calculator 
                     = new AlgebraicIntegerCalculator(unsupRing);

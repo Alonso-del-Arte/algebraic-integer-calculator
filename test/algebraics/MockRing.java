@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,13 +20,13 @@ import arithmetic.PowerBasis;
 import fractions.Fraction;
 
 /**
- * A bad implementation to be used for testing purposes only. This class should 
+ * A mock implementation to be used for testing purposes only. This class should 
  * not be available in any end user context. Use this for example in situations 
  * that should cause an {@link UnsupportedNumberDomainException} to occur, 
  * rather than {@link AlgebraicDegreeOverflowException}.
  * @author Alonso del Arte
  */
-public class BadRing implements IntegerRing {
+public class MockRing implements IntegerRing {
     
     private static final Fraction ONE = new Fraction(1);
     
@@ -90,7 +90,7 @@ public class BadRing implements IntegerRing {
      * specify maximum degree nor whether or not the ring includes imaginary 
      * numbers.
      */
-    public BadRing() {
+    public MockRing() {
         this(1, false);
     }
     
@@ -100,7 +100,7 @@ public class BadRing implements IntegerRing {
      * numbers.
      * @param maxDegree The maximum degree. For example, 3.
      */
-    public BadRing(int maxDegree) {
+    public MockRing(int maxDegree) {
         this(maxDegree, false);
     }
     
@@ -111,7 +111,7 @@ public class BadRing implements IntegerRing {
      * @param includeImaginary Whether or not the example ring contains 
      * imaginary numbers. For example, true.
      */
-    public BadRing(int maxDegree, boolean includeImaginary) {
+    public MockRing(int maxDegree, boolean includeImaginary) {
         this.maximumDegree = maxDegree;
         this.onlyReals = !includeImaginary;
     }

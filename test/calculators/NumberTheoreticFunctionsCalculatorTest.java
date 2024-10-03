@@ -18,7 +18,7 @@ package calculators;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
-import algebraics.BadRing;
+import algebraics.MockRing;
 import algebraics.IntegerRing;
 import algebraics.UnsupportedNumberDomainException;
 import algebraics.quadratics.IllDefinedQuadraticInteger;
@@ -2518,7 +2518,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoNegOneForUnsupportedRing() {
-        IntegerRing ring = new BadRing();
+        IntegerRing ring = new MockRing();
         try {
             AlgebraicInteger result = getNegOneInRing(ring);
             String message = "Trying to get -1 for unsupported ring " 
@@ -2597,7 +2597,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     // TODO: Rewrite using assertThrows()
     @Test
     public void testNoZeroForUnsupportedRing() {
-        IntegerRing ring = new BadRing();
+        IntegerRing ring = new MockRing();
         try {
             AlgebraicInteger result = getZeroInRing(ring);
             String message = "Trying to get 0 for unsupported ring " 
@@ -2674,7 +2674,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoOneForUnsupportedRing() {
-        IntegerRing ring = new BadRing();
+        IntegerRing ring = new MockRing();
         try {
             AlgebraicInteger result = getOneInRing(ring);
             String message = "Trying to get 1 for unsupported ring " 

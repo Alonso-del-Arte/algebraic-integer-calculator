@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -22,16 +22,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests of the BadRing class.
+ * Tests of the MockRing class.
  * @author Alonso del Arte
  */
-public class BadRingTest {
+public class MockRingTest {
     
     @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         int expected = randomNumber(1024) + 16;
-        BadRing badRing = new BadRing(expected);
+        MockRing badRing = new MockRing(expected);
         int actual = badRing.getMaxAlgebraicDegree();
         assertEquals(expected, actual);
     }
@@ -40,7 +40,7 @@ public class BadRingTest {
     public void testIsPurelyReal() {
         System.out.println("isPurelyReal");
         int maxDegree = randomNumber(1024) + 16;
-        BadRing ring = new BadRing(maxDegree, false);
+        MockRing ring = new MockRing(maxDegree, false);
         String msg = ring.toString() 
                 + " constructed w/ incl. imaginary false should be purely real";
         assert ring.isPurelyReal() : msg;
@@ -49,7 +49,7 @@ public class BadRingTest {
     @Test
     public void testIsPurelyRealButIsNot() {
         int maxDegree = randomNumber(1024) + 16;
-        BadRing ring = new BadRing(maxDegree,true);
+        MockRing ring = new MockRing(maxDegree,true);
         String msg = ring.toString() 
                 + " constructed w/ incl. imag. true shouldn't be purely real";
         assert !ring.isPurelyReal() : msg;

@@ -41,9 +41,9 @@ public class AlgebraicDegreeOverflowExceptionTest {
     public void testGetMaxExpectedAlgebraicDegree() {
         System.out.println("getMaxExpectedAlgebraicDegree");
         int expected = randomNumber(128) + 2;
-        BadRing ring = new BadRing(expected);
-        AlgebraicInteger numberA = new BadInteger(ring);
-        AlgebraicInteger numberB = new BadInteger(ring);
+        MockRing ring = new MockRing(expected);
+        AlgebraicInteger numberA = new MockInteger(ring);
+        AlgebraicInteger numberB = new MockInteger(ring);
         AlgebraicDegreeOverflowException exc 
                 = new AlgebraicDegreeOverflowException(DEFAULT_MESSAGE, 
                         expected, numberA, numberB);
@@ -63,10 +63,10 @@ public class AlgebraicDegreeOverflowExceptionTest {
         System.out.println("getNecessaryAlgebraicDegree");
         int degreeA = randomNumber(128) + 2;
         int degreeB = randomNumber(128) + 2;
-        BadRing ringA = new BadRing(degreeA);
-        BadRing ringB = new BadRing(degreeB);
-        BadInteger numberA = new BadInteger(ringA);
-        BadInteger numberB = new BadInteger(ringB);
+        MockRing ringA = new MockRing(degreeA);
+        MockRing ringB = new MockRing(degreeB);
+        MockInteger numberA = new MockInteger(ringA);
+        MockInteger numberB = new MockInteger(ringB);
         AlgebraicDegreeOverflowException exc 
                 = new AlgebraicDegreeOverflowException(DEFAULT_MESSAGE, degreeA, 
                         numberA, numberB);
@@ -84,10 +84,10 @@ public class AlgebraicDegreeOverflowExceptionTest {
         System.out.println("getCausingNumbers");
         int degreeA = randomNumber(128) + 2;
         int degreeB = randomNumber(128) + 2;
-        BadRing ringA = new BadRing(degreeA);
-        BadRing ringB = new BadRing(degreeB);
-        BadInteger numberA = new BadInteger(ringA);
-        BadInteger numberB = new BadInteger(ringB);
+        MockRing ringA = new MockRing(degreeA);
+        MockRing ringB = new MockRing(degreeB);
+        MockInteger numberA = new MockInteger(ringA);
+        MockInteger numberB = new MockInteger(ringB);
         AlgebraicDegreeOverflowException exc 
                 = new AlgebraicDegreeOverflowException(DEFAULT_MESSAGE, degreeA, 
                         numberA, numberB);
