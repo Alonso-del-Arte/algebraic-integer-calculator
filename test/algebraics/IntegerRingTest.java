@@ -16,8 +16,7 @@
  */
 package algebraics;
 
-import arithmetic.PowerBasis;
-import fractions.Fraction;
+import java.util.Random;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -27,6 +26,8 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class IntegerRingTest {
+    
+    static final Random RANDOM = new Random();
     
     /**
      * Test of the toTeXStringBlackboardBold function of the IntegerRing 
