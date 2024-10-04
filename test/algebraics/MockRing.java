@@ -61,7 +61,7 @@ public class MockRing implements IntegerRing {
     
     @Override
     public String toString() {
-        return "BAD RING";
+        return "Mock Ring of Degree " + this.maximumDegree;
     }
     
     @Override
