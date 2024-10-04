@@ -84,6 +84,16 @@ public class MockRing implements IntegerRing {
     public String toFilenameString() {
         return "BAD_RING";
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 
     /**
      * Auxiliary constructor. Use this constructor when it's not necessary to 
