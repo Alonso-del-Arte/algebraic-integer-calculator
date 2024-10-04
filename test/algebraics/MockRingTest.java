@@ -29,6 +29,17 @@ import static org.junit.Assert.*;
 public class MockRingTest {
     
     @Test
+    public void testToString() {
+        System.out.println("toString");
+        int maxDegree = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        String expected = "Mock Ring of Degree " + maxDegree;
+        String actual = ring.toString();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         int expected = randomNumber(1024) + 16;
@@ -54,17 +65,6 @@ public class MockRingTest {
         String msg = ring.toString() 
                 + " constructed w/ incl. imag. true shouldn't be purely real";
         assert !ring.isPurelyReal() : msg;
-    }
-    
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        int maxDegree = randomNumber(16) + 4;
-        boolean includeImaginary = RANDOM.nextBoolean();
-        MockRing ring = new MockRing(maxDegree, includeImaginary);
-        String expected = "Mock Ring of Degree " + maxDegree;
-        String actual = ring.toString();
-        assertEquals(expected, actual);
     }
     
 }
