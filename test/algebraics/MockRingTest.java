@@ -40,6 +40,14 @@ public class MockRingTest {
     }
     
     @Test
+    public void testReferentialEquality() {
+        int maxDegree = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        assertEquals(ring, ring);
+    }
+    
+    @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         int expected = randomNumber(1024) + 16;
