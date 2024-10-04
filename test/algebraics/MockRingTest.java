@@ -62,6 +62,16 @@ public class MockRingTest {
     }
     
     @Test
+    public void testNotEqualsDiffClass() {
+        int maxDegree = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        Object obj = new Object();
+        String msg = ring.toString() + " should not equal " + obj.toString();
+        assert !ring.equals(obj) : msg;
+    }
+    
+    @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         int expected = randomNumber(1024) + 16;
