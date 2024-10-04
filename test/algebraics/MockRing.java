@@ -86,11 +86,6 @@ public class MockRing implements IntegerRing {
     }
     
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof MockRing;
-    }
-    
-    @Override
     public int hashCode() {
         return 0;
     }
