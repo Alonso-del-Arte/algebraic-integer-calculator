@@ -96,7 +96,11 @@ public class MockRing implements IntegerRing {
         if (!this.getClass().equals(obj.getClass())) {
             return false;
         }
-        return this.maximumDegree == ((MockRing) obj).maximumDegree;
+        MockRing other = (MockRing) obj;
+        if (this.maximumDegree != other.maximumDegree) {
+            return false;
+        }
+        return this.onlyReals == other.onlyReals;
     }
 
     @Override
