@@ -76,8 +76,8 @@ public class MockRingTest {
         int maxDegreeA = randomNumber(16) + 4;
         boolean includeImaginary = RANDOM.nextBoolean();
         IntegerRing ringA = new MockRing(maxDegreeA, includeImaginary);
-        int maxDegree = maxDegreeA + randomNumber(8) + 2;
-        IntegerRing ringB = new MockRing(maxDegree, includeImaginary);
+        int maxDegreeB = maxDegreeA + randomNumber(8) + 2;
+        IntegerRing ringB = new MockRing(maxDegreeB, includeImaginary);
         String msg = ringA.toString() + " should not equal " + ringB.toString();
         assert !ringA.equals(ringB) : msg;
     }
@@ -90,6 +90,18 @@ public class MockRingTest {
         IntegerRing someRing = new MockRing(maxDegree, includeImaginary);
         IntegerRing sameRing = new MockRing(maxDegree, includeImaginary);
         assertEquals(someRing, sameRing);
+    }
+    
+    @Test
+    public void testNotEqualsDiffInclImag() {
+        int maxDegree = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        IntegerRing ringA = new MockRing(maxDegree, includeImaginary);
+        IntegerRing ringB = new MockRing(maxDegree, includeImaginary);
+        String msg = ringA.toString() + " initialized with include imaginary " 
+                + includeImaginary + " should not equal " + ringB.toString() 
+                + " initialized with opposite include imaginary";
+        assert !ringA.equals(ringB) : msg;
     }
     
     @Test
