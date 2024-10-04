@@ -47,6 +47,20 @@ public class MockRingTest {
         assertEquals(ring, ring);
     }
     
+    private static Object provideNull() {
+        return null;
+    }
+    
+    @Test
+    public void testNotEqualsNull() {
+        int maxDegree = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        Object obj = provideNull();
+        String msg = ring.toString() + " should not equal null";
+        assert !ring.equals(obj) : msg;
+    }
+    
     @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
