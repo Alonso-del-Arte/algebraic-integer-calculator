@@ -16,6 +16,7 @@
  */
 package algebraics;
 
+import static algebraics.IntegerRingTest.RANDOM;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
 import org.junit.Test;
@@ -49,10 +50,21 @@ public class MockRingTest {
     @Test
     public void testIsPurelyRealButIsNot() {
         int maxDegree = randomNumber(1024) + 16;
-        MockRing ring = new MockRing(maxDegree,true);
+        MockRing ring = new MockRing(maxDegree, true);
         String msg = ring.toString() 
                 + " constructed w/ incl. imag. true shouldn't be purely real";
         assert !ring.isPurelyReal() : msg;
+    }
+    
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        int maxDegree = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        String expected = "Mock Ring of Degree " + maxDegree;
+        String actual = ring.toString();
+        assertEquals(expected, actual);
     }
     
 }
