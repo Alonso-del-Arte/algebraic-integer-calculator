@@ -83,6 +83,16 @@ public class MockRingTest {
     }
     
     @Test
+    public void testEquals() {
+        System.out.println("equals");
+        int maxDegree = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        IntegerRing someRing = new MockRing(maxDegree, includeImaginary);
+        IntegerRing sameRing = new MockRing(maxDegree, includeImaginary);
+        assertEquals(someRing, sameRing);
+    }
+    
+    @Test
     public void testGetMaxAlgebraicDegree() {
         System.out.println("getMaxAlgebraicDegree");
         int expected = randomNumber(1024) + 16;
