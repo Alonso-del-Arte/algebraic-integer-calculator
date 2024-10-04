@@ -43,7 +43,7 @@ public class MockRingTest {
     public void testReferentialEquality() {
         int maxDegree = randomNumber(16) + 4;
         boolean includeImaginary = RANDOM.nextBoolean();
-        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        IntegerRing ring = new MockRing(maxDegree, includeImaginary);
         assertEquals(ring, ring);
     }
     
@@ -55,7 +55,7 @@ public class MockRingTest {
     public void testNotEqualsNull() {
         int maxDegree = randomNumber(16) + 4;
         boolean includeImaginary = RANDOM.nextBoolean();
-        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        IntegerRing ring = new MockRing(maxDegree, includeImaginary);
         Object obj = provideNull();
         String msg = ring.toString() + " should not equal null";
         assert !ring.equals(obj) : msg;
@@ -65,10 +65,21 @@ public class MockRingTest {
     public void testNotEqualsDiffClass() {
         int maxDegree = randomNumber(16) + 4;
         boolean includeImaginary = RANDOM.nextBoolean();
-        MockRing ring = new MockRing(maxDegree, includeImaginary);
+        IntegerRing ring = new MockRing(maxDegree, includeImaginary);
         Object obj = new Object();
         String msg = ring.toString() + " should not equal " + obj.toString();
         assert !ring.equals(obj) : msg;
+    }
+    
+    @Test
+    public void testNotEqualsDiffDegree() {
+        int maxDegreeA = randomNumber(16) + 4;
+        boolean includeImaginary = RANDOM.nextBoolean();
+        IntegerRing ringA = new MockRing(maxDegreeA, includeImaginary);
+        int maxDegree = maxDegreeA + randomNumber(8) + 2;
+        IntegerRing ringB = new MockRing(maxDegree, includeImaginary);
+        String msg = ringA.toString() + " should not equal " + ringB.toString();
+        assert !ringA.equals(ringB) : msg;
     }
     
     @Test
