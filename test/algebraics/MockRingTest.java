@@ -97,7 +97,7 @@ public class MockRingTest {
         int maxDegree = randomNumber(16) + 4;
         boolean includeImaginary = RANDOM.nextBoolean();
         IntegerRing ringA = new MockRing(maxDegree, includeImaginary);
-        IntegerRing ringB = new MockRing(maxDegree, includeImaginary);
+        IntegerRing ringB = new MockRing(maxDegree, !includeImaginary);
         String msg = ringA.toString() + " initialized with include imaginary " 
                 + includeImaginary + " should not equal " + ringB.toString() 
                 + " initialized with opposite include imaginary";
