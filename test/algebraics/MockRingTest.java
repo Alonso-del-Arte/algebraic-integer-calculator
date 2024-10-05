@@ -19,8 +19,13 @@ package algebraics;
 import static algebraics.IntegerRingTest.RANDOM;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import static org.testframe.api.Asserters.assertMinimum;
 
 /**
  * Tests of the MockRing class.
@@ -102,6 +107,27 @@ public class MockRingTest {
                 + includeImaginary + " should not equal " + ringB.toString() 
                 + " initialized with opposite include imaginary";
         assert !ringA.equals(ringB) : msg;
+    }
+    
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        int initialCapacity = randomNumber(64) + 16;
+        Set<IntegerRing> rings = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            int maxDegree = randomNumber(initialCapacity) + i + 1;
+            IntegerRing ring = new MockRing(maxDegree, RANDOM.nextBoolean());
+            rings.add(ring);
+            hashes.add(ring.hashCode());
+        }
+        int numberOfRings = rings.size();
+        int minimum = 3 * numberOfRings / 5;
+        int actual = hashes.size();
+        String msg = "Given " + numberOfRings 
+                + " distinct rings, there should be at least " + minimum 
+                + " distinct hash codes";
+        assertMinimum(minimum, actual, msg);
     }
     
     @Test
