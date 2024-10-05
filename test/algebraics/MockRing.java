@@ -105,7 +105,8 @@ public class MockRing implements IntegerRing {
 
     @Override
     public int hashCode() {
-        return 0;
+        int signum = this.onlyReals ? 1 : -1;
+        return signum * this.maximumDegree;
     }
 
     /**
