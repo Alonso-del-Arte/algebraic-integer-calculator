@@ -123,10 +123,14 @@ public class PureCubicRing extends CubicRing {
         return this.radicand == ((PureCubicRing) obj).radicand;
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives a hash code for this ring. Mathematically guaranteed to be unique.
+     * @return A hash code based on the constructor parameter {@code d} in some 
+     * way, such as being multiplied by &minus;1.
+     */
     @Override
     public int hashCode() {
-        return 0;
+        return -this.radicand;
     }
     
     // TODO: Write tests for this
