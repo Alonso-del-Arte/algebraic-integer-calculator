@@ -23,8 +23,13 @@ import static calculators.EratosthenesSieve.randomPrime;
 import static calculators.EratosthenesSieve.randomPrimeOtherThan;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import fractions.Fraction;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -255,6 +260,25 @@ public class PureCubicRingTest {
         PureCubicRing someRing = new PureCubicRing(d);
         PureCubicRing sameRing = new PureCubicRing(d);
         assertEquals(someRing, sameRing);
+    }
+    
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        int initialCapacity = randomNumber(128) + 2;
+        Set<PureCubicRing> rings = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            int d = randomSquarefreeNumber(i + 64);
+            PureCubicRing ring = new PureCubicRing(d);
+            rings.add(ring);
+            hashes.add(ring.hashCode());
+        }
+        int expected = rings.size();
+        int actual = hashes.size();
+        String message = "Given " + expected 
+                + " distinct rings, there should be as many hash codes";
+        assertEquals(message, expected, actual);
     }
 
     @Test
