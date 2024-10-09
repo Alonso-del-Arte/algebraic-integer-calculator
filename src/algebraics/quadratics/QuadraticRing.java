@@ -105,14 +105,12 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
     }
     
     /**
-     * Gives the absolute value of the radicand. This function is included 
-     * merely to simplify the inheritance structure of {@link QuadraticRing} to 
-     * {@link ImaginaryQuadraticRing}.
+     * Gives the absolute value of the radicand.
      * @return The same number as {@link QuadraticRing#getRadicand() 
      * getRadicand()} in the case of {@link RealQuadraticRing}. However, for 
-     * <code>ImaginaryQuadraticRing</code>, this is the absolute value. For 
-     * example, for both <b>Z</b>[&radic;&minus;2] and <b>Z</b>[&radic;2] this 
-     * would be 2.
+     * {@link ImaginaryQuadraticRing}, this is the absolute value. For example, 
+     * for both <b>Z</b>[&radic;&minus;2] and <b>Z</b>[&radic;2] this would be 
+     * 2.
      */
     public int getAbsNegRad() {
         return this.absRadicand;
