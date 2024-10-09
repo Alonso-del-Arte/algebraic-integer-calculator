@@ -38,6 +38,11 @@ public final class RealQuadraticRing extends QuadraticRing {
         return true;
     }
     
+    @Override
+    public int getRadicand() {
+        return -1;
+    }
+    
     /**
      * Gives the numeric value of the square root of the radicand. For real 
      * quadratic rings, this is the same as {@link #getAbsNegRadSqrt()}.
@@ -57,7 +62,7 @@ public final class RealQuadraticRing extends QuadraticRing {
      */
     @Override
     public int getAbsNegRad() {
-        return this.radicand;
+        return -this.radicand;
     }
     
     /**
