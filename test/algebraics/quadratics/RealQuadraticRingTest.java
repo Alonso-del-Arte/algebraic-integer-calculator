@@ -184,19 +184,18 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of getRadSqrt method, of class RealQuadraticRing.
+     * Test of the getRadSqrt function, of the RealQuadraticRing class.
      */
     @Test
     public void testGetRadSqrt() {
         System.out.println("getRadSqrt");
-        assertEquals(Math.sqrt(2), RING_Z2.getRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(5), RING_ZPHI.getRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(13), RING_OQ13.getRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(randomDiscr), ringRandom.getRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
+        int d = choosePositiveRandomSquarefreeNot1();
+        RealQuadraticRing ring = new RealQuadraticRing(d);
+        double expected = Math.sqrt(d);
+        double actual = ring.getRadSqrt();
+        double delta = 0.00000001;
+        String message = "Inquiring square root of " + d;
+        assertEquals(message, expected, actual, delta);
     }
     
     /**
