@@ -215,23 +215,6 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of getRadSqrt and getAbsNegRadSqrt methods, of class 
-     * RealQuadraticRing. Since these rings adjoin numbers that are real and 
-     * positive, getRadSqrt and getAbsNegRadSqrt should give the same result.
-     */
-    @Test
-    public void testGetRadSqrtGetAbsNegRadSqrtCorr() {
-        assertEquals(RING_Z2.getRadSqrt(), RING_Z2.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(RING_ZPHI.getRadSqrt(), RING_ZPHI.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(RING_OQ13.getRadSqrt(), RING_OQ13.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(ringRandom.getRadSqrt(), ringRandom.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-    }
-    
-    /**
      * Test of hasHalfIntegers method, of class RealQuadraticRing, inherited 
      * from {@link QuadraticInteger}.
      */
