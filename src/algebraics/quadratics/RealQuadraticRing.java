@@ -47,17 +47,6 @@ public final class RealQuadraticRing extends QuadraticRing {
     }
     
     /**
-     * Gives the absolute value of the radicand. This function is included 
-     * merely to simplify the inheritance structure of {@link QuadraticRing} to 
-     * {@link ImaginaryQuadraticRing}.
-     * @return The same number as {@link QuadraticRing#getRadicand()}.
-     */
-    @Override
-    public int getAbsNegRad() {
-        return this.radicand;
-    }
-    
-    /**
      * Gives the square root of the absolute value of the radicand. This 
      * function is included merely to simplify the inheritance structure of 
      * {@link QuadraticRing} to {@link ImaginaryQuadraticRing}.
