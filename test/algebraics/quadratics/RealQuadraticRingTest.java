@@ -157,16 +157,17 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of getRadicand method, of class RealQuadraticRing, inherited from 
-     * {@link QuadraticRing}.
+     * Test of the getRadicand function, of the RealQuadraticRing class, 
+     * inherited from {@link QuadraticRing}.
      */
     @Test
     public void testGetRadicand() {
         System.out.println("getRadicand");
-        assertEquals(2, RING_Z2.getRadicand());
-        assertEquals(5, RING_ZPHI.getRadicand());
-        assertEquals(13, RING_OQ13.getRadicand());
-        assertEquals(randomDiscr, ringRandom.getRadicand());
+        int expected = choosePositiveRandomSquarefreeNot1();
+        QuadraticRing ring = new RealQuadraticRing(expected);
+        int actual = ring.getRadicand();
+        String message = "Inquiring for radicand of " + ring.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
