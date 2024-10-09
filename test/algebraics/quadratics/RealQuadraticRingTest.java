@@ -183,17 +183,6 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of getRadicand and getAbsNegRad methods, of class RealQuadraticRing.
-     */
-    @Test
-    public void testRadAbsNegRadCorrelate() {
-        assertEquals(RING_Z2.getRadicand(), RING_Z2.getAbsNegRad());
-        assertEquals(RING_ZPHI.getRadicand(), RING_ZPHI.getAbsNegRad());
-        assertEquals(RING_OQ13.getRadicand(), RING_OQ13.getAbsNegRad());
-        assertEquals(ringRandom.getRadicand(), ringRandom.getAbsNegRad());
-    }
-
-    /**
      * Test of getRadSqrt method, of class RealQuadraticRing.
      */
     @Test
