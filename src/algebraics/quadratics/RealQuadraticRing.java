@@ -16,9 +16,6 @@
  */
 package algebraics.quadratics;
 
-import arithmetic.PowerBasis;
-import fractions.Fraction;
-
 /**
  * Defines objects to represent real quadratic rings.
  * @author Alonso del Arte
@@ -36,11 +33,6 @@ public final class RealQuadraticRing extends QuadraticRing {
     @Override
     public final boolean isPurelyReal() {
         return true;
-    }
-    
-    @Override
-    public int getRadicand() {
-        return this.radicand;
     }
     
     /**
