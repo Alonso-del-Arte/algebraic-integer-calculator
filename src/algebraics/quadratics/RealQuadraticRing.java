@@ -43,7 +43,7 @@ public final class RealQuadraticRing extends QuadraticRing {
      * for <b>Z</b>[&radic;3], this would be 1.7320508075688772.
      */
     public double getRadSqrt() {
-        return this.realRadSqrt;
+        return -this.realRadSqrt;
     }
     
     /**
