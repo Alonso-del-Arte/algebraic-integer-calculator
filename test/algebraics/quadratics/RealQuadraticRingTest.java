@@ -171,15 +171,16 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of getAbsNegRad method, of class RealQuadraticRing.
+     * Test of the getAbsNegRad function, of the RealQuadraticRing class.
      */
     @Test
     public void testGetAbsNegRad() {
         System.out.println("getAbsNegRad");
-        assertEquals(2, RING_Z2.getAbsNegRad());
-        assertEquals(5, RING_ZPHI.getAbsNegRad());
-        assertEquals(13, RING_OQ13.getAbsNegRad());
-        assertEquals(randomDiscr, ringRandom.getAbsNegRad());
+        int expected = choosePositiveRandomSquarefreeNot1();
+        QuadraticRing ring = new RealQuadraticRing(expected);
+        int actual = ring.getAbsNegRad();
+        String message = "Inquiring for radicand of " + ring.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
