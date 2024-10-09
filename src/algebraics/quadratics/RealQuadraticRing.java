@@ -36,14 +36,14 @@ public final class RealQuadraticRing extends QuadraticRing {
     }
     
     /**
-     * Gives the numeric value of the square root of the radicand. For real 
-     * quadratic rings, this is the same as {@link #getAbsNegRadSqrt()}.
+     * Gives the numeric value of the square root of the radicand. Note that 
+     * this function is not available in the abstract superclass.
      * @return The rational approximation of the square root of the radicand. 
      * For example, for <b>Z</b>[&radic;2], this would be 1.4142135623730951;  
      * for <b>Z</b>[&radic;3], this would be 1.7320508075688772.
      */
     public double getRadSqrt() {
-        return -this.realRadSqrt;
+        return this.realRadSqrt;
     }
     
     /**
