@@ -127,12 +127,18 @@ but the equations are similar. In the previous example, 47 is the solution to $x
 Most numbers in a ring are divisible by a few other numbers in that ring and not 
 divisible by any other numbers in that ring.
 
-If a number is divisible only by units and associates, then it is said to be 
-**irreducible**. For example, &minus;47 is irreducible, as it's divisible only 
-by itself, &minus;1, 1 and 47.
+If a number that is not a unit is divisible only by units and associates, then 
+it is said to be **irreducible**. For example, &minus;47 is irreducible, as it's 
+divisible only by itself, &minus;1, 1 and 47.
 
 The definition of irreducible might sound familiar, and you might think that 
-it's
+it's the same as the definition of prime numbers. And indeed in $\mathbb Z$, all 
+irreducible numbers are also prime numbers. But there are many domains in which 
+not all irreducible numbers are prime.
+
+A non-unit number $p$ in some ring $R$ is said to be **prime** if whenever $p$ 
+divides $ab$ for any combination of $a, b \in R$, then $p$ divides either $a$ or 
+$b$.
 
 (FINISH WRITING)
 
