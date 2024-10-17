@@ -247,7 +247,7 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
-        RealQuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRing();
         int a = randomNumber();
         int b = randomNumber() | (randomNumber(16) + 1);
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
@@ -264,7 +264,7 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testAlgebraicDegreeOne() {
-        RealQuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRing();
         int a = randomNumber() | (randomNumber(16) + 1);
         QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
         int expected = 1;
@@ -280,7 +280,7 @@ public class RealQuadraticIntegerTest {
      */
     @Test
     public void testAlgebraicDegreeZero() {
-        RealQuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRing();
         QuadraticInteger number = new RealQuadraticInteger(0, 0, ring);
         int expected = 0;
         int actual = number.algebraicDegree();
@@ -296,11 +296,24 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testTrace() {
         System.out.println("trace");
-        RealQuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRing();
         int a = randomNumber();
         int b = randomNumber() | (randomNumber(16) + 1);
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
         long expected = 2L * a;
+        long actual = number.trace();
+        String message = "Reckoning trace of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testTraceHalfInteger() {
+        int d = randomSquarefreeNumberMod(1, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        int expected = 2 * randomNumber() + 1;
+        int b = 2 * randomNumber() + 1;
+        QuadraticInteger number = new RealQuadraticInteger(expected, b, ring, 
+                2);
         long actual = number.trace();
         String message = "Reckoning trace of " + number.toString();
         assertEquals(message, expected, actual);
