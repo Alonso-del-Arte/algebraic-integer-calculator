@@ -241,8 +241,8 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of algebraicDegree method, of class RealQuadraticInteger, inherited 
-     * from QuadraticInteger.
+     * Test of the algebraicDegree function, of the RealQuadraticInteger class, 
+     * inherited from QuadraticInteger.
      */
     @Test
     public void testAlgebraicDegree() {
@@ -258,8 +258,8 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Another test of algebraicDegree method, of class RealQuadraticInteger, 
-     * inherited from QuadraticInteger. Purely real and rational nonzero 
+     * Another test of the algebraicDegree function, of the RealQuadraticInteger 
+     * class, inherited from QuadraticInteger. Purely real and rational nonzero 
      * integers should have algebraic degree 1.
      */
     @Test
@@ -274,9 +274,9 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Another test of algebraicDegree method, of class RealQuadraticInteger, 
-     * inherited from QuadraticInteger. Zero should have algebraic degree 0 
-     * regardless of what ring it comes from.
+     * Another test of the algebraicDegree function, of the RealQuadraticInteger 
+     * class, inherited from QuadraticInteger. Zero should have algebraic degree 
+     * 0 regardless of what ring it comes from.
      */
     @Test
     public void testAlgebraicDegreeZero() {
@@ -290,22 +290,20 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of trace method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
+     * Test of the trace function, of the RealQuadraticInteger class, inherited 
+     * from QuadraticInteger.
      */
     @Test
     public void testTrace() {
         System.out.println("trace");
-        long expected = 2L * randomRegPart;
-        long actual;
-        for (int i = 0; i < totalTestIntegers; i++) {
-            actual = testIntegers.get(i).trace();
-            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                assertEquals(randomRegForHalfInts, actual);
-            } else {
-                assertEquals(expected, actual);
-            }
-        }
+        RealQuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber() | (randomNumber(16) + 1);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        long expected = 2L * a;
+        long actual = number.trace();
+        String message = "Reckoning trace of " + number.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
