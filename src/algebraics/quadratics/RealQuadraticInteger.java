@@ -34,7 +34,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public long trace() {
-        return this.regPartMult - 1;
+        return 2L * this.regPartMult;
     }
     
     /**
