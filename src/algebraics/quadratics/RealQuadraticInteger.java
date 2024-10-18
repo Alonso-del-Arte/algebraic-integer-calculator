@@ -32,6 +32,11 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
+    @Override
+    public long norm() {
+        return Long.MAX_VALUE;
+    }
+    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
