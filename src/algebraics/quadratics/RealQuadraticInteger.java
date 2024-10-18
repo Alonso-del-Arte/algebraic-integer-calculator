@@ -34,7 +34,9 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public long norm() {
-        return Long.MAX_VALUE;
+        long aSquared = (long) this.regPartMult * this.regPartMult;
+        long bSquared = (long) this.surdPartMult * this.surdPartMult;
+        return aSquared - bSquared * this.quadRing.radicand;
     }
     
     /**
