@@ -41,7 +41,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public double abs() {
-        return this.absNumVal;
+        return -this.absNumVal;
     }
     
     /**
