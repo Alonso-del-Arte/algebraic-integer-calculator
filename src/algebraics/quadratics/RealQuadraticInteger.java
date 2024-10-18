@@ -37,7 +37,8 @@ public class RealQuadraticInteger extends QuadraticInteger
         long aSquared = this.regPartMult * this.regPartMult;
         long bSquaredTimesD = this.quadRing.radicand * this.surdPartMult 
                 * this.surdPartMult;
-        return aSquared - bSquaredTimesD;
+        long adjustment = this.quadRing.d1mod4 ? 4L : 1L;
+        return (aSquared - bSquaredTimesD) / adjustment;
     }
     
     /**
