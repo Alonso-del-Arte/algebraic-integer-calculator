@@ -150,6 +150,22 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testNormHalfInteger() {
+        int d = randomSquarefreeNumberMod(1, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        int bound = 1024;
+        int halfBound = bound / 2;
+        int a = 2 * randomNumber(bound) + 1 - halfBound;
+        int b = 2 * randomNumber(bound) + 1 - halfBound;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 
+                2);
+        long expected = (a * a - ring.getRadicand() * b * b) / 4;
+        long actual = number.norm();
+        String message = "Reckoning trace of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of minPolynomialCoeffs method, of class RealQuadraticInteger, 
      * inherited from QuadraticInteger.
