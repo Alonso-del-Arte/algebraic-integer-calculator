@@ -132,34 +132,22 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of norm method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the norm function, of the RealQuadraticInteger class, inherited 
+     * from QuadraticInteger.
+     */
     @Test
     public void testNorm() {
         System.out.println("norm");
-        fail("REWRITE THIS TEST");
-//        long expected, actual;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expected = (randomRegForHalfInts * randomRegForHalfInts 
-//                        - testIntegers.get(i).getRing().getRadicand() 
-//                        * randomSurdForHalfInts * randomSurdForHalfInts)/4;
-//            } else {
-//                expected = randomRegPart * randomRegPart 
-//                        - testIntegers.get(i).getRing().getRadicand() 
-//                        * randomSurdPart * randomSurdPart;
-//            }
-//            actual = testIntegers.get(i).norm();
-//            assertEquals(expected, actual);
-//        }
-//        RealQuadraticRing r = new RealQuadraticRing(Integer.MAX_VALUE);
-//        RealQuadraticInteger x = new RealQuadraticInteger(0, 2, r);
-//        expected = -4L * Integer.MAX_VALUE;
-//        actual = x.norm();
-//        String message = "Norm computation for " + x.toString() 
-//                + " should not overflow to 4.";
-//        assertEquals(message, expected, actual);
+        QuadraticRing ring = chooseRing();
+        int bound = 1024;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
+        int b = (randomNumber(bound) | (randomNumber(16) + 1)) - halfBound;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        long expected = a * a - ring.getRadicand() * b * b;
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
