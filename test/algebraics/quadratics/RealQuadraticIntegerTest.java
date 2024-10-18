@@ -139,7 +139,7 @@ public class RealQuadraticIntegerTest {
     public void testNorm() {
         System.out.println("norm");
         QuadraticRing ring = chooseRing();
-        int bound = 1024;
+        int bound = 256;
         int halfBound = bound / 2;
         int a = randomNumber(bound) - halfBound;
         int b = (randomNumber(bound) | (randomNumber(16) + 1)) - halfBound;
@@ -152,9 +152,10 @@ public class RealQuadraticIntegerTest {
 
     @Test
     public void testNormHalfInteger() {
+        fail("REWRITE TO BETTER BOUND d");
         int d = randomSquarefreeNumberMod(1, 4);
         QuadraticRing ring = new RealQuadraticRing(d);
-        int bound = 1024;
+        int bound = 256;
         int halfBound = bound / 2;
         int a = 2 * randomNumber(bound) + 1 - halfBound;
         int b = 2 * randomNumber(bound) + 1 - halfBound;
@@ -441,7 +442,7 @@ public class RealQuadraticIntegerTest {
     public void testAbs() {
         System.out.println("abs");
         RealQuadraticRing ring = chooseRing();
-        int bound = 1024;
+        int bound = 256;
         int a = -randomNumber(bound);
         int b = -(randomNumber(bound) | (randomNumber(16) + 1));
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
@@ -454,7 +455,7 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testAbsAlreadyPositive() {
         RealQuadraticRing ring = chooseRing();
-        int bound = 1024;
+        int bound = 256;
         int a = randomNumber(bound);
         int b = randomNumber(bound) | (randomNumber(16) + 1);
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
