@@ -435,27 +435,20 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of abs method, of class RealQuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the abs function, of the RealQuadraticInteger class.
+     */
     @Test
     public void testAbs() {
         System.out.println("abs");
-        fail("REWRITE THIS TEST");
-//        double expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
-//                        * randomSurdForHalfInts + randomRegForHalfInts);
-//                expResult /= 2;
-//            } else {
-//                expResult = Math.abs(testIntegers.get(i).getRing().getRadSqrt() 
-//                        * randomSurdPart + randomRegPart);
-//            }
-//            result = testIntegers.get(i).abs();
-//            System.out.println("|" + testIntegers.get(i).toASCIIString() 
-//                    + "| = " + result);
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        }
+        RealQuadraticRing ring = chooseRing();
+        int bound = 1024;
+        int a = -randomNumber(bound);
+        int b = -(randomNumber(bound) | (randomNumber(16) + 1));
+        RealQuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        double expected = -(a + ring.getRadSqrt() * b);
+        double actual = number.abs();
+        String message = "Reckoning absolute value of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
 
     /**
