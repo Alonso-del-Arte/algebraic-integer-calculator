@@ -444,8 +444,21 @@ public class RealQuadraticIntegerTest {
         int bound = 1024;
         int a = -randomNumber(bound);
         int b = -(randomNumber(bound) | (randomNumber(16) + 1));
-        RealQuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
         double expected = -(a + ring.getRadSqrt() * b);
+        double actual = number.abs();
+        String message = "Reckoning absolute value of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAbsAlreadyPositive() {
+        RealQuadraticRing ring = chooseRing();
+        int bound = 1024;
+        int a = randomNumber(bound);
+        int b = randomNumber(bound) | (randomNumber(16) + 1);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        double expected = a + ring.getRadSqrt() * b;
         double actual = number.abs();
         String message = "Reckoning absolute value of " + number.toString();
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
