@@ -52,7 +52,8 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public double getRealPartNumeric() {
-        return this.quadRing.realRadSqrt * this.surdPartMult + this.regPartMult;
+        return (this.quadRing.realRadSqrt * this.surdPartMult 
+                + this.regPartMult) / this.denominator;
     }
     
     /**
