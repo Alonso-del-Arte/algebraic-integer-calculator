@@ -63,7 +63,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public double getImagPartNumeric() {
-        return -1.0;
+        return this.denominator == 2 ? 0.5 : 0.0;
     }
     
     /**
