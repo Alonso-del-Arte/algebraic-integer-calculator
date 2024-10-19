@@ -525,7 +525,7 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
-//    @Test
+    @Test
     public void testGetImagPartNumericHalfInteger() {
         QuadraticRing ring = chooseRingWithHalfInts();
         int bound = 256;
