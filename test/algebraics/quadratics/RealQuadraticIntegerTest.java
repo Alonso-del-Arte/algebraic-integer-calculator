@@ -52,6 +52,14 @@ public class RealQuadraticIntegerTest {
         return new RealQuadraticRing(d);
     }
     
+    private static RealQuadraticRing chooseRingWithHalfInts() {
+        int d;
+        do {
+            d = 4 * (randomNumber(256) + 1) + 1;
+        } while (!isSquarefree(d));
+        return new RealQuadraticRing(d);
+    }
+    
     /**
      * Test of the algebraicDegree function, of the RealQuadraticInteger class, 
      * inherited from QuadraticInteger.
@@ -152,9 +160,7 @@ public class RealQuadraticIntegerTest {
 
     @Test
     public void testNormHalfInteger() {
-        fail("REWRITE TO BETTER BOUND d");
-        int d = randomSquarefreeNumberMod(1, 4);
-        QuadraticRing ring = new RealQuadraticRing(d);
+        QuadraticRing ring = chooseRingWithHalfInts();
         int bound = 256;
         int halfBound = bound / 2;
         int a = 2 * randomNumber(bound) + 1 - halfBound;
@@ -163,7 +169,7 @@ public class RealQuadraticIntegerTest {
                 2);
         long expected = (a * a - ring.getRadicand() * b * b) / 4;
         long actual = number.norm();
-        String message = "Reckoning trace of " + number.toString();
+        String message = "Reckoning norm of " + number.toString();
         assertEquals(message, expected, actual);
     }
 
