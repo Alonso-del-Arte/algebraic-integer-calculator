@@ -32,14 +32,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    @Override
-    public long norm() {
-        int adjust = this.denominator == 2 ? 4 : 1;
-        long aSquared = (long) this.regPartMult * this.regPartMult;
-        long bSquared = (long) this.surdPartMult * this.surdPartMult;
-        return (aSquared - bSquared * this.quadRing.radicand) / adjust;
-    }
-    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
