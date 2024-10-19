@@ -491,6 +491,21 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
 
+    @Test
+    public void testGetRealPartNumericHalfInteger() {
+        RealQuadraticRing ring = chooseRingWithHalfInts();
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = (2 * randomNumber(bound) + 1) - halfBound;
+        int b = (2 * randomNumber(bound) + 1) - halfBound;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        double expected = (ring.getRadSqrt() * b + a) / 2;
+        double actual = number.getRealPartNumeric();
+        String message = "Reckoning floating point approximation of " 
+                + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+
     /**
      * Test of the getImagPartNumeric function, of the RealQuadraticInteger 
      * class.
