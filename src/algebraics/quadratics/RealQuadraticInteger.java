@@ -41,8 +41,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public double abs() {
-        return Math.abs(this.regPartMult + this.quadRing.realRadSqrt 
-                * this.surdPartMult);
+        return this.absNumVal;
     }
     
     /**
