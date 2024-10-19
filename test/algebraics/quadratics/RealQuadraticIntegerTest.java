@@ -509,17 +509,20 @@ public class RealQuadraticIntegerTest {
     /**
      * Test of the getImagPartNumeric function, of the RealQuadraticInteger 
      * class.
-     */@org.junit.Ignore
+     */
     @Test
     public void testGetImagPartNumeric() {
         System.out.println("getImagPartwRadMultNumeric");
-        fail("REWRITE THIS TEST");
-//        double expResult = 0.0;
-//        double result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            result = testIntegers.get(i).getImagPartNumeric();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        }
+        QuadraticRing ring = chooseRing();
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
+        int b = randomNumber(bound) - halfBound;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        double expected = 0.0;
+        double actual = number.getImagPartNumeric();
+        String message = "Reckoning imaginary part of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
     /**
