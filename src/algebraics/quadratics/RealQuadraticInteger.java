@@ -59,11 +59,12 @@ public class RealQuadraticInteger extends QuadraticInteger
      * Gets the imaginary part of the real quadratic integer. This should always 
      * be exactly 0.
      * @return The imaginary part of the real quadratic integer. For example, 
-     * for &minus;1/2 + 9(&radic;13)/2, the result should be 0.0.
+     * for &minus;1/2 + 9(&radic;13)/2, the result should be 0.0. Or indeed for 
+     * any real quadratic integer.
      */
     @Override
     public double getImagPartNumeric() {
-        return this.denominator == 2 ? 0.5 : 0.0;
+        return 0.0;
     }
     
     /**
