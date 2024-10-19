@@ -525,6 +525,20 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
+    @Test
+    public void testGetImagPartNumericHalfInteger() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = (2 * randomNumber(bound) + 1) - halfBound;
+        int b = (2 * randomNumber(bound) + 1) - halfBound;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        double expected = 0.0;
+        double actual = number.getImagPartNumeric();
+        String message = "Reckoning imaginary part of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
     /**
      * Test of the isReApprox function, of the RealQuadraticInteger class.
      */@org.junit.Ignore
