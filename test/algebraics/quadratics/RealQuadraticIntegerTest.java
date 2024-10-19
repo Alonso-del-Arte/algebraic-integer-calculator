@@ -474,26 +474,21 @@ public class RealQuadraticIntegerTest {
     /**
      * Test of the getRealPartNumeric function, of the RealQuadraticInteger 
      * class.
-     */@org.junit.Ignore
+     */
     @Test
     public void testGetRealPartNumeric() {
         System.out.println("getRealPartMultNumeric");
-        fail("REWRITE THIS TEST");
-//        double expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = testIntegers.get(i).getRing().getRadSqrt() 
-//                        * randomSurdForHalfInts + randomRegForHalfInts;
-//                expResult /= 2;
-//            } else {
-//                expResult = testIntegers.get(i).getRing().getRadSqrt() 
-//                        * randomSurdPart + randomRegPart;
-//            }
-//            result = testIntegers.get(i).getRealPartNumeric();
-//            System.out.println(testIntegers.get(i).toASCIIString() + " = " 
-//                    + result);
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        }
+        RealQuadraticRing ring = chooseRing();
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
+        int b = randomNumber(bound) - halfBound;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        double expected = ring.getRadSqrt() * b + a;
+        double actual = number.getRealPartNumeric();
+        String message = "Reckoning floating point approximation of " 
+                + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
 
     /**
