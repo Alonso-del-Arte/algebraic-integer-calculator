@@ -45,15 +45,14 @@ public class RealQuadraticInteger extends QuadraticInteger
     }
     
     /**
-     * Gets the real part of the real quadratic integer. May be half an 
-     * integer.
+     * Gets the real part of the real quadratic integer. Will be the same as 
+     * {@link #abs()} if this number is positive or 0.
      * @return The real part of the real quadratic integer. For example, for 
      * &minus;1/2 + 9(&radic;13)/2, the result should be roughly 15.72498.
      */
     @Override
     public double getRealPartNumeric() {
-        return (this.quadRing.realRadSqrt * this.surdPartMult 
-                + this.regPartMult) / this.denominator;
+        return this.numVal;
     }
     
     /**
