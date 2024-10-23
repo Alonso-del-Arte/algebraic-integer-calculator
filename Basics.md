@@ -80,7 +80,12 @@ solution, since then $x^2 = 7$.
 Mathematicians like Girolamo Cardano resolved the quandary of equations like 
 $x^2 + 7 = 0$ by imagining that exists a number $i$ such that $i^2 = -1$. Then, 
 to solve an equation of the form $x^n = d$ where $n$ is even and $d$ is 
-negative,
+negative, it became a simple matter of multiplying $\root n \of {-d}$ by $i$. 
+
+So, to solve $x^2 = -7$, we take $\sqrt 7$ and multiply it by $i$. We can notate 
+this example as either $i \sqrt 7$, which might be regarded as more correct, or 
+as $\sqrt{-7}$, which might not be regarded as correct but which I find more 
+straightforward.
 
 (FINISH WRITING)
 
