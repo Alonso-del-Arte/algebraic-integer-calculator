@@ -333,45 +333,47 @@ public class NotDivisibleException extends Exception {
      */
     public NotDivisibleException(String message, AlgebraicInteger dividend, 
             AlgebraicInteger divisor, Fraction[] fractions) {
-        super(message);
-        boolean ringNotSupportedFlag 
-                = !(dividend.getRing() instanceof QuadraticRing 
-                && divisor.getRing() instanceof QuadraticRing);
-        if (dividend.getRing().equals(divisor.getRing()) 
-                || ringNotSupportedFlag) {
+        super("NEED TO REWRITE getMessage() TEST");
+//        boolean ringNotSupportedFlag 
+//                = !(dividend.getRing() instanceof QuadraticRing 
+//                && divisor.getRing() instanceof QuadraticRing);
+//        if (dividend.getRing().equals(divisor.getRing()) 
+//                || ringNotSupportedFlag) {
             this.initRing = dividend.getRing();
-        } else {
-            int dividendRingRadicand = ((QuadraticRing) dividend.getRing()).getRadicand();
-            int divisorRingRadicand = ((QuadraticRing) divisor.getRing()).getRadicand();
-            int radsGCD = (int) euclideanGCD(dividendRingRadicand, divisorRingRadicand);
-            int inferredRadicand;
-            if (radsGCD == 1) {
-                inferredRadicand = dividendRingRadicand * divisorRingRadicand;
-            } else {
-                inferredRadicand = dividendRingRadicand / divisorRingRadicand;
-            }
-            if (inferredRadicand < 1) {
-                this.initRing = new ImaginaryQuadraticRing(inferredRadicand);
-            } else {
-                this.initRing = new RealQuadraticRing(inferredRadicand);
-            }
-        }
-        if (fractions.length != this.initRing.getMaxAlgebraicDegree()) {
-            String excMsg = "Numbers of class " 
-                    + this.initRing.getClass().getName() 
-                    + " can have a maximum algebraic degree of " 
-                    + this.initRing.getMaxAlgebraicDegree() 
-                    + " but an array of " + fractions.length + " was passed in";
-            throw new IllegalArgumentException(excMsg);
-        }
+//        } else {
+//            int dividendRingRadicand = ((QuadraticRing) dividend.getRing()).getRadicand();
+//            int divisorRingRadicand = ((QuadraticRing) divisor.getRing()).getRadicand();
+//            int radsGCD = (int) euclideanGCD(dividendRingRadicand, divisorRingRadicand);
+//            int inferredRadicand;
+//            if (radsGCD == 1) {
+//                inferredRadicand = dividendRingRadicand * divisorRingRadicand;
+//            } else {
+//                inferredRadicand = dividendRingRadicand / divisorRingRadicand;
+//            }
+//            if (inferredRadicand < 1) {
+//                this.initRing = new ImaginaryQuadraticRing(inferredRadicand);
+//            } else {
+//                this.initRing = new RealQuadraticRing(inferredRadicand);
+//            }
+//        }
+//        if (fractions.length != this.initRing.getMaxAlgebraicDegree()) {
+//            String excMsg = "Numbers of class " 
+//                    + this.initRing.getClass().getName() 
+//                    + " can have a maximum algebraic degree of " 
+//                    + this.initRing.getMaxAlgebraicDegree() 
+//                    + " but an array of " + fractions.length + " was passed in";
+//            throw new IllegalArgumentException(excMsg);
+//        }
         this.fractions = fractions;
         double numRe = this.fractions[0].getNumericApproximation();
         double numIm = 0.0;
         if (this.initRing instanceof ImaginaryQuadraticRing) {
-            numIm = ((ImaginaryQuadraticRing) this.initRing).getAbsNegRadSqrt() * this.fractions[1].getNumericApproximation();
+            numIm = ((ImaginaryQuadraticRing) this.initRing).getAbsNegRadSqrt() 
+                    * this.fractions[1].getNumericApproximation();
         }
         if (this.initRing instanceof RealQuadraticRing) {
-            numRe += ((RealQuadraticRing) this.initRing).getRadSqrt() * this.fractions[1].getNumericApproximation();
+            numRe += ((RealQuadraticRing) this.initRing).getRadSqrt() 
+                    * this.fractions[1].getNumericApproximation();
         }
         this.numericRealPart = numRe;
         this.numericImagPart = numIm;
