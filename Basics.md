@@ -74,18 +74,24 @@ is one solution to $x^8 - 7 = 0$.
 But an equation $x^n + d = 0$ with $n$ a positive even integer seems to not have 
 any solutions in real numbers. For example, $x^2 + 7 = 0$ has no solutions in 
 real numbers. Shifting the 7 to the right of the equals sign, we obtain the 
-equation $x^2 = -7$. Clearly $x = -\sqrt 7 \approx 2.645751311$ is not a 
-solution, since then $x^2 = 7$.
+equation $x^2 = -7$. Clearly $x = -\sqrt 7 \approx -2.645751311$ is not a 
+solution, since then $x^2 = 7$, not $-7$.
+
+Likewise, $x^4 + 7 = 0$ has no solutions in real numbers either. The number $x = 
+-\root 4 \of 7 \approx -1.626576561697786$ is not a solution, since then $x^4 = 
+7$, not $-7$.
 
 Mathematicians like Girolamo Cardano resolved the quandary of equations like 
 $x^2 + 7 = 0$ by imagining that exists a number $i$ such that $i^2 = -1$. Then, 
-to solve an equation of the form $x^n = d$ where $n$ is even and $d$ is 
-negative, it became a simple matter of multiplying $\root n \of {-d}$ by $i$. 
+to solve an equation of the form $x^2 = d$ where $d$ is negative, it became a 
+simple matter of multiplying $\sqrt{-d}$ by $i$. 
 
 So, to solve $x^2 = -7$, we take $\sqrt 7$ and multiply it by $i$. We can notate 
 this example as either $i \sqrt 7$, which might be regarded as more correct, or 
 as $\sqrt{-7}$, which might not be regarded as correct but which I find more 
 straightforward.
+
+The example $x^4 + 7 = 0$ is a little more complicated.
 
 (FINISH WRITING)
 
