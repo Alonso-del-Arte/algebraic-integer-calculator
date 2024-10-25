@@ -126,7 +126,7 @@ public class NotDivisibleExceptionTest {
         Fraction[] fractions = makeFractionArray();
         NotDivisibleException instance = new NotDivisibleException(dividend, 
                 expected, fractions);
-        AlgebraicInteger actual = instance.getCausingDividend();
+        AlgebraicInteger actual = instance.getCausingDivisor();
         assertEquals(expected, actual);
     }
 
