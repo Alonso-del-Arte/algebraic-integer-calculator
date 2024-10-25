@@ -541,19 +541,21 @@ public class RealQuadraticIntegerTest {
     
     /**
      * Test of the isReApprox function, of the RealQuadraticInteger class.
-     */@org.junit.Ignore
+     */
     @Test
     public void testIsReApprox() {
         System.out.println("isReApprox");
-        fail("REWRITE THIS TEST");
-        int a = 2 * (randomNumber(32768) - 16384) + 1;
-        int b = 2 * (randomNumber(32768) - 16384) + 1;
-//        RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13, 
-//                2);
-//        String msg = "Real part of " + number.toString() + " given as " 
-//                + number.getRealPartNumeric() 
-//                + " should be considered an approximation";
-//        assert number.isReApprox() : msg;
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
+        int mask = randomNumber(8) + 2;
+        int b = (randomNumber(bound) - halfBound) | mask;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        String msg = "Real part of " + number.toString() + " given as " 
+                + number.getRealPartNumeric() 
+                + " should be considered an approximation";
+        assert number.isReApprox() : msg;
     }
 
     /**
