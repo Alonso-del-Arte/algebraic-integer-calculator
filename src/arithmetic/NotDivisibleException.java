@@ -83,12 +83,11 @@ public class NotDivisibleException extends Exception {
 
     /**
      * Gives the divisor that caused this exception.
-     * @return The AlgebraicInteger object that was passed to the constructor as
-     * the causing divisor.
+     * @return The {@code AlgebraicInteger} object that was passed to the 
+     * constructor as the causing divisor.
      */
-    // TODO: Write tests for this
     public AlgebraicInteger getCausingDivisor() {
-        return this.dividend;
+        return this.divisor;
     }
 
     /**
