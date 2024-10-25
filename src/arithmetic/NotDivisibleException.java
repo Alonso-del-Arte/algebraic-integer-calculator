@@ -64,9 +64,9 @@ public class NotDivisibleException extends Exception {
     private final double numericImagPart;
     
     /**
-     * Gives the fracts with which this exception was constructed.
-     * @return The array of Fraction objects that was supplied to the exception
-     * constructor.
+     * Gives the fractions with which this exception was constructed.
+     * @return The array of {@code Fraction} objects that was supplied to the 
+     * exception constructor.
      */
     public Fraction[] getFractions() {
         return this.fracts;
@@ -74,12 +74,11 @@ public class NotDivisibleException extends Exception {
 
     /**
      * Gives the dividend that caused this exception.
-     * @return The AlgebraicInteger object that was passed to the constructor as
-     * the causing dividend.
+     * @return The {@code AlgebraicInteger} object that was passed to the 
+     * constructor as the causing dividend.
      */
-    // TODO: Write tests for this
     public AlgebraicInteger getCausingDividend() {
-        return this.divisor;
+        return this.dividend;
     }
 
     /**
