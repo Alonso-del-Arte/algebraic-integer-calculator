@@ -536,14 +536,21 @@ public class UnaryIntegerTest {
             UnaryInteger badResult = dividend.divides(divisor);
             System.out.println(msg + ", not given result " + badResult);
         }, NotDivisibleException.class, msg);
+        assertEquals(dividend, nde.getCausingDividend());
+        assertEquals(divisor, nde.getCausingDivisor());
         Fraction division = new Fraction(nA, n);
         Fraction[] expecteds = {division};
         Fraction[] actuals = nde.getFractions();
-        String message = msg + " with fraction " + division.toString();
+        String message = msg + " with fraction " + division.toString() 
+                + " and message listing dividend and divisor";
         assertArrayEquals(message, expecteds, actuals);
         String excMsg = nde.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
+        assert excMsg.contains(Integer.toString(nA)) 
+                || excMsg.contains(dividend.toString()) : message;
+        assert excMsg.contains(Integer.toString(n)) 
+                || excMsg.contains(divisor.toString()) : message;
         System.out.println("\"" + excMsg + "\"");
     }
     
