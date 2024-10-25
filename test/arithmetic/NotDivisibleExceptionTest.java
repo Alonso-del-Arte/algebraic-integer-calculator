@@ -48,6 +48,8 @@ import static org.junit.Assert.*;
  */
 public class NotDivisibleExceptionTest {
     
+    private static final String DEFAULT_MESSAGE = "FOR TESTING PURPOSES ONLY";
+    
     /**
      * The delta value to use when assertEquals() requires a delta value.
      */
@@ -81,12 +83,19 @@ public class NotDivisibleExceptionTest {
     }
     
     /**
-     * Test of getFractions method, of class NotDivisibleException.
+     * Test of the getFractions function, of the NotDivisibleException class.
      */
     @Test
     public void testGetFractions() {
-        fail("REWRITE THIS TEST");
         System.out.println("getFractions");
+        MockRing ring = new MockRing();
+        AlgebraicInteger dividend = new MockInteger(ring);
+        AlgebraicInteger divisor = new MockInteger(ring);
+        Fraction[] expecteds = makeFractionArray();
+        NotDivisibleException instance = new NotDivisibleException(dividend, 
+                divisor, expecteds);
+        Fraction[] actuals = instance.getFractions();
+        assertArrayEquals(expecteds, actuals);
     }
         
     /**
