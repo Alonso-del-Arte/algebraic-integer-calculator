@@ -20,6 +20,7 @@ import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
 import arithmetic.Arithmeticable;
 import arithmetic.NotDivisibleException;
+import fractions.Fraction;
 
 /**
  * Represents algebraic integers of degree 1. Essentially this is another 
@@ -132,13 +133,33 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(n);
     }
 
-    // TODO: Write tests for this
+    /**
+     * Divides this unary integer by another, but only if this number is evenly 
+     * divisible by the other. For the example, suppose this integer is 6724, 
+     * which factorizes as 2<sup>2</sup> &times; 41<sup>2</sup>.
+     * @param divisor The number to divide by. For example, &minus;3362.
+     * @return The division. In the example, this would be &minus;2.
+     * @throws IllegalArgumentException If {@code divisor} is 0.
+     * @throws NotDivisibleException If this number is not evenly divisible by 
+     * {@code divisor}. In the example, this exception would occur for any 
+     * nonzero number other than &plusmn;1, &plusmn;2, &plusmn;4, &plusmn;41, 
+     * &plusmn;82, &plusmn;164, &plusmn;1681, &plusmn;3362, &plusmn;6724. 
+     */
     @Override
     public UnaryInteger divides(UnaryInteger divisor) 
             throws NotDivisibleException {
         if (divisor.number == 0) {
             String excMsg = "Can't divide " + this.toASCIIString() + " by 0";
             throw new IllegalArgumentException(excMsg);
+        }
+        int remainder = this.number % divisor.number;
+        if (remainder != 0) {
+            String excMsg = "With a remainder of " + remainder + ", " 
+                    + this.number + " does not divide " + divisor.number 
+                    + " evenly";
+            Fraction fraction = new Fraction(this.number, divisor.number);
+            Fraction[] fractions = {fraction};
+            throw new NotDivisibleException(excMsg, this, divisor, fractions);
         }
         int n = this.number / divisor.number;
         return new UnaryInteger(n);
