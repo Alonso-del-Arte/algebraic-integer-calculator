@@ -53,7 +53,7 @@ public class NotDivisibleException extends Exception {
 
     private static final long serialVersionUID = 4546560265382017843L;
     
-    private final Fraction[] fractions;
+    private final Fraction[] fracts;
 
     private final AlgebraicInteger dividend;
     private final AlgebraicInteger divisor;
@@ -64,15 +64,12 @@ public class NotDivisibleException extends Exception {
     private final double numericImagPart;
     
     /**
-     * Gives the fractions with which this exception was constructed.
+     * Gives the fracts with which this exception was constructed.
      * @return The array of Fraction objects that was supplied to the exception
      * constructor.
      */
-    // TODO: Write tests for this
     public Fraction[] getFractions() {
-        Fraction[] fracts = {new Fraction(serialVersionUID)};
-        return fracts;
-//        return this.fractions;
+        return this.fracts;
     }
 
     /**
@@ -165,8 +162,8 @@ public class NotDivisibleException extends Exception {
         if (this.initRing instanceof QuadraticRing) {
             QuadraticRing workingRing = (QuadraticRing) this.initRing;
             QuadraticInteger zeroQI = (QuadraticInteger) getZeroInRing(workingRing);
-            double numerReg = this.fractions[0].getNumericApproximation();
-            double numerSurd = this.fractions[1].getNumericApproximation();
+            double numerReg = this.fracts[0].getNumericApproximation();
+            double numerSurd = this.fracts[1].getNumericApproximation();
             int arrayLen = 0;
             if (workingRing instanceof ImaginaryQuadraticRing) {
                 arrayLen = 4;
@@ -300,10 +297,10 @@ public class NotDivisibleException extends Exception {
      * divisible. This one must be given second for the same reason the dividend
      * must be given first.
      * @param fractions An array of Fraction objects. The length of the array
-     * should equal the algebraic degree of the given ring. For example, in the
-     * case of quartic integers, the array should have four fractions.
-     * @throws IllegalArgumentException If the length of the array of fractions
-     * does not match the algebraic degree of the ring.
+ should equal the algebraic degree of the given ring. For example, in the
+ case of quartic integers, the array should have four fracts.
+     * @throws IllegalArgumentException If the length of the array of fracts
+ does not match the algebraic degree of the ring.
      */
     public NotDivisibleException(AlgebraicInteger dividend, 
             AlgebraicInteger divisor, Fraction[] fractions) {
@@ -326,10 +323,10 @@ public class NotDivisibleException extends Exception {
      * @param divisor The algebraic integer by which the dividend is not
      * divisible. This one must be given after the dividend.
      * @param fractions An array of Fraction objects. The length of the array
-     * should equal the algebraic degree of the given ring. For example, in the
-     * case of cubic integers, the array should have three fractions.
-     * @throws IllegalArgumentException If the length of the array of fractions
-     * does not match the algebraic degree of the ring.
+ should equal the algebraic degree of the given ring. For example, in the
+ case of cubic integers, the array should have three fracts.
+     * @throws IllegalArgumentException If the length of the array of fracts
+ does not match the algebraic degree of the ring.
      */
     public NotDivisibleException(String message, AlgebraicInteger dividend, 
             AlgebraicInteger divisor, Fraction[] fractions) {
@@ -356,24 +353,24 @@ public class NotDivisibleException extends Exception {
 //                this.initRing = new RealQuadraticRing(inferredRadicand);
 //            }
 //        }
-//        if (fractions.length != this.initRing.getMaxAlgebraicDegree()) {
+//        if (fracts.length != this.initRing.getMaxAlgebraicDegree()) {
 //            String excMsg = "Numbers of class " 
 //                    + this.initRing.getClass().getName() 
 //                    + " can have a maximum algebraic degree of " 
 //                    + this.initRing.getMaxAlgebraicDegree() 
-//                    + " but an array of " + fractions.length + " was passed in";
+//                    + " but an array of " + fracts.length + " was passed in";
 //            throw new IllegalArgumentException(excMsg);
 //        }
-        this.fractions = fractions;
-        double numRe = this.fractions[0].getNumericApproximation();
+        this.fracts = fractions;
+        double numRe = this.fracts[0].getNumericApproximation();
         double numIm = 0.0;
         if (this.initRing instanceof ImaginaryQuadraticRing) {
             numIm = ((ImaginaryQuadraticRing) this.initRing).getAbsNegRadSqrt() 
-                    * this.fractions[1].getNumericApproximation();
+                    * this.fracts[1].getNumericApproximation();
         }
         if (this.initRing instanceof RealQuadraticRing) {
             numRe += ((RealQuadraticRing) this.initRing).getRadSqrt() 
-                    * this.fractions[1].getNumericApproximation();
+                    * this.fracts[1].getNumericApproximation();
         }
         this.numericRealPart = numRe;
         this.numericImagPart = numIm;
