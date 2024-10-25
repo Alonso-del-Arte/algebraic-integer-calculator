@@ -362,14 +362,14 @@ public class NotDivisibleException extends Exception {
         this.fracts = fractions;
         double numRe = this.fracts[0].getNumericApproximation();
         double numIm = 0.0;
-        if (this.initRing instanceof ImaginaryQuadraticRing) {
-            numIm = ((ImaginaryQuadraticRing) this.initRing).getAbsNegRadSqrt() 
-                    * this.fracts[1].getNumericApproximation();
-        }
-        if (this.initRing instanceof RealQuadraticRing) {
-            numRe += ((RealQuadraticRing) this.initRing).getRadSqrt() 
-                    * this.fracts[1].getNumericApproximation();
-        }
+//        if (this.initRing instanceof ImaginaryQuadraticRing) {
+//            numIm = ((ImaginaryQuadraticRing) this.initRing).getAbsNegRadSqrt() 
+//                    * this.fracts[1].getNumericApproximation();
+//        }
+//        if (this.initRing instanceof RealQuadraticRing) {
+//            numRe += ((RealQuadraticRing) this.initRing).getRadSqrt() 
+//                    * this.fracts[1].getNumericApproximation();
+//        }
         this.numericRealPart = numRe;
         this.numericImagPart = numIm;
         this.dividend = dividend;
