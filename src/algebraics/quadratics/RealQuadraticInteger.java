@@ -75,7 +75,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public boolean isReApprox() {
-        return true;
+        return this.surdPartMult != 0;
     }
     
     /**
