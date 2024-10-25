@@ -100,11 +100,18 @@ public class NotDivisibleExceptionTest {
         
     /**
      * Test of getCausingDividend method, of class NotDivisibleException.
-     */@org.junit.Ignore
+     */
     @Test
     public void testGetCausingDividend() {
-        fail("REWRITE THIS TEST");
         System.out.println("getCausingDividend");
+        MockRing ring = new MockRing();
+        AlgebraicInteger expected = new MockInteger(ring);
+        AlgebraicInteger divisor = new MockInteger(ring);
+        Fraction[] fractions = makeFractionArray();
+        NotDivisibleException instance = new NotDivisibleException(expected, 
+                divisor, fractions);
+        AlgebraicInteger actual = instance.getCausingDividend();
+        assertEquals(expected, actual);
     }
 
     /**
