@@ -578,22 +578,21 @@ public class RealQuadraticIntegerTest {
 
     /**
      * Another test of the isReApprox function, of the RealQuadraticInteger 
-     * class. Given <i>a</i> + 0&radic;<i>d</i>, where <i>a</i> and <i>d</i> are 
-     * integers of degree 1, the real part of the number is a number that can be 
-     * represented precisely as a floating point number. That is to say, it is 
-     * not a rational approximation in floating point of an irrational number.
-     */@org.junit.Ignore
+     * class. Given a + 0 * sqrt(d), where a and d are ordinary integers and d 
+     * is positive, the real part as given by the getRealPartNumeric() function 
+     * is not a rational approximation in floating point of an irrational 
+     * number.
+     */
     @Test
     public void testIsNotReApproxIfSurdPartZero() {
-        System.out.println("isReApprox");
-        fail("REWRITE THIS TEST");
-        int a = randomNumber(32768) - 16384;
+        int a = randomNumber();
         int b = 0;
-//        RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13);
-//        String msg = "Real part of " + number.toString() + " given as " 
-//                + number.getRealPartNumeric() 
-//                + " should be considered exact, not an approximation";
-//        assert !number.isReApprox() : msg;
+        QuadraticRing ring = chooseRing();
+        RealQuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        String msg = "Real part of " + number.toString() + " in " 
+                + ring.toString() + " given as " + number.getRealPartNumeric() 
+                + " should be considered exact, not an approximation";
+        assert !number.isReApprox() : msg;
     }
 
     /**
