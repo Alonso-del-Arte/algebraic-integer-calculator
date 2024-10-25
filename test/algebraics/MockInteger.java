@@ -110,7 +110,7 @@ public class MockInteger implements AlgebraicInteger {
         return Double.NEGATIVE_INFINITY;
     }
 
-    MockInteger(MockRing ring) {
+    public MockInteger(MockRing ring) {
         this.domain = ring;
     }
     
