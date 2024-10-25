@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -52,6 +52,8 @@ import static calculators.NumberTheoreticFunctionsCalculator.getZeroInRing;
 public class NotDivisibleException extends Exception {
 
     private static final long serialVersionUID = 4546560265382017843L;
+    
+    private final String excMsg;
 
     private final Fraction[] fractions;
 
@@ -62,6 +64,11 @@ public class NotDivisibleException extends Exception {
 
     private final double numericRealPart;
     private final double numericImagPart;
+    
+    @Override
+    public String getMessage() {
+        return this.excMsg;
+    }
 
     /**
      * Gives the fractions with which this exception was constructed.
@@ -333,7 +340,8 @@ public class NotDivisibleException extends Exception {
      */
     public NotDivisibleException(String message, AlgebraicInteger dividend, 
             AlgebraicInteger divisor, Fraction[] fractions) {
-        super("NEED TO REWRITE getMessage() TEST");
+        super(message);
+        this.excMsg = message;
 //        boolean ringNotSupportedFlag 
 //                = !(dividend.getRing() instanceof QuadraticRing 
 //                && divisor.getRing() instanceof QuadraticRing);
