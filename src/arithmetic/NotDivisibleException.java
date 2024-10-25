@@ -53,8 +53,6 @@ public class NotDivisibleException extends Exception {
 
     private static final long serialVersionUID = 4546560265382017843L;
     
-    private final String excMsg;
-
     private final Fraction[] fractions;
 
     private final AlgebraicInteger dividend;
@@ -65,11 +63,6 @@ public class NotDivisibleException extends Exception {
     private final double numericRealPart;
     private final double numericImagPart;
     
-    @Override
-    public String getMessage() {
-        return this.excMsg;
-    }
-
     /**
      * Gives the fractions with which this exception was constructed.
      * @return The array of Fraction objects that was supplied to the exception
@@ -341,7 +334,6 @@ public class NotDivisibleException extends Exception {
     public NotDivisibleException(String message, AlgebraicInteger dividend, 
             AlgebraicInteger divisor, Fraction[] fractions) {
         super(message);
-        this.excMsg = message;
 //        boolean ringNotSupportedFlag 
 //                = !(dividend.getRing() instanceof QuadraticRing 
 //                && divisor.getRing() instanceof QuadraticRing);
