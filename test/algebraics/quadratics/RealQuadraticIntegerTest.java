@@ -560,6 +560,24 @@ public class RealQuadraticIntegerTest {
 
     /**
      * Another test of the isReApprox function, of the RealQuadraticInteger 
+     * class.
+     */
+    @Test
+    public void testIsReApproxWithHalfInts() {
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = 2 * randomNumber(bound) - halfBound + 1;
+        int b = 2 * randomNumber(bound) - halfBound + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        String msg = "Real part of " + number.toString() + " given as " 
+                + number.getRealPartNumeric() 
+                + " should be considered an approximation";
+        assert number.isReApprox() : msg;
+    }
+
+    /**
+     * Another test of the isReApprox function, of the RealQuadraticInteger 
      * class. Given <i>a</i> + 0&radic;<i>d</i>, where <i>a</i> and <i>d</i> are 
      * integers of degree 1, the real part of the number is a number that can be 
      * represented precisely as a floating point number. That is to say, it is 
