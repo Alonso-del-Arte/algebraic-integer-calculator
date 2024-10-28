@@ -32,6 +32,13 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
+    // TODO: Write tests for this
+    @Override
+    public long[] minPolynomialCoeffs() {
+        long[] array = {0, 0};
+        return array;
+    }
+    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
