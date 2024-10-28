@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -20,13 +20,13 @@ package algebraics;
  * This interface sets the basic requirements for objects representing algebraic 
  * integers. The implementing classes should provide an algebraic degree 
  * function, trace and norm functions, and the minimal polynomial formatted 
- * both as an integer array of coefficients and as a <code>String</code>.
+ * both as an integer array of coefficients and as a {@code String}.
  * <p>Almost from the beginning, {@link 
  * algebraics.quadratics.ImaginaryQuadraticInteger}, an implementation of 
- * this interface, had some variants of <code>Object</code>'s 
- * <code>toString()</code> specifically for ASCII plaintext, TeX documents and 
- * HTML pages, but it wasn't until July 2018 that I decided that some of those 
- * should be required by this interface.</p>
+ * this interface, had some variants of {@code Object}'s {@code toString()} 
+ * specifically for ASCII plaintext, TeX documents and HTML pages, but it wasn't 
+ * until July 2018 that I decided that some of those should be required by this 
+ * interface.</p>
  * <p>Basic arithmetic functions (addition, subtraction, multiplication and 
  * division) would be nice but are not explicitly required by this interface. It 
  * is then up to the implementer to define basic arithmetic methods as static or 
@@ -77,8 +77,8 @@ public interface AlgebraicInteger {
      * @return An array of 64-bit integers, in total one more than the maximum 
      * possible algebraic degree in the applicable ring. If the algebraic degree 
      * of this integer is equal to the maximum possible algebraic degree in the 
-     * given ring, then the element at position <code>length</code> &minus; 1 in 
-     * the array ought to be 1, otherwise it might be 0. For example, if the 
+     * given ring, then the element at position {@code length} &minus; 1 in the 
+     * array ought to be 1, otherwise it might be 0. For example, if the 
      * algebraic integer is 1 + &#8731;2 in <b>Z</b>[&#8731;2], which has 
      * minimal polynomial <i>x</i><sup>3</sup> &minus; 3<i>x</i><sup>2</sup> + 
      * 3<i>x</i> &minus; 3, this function would give {&minus;3, 3, &minus;3, 1}. 
@@ -152,7 +152,7 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer using only ASCII 
      * characters. It is strongly recommended that any implementations of 
-     * this interface also override <code>Object</code>'s <code>toString</code>.
+     * this interface also override {@code Object}'s {@code toString()}.
      * @return Text using only ASCII characters. For example, for 
      * &omega;\u221B2, this might be "omega cbrt(2)". Spaces are very desirable 
      * but not strictly required. However, if spaces are omitted in certain 
@@ -165,8 +165,8 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer suitable for use in a TeX 
      * document. It is strongly recommended that any implementations of 
-     * this interface also override <code>Object</code>'s <code>toString</code>. 
-     * For square roots, it is acceptable to use "\sqrt", but for cube roots and 
+     * this interface also override {@code Object}'s {@code toString()}. For 
+     * square roots, it is acceptable to use "\sqrt", but for cube roots and 
      * others, the "\root m \of n" syntax should be used, and not "\sqrt[m]{n}".
      * @return Text suitable for use in a TeX document. For example, for 1 + 
      * \u221B2, the result might be "1 + \root 3 \of 2".
@@ -176,7 +176,7 @@ public interface AlgebraicInteger {
     /**
      * A text representation of the algebraic integer suitable for use in an 
      * HTML page. It is strongly recommended that any implementations of 
-     * this interface also override <code>Object</code>'s <code>toString</code>.
+     * this interface also override {@code Object}'s {@code toString()}.
      * @return Text suitable for use in an HTML page. For example, for 1 + 
      * \u221B2, the result might be "1 + &amp;#8731;2", which should then render 
      * as "1 + &#8731;2".
@@ -204,7 +204,9 @@ public interface AlgebraicInteger {
      * problems.
      * @return The real part, which may be a rational approximation in some 
      * cases. For example, for 1 + &#8731;2, this might be 2.2599210498948734. 
-     * For <sup>3</sup>&frasl;<sub>2</sub> + <sup>&radic;&minus;19</sup>&frasl;<sub>2</sub>, this should be exactly 1.5.
+     * For <sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;19</sup>&frasl;<sub>2</sub>, this should be exactly 
+     * 1.5.
      */
     double getRealPartNumeric();
     
@@ -227,10 +229,10 @@ public interface AlgebraicInteger {
      * Indicates whether the real part of this number, as given by {@link 
      * #getRealPartNumeric()}, is an approximation or not. This tends to be the 
      * case for numbers from purely real rings of degree 2 or higher.
-     * @return True if the real part of this number as given by 
-     * <code>getRealPartNumeric()</code> is an approximation, false if it is 
-     * exact. For example, this would be true for 1 + &#8731;2, the real part of 
-     * which might be given as 2.2599210498948734; it would be false for 1 + 
+     * @return True if the real part of this number as given by {@code 
+     * getRealPartNumeric()} is an approximation, false if it is exact. For 
+     * example, this would be true for 1 + &#8731;2, the real part of which 
+     * might be given as 2.2599210498948734; it would be false for 1 + 
      * <i>i</i>&#8731;2, the real part of which should be given as 1.0, which is 
      * exact. The imaginary part of the latter number divided by <i>i</i> might 
      * be given as 1.2599210498948732. Notice that those two floating point 
@@ -243,9 +245,9 @@ public interface AlgebraicInteger {
      * #getImagPartNumeric()}, is an approximation or not. This tends to be the 
      * case for algebraic integers from imaginary rings of degree 2 or higher.
      * @return True if the imaginary part of this number as given by 
-     * <code>getImagPartNumeric()</code> is an approximation, false if it is 
-     * exact. For example, this would be true for 1 + <i>i</i>&#8731;2, since  
-     * the imaginary part of that number would be given in floating point as an 
+     * {@code getImagPartNumeric()} is an approximation, false if it is exact. 
+     * For example, this would be true for 1 + <i>i</i>&#8731;2, since the 
+     * imaginary part of that number would be given in floating point as an 
      * approximation such as 1.2599210498948732; this would be false for 1 + 
      * &#8731;2, since the imaginary part of that number should be given exactly 
      * as 0.0.
@@ -264,8 +266,8 @@ public interface AlgebraicInteger {
      * to &pi; radians. For example, the angle of <i>i</i> should be given as  
      * 1.5707963267948966 radians (90 degrees) and the angle of &minus;<i>i</i> 
      * should be given as &minus;1.5707963267948966 radians (&minus;90 degrees). 
-     * If you need this angle in degrees, you can use 
-     * <code>Math.toDegrees(double)</code> to make the conversion.
+     * If you need this angle in degrees, you can use {@code 
+     * Math.toDegrees(double)} to make the conversion.
      */
     double angle();
     
