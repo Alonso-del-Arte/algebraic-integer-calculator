@@ -1588,8 +1588,7 @@ public class QuadraticIntegerTest {
         }
     }
     
-    // TODO: Assess access level
-    static class QuadraticIntegerImpl extends QuadraticInteger {
+    private static class QuadraticIntegerImpl extends QuadraticInteger {
         
         private static final long serialVersionUID = 4558707313363386368L;
     
