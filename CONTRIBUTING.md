@@ -1,6 +1,6 @@
-This project will be open to Hacktoberfest 2024.
+This project might be open to Hacktoberfest 2025.
 
-# Guidelines for Hacktoberfest 2024 contributors
+# Guidelines for Hacktoberfest 2025 contributors
 
 The most important requirement for Hacktoberfest contributors wanting to 
 contribute to this project is to have some understanding of algebraic number 
