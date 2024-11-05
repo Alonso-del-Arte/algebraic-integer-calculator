@@ -33,9 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.testframe.api.Asserters.assertThrows;
 
 /**
  * Tests for the RealQuadraticInteger class, which defines objects that 
@@ -172,13 +173,22 @@ public class RealQuadraticIntegerTest {
         String message = "Reckoning norm of " + number.toString();
         assertEquals(message, expected, actual);
     }
+    
+    @Test
+    public void testMinPolynomialCoeffsForZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger zero = new RealQuadraticInteger(0, 0, ring);
+        long[] expecteds = {0, 1, 0};
+        long[] actuals = zero.minPolynomialCoeffs();
+        assertArrayEquals(expecteds, actuals);
+    }
 
     /**
-     * Test of minPolynomialCoeffs method, of class RealQuadraticInteger, 
-     * inherited from QuadraticInteger.
-     */@org.junit.Ignore
-    @Test
-    public void testMinPolynomialCoeffs() {
+     * Test of the minPolynomialCoeffs function, of the RealQuadraticInteger 
+     * class, inherited from QuadraticInteger.
+     */
+//    @Test
+    public void testMinPolynomialCoeffs_NOT_YET_() {
         System.out.println("minPolynomialCoeffs");
         fail("REWRITE THIS TEST");
 //        long[] expecteds = {0, 0, 1};
@@ -205,7 +215,8 @@ public class RealQuadraticIntegerTest {
 //            expecteds[1] = 0;
 //            expecteds[0] = -testIntegers.get(i).getRing().getRadicand();
 //            baseSurdDist = new RealQuadraticInteger(0, 1, testIntegers.get(i).getRing());
-//            System.out.println("Minimal polynomial of " + baseSurdDist.toASCIIString() + " is said to be " + baseSurdDist.minPolynomialStringTeX());
+//            System.out.println("Minimal polynomial of " + baseSurdDist.toASCIIString() 
+// + " is said to be " + baseSurdDist.minPolynomialStringTeX());
 //            actuals = baseSurdDist.minPolynomialCoeffs();
 //            assertArrayEquals(expecteds, actuals);
 //        }
@@ -227,6 +238,12 @@ public class RealQuadraticIntegerTest {
 //        assertArrayEquals(expecteds, actuals);
     }
 
+//    @Test
+    public void testMinPolynomialCoeffsExcessiveDegree() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance;
+        fail("HAVEN'T WRITTEN TEST YET");
+    }
     /**
      * Test of minPolynomialString method, of class RealQuadraticInteger, 
      * inherited from QuadraticInteger. Spaces in the results are desirable but 
