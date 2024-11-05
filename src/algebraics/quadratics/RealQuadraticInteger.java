@@ -36,14 +36,12 @@ public class RealQuadraticInteger extends QuadraticInteger
     @Override
     public long[] minPolynomialCoeffs() {
         long[] array = {0L, 0L, 0L};
-        long a = this.regPartMult * this.denominator;
-        long b = this.surdPartMult * this.denominator;
+        long a = (long) this.regPartMult * this.denominator;
+        long b = (long) this.surdPartMult * this.denominator;
         switch (this.algebraicDegree()) {
-            case 0:
-                array[1] = 1L;
-                break;
             case 1: 
                 array[0] = -1L * a;
+            case 0:
                 array[1] = 1L;
                 break;
             case 2: 
