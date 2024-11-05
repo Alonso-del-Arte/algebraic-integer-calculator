@@ -178,7 +178,7 @@ public class RealQuadraticIntegerTest {
     public void testMinPolynomialCoeffsForZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger zero = new RealQuadraticInteger(0, 0, ring);
-        long[] expecteds = {0, 1, 0};
+        long[] expecteds = {0L, 1L, 0L};
         long[] actuals = zero.minPolynomialCoeffs();
         assertArrayEquals(expecteds, actuals);
     }
@@ -189,7 +189,7 @@ public class RealQuadraticIntegerTest {
         int propA = RANDOM.nextInt(Short.MAX_VALUE) - Byte.MAX_VALUE;
         int a = propA == 0 ? 1 : propA;
         QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
-        long[] expecteds = {0, 1, -a};
+        long[] expecteds = {0L, 1L, -a};
         long[] actuals = number.minPolynomialCoeffs();
         String message = "Reckoning minimum polynomial coefficients for " 
                 + number.toString();
@@ -200,56 +200,26 @@ public class RealQuadraticIntegerTest {
      * Test of the minPolynomialCoeffs function, of the RealQuadraticInteger 
      * class, inherited from QuadraticInteger.
      */
-//    @Test
-    public void testMinPolynomialCoeffs_NOT_YET_() {
+    @Test
+    public void testMinPolynomialCoeffs() {
         System.out.println("minPolynomialCoeffs");
-        fail("REWRITE THIS TEST");
-//        long[] expecteds = {0, 0, 1};
-//        long[] actuals;
-//        RealQuadraticInteger baseSurdDist, rationalInt;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            System.out.println("Minimal polynomial for " + testIntegers.get(i)
-//                    .toASCIIString() + " is said to be " + testIntegers.get(i)
-//                            .minPolynomialStringTeX());
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expecteds[1] = -randomRegForHalfInts;
-//                expecteds[0] = (randomRegForHalfInts * randomRegForHalfInts 
-//                        - randomSurdForHalfInts * randomSurdForHalfInts 
-//                        * testIntegers.get(i).getRing().getRadicand()) / 4;
-//            } else {
-//                expecteds[1] = (-2) * randomRegPart;
-//                expecteds[0] = randomRegPart * randomRegPart - randomSurdPart 
-//                        * randomSurdPart * testIntegers.get(i).getRing()
-//                                .getRadicand();
-//            }
-//            actuals = testIntegers.get(i).minPolynomialCoeffs();
-//            assertArrayEquals(expecteds, actuals);
-//            /* Now to test the mimimal polymomial of the integer sqrt(d) */
-//            expecteds[1] = 0;
-//            expecteds[0] = -testIntegers.get(i).getRing().getRadicand();
-//            baseSurdDist = new RealQuadraticInteger(0, 1, testIntegers.get(i).getRing());
-//            System.out.println("Minimal polynomial of " + baseSurdDist.toASCIIString() 
-// + " is said to be " + baseSurdDist.minPolynomialStringTeX());
-//            actuals = baseSurdDist.minPolynomialCoeffs();
-//            assertArrayEquals(expecteds, actuals);
-//        }
-//        // Next, some rational integers
-//        expecteds[2] = 0;
-//        expecteds[1] = 1;
-//        for (int i = 1; i < 10; i++) {
-//            expecteds[0] = -i;
-//            rationalInt = new RealQuadraticInteger(i, 0, ringRandom);
-//            actuals = rationalInt.minPolynomialCoeffs();
-//            assertArrayEquals(expecteds, actuals);
-//        }
-//        // And last but not least, 0
-//        expecteds[0] = 0;
-//        actuals = zeroRQI.minPolynomialCoeffs();
-//        assertArrayEquals(expecteds, actuals);
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        actuals = zeroRQI.minPolynomialCoeffs();
-//        assertArrayEquals(expecteds, actuals);
+        QuadraticRing ring = chooseRing();
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int propB = RANDOM.nextInt(bound) - halfBound;
+        int b = propB == 0 ? 1 : propB;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        long norm = a * a - b * b * ring.getRadicand();
+        long trace = 2L * a;
+        long[] expecteds = {1L, -trace, norm};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
     }
+    
+    // TODO: Write minPolynomialCoeffs() test for "half-integer"
 
 //    @Test
     public void testMinPolynomialCoeffsExcessiveDegree() {
