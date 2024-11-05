@@ -219,7 +219,22 @@ public class RealQuadraticIntegerTest {
         assertArrayEquals(message, expecteds, actuals);
     }
     
-    // TODO: Write minPolynomialCoeffs() test for "half-integer"
+    @Test
+    public void testMinPolynomialCoeffsForHalfInts() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = (RANDOM.nextInt(bound) - halfBound) | 1;
+        int b = (RANDOM.nextInt(bound) - halfBound) | 1;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        long norm = ((long) a * a - (long) b * b * ring.getRadicand()) / 4L;
+        long[] expecteds = {norm, -a, 1L};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
+    
 
 //    @Test
     public void testMinPolynomialCoeffsExcessiveDegree() {
