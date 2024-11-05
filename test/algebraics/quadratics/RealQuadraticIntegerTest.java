@@ -182,6 +182,19 @@ public class RealQuadraticIntegerTest {
         long[] actuals = zero.minPolynomialCoeffs();
         assertArrayEquals(expecteds, actuals);
     }
+    
+    @Test
+    public void testMinPolynomialCoeffsForUnaryInteger() {
+        QuadraticRing ring = chooseRing();
+        int propA = RANDOM.nextInt(Short.MAX_VALUE) - Byte.MAX_VALUE;
+        int a = propA == 0 ? 1 : propA;
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
+        long[] expecteds = {0, 1, -a};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
 
     /**
      * Test of the minPolynomialCoeffs function, of the RealQuadraticInteger 
