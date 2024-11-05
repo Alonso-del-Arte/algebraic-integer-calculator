@@ -210,7 +210,7 @@ public class RealQuadraticIntegerTest {
         int propB = RANDOM.nextInt(bound) - halfBound;
         int b = propB == 0 ? 1 : propB;
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
-        long norm = (long) a * a - b * b * ring.getRadicand();
+        long norm = (long) a * a - (long) b * b * ring.getRadicand();
         long trace = 2L * a;
         long[] expecteds = {norm, -trace, 1L};
         long[] actuals = number.minPolynomialCoeffs();
