@@ -212,7 +212,7 @@ public class RealQuadraticIntegerTest {
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
         long norm = a * a - b * b * ring.getRadicand();
         long trace = 2L * a;
-        long[] expecteds = {1L, -trace, norm};
+        long[] expecteds = {norm, -trace, 1L};
         long[] actuals = number.minPolynomialCoeffs();
         String message = "Reckoning minimum polynomial coefficients for " 
                 + number.toString();
