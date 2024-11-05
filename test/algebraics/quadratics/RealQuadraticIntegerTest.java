@@ -189,7 +189,7 @@ public class RealQuadraticIntegerTest {
         int propA = RANDOM.nextInt(Short.MAX_VALUE) - Byte.MAX_VALUE;
         int a = propA == 0 ? 1 : propA;
         QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
-        long[] expecteds = {0L, 1L, -a};
+        long[] expecteds = {-a, 1L, 0L};
         long[] actuals = number.minPolynomialCoeffs();
         String message = "Reckoning minimum polynomial coefficients for " 
                 + number.toString();
