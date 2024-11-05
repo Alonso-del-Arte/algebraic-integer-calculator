@@ -35,7 +35,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     // TODO: Write tests for this
     @Override
     public long[] minPolynomialCoeffs() {
-        long[] array = {0, 0};
+        long[] array = {0, 1, 0};
         return array;
     }
     
