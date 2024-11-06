@@ -181,7 +181,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      */
     @Override
     public long[] minPolynomialCoeffs() {
-        long[] coeffs = {0L, 0L, 0L};
+        long[] coeffs = {0L, 1L, 0L};
 //        switch (this.algebraicDegree()) {
 //            case 0:
 //                coeffs[1] = 1;
