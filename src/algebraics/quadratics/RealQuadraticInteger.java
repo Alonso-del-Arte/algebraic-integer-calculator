@@ -16,6 +16,8 @@
  */
 package algebraics.quadratics;
 
+import algebraics.AlgebraicDegreeOverflowException;
+
 /**
  * Defines objects to represent real quadratic integers, for the most part 
  * symbolically rather than numerically. This class is <code>Comparable</code>, 
@@ -32,11 +34,11 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    // TODO: Write tests for this
     @Override
     public long[] minPolynomialCoeffs() {
         long[] array = {0L, 0L, 0L};
-        switch (this.algebraicDegree()) {
+        int degree = this.algebraicDegree();
+        switch (degree) {
             case 1: 
                 array[0] = -1L * this.regPartMult;
             case 0:
@@ -48,7 +50,10 @@ public class RealQuadraticInteger extends QuadraticInteger
                 array[2] = 1L;
                 break;
             default:
-                array[2] = Long.MIN_VALUE;
+                String message = "Algebraic degree erroneously given as " 
+                        + degree;
+                throw new AlgebraicDegreeOverflowException(message, degree, 
+                        this, this);
         }
         return array;
     }
