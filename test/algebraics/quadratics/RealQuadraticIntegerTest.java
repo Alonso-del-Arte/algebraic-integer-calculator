@@ -29,9 +29,8 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -235,12 +234,39 @@ public class RealQuadraticIntegerTest {
         assertArrayEquals(message, expecteds, actuals);
     }
     
-
-//    @Test
+    @Test
     public void testMinPolynomialCoeffsExcessiveDegree() {
         QuadraticRing ring = chooseRing();
-        QuadraticInteger instance;
-        fail("HAVEN'T WRITTEN TEST YET");
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int b = RANDOM.nextInt(bound) - halfBound;
+        QuadraticInteger instance = new RealQuadraticInteger(a, b, ring) {
+            
+            @Override
+            public int algebraicDegree() {
+                return 3 + RANDOM.nextInt(bound);
+            }
+            
+        };
+        int erroneousDegree = instance.algebraicDegree();
+        String msg = "Given that " + instance.toString() 
+                + " has been erroneously declared to have algebraic degree " 
+                + erroneousDegree 
+                + ", minPolynomialCoeffs() should've caused exception";
+        Throwable t = assertThrows(() -> {
+            long[] coeffs = instance.minPolynomialCoeffs();
+            System.out.println(msg + ", not given result " 
+                    + Arrays.toString(coeffs));
+        }, AlgebraicDegreeOverflowException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(erroneousDegree);
+        String message = "Exception message should include erroneous degree " 
+                + numStr;
+        assert excMsg.contains(numStr) : message;
+        System.out.println("\"" + excMsg + "\"");
     }
     /**
      * Test of minPolynomialString method, of class RealQuadraticInteger, 
