@@ -241,15 +241,15 @@ public class RealQuadraticIntegerTest {
         int halfBound = bound >> 1;
         int a = RANDOM.nextInt(bound) - halfBound;
         int b = RANDOM.nextInt(bound) - halfBound;
+        final int erroneousDegree = 3 + RANDOM.nextInt(bound);
         QuadraticInteger instance = new RealQuadraticInteger(a, b, ring) {
             
             @Override
             public int algebraicDegree() {
-                return 3 + RANDOM.nextInt(bound);
+                return erroneousDegree;
             }
             
         };
-        int erroneousDegree = instance.algebraicDegree();
         String msg = "Given that " + instance.toString() 
                 + " has been erroneously declared to have algebraic degree " 
                 + erroneousDegree 
