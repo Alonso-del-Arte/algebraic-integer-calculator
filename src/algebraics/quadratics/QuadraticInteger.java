@@ -184,17 +184,15 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         long[] coeffs = {0L, 1L, 0L};
         int degree = this.algebraicDegree();
         switch (degree) {
-            case 0:
-                coeffs[1] = 1;
-                break;
             case 1: 
-                coeffs[0] = -1 * this.regPartMult;
-                coeffs[1] = 1;
+                coeffs[0] = -1L * this.regPartMult;
+            case 0:
+                coeffs[1] = 1L;
                 break;
             case 2: 
                 coeffs[0] = this.norm();
                 coeffs[1] = -this.trace();
-                coeffs[2] = 1;
+                coeffs[2] = 1L;
                 break;
             default:
                 String excMsg = "Excessive degree " + degree 
