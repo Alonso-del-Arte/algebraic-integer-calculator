@@ -171,6 +171,28 @@ public class QuadraticIntegerTest {
     }
 
     /**
+     * Test of the minPolynomialCoeffs function, of the QuadraticInteger class.
+     */
+    @Test
+    public void testMinPolynomialCoeffs() {
+        System.out.println("minPolynomialCoeffs");
+        QuadraticRing ring = chooseRing();
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int propB = RANDOM.nextInt(bound) - halfBound;
+        int b = propB == 0 ? 1 : propB;
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        long norm = (long) a * a - (long) b * b * ring.getRadicand();
+        long trace = 2L * a;
+        long[] expecteds = {norm, -trace, 1L};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
+    
+    /**
      * Another test of the conjugate function of the QuadraticInteger class. 
      * Testing that trying to take the conjugate of a quadratic integer from an 
      * unsupported ring triggers {@link UnsupportedNumberDomainException}.
