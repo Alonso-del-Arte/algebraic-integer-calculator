@@ -18,6 +18,7 @@ package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.UnsupportedNumberDomainException;
+import static algebraics.quadratics.QuadraticRingTest.RANDOM;
 import arithmetic.NotDivisibleException;
 
 import static calculators.EratosthenesSieve.listPrimes;
@@ -28,7 +29,6 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -44,8 +44,6 @@ import static org.testframe.api.Asserters.assertThrows;
  * @author Alonso del Arte
  */
 public class QuadraticIntegerTest {
-    
-    private static final Random RANDOM = new Random();
     
     // TODO: Write arithmetic overflow tests
     
@@ -159,6 +157,19 @@ public class QuadraticIntegerTest {
         assertArrayEquals(expecteds, actuals);
     }
     
+    @Test
+    public void testMinPolynomialCoeffsForUnaryInteger() {
+        QuadraticRing ring = chooseRing();
+        int propA = RANDOM.nextInt(Short.MAX_VALUE) - Byte.MAX_VALUE;
+        int a = propA == 0 ? 1 : propA;
+        QuadraticInteger number = new QuadraticIntegerImpl(a, 0, ring);
+        long[] expecteds = {-a, 1L, 0L};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
+
     /**
      * Another test of the conjugate function of the QuadraticInteger class. 
      * Testing that trying to take the conjugate of a quadratic integer from an 
