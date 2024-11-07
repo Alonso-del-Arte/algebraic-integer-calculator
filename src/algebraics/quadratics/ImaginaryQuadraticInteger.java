@@ -45,12 +45,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 array[1] = 1L;
                 break;
             case 2:
-                long a = this.regPartMult;
-                long b = this.surdPartMult;
-                int denomSquared = this.denominator * this.denominator;
-                array[0] = (a * a - b * b * this.quadRing.radicand) 
-                        / denomSquared;
-                array[1] = -2L * a / this.denominator;
+                array[0] = this.norm();
+                array[1] = -this.trace();
                 array[2] = 1L;
                 break;
             default:
