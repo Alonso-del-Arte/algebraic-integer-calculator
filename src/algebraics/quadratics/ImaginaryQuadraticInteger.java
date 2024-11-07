@@ -36,7 +36,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public long[] minPolynomialCoeffs() {
         long[] array = {0L, 1L, 0L};
-        switch (this.algebraicDegree()) {
+        int degree = this.algebraicDegree();
+        switch (degree) {
             case 1:
                 array[0] = -this.regPartMult;
             case 0:
@@ -47,7 +48,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 array[2] = 1L;
                 break;
             default:
-                array[1] = 0;
+                String excMsg = "Excessive degree " + degree 
+                        + " occurred somehow";
+                throw new AlgebraicDegreeOverflowException(excMsg, 2, this, 
+                        this);
         }
         return array;
     }
