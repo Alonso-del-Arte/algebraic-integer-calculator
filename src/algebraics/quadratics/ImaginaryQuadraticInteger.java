@@ -33,29 +33,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
-    @Override
-    public long[] minPolynomialCoeffs() {
-        long[] array = {0L, 1L, 0L};
-        int degree = this.algebraicDegree();
-        switch (degree) {
-            case 1:
-                array[0] = -this.regPartMult;
-            case 0:
-                break;
-            case 2:
-                array[0] = this.norm();
-                array[1] = -this.trace();
-                array[2] = 1L;
-                break;
-            default:
-                String excMsg = "Excessive degree " + degree 
-                        + " occurred somehow";
-                throw new AlgebraicDegreeOverflowException(excMsg, 2, this, 
-                        this);
-        }
-        return array;
-    }
-    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 
