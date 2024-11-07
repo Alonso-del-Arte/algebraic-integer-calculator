@@ -446,49 +446,26 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     /**
-     * Test of minPolynomialCoeffs method, of class ImaginaryQuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the minPolynomialCoeffs function, of the 
+     * ImaginaryQuadraticInteger class.
+     */
     @Test
     public void testMinPolynomialCoeffs() {
         System.out.println("minPolynomialCoeffs");
-        fail("NEED TO REWRITE THIS TEST");
-        long[] expecteds = {0, 0, 1};
-        long[] actuals;
-        ImaginaryQuadraticInteger baseImagDist, purelyRealInt;
-        for (int i = 0; i < totalTestIntegers; i++) {
-            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-                expecteds[1] = -randomRealForHalfInts;
-                expecteds[0] = (randomRealForHalfInts * randomRealForHalfInts + randomImagForHalfInts * randomImagForHalfInts * testIntegers.get(i).getRing().getAbsNegRad())/4;
-            } else {
-                expecteds[1] = (-2) * randomRealPart;
-                expecteds[0] = randomRealPart * randomRealPart + randomImagPart * randomImagPart * testIntegers.get(i).getRing().getAbsNegRad();
-            }
-            actuals = testIntegers.get(i).minPolynomialCoeffs();
-            assertArrayEquals(expecteds, actuals);
-            /* Now to test the mimimal polymomial of the purely imaginary 
-               integer sqrt(d) */
-            expecteds[1] = 0;
-            expecteds[0] = testIntegers.get(i).getRing().getAbsNegRad();
-            baseImagDist = new ImaginaryQuadraticInteger(0, 1, testIntegers.get(i).getRing());
-            actuals = baseImagDist.minPolynomialCoeffs();
-            assertArrayEquals(expecteds, actuals);
-        }
-        // Next, some purely real integers
-        expecteds[2] = 0;
-        expecteds[1] = 1;
-        for (int i = 1; i < 10; i++) {
-            expecteds[0] = -i;
-            purelyRealInt = new ImaginaryQuadraticInteger(i, 0, ringRandom);
-            actuals = purelyRealInt.minPolynomialCoeffs();
-            assertArrayEquals(expecteds, actuals);
-        }
-        // And last but not least, 0
-        expecteds[0] = 0;
-        actuals = zeroIQI.minPolynomialCoeffs();
-        assertArrayEquals(expecteds, actuals);
-        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
-        actuals = zeroIQI.minPolynomialCoeffs();
-        assertArrayEquals(expecteds, actuals);
+        QuadraticRing ring = chooseRing();
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int propB = RANDOM.nextInt(bound) - halfBound;
+        int b = propB == 0 ? 1 : propB;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        long norm = (long) a * a - (long) b * b * ring.getRadicand();
+        long trace = 2L * a;
+        long[] expecteds = {norm, -trace, 1L};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
     }
 
     /**
