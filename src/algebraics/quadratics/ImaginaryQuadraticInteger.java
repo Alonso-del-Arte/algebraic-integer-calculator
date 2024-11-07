@@ -33,20 +33,28 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
-    // TODO: Write tests for this
     @Override
     public long[] minPolynomialCoeffs() {
         long[] array = {0L, 1L, 0L};
-        if (this.algebraicDegree() == 1) {
-            array[0] = -this.regPartMult;
-        }
-        if (this.algebraicDegree() == 2) {
-            long a = this.regPartMult;
-            long b = this.surdPartMult;
-            int denomSquared = this.denominator * this.denominator;
-            array[0] = (a * a - b * b * this.quadRing.radicand) / denomSquared;
-            array[1] = -2L * a / this.denominator;
-            array[2] = 1L;
+        switch (this.algebraicDegree()) {
+            case 0:
+                array[1] = 1L;
+                break;
+            case 1:
+                array[0] = -this.regPartMult;
+                array[1] = 1L;
+                break;
+            case 2:
+                long a = this.regPartMult;
+                long b = this.surdPartMult;
+                int denomSquared = this.denominator * this.denominator;
+                array[0] = (a * a - b * b * this.quadRing.radicand) 
+                        / denomSquared;
+                array[1] = -2L * a / this.denominator;
+                array[2] = 1L;
+                break;
+            default:
+                array[1] = 0;
         }
         return array;
     }
