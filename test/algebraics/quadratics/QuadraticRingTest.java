@@ -269,6 +269,10 @@ public class QuadraticRingTest {
 
         QuadraticRingImpl(int d) {
             super(d);
+            int remainder = d % 4;
+            if (remainder == -3 || remainder == 1) {
+                this.d1mod4 = true;
+            }
         }
 
     }
