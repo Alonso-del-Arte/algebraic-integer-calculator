@@ -34,30 +34,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    @Override
-    public long[] minPolynomialCoeffs() {
-        long[] array = {0L, 0L, 0L};
-        int degree = this.algebraicDegree();
-        switch (degree) {
-            case 1: 
-                array[0] = -1L * this.regPartMult;
-            case 0:
-                array[1] = 1L;
-                break;
-            case 2: 
-                array[0] = this.norm();
-                array[1] = -this.trace();
-                array[2] = 1L;
-                break;
-            default:
-                String message = "Algebraic degree erroneously given as " 
-                        + degree;
-                throw new AlgebraicDegreeOverflowException(message, degree, 
-                        this, this);
-        }
-        return array;
-    }
-    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
