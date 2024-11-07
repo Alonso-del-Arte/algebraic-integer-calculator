@@ -40,6 +40,13 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         if (this.algebraicDegree() == 1) {
             array[0] = -this.regPartMult;
         }
+        if (this.algebraicDegree() == 2) {
+            long a = this.regPartMult;
+            long b = this.surdPartMult;
+            array[0] = a * a - b * b * this.quadRing.radicand;
+            array[1] = -2L * a;
+            array[2] = 1L;
+        }
         return array;
     }
     
