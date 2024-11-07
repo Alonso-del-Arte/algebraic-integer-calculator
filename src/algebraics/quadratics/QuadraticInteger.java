@@ -190,11 +190,13 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                 coeffs[0] = -1 * this.regPartMult;
                 coeffs[1] = 1;
                 break;
-//            case 2: 
-//                coeffs[0] = this.norm();
-//                coeffs[1] = -this.trace();
-//                coeffs[2] = 1;
-//                break;
+            case 2: 
+                long a = this.regPartMult;
+                long b = this.surdPartMult;
+                coeffs[0] = a * a - b * b * this.quadRing.radicand;
+                coeffs[1] = -2L * a;
+                coeffs[2] = 1;
+                break;
             default:
                 coeffs[2] = Long.MIN_VALUE;
 //                String excMsg = "Excessive degree " + this.algebraicDegree() 
