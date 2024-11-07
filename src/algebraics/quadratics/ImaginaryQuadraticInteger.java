@@ -43,8 +43,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         if (this.algebraicDegree() == 2) {
             long a = this.regPartMult;
             long b = this.surdPartMult;
-            array[0] = a * a - b * b * this.quadRing.radicand;
-            array[1] = -2L * a;
+            int denomSquared = this.denominator * this.denominator;
+            array[0] = (a * a - b * b * this.quadRing.radicand) / denomSquared;
+            array[1] = -2L * a / this.denominator;
             array[2] = 1L;
         }
         return array;
