@@ -33,6 +33,13 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
+    // TODO: Write tests for this
+    @Override
+    public long[] minPolynomialCoeffs() {
+        long[] array = {0L, 0L, 0L};
+        return array;
+    }
+    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 
