@@ -432,6 +432,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertArrayEquals(expecteds, actuals);
     }
     
+    @Test
+    public void testMinPolynomialCoeffsForUnaryInteger() {
+        QuadraticRing ring = chooseRing();
+        int propA = RANDOM.nextInt(Short.MAX_VALUE) - Byte.MAX_VALUE;
+        int a = propA == 0 ? 1 : propA;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        long[] expecteds = {-a, 1L, 0L};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
+
     /**
      * Test of minPolynomialCoeffs method, of class ImaginaryQuadraticInteger.
      */@org.junit.Ignore
