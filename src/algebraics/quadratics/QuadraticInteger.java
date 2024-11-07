@@ -187,7 +187,6 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
             case 1: 
                 coeffs[0] = -1L * this.regPartMult;
             case 0:
-                coeffs[1] = 1L;
                 break;
             case 2: 
                 coeffs[0] = this.norm();
