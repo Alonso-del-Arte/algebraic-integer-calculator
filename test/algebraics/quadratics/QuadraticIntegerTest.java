@@ -24,6 +24,7 @@ import arithmetic.NotDivisibleException;
 import static calculators.EratosthenesSieve.listPrimes;
 import static calculators.EratosthenesSieve.randomOddPrime;
 import static calculators.EratosthenesSieve.randomPrimeOtherThan;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
@@ -61,6 +62,16 @@ public class QuadraticIntegerTest {
     private static QuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(1024);
         int d = (randomNumber() % 2 == 0) ? propD : -propD;
+        return new QuadraticRingTest.QuadraticRingImpl(d);
+    }
+    
+    private static QuadraticRing chooseRingWithHalfInts() {
+        int bound = 256;
+        int halfBound = bound / 2;
+        int d;
+        do {
+            d = 4 * (randomNumber(bound) - halfBound) + 1;
+        } while (!isSquarefree(d) && d != 1);
         return new QuadraticRingTest.QuadraticRingImpl(d);
     }
     
@@ -186,6 +197,22 @@ public class QuadraticIntegerTest {
         long norm = (long) a * a - (long) b * b * ring.getRadicand();
         long trace = 2L * a;
         long[] expecteds = {norm, -trace, 1L};
+        long[] actuals = number.minPolynomialCoeffs();
+        String message = "Reckoning minimum polynomial coefficients for " 
+                + number.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
+    
+    @Test
+    public void testMinPolynomialCoeffsForHalfInts() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = (RANDOM.nextInt(bound) - halfBound) | 1;
+        int b = (RANDOM.nextInt(bound) - halfBound) | 1;
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring, 2);
+        long norm = ((long) a * a - (long) b * b * ring.getRadicand()) / 4L;
+        long[] expecteds = {norm, -a, 1L};
         long[] actuals = number.minPolynomialCoeffs();
         String message = "Reckoning minimum polynomial coefficients for " 
                 + number.toString();
@@ -1715,7 +1742,12 @@ public class QuadraticIntegerTest {
          * checking for the class of this parameter.
          */
         public QuadraticIntegerImpl(int a, int b, QuadraticRing ring) {
-            super(a, b, ring, 1);
+            this(a, b, ring, 1);
+        }
+        
+        public QuadraticIntegerImpl(int a, int b, QuadraticRing ring, int denom) 
+        {
+            super(a, b, ring, denom);
             double re = this.regPartMult;
             double im = 0.0;
             double y = this.quadRing.realRadSqrt * this.surdPartMult;
