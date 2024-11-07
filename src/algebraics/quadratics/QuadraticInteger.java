@@ -182,27 +182,27 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     @Override
     public long[] minPolynomialCoeffs() {
         long[] coeffs = {0L, 1L, 0L};
-//        switch (this.algebraicDegree()) {
-//            case 0:
-//                coeffs[1] = 1;
-//                break;
-//            case 1: 
-//                coeffs[0] = -1 * this.regPartMult;
-//                coeffs[1] = 1;
-//                break;
+        switch (this.algebraicDegree()) {
+            case 0:
+                coeffs[1] = 1;
+                break;
+            case 1: 
+                coeffs[0] = -1 * this.regPartMult;
+                coeffs[1] = 1;
+                break;
 //            case 2: 
 //                coeffs[0] = this.norm();
 //                coeffs[1] = -this.trace();
 //                coeffs[2] = 1;
 //                break;
-//            default:
-//                coeffs[2] = Long.MIN_VALUE;
+            default:
+                coeffs[2] = Long.MIN_VALUE;
 //                String excMsg = "Excessive degree " + this.algebraicDegree() 
 //                        + " occurred somehow";
 //                Exception exc = new AlgebraicDegreeOverflowException(excMsg, 2, 
 //                        this, this);
 //                throw new RuntimeException(exc);
-//        }
+        }
         return coeffs;
     }
     
