@@ -37,6 +37,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public long[] minPolynomialCoeffs() {
         long[] array = {0L, 1L, 0L};
+        if (this.algebraicDegree() == 1) {
+            array[0] = -this.regPartMult;
+        }
         return array;
     }
     
