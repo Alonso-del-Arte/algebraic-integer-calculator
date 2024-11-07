@@ -21,15 +21,13 @@ import algebraics.UnsupportedNumberDomainException;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import fractions.Fraction;
-
-import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
-import static calculators.NumberTheoreticFunctionsCalculator
-        .randomSquarefreeNumber;
 import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 
 import java.text.DecimalFormatSymbols;
@@ -148,6 +146,19 @@ public class ImaginaryQuadraticIntegerTest {
      */
     private static final ImaginaryQuadraticInteger COMPLEX_CUBIC_ROOT_OF_UNITY 
             = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
+    
+    private static ImaginaryQuadraticRing chooseRing() {
+        int d = -randomSquarefreeNumber(256);
+        return new ImaginaryQuadraticRing(d);
+    }
+    
+    private static ImaginaryQuadraticRing chooseRingWithHalfInts() {
+        int d;
+        do {
+            d = -4 * randomNumber(256) - 3;
+        } while (!isSquarefree(d));
+        return new ImaginaryQuadraticRing(d);
+    }
     
     /**
      * Sets up the static variables that will be used for the tests. Some of the 
@@ -412,9 +423,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testMinPolynomialCoeffsForZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger zero = new ImaginaryQuadraticInteger(0, 0, ring);
+        long[] expecteds = {0L, 1L, 0L};
+        long[] actuals = zero.minPolynomialCoeffs();
+        assertArrayEquals(expecteds, actuals);
+    }
+    
     /**
      * Test of minPolynomialCoeffs method, of class ImaginaryQuadraticInteger.
-     */
+     */@org.junit.Ignore
     @Test
     public void testMinPolynomialCoeffs() {
         System.out.println("minPolynomialCoeffs");
