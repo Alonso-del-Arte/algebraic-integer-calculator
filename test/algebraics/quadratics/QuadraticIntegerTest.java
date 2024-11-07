@@ -29,6 +29,7 @@ import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -217,6 +218,41 @@ public class QuadraticIntegerTest {
         String message = "Reckoning minimum polynomial coefficients for " 
                 + number.toString();
         assertArrayEquals(message, expecteds, actuals);
+    }
+    
+    @Test
+    public void testMinPolynomialCoeffsExcessiveDegree() {
+        QuadraticRing ring = chooseRing();
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int b = RANDOM.nextInt(bound) - halfBound;
+        final int erroneousDegree = 3 + RANDOM.nextInt(bound);
+        QuadraticInteger instance = new QuadraticIntegerImpl(a, b, ring) {
+            
+            @Override
+            public int algebraicDegree() {
+                return erroneousDegree;
+            }
+            
+        };
+        String msg = "Given that " + instance.toString() 
+                + " has been erroneously declared to have algebraic degree " 
+                + erroneousDegree 
+                + ", minPolynomialCoeffs() should've caused exception";
+        Throwable t = assertThrows(() -> {
+            long[] coeffs = instance.minPolynomialCoeffs();
+            System.out.println(msg + ", not given result " 
+                    + Arrays.toString(coeffs));
+        }, AlgebraicDegreeOverflowException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(erroneousDegree);
+        String message = "Exception message should include erroneous degree " 
+                + numStr;
+        assert excMsg.contains(numStr) : message;
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
