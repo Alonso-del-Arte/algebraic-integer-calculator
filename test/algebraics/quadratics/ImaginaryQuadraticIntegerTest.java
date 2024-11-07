@@ -32,14 +32,15 @@ import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
+
+import static org.testframe.api.Asserters.assertThrows;
 
 /**
  * Tests for the ImaginaryQuadraticInteger class, which defines objects that 
@@ -482,6 +483,41 @@ public class ImaginaryQuadraticIntegerTest {
         String message = "Reckoning minimum polynomial coefficients for " 
                 + number.toString();
         assertArrayEquals(message, expecteds, actuals);
+    }
+    
+    @Test
+    public void testMinPolynomialCoeffsExcessiveDegree() {
+        QuadraticRing ring = chooseRing();
+        int bound = 1 << 16;
+        int halfBound = bound >> 1;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int b = RANDOM.nextInt(bound) - halfBound;
+        final int erroneousDegree = 3 + RANDOM.nextInt(bound);
+        QuadraticInteger instance = new ImaginaryQuadraticInteger(a, b, ring) {
+            
+            @Override
+            public int algebraicDegree() {
+                return erroneousDegree;
+            }
+            
+        };
+        String msg = "Given that " + instance.toString() 
+                + " has been erroneously declared to have algebraic degree " 
+                + erroneousDegree 
+                + ", minPolynomialCoeffs() should've caused exception";
+        Throwable t = assertThrows(() -> {
+            long[] coeffs = instance.minPolynomialCoeffs();
+            System.out.println(msg + ", not given result " 
+                    + Arrays.toString(coeffs));
+        }, AlgebraicDegreeOverflowException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(erroneousDegree);
+        String message = "Exception message should include erroneous degree " 
+                + numStr;
+        assert excMsg.contains(numStr) : message;
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
