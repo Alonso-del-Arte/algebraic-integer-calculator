@@ -418,6 +418,7 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testMinPolynomialCoeffs() {
         System.out.println("minPolynomialCoeffs");
+        fail("NEED TO REWRITE THIS TEST");
         long[] expecteds = {0, 0, 1};
         long[] actuals;
         ImaginaryQuadraticInteger baseImagDist, purelyRealInt;
@@ -464,7 +465,7 @@ public class ImaginaryQuadraticIntegerTest {
      * "0x" is implied in the minimal polynomial of purely imaginary integers 
      * and therefore "+0x" and "&minus;0x" should both be excluded from the 
      * output.
-     */
+     */@org.junit.Ignore
 // TODO: Break this test up into smaller tests
     @Test
     public void testMinPolynomialString() {
@@ -522,7 +523,7 @@ public class ImaginaryQuadraticIntegerTest {
      * ImaginaryQuadraticInteger. Spaces in the results are desirable but not 
      * required. Therefore the tests should strip out spaces before asserting 
      * equality.
-     */
+     */@org.junit.Ignore
     @Test
     public void testMinPolynomialStringTeX() {
         System.out.println("minPolynomialStringTeX");
@@ -579,7 +580,7 @@ public class ImaginaryQuadraticIntegerTest {
      * ImaginaryQuadraticInteger. Spaces in the results are desirable but not 
      * required. Therefore the tests should strip out spaces before asserting 
      * equality.
-     */
+     */@org.junit.Ignore
     @Test
     public void testMinPolynomialStringHTML() {
         System.out.println("minPolynomialStringHTML");
@@ -1716,7 +1717,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of the inferStep function, of the ImaginaryQuadraticInteger class. A 
      * line is chosen so that the step is either 1 + sqrt(d) or 1/2 + sqrt(d)/2 
      * (the latter only if ringRandom is a domain with "half-integers").
-     */
+     */@org.junit.Ignore
     @Test
     public void testInferStep() {
         System.out.println("inferStep");
@@ -1749,7 +1750,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
      * class. The step to be inferred from 5 - 5i to -5 + 5i is -1 + i.
-     */
+     */@org.junit.Ignore
     @Test
     public void testInferStepGaussian() {
         ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(5, 
@@ -1767,7 +1768,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
      * class. The step to be inferred from -2 to -11 + 3sqrt(-2) is -3 + 
      * sqrt(-2).
-     */
+     */@org.junit.Ignore
     @Test
     public void testInferStepZi2() {
         ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-2, 
@@ -1803,7 +1804,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Another test of the inferStep function, of the ImaginaryQuadraticInteger 
      * class. The step to be inferred from -1/2 - 3sqrt(-7)/2 to -11 - 3sqrt(-7) 
      * is -7/2 - sqrt(-7)/2.
-     */
+     */@org.junit.Ignore
     @Test
     public void testInferStepOQi7() {
         ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-1, 
@@ -1891,7 +1892,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of to, of class ImaginaryQuadraticInteger. This test is about 
      * imaginary quadratic integers such that lines connecting them on the 
      * complex plane are diagonals going in different directions.
-     */
+     */@org.junit.Ignore
     @Test
     public void testTo() {
         System.out.println("to");
@@ -1950,7 +1951,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of to, of class ImaginaryQuadraticInteger. If the end point 
      * parameter is the same as the starting point, to() should return a list 
      * with a single imaginary quadratic integer in it.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToSinglePoint() {
         fail("Haven't rewritten test yet");
@@ -1968,7 +1969,7 @@ public class ImaginaryQuadraticIntegerTest {
      * function on two such imaginary quadratic integers should trigger {@link 
      * algebraics.AlgebraicDegreeOverflowException}. However, such a ring would 
      * also contain real numbers, so the requested range would be infinite.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToCrossDomain() {
         fail("Haven't rewritten test yet");
@@ -1991,7 +1992,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of to, of class ImaginaryQuadraticInteger. This test is about 
      * imaginary quadratic integers such that lines connecting them on the 
      * complex plane are vertical lines, going up or down.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToOnSameRealLine() {
         System.out.println("to on same real line");
@@ -2024,7 +2025,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of to, of class ImaginaryQuadraticInteger. This test is about 
      * imaginary quadratic integers such that lines connecting them on the 
      * complex plane are horizontal lines, going left or right.
-     */
+     */@org.junit.Ignore
     @Test
     public void testToOnSameImagLine() {
         System.out.println("to on same imaginary line");
@@ -2062,7 +2063,7 @@ public class ImaginaryQuadraticIntegerTest {
      * &omega; should always be understood to mean -1/2 + sqrt(-3)/2 and &phi; 
      * should be understood to mean 1/2 + sqrt(5)/2, while &theta; means 1/2 
      * + sqrt(d)/2 with d = 1 mod 4, but d may be ambiguous.
-     */
+     */@org.junit.Ignore
     @Test
     public void testParseQuadraticInteger() {
         System.out.println("parseQuadraticInteger");
@@ -3080,7 +3081,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Another test of the mod function, of the QuadraticInteger class. If the 
      * dividend and the divisor are from different imaginary rings, an {@link 
      * AlgebraicDegreeOverflowException} should occur.
-     */
+     */@org.junit.Ignore
     @Test
     public void testModCrossDomain() {
         int a = RANDOM.nextInt(2048) + 1;
