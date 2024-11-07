@@ -36,7 +36,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public long[] minPolynomialCoeffs() {
-        long[] array = {0L, 0L, 0L};
+        long[] array = {0L, 1L, 0L};
         return array;
     }
     
