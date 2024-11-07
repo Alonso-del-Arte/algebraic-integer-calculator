@@ -192,12 +192,8 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                 coeffs[1] = 1;
                 break;
             case 2: 
-                long a = this.regPartMult;
-                long b = this.surdPartMult;
-                int denomSquared = this.denominator * this.denominator;
-                coeffs[0] = (a * a - b * b * this.quadRing.radicand) 
-                        / denomSquared;
-                coeffs[1] = -2L * a / this.denominator;
+                coeffs[0] = this.norm();
+                coeffs[1] = -this.trace();
                 coeffs[2] = 1;
                 break;
             default:
