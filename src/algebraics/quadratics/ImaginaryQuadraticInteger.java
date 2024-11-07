@@ -37,12 +37,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public long[] minPolynomialCoeffs() {
         long[] array = {0L, 1L, 0L};
         switch (this.algebraicDegree()) {
-            case 0:
-                array[1] = 1L;
-                break;
             case 1:
                 array[0] = -this.regPartMult;
-                array[1] = 1L;
+            case 0:
                 break;
             case 2:
                 array[0] = this.norm();
