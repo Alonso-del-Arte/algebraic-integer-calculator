@@ -1691,7 +1691,7 @@ public class QuadraticIntegerTest {
         }
     }
     
-    private static class QuadraticIntegerImpl extends QuadraticInteger {
+    static class QuadraticIntegerImpl extends QuadraticInteger {
         
         private static final long serialVersionUID = 4558707313363386368L;
     
@@ -1777,12 +1777,11 @@ public class QuadraticIntegerTest {
          * any object subclassed from {@link QuadraticRing} will do; there is no 
          * checking for the class of this parameter.
          */
-        public QuadraticIntegerImpl(int a, int b, QuadraticRing ring) {
+        QuadraticIntegerImpl(int a, int b, QuadraticRing ring) {
             this(a, b, ring, 1);
         }
         
-        public QuadraticIntegerImpl(int a, int b, QuadraticRing ring, int denom) 
-        {
+        QuadraticIntegerImpl(int a, int b, QuadraticRing ring, int denom) {
             super(a, b, ring, denom);
             double re = this.regPartMult;
             double im = 0.0;
