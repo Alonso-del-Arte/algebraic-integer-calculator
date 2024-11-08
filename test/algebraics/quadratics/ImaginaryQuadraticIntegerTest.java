@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
+import static algebraics.MockRingTest.provideNull;
 import algebraics.UnsupportedNumberDomainException;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
 import arithmetic.NotDivisibleException;
@@ -1550,6 +1551,17 @@ public class ImaginaryQuadraticIntegerTest {
         int b = randomNumber();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
         assertEquals(number, number);
+    }
+    
+    @Test
+    public void testNotEqualsNull() {
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        Object obj = provideNull();
+        String msg = "Number " + number.toString() + " should not equal null";
+        assert !number.equals(obj) : msg;
     }
     
     /**
