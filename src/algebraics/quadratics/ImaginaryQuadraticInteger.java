@@ -36,7 +36,17 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof ImaginaryQuadraticInteger;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        return this.regPartMult 
+                == ((ImaginaryQuadraticInteger) obj).regPartMult;
     }
     
     // TODO: Write tests for this
