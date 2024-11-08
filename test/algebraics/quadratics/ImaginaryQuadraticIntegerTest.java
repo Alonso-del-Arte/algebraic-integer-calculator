@@ -1590,8 +1590,6 @@ public class ImaginaryQuadraticIntegerTest {
         int b = randomNumber();
         QuadraticInteger someNumber = new ImaginaryQuadraticInteger(a, b, ring);
         QuadraticInteger sameNumber = new ImaginaryQuadraticInteger(a, b, ring);
-        String msg = "Number " + someNumber.toString() + " should equal " 
-                + sameNumber.toString();
         assertEquals(someNumber, sameNumber);
     }
     
