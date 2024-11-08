@@ -1593,6 +1593,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(someNumber, sameNumber);
     }
     
+    @Test
+    public void testNotEqualsDiffRe() {
+        QuadraticRing ring = chooseRing();
+        int aA = randomNumber();
+        int aB = ~aA;
+        int b = randomNumber();
+        QuadraticInteger someNumber = new ImaginaryQuadraticInteger(aA, b, 
+                ring);
+        QuadraticInteger diffNumber = new ImaginaryQuadraticInteger(aB, b, 
+                ring);
+        assertNotEquals(someNumber, diffNumber);
+    }
+    
     /**
      * Test of the inferStep function, of the ImaginaryQuadraticInteger class. A 
      * line is chosen so that the step is either 1 + sqrt(d) or 1/2 + sqrt(d)/2 
