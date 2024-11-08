@@ -134,7 +134,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the trace function, of the ImaginaryQuadraticInteger class.
      */
-    @Test
+//    @Test
     public void testTrace() {
         System.out.println("trace");
         fail("REWRITE THIS TEST");
@@ -153,7 +153,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the norm function, of the ImaginaryQuadraticInteger class.
      */
-    @Test
+//    @Test
     public void testNorm() {
         System.out.println("norm");
         fail("REWRITE THIS TEST");
@@ -532,7 +532,7 @@ public class ImaginaryQuadraticIntegerTest {
      * purely imaginary Gaussian integers, and checks their real or imaginary 
      * parts against {@link Math#abs(double)}.
      */
-    @Test
+//    @Test
     public void testAbs() {
         System.out.println("abs");
         fail("REWRITE THIS TEST");
@@ -575,7 +575,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of getRealPartNumeric method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testGetRealPartMultNumeric() {
         System.out.println("getRealPartMultNumeric");
         fail("REWRITE THIS TEST");
@@ -594,7 +594,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of getImagPartNumeric method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testGetImagPartNumeric() {
         System.out.println("getImagPartNumeric");
         fail("REWRITE THIS TEST");
@@ -615,7 +615,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the isReApprox function, of the ImaginaryQuadraticInteger class.
      */
-    @Test
+//    @Test
     public void testIsReApprox() {
         System.out.println("isReApprox");
         fail("REWRITE THIS TEST");
@@ -632,7 +632,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the isImApprox function, of the ImaginaryQuadraticInteger class.
      */
-    @Test
+//    @Test
     public void testIsImApprox() {
         System.out.println("isImApprox");
         fail("REWRITE THIS TEST");
@@ -651,7 +651,7 @@ public class ImaginaryQuadraticIntegerTest {
      * class. If the imaginary part is 0, then 0.0 is an exact value, not an 
      * approximation.
      */
-    @Test
+//    @Test
     public void testIsNotImApproxIfImagPartZero() {
         fail("REWRITE THIS TEST");
 //        int a = RANDOM.nextInt(32768) - 16384;
@@ -664,7 +664,7 @@ public class ImaginaryQuadraticIntegerTest {
 //        assert !number.isImApprox() : msg;
     }
 
-    @Test
+//    @Test
     public void testIsNotImApproxIfGaussian() {
         fail("REWRITE THIS TEST");
 //        int a = RANDOM.nextInt(32768) - 16384;
@@ -716,7 +716,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of getRegPartMult method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testGetRegPartMult() {
         System.out.println("getRealPartMult");
         fail("REWRITE THIS TEST");
@@ -735,7 +735,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of getSurdPartMult method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testGetSurdPartMult() {
         System.out.println("getImagPartMult");
         fail("REWRITE THIS TEST");
@@ -754,7 +754,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of angle method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testAngle() {
         System.out.println("angle");
         fail("REWRITE THIS TEST");
@@ -776,7 +776,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of getRing method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testGetRing() {
         System.out.println("getRing");
         fail("REWRITE THIS TEST");
@@ -792,7 +792,7 @@ public class ImaginaryQuadraticIntegerTest {
      * tests depends on the test integers determined by setUpClass() which come 
      * from rings with "half-integers" to themselves be "half-integers."
      */
-    @Test
+//    @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
         fail("REWRITE THIS TEST");
@@ -810,7 +810,7 @@ public class ImaginaryQuadraticIntegerTest {
      * that return Strings, spaces are desirable but not required. Therefore the 
      * tests should strip out spaces before asserting equality.
      */
-    @Test
+//    @Test
     public void testToString() {
         System.out.println("toString");
         fail("REWRITE THIS TEST");
@@ -871,7 +871,7 @@ public class ImaginaryQuadraticIntegerTest {
      * the test of the toString method fails, the result of this test is 
      * irrelevant.
      */
-    @Test
+//    @Test
     public void testToStringAlt() {
         System.out.println("toStringAlt");
         fail("REWRITE THIS TEST");
@@ -969,7 +969,7 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Test
+//    @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
         fail("REWRITE THIS TEST");
@@ -1028,7 +1028,7 @@ public class ImaginaryQuadraticIntegerTest {
      * If the test of the toASCIIString method fails, the result of this test is 
      * irrelevant.
      */
-    @Test
+//    @Test
     public void testToASCIIStringAlt() {
         System.out.println("toASCIIStringAlt");
         fail("REWRITE THIS TEST");
@@ -1127,7 +1127,7 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Test
+//    @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
         fail("REWRITE THIS TEST");
@@ -1190,7 +1190,7 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Test
+//    @Test
     public void testToTeXStringSingleDenom() {
         System.out.println("toTeXStringSingleDenom");
         fail("REWRITE THIS TEST");
@@ -1240,7 +1240,7 @@ public class ImaginaryQuadraticIntegerTest {
      * If the test of the toTeXString method fails, the result of this test is 
      * irrelevant.
      */
-    @Test
+//    @Test
     public void testToTeXStringAlt() {
         System.out.println("toTeXStringAlt");
         fail("REWRITE THIS TEST");
@@ -1338,7 +1338,7 @@ public class ImaginaryQuadraticIntegerTest {
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
      */
-    @Test
+//    @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
         fail("REWRITE THIS TEST");
@@ -1406,7 +1406,7 @@ public class ImaginaryQuadraticIntegerTest {
      * If the test of the toHTMLString method fails, the result of this test is 
      * irrelevant.
      */
-    @Test
+//    @Test
     public void testToHTMLStringAlt() {
         System.out.println("toHTMLStringAlt");
         fail("REWRITE THIS TEST");
@@ -1508,7 +1508,7 @@ public class ImaginaryQuadraticIntegerTest {
      * expected that hash codes will be unique among all possible 
      * ImaginaryQuadraticInteger objects.
      */
-    @Test
+//    @Test
     public void testHashCode() {
         System.out.println("hashCode");
         fail("REWRITE THIS TEST");
@@ -1546,7 +1546,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of equals method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testEquals() {
         System.out.println("equals");
         fail("REWRITE THIS TEST");
@@ -1658,7 +1658,7 @@ public class ImaginaryQuadraticIntegerTest {
      * class. The step to be inferred from -7 to -5 - 2sqrt(-3) is 1/2 - 
      * sqrt(-3)/2.
      */
-    @Test
+//    @Test
     public void testInferStepEisenstein() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-7, 
@@ -1696,7 +1696,7 @@ public class ImaginaryQuadraticIntegerTest {
      * class. The step to be inferred from -5/2 - 3sqrt(d)/2 to 11/2 - 
      * 3sqrt(d)/2 is 1.
      */
-    @Test
+//    @Test
     public void testInferStepHorizontal() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, 
@@ -1715,7 +1715,7 @@ public class ImaginaryQuadraticIntegerTest {
      * class. The step to be inferred from -5/2 - 3sqrt(d)/2 to -5/2 + 
      * 13sqrt(d)/2 is sqrt(d).
      */
-    @Test
+//    @Test
     public void testInferStepVertical() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, 
@@ -1735,7 +1735,7 @@ public class ImaginaryQuadraticIntegerTest {
      * different rings should cause {@link 
      * algebraics.AlgebraicDegreeOverflowException}.
      */
-    @Test
+//    @Test
     public void testInferStepAlgebraicDegreeOverflow() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticInteger beginPoint = new ImaginaryQuadraticInteger(-5, 
@@ -2125,7 +2125,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of parseQuaterImaginary of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testParseQuaterImaginary() {
         System.out.println("parseQuaterImaginary");
         fail("REWRITE THIS TEST");
@@ -2230,7 +2230,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of plus method, of class ImaginaryQuadraticInteger, inherited from 
      * {@link QuadraticInteger}. Adding additive inverse should give 0.
      */
-    @Test
+//    @Test
     public void testPlusAdditiveInverses() {
         fail("REWRITE THIS TEST");
 //        String failMessage;
@@ -2256,7 +2256,7 @@ public class ImaginaryQuadraticIntegerTest {
      * algebraics.AlgebraicDegreeOverflowException} unless either summand is 
      * purely real.
      */
-    @Test
+//    @Test
     public void testPlusAlgebraicDegreeOverflow() {
         fail("REWRITE THIS TEST");
 //        QuadraticInteger result;
@@ -2298,7 +2298,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of negate method, of class ImaginaryQuadraticInteger, inherited from 
      * QuadraticInteger.
      */
-    @Test
+//    @Test
     public void testNegate() {
         System.out.println("negate");
         fail("REWRITE THIS TEST");
@@ -2367,7 +2367,7 @@ public class ImaginaryQuadraticIntegerTest {
      * {@link QuadraticInteger}. Subtracting a number from itself should give 0 
      * as a result, regardless of what that number is.
      */
-    @Test
+//    @Test
     public void testMinusNumberItself() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticInteger expResult;
@@ -2396,7 +2396,7 @@ public class ImaginaryQuadraticIntegerTest {
      * algebraic integer of degree 4. Hence the operation should cause an {@link 
      * algebraics.AlgebraicDegreeOverflowException}.
      */
-    @Test
+//    @Test
     public void testMinusAlgebraicDegreeOverflow() {
         fail("REWRITE THIS TEST");
 //        QuadraticInteger result;
@@ -2479,7 +2479,7 @@ public class ImaginaryQuadraticIntegerTest {
      * {@link QuadraticInteger}. Multiplying an imaginary quadratic integer by 
      * its conjugate should give its norm.
      */
-    @Test
+//    @Test
     public void testTimesConjugate() {
         fail("REWRITE THIS TEST");
 //        for (int i = 0; i < totalTestIntegers; i++) {
@@ -2501,7 +2501,7 @@ public class ImaginaryQuadraticIntegerTest {
      * course testing that that exception itself works correctly falls to {@link 
      * algebraics.AlgebraicDegreeOverflowExceptionTest}.
      */
-    @Test
+//    @Test
     public void testTimesAlgebraicDegreeOverflow() {
         fail("REWRITE THIS TEST");
 //        QuadraticInteger result;
@@ -2581,7 +2581,7 @@ public class ImaginaryQuadraticIntegerTest {
      * divides to get back the first number. So if the test of the times method 
      * fails, the result of this test is meaningless. 
      */
-    @Test
+//    @Test
     public void testTimesDivides() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticRing currRing;
@@ -2675,7 +2675,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of divides method, of class ImaginaryQuadraticInteger, inherited 
      * from {@link QuadraticInteger}. A conjugate should divide its norm.
      */
-    @Test
+//    @Test
     public void testDividesConjugate() {
         fail("REWRITE THIS TEST");
 //        QuadraticInteger result;
@@ -2706,7 +2706,7 @@ public class ImaginaryQuadraticIntegerTest {
      * algebraics.NotDivisibleException}. Not throwing any exception at all will 
      * also fail the test.
      */
-    @Test
+//    @Test
     public void testDivisionByZeroIQI() {
         fail("REWRITE THIS TEST");
 //        for (int i = 0; i < totalTestIntegers; i++) {
@@ -2739,7 +2739,7 @@ public class ImaginaryQuadraticIntegerTest {
      * algebraics.NotDivisibleException}. Not throwing any exception at all will 
      * also fail the test.
      */
-    @Test
+//    @Test
     public void testDivisionByZeroInt() {
         fail("REWRITE THIS TEST");
 //        String msg;
@@ -2771,7 +2771,7 @@ public class ImaginaryQuadraticIntegerTest {
      * being from another ring, should still give a result if it is indeed 
      * divisible.
      */
-    @Test
+//    @Test
     public void testDividesIntAsIQI() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticInteger testDivisor;
@@ -2802,7 +2802,7 @@ public class ImaginaryQuadraticIntegerTest {
      * them having nonzero real part and nonzero imaginary part, should cause 
      * {@link algebraics.AlgebraicDegreeOverflowException}.
      */
-    @Test
+//    @Test
     public void testDividesAlgebraicDegreeOverflow() {
         fail("REWRITE THIS TEST");
 //        QuadraticInteger result, temp;
@@ -2868,7 +2868,7 @@ public class ImaginaryQuadraticIntegerTest {
      * &radic;(&minus;10)/&radic;(&minus;2), which should give &radic;5 only if 
      * there is a way for this to give a real quadratic integer as a result.
      */
-    @Test
+//    @Test
     public void testDividesCrossDomainResult() {
         fail("REWRITE THIS TEST");
 //        QuadraticInteger testDividend = new ImaginaryQuadraticInteger(0, 1, 
@@ -2908,7 +2908,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Test of the mod function, of the QuadraticInteger class. The number 14 + 
      * sqrt(-2) modulo 14 should be sqrt(-2).
      */
-    @Test
+//    @Test
     public void testMod() {
         System.out.println("mod");
         fail("REWRITE THIS TEST");
@@ -2926,7 +2926,7 @@ public class ImaginaryQuadraticIntegerTest {
      * Another test of the mod function, of the QuadraticInteger class. If m is 
      * divisible by n, m mod n should be 0.
      */
-    @Test
+//    @Test
     public void testModZero() {
         fail("REWRITE THIS TEST");
 //        int a = 2 * RANDOM.nextInt(128) + 1;
@@ -2949,7 +2949,7 @@ public class ImaginaryQuadraticIntegerTest {
      * from the dividend, resulting in a number which divided by the divisor 
      * should give 0.
      */
-    @Test
+//    @Test
     public void testOtherMod() {
         fail("REWRITE THIS TEST");
 //        int a = 2 * RANDOM.nextInt(224) + 33;
@@ -3011,7 +3011,7 @@ public class ImaginaryQuadraticIntegerTest {
      * getRealPartNumeric and getImagPartNumeric. So if the independent tests 
      * for any of those are failing, the result of this test is meaningless.
      */
-    @Test
+//    @Test
     public void testSimultTimesAndNormAndAbs() {
         fail("REWRITE THIS TEST");
 //        QuadraticInteger gauInt = new ImaginaryQuadraticInteger(0, 0, 
@@ -3101,7 +3101,7 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of applyOmega method, of class ImaginaryQuadraticInteger.
      */
-    @Test
+//    @Test
     public void testApplyOmega() {
         System.out.println("applyOmega");
         fail("REWRITE THIS TEST");
@@ -3123,7 +3123,7 @@ public class ImaginaryQuadraticIntegerTest {
      * &theta; = 1/2 + &radic;&minus;3/2 for <b>Z</b>[&omega;], the results of 
      * applyOmega and applyTheta should differ.
      */
-    @Test
+//    @Test
     public void testApplyOmegaThetaDiffer() {
         fail("REWRITE THIS TEST");
 //        ImaginaryQuadraticInteger thruOmega;
@@ -3143,7 +3143,7 @@ public class ImaginaryQuadraticIntegerTest {
      * testing here is that an invalid argument triggers an 
      * {@link IllegalArgumentException}.
      */
-    @Test
+//    @Test
     public void testConstructor() {
         fail("REWRITE THIS TEST");
 //        System.out.println("ImaginaryQuadraticInteger (constructor)");
