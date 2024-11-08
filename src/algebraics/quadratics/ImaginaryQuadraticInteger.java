@@ -36,7 +36,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public boolean equals(Object obj) {
-        return this == obj;
+        return obj instanceof ImaginaryQuadraticInteger;
     }
     
     // TODO: Write tests for this
