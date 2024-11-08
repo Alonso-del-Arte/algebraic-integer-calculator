@@ -1580,41 +1580,19 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of equals method, of class ImaginaryQuadraticInteger.
+     * Test of the equals function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testEquals() {
         System.out.println("equals");
-        fail("REWRITE THIS TEST");
-//        ImaginaryQuadraticInteger temporaryHold, transitiveHold, kindaDiffZero;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            assertTrue(testIntegers.get(i).equals(testIntegers.get(i))); // Reflexive test
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                temporaryHold = new ImaginaryQuadraticInteger(randomRealForHalfInts, randomImagForHalfInts, testIntegers.get(i).getRing(), 2);
-//                transitiveHold = new ImaginaryQuadraticInteger(randomRealForHalfInts, randomImagForHalfInts, testIntegers.get(i).getRing(), 2);
-//            } else {
-//                temporaryHold = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, testIntegers.get(i).getRing());
-//                transitiveHold = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, testIntegers.get(i).getRing());
-//            }
-//            assertTrue(testIntegers.get(i).equals(testIntegers.get(i))); // First consistency test
-//            assertEquals(testIntegers.get(i), temporaryHold);
-//            assertEquals(temporaryHold, testIntegers.get(i)); // Symmetric test
-//            assertEquals(temporaryHold, transitiveHold);
-//            assertEquals(transitiveHold, testIntegers.get(i)); // Transitive test
-//            assertTrue(testIntegers.get(i).equals(testIntegers.get(i))); // Second consistency test
-//            // assertFalse(testIntegers.get(i).equals(null)); // Null test is apparently unnecessary
-//        }
-//        for (int j = 0; j < totalTestIntegers - 1; j++) {
-//            assertFalse(testIntegers.get(j).equals(testIntegers.get(j + 1)));
-//            assertFalse(testIntegers.get(j + 1).equals(testIntegers.get(j))); // Symmetric test for not equals
-//            temporaryHold = new ImaginaryQuadraticInteger(testNormsRealParts.get(j), 0, testNorms.get(j + 1).getRing());
-//            assertEquals(testNorms.get(j), temporaryHold);
-//            kindaDiffZero = new ImaginaryQuadraticInteger(0, 0, testIntegers.get(j + 1).getRing());
-//            assertEquals(zeroIQI, kindaDiffZero); // Making sure purely real integers can register as equal
-//        }
-//        // An algebraic integer should not be equal to an unrelated object
-//        String obj = "This should not be found to be equal to a complex cubic root of 1.";
-//        assertNotEquals(COMPLEX_CUBIC_ROOT_OF_UNITY, obj);
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticInteger someNumber = new ImaginaryQuadraticInteger(a, b, ring);
+        QuadraticInteger sameNumber = new ImaginaryQuadraticInteger(a, b, ring);
+        String msg = "Number " + someNumber.toString() + " should equal " 
+                + sameNumber.toString();
+        assertEquals(someNumber, sameNumber);
     }
     
     /**
