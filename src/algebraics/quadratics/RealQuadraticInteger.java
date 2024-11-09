@@ -36,8 +36,8 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     // TODO: Write tests for this
     @Override
-    public RealQuadraticRing getRing() {
-        return new RealQuadraticRing(2);
+    public QuadraticRing getRing() {
+        return this.quadRing;
     }
     
     /**
