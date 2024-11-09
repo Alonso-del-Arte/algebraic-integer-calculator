@@ -32,6 +32,11 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof RealQuadraticInteger;
+    }
+    
     // TODO: Write tests for this
     @Override
     public int hashCode() {
