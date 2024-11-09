@@ -1272,7 +1272,8 @@ public class RealQuadraticIntegerTest {
         QuadraticRing ringA = chooseRing();
         QuadraticInteger someNumber = new RealQuadraticInteger(a, b, ringA);
         int bound = 512;
-        int d = randomSquarefreeNumberOtherThan(ringA.getRadicand(), bound);
+        int propD = randomSquarefreeNumberOtherThan(ringA.getRadicand(), bound);
+        int d = propD == 1 ? 2 : propD;
         QuadraticRing ringB = new RealQuadraticRing(d);
         QuadraticInteger diffNumber = new RealQuadraticInteger(a, b, ringB);
         String message = someNumber.toString() + " should not equal " 
