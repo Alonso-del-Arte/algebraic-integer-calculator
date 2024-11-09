@@ -44,8 +44,6 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class RealQuadraticIntegerTest {
     
-    private static final QuadraticRing RING_ZPHI = new RealQuadraticRing(5);
-    
     private static RealQuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(256);
         int d = (propD == 1) ? 5 : propD;
@@ -268,6 +266,7 @@ public class RealQuadraticIntegerTest {
         assert excMsg.contains(numStr) : message;
         System.out.println("\"" + excMsg + "\"");
     }
+    
     /**
      * Test of minPolynomialString method, of class RealQuadraticInteger, 
      * inherited from QuadraticInteger. Spaces in the results are desirable but 
@@ -676,17 +675,20 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of getRing method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the getRing function, of the RealQuadraticInteger class, 
+     * inherited from QuadraticInteger.
+     */
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        fail("REWRITE THIS TEST");
-//        assertEquals(RING_Z2, testIntegers.get(0).getRing());
-//        assertEquals(RING_ZPHI, testIntegers.get(1).getRing());
-//        assertEquals(RING_OQ13, testIntegers.get(2).getRing());
-//        assertEquals(ringRandom, testIntegers.get(3).getRing());
+        int a = randomNumber();
+        int propB = randomNumber();
+        int b = propB == 0 ? 1 : propB;
+        QuadraticRing expected = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, expected);
+        QuadraticRing actual = number.getRing();
+        String message = "Getting ring of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     /**
      * Test of getRegPartMult method, of class ImaginaryQuadraticInteger.
