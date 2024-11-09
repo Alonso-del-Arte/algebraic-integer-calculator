@@ -50,6 +50,9 @@ public class RealQuadraticInteger extends QuadraticInteger
         if (this.surdPartMult != other.surdPartMult) {
             return false;
         }
+        if (!this.quadRing.equals(other.quadRing)) {
+            return false;
+        }
         return this.denominator == other.denominator;
     }
     
