@@ -28,6 +28,8 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberOtherThan;
 import fractions.Fraction;
 import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 
@@ -1626,6 +1628,23 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticInteger someNumber = new ImaginaryQuadraticInteger(a, b, ring);
         QuadraticInteger diffNumber = new ImaginaryQuadraticInteger(a, b, ring, 2);
         assertNotEquals(someNumber, diffNumber);
+    }
+    
+    @Test
+    public void testNotEqualsDiffRing() {
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ringA = chooseRing();
+        QuadraticInteger someNumber = new ImaginaryQuadraticInteger(a, b, 
+                ringA);
+        int bound = 512;
+        int d = -randomSquarefreeNumberOtherThan(-ringA.getRadicand(), bound);
+        QuadraticRing ringB = new ImaginaryQuadraticRing(d);
+        QuadraticInteger diffNumber = new ImaginaryQuadraticInteger(a, b, 
+                ringB);
+        String message = someNumber.toString() + " should not equal " 
+                + diffNumber.toString();
+        assertNotEquals(message, someNumber, diffNumber);
     }
     
     /**
