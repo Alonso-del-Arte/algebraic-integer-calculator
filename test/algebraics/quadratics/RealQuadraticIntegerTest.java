@@ -1251,6 +1251,18 @@ public class RealQuadraticIntegerTest {
         assertNotEquals(message, someNumber, diffNumber);
     }
     
+    @Test
+    public void testNotEqualsDiffDenom() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int a = 2 * randomNumber() + 1;
+        int b = 2 * randomNumber() + 1;
+        QuadraticInteger someNumber = new RealQuadraticInteger(a, b, ring);
+        QuadraticInteger diffNumber = new RealQuadraticInteger(a, b, ring, 2);
+        String message = someNumber.toString() + " should not equal " 
+                + diffNumber.toString();
+        assertNotEquals(message, someNumber, diffNumber);
+    }
+    
     /**
      * Test of compareTo method, of class RealQuadraticInteger, implementing 
      * Comparable.
