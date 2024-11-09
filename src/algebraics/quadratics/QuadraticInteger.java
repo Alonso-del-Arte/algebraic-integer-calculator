@@ -56,7 +56,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public QuadraticRing getRing() {
-        return new ImaginaryQuadraticRing(1);// this.quadRing;
+        return new ImaginaryQuadraticRing(-1);// this.quadRing;
     }
     
     /**
