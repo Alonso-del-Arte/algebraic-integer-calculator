@@ -55,10 +55,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return this.denominator == other.denominator;
     }
     
-    // TODO: Write tests for this
     @Override
     public int hashCode() {
-        return Integer.MIN_VALUE;
+        int hash = (this.quadRing.hashCode() + this.denominator) << 16;
+        return hash + (int) this.norm();
     }
     
     /**
