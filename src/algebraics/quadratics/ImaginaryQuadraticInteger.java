@@ -36,7 +36,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public QuadraticRing getRing() {
-        return new ImaginaryQuadraticRing(-1);
+        return this.quadRing;
     }
     
     // TODO: Write tests for this
