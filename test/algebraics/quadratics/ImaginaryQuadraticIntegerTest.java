@@ -775,17 +775,19 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of getRing method, of class ImaginaryQuadraticInteger.
+     * Test of the getRing function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testGetRing() {
         System.out.println("getRing");
-        fail("REWRITE THIS TEST");
-//        assertEquals(RING_GAUSSIAN, testIntegers.get(0).getRing());
-//        assertEquals(RING_ZI2, testIntegers.get(1).getRing());
-//        assertEquals(RING_EISENSTEIN, testIntegers.get(2).getRing());
-//        assertEquals(RING_OQI7, testIntegers.get(3).getRing());
-//        assertEquals(ringRandom, testIntegers.get(4).getRing());
+        int a = randomNumber();
+        int propB = randomNumber();
+        int b = propB == 0 ? 1 : propB;
+        QuadraticRing expected = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, expected);
+        QuadraticRing actual = number.getRing();
+        String message = "Getting ring of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
