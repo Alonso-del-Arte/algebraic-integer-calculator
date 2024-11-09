@@ -21,6 +21,8 @@ import static algebraics.MockRingTest.provideNull;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberOtherThan;
 import fractions.Fraction;
 
 import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
@@ -1258,6 +1260,21 @@ public class RealQuadraticIntegerTest {
         int b = 2 * randomNumber() + 1;
         QuadraticInteger someNumber = new RealQuadraticInteger(a, b, ring);
         QuadraticInteger diffNumber = new RealQuadraticInteger(a, b, ring, 2);
+        String message = someNumber.toString() + " should not equal " 
+                + diffNumber.toString();
+        assertNotEquals(message, someNumber, diffNumber);
+    }
+    
+    @Test
+    public void testNotEqualsDiffRing() {
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ringA = chooseRing();
+        QuadraticInteger someNumber = new RealQuadraticInteger(a, b, ringA);
+        int bound = 512;
+        int d = randomSquarefreeNumberOtherThan(ringA.getRadicand(), bound);
+        QuadraticRing ringB = new RealQuadraticRing(d);
+        QuadraticInteger diffNumber = new RealQuadraticInteger(a, b, ringB);
         String message = someNumber.toString() + " should not equal " 
                 + diffNumber.toString();
         assertNotEquals(message, someNumber, diffNumber);
