@@ -16,8 +16,6 @@
  */
 package algebraics.quadratics;
 
-import algebraics.AlgebraicDegreeOverflowException;
-
 /**
  * Defines objects to represent real quadratic integers, for the most part 
  * symbolically rather than numerically. This class is <code>Comparable</code>, 
@@ -33,6 +31,18 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     private final double numVal;
     private final double absNumVal;
+    
+    // TODO: Write tests for this
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+    
+    // TODO: Write tests for this
+    @Override
+    public int hashCode() {
+        return 0;
+    }
     
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
