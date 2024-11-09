@@ -34,7 +34,9 @@ import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -1511,39 +1513,34 @@ public class ImaginaryQuadraticIntegerTest {
      * expected that hash codes will be unique among all possible 
      * ImaginaryQuadraticInteger objects.
      */
-//    @Test
+    @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        fail("REWRITE THIS TEST");
-//        ImaginaryQuadraticInteger temporaryHold;
-//        int testHash, tempHash;
-//        int prevHash = 0;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            testHash = testIntegers.get(i).hashCode();
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                temporaryHold = new ImaginaryQuadraticInteger(randomRealForHalfInts, randomImagForHalfInts, testIntegers.get(i).getRing(), 2);
-//            } else {
-//                temporaryHold = new ImaginaryQuadraticInteger(randomRealPart, randomImagPart, testIntegers.get(i).getRing());
-//            }
-//            tempHash = temporaryHold.hashCode();
-//            System.out.println(testIntegers.get(i).toASCIIString() + " hashed to " + testHash);
-//            System.out.println(temporaryHold.toASCIIString() + " hashed to " + tempHash);
-//            assertEquals(testHash, tempHash);
-//            assertFalse(testHash == prevHash);
-//            prevHash = testHash;
-//        }
-//        /* Now to test purely real integers register as equal regardless of what 
-//           imaginary quadratic ring they might be from */
-//        ImaginaryQuadraticInteger altZeroIQI = new ImaginaryQuadraticInteger(0, 0, RING_ZI2);
-//        assertEquals(altZeroIQI, zeroIQI);
-//        for (int j = 0; j < totalTestIntegers - 1; j++) {
-//            temporaryHold = new ImaginaryQuadraticInteger(testNormsRealParts.get(j), 0, testNorms.get(totalTestIntegers - 1).getRing());
-//            tempHash = temporaryHold.hashCode();
-//            testHash = testNorms.get(j).hashCode();
-//            System.out.println(temporaryHold.toString() + " from " + temporaryHold.getRing().toASCIIString() + " hashed as " + tempHash);
-//            System.out.println(testNorms.get(j).toString() + " from " + testNorms.get(j).getRing().toASCIIString() + " hashed as " + testHash);
-//            assertEquals(tempHash, testHash);
-//        }
+        int initialCapacity = randomNumber(64) + 16;
+        Set<QuadraticInteger> numbers = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>();
+        for (int i = 0; i < initialCapacity; i++) {
+            QuadraticInteger number;
+            boolean includeHalfInts = RANDOM.nextBoolean();
+            if (includeHalfInts) {
+                int a = 2 * randomNumber() + 1;
+                int b = 2 * randomNumber() + 1;
+                QuadraticRing ring = chooseRingWithHalfInts();
+                number = new ImaginaryQuadraticInteger(a, b, ring, 2);
+            } else {
+                int a = randomNumber();
+                int b = randomNumber();
+                QuadraticRing ring = chooseRing();
+                number = new ImaginaryQuadraticInteger(a, b, ring);
+            }
+            numbers.add(number);
+            hashes.add(number.hashCode());
+        }
+        int expected = numbers.size();
+        int actual = hashes.size();
+        String message = "Having created " + expected 
+                + " distinct numbers, there should be as many hash codes";
+        assertEquals(message, expected, actual);
     }
     
     @Test
