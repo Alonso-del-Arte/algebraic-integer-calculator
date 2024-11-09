@@ -34,7 +34,16 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public boolean equals(Object obj) {
-        return this == obj;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        return this.regPartMult == ((RealQuadraticInteger) obj).regPartMult;
     }
     
     // TODO: Write tests for this
