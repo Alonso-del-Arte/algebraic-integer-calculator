@@ -35,12 +35,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     // TODO: Write tests for this
     @Override
-    public QuadraticRing getRing() {
-        return this.quadRing;
-    }
-    
-    // TODO: Write tests for this
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
