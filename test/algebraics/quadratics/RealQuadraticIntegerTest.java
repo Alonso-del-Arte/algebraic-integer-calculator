@@ -1213,44 +1213,24 @@ public class RealQuadraticIntegerTest {
         assert !number.equals(numberDiffClass) : msg;
     }
     
+    @Test
+    public void testNotEqualsDiffReg() {
+        QuadraticRing ring = chooseRing();
+        int aA = randomNumber();
+        int aB = ~aA;
+        int b = randomNumber();
+        QuadraticInteger someNumber = new RealQuadraticInteger(aA, b, ring);
+        QuadraticInteger diffNumber = new RealQuadraticInteger(aB, b, ring);
+        assertNotEquals(someNumber, diffNumber);
+    }
+    
     /**
-     * Test of equals method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
+     * Test of the equals function, of the RealQuadraticInteger class.
      */@org.junit.Ignore
     @Test
     public void testEquals() {
         System.out.println("equals");
         fail("REWRITE THIS TEST");
-        RealQuadraticInteger temporaryHold, transitiveHold;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            assertTrue(testIntegers.get(i).equals(testIntegers.get(i))); // Reflexive test
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                temporaryHold = new RealQuadraticInteger(randomRegForHalfInts, randomSurdForHalfInts, testIntegers.get(i).getRing(), 2);
-//                transitiveHold = new RealQuadraticInteger(randomRegForHalfInts, randomSurdForHalfInts, testIntegers.get(i).getRing(), 2);
-//            } else {
-//                temporaryHold = new RealQuadraticInteger(randomRegPart, randomSurdPart, testIntegers.get(i).getRing());
-//                transitiveHold = new RealQuadraticInteger(randomRegPart, randomSurdPart, testIntegers.get(i).getRing());
-//            }
-//            assertTrue(testIntegers.get(i).equals(testIntegers.get(i))); // First consistency test
-//            assertEquals(testIntegers.get(i), temporaryHold);
-//            assertEquals(temporaryHold, testIntegers.get(i)); // Symmetric test
-//            assertEquals(temporaryHold, transitiveHold);
-//            assertEquals(transitiveHold, testIntegers.get(i)); // Transitive test
-//            assertTrue(testIntegers.get(i).equals(testIntegers.get(i))); // Second consistency test
-//            // assertFalse(testIntegers.get(i).equals(null)); // Null test is apparently unnecessary
-//        }
-//        RealQuadraticInteger kindaDiffZero;
-//        for (int j = 0; j < totalTestIntegers - 1; j++) {
-//            assertFalse(testIntegers.get(j).equals(testIntegers.get(j + 1)));
-//            assertFalse(testIntegers.get(j + 1).equals(testIntegers.get(j))); // Symmetric test for not equals
-//            temporaryHold = new RealQuadraticInteger(testNormsRegParts.get(j), 0, testNorms.get(j + 1).getRing());
-//            assertEquals(testNorms.get(j), temporaryHold);
-//            kindaDiffZero = new RealQuadraticInteger(0, 0, testIntegers.get(j + 1).getRing());
-//            assertEquals(zeroRQI, kindaDiffZero); // Making sure purely real integers can register as equal
-//        }
-//        // An algebraic integer should not be equal to an unrelated object
-//        RuntimeException obj = new RuntimeException("This exception will not actually be thrown.");
-//        assertNotEquals(GOLDEN_RATIO, obj);
     }
     
     /**
