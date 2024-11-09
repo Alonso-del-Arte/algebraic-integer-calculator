@@ -53,9 +53,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * ImaginaryQuadraticRing}; and in the case of a {@link 
      * RealQuadraticInteger}, this should be a {@link RealQuadraticRing}.
      */
+    // TODO: Write tests for this
     @Override
     public QuadraticRing getRing() {
-        return this.quadRing;
+        return new ImaginaryQuadraticRing(1);// this.quadRing;
     }
     
     /**
