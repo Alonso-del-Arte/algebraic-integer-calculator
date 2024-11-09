@@ -34,7 +34,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof RealQuadraticInteger;
+        return this == obj;
     }
     
     // TODO: Write tests for this
