@@ -34,6 +34,12 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
+    // TODO: Write tests for this
+    @Override
+    public RealQuadraticRing getRing() {
+        return new RealQuadraticRing(2);
+    }
+    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
