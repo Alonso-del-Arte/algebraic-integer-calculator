@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
+import static algebraics.MockRingTest.provideNull;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
@@ -1184,6 +1185,17 @@ public class RealQuadraticIntegerTest {
         int b = randomNumber();
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
         assertEquals(number, number);
+    }
+    
+    @Test
+    public void testNotEqualsNull() {
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        Object obj = provideNull();
+        String msg = "Number " + number.toString() + " should not equal null";
+        assert !number.equals(obj) : msg;
     }
     
     /**
