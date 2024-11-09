@@ -43,7 +43,11 @@ public class RealQuadraticInteger extends QuadraticInteger
         if (!this.getClass().equals(obj.getClass())) {
             return false;
         }
-        return this.regPartMult == ((RealQuadraticInteger) obj).regPartMult;
+        RealQuadraticInteger other = (RealQuadraticInteger) obj;
+        if (this.regPartMult != other.regPartMult) {
+            return false;
+        }
+        return this.surdPartMult == other.surdPartMult;
     }
     
     // TODO: Write tests for this
