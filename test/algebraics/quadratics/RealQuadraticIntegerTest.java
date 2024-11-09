@@ -1177,6 +1177,15 @@ public class RealQuadraticIntegerTest {
 //        }
     }
 
+    @Test
+    public void testReferentialEquality() {
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        assertEquals(number, number);
+    }
+    
     /**
      * Test of equals method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger.
