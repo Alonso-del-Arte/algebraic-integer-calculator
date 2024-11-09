@@ -1198,6 +1198,21 @@ public class RealQuadraticIntegerTest {
         assert !number.equals(obj) : msg;
     }
     
+    @Test
+    public void testNotEqualsDiffClass() {
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        QuadraticInteger numberDiffClass 
+                = new QuadraticIntegerTest.QuadraticIntegerImpl(a, b, ring);
+        String msg = "Number " + number.toString() + " of class " 
+                + number.getClass().getName() + " should not equal " 
+                + numberDiffClass.toString() + " of class " 
+                + numberDiffClass.getClass().getName();
+        assert !number.equals(numberDiffClass) : msg;
+    }
+    
     /**
      * Test of equals method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger.
