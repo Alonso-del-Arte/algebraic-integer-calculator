@@ -1226,11 +1226,16 @@ public class RealQuadraticIntegerTest {
     
     /**
      * Test of the equals function, of the RealQuadraticInteger class.
-     */@org.junit.Ignore
+     */
     @Test
     public void testEquals() {
         System.out.println("equals");
-        fail("REWRITE THIS TEST");
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticInteger someNumber = new RealQuadraticInteger(a, b, ring);
+        QuadraticInteger sameNumber = new RealQuadraticInteger(a, b, ring);
+        assertEquals(someNumber, sameNumber);
     }
     
     /**
