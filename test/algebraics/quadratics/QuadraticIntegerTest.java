@@ -255,6 +255,19 @@ public class QuadraticIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testGetRing() {
+        System.out.println("getRing");
+        int a = randomNumber();
+        int propB = randomNumber();
+        int b = propB == 0 ? 1 : propB;
+        QuadraticRing expected = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, expected);
+        QuadraticRing actual = number.getRing();
+        String message = "Getting ring of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Another test of the conjugate function of the QuadraticInteger class. 
      * Testing that trying to take the conjugate of a quadratic integer from an 
