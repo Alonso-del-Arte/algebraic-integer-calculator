@@ -34,12 +34,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     // TODO: Write tests for this
     @Override
-    public boolean equals(Object obj) {
-        return obj != null;
-    }
-    
-    // TODO: Write tests for this
-    @Override
     public int hashCode() {
         return 0;
     }
