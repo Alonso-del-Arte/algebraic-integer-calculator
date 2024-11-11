@@ -141,7 +141,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public long norm() {
-        return Long.MAX_VALUE;
+        return 0L;
     }
     
     /**
