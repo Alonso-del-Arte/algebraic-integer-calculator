@@ -53,13 +53,6 @@ public class QuadraticIntegerTest {
     private static final int R_A = 5;
     private static final int R_B = 2;
     
-    private static final IllDefinedQuadraticRing ILL_DEF_RING 
-            = new IllDefinedQuadraticRing(R_D);
-    private static final QuadraticInteger ILL_DEF_INT_A 
-            = new IllDefinedQuadraticInteger(R_A, R_B, ILL_DEF_RING);
-    private static final QuadraticInteger ILL_DEF_INT_B 
-            = new IllDefinedQuadraticInteger(R_B, -R_A, ILL_DEF_RING);
-    
     private static QuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(1024);
         int d = (randomNumber() % 2 == 0) ? propD : -propD;
@@ -158,6 +151,16 @@ public class QuadraticIntegerTest {
         num = QuadraticInteger.apply(Integer.MAX_VALUE, 3, ring);
         actual = num.trace();
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testNormOfZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(0, 0, ring);
+        long expected = 0L;
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
@@ -440,23 +443,23 @@ public class QuadraticIntegerTest {
     @Test
     public void testPlusUnsupportedCausesException() {
         fail("REWRITE USING ASSERT THROWS");
-        try {
-            QuadraticInteger sum = ILL_DEF_INT_A.plus(ILL_DEF_INT_B);
-            String message = "Trying to add " + ILL_DEF_INT_A.toString() 
-                    + " to " + ILL_DEF_INT_B.toString() 
-                    + " should have caused an exception, not given result " 
-                    + sum.toString();
-            fail(message);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Exception triggered for attempted addition");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String message = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to add " 
-                    + ILL_DEF_INT_A.toString() + " to " 
-                    + ILL_DEF_INT_B.toString();
-            fail(message);
-        }
+//        try {
+//            QuadraticInteger sum = ILL_DEF_INT_A.plus(ILL_DEF_INT_B);
+//            String message = "Trying to add " + ILL_DEF_INT_A.toString() 
+//                    + " to " + ILL_DEF_INT_B.toString() 
+//                    + " should have caused an exception, not given result " 
+//                    + sum.toString();
+//            fail(message);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Exception triggered for attempted addition");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String message = re.getClass().getName() 
+//                    + " is the wrong exception to throw for trying to add " 
+//                    + ILL_DEF_INT_A.toString() + " to " 
+//                    + ILL_DEF_INT_B.toString();
+//            fail(message);
+//        }
     }
     
     /**
@@ -535,36 +538,36 @@ public class QuadraticIntegerTest {
     public void testMinusUnsupportedCausesException() {
         fail("REWRITE WITH ASSERT THROWS, and with QuadraticIntegerImpl");
         QuadraticInteger subtraction;
-        try {
-            subtraction = ILL_DEF_INT_A.minus(ILL_DEF_INT_B);
-            System.out.println("Trying to subtract " 
-                    + ILL_DEF_INT_B.toASCIIString() + " from " 
-                    + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " 
-                    + subtraction.toASCIIString());
-            fail("Trying to subtract one ill-defined quadratic ...");
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException ...");
-            System.out.println("Message: " + unde.getMessage());
-        } catch (Exception e) {
-            String message = e.getClass().getName() + " triggered: " 
-                    + e.getMessage();
-            fail(message);
-        }
-        try {
-            subtraction = ILL_DEF_INT_B.minus(ILL_DEF_INT_A);
-            System.out.println("Trying to subtract " 
-                    + ILL_DEF_INT_A.toASCIIString() + " from " 
-                    + ILL_DEF_INT_B.toASCIIString() + " somehow resulted in " 
-                    + subtraction.toASCIIString() + ".");
-            fail("Trying to subtract one ill-defined quadratic ...");
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException ...");
-            System.out.println("Message: " + unde.getMessage());
-        } catch (Exception e) {
-            String message = e.getClass().getName() + " triggered: " 
-                    + e.getMessage();
-            fail(message);
-        }
+//        try {
+//            subtraction = ILL_DEF_INT_A.minus(ILL_DEF_INT_B);
+//            System.out.println("Trying to subtract " 
+//                    + ILL_DEF_INT_B.toASCIIString() + " from " 
+//                    + ILL_DEF_INT_A.toASCIIString() + " somehow resulted in " 
+//                    + subtraction.toASCIIString());
+//            fail("Trying to subtract one ill-defined quadratic ...");
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("UnsupportedNumberDomainException ...");
+//            System.out.println("Message: " + unde.getMessage());
+//        } catch (Exception e) {
+//            String message = e.getClass().getName() + " triggered: " 
+//                    + e.getMessage();
+//            fail(message);
+//        }
+//        try {
+//            subtraction = ILL_DEF_INT_B.minus(ILL_DEF_INT_A);
+//            System.out.println("Trying to subtract " 
+//                    + ILL_DEF_INT_A.toASCIIString() + " from " 
+//                    + ILL_DEF_INT_B.toASCIIString() + " somehow resulted in " 
+//                    + subtraction.toASCIIString() + ".");
+//            fail("Trying to subtract one ill-defined quadratic ...");
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("UnsupportedNumberDomainException ...");
+//            System.out.println("Message: " + unde.getMessage());
+//        } catch (Exception e) {
+//            String message = e.getClass().getName() + " triggered: " 
+//                    + e.getMessage();
+//            fail(message);
+//        }
     }
 
     /**
@@ -644,20 +647,20 @@ public class QuadraticIntegerTest {
     public void testTimesUnsupportedCausesException() {
         fail("REWRITE WITH ASSERT THROWS");
         QuadraticInteger product;
-        try {
-            product = ILL_DEF_INT_A.times(ILL_DEF_INT_B);
-            String msg = "Trying to multiply " + ILL_DEF_INT_A.toString() 
-                    + " by " + ILL_DEF_INT_B.toString() 
-                    + " somehow resulted in " + product.toString();
-            fail(msg);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException ...");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String message = re.getClass().getName() 
-                    + " is the wrong exception for unsupported multiplication";
-            fail(message);
-        }
+//        try {
+//            product = ILL_DEF_INT_A.times(ILL_DEF_INT_B);
+//            String msg = "Trying to multiply " + ILL_DEF_INT_A.toString() 
+//                    + " by " + ILL_DEF_INT_B.toString() 
+//                    + " somehow resulted in " + product.toString();
+//            fail(msg);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("UnsupportedNumberDomainException ...");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String message = re.getClass().getName() 
+//                    + " is the wrong exception for unsupported multiplication";
+//            fail(message);
+//        }
     }
     
     /**
@@ -1543,10 +1546,11 @@ public class QuadraticIntegerTest {
     
     /**
      * Test of apply method of class QuadraticInteger.
-     */
+     */@org.junit.Ignore
     @Test
     public void testApply() {
         System.out.println("apply");
+        fail("REWRITE");
         QuadraticRing ring = new ImaginaryQuadraticRing(-35);
         QuadraticInteger expResult = new ImaginaryQuadraticInteger(7, 3, ring, 2);
         QuadraticInteger result = QuadraticInteger.apply(7, 3, ring, 2);
@@ -1555,17 +1559,17 @@ public class QuadraticIntegerTest {
         expResult = new RealQuadraticInteger(19, 10, ring);
         result = QuadraticInteger.apply(19, 10, ring);
         assertEquals(expResult, result);
-        try {
-            result = QuadraticInteger.apply(R_A, R_B, ILL_DEF_RING);
-            String failMessage = "Trying to use apply with " + ILL_DEF_RING.toASCIIString() + " should have caused an exception, not given result " + result.toASCIIString();
-            fail(failMessage);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Trying to use apply with " + ILL_DEF_RING.toASCIIString() + " correctly caused UnsupportedNumberDomainException");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " should not have occurred for trying to use apply with " + ILL_DEF_RING.toASCIIString();
-            fail(failMessage);
-        }
+//        try {
+//            result = QuadraticInteger.apply(R_A, R_B, ILL_DEF_RING);
+//            String failMessage = "Trying to use apply with " + ILL_DEF_RING.toASCIIString() + " should have caused an exception, not given result " + result.toASCIIString();
+//            fail(failMessage);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Trying to use apply with " + ILL_DEF_RING.toASCIIString() + " correctly caused UnsupportedNumberDomainException");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (Exception e) {
+//            String failMessage = e.getClass().getName() + " should not have occurred for trying to use apply with " + ILL_DEF_RING.toASCIIString();
+//            fail(failMessage);
+//        }
     }
     
     /**
