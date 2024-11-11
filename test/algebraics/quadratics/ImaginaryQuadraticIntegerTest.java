@@ -208,6 +208,20 @@ public class ImaginaryQuadraticIntegerTest {
         String message = "Reckoning norm of " + number.toString();
         assertEquals(message, expected, actual);
     }
+    
+    @Test
+    public void testNormHalfInt() {
+        int bound = -2 * Byte.MIN_VALUE;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 2);
+        long expected = ((long) a * (long) a + (long) b * (long) b 
+                * (long) ring.getAbsNegRad()) / 4L;
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
 
     @Test
     public void testMinPolynomialCoeffsForZero() {
