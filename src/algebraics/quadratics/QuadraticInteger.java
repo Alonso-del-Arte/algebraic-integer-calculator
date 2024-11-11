@@ -141,6 +141,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public long norm() {
+        if (this.regPartMult == 0) {
+            return -((long) this.surdPartMult * this.surdPartMult 
+                    * this.quadRing.radicand);
+        }
         return (long) this.regPartMult * this.regPartMult;
     }
     
