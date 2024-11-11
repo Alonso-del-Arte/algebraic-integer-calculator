@@ -64,6 +64,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return hash + (int) this.norm();
     }
     
+    // TODO: Write tests for this
+    @Override
+    public long norm() {
+        return -2;
+    }
+    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 

@@ -62,6 +62,12 @@ public class RealQuadraticInteger extends QuadraticInteger
         return 0;
     }
     
+    // TODO: Write tests for this
+    @Override
+    public long norm() {
+        return 2;
+    }
+    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.

@@ -138,29 +138,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         }
     }
     
-    /**
-     * Calculates the norm of the quadratic integer. 64-bit integers are used 
-     * for the computation, but there is no overflow checking.
-     * @return Square of the "regular" part minus square of the surd part times 
-     * the radicand of the square root that is adjoined to <b>Q</b> (e.g., 3 in 
-     * the case of <b>Z</b>[&radic;3]. Should be 0 if and only if the quadratic 
-     * integer is 0. Negative norms for imaginary quadratic integers are 
-     * mathematically impossible, but could occur in this program as a result of 
-     * an arithmetic overflow. Norms for nonzero real quadratic integers may be 
-     * positive or negative. For example, the norm of 1/2 + (&radic;&minus;7)/2 
-     * is 2; the norm of 1 + &radic;&minus;7 is 8; and the norm of 2 + &radic;14 
-     * is &minus;10.
-     */
+    // TODO: Write tests for this
     @Override
     public long norm() {
-        long Na = (long) this.regPartMult * (long) this.regPartMult;
-        long Nb = (long) this.surdPartMult * (long) this.surdPartMult 
-                * (long) this.quadRing.radicand;
-        long N = Na - Nb;
-        if (this.denominator == 2) {
-            N /= 4L;
-        }
-        return N;
+        return 0;
     }
     
     /**
@@ -663,25 +644,25 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         if (this.regPartMult != other.regPartMult) {
             return false;
         }
-        if (this.surdPartMult != other.surdPartMult) {
-            return false;
-        }
-        if (this.denominator != other.denominator) {
-            return false;
-        }
-        if (this.surdPartMult == 0) {
-            return true;
-        }
+//        if (this.surdPartMult != other.surdPartMult) {
+//            return false;
+//        }
+//        if (this.denominator != other.denominator) {
+//            return false;
+//        }
+//        if (this.surdPartMult == 0) {
+//            return true;
+//        }
         return (this.quadRing.radicand == other.quadRing.radicand);
     }
    
-    // FEATURE NOT IMPLEMENTED YET
+    // TODO: Implement feature
     public static QuadraticInteger parseQuadraticInteger(QuadraticRing ring, 
             String str) {
         return null;
     }
     
-    // FEATURE NOT IMPLEMENTED YET
+    // TODO: Implement feature
     public static QuadraticInteger parseQuadraticInteger(String str) {
         return null;
     }
