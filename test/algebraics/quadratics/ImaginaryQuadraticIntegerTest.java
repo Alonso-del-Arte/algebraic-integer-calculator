@@ -192,55 +192,21 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the norm function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testNorm() {
         System.out.println("norm");
-        fail("REWRITE THIS TEST");
-        // Norm of 0 should be 0
-//        long expected = 0L;
-//        long actual = zeroIQI.norm();
-//        assertEquals(expected, actual);
-//        // Norm of a unit should be 1
-//        expected = 1L;
-//        ImaginaryQuadraticInteger complexUnit 
-//                = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
-//        actual = complexUnit.norm();
-//        assertEquals(expected, actual);
-//        complexUnit = new ImaginaryQuadraticInteger(0, -1, RING_GAUSSIAN);
-//        actual = complexUnit.norm();
-//        assertEquals(expected, actual);
-//        complexUnit = new ImaginaryQuadraticInteger(-1, 1, RING_EISENSTEIN, 2);
-//        actual = complexUnit.norm();
-//        assertEquals(expected, actual);
-//        complexUnit = new ImaginaryQuadraticInteger(1, 1, RING_EISENSTEIN, 2);
-//        actual = complexUnit.norm();
-//        assertEquals(expected, actual);
-//        complexUnit = new ImaginaryQuadraticInteger(1, -1, RING_EISENSTEIN, 2);
-//        actual = complexUnit.norm();
-//        assertEquals(expected, actual);
-//        complexUnit = new ImaginaryQuadraticInteger(-1, -1, RING_EISENSTEIN, 2);
-//        actual = complexUnit.norm();
-//        assertEquals(expected, actual);
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expected = (randomRealForHalfInts * randomRealForHalfInts 
-//                        - testIntegers.get(i).getRing().getRadicand() 
-//                        * randomImagForHalfInts * randomImagForHalfInts) / 4;
-//            } else {
-//                expected = randomRealPart * randomRealPart 
-//                        - testIntegers.get(i).getRing().getRadicand() 
-//                        * randomImagPart * randomImagPart;
-//            }
-//            actual = testIntegers.get(i).norm();
-//            assertEquals(expected, actual);
-//        }
-//        QuadraticRing ring = new ImaginaryQuadraticRing(-Integer.MAX_VALUE);
-//        QuadraticInteger z = new ImaginaryQuadraticInteger(1, 1, ring);
-//        expected = -1L * Integer.MIN_VALUE;
-//        actual = z.norm();
-//        String message = "Norm computation for " + z.toString() 
-//                + " should not overflow to " + Integer.MIN_VALUE;
-//        assertEquals(message, expected, actual);
+        int bound = 2 * Short.MAX_VALUE;
+        int propA = randomNumber(bound);
+        int a = propA == 0 ? 1 : propA;
+        int propB = randomNumber(bound);
+        int b = propB == 0 ? 1 : propB;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        long expected = (long) a * (long) a + (long) b * (long) b 
+                * (long) ring.getAbsNegRad();
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
     }
 
     @Test
