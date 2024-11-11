@@ -155,6 +155,16 @@ public class ImaginaryQuadraticIntegerTest {
 //        }
     }
     
+    @Test
+    public void testNormOfZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, ring);
+        long expected = 0L;
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the norm function, of the ImaginaryQuadraticInteger class.
      */
