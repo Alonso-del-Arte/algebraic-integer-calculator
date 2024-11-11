@@ -188,6 +188,23 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testNorm() {
+        System.out.println("norm");
+        int bound = 2 * Short.MAX_VALUE;
+        int propA = randomNumber(bound);
+        int a = propA == 0 ? 1 : propA;
+        int propB = randomNumber(bound);
+        int b = propB == 0 ? 1 : propB;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        long expected = (long) a * (long) a - (long) b * (long) b 
+                * (long) ring.getRadicand();
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testMinPolynomialCoeffsForZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger zero = new QuadraticIntegerImpl(0, 0, ring);
