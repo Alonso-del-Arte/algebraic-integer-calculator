@@ -71,7 +71,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             return (long) this.surdPartMult * this.surdPartMult 
                     * this.quadRing.absRadicand;
         }
-        return (long) this.regPartMult * this.regPartMult;
+        return (long) this.regPartMult * this.regPartMult 
+                + (long) this.surdPartMult * this.surdPartMult 
+                * this.quadRing.absRadicand;
     }
     
     /**
