@@ -177,6 +177,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testNormOfPurelyImaginary() {
+        int propB = randomNumber();
+        int b = propB == 0 ? 1 : propB;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, b, ring);
+        long expected = (long) b * (long) b * (long) ring.getAbsNegRad();
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the norm function, of the ImaginaryQuadraticInteger class.
      */
