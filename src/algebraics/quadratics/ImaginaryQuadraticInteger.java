@@ -67,7 +67,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public long norm() {
-        return -2;
+        return 0L;
     }
     
     /**
