@@ -164,6 +164,18 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testNormOfUnary() {
+        int propA = randomNumber();
+        int a = propA == 0 ? 1 : propA;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, 0, ring);
+        long expected = (long) a * (long) a;
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testMinPolynomialCoeffsForZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger zero = new QuadraticIntegerImpl(0, 0, ring);
