@@ -154,14 +154,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      */
     @Override
     public long norm() {
-        if (this.denominator == 2) {
-            return ((long) this.regPartMult * this.regPartMult 
-                    - ((long) this.surdPartMult * this.surdPartMult 
-                    * this.quadRing.radicand)) / 4;
-        }
-        return (long) this.regPartMult * this.regPartMult 
+        int denomSquared = this.denominator * this.denominator;
+        return ((long) this.regPartMult * this.regPartMult 
                 - ((long) this.surdPartMult * this.surdPartMult 
-                * this.quadRing.radicand);
+                * this.quadRing.radicand)) / denomSquared;
     }
     
     /**
