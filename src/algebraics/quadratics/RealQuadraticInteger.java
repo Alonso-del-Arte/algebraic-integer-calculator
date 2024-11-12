@@ -56,10 +56,11 @@ public class RealQuadraticInteger extends QuadraticInteger
         return this.denominator == other.denominator;
     }
     
-    // TODO: Write tests for this
     @Override
     public int hashCode() {
-        return 0;
+        int hash = (int) this.norm();
+        hash <<= 16;
+        return hash + this.quadRing.radicand;
     }
     
     /**
