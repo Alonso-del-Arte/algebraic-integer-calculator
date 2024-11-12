@@ -150,6 +150,18 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testNormNoSurdPart() {
+        int propA = randomNumber();
+        int a = propA == 0 ? 1 : propA;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
+        long expected = (long) a * (long) a;
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the norm function, of the RealQuadraticInteger class, inherited 
      * from QuadraticInteger.
