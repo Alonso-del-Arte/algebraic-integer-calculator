@@ -620,58 +620,17 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
             return this.toHTMLString();
         }
     }
-
-    /**
-     * Returns a hash code value for the quadratic integer. Overriding {@link 
-     * Object#hashCode} on account of needing to override {@link Object#equals}. 
-     * The hash code is based on the "regular" part (multiplied by 2 when 
-     * applicable), the "surd" part (multiplied by 2 when applicable), the 
-     * discriminant and the denominator. However, if the "surd" part is 0, the 
-     * purely real integer is treated as a Gaussian integer. This was done in 
-     * the hope of satisfying the contract that two objects that evaluate as 
-     * equal also hash equal. However, uniqueness of hash codes for distinct 
-     * numbers is not mathematically guaranteed.
-     * @return An integer which is hopefully unique from the hash codes of 
-     * algebraic integers which are different that might occur in the same 
-     * execution of the program.
-     */
-    @Override
-    public int hashCode() {
-        if (this.surdPartMult == 0) {
-            return Objects.hash(this.regPartMult, 0, -1);
-        } else {
-            return Objects.hash(this.regPartMult, this.surdPartMult, 
-                    this.quadRing.radicand, this.denominator);
-        }
-    }
-
+    
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        final QuadraticInteger other = (QuadraticInteger) obj;
-        if (this.regPartMult != other.regPartMult) {
-            return false;
-        }
-//        if (this.surdPartMult != other.surdPartMult) {
-//            return false;
-//        }
-//        if (this.denominator != other.denominator) {
-//            return false;
-//        }
-//        if (this.surdPartMult == 0) {
-//            return true;
-//        }
-        return (this.quadRing.radicand == other.quadRing.radicand);
+        return false;
     }
-   
+    
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
     // TODO: Implement feature
     public static QuadraticInteger parseQuadraticInteger(QuadraticRing ring, 
             String str) {
