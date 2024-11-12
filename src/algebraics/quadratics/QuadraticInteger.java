@@ -138,12 +138,30 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         }
     }
     
-    // TODO: Write tests for this
+    /**
+     * Calculates the norm of the quadratic integer. 64-bit integers are used 
+     * for the computation, but there is no overflow checking.
+     * @return Square of the "regular" part minus square of the surd part times 
+     * the radicand of the square root that is adjoined to <b>Q</b> (e.g., 3 in 
+     * the case of <b>Z</b>[&radic;3]. Should be 0 if and only if the quadratic 
+     * integer is 0. Negative norms for imaginary quadratic integers are 
+     * mathematically impossible, but could occur in this program as a result of 
+     * an arithmetic overflow. Norms for nonzero real quadratic integers may be 
+     * positive or negative. For example, the norm of 
+     * <sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub> is 2; the norm of 1 + 
+     * &radic;&minus;7 is 8; and the norm of 2 + &radic;14 is &minus;10.
+     */
     @Override
     public long norm() {
         if (this.regPartMult == 0) {
             return -((long) this.surdPartMult * this.surdPartMult 
                     * this.quadRing.radicand);
+        }
+        if (this.denominator == 2) {
+            return ((long) this.regPartMult * this.regPartMult 
+                    - ((long) this.surdPartMult * this.surdPartMult 
+                    * this.quadRing.radicand)) / 4;
         }
         return (long) this.regPartMult * this.regPartMult 
                 - ((long) this.surdPartMult * this.surdPartMult 
