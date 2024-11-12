@@ -34,6 +34,8 @@ import static calculators.NumberTheoreticFunctionsCalculator
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -1176,42 +1178,37 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of hashCode method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the hashCode function, of the RealQuadraticInteger class, 
+     * inherited from QuadraticInteger.
+     */
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        fail("REWRITE THIS TEST");
-        RealQuadraticInteger temporaryHold;
-        int testHash, tempHash;
-        int prevHash = 0;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            testHash = testIntegers.get(i).hashCode();
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                temporaryHold = new RealQuadraticInteger(randomRegForHalfInts, randomSurdForHalfInts, testIntegers.get(i).getRing(), 2);
-//            } else {
-//                temporaryHold = new RealQuadraticInteger(randomRegPart, randomSurdPart, testIntegers.get(i).getRing());
-//            }
-//            tempHash = temporaryHold.hashCode();
-//            System.out.println(testIntegers.get(i).toASCIIString() + " hashed to " + testHash);
-//            System.out.println(temporaryHold.toASCIIString() + " hashed to " + tempHash);
-//            assertEquals(testHash, tempHash);
-//            assertFalse(testHash == prevHash);
-//            prevHash = testHash;
-//        }
-//        /* Now to test purely real integers register as equal regardless of what 
-//           real quadratic ring they might be from */
-//        RealQuadraticInteger altZeroRQI = new RealQuadraticInteger(0, 0, RING_Z2);
-//        assertEquals(altZeroRQI, zeroRQI);
-//        for (int j = 0; j < totalTestIntegers - 1; j++) {
-//            temporaryHold = new RealQuadraticInteger(testNormsRegParts.get(j), 0, testNorms.get(totalTestIntegers - 1).getRing());
-//            tempHash = temporaryHold.hashCode();
-//            testHash = testNorms.get(j).hashCode();
-//            System.out.println(temporaryHold.toASCIIString() + " from " + temporaryHold.getRing().toASCIIString() + " hashed as " + tempHash);
-//            System.out.println(testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " hashed as " + testHash);
-//            assertEquals(tempHash, testHash);
-//        }
+        int initialCapacity = randomNumber(64) + 16;
+        Set<QuadraticInteger> numbers = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>();
+        for (int i = 0; i < initialCapacity; i++) {
+            QuadraticInteger number;
+            boolean includeHalfInts = RANDOM.nextBoolean();
+            if (includeHalfInts) {
+                int a = 2 * randomNumber() + 1;
+                int b = 2 * randomNumber() + 1;
+                QuadraticRing ring = chooseRingWithHalfInts();
+                number = new RealQuadraticInteger(a, b, ring, 2);
+            } else {
+                int a = randomNumber();
+                int b = randomNumber();
+                QuadraticRing ring = chooseRing();
+                number = new RealQuadraticInteger(a, b, ring);
+            }
+            numbers.add(number);
+            hashes.add(number.hashCode());
+        }
+        int expected = numbers.size();
+        int actual = hashes.size();
+        String message = "Having created " + expected 
+                + " distinct numbers, there should be as many hash codes";
+        assertEquals(message, expected, actual);
     }
 
     @Test
