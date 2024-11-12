@@ -178,7 +178,7 @@ public class RealQuadraticIntegerTest {
     /**
      * Test of the norm function, of the RealQuadraticInteger class, inherited 
      * from QuadraticInteger.
-     */@org.junit.Ignore
+     */
     @Test
     public void testNorm() {
         System.out.println("norm");
