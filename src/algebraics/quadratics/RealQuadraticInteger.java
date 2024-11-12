@@ -65,7 +65,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     // TODO: Write tests for this
     @Override
     public long norm() {
-        return 0;
+        return (long) this.regPartMult * this.regPartMult;
     }
     
     /**
