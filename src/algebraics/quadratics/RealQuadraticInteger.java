@@ -64,9 +64,10 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public long norm() {
-        return (long) this.regPartMult * this.regPartMult 
+        int denomSquared = this.denominator * this.denominator;
+        return ((long) this.regPartMult * this.regPartMult 
                 - (long) this.surdPartMult * this.surdPartMult 
-                * this.quadRing.radicand;
+                * this.quadRing.radicand) / denomSquared;
     }
     
     /**
