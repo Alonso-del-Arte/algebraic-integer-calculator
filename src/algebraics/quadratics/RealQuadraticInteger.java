@@ -62,14 +62,6 @@ public class RealQuadraticInteger extends QuadraticInteger
         return 0;
     }
     
-    @Override
-    public long norm() {
-        int denomSquared = this.denominator * this.denominator;
-        return ((long) this.regPartMult * this.regPartMult 
-                - (long) this.surdPartMult * this.surdPartMult 
-                * this.quadRing.radicand) / denomSquared;
-    }
-    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
