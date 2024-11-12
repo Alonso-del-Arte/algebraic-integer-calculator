@@ -55,6 +55,7 @@ public class QuadraticIntegerTest {
     
     private static QuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(1024);
+        if (propD == 1) propD = 2; 
         int d = (randomNumber() % 2 == 0) ? propD : -propD;
         return new QuadraticRingTest.QuadraticRingImpl(d);
     }
@@ -199,6 +200,21 @@ public class QuadraticIntegerTest {
         QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
         long expected = (long) a * (long) a - (long) b * (long) b 
                 * (long) ring.getRadicand();
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testNormHalfInteger() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = 2 * randomNumber(bound) + 1 - halfBound;
+        int b = 2 * randomNumber(bound) + 1 - halfBound;
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring, 
+                2);
+        long expected = (a * a - ring.getRadicand() * b * b) / 4;
         long actual = number.norm();
         String message = "Reckoning norm of " + number.toString();
         assertEquals(message, expected, actual);
