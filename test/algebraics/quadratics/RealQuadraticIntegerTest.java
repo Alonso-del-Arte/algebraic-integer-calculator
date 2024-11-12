@@ -162,6 +162,19 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testNormNoRegPart() {
+        int bound = Integer.MIN_VALUE / (-256);
+        int propB = randomNumber(bound);
+        int b = propB == 0 ? 1 : propB;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(0, b, ring);
+        long expected = (long) b * (long) b * (long) ring.getAbsNegRad();
+        long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the norm function, of the RealQuadraticInteger class, inherited 
      * from QuadraticInteger.
