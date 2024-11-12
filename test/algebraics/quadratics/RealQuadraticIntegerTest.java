@@ -193,7 +193,7 @@ public class RealQuadraticIntegerTest {
         String message = "Reckoning norm of " + number.toString();
         assertEquals(message, expected, actual);
     }
-@org.junit.Ignore
+
     @Test
     public void testNormHalfInteger() {
         QuadraticRing ring = chooseRingWithHalfInts();
@@ -201,8 +201,7 @@ public class RealQuadraticIntegerTest {
         int halfBound = bound / 2;
         int a = 2 * randomNumber(bound) + 1 - halfBound;
         int b = 2 * randomNumber(bound) + 1 - halfBound;
-        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 
-                2);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
         long expected = (a * a - ring.getRadicand() * b * b) / 4;
         long actual = number.norm();
         String message = "Reckoning norm of " + number.toString();
