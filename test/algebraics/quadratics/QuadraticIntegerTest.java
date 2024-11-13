@@ -119,6 +119,22 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testEquals() {
+        System.out.println("equals");
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        boolean canBeHalfInt = ring.hasHalfIntegers() && (Math.abs(a % 2) == 1) 
+                && (Math.abs(b % 2) == 1);
+        int denom = (canBeHalfInt && RANDOM.nextBoolean()) ? 2 : 1;
+        QuadraticInteger someNumber = new QuadraticIntegerImpl(a, b, ring, 
+                denom);
+        QuadraticInteger sameNumber = new QuadraticIntegerImpl(a, b, ring, 
+                denom);
+        assertEquals(someNumber, sameNumber);
+    }
+    
+    @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
         QuadraticRing ring = chooseRing();
