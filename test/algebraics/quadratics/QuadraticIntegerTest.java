@@ -105,6 +105,20 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testNotEqualsDiffClass() {
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger someNumber = new QuadraticIntegerImpl(a, b, ring);
+        QuadraticInteger diffClassNum = new QuadraticIntegerImpl(a, b, ring) {};
+        String msg = someNumber.toString() + " of class " 
+                + someNumber.getClass().getName() + " should not equal " 
+                + diffClassNum.toString() + " of class " 
+                + diffClassNum.getClass().getName();
+        assert !someNumber.equals(diffClassNum) : msg;
+    }
+    
+    @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
         QuadraticRing ring = chooseRing();
