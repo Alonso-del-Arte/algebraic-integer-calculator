@@ -33,37 +33,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
-    // TODO: Write tests for this
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!this.getClass().equals(obj.getClass())) {
-            return false;
-        }
-        ImaginaryQuadraticInteger other = (ImaginaryQuadraticInteger) obj;
-        if (this.regPartMult != other.regPartMult) {
-            return false;
-        }
-        if (this.surdPartMult != other.surdPartMult) {
-            return false;
-        }
-        if (!this.quadRing.equals(other.quadRing)) {
-            return false;
-        }
-        return this.denominator == other.denominator;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = (this.quadRing.hashCode() + this.denominator) << 16;
-        return hash + (int) this.norm();
-    }
-    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 

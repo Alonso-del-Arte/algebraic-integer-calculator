@@ -32,37 +32,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!this.getClass().equals(obj.getClass())) {
-            return false;
-        }
-        RealQuadraticInteger other = (RealQuadraticInteger) obj;
-        if (this.regPartMult != other.regPartMult) {
-            return false;
-        }
-        if (this.surdPartMult != other.surdPartMult) {
-            return false;
-        }
-        if (!this.quadRing.equals(other.quadRing)) {
-            return false;
-        }
-        return this.denominator == other.denominator;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = (int) this.norm();
-        hash <<= 16;
-        return hash + this.quadRing.radicand;
-    }
-    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
