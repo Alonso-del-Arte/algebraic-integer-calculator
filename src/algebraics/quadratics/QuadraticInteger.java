@@ -647,7 +647,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     
     @Override
     public int hashCode() {
-        return 0;
+        int hash = (int) this.norm();
+        hash <<= 16;
+        return hash + this.quadRing.radicand;
     }
 
     // TODO: Implement feature
