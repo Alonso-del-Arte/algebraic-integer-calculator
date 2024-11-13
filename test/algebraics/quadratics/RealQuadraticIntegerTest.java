@@ -26,6 +26,8 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import fractions.Fraction;
 
 import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .nextHighestSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
@@ -1303,10 +1305,7 @@ public class RealQuadraticIntegerTest {
         QuadraticRing ringA = chooseRing();
         QuadraticInteger someNumber = new RealQuadraticInteger(a, b, ringA);
         int bound = 512;
-        int alternative = bound;
-        while (!isSquarefree(alternative)) {
-            alternative++;
-        }
+        int alternative = nextHighestSquarefree(bound);
         int dA = ringA.getRadicand();
         int propD = randomSquarefreeNumberOtherThan(dA, bound);
         int d = (propD == 1) ? 2 : propD;
