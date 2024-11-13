@@ -70,6 +70,31 @@ public class QuadraticIntegerTest {
         return new QuadraticRingTest.QuadraticRingImpl(d);
     }
     
+    private static QuadraticInteger chooseNumber() {
+        int bound = 256;
+        int origin = -bound;
+        if (RANDOM.nextBoolean()) {
+            int a = 2 * RANDOM.nextInt(origin, bound) + 1;
+            int b = 2 * RANDOM.nextInt(origin, bound) + 1;
+            QuadraticRing ring = chooseRingWithHalfInts();
+            return new QuadraticIntegerImpl(a, b, ring, 2);
+        } else {
+            int a = RANDOM.nextInt(origin, bound);
+            int b = RANDOM.nextInt(origin, bound);
+            QuadraticRing ring = chooseRing();
+            return new QuadraticIntegerImpl(a, b, ring);
+        }
+    }
+    
+    // TODO: Write tests for toString()
+    
+    @Test
+    public void testReferentialEquality() {
+        QuadraticInteger number = chooseNumber();
+        String msg = number.toString() + " should equal itself";
+        assert number.equals(number) : msg;
+    }
+    
     @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
