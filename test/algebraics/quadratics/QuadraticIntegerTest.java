@@ -26,9 +26,13 @@ import static calculators.EratosthenesSieve.listPrimes;
 import static calculators.EratosthenesSieve.randomOddPrime;
 import static calculators.EratosthenesSieve.randomPrimeOtherThan;
 import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .nextHighestSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberOtherThan;
 
 import java.util.Arrays;
 import java.util.List;
@@ -158,6 +162,25 @@ public class QuadraticIntegerTest {
         String msg = numberA.toString() + " should not equal " 
                 + numberB.toString();
         assert !numberA.equals(numberB) : msg;
+    }
+    
+    @Test
+    public void testNotEqualsDiffRing() {
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ringA = chooseRing();
+        QuadraticInteger someNumber = new QuadraticIntegerImpl(a, b, ringA);
+        int bound = 512;
+        int alternative = nextHighestSquarefree(bound);
+        int dA = ringA.getRadicand();
+        int propD = randomSquarefreeNumberOtherThan(dA, bound);
+        int d = (propD == 1) ? 2 : propD;
+        d = (d == dA) ? alternative : d;
+        QuadraticRing ringB = new QuadraticRingTest.QuadraticRingImpl(d);
+        QuadraticInteger diffNumber = new QuadraticIntegerImpl(a, b, ringB);
+        String msg = someNumber.toString() + " should not equal " 
+                + diffNumber.toString();
+        assert !someNumber.equals(diffNumber) : msg;
     }
     
     @Test
