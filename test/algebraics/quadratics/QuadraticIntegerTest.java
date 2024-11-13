@@ -148,6 +148,19 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testNotEqualsDiffSurdPart() {
+        int a = randomNumber();
+        int bA = randomNumber();
+        int bB = ((bA << 16) + (bA >> 16)) ^ 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger numberA = new QuadraticIntegerImpl(a, bA, ring);
+        QuadraticInteger numberB = new QuadraticIntegerImpl(a, bB, ring);
+        String msg = numberA.toString() + " should not equal " 
+                + numberB.toString();
+        assert !numberA.equals(numberB) : msg;
+    }
+    
+    @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
         QuadraticRing ring = chooseRing();
