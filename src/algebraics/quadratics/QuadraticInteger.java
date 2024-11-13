@@ -632,7 +632,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         if (!this.getClass().equals(obj.getClass())) {
             return false;
         }
-        return this.regPartMult == ((QuadraticInteger) obj).regPartMult;
+        QuadraticInteger other = (QuadraticInteger) obj;
+        if (this.regPartMult != other.regPartMult) {
+            return false;
+        }
+        return this.surdPartMult == other.surdPartMult;
     }
     
     @Override
