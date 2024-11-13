@@ -1309,8 +1309,8 @@ public class RealQuadraticIntegerTest {
         }
         int dA = ringA.getRadicand();
         int propD = randomSquarefreeNumberOtherThan(dA, bound);
-        int d = propD == 1 ? 2 : propD;
-        d = d == dA ? alternative : d;
+        int d = (propD == 1) ? 2 : propD;
+        d = (d == dA) ? alternative : d;
         QuadraticRing ringB = new RealQuadraticRing(d);
         QuadraticInteger diffNumber = new RealQuadraticInteger(a, b, ringB);
         String message = someNumber.toString() + " should not equal " 
