@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
+import static algebraics.MockRingTest.provideNull;
 import algebraics.UnsupportedNumberDomainException;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
 import arithmetic.NotDivisibleException;
@@ -93,6 +94,14 @@ public class QuadraticIntegerTest {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
         assert number.equals(number) : msg;
+    }
+    
+    @Test
+    public void testNotEqualsNull() {
+        QuadraticInteger number = chooseNumber();
+        String msg = number.toString() + " should not equal null";
+        Object obj = provideNull();
+        assert !number.equals(obj) : msg;
     }
     
     @Test
