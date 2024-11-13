@@ -35,7 +35,9 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -193,6 +195,24 @@ public class QuadraticIntegerTest {
         String msg = someNumber.toString() + " should not equal " 
                 + diffNumber.toString();
         assert !someNumber.equals(diffNumber) : msg;
+    }
+    
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        int initialCapacity = RANDOM.nextInt(16, 64);
+        Set<QuadraticInteger> numbers = new HashSet<>(initialCapacity);
+        Set<Integer> hashes = new HashSet<>(initialCapacity);
+        for (int i = 0; i < initialCapacity; i++) {
+            QuadraticInteger number = chooseNumber();
+            numbers.add(number);
+            hashes.add(number.hashCode());
+        }
+        int expected = numbers.size();
+        int actual = hashes.size();
+        String message = "Given " + expected 
+                + " distinct numbers, expecting as many distinct hash codes";
+        assertEquals(message, expected, actual);
     }
     
     @Test
