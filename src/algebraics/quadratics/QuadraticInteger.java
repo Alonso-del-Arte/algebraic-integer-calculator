@@ -623,7 +623,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     
     @Override
     public boolean equals(Object obj) {
-        return true;
+        return obj != null;
     }
     
     @Override
