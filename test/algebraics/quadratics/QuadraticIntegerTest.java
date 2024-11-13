@@ -184,6 +184,18 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testNotEqualsDiffDenom() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int a = 2 * randomNumber() + 1;
+        int b = 2 * randomNumber() + 1;
+        QuadraticInteger someNumber = new QuadraticIntegerImpl(a, b, ring);
+        QuadraticInteger diffNumber = new QuadraticIntegerImpl(a, b, ring, 2);
+        String msg = someNumber.toString() + " should not equal " 
+                + diffNumber.toString();
+        assert !someNumber.equals(diffNumber) : msg;
+    }
+    
+    @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
         QuadraticRing ring = chooseRing();
