@@ -36,6 +36,12 @@ import java.io.Serializable;
 public abstract class QuadraticInteger implements AlgebraicInteger, 
         Arithmeticable<QuadraticInteger>, Serializable {
     
+    private static final char THETA_LETTER = '\u03B8';
+    
+    private static final char PHI_LETTER = '\u03C6';
+    
+    private static final char OMEGA_LETTER = '\u03C9';
+    
     private static final Fraction ONE_HALF = new Fraction(1, 2);
 
     protected final int regPartMult;

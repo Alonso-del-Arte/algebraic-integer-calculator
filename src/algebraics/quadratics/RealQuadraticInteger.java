@@ -29,6 +29,10 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     private static final long serialVersionUID = 4547847540095073075L;
     
+    private static final char THETA_LETTER = '\u03B8';
+    
+    private static final char PHI_LETTER = '\u03C6';
+    
     private final double numVal;
     private final double absNumVal;
     

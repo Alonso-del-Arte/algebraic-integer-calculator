@@ -30,6 +30,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final long serialVersionUID = 4547649335944297267L;
     
+    private static final char THETA_LETTER = '\u03B8';
+    
+    private static final char OMEGA_LETTER = '\u03C9';
+    
     private final double numValRe;
     private final double numValIm;
     
