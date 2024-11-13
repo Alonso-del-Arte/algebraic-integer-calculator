@@ -25,7 +25,6 @@ import calculators.NumberTheoreticFunctionsCalculator;
 import fractions.Fraction;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Provides a template for defining objects to represent real or imaginary 
@@ -621,6 +620,23 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         }
     }
     
+    /**
+     * Determines whether some object is equal to this number. In addition to 
+     * the obvious parameters, the runtime classes need to match, as well as 
+     * those of the rings, as applicable.
+     * @param obj The object to compare for equality. Examples: 1 + <i>i</i>, 3 
+     * + &radic;7, 3 + &radic;13, <sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;13</sup>&frasl;<sub>2</sub>, 
+     * 2 from <b>Z</b>[&radic;&minus;2], 2 from <b>Z</b>[&radic;2], 
+     * a {@code LocalDate} object for today's date, null.
+     * @return True if the runtime class of {@code obj} is the same as the 
+     * runtime class of this number, the "regular" and "surd" parts match and 
+     * the rings match, false in all other cases. Each of the examples gives 
+     * true when compared against itself, and false when compared against the 
+     * other examples. This includes 2 from <b>Z</b>[&radic;&minus;2] and 2 from 
+     * <b>Z</b>[&radic;2]. Even though the numbers are arithmetically equal, 
+     * they represent the same number in different contexts.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -645,6 +661,15 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         return this.denominator == other.denominator;
     }
     
+    /**
+     * Gives a hash code for this number. It is impossible to give distinct hash 
+     * codes for all possible instances of this class. The hope is that the hash 
+     * codes are unique enough in a given session. The formula is subject to 
+     * change in later releases of this program.
+     * @return A hash code. For example, for <sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;21</sup>&frasl;<sub>2</sub>, the hash code might be 
+     * &minus;196587.
+     */
     @Override
     public int hashCode() {
         int hash = (int) this.norm();
