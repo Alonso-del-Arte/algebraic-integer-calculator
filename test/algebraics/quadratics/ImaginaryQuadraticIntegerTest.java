@@ -124,6 +124,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringGaussianPurelyImaginaryPositive() {
+        int shift = randomNumber(16);
+        int powerOfTwo = 1 << shift;
+        int bound = Short.MAX_VALUE;
+        int b = randomNumber(bound) | powerOfTwo;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, b, 
+                RING_GAUSSIAN);
+        String expected = b + "i";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toString method, of class ImaginaryQuadraticInteger. For methods 
      * that return Strings, spaces are desirable but not required. Therefore the 
