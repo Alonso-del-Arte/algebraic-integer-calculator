@@ -39,7 +39,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        return "SORRY, REWIND TO FAILING";
+        return Integer.toString(this.regPartMult);
     }
     
     /**
