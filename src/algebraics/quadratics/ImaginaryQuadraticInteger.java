@@ -53,7 +53,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 return Integer.toString(this.regPartMult);
             }
         } else {
-            return this.regPartMult + " + " + this.surdPartMult + "i";
+            if (this.regPartMult < 0) {
+                return "\u2212" + (-this.regPartMult) + " + " 
+                        + this.surdPartMult + "i";
+            } else {
+                return this.regPartMult + " + " + this.surdPartMult + "i";
+            }
         }
     }
     
