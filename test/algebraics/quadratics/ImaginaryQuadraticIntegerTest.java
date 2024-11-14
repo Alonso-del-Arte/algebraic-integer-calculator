@@ -91,8 +91,8 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToStringPurelyReal() {
-        int a = randomNumber();
+    public void testToStringPurelyRealButNotNegative() {
+        int a = randomNumber(Short.MAX_VALUE);
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
         String expected = Integer.toString(a);
