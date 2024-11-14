@@ -90,12 +90,22 @@ public class ImaginaryQuadraticIntegerTest {
         return new ImaginaryQuadraticRing(d);
     }
     
+    @Test
+    public void testToStringPurelyReal() {
+        int a = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        String expected = Integer.toString(a);
+        String actual = number.toString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toString method, of class ImaginaryQuadraticInteger. For methods 
      * that return Strings, spaces are desirable but not required. Therefore the 
      * tests should strip out spaces before asserting equality.
      */
-    @Test
+//    @Test
     public void testToString() {
         System.out.println("toString");
         fail("REWRITE THIS TEST");
