@@ -53,6 +53,8 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class ImaginaryQuadraticIntegerTest {
     
+    private static final String MINUS_SIGN = "\u2212";
+    
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>], numbers of the form 
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
@@ -105,7 +107,7 @@ public class ImaginaryQuadraticIntegerTest {
         int a = randomNumber(Short.MAX_VALUE) + 1;
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, 0, ring);
-        String expected = "\u2212" + a;
+        String expected = MINUS_SIGN + a;
         String actual = number.toString();
         assertEquals(expected, actual);
     }
@@ -145,15 +147,13 @@ public class ImaginaryQuadraticIntegerTest {
         int b = randomNumber(bound) | powerOfTwo;
         QuadraticInteger number = new ImaginaryQuadraticInteger(0, -b, 
                 RING_GAUSSIAN);
-        String expected = "\u2212" + b + "i";
+        String expected = MINUS_SIGN + b + "i";
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
     }
     
     /**
-     * Test of toString method, of class ImaginaryQuadraticInteger. For methods 
-     * that return Strings, spaces are desirable but not required. Therefore the 
-     * tests should strip out spaces before asserting equality.
+     * Test of the toString function, of the ImaginaryQuadraticInteger class.
      */
 //    @Test
     public void testToString() {
@@ -168,7 +168,7 @@ public class ImaginaryQuadraticIntegerTest {
 //        expResult = expResult.replace("+-", "-");
 //        expResult = expResult.replace("+1i", "+i");
 //        expResult = expResult.replace("-1i", "-i");
-//        expResult = expResult.replace("-", "\u2212");
+//        expResult = expResult.replace("-", MINUS_SIGN);
 //        String result = testIntegers.get(0).toString().replace(" ", "");
 //        assertEquals(expResult, result);
 //        for (int i = 1; i < totalTestIntegers; i++) {
@@ -184,7 +184,7 @@ public class ImaginaryQuadraticIntegerTest {
 //            expResult = expResult.replace("+-", "-");
 //            expResult = expResult.replace("+1\u221A", "+\u221A");
 //            expResult = expResult.replace("-1\u221A", "-\u221A");
-//            expResult = expResult.replace("-", "\u2212");
+//            expResult = expResult.replace("-", MINUS_SIGN);
 //            result = testIntegers.get(i).toString().replace(" ", "");
 //            assertEquals(expResult, result);
 //        }
@@ -243,7 +243,7 @@ public class ImaginaryQuadraticIntegerTest {
 //                        expResult = "\u03C9";
 //                    }
 //                    expResult = expResult.replace("+0\u03C9", "");
-//                    expResult = expResult.replace("-", "\u2212");
+//                    expResult = expResult.replace("-", MINUS_SIGN);
 //                    currIQI = new ImaginaryQuadraticInteger(a, b, RING_EISENSTEIN, 2);
 //                    result = currIQI.toStringAlt().replace(" ", "");
 //                    assertEquals(expResult, result);
@@ -271,7 +271,7 @@ public class ImaginaryQuadraticIntegerTest {
 //                        expResult = "\u03B8";
 //                    }
 //                    expResult = expResult.replace("+0\u03B8", "");
-//                    expResult = expResult.replace("-", "\u2212");
+//                    expResult = expResult.replace("-", MINUS_SIGN);
 //                    currIQI = new ImaginaryQuadraticInteger(m, n, RING_OQI7, 2);
 //                    result = currIQI.toStringAlt().replace(" ", "");
 //                    assertEquals(expResult, result);
@@ -649,7 +649,7 @@ public class ImaginaryQuadraticIntegerTest {
 //                if (randomRealForHalfInts < 0) {
 //                    expected = expected + "+" + ((-1) * randomRealForHalfInts);
 //                } else {
-//                    expected = expected + "\u2212" + randomRealForHalfInts;
+//                    expected = expected + MINUS_SIGN + randomRealForHalfInts;
 //                }
 //                expected = expected + "x+" + ((randomRealForHalfInts 
 //                        * randomRealForHalfInts + randomImagForHalfInts 
@@ -659,7 +659,7 @@ public class ImaginaryQuadraticIntegerTest {
 //                if (randomRealPart < 0) {
 //                    expected = expected + "+" + ((-2) * randomRealPart);
 //                } else {
-//                    expected = expected + "\u2212" + (2 * randomRealPart);
+//                    expected = expected + MINUS_SIGN + (2 * randomRealPart);
 //                }
 //                expected = expected + "x+" + (randomRealPart * randomRealPart 
 //                        + randomImagPart * randomImagPart 
