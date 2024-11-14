@@ -39,7 +39,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        return Integer.toString(this.regPartMult);
+        if (this.surdPartMult == 0) {
+            return Integer.toString(this.regPartMult);
+        } else {
+            return this.regPartMult + " + " + this.surdPartMult + "i";
+        }
     }
     
     /**
