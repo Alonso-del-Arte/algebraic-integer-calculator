@@ -166,6 +166,34 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringGaussianNegativeRealNegativeImaginary() {
+        int shift = randomNumber(16);
+        int powerOfTwo = 1 << shift;
+        int bound = Short.MAX_VALUE;
+        int a = randomNumber(bound) | powerOfTwo;
+        int b = randomNumber(bound) | powerOfTwo;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, 
+                RING_GAUSSIAN);
+        String expected = MINUS_SIGN + a + MINUS_SIGN + b + "i";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToStringGaussianPositiveRealNegativeImaginary() {
+        int shift = randomNumber(16);
+        int powerOfTwo = 1 << shift;
+        int bound = Short.MAX_VALUE;
+        int a = randomNumber(bound) | powerOfTwo;
+        int b = randomNumber(bound) | powerOfTwo;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, 
+                RING_GAUSSIAN);
+        String expected = a + MINUS_SIGN + b + "i";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function, of the ImaginaryQuadraticInteger class.
      */
