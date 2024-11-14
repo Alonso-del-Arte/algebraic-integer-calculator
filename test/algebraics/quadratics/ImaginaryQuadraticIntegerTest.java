@@ -101,6 +101,16 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringPurelyRealNegative() {
+        int a = randomNumber(Short.MAX_VALUE) + 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, 0, ring);
+        String expected = "\u2212" + a;
+        String actual = number.toString();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testToStringGaussian() {
         int shift = randomNumber(16);
         int powerOfTwo = 1 << shift;
