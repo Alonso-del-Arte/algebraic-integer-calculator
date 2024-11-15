@@ -53,13 +53,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        if (this.regPartMult == 0) {
-            if (this.surdPartMult < 0) {
-                return "\u2212" + (-this.surdPartMult) + "i";
-            } else {
-                return this.surdPartMult + "i";
-            }
-        }
         if (this.surdPartMult == 0) {
             if (this.regPartMult < 0) {
                 return "\u2212" + (-this.regPartMult);
@@ -69,6 +62,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         } else {
             String intermediate = this.regPartMult + " + " + this.surdPartMult 
                     + "i";
+            intermediate = intermediate.replace("0 + ", "");
             intermediate = intermediate.replace(" + -", 
                     MINUS_SIGN_SPACED);
             intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
