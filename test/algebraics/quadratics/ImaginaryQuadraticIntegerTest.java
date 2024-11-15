@@ -93,7 +93,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToStringPurelyRealButNotNegative() {
+    public void testToStringPurelyRealPositive() {
         int a = randomNumber(Short.MAX_VALUE);
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
@@ -118,7 +118,7 @@ public class ImaginaryQuadraticIntegerTest {
         int powerOfTwo = 1 << shift;
         int bound = Short.MAX_VALUE;
         int a = randomNumber(bound) | powerOfTwo;
-        int b = randomNumber(bound) | powerOfTwo;
+        int b = RANDOM.nextInt(2, bound);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
                 RING_GAUSSIAN);
         String expected = a + "+" + b + "i";
@@ -128,10 +128,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToStringGaussianPurelyImaginaryPositive() {
-        int shift = randomNumber(16);
-        int powerOfTwo = 1 << shift;
         int bound = Short.MAX_VALUE;
-        int b = randomNumber(bound) | powerOfTwo;
+        int b = RANDOM.nextInt(2, bound);
         QuadraticInteger number = new ImaginaryQuadraticInteger(0, b, 
                 RING_GAUSSIAN);
         String expected = b + "i";
@@ -141,10 +139,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToStringGaussianPurelyImaginaryNegative() {
-        int shift = randomNumber(16);
-        int powerOfTwo = 1 << shift;
         int bound = Short.MAX_VALUE;
-        int b = randomNumber(bound) | powerOfTwo;
+        int b = RANDOM.nextInt(2, bound);
         QuadraticInteger number = new ImaginaryQuadraticInteger(0, -b, 
                 RING_GAUSSIAN);
         String expected = MINUS_SIGN + b + "i";
@@ -158,7 +154,7 @@ public class ImaginaryQuadraticIntegerTest {
         int powerOfTwo = 1 << shift;
         int bound = Short.MAX_VALUE;
         int a = randomNumber(bound) | powerOfTwo;
-        int b = randomNumber(bound) | powerOfTwo;
+        int b = RANDOM.nextInt(2, bound);
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, b, 
                 RING_GAUSSIAN);
         String expected = MINUS_SIGN + a + "+" + b + "i";
@@ -172,7 +168,7 @@ public class ImaginaryQuadraticIntegerTest {
         int powerOfTwo = 1 << shift;
         int bound = Short.MAX_VALUE;
         int a = randomNumber(bound) | powerOfTwo;
-        int b = randomNumber(bound) | powerOfTwo;
+        int b = RANDOM.nextInt(2, bound);
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, 
                 RING_GAUSSIAN);
         String expected = MINUS_SIGN + a + MINUS_SIGN + b + "i";
@@ -186,7 +182,7 @@ public class ImaginaryQuadraticIntegerTest {
         int powerOfTwo = 1 << shift;
         int bound = Short.MAX_VALUE;
         int a = randomNumber(bound) | powerOfTwo;
-        int b = randomNumber(bound) | powerOfTwo;
+        int b = RANDOM.nextInt(2, bound);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, 
                 RING_GAUSSIAN);
         String expected = a + MINUS_SIGN + b + "i";
