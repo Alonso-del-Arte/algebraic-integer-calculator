@@ -67,25 +67,14 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 return Integer.toString(this.regPartMult);
             }
         } else {
-            if (this.regPartMult < 0) {
-                String intermediate = "\u2212" + (-this.regPartMult) + " + " 
-                        + this.surdPartMult + "i";
-                intermediate = intermediate.replace(" + -", 
-                        MINUS_SIGN_SPACED);
-                intermediate = intermediate.replace(" + " 
-                        + MINUS_SIGN_CHARACTER, MINUS_SIGN_SPACED);
-                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-                return intermediate;
-            } else {
-                String intermediate = this.regPartMult + " + " 
-                        + this.surdPartMult + "i";
-                intermediate = intermediate.replace(" + -", 
-                        MINUS_SIGN_SPACED);
-                intermediate = intermediate.replace(" + " 
-                        + MINUS_SIGN_CHARACTER, MINUS_SIGN_SPACED);
-                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-                return intermediate;
-            }
+            String intermediate = this.regPartMult + " + " + this.surdPartMult 
+                    + "i";
+            intermediate = intermediate.replace(" + -", 
+                    MINUS_SIGN_SPACED);
+            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
+                    MINUS_SIGN_SPACED);
+            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+            return intermediate;
         }
     }
     
