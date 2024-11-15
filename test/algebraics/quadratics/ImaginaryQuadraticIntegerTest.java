@@ -208,7 +208,7 @@ public class ImaginaryQuadraticIntegerTest {
         int a = 10 * RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
         QuadraticRing ring = chooseRing();
-        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, ring);
         String expected = Integer.toString(a) + MINUS_SIGN + b + "i";
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
