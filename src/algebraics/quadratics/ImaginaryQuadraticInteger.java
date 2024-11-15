@@ -53,23 +53,24 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        if (this.surdPartMult == 0) {
-            if (this.regPartMult < 0) {
-                return "\u2212" + (-this.regPartMult);
-            } else {
-                return Integer.toString(this.regPartMult);
-            }
-        } else {
-            String intermediate = this.regPartMult + " + " + this.surdPartMult 
-                    + "i";
-            intermediate = intermediate.replace("0 + ", "");
-            intermediate = intermediate.replace(" + -", 
-                    MINUS_SIGN_SPACED);
-            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
-                    MINUS_SIGN_SPACED);
-            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-            return intermediate;
-        }
+        return "REWIND TO FAIL AGAIN";
+//        if (this.surdPartMult == 0) {
+//            if (this.regPartMult < 0) {
+//                return "\u2212" + (-this.regPartMult);
+//            } else {
+//                return Integer.toString(this.regPartMult);
+//            }
+//        } else {
+//            String intermediate = this.regPartMult + " + " + this.surdPartMult 
+//                    + "i";
+//            intermediate = intermediate.replace("0 + ", "");
+//            intermediate = intermediate.replace(" + -", 
+//                    MINUS_SIGN_SPACED);
+//            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
+//                    MINUS_SIGN_SPACED);
+//            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+//            return intermediate;
+//        }
     }
     
     /**
