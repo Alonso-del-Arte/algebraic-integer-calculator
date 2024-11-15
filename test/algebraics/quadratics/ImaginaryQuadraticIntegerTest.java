@@ -202,6 +202,42 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringGaussianNoOmitLeastSignifZeroInRealPartNegImag() {
+        int bound = 4096;
+        int a = 10 * RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = Integer.toString(a) + MINUS_SIGN + b + "i";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToStringGaussianNoOmitLeastSignificantZeroInNegRealPart() {
+        int bound = 4096;
+        int a = 10 * RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, b, ring);
+        String expected = MINUS_SIGN + a + "+" + b + "i";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToStringGaussianNoOmitLeastSignif0InNegRealPartNegImag() {
+        int bound = 4096;
+        int a = 10 * RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, ring);
+        String expected = MINUS_SIGN + a + MINUS_SIGN + b + "i";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function, of the ImaginaryQuadraticInteger class.
      */
