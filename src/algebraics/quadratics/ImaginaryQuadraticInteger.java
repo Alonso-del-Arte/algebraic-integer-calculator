@@ -62,7 +62,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         } else {
             String intermediate = this.regPartMult + " + " + this.surdPartMult 
                     + "i";
-            intermediate = intermediate.replace("0 + ", "");
+            if (intermediate.startsWith("0 + ")) {
+                intermediate = intermediate.substring(4);
+            }
             intermediate = intermediate.replace(" + -", 
                     MINUS_SIGN_SPACED);
             intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
