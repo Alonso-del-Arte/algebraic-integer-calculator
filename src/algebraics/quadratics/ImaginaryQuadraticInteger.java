@@ -30,6 +30,20 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final long serialVersionUID = 4547649335944297267L;
     
+    private static final char MINUS_SIGN_CHARACTER = '\u2212';
+    
+    private static final char[] MINUS_SIGN_CHARACTER_ARRAY 
+            = {MINUS_SIGN_CHARACTER};
+    
+    private static final String MINUS_SIGN_STRING 
+            = new String(MINUS_SIGN_CHARACTER_ARRAY);
+    
+    private static final String MINUS_SIGN_SPACED = " " + MINUS_SIGN_CHARACTER 
+            + ' ';
+    
+    private static final String PLUS_SIGN_THEN_MINUS = " + " 
+            + MINUS_SIGN_CHARACTER;
+    
     private static final char THETA_LETTER = '\u03B8';
     
     private static final char OMEGA_LETTER = '\u03C9';
@@ -54,10 +68,23 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             }
         } else {
             if (this.regPartMult < 0) {
-                return "\u2212" + (-this.regPartMult) + " + " 
+                String intermediate = "\u2212" + (-this.regPartMult) + " + " 
                         + this.surdPartMult + "i";
+                intermediate = intermediate.replace(" + -", 
+                        MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace(" + " 
+                        + MINUS_SIGN_CHARACTER, MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+                return intermediate;
             } else {
-                return this.regPartMult + " + " + this.surdPartMult + "i";
+                String intermediate = this.regPartMult + " + " 
+                        + this.surdPartMult + "i";
+                intermediate = intermediate.replace(" + -", 
+                        MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace(" + " 
+                        + MINUS_SIGN_CHARACTER, MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+                return intermediate;
             }
         }
     }
