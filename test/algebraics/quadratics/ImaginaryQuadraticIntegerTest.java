@@ -55,6 +55,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     private static final String MINUS_SIGN = "\u2212";
     
+    private static final char SQRT_SYMBOL = '\u221A';
+    
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>], numbers of the form 
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
@@ -235,6 +237,15 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, ring);
         String expected = MINUS_SIGN + a + MINUS_SIGN + b + "i";
         String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToStringImaginaryUnit() {
+        QuadraticInteger imagUnit = new ImaginaryQuadraticInteger(0, 1, 
+                RING_GAUSSIAN);
+        String expected = "i";
+        String actual = imagUnit.toString().replace(" ", "");
         assertEquals(expected, actual);
     }
     
