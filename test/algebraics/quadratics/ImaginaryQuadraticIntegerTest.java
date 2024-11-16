@@ -249,6 +249,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringNegativeImaginaryUnit() {
+        QuadraticInteger imagUnit = new ImaginaryQuadraticInteger(0, -1, 
+                RING_GAUSSIAN);
+        String expected = MINUS_SIGN + "i";
+        String actual = imagUnit.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function, of the ImaginaryQuadraticInteger class.
      */
