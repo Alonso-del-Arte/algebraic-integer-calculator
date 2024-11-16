@@ -55,7 +55,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public String toString() {
         if (this.surdPartMult == 0) {
             if (this.regPartMult < 0) {
-                return "\u2212" + (-this.regPartMult);
+                return MINUS_SIGN_STRING + (-this.regPartMult);
             } else {
                 return Integer.toString(this.regPartMult);
             }
