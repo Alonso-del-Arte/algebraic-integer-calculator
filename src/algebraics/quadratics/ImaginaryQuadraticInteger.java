@@ -64,6 +64,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 if (this.surdPartMult == 1) {
                     return "i";
                 }
+                if (this.surdPartMult == -1) {
+                    char[] symbols = {MINUS_SIGN_CHARACTER, 'i'};
+                    return new String(symbols);
+                }
             }
             String intermediate = this.regPartMult + " + " + this.surdPartMult 
                     + "i";
