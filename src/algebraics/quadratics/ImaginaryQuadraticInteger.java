@@ -51,37 +51,37 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
-    @Override
-    public String toString() {
-        if (this.surdPartMult == 0) {
-            if (this.regPartMult < 0) {
-                return MINUS_SIGN_STRING + (-this.regPartMult);
-            } else {
-                return Integer.toString(this.regPartMult);
-            }
-        } else {
-            if (this.regPartMult == 0) {
-                if (this.surdPartMult == 1) {
-                    return "i";
-                }
-                if (this.surdPartMult == -1) {
-                    return MINUS_SIGN_STRING + "i";
-                }
-            }
-            String intermediate = this.regPartMult + " + " + this.surdPartMult 
-                    + "i";
-            intermediate = intermediate.replace(" + 1i", " + i");
-            if (intermediate.startsWith("0 + ")) {
-                intermediate = intermediate.substring(4);
-            }
-            intermediate = intermediate.replace(" + -", 
-                    MINUS_SIGN_SPACED);
-            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
-                    MINUS_SIGN_SPACED);
-            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-            return intermediate;
-        }
-    }
+//    @Override
+//    public String toString() {
+//        if (this.surdPartMult == 0) {
+//            if (this.regPartMult < 0) {
+//                return MINUS_SIGN_STRING + (-this.regPartMult);
+//            } else {
+//                return Integer.toString(this.regPartMult);
+//            }
+//        } else {
+//            if (this.regPartMult == 0) {
+//                if (this.surdPartMult == 1) {
+//                    return "i";
+//                }
+//                if (this.surdPartMult == -1) {
+//                    return MINUS_SIGN_STRING + "i";
+//                }
+//            }
+//            String intermediate = this.regPartMult + " + " + this.surdPartMult 
+//                    + "i";
+//            intermediate = intermediate.replace(" + 1i", " + i");
+//            if (intermediate.startsWith("0 + ")) {
+//                intermediate = intermediate.substring(4);
+//            }
+//            intermediate = intermediate.replace(" + -", 
+//                    MINUS_SIGN_SPACED);
+//            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
+//                    MINUS_SIGN_SPACED);
+//            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+//            return intermediate;
+//        }
+//    }
     
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
