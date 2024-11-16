@@ -60,6 +60,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 return Integer.toString(this.regPartMult);
             }
         } else {
+            if (this.regPartMult == 0) {
+                if (this.surdPartMult == 1) {
+                    return "i";
+                }
+            }
             String intermediate = this.regPartMult + " + " + this.surdPartMult 
                     + "i";
             if (intermediate.startsWith("0 + ")) {
