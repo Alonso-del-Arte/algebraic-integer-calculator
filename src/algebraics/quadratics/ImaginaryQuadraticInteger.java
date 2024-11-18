@@ -51,8 +51,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
     
-//    @Override
-//    public String toString() {
+    @Override
+    public String toString() {
+        return "REWIND TO FAILING AGAIN";
 //        if (this.surdPartMult == 0) {
 //            if (this.regPartMult < 0) {
 //                return MINUS_SIGN_STRING + (-this.regPartMult);
@@ -81,7 +82,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
 //            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
 //            return intermediate;
 //        }
-//    }
+    }
     
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
