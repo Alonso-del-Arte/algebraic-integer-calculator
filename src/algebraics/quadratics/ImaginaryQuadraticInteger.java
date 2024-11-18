@@ -53,35 +53,34 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        return "REWIND TO FAILING AGAIN";
-//        if (this.surdPartMult == 0) {
-//            if (this.regPartMult < 0) {
-//                return MINUS_SIGN_STRING + (-this.regPartMult);
-//            } else {
-//                return Integer.toString(this.regPartMult);
-//            }
-//        } else {
-//            if (this.regPartMult == 0) {
-//                if (this.surdPartMult == 1) {
-//                    return "i";
-//                }
-//                if (this.surdPartMult == -1) {
-//                    return MINUS_SIGN_STRING + "i";
-//                }
-//            }
-//            String intermediate = this.regPartMult + " + " + this.surdPartMult 
-//                    + "i";
-//            intermediate = intermediate.replace(" + 1i", " + i");
-//            if (intermediate.startsWith("0 + ")) {
-//                intermediate = intermediate.substring(4);
-//            }
-//            intermediate = intermediate.replace(" + -", 
-//                    MINUS_SIGN_SPACED);
-//            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
-//                    MINUS_SIGN_SPACED);
-//            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-//            return intermediate;
-//        }
+        if (this.surdPartMult == 0) {
+            if (this.regPartMult < 0) {
+                return MINUS_SIGN_STRING + (-this.regPartMult);
+            } else {
+                return Integer.toString(this.regPartMult);
+            }
+        } else {
+            if (this.regPartMult == 0) {
+                if (this.surdPartMult == 1) {
+                    return "i";
+                }
+                if (this.surdPartMult == -1) {
+                    return MINUS_SIGN_STRING + "i";
+                }
+            }
+            String intermediate = this.regPartMult + " + " + this.surdPartMult 
+                    + "i";
+            intermediate = intermediate.replace(" + 1i", " + i");
+            if (intermediate.startsWith("0 + ")) {
+                intermediate = intermediate.substring(4);
+            }
+            intermediate = intermediate.replace(" + -", 
+                    MINUS_SIGN_SPACED);
+            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
+                    MINUS_SIGN_SPACED);
+            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+            return intermediate;
+        }
     }
     
     /**
