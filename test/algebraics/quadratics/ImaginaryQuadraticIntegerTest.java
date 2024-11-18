@@ -273,58 +273,18 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the toString function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testToString() {
         System.out.println("toString");
-        fail("REWRITE THIS TEST");
-//        String expResult;
-//        if (randomRealPart == 0) {
-//            expResult = randomImagPart + "i";
-//        } else {
-//            expResult = randomRealPart + "+" + randomImagPart + "i";
-//        }
-//        expResult = expResult.replace("+-", "-");
-//        expResult = expResult.replace("+1i", "+i");
-//        expResult = expResult.replace("-1i", "-i");
-//        expResult = expResult.replace("-", MINUS_SIGN);
-//        String result = testIntegers.get(0).toString().replace(" ", "");
-//        assertEquals(expResult, result);
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomRealForHalfInts + "/2+" + randomImagForHalfInts + "\u221A(" + testIntegers.get(i).getRing().getRadicand() + ")/2";
-//            } else {
-//                if (randomRealPart == 0) {
-//                    expResult = randomImagPart + "\u221A(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                } else {
-//                    expResult = randomRealPart + "+" + randomImagPart + "\u221A(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                }
-//            }
-//            expResult = expResult.replace("+-", "-");
-//            expResult = expResult.replace("+1\u221A", "+\u221A");
-//            expResult = expResult.replace("-1\u221A", "-\u221A");
-//            expResult = expResult.replace("-", MINUS_SIGN);
-//            result = testIntegers.get(i).toString().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // Next, test on a couple of complex units
-//        expResult = "i";
-//        result = IMAG_UNIT_I.toString();
-//        assertEquals(expResult, result);
-//        expResult = "\u2212i";
-//        result = IMAG_UNIT_NEG_I.toString();
-//        assertEquals(expResult, result);
-//        expResult = "\u22121/2+\u221A(\u22123)/2";
-//        result = COMPLEX_CUBIC_ROOT_OF_UNITY.toString().replace(" ", "");
-//        assertEquals(expResult, result);
-//        // And last but not least, 0 and 1
-//        expResult = "0";
-//        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandom);
-//        result = zeroIQI.toString();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandom);
-//        result = oneIQI.toString();
-//        assertEquals(expResult, result);
+        int bound = 8192;
+        int a = RANDOM.nextInt(2, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = a + "+" + b + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + Math.abs(ring.getRadicand()) + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
