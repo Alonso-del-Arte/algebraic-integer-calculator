@@ -197,8 +197,8 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 4096;
         int a = 10 * RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
-        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_GAUSSIAN);
         String expected = a + "+" + b + "i";
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
@@ -209,8 +209,8 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 4096;
         int a = 10 * RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
-        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, ring);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, 
+                RING_GAUSSIAN);
         String expected = Integer.toString(a) + MINUS_SIGN + b + "i";
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
@@ -221,8 +221,8 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 4096;
         int a = 10 * RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
-        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, b, ring);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, b, 
+                RING_GAUSSIAN);
         String expected = MINUS_SIGN + a + "+" + b + "i";
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
@@ -233,8 +233,8 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 4096;
         int a = 10 * RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
-        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, ring);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, 
+                RING_GAUSSIAN);
         String expected = MINUS_SIGN + a + MINUS_SIGN + b + "i";
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
