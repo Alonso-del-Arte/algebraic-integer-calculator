@@ -30,6 +30,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final long serialVersionUID = 4547649335944297267L;
     
+    private static final String PLUS_SIGN_SPACED = " + ";
+    
     private static final char MINUS_SIGN_CHARACTER = '\u2212';
     
     private static final char[] MINUS_SIGN_CHARACTER_ARRAY 
@@ -48,6 +50,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final char OMEGA_LETTER = '\u03C9';
     
+    private static final char SQRT_SYMBOL = '\u221A';
+    
     private final double numValRe;
     private final double numValIm;
     
@@ -60,26 +64,32 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 return Integer.toString(this.regPartMult);
             }
         } else {
-            if (this.regPartMult == 0) {
-                if (this.surdPartMult == 1) {
-                    return "i";
+            if (this.quadRing.radicand == -1) {
+                if (this.regPartMult == 0) {
+                    if (this.surdPartMult == 1) {
+                        return "i";
+                    }
+                    if (this.surdPartMult == -1) {
+                        return MINUS_SIGN_STRING + "i";
+                    }
                 }
-                if (this.surdPartMult == -1) {
-                    return MINUS_SIGN_STRING + "i";
+                String intermediate = this.regPartMult + " + " 
+                        + this.surdPartMult + "i";
+                intermediate = intermediate.replace(" + 1i", " + i");
+                if (intermediate.startsWith("0 + ")) {
+                    intermediate = intermediate.substring(4);
                 }
+                intermediate = intermediate.replace(" + -", 
+                        MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
+                        MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+                return intermediate;
+            } else {
+                return this.regPartMult + PLUS_SIGN_SPACED + this.surdPartMult 
+                        + SQRT_SYMBOL + '(' + MINUS_SIGN_CHARACTER
+                        + this.quadRing.absRadicand + ')';
             }
-            String intermediate = this.regPartMult + " + " + this.surdPartMult 
-                    + "i";
-            intermediate = intermediate.replace(" + 1i", " + i");
-            if (intermediate.startsWith("0 + ")) {
-                intermediate = intermediate.substring(4);
-            }
-            intermediate = intermediate.replace(" + -", 
-                    MINUS_SIGN_SPACED);
-            intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
-                    MINUS_SIGN_SPACED);
-            intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-            return intermediate;
         }
     }
     
