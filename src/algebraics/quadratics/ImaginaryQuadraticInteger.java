@@ -102,6 +102,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                     return intermediate.substring(intermediate
                             .indexOf(SQRT_SYMBOL));
                 }
+                if (this.regPartMult == 0 && this.surdPartMult == -1) {
+                    return MINUS_SIGN_STRING + intermediate
+                            .substring(intermediate.indexOf(SQRT_SYMBOL));
+                }
                 if (intermediate.startsWith("0 + ")) {
                     intermediate = intermediate.replace("0 + ", "");
                 }
