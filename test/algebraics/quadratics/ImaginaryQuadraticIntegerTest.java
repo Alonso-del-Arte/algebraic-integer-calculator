@@ -270,6 +270,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringNonZeroRealMinusOneImag() {
+        int shift = randomNumber(8);
+        int powerOfTwo = 1 << shift;
+        int a = randomNumber(256) | powerOfTwo;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -1, 
+                RING_GAUSSIAN);
+        String expected = a + MINUS_SIGN + 'i';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function, of the ImaginaryQuadraticInteger class.
      */
