@@ -98,6 +98,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                         + ')';
                 intermediate = intermediate.replace(PLUS_SIGN_THEN_DASH, 
                         MINUS_SIGN_SPACED);
+                if (this.regPartMult == 0 && this.surdPartMult == 1) {
+                    return intermediate.substring(intermediate
+                            .indexOf(SQRT_SYMBOL));
+                }
                 if (intermediate.startsWith("0 + ")) {
                     intermediate = intermediate.replace("0 + ", "");
                 }
