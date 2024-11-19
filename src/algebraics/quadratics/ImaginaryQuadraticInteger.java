@@ -86,9 +86,13 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
                 return intermediate;
             } else {
-                return this.regPartMult + PLUS_SIGN_SPACED + this.surdPartMult 
-                        + SQRT_SYMBOL + '(' + MINUS_SIGN_CHARACTER
-                        + this.quadRing.absRadicand + ')';
+                String initialSign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
+                        : "";
+                String intermediate = initialSign + Math.abs(this.regPartMult) 
+                        + PLUS_SIGN_SPACED + this.surdPartMult + SQRT_SYMBOL 
+                        + '(' + MINUS_SIGN_CHARACTER + this.quadRing.absRadicand 
+                        + ')';
+                return intermediate;
             }
         }
     }
