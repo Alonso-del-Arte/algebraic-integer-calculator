@@ -375,6 +375,16 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
     }
+    
+    @Test
+    public void testToStringZeroRePlusOneOfRoot() {
+        QuadraticRing ring = chooseRingDOtherThan(-1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, 1, ring);
+        String expected = "" + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + Math.abs(ring.getRadicand()) + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
 
     /**
      * Test of toStringAlt method, of class ImaginaryQuadraticInteger. For 
