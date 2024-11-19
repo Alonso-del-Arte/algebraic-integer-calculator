@@ -312,6 +312,32 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testToStringNegativeReNegativeIm() {
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, ring);
+        String expected = MINUS_SIGN + a + MINUS_SIGN + b + SQRT_SYMBOL + '(' 
+                + MINUS_SIGN + Math.abs(ring.getRadicand()) + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringPositiveReNegativeIm() {
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, ring);
+        String expected = a + MINUS_SIGN + b + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + Math.abs(ring.getRadicand()) + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
