@@ -78,7 +78,7 @@ public class ImaginaryQuadraticIntegerTest {
         return new ImaginaryQuadraticRing(d);
     }
     
-    private static ImaginaryQuadraticRing chooseRingOtherThan(int avoidedD) {
+    private static ImaginaryQuadraticRing chooseRingDOtherThan(int avoidedD) {
         int d = avoidedD;
         while (d == avoidedD) {
             d = -randomSquarefreeNumber(256);
@@ -291,7 +291,7 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 8192;
         int a = RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRingDOtherThan(-1);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
         String expected = a + "+" + b + SQRT_SYMBOL + '(' + MINUS_SIGN 
                 + Math.abs(ring.getRadicand()) + ')';
@@ -304,7 +304,7 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 8192;
         int a = RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRingDOtherThan(-1);
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, b, ring);
         String expected = MINUS_SIGN + a + "+" + b + SQRT_SYMBOL + '(' 
                 + MINUS_SIGN + Math.abs(ring.getRadicand()) + ')';
@@ -317,7 +317,7 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 8192;
         int a = RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRingDOtherThan(-1);
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, ring);
         String expected = MINUS_SIGN + a + MINUS_SIGN + b + SQRT_SYMBOL + '(' 
                 + MINUS_SIGN + Math.abs(ring.getRadicand()) + ')';
@@ -330,12 +330,19 @@ public class ImaginaryQuadraticIntegerTest {
         int bound = 8192;
         int a = RANDOM.nextInt(1, bound);
         int b = RANDOM.nextInt(2, bound);
-        QuadraticRing ring = chooseRing();
+        QuadraticRing ring = chooseRingDOtherThan(-1);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, ring);
         String expected = a + MINUS_SIGN + b + SQRT_SYMBOL + '(' + MINUS_SIGN 
                 + Math.abs(ring.getRadicand()) + ')';
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
+    }
+    
+//    @Test
+    public void testToStringZeroRePositiveIm_NOT_YET_() {
+//        int bound = 8192;
+//        int b = RANDOM.nextInt(2, bound);
+        fail();
     }
 
     /**
