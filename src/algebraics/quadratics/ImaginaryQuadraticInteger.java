@@ -59,49 +59,48 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        return "REWIND TO FAILING YET AGAIN";
-//        if (this.surdPartMult == 0) {
-//            if (this.regPartMult < 0) {
-//                return MINUS_SIGN_STRING + (-this.regPartMult);
-//            } else {
-//                return Integer.toString(this.regPartMult);
-//            }
-//        } else {
-//            if (this.quadRing.radicand == -1) {
-//                if (this.regPartMult == 0) {
-//                    if (this.surdPartMult == 1) {
-//                        return "i";
-//                    }
-//                    if (this.surdPartMult == -1) {
-//                        return MINUS_SIGN_STRING + "i";
-//                    }
-//                }
-//                String intermediate = this.regPartMult + " + " 
-//                        + this.surdPartMult + "i";
-//                intermediate = intermediate.replace(" + 1i", " + i");
-//                intermediate = intermediate.replace(" + -1i", MINUS_SIGN_SPACED 
-//                        + 'i');
-//                if (intermediate.startsWith("0 + ")) {
-//                    intermediate = intermediate.substring(4);
-//                }
-//                intermediate = intermediate.replace(" + -", 
-//                        MINUS_SIGN_SPACED);
-//                intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
-//                        MINUS_SIGN_SPACED);
-//                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-//                return intermediate;
-//            } else {
-//                String initialSign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
-//                        : "";
-//                String intermediate = initialSign + Math.abs(this.regPartMult) 
-//                        + PLUS_SIGN_SPACED + this.surdPartMult + SQRT_SYMBOL 
-//                        + '(' + MINUS_SIGN_CHARACTER + this.quadRing.absRadicand 
-//                        + ')';
-//                intermediate = intermediate.replace(PLUS_SIGN_THEN_DASH, 
-//                        MINUS_SIGN_SPACED);
-//                return intermediate;
-//            }
-//        }
+        if (this.surdPartMult == 0) {
+            if (this.regPartMult < 0) {
+                return MINUS_SIGN_STRING + (-this.regPartMult);
+            } else {
+                return Integer.toString(this.regPartMult);
+            }
+        } else {
+            if (this.quadRing.radicand == -1) {
+                if (this.regPartMult == 0) {
+                    if (this.surdPartMult == 1) {
+                        return "i";
+                    }
+                    if (this.surdPartMult == -1) {
+                        return MINUS_SIGN_STRING + "i";
+                    }
+                }
+                String intermediate = this.regPartMult + " + " 
+                        + this.surdPartMult + "i";
+                intermediate = intermediate.replace(" + 1i", " + i");
+                intermediate = intermediate.replace(" + -1i", MINUS_SIGN_SPACED 
+                        + 'i');
+                if (intermediate.startsWith("0 + ")) {
+                    intermediate = intermediate.substring(4);
+                }
+                intermediate = intermediate.replace(" + -", 
+                        MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
+                        MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
+                return intermediate;
+            } else {
+                String initialSign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
+                        : "";
+                String intermediate = initialSign + Math.abs(this.regPartMult) 
+                        + PLUS_SIGN_SPACED + this.surdPartMult + SQRT_SYMBOL 
+                        + '(' + MINUS_SIGN_CHARACTER + this.quadRing.absRadicand 
+                        + ')';
+                intermediate = intermediate.replace(PLUS_SIGN_THEN_DASH, 
+                        MINUS_SIGN_SPACED);
+                return intermediate;
+            }
+        }
     }
     
     /**
