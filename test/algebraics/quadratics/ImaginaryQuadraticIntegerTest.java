@@ -338,11 +338,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
-//    @Test
-    public void testToStringZeroRePositiveIm_NOT_YET_() {
-//        int bound = 8192;
-//        int b = RANDOM.nextInt(2, bound);
-        fail();
+    @Test
+    public void testToStringZeroRePositiveIm() {
+        int bound = 8192;
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRingDOtherThan(-1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, b, ring);
+        String expected = Integer.toString(b) + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + Math.abs(ring.getRadicand()) + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
