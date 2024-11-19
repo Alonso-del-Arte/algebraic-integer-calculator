@@ -98,6 +98,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                         + ')';
                 intermediate = intermediate.replace(PLUS_SIGN_THEN_DASH, 
                         MINUS_SIGN_SPACED);
+                intermediate = intermediate.replace("0 + ", "");
                 return intermediate;
             }
         }
