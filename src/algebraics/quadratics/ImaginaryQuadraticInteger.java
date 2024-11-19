@@ -43,8 +43,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private static final String MINUS_SIGN_SPACED = " " + MINUS_SIGN_CHARACTER 
             + ' ';
     
-    private static final String PLUS_SIGN_THEN_MINUS = " + " 
+    private static final String PLUS_SIGN_THEN_MINUS = PLUS_SIGN_SPACED 
             + MINUS_SIGN_CHARACTER;
+    
+    private static final String PLUS_SIGN_THEN_DASH = PLUS_SIGN_SPACED + '-';
     
     private static final char THETA_LETTER = '\u03B8';
     
@@ -94,6 +96,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                         + PLUS_SIGN_SPACED + this.surdPartMult + SQRT_SYMBOL 
                         + '(' + MINUS_SIGN_CHARACTER + this.quadRing.absRadicand 
                         + ')';
+                intermediate = intermediate.replace(PLUS_SIGN_THEN_DASH, 
+                        MINUS_SIGN_SPACED);
                 return intermediate;
             }
         }
