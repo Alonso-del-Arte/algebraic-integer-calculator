@@ -109,6 +109,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 if (intermediate.startsWith("0 ") && this.surdPartMult < -1) {
                     int beginIndex = intermediate.indexOf(MINUS_SIGN_CHARACTER);
                     intermediate = intermediate.substring(beginIndex);
+                    intermediate = intermediate.replace(MINUS_SIGN_STRING + ' ', 
+                            MINUS_SIGN_STRING);
                 }
                 if (intermediate.startsWith("0 ") && this.surdPartMult > 1) {
                     intermediate = intermediate.substring(4);
