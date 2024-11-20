@@ -407,6 +407,59 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
     }
+    
+    @Test
+    public void testToStringHalfIntPositiveRePositiveIm() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 2);
+        String expected = a + "/2+" + b + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveReNegativeIm() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -b, ring, 2);
+        String expected = a + "/2" + MINUS_SIGN + b + SQRT_SYMBOL + '(' 
+                + MINUS_SIGN + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeRePositiveIm() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, b, ring, 2);
+        String expected = MINUS_SIGN + a + "/2+" + b + SQRT_SYMBOL + '(' 
+                + MINUS_SIGN + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeReNegativeIm() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -b, ring, 
+                2);
+        String expected = MINUS_SIGN + a + "/2" + MINUS_SIGN + b + SQRT_SYMBOL 
+                + '(' + MINUS_SIGN + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
 
     /**
      * Test of toStringAlt method, of class ImaginaryQuadraticInteger. For 
