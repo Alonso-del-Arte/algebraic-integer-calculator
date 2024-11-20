@@ -81,11 +81,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             String target, replacement;
             if (this.surdPartMult < 0) {
                 target = MINUS_SIGN_SPACED;
-                replacement = "/2" + MINUS_SIGN_SPACED;
             } else {
                 target = PLUS_SIGN_SPACED;
-                replacement = "/2" + PLUS_SIGN_SPACED;
             }
+            replacement = "/2" + target;
             String regHalved = zeroSurdRemoved.replace(target, replacement);
             return regHalved + "/2";
         }
