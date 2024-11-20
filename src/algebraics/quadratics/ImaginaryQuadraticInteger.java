@@ -77,19 +77,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 MINUS_SIGN_SPACED);
         String zeroSurdRemoved = extraSignRemoved.replace(" + 0" + radicandStr, 
                 "");
-        if (this.denominator == 2) {
-            String target, replacement;
-            if (this.surdPartMult < 0) {
-                target = MINUS_SIGN_SPACED;
-            } else {
-                target = PLUS_SIGN_SPACED;
-            }
-            replacement = "/2" + target;
-            String regHalved = zeroSurdRemoved.replace(target, replacement);
-            return regHalved + "/2";
-        }
         String withRedundantOneRemoved = zeroSurdRemoved.replace(" 1" 
-                + radicandStr, radicandStr);
+                + radicandStr, " " + radicandStr);
         String zeroRegRemoved = (withRedundantOneRemoved.startsWith("0 ")) 
                 ? withRedundantOneRemoved.replace("0 ", "") 
                 : withRedundantOneRemoved;
@@ -98,8 +87,19 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                         MINUS_SIGN_STRING) 
                 : zeroRegRemoved;
         int beginIndex = (this.surdPartMult == 1) ? 1 : 2;
-        return (tweaked.startsWith("+")) ? tweaked.substring(beginIndex) 
-                : tweaked;
+        String processed = (tweaked.startsWith("+")) 
+                ? tweaked.substring(beginIndex) : tweaked;
+        if (this.denominator == 2) {
+            String target, replacement;
+            if (this.surdPartMult < 0) {
+                target = MINUS_SIGN_SPACED;
+            } else {
+                target = PLUS_SIGN_SPACED;
+            }
+            replacement = "/2" + target;
+            processed = processed.replace(target, replacement) + "/2";
+        }
+        return processed;
     }
     
     /**
