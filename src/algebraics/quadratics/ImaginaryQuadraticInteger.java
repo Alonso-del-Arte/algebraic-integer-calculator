@@ -86,7 +86,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 ? zeroRegRemoved.replace(MINUS_SIGN_THEN_SPACE, 
                         MINUS_SIGN_STRING) 
                 : zeroRegRemoved;
-        return (tweaked.startsWith("+")) ? tweaked.substring(1) : tweaked;
+        int beginIndex = (this.surdPartMult == 1) ? 1 : 2;
+        return (tweaked.startsWith("+")) ? tweaked.substring(beginIndex) 
+                : tweaked;
     }
     
     /**
