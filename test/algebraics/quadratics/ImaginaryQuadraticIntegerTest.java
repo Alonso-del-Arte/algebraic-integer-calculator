@@ -351,6 +351,18 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     @Test
+    public void testToStringZeroReNegativeIm() {
+        int bound = 8192;
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRingDOtherThan(-1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, -b, ring);
+        String expected = MINUS_SIGN + b + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + Math.abs(ring.getRadicand()) + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void testToStringPositiveReMultipleOfTen() {
         int bound = 8192;
         int a = 10 * RANDOM.nextInt(1, bound);
