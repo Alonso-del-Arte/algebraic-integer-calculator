@@ -43,6 +43,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private static final String MINUS_SIGN_SPACED = " " + MINUS_SIGN_CHARACTER 
             + ' ';
     
+    private static final String MINUS_SIGN_THEN_SPACE = MINUS_SIGN_STRING + ' ';
+    
     private static final String PLUS_SIGN_THEN_MINUS = PLUS_SIGN_SPACED 
             + MINUS_SIGN_CHARACTER;
     
@@ -54,70 +56,37 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final char SQRT_SYMBOL = '\u221A';
     
+    private static final char[] RADICAND_CHARS = {SQRT_SYMBOL, '(', 
+        MINUS_SIGN_CHARACTER, 'd', ')'};
+    
+    private static final String RADICAND_CHAR_SEQ = new String(RADICAND_CHARS);
+    
     private final double numValRe;
     private final double numValIm;
     
     @Override
     public String toString() {
-        if (this.surdPartMult == 0) {
-            if (this.regPartMult < 0) {
-                return MINUS_SIGN_STRING + (-this.regPartMult);
-            } else {
-                return Integer.toString(this.regPartMult);
-            }
-        } else {
-            if (this.quadRing.radicand == -1) {
-                if (this.regPartMult == 0) {
-                    if (this.surdPartMult == 1) {
-                        return "i";
-                    }
-                    if (this.surdPartMult == -1) {
-                        return MINUS_SIGN_STRING + "i";
-                    }
-                }
-                String intermediate = this.regPartMult + " + " 
-                        + this.surdPartMult + "i";
-                intermediate = intermediate.replace(" + 1i", " + i");
-                intermediate = intermediate.replace(" + -1i", MINUS_SIGN_SPACED 
-                        + 'i');
-                if (intermediate.startsWith("0 + ")) {
-                    intermediate = intermediate.substring(4);
-                }
-                intermediate = intermediate.replace(" + -", 
-                        MINUS_SIGN_SPACED);
-                intermediate = intermediate.replace(" + " + MINUS_SIGN_CHARACTER, 
-                        MINUS_SIGN_SPACED);
-                intermediate = intermediate.replace('-', MINUS_SIGN_CHARACTER);
-                return intermediate;
-            } else {
-                String initialSign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
-                        : "";
-                String intermediate = initialSign + Math.abs(this.regPartMult) 
-                        + PLUS_SIGN_SPACED + this.surdPartMult + SQRT_SYMBOL 
-                        + '(' + MINUS_SIGN_CHARACTER + this.quadRing.absRadicand 
-                        + ')';
-                intermediate = intermediate.replace(PLUS_SIGN_THEN_DASH, 
-                        MINUS_SIGN_SPACED);
-                if (this.regPartMult == 0 && this.surdPartMult == 1) {
-                    return intermediate.substring(intermediate
-                            .indexOf(SQRT_SYMBOL));
-                }
-                if (this.regPartMult == 0 && this.surdPartMult == -1) {
-                    return MINUS_SIGN_STRING + intermediate
-                            .substring(intermediate.indexOf(SQRT_SYMBOL));
-                }
-                if (intermediate.startsWith("0 ") && this.surdPartMult < -1) {
-                    int beginIndex = intermediate.indexOf(MINUS_SIGN_CHARACTER);
-                    intermediate = intermediate.substring(beginIndex);
-                    intermediate = intermediate.replace(MINUS_SIGN_STRING + ' ', 
-                            MINUS_SIGN_STRING);
-                }
-                if (intermediate.startsWith("0 ") && this.surdPartMult > 1) {
-                    intermediate = intermediate.substring(4);
-                }
-                return intermediate;
-            }
-        }
+        int absRad = this.quadRing.absRadicand;
+        String radNumStr = Integer.toString(absRad);
+        String radicandStr = (absRad == 1) ? "i" 
+                : RADICAND_CHAR_SEQ.replace("d", radNumStr);
+        String initial = this.regPartMult + PLUS_SIGN_SPACED + this.surdPartMult 
+                + radicandStr;
+        String dashesReplaced = initial.replace('-', MINUS_SIGN_CHARACTER);
+        String extraSignRemoved = dashesReplaced.replace(PLUS_SIGN_THEN_MINUS, 
+                MINUS_SIGN_SPACED);
+        String zeroSurdRemoved = extraSignRemoved.replace(" + 0" + radicandStr, 
+                "");
+        String withRedundantOneRemoved = zeroSurdRemoved.replace(" 1" 
+                + radicandStr, radicandStr);
+        String zeroRegRemoved = (withRedundantOneRemoved.startsWith("0 ")) 
+                ? withRedundantOneRemoved.replace("0 ", "") 
+                : withRedundantOneRemoved;
+        String tweaked = (zeroRegRemoved.startsWith(MINUS_SIGN_THEN_SPACE)) 
+                ? zeroRegRemoved.replace(MINUS_SIGN_THEN_SPACE, 
+                        MINUS_SIGN_STRING) 
+                : zeroRegRemoved;
+        return (tweaked.startsWith("+")) ? tweaked.substring(1) : tweaked;
     }
     
     /**
