@@ -461,6 +461,55 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testToStringHalfIntPositiveRePlusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 1, ring, 2);
+        String expected = a + "/2+" + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveReMinusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -1, ring, 2);
+        String expected = a + "/2" + MINUS_SIGN + SQRT_SYMBOL + '(' + MINUS_SIGN 
+                + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeRePlusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, 1, ring, 2);
+        String expected = MINUS_SIGN + a + "/2+" + SQRT_SYMBOL + '(' 
+                + MINUS_SIGN + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeReMinusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -1, ring, 
+                2);
+        String expected = MINUS_SIGN + a + "/2" + MINUS_SIGN + SQRT_SYMBOL + '(' 
+                + MINUS_SIGN + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
