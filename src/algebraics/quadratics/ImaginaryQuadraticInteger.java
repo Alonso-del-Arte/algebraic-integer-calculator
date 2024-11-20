@@ -77,6 +77,18 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 MINUS_SIGN_SPACED);
         String zeroSurdRemoved = extraSignRemoved.replace(" + 0" + radicandStr, 
                 "");
+        if (this.denominator == 2) {
+            String target, replacement;
+            if (this.surdPartMult < 0) {
+                target = MINUS_SIGN_SPACED;
+                replacement = "/2" + MINUS_SIGN_SPACED;
+            } else {
+                target = PLUS_SIGN_SPACED;
+                replacement = "/2" + PLUS_SIGN_SPACED;
+            }
+            String regHalved = zeroSurdRemoved.replace(target, replacement);
+            return regHalved + "/2";
+        }
         String withRedundantOneRemoved = zeroSurdRemoved.replace(" 1" 
                 + radicandStr, radicandStr);
         String zeroRegRemoved = (withRedundantOneRemoved.startsWith("0 ")) 
