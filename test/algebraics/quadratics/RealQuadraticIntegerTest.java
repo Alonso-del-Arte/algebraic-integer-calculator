@@ -775,6 +775,19 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testGetSurdPartMultHalfInt() {
+        int bound = 512;
+        int a = 2 * randomNumber(bound) + 1;
+        int expected = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, expected, ring, 
+                2);
+        int actual = number.getSurdPartMult();
+        String message = "Getting surd part of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of getDenominator method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
