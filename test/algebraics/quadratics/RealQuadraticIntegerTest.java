@@ -761,22 +761,18 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of getSurdPartMult method, of class ImaginaryQuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the getSurdPartMult function, of the RealQuadraticInteger class.
+     */
     @Test
     public void testGetSurdPartMult() {
         System.out.println("getImagPartMult");
-        fail("REWRITE THIS TEST");
-        int expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomSurdForHalfInts;
-//            } else {
-//                expResult = randomSurdPart;
-//            }
-//            result = testIntegers.get(i).getSurdPartMult();
-//            assertEquals(expResult, result);
-//        }
+        int a = randomNumber();
+        int expected = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, expected, ring);
+        int actual = number.getSurdPartMult();
+        String message = "Getting surd part of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
