@@ -743,7 +743,7 @@ public class RealQuadraticIntegerTest {
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new RealQuadraticInteger(expected, b, ring);
         int actual = number.getRegPartMult();
-        String message = "Getting real part of " + number.toString();
+        String message = "Getting reg part of " + number.toString();
         assertEquals(message, expected, actual);
     }
     
