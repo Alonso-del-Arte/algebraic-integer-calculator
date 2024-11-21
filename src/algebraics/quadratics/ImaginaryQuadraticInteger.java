@@ -101,7 +101,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public int getRegPartMult() {
-        return Integer.MIN_VALUE;
+        return this.regPartMult * this.denominator;
     }
     
     /**
