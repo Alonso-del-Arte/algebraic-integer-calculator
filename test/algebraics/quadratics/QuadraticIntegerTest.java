@@ -54,8 +54,6 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class QuadraticIntegerTest {
     
-    // TODO: Write arithmetic overflow tests
-    
     private static QuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(1024);
         if (propD == 1) propD = 2; 
@@ -89,7 +87,10 @@ public class QuadraticIntegerTest {
         }
     }
     
-    // TODO: Write tests for toString()
+    @Test
+    public void testToString() {
+        fail("HAVEN'T WRITTEN TEST YET");
+    }
     
     @Test
     public void testReferentialEquality() {
@@ -454,6 +455,21 @@ public class QuadraticIntegerTest {
                 + numStr;
         assert excMsg.contains(numStr) : message;
         System.out.println("\"" + excMsg + "\"");
+    }
+    
+    /**
+     * Test of the getRegPartMult function, of the RealQuadraticInteger class.
+     */
+    @Test
+    public void testGetRegPartMult() {
+        System.out.println("getRegPartMult");
+        int expected = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(expected, b, ring);
+        int actual = number.getRegPartMult();
+        String message = "Getting real part of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
