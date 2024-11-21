@@ -1390,6 +1390,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testGetSurdPartMultHalfInt() {
+        int bound = 512;
+        int a = 2 * randomNumber(bound) + 1;
+        int expected = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, expected, 
+                ring, 2);
+        int actual = number.getSurdPartMult();
+        String message = "Getting imaginary part of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of angle method, of class ImaginaryQuadraticInteger.
      */
