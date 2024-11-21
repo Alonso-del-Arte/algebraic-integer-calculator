@@ -1344,22 +1344,20 @@ public class ImaginaryQuadraticIntegerTest {
 //    }
     
     /**
-     * Test of getRegPartMult method, of class ImaginaryQuadraticInteger.
+     * Test of the getRegPartMult function, of the ImaginaryQuadraticInteger 
+     * class.
      */
-//    @Test
+    @Test
     public void testGetRegPartMult() {
         System.out.println("getRealPartMult");
-        fail("REWRITE THIS TEST");
-//        int expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomRealForHalfInts;
-//            } else {
-//                expResult = randomRealPart;
-//            }
-//            result = testIntegers.get(i).getRegPartMult();
-//            assertEquals(expResult, result);
-//        }
+        int expected = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(expected, b, 
+                ring);
+        int actual = number.getRegPartMult();
+        String message = "Getting real part of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
