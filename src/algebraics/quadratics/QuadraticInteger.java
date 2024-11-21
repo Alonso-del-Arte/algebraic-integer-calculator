@@ -74,7 +74,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * be 7.
      */
     public int getRegPartMult() {
-        return -this.regPartMult - 1;
+        return this.regPartMult * this.denominator;
     }
     
     /**
