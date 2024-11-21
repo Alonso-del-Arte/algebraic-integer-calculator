@@ -90,13 +90,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         String processed = (tweaked.startsWith("+")) 
                 ? tweaked.substring(beginIndex) : tweaked;
         if (this.denominator == 2) {
-            String target, replacement;
-            if (this.surdPartMult < 0) {
-                target = MINUS_SIGN_SPACED;
-            } else {
-                target = PLUS_SIGN_SPACED;
-            }
-            replacement = "/2" + target;
+            String target = (this.surdPartMult < 0) ? MINUS_SIGN_SPACED 
+                    : PLUS_SIGN_SPACED;
+            String replacement = "/2" + target;
             processed = processed.replace(target, replacement) + "/2";
         }
         return processed;
