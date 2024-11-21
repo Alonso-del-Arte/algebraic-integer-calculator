@@ -44,10 +44,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     
     private static final Fraction ONE_HALF = new Fraction(1, 2);
 
-    protected final int regPartMult;
-    protected final int surdPartMult;
-    protected final QuadraticRing quadRing;
-    protected final int denominator;
+    final int regPartMult;
+    final int surdPartMult;
+    final QuadraticRing quadRing;
+    final int denominator;
     
     /**
      * Retrieves an object representing the ring this quadratic integer belongs 
@@ -69,8 +69,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * @return In the case of an imaginary quadratic integer, the real part, 
      * possibly multiplied by 2. In the case of a real quadratic integer, the 
      * part of the real quadratic integer that is not multiplied by the square 
-     * root of the radicand, possibly multiplied by 2. For example, for 7/2 + 
-     * (&radic;&minus;3)/2, this would be 7. For 7 + &radic;3, this would also 
+     * root of the radicand, possibly multiplied by 2. For example, for 
+     * <sup>7</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub>, 
+     * this would be 7. For 7 + &radic;3, this would also 
      * be 7.
      */
     public int getRegPartMult() {
