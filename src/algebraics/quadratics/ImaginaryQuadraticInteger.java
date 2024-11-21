@@ -98,10 +98,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return processed;
     }
     
-    // TODO: Write tests for this
     @Override
     public int getRegPartMult() {
-        return this.regPartMult * this.denominator;
+        return this.regPartMult;
     }
     
     /**
