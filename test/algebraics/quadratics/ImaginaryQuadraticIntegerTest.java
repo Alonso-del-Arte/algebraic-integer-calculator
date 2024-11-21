@@ -1374,22 +1374,20 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of getSurdPartMult method, of class ImaginaryQuadraticInteger.
+     * Test of the getSurdPartMult function, of the ImaginaryQuadraticInteger 
+     * class.
      */
-//    @Test
+    @Test
     public void testGetSurdPartMult() {
         System.out.println("getImagPartMult");
-        fail("REWRITE THIS TEST");
-//        int expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomImagForHalfInts;
-//            } else {
-//                expResult = randomImagPart;
-//            }
-//            result = testIntegers.get(i).getSurdPartMult();
-//            assertEquals(expResult, result);
-//        }
+        int a = randomNumber();
+        int expected = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, expected, 
+                ring);
+        int actual = number.getSurdPartMult();
+        String message = "Getting imaginary part of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
