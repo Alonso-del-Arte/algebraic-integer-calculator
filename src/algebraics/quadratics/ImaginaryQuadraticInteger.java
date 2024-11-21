@@ -114,6 +114,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return twiceRealPartMult;
     }
     
+    // TODO: Write tests for this
+    @Override
+    public int getSurdPartMult() {
+        return Integer.MIN_VALUE;
+    }
+    
     /**
      * Gives twice the imaginary part of the imaginary quadratic integer, before 
      * multiplication by &radic;<i>d</i>. If the ring has so-called 
