@@ -85,12 +85,13 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * @return In the case of an imaginary quadratic integer, the imaginary 
      * part, possibly multiplied by 2. In the case of a real quadratic integer, 
      * the part of the real quadratic integer that is multiplied by the square 
-     * root of the radicand, possibly multiplied by 2. For example, for 5/2 + 
-     * 3(&radic;&minus;3)/2, this would be 3. For 5 + 3&radic;3, this would also 
-     * be 3.
+     * root of the radicand, possibly multiplied by 2. For example, for 
+     * <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>3&radic;&minus;3</sup>&frasl;<sub>2</sub>, this would be 3. For 5 + 
+     * 3&radic;3, this would also be 3.
      */
     public int getSurdPartMult() {
-        return this.surdPartMult * this.denominator;
+        return this.surdPartMult;
     }
     
     /**
