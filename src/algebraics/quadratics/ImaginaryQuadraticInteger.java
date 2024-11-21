@@ -98,6 +98,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return processed;
     }
     
+    // TODO: Write tests for this
+    @Override
+    public int getRegPartMult() {
+        return Integer.MIN_VALUE;
+    }
+    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 
