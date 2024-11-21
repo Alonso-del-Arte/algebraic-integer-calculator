@@ -731,6 +731,7 @@ public class RealQuadraticIntegerTest {
         String message = "Getting ring of " + number.toString();
         assertEquals(message, expected, actual);
     }
+    
     /**
      * Test of the getRegPartMult function, of the RealQuadraticInteger class.
      */
@@ -805,7 +806,6 @@ public class RealQuadraticIntegerTest {
     public void testToString() {
         System.out.println("toString");
         fail("REWRITE THIS TEST");
-        String expResult, result;
 //        for (int i = 1; i < totalTestIntegers; i++) {
 //            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
 //                expResult = randomRegForHalfInts + "/2+" + randomSurdForHalfInts + "\u221A(" + testIntegers.get(i).getRing().getRadicand() + ")/2";
