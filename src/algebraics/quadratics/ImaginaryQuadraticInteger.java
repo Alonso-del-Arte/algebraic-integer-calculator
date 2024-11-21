@@ -114,10 +114,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return twiceRealPartMult;
     }
     
-    // TODO: Write tests for this
     @Override
     public int getSurdPartMult() {
-        return this.surdPartMult * this.denominator;
+        return this.surdPartMult;
     }
     
     /**
