@@ -486,6 +486,18 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testGetSurdPartMult() {
+        System.out.println("getImagPartMult");
+        int a = randomNumber();
+        int expected = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, expected, ring);
+        int actual = number.getSurdPartMult();
+        String message = "Getting surd part of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testGetRing() {
         System.out.println("getRing");
         int a = randomNumber();
