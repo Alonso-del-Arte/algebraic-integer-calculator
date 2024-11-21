@@ -88,9 +88,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * root of the radicand, possibly multiplied by 2. For example, for 5/2 + 
      * 3(&radic;&minus;3)/2, this would be 3. For 5 + 3&radic;3, this would also 
      * be 3.
-     */
+     */// TODO: Write tests for this
     public int getSurdPartMult() {
-        return this.surdPartMult;
+        return -this.surdPartMult;
     }
     
     /**
