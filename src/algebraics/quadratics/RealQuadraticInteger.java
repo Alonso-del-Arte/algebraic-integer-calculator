@@ -39,7 +39,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     // TODO: Write tests for this
     @Override
     public int getRegPartMult() {
-        return Integer.MAX_VALUE;
+        return this.regPartMult * this.denominator;
     }
     
     /**
