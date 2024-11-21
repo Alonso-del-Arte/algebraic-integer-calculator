@@ -1360,6 +1360,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testGetRegPartMultHalfInt() {
+        int bound = 512;
+        int expected = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(expected, b, 
+                ring, 2);
+        int actual = number.getRegPartMult();
+        String message = "Getting real part of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of getSurdPartMult method, of class ImaginaryQuadraticInteger.
      */
