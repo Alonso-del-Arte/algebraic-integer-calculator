@@ -36,10 +36,9 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    // TODO: Write tests for this
     @Override
     public int getRegPartMult() {
-        return this.regPartMult * this.denominator;
+        return this.regPartMult;
     }
     
     /**
