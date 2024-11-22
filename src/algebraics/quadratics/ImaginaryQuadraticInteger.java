@@ -131,11 +131,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return twiceImagPartMult;
     }
 
-    @Override
-    public int getDenominator() {
-        return this.denominator;
-    }
-    
     /**
      * Gives this imaginary quadratic integer's distance from 0 as a floating 
      * point number. Sometimes called "complex norm."
