@@ -100,14 +100,16 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * @return 2 only in the case of so-called "half-integers," always 1 
      * otherwise. So, if {@link #getRing()}{@link 
      * ImaginaryQuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is false, 
-     * this getter should always return 1. For example, for 3/2 + 
-     * (&radic;&minus;7)/2, this would be 2, for 3 + &radic;&minus;7 this would 
-     * be 1. In the ring of the Gaussian integers, this getter should always 
-     * return 1. Even if &minus;1 or &minus;2 was successfully used as a 
-     * denominator in the constructor, this getter will still return 1 or 2.
+     * this getter should always return 1. For example, for 
+     * <sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub>, this would be 2, for 3 + 
+     * &radic;&minus;7 this would be 1. In the ring of the Gaussian integers, 
+     * this getter should always return 1. Even if &minus;1 or &minus;2 was 
+     * successfully used as a denominator in the constructor, this getter will 
+     * still return 1 or 2.
      */
     public int getDenominator() {
-        return this.denominator;
+        return 0;
     }
 
     /**
