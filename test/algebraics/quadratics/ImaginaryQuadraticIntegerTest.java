@@ -713,6 +713,28 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
+     * Test of angle method, of class ImaginaryQuadraticInteger.
+     */
+//    @Test
+    public void testAngle() {
+        System.out.println("angle");
+        fail("REWRITE THIS TEST");
+//        double expResult = 1.57079633;
+//        double result = IMAG_UNIT_I.angle();
+//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
+//        expResult *= -1.0;
+//        result = IMAG_UNIT_NEG_I.angle();
+//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
+//        expResult = 2.0943951;
+//        result = COMPLEX_CUBIC_ROOT_OF_UNITY.angle();
+//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
+//        expResult *= -1.0;
+//        QuadraticInteger omegaSquared = COMPLEX_CUBIC_ROOT_OF_UNITY.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
+//        result = omegaSquared.angle();
+//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    /**
      * Another test of the algebraicDegree function, of the 
      * ImaginaryQuadraticInteger inherited from {@link QuadraticInteger}. Purely 
      * real nonzero integers should have algebraic degree 1.
@@ -1404,28 +1426,6 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of angle method, of class ImaginaryQuadraticInteger.
-     */
-//    @Test
-    public void testAngle() {
-        System.out.println("angle");
-        fail("REWRITE THIS TEST");
-//        double expResult = 1.57079633;
-//        double result = IMAG_UNIT_I.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        expResult *= -1.0;
-//        result = IMAG_UNIT_NEG_I.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        expResult = 2.0943951;
-//        result = COMPLEX_CUBIC_ROOT_OF_UNITY.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        expResult *= -1.0;
-//        QuadraticInteger omegaSquared = COMPLEX_CUBIC_ROOT_OF_UNITY.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
-//        result = omegaSquared.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-    }
-    
-    /**
      * Test of the getRing function, of the ImaginaryQuadraticInteger class.
      */
     @Test
@@ -1442,21 +1442,23 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of getDenominator method, of class ImaginaryQuadraticInteger. This 
-     * tests depends on the test integers determined by setUpClass() which come 
-     * from rings with "half-integers" to themselves be "half-integers."
+     * Test of the getDenominator function, of the ImaginaryQuadraticInteger 
+     * class.
      */
-//    @Test
+    @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
-        fail("REWRITE THIS TEST");
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                assertEquals(2, testIntegers.get(i).getDenominator());
-//            } else {
-//                assertEquals(1, testIntegers.get(i).getDenominator());
-//            }
-//        }
+        int bound = 8192;
+        int halfBound = bound / 2;
+        int a = 2 * randomNumber(bound) + 1 - halfBound;
+        int b = 2 * randomNumber(bound) + 1 - halfBound;
+        int expected = 2;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 
+                expected);
+        int actual = number.getDenominator();
+        String message = "Getting denominator of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
