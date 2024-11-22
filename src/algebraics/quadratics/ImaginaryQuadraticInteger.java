@@ -130,6 +130,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         }
         return twiceImagPartMult;
     }
+
+    // TODO: Write tests for this
+    @Override
+    public int getDenominator() {
+        return 0;
+    }
     
     /**
      * Gives this imaginary quadratic integer's distance from 0 as a floating 
