@@ -807,6 +807,19 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testGetDenominatorOne() {
+        int a = randomNumber();
+        int b = randomNumber();
+        int expected = 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 
+                expected);
+        int actual = number.getDenominator();
+        String message = "Getting denominator of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of toString method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
