@@ -134,7 +134,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public int getDenominator() {
-        return 0;
+        return 2;
     }
     
     /**
