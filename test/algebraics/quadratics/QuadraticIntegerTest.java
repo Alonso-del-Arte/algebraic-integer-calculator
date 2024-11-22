@@ -542,6 +542,19 @@ public class QuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testGetDenominatorOne() {
+        int a = randomNumber();
+        int b = randomNumber();
+        int expected = 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring, 
+                expected);
+        int actual = number.getDenominator();
+        String message = "Getting denominator of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Another test of the conjugate function of the QuadraticInteger class. 
      * Testing that trying to take the conjugate of a quadratic integer from an 
