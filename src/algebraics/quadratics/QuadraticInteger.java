@@ -109,7 +109,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * still return 1 or 2.
      */
     public int getDenominator() {
-        return 2;
+        return this.denominator;
     }
 
     /**
