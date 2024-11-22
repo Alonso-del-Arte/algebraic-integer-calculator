@@ -1461,6 +1461,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testGetDenominatorOne() {
+        int a = randomNumber();
+        int b = randomNumber();
+        int expected = 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 
+                expected);
+        int actual = number.getDenominator();
+        String message = "Getting denominator of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of hashCode method, of class ImaginaryQuadraticInteger. It is 
      * expected that if two ImaginaryQuadraticInteger objects are equal, their 
