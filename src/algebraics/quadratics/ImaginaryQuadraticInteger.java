@@ -131,10 +131,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return twiceImagPartMult;
     }
 
-    // TODO: Write tests for this
     @Override
     public int getDenominator() {
-        return 2;
+        return this.denominator;
     }
     
     /**
