@@ -86,7 +86,7 @@ public class QuadraticIntegerTest {
             return new QuadraticIntegerImpl(a, b, ring);
         }
     }
-    
+    @org.junit.Ignore
     @Test
     public void testToString() {
         fail("HAVEN'T WRITTEN TEST YET");
@@ -523,6 +523,25 @@ public class QuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    /**
+     * Test of the getDenominator function, of the QuadraticInteger class.
+     */
+    @Test
+    public void testGetDenominator() {
+        System.out.println("getDenominator");
+        int bound = 8192;
+        int halfBound = bound / 2;
+        int a = 2 * randomNumber(bound) + 1 - halfBound;
+        int b = 2 * randomNumber(bound) + 1 - halfBound;
+        int expected = 2;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring, 
+                expected);
+        int actual = number.getDenominator();
+        String message = "Getting denominator of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Another test of the conjugate function of the QuadraticInteger class. 
      * Testing that trying to take the conjugate of a quadratic integer from an 
