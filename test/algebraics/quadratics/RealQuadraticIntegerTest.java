@@ -789,20 +789,22 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of getDenominator method, of class RealQuadraticInteger, inherited 
-     * from QuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the getDenominator function, of the RealQuadraticInteger class.
+     */
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
-        fail("REWRITE THIS TEST");
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                assertEquals(2, testIntegers.get(i).getDenominator());
-//            } else {
-//                assertEquals(1, testIntegers.get(i).getDenominator());
-//            }
-//        }
+        int bound = 8192;
+        int halfBound = bound / 2;
+        int a = 2 * randomNumber(bound) + 1 - halfBound;
+        int b = 2 * randomNumber(bound) + 1 - halfBound;
+        int expected = 2;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 
+                expected);
+        int actual = number.getDenominator();
+        String message = "Getting denominator of " + number.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
