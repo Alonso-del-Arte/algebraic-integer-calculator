@@ -143,7 +143,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public double abs() {
-        return 0.5 + this.regPartMult;
+        return 0.0;
     }
 
     /**
