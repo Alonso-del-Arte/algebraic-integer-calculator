@@ -1233,49 +1233,24 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of abs, of class ImaginaryQuadraticInteger. Besides the algebraic 
-     * integers from setUpClass(), this test also tests some purely real and 
-     * purely imaginary Gaussian integers, and checks their real or imaginary 
-     * parts against {@link Math#abs(double)}.
+     * Test of the abs function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testAbs() {
         System.out.println("abs");
-        fail("REWRITE THIS TEST");
-//        double xSquared = randomRealPart * randomRealPart;
-//        double preY = randomImagPart * randomImagPart;
-//        double ySquared, expResult, result;
-//        double xSqForHalfInts = randomRealForHalfInts * randomRealForHalfInts;
-//        double preYForHalfInts = randomImagForHalfInts * randomImagForHalfInts;
-//        ImaginaryQuadraticInteger ramifier;
-//        for (QuadraticInteger testInteger : testIntegers) {
-//            if (testInteger.getRing().hasHalfIntegers()) {
-//                ySquared = preYForHalfInts 
-//                        * testInteger.getRing().getAbsNegRad();
-//                expResult = (xSqForHalfInts + ySquared)/4;
-//                expResult = Math.sqrt(expResult);
-//            } else {
-//                ySquared = preY * testInteger.getRing().getAbsNegRad();
-//                expResult = Math.sqrt(xSquared + ySquared);
-//            }
-//            result = testInteger.abs();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//            // The result should be the same for the conjugate...
-//            result = testInteger.conjugate().abs();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//            // ...and the conjugate times -1...
-//            result = testInteger.conjugate().times(-1).abs();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//            // ...and the original number times -1.
-//            result = testInteger.conjugate().times(-1).abs();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//            // abs(sqrt(d)) should equal sqrt(-d)
-//            ramifier = new ImaginaryQuadraticInteger(0, 1, 
-//                    testInteger.getRing());
-//            expResult = testInteger.getRing().getAbsNegRadSqrt();
-//            result = ramifier.abs();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        }
+        int shift = randomNumber(16);
+        int powerOfTwo = 1 << shift;
+        int bound = -Short.MIN_VALUE;
+        int halfBound = bound / 2;
+        int a = (randomNumber(bound) - halfBound) | powerOfTwo;
+        int b = (randomNumber(bound) - halfBound) | powerOfTwo;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        double hypotenuseSquared = (double) a * a + b * b * ring.getAbsNegRad();
+        double expected = Math.sqrt(hypotenuseSquared);
+        double actual = number.abs();
+        String message = "Calculating abs(" + number.toString() + ")";
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
     /**
