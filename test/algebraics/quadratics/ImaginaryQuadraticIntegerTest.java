@@ -1179,6 +1179,16 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
+    public void testAbsZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, ring);
+        double expected = 0.0;
+        double actual = number.abs();
+        String message = "Calculating abs(" + number.toString() + ")";
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
     public void testAbsPurelyRealPositive() {
         int a = randomNumber();
         QuadraticRing ring = chooseRing();
