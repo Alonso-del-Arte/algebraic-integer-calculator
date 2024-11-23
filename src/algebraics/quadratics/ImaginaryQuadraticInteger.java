@@ -141,32 +141,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * purely real negative integers this is the integer itself multiplied by 
      * &minus;1.0.
      */
-    // TODO: Refactor
     @Override
     public double abs() {
-        return -Double.MAX_VALUE;
-//        if (this.surdPartMult == 0) {
-//            if (this.regPartMult < 0) {
-//                return -this.regPartMult;
-//            } else {
-//                return this.regPartMult;
-//            }
-//        }
-//        if (this.regPartMult == 0 && this.quadRing.radicand == -1) {
-//            if (this.surdPartMult < 0) {
-//                return -this.surdPartMult;
-//            } else {
-//                return this.surdPartMult;
-//            }
-//        }
-//        double realLegSquare = this.regPartMult * this.regPartMult;
-//        double imagLegSquare = this.surdPartMult * this.surdPartMult 
-//                * this.quadRing.absRadicand;
-//        double hypotenuseSquare = realLegSquare + imagLegSquare;
-//        if (this.denominator == 2) {
-//            hypotenuseSquare /= 4;
-//        }
-//        return Math.sqrt(hypotenuseSquare);
+        return this.regPartMult;
     }
 
     /**
