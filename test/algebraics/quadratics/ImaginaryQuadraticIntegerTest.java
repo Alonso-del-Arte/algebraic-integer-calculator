@@ -1199,6 +1199,17 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
+    @Test
+    public void testAbsPurelyRealNegative() {
+        int a = -randomNumber(Short.MAX_VALUE) - 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        double expected = Math.abs(a);
+        double actual = number.abs();
+        String message = "Calculating abs(" + number.toString() + ")";
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
     /**
      * Test of abs, of class ImaginaryQuadraticInteger. Besides the algebraic 
      * integers from setUpClass(), this test also tests some purely real and 
