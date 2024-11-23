@@ -144,7 +144,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public double abs() {
         if (this.regPartMult == 0) {
-            return this.quadRing.realRadSqrt * this.surdPartMult;
+            return this.quadRing.realRadSqrt * Math.abs(this.surdPartMult);
         }
         return Math.abs(this.regPartMult);
     }
