@@ -714,10 +714,21 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testAnglePurelyRealNegative() {
-        int a = -randomNumber(8192);
+        int a = -randomNumber(8192) - 1;
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
         double expected = Math.PI;
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAnglePurelyRealPositive() {
+        int a = randomNumber(8192) + 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        double expected = 0.0;
         double actual = number.angle();
         String message = "Reckoning angle of " + number.toString();
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
