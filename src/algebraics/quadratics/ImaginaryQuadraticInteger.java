@@ -217,10 +217,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public double angle() {
         if (this.regPartMult == 0 && this.surdPartMult != 0) {
-            if (this.surdPartMult > 0) {
-                return Math.PI / 2;
-            }
-            return -Math.PI / 2;
+            return Math.PI / 2 * Integer.signum(this.surdPartMult);
         }
         if (this.regPartMult >= 0) {
             return 0;
