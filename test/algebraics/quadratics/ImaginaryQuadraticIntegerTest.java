@@ -1246,7 +1246,9 @@ public class ImaginaryQuadraticIntegerTest {
         int b = (randomNumber(bound) - halfBound) | powerOfTwo;
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
-        double hypotenuseSquared = (double) a * a + b * b * ring.getAbsNegRad();
+        double realLeg = ((double) a) * a;
+        double imagLeg = ((double) b) * b * ring.getAbsNegRad();
+        double hypotenuseSquared = realLeg + imagLeg;
         double expected = Math.sqrt(hypotenuseSquared);
         double actual = number.abs();
         String message = "Calculating abs(" + number.toString() + ")";
