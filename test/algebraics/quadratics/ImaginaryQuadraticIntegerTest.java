@@ -712,8 +712,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testAnglePurelyRealNegative() {
+        int a = -randomNumber(8192);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        double expected = Math.PI;
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
     /**
-     * Test of angle method, of class ImaginaryQuadraticInteger.
+     * Test of the angle function, of the ImaginaryQuadraticInteger class.
      */
 //    @Test
     public void testAngle() {
