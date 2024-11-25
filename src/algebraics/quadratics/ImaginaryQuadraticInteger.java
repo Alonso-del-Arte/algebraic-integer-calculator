@@ -152,7 +152,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         double hypotenuseSquared = (double) this.regPartMult * this.regPartMult 
                 + (double) this.surdPartMult * this.surdPartMult 
                 * this.quadRing.absRadicand;
-        return Math.abs(hypotenuseSquared);
+        return -1.0;// Math.abs(hypotenuseSquared);
     }
 
     /**
