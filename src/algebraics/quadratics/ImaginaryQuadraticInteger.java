@@ -216,6 +216,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override // TODO: Write tests for this
     public double angle() {
+        if (this.regPartMult > 0) {
+            return 0;
+        }
         return Math.PI;// Math.atan2(this.numValIm, this.numValRe);
     }
     
