@@ -133,7 +133,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
 
     /**
      * Gives this imaginary quadratic integer's distance from 0 as a floating 
-     * point number. Sometimes called "complex norm."
+     * point number. Sometimes called "complex norm," "complex argument," 
+     * "phase" or "amplitude."
      * @return This distance from 0 of the imaginary quadratic integer as a 
      * floating point number. For example, for 5/2 + (&radic;&minus;7)/2, this 
      * would be approximately 2.82842712. For a purely real positive integer, 
@@ -213,9 +214,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * in degrees, you can use <code>Math.toDegrees(double)</code> to make the 
      * conversion.
      */
-    @Override
+    @Override // TODO: Write tests for this
     public double angle() {
-        return Math.atan2(this.numValIm, this.numValRe);
+        return -Double.MAX_VALUE;// Math.atan2(this.numValIm, this.numValRe);
     }
     
     /**
