@@ -101,11 +101,11 @@ Just as with $\mathbb Z$, all the rings that will be discussed below are closed
 under addition and closed under multiplication. But they're not closed under 
 division.
 
-We can restate this thus: given a ring $R$, if $a \in R$ and $b \in R$, then $a 
-+ b \in R$ and $ab \in R$, but $\frac{a}{b}$ and $\frac{b}{a}$ might be outside 
-$R$.
+We can restate this thus: given a ring $R$, if $a \in R$ and $b \in R$, then 
+$a + b \in R$ and $ab \in R$, but $\frac{a}{b}$ and $\frac{b}{a}$ might be 
+outside $R$.
 
-For example, 7 and 22 are numbers in $\mathbb Z$, and we see that 7 + 22 = 29 
+For example, 7 and 22 are numbers in $\mathbb Z$, and we see that $7 + 22 = 29$ 
 and 7 &times; 22 = 164 are also in $\mathbb Z$. Clearly 164 is divisible by both 
 7 and 22.
 
@@ -203,8 +203,8 @@ necessarily squarefree.
 
 (FINISH WRITING)
 
-The norm function is $N(a + b \root 3 \of d + c (\root 3 \of d)^2) = a^3 + b^3 d 
-+ c^3 d^2 - 3abcd$.
+The norm function is 
+$N(a + b \root 3 \of d + c (\root 3 \of d)^2) = a^3 + b^3 d + c^3 d^2 - 3abcd$.
 
 (FINISH WRITING)
 
