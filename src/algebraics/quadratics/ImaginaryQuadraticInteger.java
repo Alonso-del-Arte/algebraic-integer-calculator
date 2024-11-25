@@ -214,8 +214,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * in degrees, you can use <code>Math.toDegrees(double)</code> to make the 
      * conversion.
      */
-    @Override // TODO: Write tests for this
+    @Override
     public double angle() {
+        if (this.regPartMult == 0 && this.surdPartMult != 0) {
+            return -Math.PI / 2;
+        }
         if (this.regPartMult >= 0) {
             return 0;
         }
