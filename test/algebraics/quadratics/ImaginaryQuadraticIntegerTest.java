@@ -87,10 +87,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     private static ImaginaryQuadraticRing chooseRingWithHalfInts() {
-        int d;
-        do {
-            d = -4 * randomNumber(256) - 3;
-        } while (!isSquarefree(d));
+        int d = -randomSquarefreeNumberMod(3, 4);
         return new ImaginaryQuadraticRing(d);
     }
     
@@ -1222,8 +1219,7 @@ public class ImaginaryQuadraticIntegerTest {
     public void testConjugateHalfIntegers() {
         int a = RANDOM.nextInt() | 1;
         int b = RANDOM.nextInt() | 1;
-        int d = -randomSquarefreeNumberMod(3, 4);
-        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticRing ring = chooseRingWithHalfInts();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 2);
         QuadraticInteger expected = new ImaginaryQuadraticInteger(a, -b, ring, 
                 2);
