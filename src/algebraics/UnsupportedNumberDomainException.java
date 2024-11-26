@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -46,8 +46,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      * the exception was constructed.
      */
     public AlgebraicInteger[] getCausingNumbers() {
-        return (new AlgebraicInteger[]{this.unsupRingNumberA, 
-            this.unsupRingNumberB});
+        return (new AlgebraicInteger[]{});
     }
     
     /**
@@ -59,7 +58,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      * 2-number constructor. This is guaranteed to not be null.
      */
     public IntegerRing getCausingDomain() {
-        return this.unsupDomain;
+        return null;// this.unsupDomain;
     }
     
     /**
@@ -131,21 +130,21 @@ public class UnsupportedNumberDomainException extends RuntimeException {
     public UnsupportedNumberDomainException(String message, 
             AlgebraicInteger numberA, AlgebraicInteger numberB) {
         super(message);
-        if (numberA == null) {
-            String excMsg = "numberA parameter must not be null";
-            throw new NullPointerException(excMsg);
-        }
+//        if (numberA == null) {
+//            String excMsg = "numberA parameter must not be null";
+//            throw new NullPointerException(excMsg);
+//        }
         IntegerRing inferredRing = numberA.getRing();
-        if (numberB != null) {
-            IntegerRing checkRing = numberB.getRing();
-            if (!inferredRing.equals(checkRing)) {
-                String excMsg = numberA.toASCIIString() + " is from " 
-                        + inferredRing.toASCIIString() + " but " 
-                        + numberB.toASCIIString() + " is from " 
-                        + checkRing.toASCIIString();
-                throw new IllegalArgumentException(excMsg);
-            }
-        }
+//        if (numberB != null) {
+//            IntegerRing checkRing = numberB.getRing();
+//            if (!inferredRing.equals(checkRing)) {
+//                String excMsg = numberA.toASCIIString() + " is from " 
+//                        + inferredRing.toASCIIString() + " but " 
+//                        + numberB.toASCIIString() + " is from " 
+//                        + checkRing.toASCIIString();
+//                throw new IllegalArgumentException(excMsg);
+//            }
+//        }
         this.unsupRingNumberA = numberA;
         this.unsupRingNumberB = numberB;
         this.unsupDomain = inferredRing;
