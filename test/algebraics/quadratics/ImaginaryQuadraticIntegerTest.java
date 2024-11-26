@@ -823,6 +823,66 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
+    @Test
+    public void testAngleHalfIntsPositiveRePositiveIm() {
+        int bound = 8192;
+        int a = 2 * RANDOM.nextInt(bound) + 1;
+        int b = 2 * RANDOM.nextInt(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 2);
+        double y = ring.getAbsNegRadSqrt() * b / 2;
+        double x = 0.5 * a;
+        double expected = Math.atan2(y, x);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAngleHalfIntsPositiveReNegativeIm() {
+        int bound = 8192;
+        int a = 2 * RANDOM.nextInt(bound) + 1;
+        int b = -2 * RANDOM.nextInt(bound) - 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 2);
+        double y = ring.getAbsNegRadSqrt() * b / 2;
+        double x = 0.5 * a;
+        double expected = Math.atan2(y, x);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAngleHalfIntsNegativeReNegativeIm() {
+        int bound = 8192;
+        int a = -2 * RANDOM.nextInt(bound) - 1;
+        int b = -2 * RANDOM.nextInt(bound) - 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 2);
+        double y = ring.getAbsNegRadSqrt() * b / 2;
+        double x = 0.5 * a;
+        double expected = Math.atan2(y, x);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAngleHalfIntsNegativeRePositiveIm() {
+        int bound = 8192;
+        int a = -2 * RANDOM.nextInt(bound) - 1;
+        int b = 2 * RANDOM.nextInt(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring, 2);
+        double y = ring.getAbsNegRadSqrt() * b / 2;
+        double x = 0.5 * a;
+        double expected = Math.atan2(y, x);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
     /**
      * Another test of the algebraicDegree function, of the 
      * ImaginaryQuadraticInteger inherited from {@link QuadraticInteger}. Purely 
