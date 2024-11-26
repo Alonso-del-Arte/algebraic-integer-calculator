@@ -216,6 +216,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public double angle() {
+        if (this.denominator == 2) {
+            return Double.MAX_EXPONENT;
+        }
         if (this.regPartMult == 0 && this.surdPartMult != 0) {
             return Math.PI / 2 * Integer.signum(this.surdPartMult);
         }
