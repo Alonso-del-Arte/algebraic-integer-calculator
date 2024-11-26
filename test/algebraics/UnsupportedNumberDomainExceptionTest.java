@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -49,8 +49,9 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testGetMessage() {
         System.out.println("getMessage");
+        fail("REWRITE THIS TEST");
         int d = randomSquarefreeNumber(200);
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(d);
+        MockRing ring = new MockRing();
         UnsupportedNumberDomainException exc 
                 = new UnsupportedNumberDomainException(TESTING_MESSAGE, ring);
         String msg = "Exception message should not be empty";
