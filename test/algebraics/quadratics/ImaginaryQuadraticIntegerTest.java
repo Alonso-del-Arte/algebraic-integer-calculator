@@ -766,23 +766,61 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the angle function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testAngle() {
         System.out.println("angle");
-        fail("REWRITE THIS TEST");
-//        double expResult = 1.57079633;
-//        double result = IMAG_UNIT_I.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        expResult *= -1.0;
-//        result = IMAG_UNIT_NEG_I.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        expResult = 2.0943951;
-//        result = COMPLEX_CUBIC_ROOT_OF_UNITY.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//        expResult *= -1.0;
-//        QuadraticInteger omegaSquared = COMPLEX_CUBIC_ROOT_OF_UNITY.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
-//        result = omegaSquared.angle();
-//        assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
+        int bound = 16384;
+        int a = RANDOM.nextInt(bound) + 1;
+        int b = RANDOM.nextInt(bound) + 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        double y = ring.getAbsNegRadSqrt() * b;
+        double expected = Math.atan2(y, a);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAnglePositiveReNegativeIm() {
+        int bound = 16384;
+        int a = RANDOM.nextInt(bound) + 1;
+        int b = -RANDOM.nextInt(bound) - 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        double y = ring.getAbsNegRadSqrt() * b;
+        double expected = Math.atan2(y, a);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAngleNegativeReNegativeIm() {
+        int bound = 16384;
+        int a = -RANDOM.nextInt(bound) - 1;
+        int b = -RANDOM.nextInt(bound) - 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        double y = ring.getAbsNegRadSqrt() * b;
+        double expected = Math.atan2(y, a);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAngleNegativeRePositiveIm() {
+        int bound = 16384;
+        int a = -RANDOM.nextInt(bound) - 1;
+        int b = RANDOM.nextInt(bound) + 1;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        double y = ring.getAbsNegRadSqrt() * b;
+        double expected = Math.atan2(y, a);
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
     /**
