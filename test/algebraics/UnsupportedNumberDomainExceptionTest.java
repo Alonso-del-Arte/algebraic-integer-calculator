@@ -16,14 +16,8 @@
  */
 package algebraics;
 
-import algebraics.quadratics.IllDefinedQuadraticInteger;
-import algebraics.quadratics.IllDefinedQuadraticRing;
-import algebraics.quadratics.QuadraticInteger;
-
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
-
-import java.util.Random;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -33,8 +27,6 @@ import static org.junit.Assert.*;
  * @author Alonso del Arte
  */
 public class UnsupportedNumberDomainExceptionTest {
-    
-    private static final Random RANDOM = new Random();
     
     private static final String TESTING_MESSAGE 
             = "This is for testing purposes only";
@@ -50,7 +42,6 @@ public class UnsupportedNumberDomainExceptionTest {
     public void testGetMessage() {
         System.out.println("getMessage");
         fail("REWRITE THIS TEST");
-        int d = randomSquarefreeNumber(200);
         MockRing ring = new MockRing();
         UnsupportedNumberDomainException exc 
                 = new UnsupportedNumberDomainException(TESTING_MESSAGE, ring);
@@ -65,17 +56,15 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testGetCausingNumbers() {
         System.out.println("getCausingNumbers");
-        int d = -randomSquarefreeNumber(200);
-        int re = RANDOM.nextInt(16384) - 8192;
-        int im = RANDOM.nextInt(16384) - 8192;
-        IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(d);
-        QuadraticInteger a = new IllDefinedQuadraticInteger(re, im, r);
-        QuadraticInteger b = new IllDefinedQuadraticInteger(im, re, r);
+        MockRing ring = new MockRing();
+        MockInteger numberA = new MockInteger(ring);
+        MockInteger numberB = new MockInteger(ring);
         UnsupportedNumberDomainException exc 
-                = new UnsupportedNumberDomainException(TESTING_MESSAGE, a, b);
-        AlgebraicInteger[] expected = {a, b};
-        AlgebraicInteger[] actual = exc.getCausingNumbers();
-        assertArrayEquals(expected, actual);
+                = new UnsupportedNumberDomainException(TESTING_MESSAGE, numberA, 
+                        numberB);
+        AlgebraicInteger[] expecteds = {numberA, numberB};
+        AlgebraicInteger[] actuals = exc.getCausingNumbers();
+        assertArrayEquals(expecteds, actuals);
     }
     
     /**
@@ -85,8 +74,7 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testGetCausingDomain() {
         System.out.println("getCausingDomain");
-        int d = -randomSquarefreeNumber(200);
-        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(d);
+        MockRing expected = new MockRing();
         UnsupportedNumberDomainException exc 
                 = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
                         expected);
@@ -180,10 +168,8 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testConstructorRejectsNullNumberARegardlessOfNumberB() {
         int d = randomSquarefreeNumber(200);
-        int a = RANDOM.nextInt(16384) - 8192;
-        int b = RANDOM.nextInt(16384) - 8192;
-        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(d);
-        QuadraticInteger num = new IllDefinedQuadraticInteger(a, b, expected);
+        MockRing expected = new MockRing(d);
+        MockInteger num = new MockInteger(expected);
         try {
             UnsupportedNumberDomainException badExc 
                     = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
@@ -213,10 +199,8 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testConstructorInfersRing() {
         int d = randomSquarefreeNumber(200);
-        int a = RANDOM.nextInt(16384) - 8192;
-        int b = RANDOM.nextInt(16384) - 8192;
-        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(d);
-        QuadraticInteger num = new IllDefinedQuadraticInteger(a, b, expected);
+        MockRing expected = new MockRing(d);
+        MockInteger num = new MockInteger(expected);
         UnsupportedNumberDomainException exc 
                 = new UnsupportedNumberDomainException(TESTING_MESSAGE, num);
         IntegerRing actual = exc.getCausingDomain();
@@ -230,13 +214,11 @@ public class UnsupportedNumberDomainExceptionTest {
      */
     @Test
     public void testConstructorChecksRingsMatch() {
-        int d = randomSquarefreeNumber(200);
-        int a = RANDOM.nextInt(16384) - 8192;
-        int b = RANDOM.nextInt(16384) - 8192;
-        IllDefinedQuadraticRing ringA = new IllDefinedQuadraticRing(d);
-        IllDefinedQuadraticRing ringB = new IllDefinedQuadraticRing(-d);
-        QuadraticInteger numberA = new IllDefinedQuadraticInteger(a, b, ringA);
-        QuadraticInteger numberB = new IllDefinedQuadraticInteger(a, b, ringB);
+        int maxDegree = randomSquarefreeNumber(200);
+        MockRing ringA = new MockRing(maxDegree);
+        MockRing ringB = new MockRing(maxDegree + 1);
+        MockInteger numberA = new MockInteger(ringA);
+        MockInteger numberB = new MockInteger(ringB);
         try {
             UnsupportedNumberDomainException badExc 
                     = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
