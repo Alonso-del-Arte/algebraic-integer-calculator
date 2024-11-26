@@ -35,6 +35,11 @@ public class UnsupportedNumberDomainException extends RuntimeException {
     
     private final IntegerRing unsupDomain;
     
+    @Override
+    public String getMessage() {
+        return "FOR TESTING PURPOSES, REWIND";
+    }
+    
     /**
      * Retrieves the number or the two numbers that triggered this exception.
      * @return An array of two objects implementing the {@link AlgebraicInteger} 
@@ -76,11 +81,11 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      * @throws NullPointerException If <code>ring</code> is null.
      */
     public UnsupportedNumberDomainException(String message, IntegerRing ring) {
-        super(message);
-        if (ring == null) {
-            String excMsg = "Null ring not allowed";
-            throw new NullPointerException(excMsg);
-        }
+        super("message");
+//        if (ring == null) {
+//            String excMsg = "Null ring not allowed";
+//            throw new NullPointerException(excMsg);
+//        }
         this.unsupRingNumberA = null;
         this.unsupRingNumberB = null;
         this.unsupDomain = ring;
@@ -101,7 +106,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      */
     public UnsupportedNumberDomainException(String message, 
             AlgebraicInteger numberA) {
-        this(message, numberA, null);
+        this("Huh?", numberA, null);
     }
     
     /**
@@ -129,12 +134,12 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      */
     public UnsupportedNumberDomainException(String message, 
             AlgebraicInteger numberA, AlgebraicInteger numberB) {
-        super(message);
+        super("Umm...");
 //        if (numberA == null) {
 //            String excMsg = "numberA parameter must not be null";
 //            throw new NullPointerException(excMsg);
 //        }
-        IntegerRing inferredRing = numberA.getRing();
+//        IntegerRing inferredRing = numberA.getRing();
 //        if (numberB != null) {
 //            IntegerRing checkRing = numberB.getRing();
 //            if (!inferredRing.equals(checkRing)) {
@@ -147,7 +152,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
 //        }
         this.unsupRingNumberA = numberA;
         this.unsupRingNumberB = numberB;
-        this.unsupDomain = inferredRing;
+        this.unsupDomain = null;// inferredRing;
     }
     
 }
