@@ -219,10 +219,17 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         if (this.regPartMult == 0 && this.surdPartMult != 0) {
             return Math.PI / 2 * Integer.signum(this.surdPartMult);
         }
-        if (this.regPartMult >= 0) {
-            return 0;
+        if (this.surdPartMult == 0) {
+            if (this.regPartMult >= 0) {
+                return 0.0;
+            }
+            if (this.surdPartMult == 0) {
+                return Math.PI;
+            }
         }
-        return Math.PI;// Math.atan2(this.numValIm, this.numValRe);
+        double y = this.quadRing.realRadSqrt * this.surdPartMult;
+        return Math.atan2(y, this.regPartMult);
+// Math.atan2(this.numValIm, this.numValRe);
     }
     
     /**
