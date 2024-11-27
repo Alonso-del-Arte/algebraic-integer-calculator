@@ -30,17 +30,10 @@ public class UnsupportedNumberDomainException extends RuntimeException {
     
     private static final long serialVersionUID = 1058433824;
     
-    private final String msg;
-    
     private final AlgebraicInteger unsupRingNumberA;
     private final AlgebraicInteger unsupRingNumberB;
     
     private final IntegerRing unsupDomain;
-    
-    @Override
-    public String getMessage() {
-        return this.msg;
-    }
     
     /**
      * Retrieves the number or the two numbers that triggered this exception.
@@ -84,12 +77,11 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      * @throws NullPointerException If <code>ring</code> is null.
      */
     public UnsupportedNumberDomainException(String message, IntegerRing ring) {
-        super("message");
+        super(message);
         if (ring == null) {
             String excMsg = "Null ring not allowed";
             throw new NullPointerException(excMsg);
         }
-this.msg = message;
         this.unsupRingNumberA = null;
         this.unsupRingNumberB = null;
         this.unsupDomain = ring;
@@ -138,7 +130,7 @@ this.msg = message;
      */
     public UnsupportedNumberDomainException(String message, 
             AlgebraicInteger numberA, AlgebraicInteger numberB) {
-        super("Umm...");
+        super(message);
 //        if (numberA == null) {
 //            String excMsg = "numberA parameter must not be null";
 //            throw new NullPointerException(excMsg);
@@ -154,7 +146,6 @@ this.msg = message;
                 throw new IllegalArgumentException(excMsg);
             }
         }
-this.msg = message;
         this.unsupRingNumberA = numberA;
         this.unsupRingNumberB = numberB;
         this.unsupDomain = this.unsupRingNumberA.getRing();// inferredRing;
