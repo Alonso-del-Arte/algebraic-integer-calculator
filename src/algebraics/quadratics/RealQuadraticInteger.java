@@ -87,10 +87,10 @@ public class RealQuadraticInteger extends QuadraticInteger
      * #getImagPartNumeric()}, is an approximation or not.
      * @return Always false for a real quadratic integer, since the imaginary 
      * part, 0, can be represented precisely in floating point as 0.0.
-     */
+     */ // TODO: Rewrite tests
     @Override
     public boolean isImApprox() {
-        return false;
+        return true;
     }
     
     /**
