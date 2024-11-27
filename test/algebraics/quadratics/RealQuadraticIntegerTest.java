@@ -703,6 +703,21 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
 
+    @Test
+    public void testAngleOfPositive() {
+        QuadraticRing ring = chooseRing();
+        int bound = 4096;
+        int halfBound = bound / 2;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int adjust = (a < 1) ? -a : 1;
+        int b = RANDOM.nextInt(bound) + adjust;
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        double expected = 0.0;
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+
     /**
      * Test of the angle function, of the RealQuadraticInteger class.
      */@org.junit.Ignore
