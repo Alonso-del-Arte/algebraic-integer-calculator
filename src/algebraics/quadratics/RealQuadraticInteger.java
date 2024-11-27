@@ -101,10 +101,10 @@ public class RealQuadraticInteger extends QuadraticInteger
      * represent numbers with nonzero imaginary parts.
      * @return &pi; (approximately 3.14) radians if this real quadratic integer 
      * is negative, 0 otherwise.
-     */ // TODO: Rewrite test for this
+     */
     @Override
     public double angle() {
-        return Double.MAX_VALUE;
+        return this.numVal;
     }
     
     /**
