@@ -718,6 +718,21 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
 
+    @Test
+    public void testAngleHalfIntsPositive() {
+        int bound = 4096;
+        int halfBound = bound / 2;
+        int a = 2 * RANDOM.nextInt(bound) - halfBound + 1;
+        int adjust = ((a < 1) ? -a : 0) & -2;
+        int b = 2 * RANDOM.nextInt(bound) + adjust + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        double expected = 0.0;
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+
     /**
      * Test of the angle function, of the RealQuadraticInteger class.
      */
@@ -731,6 +746,21 @@ public class RealQuadraticIntegerTest {
         int adjust = (a < 1) ? -a : 1;
         int b = RANDOM.nextInt(bound) + adjust;
         QuadraticInteger number = new RealQuadraticInteger(-a, -b, ring);
+        double expected = Math.PI;
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
+    
+    @Test
+    public void testAngleHalfIntsNegative() {
+        int bound = 4096;
+        int halfBound = bound / 2;
+        int a = 2 * RANDOM.nextInt(bound) - halfBound + 1;
+        int adjust = ((a < 1) ? -a : 0) & -2;
+        int b = 2 * RANDOM.nextInt(bound) + adjust + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(-a, -b, ring, 2);
         double expected = Math.PI;
         double actual = number.angle();
         String message = "Reckoning angle of " + number.toString();
