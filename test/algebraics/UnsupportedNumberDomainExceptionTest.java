@@ -222,6 +222,12 @@ public class UnsupportedNumberDomainExceptionTest {
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
+        String ringAStr = ringA.toASCIIString();
+        String ringBStr = ringB.toASCIIString();
+        String containsMsg = "Exception message should contain labels of rings " 
+                + ringAStr + " and " + ringBStr;
+        assert excMsg.contains(ringAStr) : containsMsg;
+        assert excMsg.contains(ringAStr) : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
     
