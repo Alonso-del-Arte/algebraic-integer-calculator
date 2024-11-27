@@ -693,6 +693,20 @@ public class RealQuadraticIntegerTest {
     }
     
     @Test
+    public void testIsImApproxHalfInts() {
+        int bound = 8192;
+        int halfBound = bound / 2;
+        int a = 2 * randomNumber(bound) - halfBound + 1;
+        int b = 2 * randomNumber(bound) - halfBound + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        String msg = "Imaginary part of " + number.toString() + " given as " 
+                + number.getImagPartNumeric() 
+                + " should be considered exact, not an approximation";
+        assert !number.isImApprox() : msg;
+    }
+    
+    @Test
     public void testAngleOfZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger zero = new RealQuadraticInteger(0, 0, ring);
