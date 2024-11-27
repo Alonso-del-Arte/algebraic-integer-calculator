@@ -104,7 +104,11 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public double angle() {
-        return 0.0;
+        if (this.numVal < 0.0) {
+            return Math.PI;
+        } else {
+            return 0.0;
+        }
     }
     
     /**
