@@ -110,7 +110,7 @@ this.msg = message;
      */
     public UnsupportedNumberDomainException(String message, 
             AlgebraicInteger numberA) {
-        this("Huh?", numberA, null);
+        this(message, numberA, null);
     }
     
     /**
