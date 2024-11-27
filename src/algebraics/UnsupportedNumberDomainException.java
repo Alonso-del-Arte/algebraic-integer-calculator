@@ -30,7 +30,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
     
     private static final long serialVersionUID = 1058433824;
     
-    private final String excMsg;
+    private final String msg;
     
     private final AlgebraicInteger unsupRingNumberA;
     private final AlgebraicInteger unsupRingNumberB;
@@ -39,7 +39,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
     
     @Override
     public String getMessage() {
-        return this.excMsg;
+        return this.msg;
     }
     
     /**
@@ -89,7 +89,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
 //            String excMsg = "Null ring not allowed";
 //            throw new NullPointerException(excMsg);
 //        }
-this.excMsg = message;
+this.msg = message;
         this.unsupRingNumberA = null;
         this.unsupRingNumberB = null;
         this.unsupDomain = ring;
@@ -154,7 +154,7 @@ this.excMsg = message;
 //                throw new IllegalArgumentException(excMsg);
 //            }
 //        }
-this.excMsg = message;
+this.msg = message;
         this.unsupRingNumberA = numberA;
         this.unsupRingNumberB = numberB;
         this.unsupDomain = null;// inferredRing;
