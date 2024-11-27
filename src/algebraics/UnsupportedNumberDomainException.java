@@ -157,7 +157,7 @@ this.msg = message;
 this.msg = message;
         this.unsupRingNumberA = numberA;
         this.unsupRingNumberB = numberB;
-        this.unsupDomain = null;// inferredRing;
+        this.unsupDomain = this.unsupRingNumberA.getRing();// inferredRing;
     }
     
 }
