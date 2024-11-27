@@ -104,10 +104,6 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public double angle() {
-        // TODO: Write tests for "half-integers"
-        if (this.denominator == 2) {
-            return Double.PRECISION;
-        }
         if (this.numVal < 0.0) {
             return Math.PI;
         } else {
