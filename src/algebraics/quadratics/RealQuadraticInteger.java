@@ -136,19 +136,6 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public int compareTo(RealQuadraticInteger other) {
-        double diffRe;
-        if (this.quadRing.equals(other.quadRing)) {
-            QuadraticInteger diff = this.minus(other);
-            diffRe = diff.getRealPartNumeric();
-        } else {
-            diffRe = this.numVal - other.numVal;
-        }
-        if (diffRe < 0.0) {
-            return -1;
-        }
-        if (diffRe > 0) {
-            return 1;
-        }
         return 0;
     }
     
