@@ -52,10 +52,23 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testGetMessageOneNumberConstructor() {
         MockRing ring = new MockRing();
-        AlgebraicInteger number = new MockInteger(ring);
+        AlgebraicInteger numberA = new MockInteger(ring);
         String expected = TESTING_MESSAGE + ' ' + randomNumber();
         RuntimeException exc 
-                = new UnsupportedNumberDomainException(expected, number);
+                = new UnsupportedNumberDomainException(expected, numberA);
+        String actual = exc.getMessage();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetMessageTwoNumberConstructor() {
+        MockRing ring = new MockRing();
+        AlgebraicInteger numberA = new MockInteger(ring);
+        AlgebraicInteger numberB = new MockInteger(ring);
+        String expected = TESTING_MESSAGE + ' ' + randomNumber();
+        RuntimeException exc 
+                = new UnsupportedNumberDomainException(expected, numberA, 
+                        numberB);
         String actual = exc.getMessage();
         assertEquals(expected, actual);
     }
