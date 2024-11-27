@@ -692,9 +692,19 @@ public class RealQuadraticIntegerTest {
 //                + " should be considered exact, not an approximation";
 //        assert number.isReApprox() : msg;
     }
+    
+    @Test
+    public void testAngleOfZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger zero = new RealQuadraticInteger(0, 0, ring);
+        double expected = 0.0;
+        double actual = zero.angle();
+        String message = "Reckoning angle of " + zero.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
+    }
 
     /**
-     * Test of getImagPartNumeric method, of class RealQuadraticInteger.
+     * Test of the angle function, of the RealQuadraticInteger class.
      */@org.junit.Ignore
     @Test
     public void testAngle() {
