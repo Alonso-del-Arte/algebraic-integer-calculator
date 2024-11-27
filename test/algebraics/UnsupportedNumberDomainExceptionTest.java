@@ -16,6 +16,7 @@
  */
 package algebraics;
 
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 
@@ -35,20 +36,17 @@ public class UnsupportedNumberDomainExceptionTest {
     
     /**
      * Test of the getMessage function, of the UnsupportedNumberDomainException 
-     * class, inherited from RuntimeException. This test only requires that the 
-     * message not be an empty String and that it contain characters other than 
-     * whitespace characters. Whether the message is helpful to someone 
-     * debugging the program is beyond the scope of this test.
+     * class.
      */
     @Test
     public void testGetMessage() {
         System.out.println("getMessage");
-        fail("REWRITE THIS TEST");
         MockRing ring = new MockRing();
+        String expected = TESTING_MESSAGE + ' ' + randomNumber();
         RuntimeException exc 
-                = new UnsupportedNumberDomainException(TESTING_MESSAGE, ring);
-        String msg = "Exception message should not be empty";
-        assert !exc.getMessage().isEmpty() : msg;
+                = new UnsupportedNumberDomainException(expected, ring);
+        String actual = exc.getMessage();
+        assertEquals(expected, actual);
     }
 
     /**
