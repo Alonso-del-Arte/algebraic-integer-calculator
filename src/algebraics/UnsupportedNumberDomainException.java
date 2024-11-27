@@ -154,7 +154,7 @@ this.msg = message;
                 throw new IllegalArgumentException(excMsg);
             }
         }
-this.msg = message;
+this.msg = (numberB == null) ? message : message + numberB.toString();
         this.unsupRingNumberA = numberA;
         this.unsupRingNumberB = numberB;
         this.unsupDomain = this.unsupRingNumberA.getRing();// inferredRing;
