@@ -85,10 +85,10 @@ public class UnsupportedNumberDomainException extends RuntimeException {
      */
     public UnsupportedNumberDomainException(String message, IntegerRing ring) {
         super("message");
-//        if (ring == null) {
-//            String excMsg = "Null ring not allowed";
-//            throw new NullPointerException(excMsg);
-//        }
+        if (ring == null) {
+            String excMsg = "Null ring not allowed";
+            throw new NullPointerException(excMsg);
+        }
 this.msg = message;
         this.unsupRingNumberA = null;
         this.unsupRingNumberB = null;
