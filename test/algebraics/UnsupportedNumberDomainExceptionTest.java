@@ -22,6 +22,8 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the UnsupportedNumberDomainException class.
  * @author Alonso del Arte
@@ -43,7 +45,7 @@ public class UnsupportedNumberDomainExceptionTest {
         System.out.println("getMessage");
         fail("REWRITE THIS TEST");
         MockRing ring = new MockRing();
-        UnsupportedNumberDomainException exc 
+        RuntimeException exc 
                 = new UnsupportedNumberDomainException(TESTING_MESSAGE, ring);
         String msg = "Exception message should not be empty";
         assert !exc.getMessage().isEmpty() : msg;
@@ -100,33 +102,20 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testConstructorRejectsNullRing() {
         IntegerRing badRing = provideNullRing();
-        try {
-            UnsupportedNumberDomainException badExc 
+        String msg = "Constructor should reject null ring";
+        Throwable t = assertThrows(() -> {
+            RuntimeException badInstance 
                     = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
                             badRing);
-            String msg = "Should not have been able to create " 
-                    + badExc.toString() + " with null ring";
-            fail(msg);
-        } catch (NullPointerException npe) {
-            System.out.println("Null ring correctly caused exception");
-            String excMsg = npe.getMessage();
-            assert excMsg != null : "Message should not be null";
-            assert !excMsg.isEmpty() : "Message should not be empty";
-            System.out.println("\"" + excMsg + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception for null ring";
-            fail(msg);
-        }
+            System.out.println(msg + ", not created bad instance " 
+                    + badInstance.toString());
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
-    /**
-     * This is necessary only because trying to pass a null literal to the 
-     * UnsupportedNumberDomainException 2-parameter constructor results in an 
-     * ambiguity the compiler refuses to process. The possibility of a null 
-     * falling through the cracks remains, hence this null provider.
-     * @return Null, always.
-     */
     private static AlgebraicInteger provideNullNumber() {
         return null;
     }
@@ -138,56 +127,36 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testConstructorRejectsNullNumberA() {
         AlgebraicInteger badNumber = provideNullNumber();
-        try {
-            UnsupportedNumberDomainException badExc 
+        String msg = "Constructor should reject null number";
+        Throwable t = assertThrows(() -> {
+            RuntimeException badInstance 
                     = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
                             badNumber);
-            String msg = "Should not have been able to create " 
-                    + badExc.toString() + " with null numberA";
-            fail(msg);
-        } catch (NullPointerException npe) {
-            System.out.println("Null numberA correctly caused exception");
-            String excMsg = npe.getMessage();
-            assert excMsg != null : "Message should not be null";
-            assert !excMsg.isEmpty() : "Message should not be empty";
-            System.out.println("\"" + excMsg + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception for null numberA";
-            fail(msg);
-        }
+            System.out.println(msg + ", not created bad instance " 
+                    + badInstance.toString());
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
-    /**
-     * Test of the UnsupportedNumberDomainException constructor. When using the 
-     * 3-parameter constructor, the numberA parameter must not be null. As it 
-     * turns out, it's unnecessary to test the 2-parameter constructors for a 
-     * null literal, because using null for the second parameter causes an 
-     * ambiguous reference that the compiler will refuse to process.
-     */
     @Test
     public void testConstructorRejectsNullNumberARegardlessOfNumberB() {
-        int d = randomSquarefreeNumber(200);
-        MockRing expected = new MockRing(d);
-        MockInteger num = new MockInteger(expected);
-        try {
-            UnsupportedNumberDomainException badExc 
+        MockRing ring = new MockRing();
+        MockInteger numberB = new MockInteger(ring);
+        String msg = "Constructor should reject null numberA";
+        Throwable t = assertThrows(() -> {
+            RuntimeException badInstance 
                     = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
-                            null, num);
-            String msg = "Should not have been able to create " 
-                    + badExc.toString() + " with null numberA";
-            fail(msg);
-        } catch (NullPointerException npe) {
-            System.out.println("Null for numberA correctly caused exception");
-            String excMsg = npe.getMessage();
-            assert excMsg != null : "Message should not be null";
-            assert !excMsg.isEmpty() : "Message should not be empty";
-            System.out.println("\"" + excMsg + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception for null numberA";
-            fail(msg);
-        }
+                            null, numberB);
+            System.out.println(msg + ", not created bad instance " 
+                    + badInstance.toString());
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
@@ -198,11 +167,11 @@ public class UnsupportedNumberDomainExceptionTest {
      */
     @Test
     public void testConstructorInfersRing() {
-        int d = randomSquarefreeNumber(200);
-        MockRing expected = new MockRing(d);
-        MockInteger num = new MockInteger(expected);
+        MockRing expected = new MockRing();
+        MockInteger numberA = new MockInteger(expected);
         UnsupportedNumberDomainException exc 
-                = new UnsupportedNumberDomainException(TESTING_MESSAGE, num);
+                = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
+                        numberA);
         IntegerRing actual = exc.getCausingDomain();
         assertEquals(expected, actual);
     }
@@ -219,27 +188,19 @@ public class UnsupportedNumberDomainExceptionTest {
         MockRing ringB = new MockRing(maxDegree + 1);
         MockInteger numberA = new MockInteger(ringA);
         MockInteger numberB = new MockInteger(ringB);
-        try {
-            UnsupportedNumberDomainException badExc 
+        String msg = "Constructor should reject numberA from " 
+                + ringA.toString() + " and numberB from " + ringB.toString();
+        Throwable t = assertThrows(() -> {
+            RuntimeException badInstance 
                     = new UnsupportedNumberDomainException(TESTING_MESSAGE, 
                             numberA, numberB);
-            String msg = "Should not have been able to create " 
-                    + badExc.toString() + " with " + numberA.toString() 
-                    + " and " + numberB.toString() 
-                    + ", which come from different rings";
-            fail(msg);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Trying to use " + numberA.toString() 
-                    + " and " + numberB.toString() 
-                    + " correctly caused exception");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception for trying to use " 
-                    + numberA.toString() + " and " + numberB.toString() 
-                    + ", which come from different rings";
-            fail(msg);
-        }
+            System.out.println(msg + ", not created bad instance " 
+                    + badInstance.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
 }
