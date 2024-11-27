@@ -143,17 +143,17 @@ this.msg = message;
 //            String excMsg = "numberA parameter must not be null";
 //            throw new NullPointerException(excMsg);
 //        }
-//        IntegerRing inferredRing = numberA.getRing();
-//        if (numberB != null) {
-//            IntegerRing checkRing = numberB.getRing();
-//            if (!inferredRing.equals(checkRing)) {
-//                String excMsg = numberA.toASCIIString() + " is from " 
-//                        + inferredRing.toASCIIString() + " but " 
-//                        + numberB.toASCIIString() + " is from " 
-//                        + checkRing.toASCIIString();
-//                throw new IllegalArgumentException(excMsg);
-//            }
-//        }
+        IntegerRing inferredRing = numberA.getRing();
+        if (numberB != null) {
+            IntegerRing checkRing = numberB.getRing();
+            if (!inferredRing.equals(checkRing)) {
+                String excMsg = numberA.toASCIIString() + " is from " 
+                        + inferredRing.toASCIIString() + " but " 
+                        + numberB.toASCIIString() + " is from " 
+                        + checkRing.toASCIIString();
+                throw new IllegalArgumentException(excMsg);
+            }
+        }
 this.msg = message;
         this.unsupRingNumberA = numberA;
         this.unsupRingNumberB = numberB;
