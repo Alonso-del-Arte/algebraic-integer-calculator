@@ -132,7 +132,7 @@ public class UnsupportedNumberDomainException extends RuntimeException {
         }
         if (numberB != null) {
             IntegerRing checkRing = numberB.getRing();
-            if (numberA != null && !numberA.getRing().equals(checkRing)) {
+            if (!numberA.getRing().equals(checkRing)) {
                 String excMsg = "Rings don't match";
 //            String excMsg = numberA.toASCIIString() + " is from " 
 //                    + ring.toASCIIString() + " but " + numberB.toASCIIString() 
