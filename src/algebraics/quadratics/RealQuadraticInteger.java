@@ -90,7 +90,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public boolean isImApprox() {
-        return this.denominator != 1;
+        return false;
     }
     
     /**
