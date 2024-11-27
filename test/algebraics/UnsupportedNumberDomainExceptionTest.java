@@ -41,10 +41,21 @@ public class UnsupportedNumberDomainExceptionTest {
     @Test
     public void testGetMessage() {
         System.out.println("getMessage");
-        MockRing ring = new MockRing();
+        IntegerRing ring = new MockRing();
         String expected = TESTING_MESSAGE + ' ' + randomNumber();
         RuntimeException exc 
                 = new UnsupportedNumberDomainException(expected, ring);
+        String actual = exc.getMessage();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testGetMessageOneNumberConstructor() {
+        MockRing ring = new MockRing();
+        AlgebraicInteger number = new MockInteger(ring);
+        String expected = TESTING_MESSAGE + ' ' + randomNumber();
+        RuntimeException exc 
+                = new UnsupportedNumberDomainException(expected, number);
         String actual = exc.getMessage();
         assertEquals(expected, actual);
     }
