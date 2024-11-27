@@ -164,7 +164,7 @@ public class UnsupportedNumberDomainExceptionTest {
     }
     
     @Test
-    public void testConstructorRejectsNullNumberARegardlessOfNumberB() {
+    public void testConstructorRejectsNullNumberAWhenNumberBNotNull() {
         MockRing ring = new MockRing();
         MockInteger numberB = new MockInteger(ring);
         String msg = "Constructor should reject null numberA";
