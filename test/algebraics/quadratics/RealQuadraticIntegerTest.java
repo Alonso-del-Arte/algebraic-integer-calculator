@@ -678,19 +678,18 @@ public class RealQuadraticIntegerTest {
 
     /**
      * Test of the isImApprox function, of the RealQuadraticInteger class.
-     */@org.junit.Ignore
+     */
     @Test
     public void testIsImApprox() {
         System.out.println("isImApprox");
-        fail("REWRITE THIS TEST");
-        int a = 2 * (randomNumber(32768) - 16384) + 1;
-        int b = 2 * (randomNumber(32768) - 16384) + 1;
-//        RealQuadraticInteger number = new RealQuadraticInteger(a, b, RING_OQ13, 
-//                2);
-//        String msg = "Imaginary part of " + number.toString() + " given as " 
-//                + number.getImagPartNumeric() 
-//                + " should be considered exact, not an approximation";
-//        assert number.isReApprox() : msg;
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        String msg = "Imaginary part of " + number.toString() + " given as " 
+                + number.getImagPartNumeric() 
+                + " should be considered exact, not an approximation";
+        assert !number.isImApprox() : msg;
     }
     
     @Test
