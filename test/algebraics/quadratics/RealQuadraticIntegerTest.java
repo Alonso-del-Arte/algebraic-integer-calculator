@@ -720,24 +720,21 @@ public class RealQuadraticIntegerTest {
 
     /**
      * Test of the angle function, of the RealQuadraticInteger class.
-     */@org.junit.Ignore
+     */
     @Test
     public void testAngle() {
         System.out.println("angle");
-        fail("REWRITE THIS TEST");
-        double expResult, result;
-//        QuadraticInteger num = GOLDEN_RATIO;
-//        for (int i = 0; i < 10; i++) {
-//            num = num.plus(i);
-//            expResult = 0.0;
-//            result = num.angle();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//            num = num.times(-1); // Negate number
-//            expResult = Math.PI;
-//            result = num.angle();
-//            assertEquals(expResult, result, QuadraticRingTest.TEST_DELTA);
-//            num = num.times(-1); // Back to positive
-//        }
+        QuadraticRing ring = chooseRing();
+        int bound = 4096;
+        int halfBound = bound / 2;
+        int a = RANDOM.nextInt(bound) - halfBound;
+        int adjust = (a < 1) ? -a : 1;
+        int b = RANDOM.nextInt(bound) + adjust;
+        QuadraticInteger number = new RealQuadraticInteger(-a, -b, ring);
+        double expected = Math.PI;
+        double actual = number.angle();
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
     /**
