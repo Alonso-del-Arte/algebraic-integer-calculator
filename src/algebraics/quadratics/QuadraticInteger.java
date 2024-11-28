@@ -1346,10 +1346,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * @throws NullPointerException If <code>ring</code> is null.
      */
     public QuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
-        if (ring == null) {
-            String excMsg = "Ring parameter must not be null";
-            throw new NullPointerException(excMsg);
-        }
+//        if (ring == null) {
+//            String excMsg = "Ring parameter must not be null";
+//            throw new NullPointerException(excMsg);
+//        }
         boolean abParityMatch;
         if (denom == -1 || denom == -2) {
             a *= -1;
