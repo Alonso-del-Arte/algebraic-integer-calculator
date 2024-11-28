@@ -144,13 +144,8 @@ public class RealQuadraticInteger extends QuadraticInteger
         } else {
             diffRe = this.numVal - other.numVal;
         }
-        if (diffRe < 0.0) {
-            return -1;
-        }
-        if (diffRe > 0) {
-            return 1;
-        }
-        return 0;
+        long bits = Double.doubleToLongBits(diffRe);
+        return Long.signum(bits);
     }
     
     /**
