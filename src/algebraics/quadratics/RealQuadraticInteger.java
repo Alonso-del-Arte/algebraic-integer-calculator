@@ -147,8 +147,16 @@ public class RealQuadraticInteger extends QuadraticInteger
                 return 1;
             }
             return 0;
+        } else {
+            double diffRe = this.numVal - other.numVal;
+            if (diffRe < 0) {
+                return -1;
+            }
+            if (diffRe > 0) {
+                return 1;
+            }
+            return 0;
         }
-        return 0;
     }
     
     /**
