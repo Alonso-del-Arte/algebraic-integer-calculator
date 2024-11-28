@@ -61,6 +61,14 @@ public class RealQuadraticIntegerTest {
         return new RealQuadraticRing(d);
     }
     
+    private static RealQuadraticRing chooseRingDOtherThan(int avoidedD) {
+        int d = avoidedD;
+        while (d == avoidedD || d == 1) {
+            d = randomSquarefreeNumber(256);
+        }
+        return new RealQuadraticRing(d);
+    }
+    
     private static RealQuadraticRing chooseRingWithHalfInts() {
         int d;
         do {
@@ -1453,99 +1461,26 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of compareTo method, of class RealQuadraticInteger, implementing 
-     * Comparable.
-     */@org.junit.Ignore
+     * Test of the compareTo function, of the RealQuadraticInteger class.
+     */
     @Test
     public void testCompareTo() {
         System.out.println("compareTo");
-        fail("REWRITE THIS TEST");
-        RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
-        RealQuadraticInteger negSeven = new RealQuadraticInteger(-7, 0, ringZ10);
-        RealQuadraticInteger numNeg136plus44Sqrt10 = new RealQuadraticInteger(-136, 44, ringZ10);
-        RealQuadraticInteger num117minus36Sqrt10 = new RealQuadraticInteger(117, -36, ringZ10);
-        RealQuadraticInteger numSqrt10 = new RealQuadraticInteger(0, 1, ringZ10);
-        int comparison = negSeven.compareTo(numNeg136plus44Sqrt10);
-        String assertionMessage = negSeven.toString() + " should be found to be less than " + numNeg136plus44Sqrt10;
-        assertTrue(assertionMessage, comparison < 0);
-        comparison = numNeg136plus44Sqrt10.compareTo(num117minus36Sqrt10);
-        assertionMessage = numNeg136plus44Sqrt10.toString() + " should be found to be less than " + num117minus36Sqrt10;
-        assertTrue(assertionMessage, comparison < 0);
-        comparison = num117minus36Sqrt10.compareTo(numSqrt10);
-        assertionMessage = num117minus36Sqrt10.toString() + " should be found to be less than " + numSqrt10;
-        assertTrue(assertionMessage, comparison < 0);
-        comparison = negSeven.compareTo(negSeven);
-        assertEquals(0, comparison);
-        comparison = numNeg136plus44Sqrt10.compareTo(numNeg136plus44Sqrt10);
-        assertEquals(0, comparison);
-        comparison = num117minus36Sqrt10.compareTo(num117minus36Sqrt10);
-        assertEquals(0, comparison);
-        comparison = numSqrt10.compareTo(numSqrt10);
-        assertEquals(0, comparison);
-        comparison = numSqrt10.compareTo(num117minus36Sqrt10);
-        assertionMessage = numSqrt10.toString() + " should be found to be greater than " + num117minus36Sqrt10.toString();
-        assertTrue(assertionMessage, comparison > 0);
-        comparison = num117minus36Sqrt10.compareTo(numNeg136plus44Sqrt10);
-        assertionMessage = num117minus36Sqrt10.toString() + " should be found to be greater than " + numNeg136plus44Sqrt10.toString();
-        assertTrue(assertionMessage, comparison > 0);
-        comparison = numNeg136plus44Sqrt10.compareTo(negSeven);
-        assertionMessage = numNeg136plus44Sqrt10.toString() + " should be found to be greater than " + negSeven.toString();
-        assertTrue(assertionMessage, comparison > 0);
-        try {
-            comparison = numSqrt10.compareTo(null);
-            String failMsg = "Comparing " + numSqrt10.toString() + " to null should have caused an exception, not given result " + comparison + ".";
-            fail(failMsg);
-        } catch (NullPointerException npe) {
-            System.out.println("Comparing " + numSqrt10.toASCIIString() + " to null correctly triggered NullPointerException.");
-            System.out.println("NullPointerException had this message: \"" + npe.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMsg = e.getClass().getName() + " is the wrong exception to throw for comparing " + numSqrt10.toString() + " to null.";
-            fail(failMsg);
-        }
+        RealQuadraticRing ringA = chooseRing();
+        List<RealQuadraticInteger> list 
+                = makeListOfRandomRealQuadraticsAllFromSameRing(ringA);
+        int avoidedD = ringA.getRadicand();
+        RealQuadraticRing ringB = chooseRingDOtherThan(avoidedD);
+        list.addAll(makeListOfRandomRealQuadraticsAllFromSameRing(ringB));
+        RealQuadraticRing ringC = chooseRingWithHalfInts();
+        list.addAll(makeListOfRandomRealQuadraticsAllFromSameRing(ringC));
+        List<RealQuadraticInteger> expected = new ArrayList<>(list);
+        Collections.sort(expected, new RealQuadraticIntegerComparator());
+        List<RealQuadraticInteger> actual = new ArrayList<>(list);
+        Collections.sort(actual);
+        assertContainsSameOrder(expected, actual);
     }
 
-    // TODO: Determine if this test is redundant
-    /**
-     * Another test of compareTo method, of class RealQuadraticInteger, 
-     * implementing Comparable.
-     */@org.junit.Ignore
-    @Test
-    public void testCompareToThroughCollectionSort() {
-        fail("REWRITE THIS TEST");
-//        RealQuadraticRing ringZ10 = new RealQuadraticRing(10);
-//        RealQuadraticInteger negSeven = new RealQuadraticInteger(-7, 0, ringZ10);
-//        RealQuadraticInteger numNeg136plus44Sqrt10 = new RealQuadraticInteger(-136, 44, ringZ10);
-//        RealQuadraticInteger num117minus36Sqrt10 = new RealQuadraticInteger(117, -36, ringZ10);
-//        RealQuadraticInteger numSqrt10 = new RealQuadraticInteger(0, 1, ringZ10);
-//        List<RealQuadraticInteger> expected = new ArrayList<>();
-//        expected.add(negSeven);
-//        expected.add(numNeg136plus44Sqrt10);
-//        expected.add(num117minus36Sqrt10);
-//        expected.add(numSqrt10);
-//        List<RealQuadraticInteger> actual = new ArrayList<>();
-//        actual.add(num117minus36Sqrt10);
-//        actual.add(negSeven);
-//        actual.add(numSqrt10);
-//        actual.add(numNeg136plus44Sqrt10);
-//        Collections.sort(actual);
-//        assertEquals(expected, actual);
-//        RealQuadraticInteger surd = new RealQuadraticInteger(0, 1, RING_OQ13);
-//        expected.add(surd);
-//        actual.add(surd);
-//        surd = new RealQuadraticInteger(0, 1, RING_ZPHI);
-//        expected.add(1, surd);
-//        actual.add(surd);
-//        expected.add(1, GOLDEN_RATIO);
-//        actual.add(GOLDEN_RATIO);
-//        surd = new RealQuadraticInteger(0, 1, RING_Z2);
-//        expected.add(1, surd);
-//        actual.add(surd);
-//        expected.add(1, oneRQI);
-//        actual.add(oneRQI);
-//        Collections.sort(actual);
-//        assertEquals(expected, actual);
-    }
-    
     /**
      * Test of parseQuadraticInteger, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger. Whatever is output by toString, toStringAlt, 
