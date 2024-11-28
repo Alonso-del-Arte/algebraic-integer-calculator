@@ -34,14 +34,18 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import static org.testframe.api.Asserters.assertContainsSameOrder;
 import static org.testframe.api.Asserters.assertThrows;
 
 /**
@@ -1415,6 +1419,39 @@ public class RealQuadraticIntegerTest {
         assertNotEquals(message, someNumber, diffNumber);
     }
     
+    private List<RealQuadraticInteger> 
+        makeListOfRandomRealQuadraticsAllFromSameRing(RealQuadraticRing ring) {
+        int initialCapacity = randomNumber(8) + 4;
+        List<RealQuadraticInteger> list = new ArrayList<>(initialCapacity);
+        int bound = 1024;
+        int halfBound = bound / 2;
+        boolean includeHalfInts = ring.hasHalfIntegers();
+        for (int i = 0; i < initialCapacity; i++) {
+            int a = randomNumber(bound) - halfBound;
+            int b = randomNumber(bound) - halfBound;
+            RealQuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+            list.add(number);
+            if (includeHalfInts && a % 2 != 0 && b % 2 != 0) {
+                RealQuadraticInteger halfInt = new RealQuadraticInteger(a, b, 
+                        ring, 2);
+                list.add(halfInt);
+            }
+        }
+        return list;
+    }
+    
+    @Test
+    public void testCompareToAllSameRing() {
+        RealQuadraticRing ring = chooseRing();
+        List<RealQuadraticInteger> list 
+                = makeListOfRandomRealQuadraticsAllFromSameRing(ring);
+        List<RealQuadraticInteger> expected = new ArrayList<>(list);
+        Collections.sort(expected, new RealQuadraticIntegerComparator());
+        List<RealQuadraticInteger> actual = new ArrayList<>(list);
+        Collections.sort(actual);
+        assertContainsSameOrder(expected, actual);
+    }
+    
     /**
      * Test of compareTo method, of class RealQuadraticInteger, implementing 
      * Comparable.
@@ -1467,11 +1504,10 @@ public class RealQuadraticIntegerTest {
         }
     }
 
+    // TODO: Determine if this test is redundant
     /**
      * Another test of compareTo method, of class RealQuadraticInteger, 
-     * implementing Comparable. This one checks that {@link 
-     * Collections#sort(java.util.List)} can use compareTo to sort a list of 
-     * real quadratic integers in ascending order.
+     * implementing Comparable.
      */@org.junit.Ignore
     @Test
     public void testCompareToThroughCollectionSort() {
@@ -2555,6 +2591,17 @@ public class RealQuadraticIntegerTest {
                     + " is the wrong exception to throw for trying to use null ring";
             fail(msg);
         }
+    }
+    
+    private static class RealQuadraticIntegerComparator 
+            implements Comparator<RealQuadraticInteger> {
+        
+        @Override
+        public int compare(RealQuadraticInteger a, RealQuadraticInteger b) {
+            return Double.compare(a.getRealPartNumeric(), 
+                    b.getRealPartNumeric());
+        }
+        
     }
     
 }
