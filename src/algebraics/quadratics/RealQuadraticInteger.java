@@ -119,7 +119,8 @@ public class RealQuadraticInteger extends QuadraticInteger
      * specified real quadratic integer. This enables sorting with {@link 
      * java.util.Collections#sort(java.util.List)} without need for a 
      * comparator. If you need to sort by norm, use {@link 
-     * algebraics.NormAbsoluteComparator} or {@link algebraics.NormComparator}.
+     * arithmetic.comparators.NormAbsoluteComparator NormAbsoluteComparator} or 
+     * {@link arithmetic.comparators.NormComparator NormComparator}.
      * @param other The real quadratic integer to compare this real quadratic 
      * integer to. The comparison is more reliable if all involved real 
      * quadratic integers come from the same ring. Examples: &minus;&radic;21 
@@ -136,6 +137,17 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public int compareTo(RealQuadraticInteger other) {
+        if (this.quadRing.equals(other.quadRing)) {
+            QuadraticInteger diff = this.minus(other);
+            double diffRe = diff.getRealPartNumeric();
+            if (diffRe < 0) {
+                return -1;
+            }
+            if (diffRe > 0) {
+                return 1;
+            }
+            return 0;
+        }
         return 0;
     }
     
