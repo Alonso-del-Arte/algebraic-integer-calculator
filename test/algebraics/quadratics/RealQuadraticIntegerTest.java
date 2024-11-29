@@ -2505,10 +2505,29 @@ public class RealQuadraticIntegerTest {
         int b = randomNumber();
         int denom = RANDOM.nextBoolean() ? 2 : 1;
         String msg = "Should not be able to create instance with a = " + a 
-                + ", b = " + b + " and null ring";
+                + ", b = " + b + ", denom = " + denom + " and null ring";
         Throwable t = assertThrows(() -> {
             QuadraticInteger badInstance = new RealQuadraticInteger(a, b, null, 
                     denom);
+            System.out.println(msg + ", but did create " 
+                    + badInstance.getClass().getName() + '@' 
+                    + Integer.toHexString(System
+                            .identityHashCode(badInstance)));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Message should not be null";
+        assert !excMsg.isBlank() : "Message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testConstructorDefaultDenomRejectsNullRing() {
+        int a = randomNumber();
+        int b = randomNumber();
+        String msg = "Should not be able to create instance with a = " + a 
+                + ", b = " + b + " and null ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticInteger badInstance = new RealQuadraticInteger(a, b, null);
             System.out.println(msg + ", but did create " 
                     + badInstance.getClass().getName() + '@' 
                     + Integer.toHexString(System
