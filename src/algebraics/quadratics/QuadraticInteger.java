@@ -1346,45 +1346,45 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * @throws NullPointerException If <code>ring</code> is null.
      */
     public QuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
-//        if (ring == null) {
-//            String excMsg = "Ring parameter must not be null";
-//            throw new NullPointerException(excMsg);
-//        }
-//        boolean abParityMatch;
-//        if (denom == -1 || denom == -2) {
-//            a *= -1;
-//            b *= -1;
-//            denom *= -1;
-//        }
-//        if (denom < 1 || denom > 2) {
-//            String excMsg = "Parameter denom must be 1 or 2";
-//            throw new IllegalArgumentException(excMsg);
-//        }
-//        if (denom == 2) {
-//            abParityMatch = Math.abs(a % 2) == Math.abs(b % 2);
-//            if (!abParityMatch) {
-//                String excMsg = "Parity of a must match parity of b";
-//                throw new IllegalArgumentException(excMsg);
-//            }
-//            if (a % 2 == 0) {
-//                this.regPartMult = a / 2;
-//                this.surdPartMult = b / 2;
-//                this.denominator = 1;
-//            } else {
-//                if (ring.d1mod4) {
-//                    this.regPartMult = a;
-//                    this.surdPartMult = b;
-//                    this.denominator = 2;
-//                } else {
-//                    String excMsg = "a and b should both be even, or denom 1";
-//                    throw new IllegalArgumentException(excMsg);
-//                }
-//            }
-//        } else {
+        if (ring == null) {
+            String excMsg = "Ring parameter must not be null";
+            throw new NullPointerException(excMsg);
+        }
+        boolean abParityMatch;
+        if (denom == -1 || denom == -2) {
+            a *= -1;
+            b *= -1;
+            denom *= -1;
+        }
+        if (denom < 1 || denom > 2) {
+            String excMsg = "Parameter denom must be 1 or 2";
+            throw new IllegalArgumentException(excMsg);
+        }
+        if (denom == 2) {
+            abParityMatch = Math.abs(a % 2) == Math.abs(b % 2);
+            if (!abParityMatch) {
+                String excMsg = "Parity of a must match parity of b";
+                throw new IllegalArgumentException(excMsg);
+            }
+            if (a % 2 == 0) {
+                this.regPartMult = a / 2;
+                this.surdPartMult = b / 2;
+                this.denominator = 1;
+            } else {
+                if (ring.d1mod4) {
+                    this.regPartMult = a;
+                    this.surdPartMult = b;
+                    this.denominator = 2;
+                } else {
+                    String excMsg = "a and b should both be even, or denom 1";
+                    throw new IllegalArgumentException(excMsg);
+                }
+            }
+        } else {
             this.regPartMult = a;
             this.surdPartMult = b;
             this.denominator = 1;
-//        }
+        }
         this.quadRing = ring;
     }
     
