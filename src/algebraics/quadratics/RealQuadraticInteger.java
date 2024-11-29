@@ -29,12 +29,20 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     private static final long serialVersionUID = 4547847540095073075L;
     
+    private static final char SQRT_SYMBOL = '\u221A';
+    
     private static final char THETA_LETTER = '\u03B8';
     
     private static final char PHI_LETTER = '\u03C6';
     
     private final double numVal;
     private final double absNumVal;
+    
+    @Override
+    public String toString() {
+        return this.regPartMult + " + " + this.surdPartMult + SQRT_SYMBOL + '(' 
+                + this.quadRing.radicand + ')';
+    }
     
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
