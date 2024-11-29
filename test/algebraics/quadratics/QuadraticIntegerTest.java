@@ -1992,6 +1992,27 @@ public class QuadraticIntegerTest {
 //        }
     }
     
+    @Test
+    public void testConstructorRejectsNullRing() {
+        int a = randomNumber();
+        int b = randomNumber();
+        int denom = RANDOM.nextBoolean() ? 2 : 1;
+        String msg = "Should not be able to create instance with a = " + a 
+                + ", b = " + b + ", denom = " + denom + " and null ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticInteger badInstance = new QuadraticIntegerImpl(a, b, null, 
+                    denom);
+            System.out.println(msg + ", but did create " 
+                    + badInstance.getClass().getName() + '@' 
+                    + Integer.toHexString(System
+                            .identityHashCode(badInstance)));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Message should not be null";
+        assert !excMsg.isBlank() : "Message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     static class QuadraticIntegerImpl extends QuadraticInteger {
         
         private static final long serialVersionUID = 4558707313363386368L;
@@ -2084,16 +2105,17 @@ public class QuadraticIntegerTest {
         
         QuadraticIntegerImpl(int a, int b, QuadraticRing ring, int denom) {
             super(a, b, ring, denom);
-            double re = this.regPartMult;
-            double im = 0.0;
-            double y = this.quadRing.realRadSqrt * this.surdPartMult;
-            if (this.quadRing.radicand < 0) {
-                im += y;
-            } else {
-                re += y;
-            }
-            this.numValRe = re;
-            this.numValIm = im;
+//            double re = this.regPartMult;
+//            double im = 0.0;
+//            double y = this.quadRing.realRadSqrt * this.surdPartMult;
+//            if (this.quadRing.radicand < 0) {
+//                im += y;
+//            } else {
+//                re += y;
+//            }
+//            this.numValRe = re;
+//            this.numValIm = im;
+this.numValRe = 0.0;this.numValIm = 0.0;
         }
         
     }
