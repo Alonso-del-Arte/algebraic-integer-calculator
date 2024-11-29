@@ -227,10 +227,6 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     public RealQuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
         super(a, b, ring, denom);
-        if (ring == null) {
-            String excMsg = "Ring should not be null";
-            throw new NullPointerException(excMsg);
-        }
         if (!(ring instanceof RealQuadraticRing)) {
             String excMsg = "Ring is not real as needed";
             throw new IllegalArgumentException(excMsg);
