@@ -324,62 +324,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      */
     @Override
     public String toString() {
-        String QIString = "";
-        if (this.denominator == 2) {
-            QIString = this.regPartMult + "/2 ";
-            if (this.surdPartMult < -1) {
-                QIString += (("- " + ((-1) * this.surdPartMult)) + "\u221A(" 
-                        + this.quadRing.radicand + ")/2");
-            }
-            if (this.surdPartMult == -1) {
-                QIString += ("- \u221A(" + this.quadRing.radicand + ")/2");
-            }
-            if (this.surdPartMult == 1) {
-                QIString += ("+ \u221A(" + this.quadRing.radicand + ")/2");
-            }
-            if (this.surdPartMult > 1) {
-                QIString += ("+ " + this.surdPartMult + "\u221A(" 
-                        + this.quadRing.radicand + ")/2");
-            } 
-        } else {
-            if (this.regPartMult == 0) {
-                if (this.surdPartMult == 0) {
-                    QIString = "0";
-                } else {
-                    if (this.surdPartMult < -1 || this.surdPartMult > 1) {
-                        QIString = this.surdPartMult + "\u221A(" 
-                                + this.quadRing.radicand + ")";
-                    }
-                    if (this.surdPartMult == -1) {
-                        QIString = "-\u221A(" + this.quadRing.radicand + ")";
-                    }
-                    if (this.surdPartMult == 1) {
-                        QIString = "\u221A(" + this.quadRing.radicand + ")";
-                    }
-                }
-            } else {
-                QIString = Integer.toString(this.regPartMult);
-                if (this.surdPartMult < -1) {
-                    QIString += ((" - " + ((-1) * this.surdPartMult)) 
-                            + "\u221A(" + this.quadRing.radicand + ")");
-                }
-                if (this.surdPartMult == -1) {
-                    QIString += (" - \u221A(" + this.quadRing.radicand + ")");
-                }
-                if (this.surdPartMult == 1) {
-                    QIString += (" + \u221A(" + this.quadRing.radicand + ")");
-                }
-                if (this.surdPartMult > 1) {
-                    QIString += (" + " + this.surdPartMult + "\u221A(" 
-                            + this.quadRing.radicand + ")");
-                }
-            }
-        }
-        if (this.quadRing.radicand == -1) {
-            QIString = QIString.replace("\u221A(-1)", "i");
-        }
-        QIString = QIString.replace("-", "\u2212");
-        return QIString;
+        return "REWIND TO FAILING";
     }
     
     /**
