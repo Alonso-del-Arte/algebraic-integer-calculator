@@ -55,6 +55,10 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class RealQuadraticIntegerTest {
     
+    private static final String MINUS_SIGN = "\u2212";
+    
+    private static final char SQRT_SYMBOL = '\u221A';
+    
     private static RealQuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(256);
         int d = (propD == 1) ? 5 : propD;
@@ -897,42 +901,18 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
-    /**
-     * Test of toString method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger. For functions that return Strings, spaces are desirable 
-     * but not required. Therefore the tests should strip out spaces before 
-     * asserting equality.
-     */@org.junit.Ignore
     @Test
     public void testToString() {
         System.out.println("toString");
-        fail("REWRITE THIS TEST");
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomRegForHalfInts + "/2+" + randomSurdForHalfInts + "\u221A(" + testIntegers.get(i).getRing().getRadicand() + ")/2";
-//            } else {
-//                if (randomRegPart == 0) {
-//                    expResult = randomSurdPart + "\u221A(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                } else {
-//                    expResult = randomRegPart + "+" + randomSurdPart + "\u221A(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                }
-//            }
-//            expResult = expResult.replace("+-", "-");
-//            expResult = expResult.replace("+1\u221A", "+\u221A");
-//            expResult = expResult.replace("-1\u221A", "-\u221A");
-//            expResult = expResult.replace("-", "\u2212");
-//            result = testIntegers.get(i).toString().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // And last but not least, 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toString();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toString();
-//        assertEquals(expResult, result);
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        String expected = a + "+" + b + SQRT_SYMBOL + '(' + ring.getRadicand() 
+                + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
