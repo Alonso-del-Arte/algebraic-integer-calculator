@@ -112,28 +112,35 @@ public class RealQuadraticInteger extends QuadraticInteger
     }
     
     /**
-     * Compares the number represented by this RealQuadraticInteger object with 
-     * the number represented by the specified RealQuadraticInteger object for 
-     * order. Returns a negative integer, zero, or a positive integer as this 
-     * real quadratic integer is less than, equal to, or greater than the 
-     * specified real quadratic integer. This enables sorting with {@link 
-     * java.util.Collections#sort(java.util.List)} without need for a 
-     * comparator. If you need to sort by norm, use {@link 
+     * Compares the number represented by this {@code RealQuadraticInteger} 
+     * object with the number represented by the specified {@code 
+     * RealQuadraticInteger} object for order. Returns a negative integer, zero, 
+     * or a positive integer as this real quadratic integer is less than, equal 
+     * to, or greater than the specified real quadratic integer. This enables 
+     * sorting with {@code java.util.Collections.sort()} without need for a 
+     * comparator. If you need to sort by norm rather than by value, use {@link 
      * arithmetic.comparators.NormAbsoluteComparator NormAbsoluteComparator} or 
      * {@link arithmetic.comparators.NormComparator NormComparator}.
      * @param other The real quadratic integer to compare this real quadratic 
      * integer to. The comparison is more reliable if all involved real 
      * quadratic integers come from the same ring. Examples: &minus;&radic;21 
-     * (roughly &minus;4.58257569), 4 + &radic;21 (roughly 8.58257569), 
-     * &minus;3/2 + (13&radic;21)/2 (roughly 28.286742).
+     * (roughly &minus;4.58257569), 4 + &radic;21 (roughly 8.5825757), 4 + 
+     * &radic;22 (roughly 8.6904157598), &minus;<sup>3</sup>&frasl;<sub>2</sub> 
+     * + <sup>13&radic;21</sup>&frasl;<sub>2</sub> (roughly 28.286742).
      * @return &minus;1 or any other negative integer if this real quadratic 
      * integer is less than the other real quadratic integer; 0 if this and the 
      * other real quadratic integers are equal; 1 or any positive integer if 
      * this real quadratic integer is greater than the other real quadratic 
      * integer. For example, if this real quadratic integer is 4 + &radic;21, 
      * then, compared to &minus;&radic;21, the result will most likely be 1; 
-     * compared to 4 + &radic;21, the result must be 0; and compared to 
-     * &minus;3/2 + (13&radic;21)/2, the result will most likely be &minus;1.
+     * compared to 4 + &radic;21, the result must be 0; compared to 
+     * &minus;<sup>3</sup>&frasl;<sub>2</sub> + 
+     * <sup>13&radic;21</sup>&frasl;<sub>2</sub>, the result will most likely be 
+     * &minus;1. The comparison to 4 + &radic;22 is performed in floating point, 
+     * subtracting 8.69041575982343 from 8.582575694955839 for a result of 
+     * &minus;0.10784006486759168 which should become &minus;1. Floating point 
+     * calculations should be reasonably accurate if the numbers in many cases, 
+     * but we make no guarantees.
      */
     @Override
     public int compareTo(RealQuadraticInteger other) {
@@ -170,23 +177,24 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     /**
      * Alternative constructor, may be used when the denominator is known to be 
-     * 1. For example, this constructor may be used for 1 + &radic;5. For 1/2 + 
-     * (&radic;5)/2, it will be necessary to use the primary constructor. One 
-     * could always construct 1 + &radic;5 and then use {@link 
-     * QuadraticInteger#divides(int)} with a divisor of 2, but that would 
-     * probably be too circuitous in most cases.
+     * 1. For example, this constructor may be used for 1 + &radic;5. For 
+     * <sup>1</sup>&frasl;<sub>2</sub> + <sup>&radic;5</sup>&frasl;<sub>2</sub>, 
+     * it will be necessary to use the primary constructor. One could always 
+     * construct 1 + &radic;5 and then use {@link QuadraticInteger#divides(int)} 
+     * with a divisor of 2, but that would probably be too circuitous in most 
+     * cases.
      * @param a The "regular" part of the real quadratic integer. For example, 
      * for 5 + 4&radic;3, this parameter would be 5.
      * @param b The part to be multiplied by &radic;<i>d</i>. For example, for 5 
      * + 4&radic;3, this parameter would be 4.
      * @param ring The ring to which this algebraic integer belongs to. For 
-     * example, for 5 + 4&radic;3, this parameter could be <code>new 
-     * RealQuadraticRing(3)</code>.
-     * @throws IllegalArgumentException If <code>ring</code> is not of the type 
-     * {@link RealQuadraticRing}. This exception will occur even if 
-     * <code>b</code> equals 0. There will be no quiet substitution of a real 
-     * ring, unlike in an earlier version of this class.
-     * @throws NullPointerException If <code>ring</code> is null.
+     * example, for 5 + 4&radic;3, this parameter could be {@code new 
+     * RealQuadraticRing(3)}.
+     * @throws IllegalArgumentException If {@code ring} is not of the type 
+     * {@link RealQuadraticRing}. This exception will occur even if {@code b} 
+     * equals 0. There will be no quiet substitution of a real ring, unlike in 
+     * an earlier version of this class.
+     * @throws NullPointerException If {@code ring} is null.
      */
     public RealQuadraticInteger(int a, int b, QuadraticRing ring) {
         this(a, b, ring, 1);
@@ -196,29 +204,33 @@ public class RealQuadraticInteger extends QuadraticInteger
      * Primary constructor. If the denominator is known to be 1, the alternative 
      * constructor may be used.
      * @param a The "regular" part of the real quadratic integer, multiplied by 
-     * 2 when applicable. For example, for 7/2 + (31&radic;5)/2, this parameter 
-     * would be 7.
+     * 2 when applicable. For example, for <sup>7</sup>&frasl;<sub>2</sub> + 
+     * <sup>31&radic;5</sup>&frasl;<sub>2</sub>, this parameter would be 7.
      * @param b The part to be multiplied by &radic;<i>d</i>, multiplied by 2 
-     * when applicable. For example, for 7/2 + (31&radic;5)/2, this parameter 
-     * would be 31.
+     * when applicable. For example, for <sup>7</sup>&frasl;<sub>2</sub> + 
+     * <sup>31&radic;5</sup>&frasl;<sub>2</sub>, this parameter would be 7.
      * @param ring The ring to which this algebraic integer belongs to. For 
-     * example, for 7/2 + (31&radic;5)/2, this parameter could be <code>new 
-     * RealQuadraticRing(5)</code>.
-     * @param denom In most cases 1, but may be 2 if <code>a</code> and 
-     * <code>b</code> have the same parity and 
-     * <code>ring</code>{@link QuadraticRing#hasHalfIntegers() 
-     * .hasHalfIntegers()} is true. If that is the case, &minus;2 may also be 
-     * used, and &minus;1 can always be used; the constructor will quietly 
-     * substitute 1 or 2 and multiply <code>a</code> and <code>b</code> by 
-     * &minus;1.
-     * @throws IllegalArgumentException If <code>ring</code> is not of the type 
-     * {@link RealQuadraticRing}. This exception will occur even if 
-     * <code>b</code> equals 0. There will be no quiet substitution of a real 
-     * ring, unlike in an earlier version of this class.
-     * @throws NullPointerException If <code>ring</code> is null.
+     * example, for <sup>7</sup>&frasl;<sub>2</sub> + 
+     * <sup>31&radic;5</sup>&frasl;<sub>2</sub> this parameter could be {@code 
+     * new RealQuadraticRing(5)}.
+     * @param denom In most cases 1, but may be 2 if {@code a} and {@code b} 
+     * have the same parity and {@code ring.}{@link 
+     * QuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is true. If that is 
+     * the case, &minus;2 may also be used, and &minus;1 can always be used; the 
+     * constructor will quietly substitute 1 or 2 and multiply {@code a} and 
+     * {@code b} by &minus;1.
+     * @throws IllegalArgumentException If {@code ring} is not of the type 
+     * {@link RealQuadraticRing}. This exception will occur even if {@code b} 
+     * equals 0. There will be no quiet substitution of a real ring, unlike in 
+     * an earlier version of this class.
+     * @throws NullPointerException If {@code ring} is null.
      */
     public RealQuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
         super(a, b, ring, denom);
+        if (ring == null) {
+            String excMsg = "Ring should not be null";
+            throw new NullPointerException(excMsg);
+        }
         if (!(ring instanceof RealQuadraticRing)) {
             String excMsg = "Ring is not real as needed";
             throw new IllegalArgumentException(excMsg);
