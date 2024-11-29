@@ -385,23 +385,24 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     /**
      * A text representation of the quadratic integer, using theta notation when 
      * {@link #getRing()}{@link ImaginaryQuadraticRing#hasHalfIntegers() 
-     * .hasHalfIntegers()} is true.
-     * @return A String representing the quadratic integer which can be used in 
-     * a JTextField. If {@link #getRing()}{@link 
-     * ImaginaryQuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is false, 
-     * this just returns the same String as {@link #toString()}. Note that 
-     * &omega; here is used strictly only to mean -1/2 + (&radic;-3)/2, but 
-     * &theta; can mean 1/2 + (&radic;<i>d</i>)/2 for any <i>d</i> congruent to 
-     * 1 modulo 4 other than -3. Thus, for example, 5/2 + (&radic;-3)/2 = 3 + 
-     * &omega;, but 5/2 + (&radic;-7)/2 = 2 + &theta;, 5/2 + (&radic;-11)/2 = 2 
-     * + &theta;, 5/2 + (&radic;-15)/2 = 2 + &theta;, etc.
+     * .hasHalfIntegers()} is true. For some of the examples, suppose this 
+     * number is <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;11</sup>&frasl;<sub>2</sub> or 
+     * <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;13</sup>&frasl;<sub>2</sub>.
+     * @return A representation using theta notation. For both of the examples, 
+     * this would be 2 + &theta;. Note that &omega; here is used strictly to 
+     * mean &minus;<sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub>. If {@link 
+     * #getRing()}{@link QuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is 
+     * false, this just returns the same as {@link #toString()}.
      */
     public String toStringAlt() {
         String altQIString;
         if (this.quadRing.d1mod4) {
             int nonThetaPart = this.regPartMult;
             int thetaPart = this.surdPartMult;
-            char thetaLetter = '\u03B8';
+            char thetaLetter = THETA_LETTER;
             if (this.denominator == 1) {
                 nonThetaPart *= 2;
                 thetaPart *= 2;
@@ -409,11 +410,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
             switch (this.quadRing.radicand) {
                 case -3:
                     nonThetaPart = (nonThetaPart + thetaPart)/2;
-                    thetaLetter = '\u03C9'; // omega instead of theta
+                    thetaLetter = OMEGA_LETTER;
                     break;
                 case 5:
-                    thetaLetter = '\u03C6'; // phi instead of theta
-                    // no break, deliberate fall-through to default
+                    thetaLetter = PHI_LETTER;
                 default:
                     nonThetaPart = (nonThetaPart - thetaPart)/2;
             }

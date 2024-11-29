@@ -2091,31 +2091,42 @@ public class QuadraticIntegerTest {
         }
     
         /**
-         * Constructor.
+         * Constructor. Auxiliary.
          * @param a The integer for the "regular" part.
          * @param b The integer to be multiplied by the square root of the 
          * radicand.
-         * @param ring Preferably an {@link IllDefinedQuadraticRing} object, but 
-         * any object subclassed from {@link QuadraticRing} will do; there is no 
-         * checking for the class of this parameter.
+         * @param ring Preferably a {@link QuadraticRingTest.QuadraticRingImpl} 
+         * object, but any object subclassed from {@link QuadraticRing} will do; 
+         * there is no checking for the class of this parameter.
          */
         QuadraticIntegerImpl(int a, int b, QuadraticRing ring) {
             this(a, b, ring, 1);
         }
         
+        /**
+         * Constructor. Auxiliary.
+         * @param a The integer for the "regular" part.
+         * @param b The integer to be multiplied by the square root of the 
+         * radicand.
+         * @param ring Preferably a {@link QuadraticRingTest.QuadraticRingImpl} 
+         * object, but any object subclassed from {@link QuadraticRing} will do; 
+         * there is no checking for the class of this parameter.
+         * @param denom The denominator. Should be 1 in most cases, 2 only when 
+         * the ring has "half-integers" and {@code a} and {@code b} match in 
+         * parity.
+         */
         QuadraticIntegerImpl(int a, int b, QuadraticRing ring, int denom) {
             super(a, b, ring, denom);
-//            double re = this.regPartMult;
-//            double im = 0.0;
-//            double y = this.quadRing.realRadSqrt * this.surdPartMult;
-//            if (this.quadRing.radicand < 0) {
-//                im += y;
-//            } else {
-//                re += y;
-//            }
-//            this.numValRe = re;
-//            this.numValIm = im;
-this.numValRe = 0.0;this.numValIm = 0.0;
+            double re = this.regPartMult;
+            double im = 0.0;
+            double y = this.quadRing.realRadSqrt * this.surdPartMult;
+            if (this.quadRing.radicand < 0) {
+                im += y;
+            } else {
+                re += y;
+            }
+            this.numValRe = re / this.denominator;
+            this.numValIm = im / this.denominator;
         }
         
     }
