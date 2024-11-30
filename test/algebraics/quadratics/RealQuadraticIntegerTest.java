@@ -1023,6 +1023,107 @@ public class RealQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringHalfIntPositiveRegPositiveSurd() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
+        String expected = a + "/2+" + b + SQRT_SYMBOL + '(' + ring.getRadicand() 
+                + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveRegNegativeSurd() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, -b, ring, 2);
+        String expected = a + "/2" + MINUS_SIGN + b + SQRT_SYMBOL + '(' 
+                + ring.getRadicand() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeRegPositiveSurd() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(-a, b, ring, 2);
+        String expected = MINUS_SIGN + a + "/2+" + b + SQRT_SYMBOL + '(' 
+                + ring.getRadicand() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeReNegativeIm() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(-a, -b, ring, 2);
+        String expected = MINUS_SIGN + a + "/2" + MINUS_SIGN + b + SQRT_SYMBOL 
+                + '(' + ring.getRadicand() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveRePlusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, 1, ring, 2);
+        String expected = a + "/2+" + SQRT_SYMBOL + '(' + ring.getRadicand() 
+                + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveReMinusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(a, -1, ring, 2);
+        String expected = a + "/2" + MINUS_SIGN + SQRT_SYMBOL + '(' 
+                + ring.getRadicand() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeRePlusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(-a, 1, ring, 2);
+        String expected = MINUS_SIGN + a + "/2+" + SQRT_SYMBOL + '(' 
+                + ring.getRadicand() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeReMinusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new RealQuadraticInteger(-a, -1, ring, 
+                2);
+        String expected = MINUS_SIGN + a + "/2" + MINUS_SIGN + SQRT_SYMBOL + '(' 
+                + ring.getRadicand() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
