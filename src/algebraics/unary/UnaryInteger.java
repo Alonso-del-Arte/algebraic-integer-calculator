@@ -170,6 +170,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     public UnaryInteger divides(int divisor) throws NotDivisibleException {
         if (divisor == 0) {
             String excMsg = "Can't divide " + this.toString() + " by 0";
+            throw new IllegalArgumentException(excMsg);
         }
         return this;
     }
