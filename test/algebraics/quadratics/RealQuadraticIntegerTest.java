@@ -23,7 +23,6 @@ import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
-import fractions.Fraction;
 
 import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator
@@ -961,7 +960,7 @@ public class RealQuadraticIntegerTest {
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new RealQuadraticInteger(0, b, ring);
         String expected = Integer.toString(b) + SQRT_SYMBOL + '(' 
-                + ring.getRadicand()+ ')';
+                + ring.getRadicand() + ')';
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
     }
