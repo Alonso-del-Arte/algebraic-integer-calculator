@@ -149,14 +149,14 @@ public final class UnaryInteger implements AlgebraicInteger,
     public UnaryInteger divides(UnaryInteger divisor) 
             throws NotDivisibleException {
         if (divisor.number == 0) {
-            String excMsg = "Can't divide " + this.toASCIIString() + " by 0";
+            String excMsg = "Can't divide ";// + this.toASCIIString() + " by 0";
             throw new IllegalArgumentException(excMsg);
         }
         int remainder = this.number % divisor.number;
         if (remainder != 0) {
-            String excMsg = "With a remainder of " + remainder + ", " 
-                    + this.number + " does not divide " + divisor.number 
-                    + " evenly";
+            String excMsg = "With a remainder of ";// + remainder + ", " 
+//                    + this.number + " does not divide " + divisor.number 
+//                    + " evenly";
             Fraction fraction = new Fraction(this.number, divisor.number);
             Fraction[] fractions = {fraction};
             throw new NotDivisibleException(excMsg, this, divisor, fractions);
@@ -168,6 +168,9 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public UnaryInteger divides(int divisor) throws NotDivisibleException {
+        if (divisor == 0) {
+            String excMsg = "Can't divide " + this.toString() + " by 0";
+        }
         return this;
     }
 
