@@ -583,6 +583,20 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testDividesInt() {
+        int n = randomNumber(Byte.MAX_VALUE) + 1;
+        UnaryInteger expected = new UnaryInteger(n);
+        int divisor = randomNumber(1024) + 16;
+        int nA = divisor * n;
+        UnaryInteger dividend = new UnaryInteger(nA);
+        String message = "Dividing " + dividend.toString() + " by " + divisor;
+        assertDoesNotThrow(() -> {
+            UnaryInteger actual = dividend.divides(divisor);
+            assertEquals(message, expected, actual);
+        }, message + " should not cause any exception");
+    }
+    
     // TODO: Write test for divides(int) when divisor is NOT divisible
     
 }
