@@ -502,6 +502,12 @@ public class UnaryIntegerTest {
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
+        String dividendStr = dividend.toASCIIString();
+        String divisorStr = divisor.toASCIIString();
+        String containsMsg = "Exception message should contain " + dividendStr 
+                + " and " + divisorStr;
+        assert excMsg.contains(dividendStr) : containsMsg;
+        assert excMsg.contains(divisorStr) : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
     
