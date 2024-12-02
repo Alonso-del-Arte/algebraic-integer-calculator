@@ -348,10 +348,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      */
     @Override
     public String toString() {
-        String preliminary = this.regPartMult + PLUS_SIGN_SPACED 
-                + this.surdPartMult + RADICAND_CHAR_SEQ;
-        String numStr = preliminary.replace("0 + ", "")
-                .replace(PLUS_SIGN_THEN_DASH, MINUS_SIGN_SPACED).replace("d", 
+        String initial = (this.regPartMult == 0) ? "" : this.regPartMult 
+                + PLUS_SIGN_SPACED;
+        String preliminary = initial + this.surdPartMult + RADICAND_CHAR_SEQ;
+        String numStr = preliminary.replace(PLUS_SIGN_THEN_DASH, 
+                MINUS_SIGN_SPACED).replace("d", 
                         Integer.toString(this.quadRing.radicand));
         return numStr.replace('-', MINUS_SIGN);
     }
