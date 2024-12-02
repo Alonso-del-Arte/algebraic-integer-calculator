@@ -54,6 +54,10 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class QuadraticIntegerTest {
     
+    private static final String MINUS_SIGN = "\u2212";
+    
+    private static final char SQRT_SYMBOL = '\u221A';
+    
     private static QuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(1024);
         if (propD == 1) propD = 2; 
@@ -86,10 +90,20 @@ public class QuadraticIntegerTest {
             return new QuadraticIntegerImpl(a, b, ring);
         }
     }
-    @org.junit.Ignore
+
     @Test
     public void testToString() {
-        fail("HAVEN'T WRITTEN TEST YET");
+        System.out.println("toString");
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        String expected = a + "+" + b + SQRT_SYMBOL + '(' + radSign 
+                + ring.getAbsNegRad() + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
     }
     
     @Test
