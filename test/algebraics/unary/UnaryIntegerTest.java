@@ -597,6 +597,35 @@ public class UnaryIntegerTest {
         }, message + " should not cause any exception");
     }
     
+    @Test
+    public void testDivideByCoprimeInt() {
+        int signAdjust = Integer.signum(2 * randomNumber() + 1);
+        int divisor = signAdjust * randomNumber(Byte.MAX_VALUE) + 2;
+        int nB = divisor + signAdjust;
+        int nA = nB * nB;
+        UnaryInteger dividend = new UnaryInteger(nA);
+        String msg = "Trying to divide " + dividend.toString() + " by " 
+                + divisor + " should cause NotDivisibleException";
+        NotDivisibleException nde = assertThrows(() -> {
+            UnaryInteger badResult = dividend.divides(divisor);
+            System.out.println(msg + ", not given result " + badResult);
+        }, NotDivisibleException.class, msg);
+        assertEquals(dividend, nde.getCausingDividend());
+        assertEquals(new UnaryInteger(divisor), nde.getCausingDivisor());
+        Fraction division = new Fraction(nA, divisor);
+        Fraction[] expecteds = {division};
+        Fraction[] actuals = nde.getFractions();
+        String message = msg + " with fraction " + division.toString() 
+                + " and message listing dividend and divisor";
+        assertArrayEquals(message, expecteds, actuals);
+        String excMsg = nde.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        assert excMsg.contains(dividend.toASCIIString()) : message;
+        assert excMsg.contains(Integer.toString(divisor)) : message;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     // TODO: Write test for divides(int) when divisor is NOT divisible
     
 }
