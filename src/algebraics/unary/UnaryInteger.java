@@ -171,14 +171,15 @@ public final class UnaryInteger implements AlgebraicInteger,
             String excMsg = "Can't divide " + this.toString() + " by 0";
             throw new IllegalArgumentException(excMsg);
         }
+        UnaryInteger wrappedDivisor = new UnaryInteger(divisor);
         int remainder = this.number % divisor;
         if (remainder != 0) {
             String excMsg = "With a remainder of " + remainder + ", " 
                     + this.number + " does not divide " + divisor + " evenly";
             Fraction fraction = new Fraction(this.number, divisor);
             Fraction[] fractions = {fraction};
-            throw new NotDivisibleException(excMsg, this, 
-                    new UnaryInteger(divisor), fractions);
+            throw new NotDivisibleException(excMsg, this, wrappedDivisor, 
+                    fractions);
         }
         int n = this.number / divisor;
         return new UnaryInteger(n);
