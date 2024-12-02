@@ -49,6 +49,8 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     
     private static final String MINUS_SIGN_THEN_SPACE = MINUS_SIGN_STRING + ' ';
     
+    private static final String PLUS_SIGN_THEN_DASH = PLUS_SIGN_SPACED + '-';
+    
     private static final String PLUS_SIGN_THEN_MINUS = PLUS_SIGN_SPACED 
             + MINUS_SIGN;
     
@@ -348,8 +350,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     public String toString() {
         String preliminary = this.regPartMult + PLUS_SIGN_SPACED 
                 + this.surdPartMult + RADICAND_CHAR_SEQ;
-        String numStr = preliminary.replace("d", 
-                Integer.toString(this.quadRing.radicand));
+        String numStr = preliminary.replace(PLUS_SIGN_THEN_DASH, 
+                MINUS_SIGN_SPACED).replace("d", 
+                        Integer.toString(this.quadRing.radicand));
         return numStr.replace('-', MINUS_SIGN);
     }
     
