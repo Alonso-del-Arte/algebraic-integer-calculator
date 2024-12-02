@@ -340,17 +340,18 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     /**
      * A text representation of the quadratic integer, with the "regular" part  
      * first and the "surd" part second.
-     * @return A String representing the imaginary quadratic integer which can 
-     * be used in a JTextField. Because of the "&radic;" character, this might 
-     * not be suitable for console output.
+     * @return A {@code String} instance representing the quadratic integer.  
+     * Because of the square root character "&radic;", this might not be 
+     * suitable for console output.
      */
     @Override
     public String toString() {
-        String numStr = this.regPartMult + PLUS_SIGN_SPACED + this.surdPartMult 
-                + RADICAND_CHAR_SEQ;
+        String preliminary = this.regPartMult + PLUS_SIGN_SPACED 
+                + this.surdPartMult + RADICAND_CHAR_SEQ;
         String signStr = (this.quadRing.radicand < 0) ? MINUS_SIGN_STRING : "";
         String radStr = signStr + this.quadRing.absRadicand;
-        return numStr.replace("d", radStr);
+        String numStr = preliminary.replace("d", radStr);
+        return numStr.replace('-', MINUS_SIGN);
     }
     
     /**
