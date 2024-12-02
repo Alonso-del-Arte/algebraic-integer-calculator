@@ -560,6 +560,29 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testDivisionByIntZero() {
+        int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
+        UnaryInteger dividend = new UnaryInteger(n);
+        int divisor = 0;
+        String msg = "Dividing " + dividend.toString() + " by " + divisor 
+                + " should cause an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = dividend.divides(divisor);
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String dividendStr = dividend.toASCIIString();
+        String containsMsg = "Exception message should contain " + dividendStr 
+                + " and 0";
+        assert excMsg.contains(dividendStr) : containsMsg;
+        assert excMsg.contains("0") : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     // TODO: Write test for divides(int) when divisor is NOT divisible
     
 }
