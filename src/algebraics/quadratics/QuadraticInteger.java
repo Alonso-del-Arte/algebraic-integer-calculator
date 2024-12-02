@@ -348,9 +348,8 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     public String toString() {
         String preliminary = this.regPartMult + PLUS_SIGN_SPACED 
                 + this.surdPartMult + RADICAND_CHAR_SEQ;
-        String signStr = (this.quadRing.radicand < 0) ? MINUS_SIGN_STRING : "";
-        String radStr = signStr + this.quadRing.absRadicand;
-        String numStr = preliminary.replace("d", radStr);
+        String numStr = preliminary.replace("d", 
+                Integer.toString(this.quadRing.radicand));
         return numStr.replace('-', MINUS_SIGN);
     }
     
