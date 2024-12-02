@@ -121,6 +121,34 @@ public class QuadraticIntegerTest {
     }
 
     @Test
+    public void testToStringNegativeRegNegativeSurd() {
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(-a, -b, ring);
+        String expected = MINUS_SIGN + a + MINUS_SIGN + b + SQRT_SYMBOL + '(' 
+                + radSign + ring.getAbsNegRad() + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringPositiveRegNegativeSurd() {
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(a, -b, ring);
+        String expected = a + MINUS_SIGN + b + SQRT_SYMBOL + '(' + radSign 
+                + ring.getAbsNegRad() + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
