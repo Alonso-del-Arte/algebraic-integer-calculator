@@ -203,6 +203,28 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringZeroRegPlusOneOfRoot() {
+        QuadraticRing ring = chooseRing();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(0, 1, ring);
+        String expected = "" + SQRT_SYMBOL + '(' + radSign + ring.getAbsNegRad() 
+                + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringZeroRegMinusOneOfRoot() {
+        QuadraticRing ring = chooseRing();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(0, -1, ring);
+        String expected = MINUS_SIGN + SQRT_SYMBOL + '(' + radSign 
+                + ring.getAbsNegRad() + ')';
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
