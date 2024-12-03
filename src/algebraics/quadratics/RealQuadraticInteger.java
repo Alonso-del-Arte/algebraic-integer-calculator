@@ -29,31 +29,11 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     private static final long serialVersionUID = 4547847540095073075L;
     
-    private static final String PLUS_SIGN_SPACED = " + ";
-    
-    private static final char MINUS_SIGN = '\u2212';
-    
-    private static final char[] MINUS_SIGN_CHARACTER_ARRAY = {MINUS_SIGN};
-    
-    private static final String MINUS_SIGN_STRING 
-            = new String(MINUS_SIGN_CHARACTER_ARRAY);
-    
-    private static final String MINUS_SIGN_SPACED = " " + MINUS_SIGN + ' ';
-    
-    private static final String MINUS_SIGN_THEN_SPACE = MINUS_SIGN_STRING + ' ';
-    
-    private static final String PLUS_SIGN_THEN_MINUS = PLUS_SIGN_SPACED 
-            + MINUS_SIGN;
-    
     private static final char SQRT_SYMBOL = '\u221A';
     
     private static final char THETA_LETTER = '\u03B8';
     
     private static final char PHI_LETTER = '\u03C6';
-    
-    private static final char[] RADICAND_CHARS = {SQRT_SYMBOL, '(', 'd', ')'};
-    
-    private static final String RADICAND_CHAR_SEQ = new String(RADICAND_CHARS);
     
     private final double numVal;
     private final double absNumVal;
