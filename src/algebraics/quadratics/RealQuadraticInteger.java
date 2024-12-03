@@ -29,6 +29,8 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     private static final long serialVersionUID = 4547847540095073075L;
     
+    private static final String MINUS_SIGN = "\u2212";
+    
     private static final char THETA_LETTER = '\u03B8';
     
     private static final char PHI_LETTER = '\u03C6';
@@ -39,7 +41,11 @@ public class RealQuadraticInteger extends QuadraticInteger
     @Override
     public String toString() {
         if (this.surdPartMult == 0) {
-            return Integer.toString(this.regPartMult);
+            if (this.regPartMult < 0) {
+                return MINUS_SIGN + Math.abs(this.regPartMult);
+            } else {
+                return Integer.toString(this.regPartMult);
+            }
         } else {
             return super.toString();
         }
