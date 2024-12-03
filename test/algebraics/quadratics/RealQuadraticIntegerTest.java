@@ -921,6 +921,17 @@ public class RealQuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringNegativeRegZeroSurd() {
+        int bound = 16384;
+        int a = RANDOM.nextInt(1, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(-a, 0, ring);
+        String expected = MINUS_SIGN + a;
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testToString() {
         System.out.println("toString");
         int bound = 8192;
