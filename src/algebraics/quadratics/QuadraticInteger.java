@@ -354,6 +354,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         String numStr = preliminary.replace(PLUS_SIGN_THEN_DASH, 
                 MINUS_SIGN_SPACED).replace("d", 
                         Integer.toString(this.quadRing.radicand));
+        if (Math.abs(this.surdPartMult) == 1) {
+            numStr = numStr.replace("1" + SQRT_SYMBOL, "" + SQRT_SYMBOL);
+        }
         return numStr.replace('-', MINUS_SIGN);
     }
     
