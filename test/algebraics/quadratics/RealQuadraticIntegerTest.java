@@ -901,6 +901,26 @@ public class RealQuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringPositiveRegZeroSurd() {
+        int bound = 16384;
+        int a = RANDOM.nextInt(1, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
+        String expected = Integer.toString(a);
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToStringZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(0, 0, ring);
+        String expected = "0";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testToString() {
         System.out.println("toString");
         int bound = 8192;
