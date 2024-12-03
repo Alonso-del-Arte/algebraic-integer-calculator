@@ -225,6 +225,115 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringHalfIntPositiveRegPositiveSurd() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring, 2);
+        String expected = a + "/2+" + b + SQRT_SYMBOL + '(' + radSign 
+                + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveRegNegativeSurd() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(a, -b, ring, 2);
+        String expected = a + "/2" + MINUS_SIGN + b + SQRT_SYMBOL + '(' 
+                + radSign + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeRegPositiveSurd() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(-a, b, ring, 2);
+        String expected = MINUS_SIGN + a + "/2+" + b + SQRT_SYMBOL + '(' 
+                + radSign + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeReNegativeIm() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        int b = 2 * randomNumber(bound) + 3;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(-a, -b, ring, 2);
+        String expected = MINUS_SIGN + a + "/2" + MINUS_SIGN + b + SQRT_SYMBOL 
+                + '(' + radSign + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveRePlusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(a, 1, ring, 2);
+        String expected = a + "/2+" + SQRT_SYMBOL + '(' + radSign 
+                + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntPositiveReMinusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(a, -1, ring, 2);
+        String expected = a + "/2" + MINUS_SIGN + SQRT_SYMBOL + '(' + radSign
+                + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeRePlusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(-a, 1, ring, 2);
+        String expected = MINUS_SIGN + a + "/2+" + SQRT_SYMBOL + '(' + radSign
+                + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringHalfIntNegativeReMinusHalfOfRoot() {
+        int bound = 256;
+        int a = 2 * randomNumber(bound) + 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        String radSign = (ring.getRadicand() < 0) ? MINUS_SIGN : "";
+        QuadraticInteger number = new QuadraticIntegerImpl(-a, -1, ring, 
+                2);
+        String expected = MINUS_SIGN + a + "/2" + MINUS_SIGN + SQRT_SYMBOL + '(' 
+                + radSign + ring.getAbsNegRad() + ')' + "/2";
+        String actual = number.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
