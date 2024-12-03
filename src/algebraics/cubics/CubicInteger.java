@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2024 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -33,7 +33,7 @@ public abstract class CubicInteger implements AlgebraicInteger {
      * @return An object of type {@link CubicRing}.
      */
     @Override
-    public CubicRing getRing() {
+    public final CubicRing getRing() {
         return this.cubicRing;
     }
     
