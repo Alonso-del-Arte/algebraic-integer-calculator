@@ -58,39 +58,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    @Override
-    public String toString() {
-        int rad = this.quadRing.absRadicand;
-        String radNumStr = Integer.toString(rad);
-        String radicandStr = RADICAND_CHAR_SEQ.replace("d", radNumStr);
-        String initial = this.regPartMult + PLUS_SIGN_SPACED + this.surdPartMult 
-                + radicandStr;
-        String dashesReplaced = initial.replace('-', MINUS_SIGN);
-        String extraSignRemoved = dashesReplaced.replace(PLUS_SIGN_THEN_MINUS, 
-                MINUS_SIGN_SPACED);
-        String zeroSurdRemoved = extraSignRemoved.replace(" + 0" + radicandStr, 
-                "");
-        String withRedundantOneRemoved = zeroSurdRemoved.replace(" 1" 
-                + radicandStr, " " + radicandStr);
-        String zeroRegRemoved = (withRedundantOneRemoved.startsWith("0 ")) 
-                ? withRedundantOneRemoved.replace("0 ", "") 
-                : withRedundantOneRemoved;
-        String tweaked = (zeroRegRemoved.startsWith(MINUS_SIGN_THEN_SPACE)) 
-                ? zeroRegRemoved.replace(MINUS_SIGN_THEN_SPACE, 
-                        MINUS_SIGN_STRING) 
-                : zeroRegRemoved;
-        int beginIndex = (this.surdPartMult == 1) ? 1 : 2;
-        String processed = (tweaked.startsWith("+")) 
-                ? tweaked.substring(beginIndex) : tweaked;
-        if (this.denominator == 2) {
-            String target = (this.surdPartMult < 0) ? MINUS_SIGN_SPACED 
-                    : PLUS_SIGN_SPACED;
-            String replacement = "/2" + target;
-            processed = processed.replace(target, replacement) + "/2";
-        }
-        return processed;
-    }
-    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
