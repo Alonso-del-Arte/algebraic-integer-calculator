@@ -24,8 +24,6 @@ import fractions.Fraction;
  */
 public class PureCubicInteger extends CubicInteger {
     
-    private final PureCubicRing domain;
-    
     // TODO: Write tests for this
     @Override
     public int algebraicDegree() {
@@ -67,15 +65,6 @@ public class PureCubicInteger extends CubicInteger {
     @Override
     public String minPolynomialStringHTML() {
         return "SORRY, NOT IMPLEMENTED YET";
-    }
-    
-    /**
-     * Retrieves an object representing the ring this cubic integer belongs to.
-     * @return A {@link PureCubicRing} instance.
-     */
-    @Override
-    public PureCubicRing getRing() {
-        return this.domain;
     }
     
     // TODO: Write tests for this
@@ -133,16 +122,13 @@ public class PureCubicInteger extends CubicInteger {
     }
         
     // TODO: Write tests for this
-    public PureCubicInteger(int a, int b, int c, PureCubicRing ring) {
+    public PureCubicInteger(int a, int b, int c, CubicRing ring) {
         super(ring);
-        this.domain = ring;
     }
     
     // TODO: Write tests for this
-    public PureCubicInteger(Fraction a, Fraction b, Fraction c, 
-            PureCubicRing ring) {
+    public PureCubicInteger(Fraction a, Fraction b, Fraction c, CubicRing ring) {
         super(ring);
-        this.domain = ring;
     }
     
 }

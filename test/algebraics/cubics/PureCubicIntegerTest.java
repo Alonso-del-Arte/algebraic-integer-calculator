@@ -37,10 +37,10 @@ public class PureCubicIntegerTest {
         System.out.println("getRing");
         int n = randomNumber(6) + 2;
         int d = randomSquarefreeNumberMod(n, 9);
-        PureCubicRing expected = new PureCubicRing(d);
+        CubicRing expected = new PureCubicRing(d);
         PureCubicInteger number = new PureCubicInteger(randomNumber(), 
                 randomNumber(), randomNumber(), expected);
-        PureCubicRing actual = number.getRing();
+        CubicRing actual = number.getRing();
         assertEquals(expected, actual);
     }
     
