@@ -652,6 +652,7 @@ public class UnaryIntegerTest {
     
     @Test
     public void testMod() {
+        System.out.println("mod");
         int divisorN = randomNumber(256) + 4;
         int dividendN = 256 * divisorN;
         UnaryInteger divisor = new UnaryInteger(divisorN);
@@ -662,8 +663,8 @@ public class UnaryIntegerTest {
             UnaryInteger expected = new UnaryInteger(n);
             assertDoesNotThrow(() -> {
                 UnaryInteger actual = dividend.mod(divisor);
-                assertEquals(message, expected, actual);}, 
-                    message + " should not cause any exception");
+                assertEquals(message, expected, actual);
+            }, message + " should not cause any exception");
         }
     }
     
@@ -689,6 +690,22 @@ public class UnaryIntegerTest {
         assert excMsg.contains(dividendStr) : containsMsg;
         assert excMsg.contains(divisorStr) : containsMsg;
         System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testModInt() {
+        int divisor = randomNumber(256) + 4;
+        int dividendN = 256 * divisor;
+        for (int n = 0; n < divisor; n++) {
+            UnaryInteger dividend = new UnaryInteger(dividendN + n);
+            String message = "Reckoning " + dividend.toString() + " mod " 
+                    + divisor;
+            UnaryInteger expected = new UnaryInteger(n);
+            assertDoesNotThrow(() -> {
+                UnaryInteger actual = dividend.mod(divisor);
+                assertEquals(message, expected, actual);
+            }, message + " should not cause any exception");
+        }
     }
     
 }
