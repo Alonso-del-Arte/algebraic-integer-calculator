@@ -654,7 +654,6 @@ public class UnaryIntegerTest {
     public void testMod() {
         int divisorN = randomNumber(256) + 4;
         int dividendN = 256 * divisorN;
-        int stop = dividendN + divisorN;
         UnaryInteger divisor = new UnaryInteger(divisorN);
         for (int n = 0; n < divisorN; n++) {
             UnaryInteger dividend = new UnaryInteger(dividendN + n);
@@ -666,6 +665,30 @@ public class UnaryIntegerTest {
                 assertEquals(message, expected, actual);}, 
                     message + " should not cause any exception");
         }
+    }
+    
+    @Test
+    public void testModIntZero() {
+        int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
+        UnaryInteger dividend = new UnaryInteger(n);
+        int divisor = 0;
+        String msg = "Taking " + dividend.toString() + " modulo " + divisor 
+                + " should cause an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = dividend.mod(divisor);
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String dividendStr = dividend.toASCIIString();
+        String divisorStr = Integer.toString(divisor);
+        String containsMsg = "Exception message should contain " + dividendStr 
+                + " and " + divisorStr;
+        assert excMsg.contains(dividendStr) : containsMsg;
+        assert excMsg.contains(divisorStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
     }
     
 }
