@@ -181,7 +181,6 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(remainder);
     }
 
-    // TODO: Write tests for this
     @Override
     public UnaryInteger mod(int divisor) {
         if (divisor == 0) {
@@ -189,7 +188,8 @@ public final class UnaryInteger implements AlgebraicInteger,
                     + " modulo 0 is not a valid operation";
             throw new IllegalArgumentException(excMsg);
         }
-        return this;
+        int remainder = this.number % divisor;
+        return new UnaryInteger(remainder);
     }
     
     // TODO: Write tests for this
