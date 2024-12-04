@@ -650,4 +650,20 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testMod() {
+        int divisorN = randomNumber(256) + 4;
+        int dividendN = 256 * divisorN;
+        int stop = dividendN + divisorN;
+        UnaryInteger divisor = new UnaryInteger(divisorN);
+        for (int n = 0; n < divisorN; n++) {
+            UnaryInteger dividend = new UnaryInteger(dividendN + n);
+            UnaryInteger expected = new UnaryInteger(n);
+            UnaryInteger actual = dividend.mod(divisor);
+            String message = "Reckoning " + dividend.toString() + " mod " 
+                    + divisor.toString();
+            assertEquals(message, expected, actual);
+        }
+    }
+    
 }
