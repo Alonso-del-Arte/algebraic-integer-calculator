@@ -59,6 +59,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private static final char[] RADICAND_CHARS = {SQRT_SYMBOL, '(', 
         MINUS_SIGN_CHARACTER, 'd', ')'};
     
+    private static final char[] SQRT_NEG_ONE_CHARS = {SQRT_SYMBOL, '(', 
+        MINUS_SIGN_CHARACTER, '1', ')'};
+    
+    private static final String SQRT_NEG_ONE_SEQ 
+            = new String(SQRT_NEG_ONE_CHARS);
+    
     private static final String RADICAND_CHAR_SEQ = new String(RADICAND_CHARS);
     
     private final double numValRe;
@@ -66,36 +72,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        int absRad = this.quadRing.absRadicand;
-        String radNumStr = Integer.toString(absRad);
-        String radicandStr = (absRad == 1) ? "i" 
-                : RADICAND_CHAR_SEQ.replace("d", radNumStr);
-        String initial = this.regPartMult + PLUS_SIGN_SPACED + this.surdPartMult 
-                + radicandStr;
-        String dashesReplaced = initial.replace('-', MINUS_SIGN_CHARACTER);
-        String extraSignRemoved = dashesReplaced.replace(PLUS_SIGN_THEN_MINUS, 
-                MINUS_SIGN_SPACED);
-        String zeroSurdRemoved = extraSignRemoved.replace(" + 0" + radicandStr, 
-                "");
-        String withRedundantOneRemoved = zeroSurdRemoved.replace(" 1" 
-                + radicandStr, " " + radicandStr);
-        String zeroRegRemoved = (withRedundantOneRemoved.startsWith("0 ")) 
-                ? withRedundantOneRemoved.replace("0 ", "") 
-                : withRedundantOneRemoved;
-        String tweaked = (zeroRegRemoved.startsWith(MINUS_SIGN_THEN_SPACE)) 
-                ? zeroRegRemoved.replace(MINUS_SIGN_THEN_SPACE, 
-                        MINUS_SIGN_STRING) 
-                : zeroRegRemoved;
-        int beginIndex = (this.surdPartMult == 1) ? 1 : 2;
-        String processed = (tweaked.startsWith("+")) 
-                ? tweaked.substring(beginIndex) : tweaked;
-        if (this.denominator == 2) {
-            String target = (this.surdPartMult < 0) ? MINUS_SIGN_SPACED 
-                    : PLUS_SIGN_SPACED;
-            String replacement = "/2" + target;
-            processed = processed.replace(target, replacement) + "/2";
+        String numStr = super.toString();
+        if (this.quadRing.radicand == -1) {
+            return numStr.replace(SQRT_NEG_ONE_SEQ, "i");
+        } else {
+            return numStr;
         }
-        return processed;
     }
     
     /**
