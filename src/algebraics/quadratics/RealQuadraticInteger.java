@@ -38,19 +38,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    @Override
-    public String toString() {
-        if (this.surdPartMult == 0) {
-            if (this.regPartMult < 0) {
-                return MINUS_SIGN + Math.abs(this.regPartMult);
-            } else {
-                return Integer.toString(this.regPartMult);
-            }
-        } else {
-            return super.toString();
-        }
-    }
-    
     /**
      * Gives the absolute value of the numeric value of this real quadratic 
      * integer. In most cases it will be a rational approximation.
