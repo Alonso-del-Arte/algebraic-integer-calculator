@@ -626,6 +626,28 @@ public class UnaryIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
-    // TODO: Write test for divides(int) when divisor is NOT divisible
+    @Test
+    public void testModZero() {
+        int n = randomNumber(Integer.MAX_VALUE) - Short.MAX_VALUE;
+        UnaryInteger dividend = new UnaryInteger(n);
+        UnaryInteger divisor = new UnaryInteger(0);
+        String msg = "Taking " + dividend.toString() + " modulo " 
+                + divisor.toString() + " should cause an exception";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = dividend.mod(divisor);
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String dividendStr = dividend.toASCIIString();
+        String divisorStr = divisor.toASCIIString();
+        String containsMsg = "Exception message should contain " + dividendStr 
+                + " and " + divisorStr;
+        assert excMsg.contains(dividendStr) : containsMsg;
+        assert excMsg.contains(divisorStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
     
 }
