@@ -170,7 +170,6 @@ public final class UnaryInteger implements AlgebraicInteger,
         return this.divides(new UnaryInteger(divisor));
     }
 
-    // TODO: Write tests for this
     @Override
     public UnaryInteger mod(UnaryInteger divisor) {
         if (divisor.number == 0) {
@@ -178,7 +177,8 @@ public final class UnaryInteger implements AlgebraicInteger,
                     + divisor.toASCIIString() + " is not a valid operation";
             throw new IllegalArgumentException(excMsg);
         }
-        return this;
+        int remainder = this.number % divisor.number;
+        return new UnaryInteger(remainder);
     }
 
     // TODO: Write tests for this
