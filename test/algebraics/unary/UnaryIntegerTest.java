@@ -658,11 +658,13 @@ public class UnaryIntegerTest {
         UnaryInteger divisor = new UnaryInteger(divisorN);
         for (int n = 0; n < divisorN; n++) {
             UnaryInteger dividend = new UnaryInteger(dividendN + n);
-            UnaryInteger expected = new UnaryInteger(n);
-            UnaryInteger actual = dividend.mod(divisor);
             String message = "Reckoning " + dividend.toString() + " mod " 
                     + divisor.toString();
-            assertEquals(message, expected, actual);
+            UnaryInteger expected = new UnaryInteger(n);
+            assertDoesNotThrow(() -> {
+                UnaryInteger actual = dividend.mod(divisor);
+                assertEquals(message, expected, actual);}, 
+                    message + " should not cause any exception");
         }
     }
     
