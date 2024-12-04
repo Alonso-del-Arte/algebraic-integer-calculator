@@ -183,13 +183,7 @@ public final class UnaryInteger implements AlgebraicInteger,
 
     @Override
     public UnaryInteger mod(int divisor) {
-        if (divisor == 0) {
-            String excMsg = "Taking " + this.toASCIIString() 
-                    + " modulo 0 is not a valid operation";
-            throw new IllegalArgumentException(excMsg);
-        }
-        int remainder = this.number % divisor;
-        return new UnaryInteger(remainder);
+        return this.mod(new UnaryInteger(divisor));
     }
     
     // TODO: Write tests for this
