@@ -351,7 +351,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     @Override
     public String toString() {
         if (this.surdPartMult == 0) {
-            return Integer.toString(this.regPartMult);
+            if (this.regPartMult < 0) {
+                return MINUS_SIGN_STRING + Integer.toString(-this.regPartMult);
+            } else {
+                return Integer.toString(this.regPartMult);
+            }
         }
         String initial = (this.regPartMult == 0) ? "" : this.regPartMult 
                 + PLUS_SIGN_SPACED;
