@@ -520,6 +520,20 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToStringAltD2Mod4SameAsToString() {
+        int a = randomNumber();
+        int b = randomNumber();
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = number.toString();
+        String actual = number.toStringAlt();
+        String message = "Given " + expected 
+                + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
