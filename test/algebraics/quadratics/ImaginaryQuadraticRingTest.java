@@ -687,6 +687,10 @@ public class ImaginaryQuadraticRingTest {
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(d);
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
     
@@ -703,6 +707,10 @@ public class ImaginaryQuadraticRingTest {
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(d);
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
     
@@ -720,6 +728,10 @@ public class ImaginaryQuadraticRingTest {
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(d);
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
     
