@@ -32,6 +32,11 @@ public final class UnaryInteger implements AlgebraicInteger,
     
     private final int number;
     
+    // TODO: Write tests for this
+    public int getNumber() {
+        return 0;
+    }
+    
     /**
      * Adds an unary integer to this one. For example, let's say this integer is 
      * 1728.
