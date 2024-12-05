@@ -21,8 +21,14 @@ import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import fractions.Fraction;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -110,6 +116,16 @@ public class UnaryIntegerTest {
         String expected = "&minus;" + Integer.toString(-n);
         String actual = number.toHTMLString();
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testGetNumber() {
+        System.out.println("getNumber");
+        int expected = randomNumber();
+        UnaryInteger instance = new UnaryInteger(expected);
+        int actual = instance.getNumber();
+        String message = "Getting number for " + instance.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
