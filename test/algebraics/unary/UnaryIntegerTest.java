@@ -33,6 +33,7 @@ import java.util.Set;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertContainsSameOrder;
 import static org.testframe.api.Asserters.assertDoesNotThrow;
 import static org.testframe.api.Asserters.assertThrows;
 
@@ -722,6 +723,38 @@ public class UnaryIntegerTest {
                 assertEquals(message, expected, actual);
             }, message + " should not cause any exception");
         }
+    }
+    
+    private static List<UnaryInteger> makeList() {
+        int initialCapacity = randomNumber(64) + 16;
+        List<UnaryInteger> list = new ArrayList<>(initialCapacity);
+        int bound = 8192;
+        int halfBound = bound / 2;
+        for (int i = 0; i < initialCapacity; i++) {
+            int n = randomNumber(bound) - halfBound + i;
+            list.add(new UnaryInteger(n));
+        }
+        return list;
+    }
+    
+    @Test
+    public void testCompareTo() {
+        System.out.println("compareTo");
+        List<UnaryInteger> actual = makeList();
+        List<UnaryInteger> expected = new ArrayList<>(actual);
+        Collections.sort(expected, new UnaryIntegerComparator());
+        Collections.sort(actual);
+        assertContainsSameOrder(expected, actual);
+    }
+    
+    private static class UnaryIntegerComparator 
+            implements Comparator<UnaryInteger> {
+        
+        @Override
+        public int compare(UnaryInteger a, UnaryInteger b) {
+            return Integer.compare(a.getNumber(), b.getNumber());
+        }
+        
     }
     
 }
