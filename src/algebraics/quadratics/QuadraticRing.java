@@ -444,7 +444,7 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      */
     public QuadraticRing(int d) {
         if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
-            String excMsg = "Squarefree integer required for parameter d, " + d 
+            String excMsg = "Squarefree integer required for parameter d, "// + d 
                     + " is not squarefree";
             throw new IllegalArgumentException(excMsg);
         }
