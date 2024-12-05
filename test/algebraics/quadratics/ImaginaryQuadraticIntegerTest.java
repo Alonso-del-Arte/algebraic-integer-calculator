@@ -506,6 +506,19 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
     }
+    
+    @Test
+    public void testToStringAltGaussianSameAsToString() {
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_GAUSSIAN);
+        String expected = number.toString();
+        String actual = number.toStringAlt();
+        String message = "Given " + expected 
+                + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
 
     /**
      * Test of toStringAlt method, of class ImaginaryQuadraticInteger. For 
