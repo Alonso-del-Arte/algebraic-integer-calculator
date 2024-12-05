@@ -223,6 +223,7 @@ public class QuadraticRingTest {
 
     @Test
     public void testApplyRejectsSquareMultiple() {
+        fail("REWRITE THIS TEST IN LIGHT OF FAIL WITH d = -578126579");
         int root = RANDOM.nextInt(2, 4096);
         int signum = (root % 2 == 0) ? 1 : -1;
         int d = signum * randomSquarefreeNumber(512) * root * root;
@@ -243,7 +244,7 @@ public class QuadraticRingTest {
     @Test
     public void testConstructorRejectsNonSquarefreeD() {
         int n = RANDOM.nextInt(2, 128);
-        int signum = (n % 2 == 0) ? 1 : -1;
+        int signum = (RANDOM.nextBoolean()) ? 1 : -1;
         int square = n * n;
         int d = signum * square * randomSquarefreeNumber(Short.MAX_VALUE);
         String msg = "Parameter d = " + d 
@@ -257,6 +258,10 @@ public class QuadraticRingTest {
         String excMsg = t.getMessage();
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(d);
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
 
