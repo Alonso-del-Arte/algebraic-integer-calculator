@@ -32,9 +32,14 @@ public final class UnaryInteger implements AlgebraicInteger,
     
     private final int number;
     
-    // TODO: Write tests for this
+    /**
+     * Retrieves the 32-bit integer this number object was constructed with. For 
+     * the example, suppose this instance was constructed with &minus;1729.
+     * @return The 32-bit integer primitive that was passed to the constructor. 
+     * For example, &minus;1729.
+     */
     public int getNumber() {
-        return 0;
+        return this.number;
     }
     
     /**
