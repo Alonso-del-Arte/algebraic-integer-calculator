@@ -75,6 +75,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return super.toString().replace(SQRT_NEG_ONE_SEQ, "i");
     }
     
+    @Override
+    public String toStringAlt() {
+        return "REWIND TO FAILING";
+    }
+    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 
