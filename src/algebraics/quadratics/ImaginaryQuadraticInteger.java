@@ -77,7 +77,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toStringAlt() {
-        if (this.quadRing.radicand == -1) {
+        int rad = this.quadRing.radicand;
+        if (rad == -1 || rad % 4 == -2) {
             return this.toString();
         }
         return "REWIND TO FAILING";
