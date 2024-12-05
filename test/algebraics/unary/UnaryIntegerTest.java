@@ -22,7 +22,6 @@ import fractions.Fraction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -547,11 +546,13 @@ public class UnaryIntegerTest {
     
     @Test
     public void testDivideByCoprime() {
-        int signAdjust = Integer.signum(2 * randomNumber() + 1);
-        int n = signAdjust * randomNumber(Byte.MAX_VALUE) + 2;
+        int sign = Integer.signum(2 * randomNumber() + 1);
+        int positive = randomNumber(Byte.MAX_VALUE) + 3;
+        int n = sign * positive;
         UnaryInteger divisor = new UnaryInteger(n);
-        int nB = n + signAdjust;
-        int nA = nB * nB;
+        int multiplier = randomNumber(128) + 2;
+        int remainder = randomNumber(positive - 1) + 1;
+        int nA = n * multiplier + remainder;
         UnaryInteger dividend = new UnaryInteger(nA);
         String msg = "Trying to divide " + dividend.toString() + " by " 
                 + divisor.toString() + " should cause NotDivisibleException";
@@ -616,10 +617,12 @@ public class UnaryIntegerTest {
     
     @Test
     public void testDivideByCoprimeInt() {
-        int signAdjust = Integer.signum(2 * randomNumber() + 1);
-        int divisor = signAdjust * randomNumber(Byte.MAX_VALUE) + 2;
-        int nB = divisor + signAdjust;
-        int nA = nB * nB;
+        int sign = Integer.signum(2 * randomNumber() + 1);
+        int positive = randomNumber(Byte.MAX_VALUE) + 3;
+        int divisor = sign * positive;
+        int multiplier = randomNumber(128) + 2;
+        int remainder = randomNumber(positive - 1) + 1;
+        int nA = divisor * multiplier + remainder;
         UnaryInteger dividend = new UnaryInteger(nA);
         String msg = "Trying to divide " + dividend.toString() + " by " 
                 + divisor + " should cause NotDivisibleException";
