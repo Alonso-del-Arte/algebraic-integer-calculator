@@ -49,6 +49,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     private static final char SQRT_SYMBOL = '\u221A';
     
+    private static final char OMEGA_CHAR = '\u03C9';
+    
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>], numbers of the form 
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
@@ -537,6 +539,16 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toStringAlt();
         String message = "Given " + expected 
                 + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltOmega() {
+        QuadraticInteger omega = new ImaginaryQuadraticInteger(-1, 1, 
+                RING_EISENSTEIN, 2);
+        String expected = "" + OMEGA_CHAR;
+        String actual = omega.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + omega.toString();
         assertEquals(message, expected, actual);
     }
 
