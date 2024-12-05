@@ -18,11 +18,9 @@ package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import static algebraics.MockRingTest.provideNull;
-import algebraics.UnsupportedNumberDomainException;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
-import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
@@ -30,17 +28,11 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
-import fractions.Fraction;
-import static viewers.ImagQuadRingDisplay.MINIMUM_RING_D;
 
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
