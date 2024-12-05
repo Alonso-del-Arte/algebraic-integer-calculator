@@ -15,7 +15,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics.quadratics;
-
+import calculators.NumberTheoreticFunctionsCalculator;
 /**
  * Defines objects to represent real quadratic rings.
  * @author Alonso del Arte
@@ -67,12 +67,18 @@ public final class RealQuadraticRing extends QuadraticRing {
      */
     public RealQuadraticRing(int d) {
         super(d);
+        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
+            String excMsg = "Squarefree integer required for parameter d, " + d 
+                    + " is not squarefree";
+            throw new IllegalArgumentException(excMsg);
+        }
         if (d < 1) {
-            String excMsg = "Positive integer required for parameter d";
+            String excMsg = "Positive integer required for parameter d, not " 
+                    + d;
             throw new IllegalArgumentException(excMsg);
         }
         if (d == 1) {
-            String excMsg = "O_(Q(sqrt(one))) is not supported";
+            String excMsg = "O_(Q(sqrt(1))) is not supported";
             throw new IllegalArgumentException(excMsg);
         }
         this.d1mod4 = (d % 4 == 1);
