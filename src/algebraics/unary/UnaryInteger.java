@@ -196,10 +196,9 @@ public final class UnaryInteger implements AlgebraicInteger,
         return this.mod(new UnaryInteger(divisor));
     }
     
-    // TODO: Write tests for this
     @Override
     public int compareTo(UnaryInteger other) {
-        return 0;
+        return Integer.compare(this.number, other.number);
     }
     
     // TODO: Write tests for this
