@@ -162,15 +162,15 @@ public final class UnaryInteger implements AlgebraicInteger,
             String excMsg = "Can't divide " + this.toASCIIString() + " by 0";
             throw new IllegalArgumentException(excMsg);
         }
-        int remainder = this.number % divisor.number;
-        if (remainder != 0) {
-            String excMsg = "With a remainder of " + remainder + ", " 
-                    + this.number + " does not divide " + divisor.number 
-                    + " evenly";
-            Fraction fraction = new Fraction(this.number, divisor.number);
-            Fraction[] fractions = {fraction};
-            throw new NotDivisibleException(excMsg, this, divisor, fractions);
-        }
+//        int remainder = this.number % divisor.number;
+//        if (remainder != 0) {
+//            String excMsg = "With a remainder of " + remainder + ", " 
+//                    + this.number + " does not divide " + divisor.number 
+//                    + " evenly";
+//            Fraction fraction = new Fraction(this.number, divisor.number);
+//            Fraction[] fractions = {fraction};
+//            throw new NotDivisibleException(excMsg, this, divisor, fractions);
+//        }
         int n = this.number / divisor.number;
         return new UnaryInteger(n);
     }
