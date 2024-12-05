@@ -61,17 +61,12 @@ public final class RealQuadraticRing extends QuadraticRing {
      * Constructs a new object representing a real quadratic ring.
      * @param d A squarefree, positive integer greater than 1. Examples: 5, 21, 
      * 1729.
-     * @throws IllegalArgumentException If <code>d</code> is any negative 
-     * integer, or if it's 0 or 1, or positive but the multiple of a nontrivial 
-     * square. Examples: &minus;7, 28.
+     * @throws IllegalArgumentException If {@code d} is any negative integer, or 
+     * if it's 0 or 1, or positive but the multiple of a nontrivial square. 
+     * Examples: &minus;7, 28.
      */
     public RealQuadraticRing(int d) {
         super(d);
-        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
-            String excMsg = "Squarefree integer required for parameter d, " + d 
-                    + " is not squarefree";
-            throw new IllegalArgumentException(excMsg);
-        }
         if (d < 1) {
             String excMsg = "Positive integer required for parameter d, not " 
                     + d;

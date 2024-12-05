@@ -154,11 +154,6 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
      */
     public ImaginaryQuadraticRing(int d) {
         super(d);
-        if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
-            String excMsg = "Squarefree integer required for parameter d, " + d 
-                    + " is not squarefree";
-            throw new IllegalArgumentException(excMsg);
-        }
         if (d > -1) {
             String excMsg = "Negative integer required for parameter d, not " 
                     + d;
