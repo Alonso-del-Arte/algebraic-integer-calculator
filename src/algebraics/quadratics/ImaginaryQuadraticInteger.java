@@ -72,12 +72,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toString() {
-        String numStr = super.toString();
-        if (this.quadRing.radicand == -1) {
-            return numStr.replace(SQRT_NEG_ONE_SEQ, "i");
-        } else {
-            return numStr;
-        }
+        return super.toString().replace(SQRT_NEG_ONE_SEQ, "i");
     }
     
     /**
