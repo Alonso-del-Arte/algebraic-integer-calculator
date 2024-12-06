@@ -2651,6 +2651,29 @@ public class RealQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
         
+    @Test
+    public void testToUnaryIntegerOverflowsAlgebraicDegree() {
+        int a = randomNumber();
+        int b = randomNumber() | randomPowerOfTwo();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new RealQuadraticInteger(a, b, ring);
+        String msg = "Should not be able to convert " + instance.toString() 
+                + " to unary integer";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = instance.toUnaryInteger();
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, AlgebraicDegreeOverflowException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = instance.toASCIIString();
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+
     /**
      * Test of applyPhi method, of class RealQuadraticInteger.
      */@org.junit.Ignore
