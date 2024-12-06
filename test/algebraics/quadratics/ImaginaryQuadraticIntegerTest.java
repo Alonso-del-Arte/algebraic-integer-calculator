@@ -23,6 +23,7 @@ import algebraics.unary.UnaryInteger;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator.randomPowerOfTwo;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
@@ -3397,12 +3398,32 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToUnaryInteger() {
+        System.out.println("toUnaryInteger");
         int a = randomNumber();
         QuadraticRing ring = chooseRing();
         QuadraticInteger instance = new ImaginaryQuadraticInteger(a, 0, ring);
         UnaryInteger expected = new UnaryInteger(a);
         UnaryInteger actual = instance.toUnaryInteger();
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToUnaryIntegerOverflowsAlgebraicDegree() {
+        int a = randomNumber();
+        int b = randomNumber() | randomPowerOfTwo();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new ImaginaryQuadraticInteger(a, b, ring);
+        String msg = "Should not be able to convert " + instance.toString() 
+                + " to unary integer";
+        Throwable t = assertThrows(() -> {
+            UnaryInteger badResult = instance.toUnaryInteger();
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, AlgebraicDegreeOverflowException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
 
     // TODO: Break up this constructor test into smaller tests
