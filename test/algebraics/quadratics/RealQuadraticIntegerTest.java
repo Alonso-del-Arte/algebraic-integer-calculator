@@ -19,19 +19,20 @@ package algebraics.quadratics;
 import algebraics.AlgebraicDegreeOverflowException;
 import static algebraics.MockRingTest.provideNull;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
+import algebraics.unary.UnaryInteger;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
-import static calculators.NumberTheoreticFunctionsCalculator
-        .randomSquarefreeNumberOtherThan;
-
 import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator
         .nextHighestSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator.randomPowerOfTwo;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberOtherThan;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2639,6 +2640,17 @@ public class RealQuadraticIntegerTest {
 //        }
     }
     
+    @Test
+    public void testToUnaryInteger() {
+        System.out.println("toUnaryInteger");
+        int a = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new RealQuadraticInteger(a, 0, ring);
+        UnaryInteger expected = new UnaryInteger(a);
+        UnaryInteger actual = instance.toUnaryInteger();
+        assertEquals(expected, actual);
+    }
+        
     /**
      * Test of applyPhi method, of class RealQuadraticInteger.
      */@org.junit.Ignore
