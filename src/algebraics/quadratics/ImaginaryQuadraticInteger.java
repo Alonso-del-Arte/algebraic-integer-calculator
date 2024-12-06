@@ -408,7 +408,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public UnaryInteger toUnaryInteger() {
-        return new UnaryInteger(-1);
+        return new UnaryInteger(this.regPartMult);
     }
     
     /**
