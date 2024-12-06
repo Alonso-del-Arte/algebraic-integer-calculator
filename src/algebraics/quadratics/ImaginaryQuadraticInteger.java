@@ -408,6 +408,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public UnaryInteger toUnaryInteger() {
+        if (this.surdPartMult != 0) {
+            String excMsg = "Can't convert " + this.toASCIIString() 
+                    + " to unary integer";
+            throw new AlgebraicDegreeOverflowException(excMsg, 1, this, this);
+        }
         return new UnaryInteger(this.regPartMult);
     }
     
