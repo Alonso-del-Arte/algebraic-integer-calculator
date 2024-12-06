@@ -2057,6 +2057,11 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
+    // TODO: Write tests for this
+    public static int randomPowerOfTwo() {
+        return -1;
+    }
+    
     /**
      * Gives a pseudorandom number. The number may be negative, 0 or positive. 
      * If you need to bound the number more narrowly than the range of 
