@@ -20,6 +20,7 @@ import algebraics.AlgebraicDegreeOverflowException;
 import static algebraics.MockRingTest.provideNull;
 import algebraics.UnsupportedNumberDomainException;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
+import algebraics.unary.UnaryInteger;
 import arithmetic.NotDivisibleException;
 
 import static calculators.EratosthenesSieve.listPrimes;
@@ -29,6 +30,7 @@ import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator
         .nextHighestSquarefree;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator.randomPowerOfTwo;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
@@ -2100,6 +2102,17 @@ public class QuadraticIntegerTest {
         assertEquals(message, 0L, actual);
     }
     
+    @Test
+    public void testToUnaryInteger() {
+        System.out.println("toUnaryInteger");
+        int a = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new QuadraticIntegerImpl(a, 0, ring);
+        UnaryInteger expected = new UnaryInteger(a);
+        UnaryInteger actual = instance.toUnaryInteger();
+        assertEquals(expected, actual);
+    }
+        
     /**
      * Test of apply method of class QuadraticInteger.
      */@org.junit.Ignore
