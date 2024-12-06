@@ -2057,9 +2057,14 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, ring);
     }
     
-    // TODO: Write tests for this
+    /**
+     * Gives a pseudorandomly chosen power of two.
+     * @return A power of two, one of 1, 2, 4, 8, 16, 32, 64, 128, ..., 
+     * 1073741824.
+     */
     public static int randomPowerOfTwo() {
-        return -1;
+        int shift = randomNumber(31);
+        return 1 << shift;
     }
     
     /**
