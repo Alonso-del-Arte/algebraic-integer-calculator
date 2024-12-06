@@ -158,16 +158,6 @@ public class RealQuadraticInteger extends QuadraticInteger
         return Long.signum(bits);
     }
     
-    @Override
-    public UnaryInteger toUnaryInteger() {
-        if (this.surdPartMult != 0) {
-            String excMsg = "Can't convert " + this.toASCIIString() 
-                    + " to unary integer";
-            throw new AlgebraicDegreeOverflowException(excMsg, 1, this, this);
-        }
-        return new UnaryInteger(this.regPartMult);
-    }
-    
     /**
      * Creates a <code>RealQuadraticInteger</code> based on the parameters 
      * according to "theta" notation. Here &theta; = &phi; = 

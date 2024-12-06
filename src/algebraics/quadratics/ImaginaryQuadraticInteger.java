@@ -406,16 +406,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 new ImaginaryQuadraticRing(-3), 2);
     }
     
-    @Override
-    public UnaryInteger toUnaryInteger() {
-        if (this.surdPartMult != 0) {
-            String excMsg = "Can't convert " + this.toASCIIString() 
-                    + " to unary integer";
-            throw new AlgebraicDegreeOverflowException(excMsg, 1, this, this);
-        }
-        return new UnaryInteger(this.regPartMult);
-    }
-    
     /**
      * Alternative constructor, may be used when the denominator is known to be 
      * 1. For example, this constructor may be used for &minus;1 + 
