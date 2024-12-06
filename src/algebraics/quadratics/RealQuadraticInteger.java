@@ -159,7 +159,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public UnaryInteger toUnaryInteger() {
-        return new UnaryInteger(1);
+        return new UnaryInteger(this.regPartMult);
     }
     
     /**
