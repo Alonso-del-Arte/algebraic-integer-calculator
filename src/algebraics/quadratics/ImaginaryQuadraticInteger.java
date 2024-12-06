@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
+import algebraics.unary.UnaryInteger;
 import arithmetic.NotDivisibleException;
 
 import java.text.DecimalFormatSymbols;
@@ -287,7 +288,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * integer and <code>endPoint</code> come from different imaginary quadratic 
      * rings.
      */
-    public ImaginaryQuadraticIntegerLine to(ImaginaryQuadraticInteger endPoint) {
+    public ImaginaryQuadraticIntegerLine 
+        to(ImaginaryQuadraticInteger endPoint) {
         if (!this.quadRing.equals(endPoint.quadRing)) {
             String exceptionMessage = "Ring that contains both " 
                     + this.toASCIIString() + " and " + endPoint.toASCIIString() 
@@ -402,6 +404,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public static ImaginaryQuadraticInteger applyOmega(int m, int n) {
         return (ImaginaryQuadraticInteger) QuadraticInteger.apply(2 * m - n, n, 
                 new ImaginaryQuadraticRing(-3), 2);
+    }
+    
+    @Override
+    public UnaryInteger toUnaryInteger() {
+        return new UnaryInteger(-1);
     }
     
     /**

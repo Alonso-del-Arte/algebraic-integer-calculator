@@ -19,6 +19,7 @@ package algebraics.quadratics;
 import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.AlgebraicInteger;
 import algebraics.UnsupportedNumberDomainException;
+import algebraics.unary.UnaryInteger;
 import arithmetic.Arithmeticable;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
@@ -1212,6 +1213,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         if (divisor == 0) return this;
         return new ImaginaryQuadraticInteger(-1, -1, 
                 new ImaginaryQuadraticRing(-1));
+    }
+    
+    public UnaryInteger toUnaryInteger() {
+        return new UnaryInteger(0);
     }
     
     /**
