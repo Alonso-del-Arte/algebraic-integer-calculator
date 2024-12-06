@@ -2876,6 +2876,26 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @Test
+    public void testRandomPowerOfTwo() {
+        System.out.println("randomPowerOfTwo");
+        int initialCapacity = 31;
+        Set<Integer> expected = new HashSet<>(initialCapacity);
+        for (int pow = 1; pow > 0; pow <<= 1) {
+            expected.add(pow);
+        }
+        Set<Integer> actual = new HashSet<>(initialCapacity);
+        int totalNumberOfCalls = 32 * initialCapacity;
+        for (int i = 0; i < totalNumberOfCalls; i++) {
+            int power = NumberTheoreticFunctionsCalculator.randomPowerOfTwo();
+            String message = "Number " + power + " is said to be a power of 2";
+            assertEquals(message, Integer.highestOneBit(power), power);
+            assert power > 0 : message;
+            actual.add(power);
+        }
+        assertContainsSame(expected, actual);
+    }
+    
     /**
      * Test of the randomNumber function, of the 
      * NumberTheoreticFunctionsCalculator class.
