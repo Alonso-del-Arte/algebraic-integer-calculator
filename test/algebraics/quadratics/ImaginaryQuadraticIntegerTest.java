@@ -19,6 +19,7 @@ package algebraics.quadratics;
 import algebraics.AlgebraicDegreeOverflowException;
 import static algebraics.MockRingTest.provideNull;
 import static algebraics.quadratics.QuadraticRingTest.RANDOM;
+import algebraics.unary.UnaryInteger;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
@@ -3393,8 +3394,18 @@ public class ImaginaryQuadraticIntegerTest {
 //            }
 //        }
     }
+    
+    @Test
+    public void testToUnaryInteger() {
+        int a = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new ImaginaryQuadraticInteger(a, 0, ring);
+        UnaryInteger expected = new UnaryInteger(a);
+        UnaryInteger actual = instance.toUnaryInteger();
+        assertEquals(expected, actual);
+    }
 
-    // TODO: Break up this constructor tests into smaller tests
+    // TODO: Break up this constructor test into smaller tests
     /**
      * Test of ImaginaryQuadraticInteger class constructor. The main thing we're 
      * testing here is that an invalid argument triggers an 
