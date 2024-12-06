@@ -1215,7 +1215,20 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                 new ImaginaryQuadraticRing(-1));
     }
     
+    /**
+     * Converts this number to an unary integer if it's of degree 0 or 1.
+     * @return The converted unary integer. For example, for &minus;7 + 
+     * 0&radic;21, this would be &minus;7.
+     * @throws AlgebraicDegreeOverflowException If this number is of degree 2. 
+     * For example, the exception would occur if this number is &minus;7 + 
+     * 10&radic;21 rather than &minus;7 + 0&radic;21.
+     */
     public UnaryInteger toUnaryInteger() {
+        if (this.surdPartMult != 0) {
+            String message = "Can't convert " + this.toASCIIString() 
+                    + " to unary integer";
+            throw new AlgebraicDegreeOverflowException(message, 1, this, this);
+        }
         return new UnaryInteger(this.regPartMult);
     }
     
