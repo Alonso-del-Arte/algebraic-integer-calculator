@@ -15,6 +15,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics.quadratics;
+import algebraics.AlgebraicDegreeOverflowException;
 import algebraics.unary.UnaryInteger;
 /**
  * Defines objects to represent real quadratic integers, for the most part 
@@ -159,6 +160,11 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public UnaryInteger toUnaryInteger() {
+        if (this.surdPartMult != 0) {
+            String excMsg = "Can't convert " + this.toASCIIString() 
+                    + " to unary integer";
+            throw new AlgebraicDegreeOverflowException(excMsg, 1, this, this);
+        }
         return new UnaryInteger(this.regPartMult);
     }
     
