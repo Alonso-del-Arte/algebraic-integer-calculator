@@ -1216,7 +1216,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     }
     
     public UnaryInteger toUnaryInteger() {
-        return new UnaryInteger(0);
+        return new UnaryInteger(this.regPartMult);
     }
     
     /**
