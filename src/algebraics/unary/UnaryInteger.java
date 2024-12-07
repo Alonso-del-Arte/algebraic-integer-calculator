@@ -230,7 +230,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public long[] minPolynomialCoeffs() {
-        long[] array = {Long.MIN_VALUE, Long.MAX_VALUE};
+        long[] array = {0L, 1L};
         return array;
     }
 
