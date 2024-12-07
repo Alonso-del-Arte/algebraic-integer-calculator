@@ -227,10 +227,17 @@ public final class UnaryInteger implements AlgebraicInteger,
         return Long.MAX_VALUE;
     }
 
+    /**
+     * Gives the coefficients for the minimal polynomial of this integer. They  
+     * are given in the reverse order of the normal expression of the minimal 
+     * polynomial.
+     * @return The minimum polynomial coefficients. For example, if this number 
+     * is 7, the minimum polynomial is <i>x</i> &minus; 7, so the coefficients 1 
+     * and &minus;7 are given as {&minus;7, 1}.
+     */
     @Override
     public long[] minPolynomialCoeffs() {
-        long[] array = {-this.number, 1L};
-        return array;
+        return new long[]{-this.number, 1L};
     }
 
     // TODO: Write tests for this
