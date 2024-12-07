@@ -225,6 +225,18 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testMinPolynomialCoeffs() {
+        System.out.println("minPolynomialCoeffs");
+        int n = randomNumber() | randomPowerOfTwo();
+        UnaryInteger instance = new UnaryInteger(n);
+        long[] expecteds = {-n, 1L};
+        long[] actuals = instance.minPolynomialCoeffs();
+        String message = "Reckoning minimal polynomial coefficients for " 
+                + instance.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
+    
+    @Test
     public void testGetRing() {
         System.out.println("getRing");
         int n = randomNumber();
