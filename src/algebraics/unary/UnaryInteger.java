@@ -227,10 +227,12 @@ public final class UnaryInteger implements AlgebraicInteger,
         return Long.MAX_VALUE;
     }
 
-    // TODO: Write tests for this
     @Override
     public long[] minPolynomialCoeffs() {
         long[] array = {0L, 1L};
+        if (this.number != 0) {
+            array[0] = -this.number;
+        }
         return array;
     }
 
