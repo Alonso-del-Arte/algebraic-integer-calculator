@@ -203,7 +203,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     
     @Override
     public int algebraicDegree() {
-        return 1;
+        return Math.abs(Integer.signum(this.number));
     }
 
     // TODO: Write tests for this
