@@ -19,6 +19,7 @@ package algebraics.unary;
 import algebraics.IntegerRing;
 import arithmetic.NotDivisibleException;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator.randomPowerOfTwo;
 import fractions.Fraction;
 
 import java.time.LocalDateTime;
@@ -183,6 +184,18 @@ public class UnaryIntegerTest {
         int expected = integers.size();
         int actual = hashes.size();
         String message = "Each unique integer should have a unique hash code";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testGetAlgebraicDegree() {
+        System.out.println("algebraicDegree");
+        int n = randomNumber() | randomPowerOfTwo();
+        UnaryInteger instance = new UnaryInteger(n);
+        int expected = 1;
+        int actual = instance.algebraicDegree();
+        String message = "Algebraic degree of " + instance.toString() 
+                + " should be " + expected;
         assertEquals(message, expected, actual);
     }
     
