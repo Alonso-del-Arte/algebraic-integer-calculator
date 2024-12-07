@@ -91,9 +91,16 @@ simple matter of multiplying $\sqrt{-d}$ by $i$.
 So, to solve $x^2 = -7$, we take $\sqrt 7$ and multiply it by $i$. We can notate 
 this example as either $i \sqrt 7$, which might be regarded as more correct, or 
 as $\sqrt{-7}$, which might not be regarded as correct but which I find more 
-straightforward.
+straightforward. However you notate this, we're talking about a purely imaginary 
+number: it has 0 for a real part and not 0 for an imaginary part.
 
-The example $x^4 + 7 = 0$ is a little more complicated.
+The example $x^4 + 7 = 0$ is a little more complicated. So we're going to set 
+that one aside for now and instead look at the similar $x^4 + 1 = 0$. Rewriting, 
+we obtain $x^4 = -1$. This suggests that $x^2 = i$ and therefore $x = \sqrt i$.
+
+But then what is $\sqrt i$? As it turns out, it's $$\frac{1}{\sqrt 2} + 
+\frac{1}{\sqrt 2},$$ which is a number with both a nonzero real part and a 
+nonzero imaginary part.
 
 (FINISH WRITING)
 
