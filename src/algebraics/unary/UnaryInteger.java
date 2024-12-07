@@ -201,10 +201,9 @@ public final class UnaryInteger implements AlgebraicInteger,
         return Integer.compare(this.number, other.number);
     }
     
-    // TODO: Write tests for this
     @Override
     public int algebraicDegree() {
-        return Integer.MAX_VALUE;
+        return 1;
     }
 
     // TODO: Write tests for this
