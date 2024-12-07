@@ -89,6 +89,27 @@ public class AlgebraicDegreeOverflowException extends RuntimeException {
             this.diffRingNumberB});
     }
     
+    // TODO: Write tests for this constructor
+    public AlgebraicDegreeOverflowException(String message, int maxDegree, 
+            AlgebraicInteger number) {
+        super(message);
+        this.maxExpectedAlgebraicDegree = maxDegree;
+        this.diffRingNumberA = null;
+        this.diffRingNumberB = null;
+        this.necessaryAlgebraicDegree = -1;
+    }
+    
+    // TODO: Write tests for this constructor
+    public AlgebraicDegreeOverflowException(String message, int maxDegree, 
+            AlgebraicInteger number, IntegerRing ring) {
+        super(message);
+        this.maxExpectedAlgebraicDegree = maxDegree;
+        this.diffRingNumberA = null;
+        this.diffRingNumberB = null;
+        this.necessaryAlgebraicDegree = this.diffRingNumberA.algebraicDegree() 
+                * this.diffRingNumberB.algebraicDegree();
+    }
+    
     /**
      * This exception should be thrown when the result of an arithmetic 
      * operation on two objects implementing the {@link AlgebraicInteger} 
