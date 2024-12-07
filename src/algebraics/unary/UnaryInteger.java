@@ -229,10 +229,7 @@ public final class UnaryInteger implements AlgebraicInteger,
 
     @Override
     public long[] minPolynomialCoeffs() {
-        long[] array = {0L, 1L};
-        if (this.number != 0) {
-            array[0] = -this.number;
-        }
+        long[] array = {-this.number, 1L};
         return array;
     }
 
