@@ -16,6 +16,7 @@
  */
 package algebraics.unary;
 
+import algebraics.IntegerRing;
 import arithmetic.NotDivisibleException;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import fractions.Fraction;
@@ -182,6 +183,18 @@ public class UnaryIntegerTest {
         int expected = integers.size();
         int actual = hashes.size();
         String message = "Each unique integer should have a unique hash code";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testGetRing() {
+        System.out.println("getRing");
+        int n = randomNumber();
+        UnaryInteger number = new UnaryInteger(n);
+        IntegerRing expected = UnaryRing.Z;
+        IntegerRing actual = number.getRing();
+        String message = "Ring containing " + number.toString() + " should be " 
+                + expected.toString();
         assertEquals(message, expected, actual);
     }
     
