@@ -17,7 +17,6 @@
 package algebraics.unary;
 
 import algebraics.AlgebraicInteger;
-import algebraics.IntegerRing;
 import arithmetic.Arithmeticable;
 import arithmetic.NotDivisibleException;
 import fractions.Fraction;
