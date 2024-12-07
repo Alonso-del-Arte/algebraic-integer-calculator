@@ -244,10 +244,13 @@ public final class UnaryInteger implements AlgebraicInteger,
         return "SORRY, NOT IMPLEMENTED YET";
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives an object representing the ring <b>Z</b>.
+     * @return Always <b>Z</b>.
+     */
     @Override
-    public IntegerRing getRing() {
-        return new algebraics.quadratics.ImaginaryQuadraticRing(-1);
+    public UnaryRing getRing() {
+        return UnaryRing.Z;
     }
 
     /**
