@@ -228,10 +228,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                 coeffs[2] = 1L;
                 break;
             default:
-                String excMsg = "Excessive degree " + degree 
+                String message = "Excessive degree " + degree 
                         + " occurred somehow";
-                throw new AlgebraicDegreeOverflowException(excMsg, 2, this, 
-                        this);
+                throw new AlgebraicDegreeOverflowException(message, 2, this);
         }
         return coeffs;
     }
