@@ -23,11 +23,10 @@ import fractions.Fraction;
 /**
  * Represents the ring of integers of degree 1. Mathematicians notate this ring 
  * as &#x2124; or <b>Z</b>. This class has only one instance, {@link #Z}, and 
- * the only constructor is class private. All the functions are final, but this 
- * is more for the sake of symbolism, since subclasses are not allowed.
+ * the only constructor is class private.
  * @author Alonso del Arte
  */
-final class UnaryRing implements IntegerRing {
+public final class UnaryRing implements IntegerRing {
     
     /**
      * The ring of algebraic integers of degree 1, notated <b>Z</b> or &#x2124;.
@@ -43,7 +42,8 @@ final class UnaryRing implements IntegerRing {
     /**
      * Gives the maximum algebraic degree of numbers in this ring. For a nonzero 
      * integer <i>n</i>, the minimum polynomial is <i>x</i> &minus; <i>n</i>, 
-     * and for 0 it's just <i>x</i>.
+     * and for 0 it's just <i>x</i>, which means an implied exponent 1 in both 
+     * cases.
      * @return Always 1.
      */
     @Override
@@ -81,8 +81,7 @@ final class UnaryRing implements IntegerRing {
     }
 
     /**
-     * Formats the ring's label as a <code>String</code> using ASCII characters 
-     * only.
+     * Formats the ring's label as a {@code String} using ASCII characters only.
      * @return Always just "Z". 
      */
     @Override
@@ -91,8 +90,8 @@ final class UnaryRing implements IntegerRing {
     }
 
     /**
-     * Formats the ring's label as a <code>String</code> that can be used in a 
-     * TeX document. Does not use blackboard bold.
+     * Formats the ring's label as a {@code String} that can be used in a TeX 
+     * document. Does not use blackboard bold.
      * @return Either "\mathbf Z" or "\mathbf{Z}", which should display as 
      * "<b>Z</b>" in the output document, provided the TeX printer is configured 
      * correctly.
@@ -103,8 +102,8 @@ final class UnaryRing implements IntegerRing {
     }
 
     /**
-     * Formats the ring's label as a <code>String</code> that can be used in a 
-     * TeX document. Uses blackboard bold.
+     * Formats the ring's label as a {@code String} that can be used in a TeX 
+     * document. Uses blackboard bold.
      * @return Either "\mathbb Z" or "\mathbb{Z}", which should display as 
      * "&#x2124;" in the output document, provided the TeX printer is configured 
      * correctly.
@@ -115,8 +114,8 @@ final class UnaryRing implements IntegerRing {
     }
 
     /**
-     * Formats the ring's label as a <code>String</code> that can be used in an 
-     * HTML document. Does not use blackboard bold.
+     * Formats the ring's label as a {@code String} that can be used in an HTML 
+     * document. Does not use blackboard bold.
      * @return Something like "&lt;b&gt;Z&lt;/b&gt;", which should display as 
      * "<b>Z</b>" in a Web browser.
      */
@@ -126,8 +125,8 @@ final class UnaryRing implements IntegerRing {
     }
 
     /**
-     * Formats the ring's label as a <code>String</code> that can be used in an 
-     * HTML document. Uses blackboard bold.
+     * Formats the ring's label as a {@code String} that can be used in an HTML 
+     * document. Uses blackboard bold.
      * @return Either "&amp;#x2124;" or "&amp;#8484;", both of which display as 
      * "&#x2124;" in a Web browser.
      */
@@ -137,8 +136,8 @@ final class UnaryRing implements IntegerRing {
     }
 
     /**
-     * Formats the ring's label as a <code>String</code> that could 
-     * theoretically be used in an old MS-DOS file save dialog. 
+     * Formats the ring's label as a {@code String} that could theoretically be 
+     * used in an old MS-DOS file save dialog. 
      * @return Always "Z", the same as {@link #toASCIIString()}.
      */
     @Override
