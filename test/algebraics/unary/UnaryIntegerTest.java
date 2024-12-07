@@ -200,6 +200,16 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testGetAlgebraicDegreeZero() {
+        int expected = 0;
+        UnaryInteger instance = new UnaryInteger(expected);
+        int actual = instance.algebraicDegree();
+        String message = "Algebraic degree of " + instance.toString() 
+                + " should be " + expected;
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testGetRing() {
         System.out.println("getRing");
         int n = randomNumber();
