@@ -209,6 +209,21 @@ public class UnaryIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    // TODO: Write test for norm()
+    
+    // TODO: Write test for trace()
+    
+    @Test
+    public void testMinPolynomialCoeffsZero() {
+        int n = 0;
+        UnaryInteger zero = new UnaryInteger(n);
+        long[] expecteds = {n, 1L};
+        long[] actuals = zero.minPolynomialCoeffs();
+        String message = "Reckoning minimal polynomial coefficients for " 
+                + zero.toString();
+        assertArrayEquals(message, expecteds, actuals);
+    }
+    
     @Test
     public void testGetRing() {
         System.out.println("getRing");
