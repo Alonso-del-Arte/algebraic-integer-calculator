@@ -33,6 +33,8 @@ public final class UnaryRing implements IntegerRing {
      */
     public static final UnaryRing Z = new UnaryRing();
     
+    private static final String LABEL = "Z";
+    
     private static final Fraction ONE = new Fraction(1);
     
     private static final Fraction[] MULTIPLICAND = {ONE};
@@ -81,12 +83,21 @@ public final class UnaryRing implements IntegerRing {
     }
 
     /**
+     * Gives the ring's label.
+     * @return Always just "Z". 
+     */
+    @Override
+    public final String toString() {
+        return LABEL;
+    }
+
+    /**
      * Formats the ring's label as a {@code String} using ASCII characters only.
      * @return Always just "Z". 
      */
     @Override
     public final String toASCIIString() {
-        return "Z";
+        return LABEL;
     }
 
     /**
