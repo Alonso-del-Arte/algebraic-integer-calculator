@@ -201,9 +201,18 @@ public final class UnaryInteger implements AlgebraicInteger,
         return Integer.compare(this.number, other.number);
     }
     
+    /**
+     * Gives the algebraic degree of this number. See also {@link 
+     * #minPolynomialCoeffs()} and {@link #minPolynomialString()}.
+     * @return 0 if this number is 0, otherwise always 1.
+     */
     @Override
     public int algebraicDegree() {
-        return Math.abs(Integer.signum(this.number));
+        if (this.number == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     // TODO: Write tests for this
