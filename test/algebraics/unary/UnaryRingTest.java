@@ -57,6 +57,12 @@ public class UnaryRingTest {
     }
     
     @Test
+    public void testToString() {
+        System.out.println("toString");
+        assertEquals("Z", UnaryRing.Z.toString());
+    }
+    
+    @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
         assertEquals("Z", UnaryRing.Z.toASCIIString());
