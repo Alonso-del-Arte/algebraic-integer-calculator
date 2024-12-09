@@ -1148,6 +1148,17 @@ public class ImaginaryQuadraticIntegerTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testMinPolynomialStringForZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger zero = new ImaginaryQuadraticInteger(0, 0, ring);
+        String expected = "x";
+        String actual = zero.minPolynomialString().replace(" ", "");
+        String message = "Reckoning minimum polynomial text for " 
+                + zero.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of minPolynomialString method, of class ImaginaryQuadraticInteger.
      * Spaces in the results are desirable but not required. Therefore the tests 
