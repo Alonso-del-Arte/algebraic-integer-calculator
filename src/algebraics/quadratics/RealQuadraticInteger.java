@@ -15,8 +15,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics.quadratics;
-import algebraics.AlgebraicDegreeOverflowException;
-import algebraics.unary.UnaryInteger;
+
 /**
  * Defines objects to represent real quadratic integers, for the most part 
  * symbolically rather than numerically. This class is <code>Comparable</code>, 
