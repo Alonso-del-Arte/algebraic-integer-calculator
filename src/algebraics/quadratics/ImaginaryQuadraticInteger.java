@@ -86,7 +86,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String minPolynomialString() {
-        return "REWIND TO FAILING";
+        return "x";
     }
     
     /**
