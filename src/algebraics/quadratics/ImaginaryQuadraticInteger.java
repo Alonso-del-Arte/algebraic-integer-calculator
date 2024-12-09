@@ -84,6 +84,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return "REWIND TO FAILING";
     }
     
+    @Override
+    public String minPolynomialString() {
+        return "REWIND TO FAILING";
+    }
+    
     /**
      * Gives twice the real part of the imaginary quadratic integer. If the ring 
      * has so-called "half-integers," this might be an odd number, otherwise it 
