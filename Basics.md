@@ -99,7 +99,7 @@ that one aside for now and instead look at the similar $x^4 + 1 = 0$. Rewriting,
 we obtain $x^4 = -1$. This suggests that $x^2 = i$ and therefore $x = \sqrt i$.
 
 But then what is $\sqrt i$? As it turns out, it's $$\frac{1}{\sqrt 2} + 
-\frac{1}{\sqrt 2},$$ which is a number with both a nonzero real part and a 
+\frac{i}{\sqrt 2},$$ which is a number with both a nonzero real part and a 
 nonzero imaginary part.
 
 (FINISH WRITING)
