@@ -356,7 +356,7 @@ public final class UnaryInteger implements AlgebraicInteger,
 
     @Override
     public double abs() {
-        return Double.valueOf(Math.abs(this.number));
+        return (double) Math.abs(this.number);
     }
 
     // TODO: Write tests for this
