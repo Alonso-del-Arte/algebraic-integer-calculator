@@ -249,6 +249,16 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testAbsZero() {
+        UnaryInteger zero = new UnaryInteger(0);
+        double expected = 0.0;
+        double actual = zero.abs();
+        double delta = 0.1;
+        String message = "Reckoning absolute value of " + zero.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
