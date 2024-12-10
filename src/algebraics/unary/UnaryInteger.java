@@ -357,7 +357,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public double abs() {
-        return Double.NaN;
+        return 0.0;
     }
 
     // TODO: Write tests for this
