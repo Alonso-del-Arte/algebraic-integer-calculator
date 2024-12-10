@@ -259,6 +259,18 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testAbs() {
+        System.out.println("abs");
+        int n = randomNumber() | Integer.MIN_VALUE;
+        UnaryInteger number = new UnaryInteger(n);
+        double expected = -1.0 * n;
+        double actual = number.abs();
+        double delta = 0.1;
+        String message = "Reckoning absolute value of " + number.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
