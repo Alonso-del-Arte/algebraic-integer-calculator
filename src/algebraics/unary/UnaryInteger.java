@@ -354,9 +354,17 @@ public final class UnaryInteger implements AlgebraicInteger,
         return this.number;
     }
 
+    /**
+     * Gives the absolute value of this integer, which is its distance from 0. 
+     * Mathematically guaranteed to be a precise integer value (this is a 
+     * guarantee we can't make for other implementations of {@link 
+     * algebraics.AlgebraicInteger}). Examples: &minus;7, 0 and 7.
+     * @return The absolute value of this integer. For the examples, this would 
+     * be 7.0 for both &minus;7 and 7, 0.0 for 0.
+     */
     @Override
     public double abs() {
-        return (double) Math.abs(this.number);
+        return Math.abs(this.number);
     }
 
     // TODO: Write tests for this
