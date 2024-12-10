@@ -582,15 +582,14 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
-//    @Test TODO: Remove "_NOT_YET_" from next line, couple other edits
-    public void testToStringAltOmega_NOT_YET_() {
+    @Test
+    public void testToStringAltOmega() {
         QuadraticInteger omega = new ImaginaryQuadraticInteger(-1, 1, 
                 RING_EISENSTEIN, 2);
         String expected = "" + OMEGA_CHAR;
-        fail("TEST ON HOLD FOR NOW");
         String actual = omega.toStringAlt().replace(" ", "");
         String message = "toStringAlt() for " + omega.toString();
-//        assertEquals(message, expected, actual);
+        assertEquals(message, expected, actual);
     }
 
     /**
