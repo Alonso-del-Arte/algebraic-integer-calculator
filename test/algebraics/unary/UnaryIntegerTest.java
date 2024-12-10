@@ -271,6 +271,17 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testAbsAlreadyPositive() {
+        int n = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
+        UnaryInteger number = new UnaryInteger(n);
+        double expected = (double) n;
+        double actual = number.abs();
+        double delta = 0.1;
+        String message = "Reckoning absolute value of " + number.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
