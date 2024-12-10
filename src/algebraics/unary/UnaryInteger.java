@@ -357,7 +357,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public double abs() {
-        return 0.0;
+        return new Double(-this.number);
     }
 
     // TODO: Write tests for this
