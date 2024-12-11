@@ -367,10 +367,16 @@ public final class UnaryInteger implements AlgebraicInteger,
         return Math.abs(this.number);
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives the real part of this number. Since <b>Z</b> is a purely real ring, 
+     * this function just gives this integer as a floating point number.
+     * @return This number. The same as {@link #getNumber()} but as a 64-bit 
+     * floating number instead of a 32-bit integer. For example, for &minus;7, 
+     * this would be &minus;7.0.
+     */
     @Override
     public double getRealPartNumeric() {
-        return Double.NEGATIVE_INFINITY;
+        return this.number;
     }
 
     // TODO: Write tests for this
