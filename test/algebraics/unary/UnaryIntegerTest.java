@@ -306,6 +306,16 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testIsReApprox() {
+        System.out.println("isReApprox");
+        int n = randomNumber();
+        UnaryInteger number = new UnaryInteger(n);
+        String msg = "Real part of " + number.toString() 
+                + " should not be considered an approximation";
+        assert !number.isReApprox() : msg;
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
