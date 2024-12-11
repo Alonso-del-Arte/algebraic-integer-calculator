@@ -336,6 +336,17 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testAngleOfPositive() {
+        int n = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
+        UnaryInteger number = new UnaryInteger(n);
+        double expected = 0.0;
+        double actual = number.angle();
+        double delta = 0.00000001;
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
