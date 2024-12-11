@@ -389,10 +389,18 @@ public final class UnaryInteger implements AlgebraicInteger,
         return 0.0;
     }
 
-    // TODO: Write tests for this
+    /**
+     * Indicates whether the real part of this number, as given by {@link 
+     * #getRealPartNumeric()}, is an approximation or not. Since the numbers 
+     * represented by this class can all be represented by 32-bit integer 
+     * primitives, and {@code getRealPartNumeric()} returns 64-bit floating 
+     * point numbers that can represent 53-bit integers precisely, loss of 
+     * precision is not a concern here.
+     * @return Always false for all instances of this class.
+     */
     @Override
     public boolean isReApprox() {
-        return true;
+        return false;
     }
 
     // TODO: Write tests for this
