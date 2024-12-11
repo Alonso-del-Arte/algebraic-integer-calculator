@@ -188,7 +188,7 @@ public class UnaryIntegerTest {
     }
     
     @Test
-    public void testGetAlgebraicDegree() {
+    public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
         int n = randomNumber() | randomPowerOfTwo();
         UnaryInteger instance = new UnaryInteger(n);
