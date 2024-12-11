@@ -347,6 +347,18 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testAngle() {
+        System.out.println("angle");
+        int n = randomNumber() ^ Integer.MIN_VALUE;
+        UnaryInteger number = new UnaryInteger(n);
+        double expected = Math.PI;
+        double actual = number.angle();
+        double delta = 0.00000001;
+        String message = "Reckoning angle of " + number.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
