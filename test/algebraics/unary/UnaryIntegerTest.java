@@ -349,7 +349,7 @@ public class UnaryIntegerTest {
     @Test
     public void testAngle() {
         System.out.println("angle");
-        int n = randomNumber() ^ Integer.MIN_VALUE;
+        int n = randomNumber() | Integer.MIN_VALUE;
         UnaryInteger number = new UnaryInteger(n);
         double expected = Math.PI;
         double actual = number.angle();
