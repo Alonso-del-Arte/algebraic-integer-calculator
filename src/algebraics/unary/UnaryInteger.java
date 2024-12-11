@@ -419,7 +419,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public double angle() {
-        return Math.PI / 128;
+        return (double) this.number;
     }
     
     public UnaryInteger(int n) {
