@@ -416,10 +416,19 @@ public final class UnaryInteger implements AlgebraicInteger,
         return false;
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives the angle of this number. Also called "argument," "phase" or 
+     * "amplitude."
+     * @return 0.0 if this number is 0 or positive, 3.141592653589793 (the 
+     * 64-bit floating point approximation to &pi;) if this number is negative.
+     */
     @Override
     public double angle() {
-        return 0.0;
+        if (this.number < 0) {
+            return Math.PI;
+        } else {
+            return 0.0;
+        }
     }
     
     public UnaryInteger(int n) {
