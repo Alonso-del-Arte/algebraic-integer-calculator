@@ -403,10 +403,17 @@ public final class UnaryInteger implements AlgebraicInteger,
         return false;
     }
 
-    // TODO: Write tests for this
+    /**
+     * Indicates whether the imaginary part of this number, as given by {@link 
+     * #getImagPartNumeric()}, is an approximation or not. Since the imaginary 
+     * part of any number represented by this class is 0 and 0.0 is easily 
+     * represented in 64-bit floating point, the imaginary part does not have to 
+     * be approximated.
+     * @return Always false for all instances of this class.
+     */
     @Override
     public boolean isImApprox() {
-        return true;
+        return false;
     }
 
     // TODO: Write tests for this
