@@ -294,6 +294,18 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testGetImagPartNumeric() {
+        System.out.println("getImagPartNumeric");
+        int n = randomNumber();
+        UnaryInteger number = new UnaryInteger(n);
+        double expected = 0.0;
+        double actual = number.getImagPartNumeric();
+        double delta = 0.1;
+        String message = "Reckoning imaginary part of " + number.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
