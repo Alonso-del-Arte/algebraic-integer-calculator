@@ -200,7 +200,7 @@ public class UnaryIntegerTest {
     }
     
     @Test
-    public void testGetAlgebraicDegreeZero() {
+    public void testAlgebraicDegreeZero() {
         int expected = 0;
         UnaryInteger instance = new UnaryInteger(expected);
         int actual = instance.algebraicDegree();
