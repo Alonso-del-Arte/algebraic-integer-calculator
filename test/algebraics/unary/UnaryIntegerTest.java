@@ -326,6 +326,16 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testAngleOfZero() {
+        UnaryInteger zero = new UnaryInteger(0);
+        double expected = 0.0;
+        double actual = zero.angle();
+        double delta = 0.00000001;
+        String message = "Reckoning angle of " + zero.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
