@@ -77,11 +77,19 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toStringAlt() {
-//        int rad = this.quadRing.radicand;
-//        if (rad % 4 != -3) {
+        int rad = this.quadRing.radicand;
+        if (rad % 4 == -3) {
+            if (this.regPartMult == -1) {
+                return Character.toString(OMEGA_LETTER);
+            } else {
+                int adjustment = (this.denominator == 1) ? 2 : 1;
+                String multiplierStr = Integer.toString(this.surdPartMult 
+                        * adjustment);
+                return multiplierStr + OMEGA_LETTER;
+            }
+        } else {
             return this.toString();
-//        }
-//        return "REWIND TO FAILING";
+        }
     }
     
     @Override
