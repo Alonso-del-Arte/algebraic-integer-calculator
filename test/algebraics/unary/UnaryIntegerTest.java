@@ -316,6 +316,16 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testIsImApprox() {
+        System.out.println("isImApprox");
+        int n = randomNumber();
+        UnaryInteger number = new UnaryInteger(n);
+        String msg = "Imaginary part of " + number.toString() 
+                + " should not be considered an approximation";
+        assert !number.isImApprox() : msg;
+    }
+    
+    @Test
     public void testPlus() {
         System.out.println("plus");
         int a = randomNumber(Short.MAX_VALUE) + 1;
