@@ -379,10 +379,14 @@ public final class UnaryInteger implements AlgebraicInteger,
         return this.number;
     }
 
-    // TODO: Write tests for this
+    /**
+     * Gives the imaginary part of this integer. Since <b>Z</b> is a purely real 
+     * ring, every number in this ring has an imaginary part of 0.
+     * @return Always 0.0 for all instances of this class.
+     */
     @Override
     public double getImagPartNumeric() {
-        return Double.POSITIVE_INFINITY;
+        return 0.0;
     }
 
     // TODO: Write tests for this
