@@ -591,13 +591,21 @@ public class ImaginaryQuadraticIntegerTest {
         String message = "toStringAlt() for " + omega.toString();
         assertEquals(message, expected, actual);
     }
+    
+    @Test
+    public void testToStringAltPositiveMultipleOfOmega() {
+        int b = RANDOM.nextInt(2, 8192);
+        int a = -b;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_EISENSTEIN, 2);
+        String expected = Integer.toString(b) + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Writing " + number + " in terms of " + OMEGA_CHAR;
+        assertEquals(message, expected, actual);
+    }
 
     /**
-     * Test of toStringAlt method, of class ImaginaryQuadraticInteger. For 
-     * methods that return Strings, spaces are desirable but not required.
-     * Therefore the tests should strip out spaces before asserting equality. If
-     * the test of the toString method fails, the result of this test is 
-     * irrelevant.
+     * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
      */
 //    @Test
     public void testToStringAlt() {
