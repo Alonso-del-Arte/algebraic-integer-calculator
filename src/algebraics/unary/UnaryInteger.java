@@ -214,10 +214,9 @@ public final class UnaryInteger implements AlgebraicInteger,
         }
     }
 
-    // TODO: Write tests for this
     @Override
     public long trace() {
-        return Long.MIN_VALUE;
+        return this.number;
     }
 
     // TODO: Write tests for this
