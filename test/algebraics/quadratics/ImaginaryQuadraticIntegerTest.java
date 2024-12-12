@@ -616,6 +616,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToStringAltNegativeOmega() {
+        QuadraticInteger omega = new ImaginaryQuadraticInteger(1, -1, 
+                RING_EISENSTEIN, 2);
+        String expected = MINUS_SIGN + OMEGA_CHAR;
+        String actual = omega.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + omega.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
      */
