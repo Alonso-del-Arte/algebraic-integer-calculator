@@ -604,6 +604,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToStringAltNegativeMultipleOfOmega() {
+        int a = RANDOM.nextInt(2, 8192);
+        int b = -a;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_EISENSTEIN, 2);
+        String expected = MINUS_SIGN + Integer.toString(a) + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Writing " + number + " in terms of " + OMEGA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
      */
