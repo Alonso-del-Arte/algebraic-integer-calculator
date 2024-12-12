@@ -219,10 +219,9 @@ public final class UnaryInteger implements AlgebraicInteger,
         return this.number;
     }
 
-    // TODO: Write tests for this
     @Override
     public long norm() {
-        return Long.MAX_VALUE;
+        return this.number;
     }
 
     /**
