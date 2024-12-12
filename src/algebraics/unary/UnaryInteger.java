@@ -120,8 +120,8 @@ public final class UnaryInteger implements AlgebraicInteger,
      */
     @Override
     public UnaryInteger times(UnaryInteger multiplicand) {
-        int n = Math.multiplyExact(this.number, multiplicand.number);
-        return new UnaryInteger(n);
+        return new UnaryInteger(Math.multiplyExact(this.number, 
+                multiplicand.number));
     }
 
     /**
