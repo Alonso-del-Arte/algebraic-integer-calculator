@@ -221,6 +221,12 @@ public final class UnaryInteger implements AlgebraicInteger,
         return this.number;
     }
 
+    /**
+     * Gives the norm of this number. Since unary integers don't have distinct 
+     * conjugates, this gives the same number as {@link #getNumber()}, but in a 
+     * 64-bit integer. For the example, suppose this number is &minus;7.
+     * @return The same number as {@link #trace()}. For example, {@code -7L}.
+     */
     @Override
     public long norm() {
         return this.number;
