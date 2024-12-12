@@ -209,9 +209,17 @@ public class UnaryIntegerTest {
         assertEquals(message, expected, actual);
     }
     
-    // TODO: Write test for norm()
+    @Test
+    public void testTrace() {
+        System.out.println("trace");
+        int expected = randomNumber();
+        UnaryInteger number = new UnaryInteger(expected);
+        long actual = number.trace();
+        String message = "Reckoning trace of " + expected;
+        assertEquals(message, expected, actual);
+    }
     
-    // TODO: Write test for trace()
+    // TODO: Write test for norm()
     
     @Test
     public void testMinPolynomialCoeffsZero() {
