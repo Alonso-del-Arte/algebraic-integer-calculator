@@ -79,19 +79,18 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public String toStringAlt() {
         int rad = this.quadRing.radicand;
         if (rad % 4 == -3) {
-            if (this.regPartMult == -1) {
-                return Character.toString(OMEGA_LETTER);
-            } else {
-                if (this.regPartMult == 1) {
+            switch (this.regPartMult) {
+                case -1:
+                    return Character.toString(OMEGA_LETTER);
+                case 1:
                     return new String(new char[]{MINUS_SIGN_CHARACTER, 
                         OMEGA_LETTER});
-                } else {
+                default:
                     int adjustment = (this.denominator == 1) ? 2 : 1;
                     String multiplierStr = Integer.toString(this.surdPartMult 
                             * adjustment);
                     return (multiplierStr + OMEGA_LETTER).replace('-', 
                             MINUS_SIGN_CHARACTER);
-                }
             }
         } else {
             return this.toString();
