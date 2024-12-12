@@ -213,8 +213,8 @@ public final class UnaryInteger implements AlgebraicInteger,
     /**
      * Gives the trace of this number. Since unary integers don't have distinct 
      * conjugates, this gives the same number as {@link #getNumber()}, but in a 
-     * 64-bit integer.
-     * @return The same number as {@link #norm()}. For example, &minus;7.
+     * 64-bit integer. For the example, suppose this number is &minus;7.
+     * @return The same number as {@link #norm()}. For example, {@code -7L}.
      */
     @Override
     public long trace() {
