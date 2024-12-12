@@ -425,6 +425,10 @@ public final class UnaryInteger implements AlgebraicInteger,
         }
     }
     
+    /**
+     * Sole constructor.
+     * @param n The integer. For example, 1729.
+     */
     public UnaryInteger(int n) {
         this.number = n;
     }
