@@ -85,7 +85,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 int adjustment = (this.denominator == 1) ? 2 : 1;
                 String multiplierStr = Integer.toString(this.surdPartMult 
                         * adjustment);
-                return multiplierStr + OMEGA_LETTER;
+                return (multiplierStr + OMEGA_LETTER).replace('-', 
+                        MINUS_SIGN_CHARACTER);
             }
         } else {
             return this.toString();
