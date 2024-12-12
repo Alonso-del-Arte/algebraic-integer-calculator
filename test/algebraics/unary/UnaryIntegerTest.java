@@ -219,7 +219,15 @@ public class UnaryIntegerTest {
         assertEquals(message, expected, actual);
     }
     
-    // TODO: Write test for norm()
+    @Test
+    public void testNorm() {
+        System.out.println("norm");
+        int expected = randomNumber();
+        UnaryInteger number = new UnaryInteger(expected);
+        long actual = number.norm();
+        String message = "Reckoning norm of " + expected;
+        assertEquals(message, expected, actual);
+    }
     
     @Test
     public void testMinPolynomialCoeffsZero() {
