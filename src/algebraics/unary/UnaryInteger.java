@@ -64,8 +64,7 @@ public final class UnaryInteger implements AlgebraicInteger,
      */
     @Override
     public UnaryInteger plus(int addend) {
-        int n = Math.addExact(this.number, addend);
-        return new UnaryInteger(n);
+        return new UnaryInteger(Math.addExact(this.number, addend));
     }
     
     /**
