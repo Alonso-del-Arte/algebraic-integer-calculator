@@ -245,13 +245,16 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new long[]{-this.number, 1L};
     }
 
-    // TODO: Write tests for this
     @Override
     public String minPolynomialString() {
         if (this.number == 0) {
             return "x";
         } else {
-            return "x + " + (-this.number);
+            if (this.number > 0) {
+                return "x \u2212 " + this.number;
+            } else {
+                return "x + " + (-this.number);
+            }
         }
     }
 
