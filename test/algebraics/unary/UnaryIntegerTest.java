@@ -264,9 +264,9 @@ public class UnaryIntegerTest {
     
     @Test
     public void testMinPolynomialStringNegative() {
-        int n = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
-        UnaryInteger number = new UnaryInteger(-n);
-        String expected = "x+" + n;
+        int n = randomNumber() | Integer.MIN_VALUE;
+        UnaryInteger number = new UnaryInteger(n);
+        String expected = "x+" + (-n);
         String actual = number.minPolynomialString().replace(" ", "");
         String message = "Reckoning minimal polynomial for " + number.toString();
         assertEquals(message, expected, actual);
