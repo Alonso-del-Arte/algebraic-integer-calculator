@@ -248,7 +248,11 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public String minPolynomialString() {
-        return "x";
+        if (this.number == 0) {
+            return "x";
+        } else {
+            return "x + " + (-this.number);
+        }
     }
 
     // TODO: Write tests for this
