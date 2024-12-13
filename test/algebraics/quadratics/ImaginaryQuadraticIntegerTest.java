@@ -626,6 +626,25 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToStringAltPurelyRealPositive() {
+        int a = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
+                RING_EISENSTEIN);
+        String expected = Integer.toString(a);
+        String actual = number.toStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltZero() {
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, 
+                RING_EISENSTEIN);
+        String expected = "0";
+        String actual = number.toStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
      */
