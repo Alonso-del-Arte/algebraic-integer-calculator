@@ -645,6 +645,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringAltPurelyRealNegative() {
+        int a = randomNumber() | Integer.MIN_VALUE;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
+                RING_EISENSTEIN);
+        String expected = MINUS_SIGN + Integer.toString(-a);
+        String actual = number.toStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
      */
