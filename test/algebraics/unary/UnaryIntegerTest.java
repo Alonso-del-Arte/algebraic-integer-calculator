@@ -253,6 +253,16 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testMinPolynomialStringZero() {
+        int n = 0;
+        UnaryInteger zero = new UnaryInteger(n);
+        String expected = "x";
+        String actual = zero.minPolynomialString().replace(" ", "");
+        String message = "Reckoning minimal polynomial for " + zero.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testGetRing() {
         System.out.println("getRing");
         int n = randomNumber();
