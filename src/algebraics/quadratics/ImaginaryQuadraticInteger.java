@@ -80,7 +80,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         int rad = this.quadRing.radicand;
         if (rad % 4 == -3) {
             if (rad == -3 && this.surdPartMult == 0) {
-                return Integer.toString(this.regPartMult);
+                if (this.regPartMult < 0) {
+                    return MINUS_SIGN_STRING 
+                            + Integer.toString(-this.regPartMult);
+                } else {
+                    return Integer.toString(this.regPartMult);
+                }
             }
             switch (this.regPartMult) {
                 case -1:
