@@ -251,7 +251,7 @@ public final class UnaryInteger implements AlgebraicInteger,
         if (this.number == 0) {
             return "x";
         } else {
-            return "x ? " + (-this.number);
+            return "x + " + (-this.number);
         }
     }
 
