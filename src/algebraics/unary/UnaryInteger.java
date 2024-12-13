@@ -247,14 +247,16 @@ public final class UnaryInteger implements AlgebraicInteger,
 
     @Override
     public String minPolynomialString() {
-        if (this.number == 0) {
-            return "x";
-        } else {
-            if (this.number > 0) {
-                return "x \u2212 " + this.number;
-            } else {
+        switch (Integer.signum(this.number)) {
+            case -1:
                 return "x + " + (-this.number);
-            }
+            case 0:
+                return "x";
+            case 1:
+                return "x \u2212 " + this.number;
+            default:
+                throw new RuntimeException("Unexpected signum value for " 
+                        + this.number);
         }
     }
 
