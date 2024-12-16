@@ -88,17 +88,20 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 }
             }
             switch (this.regPartMult) {
-                case -1:
+                case -1 -> {
                     return Character.toString(OMEGA_LETTER);
-                case 1:
-                    return new String(new char[]{MINUS_SIGN_CHARACTER, 
+                }
+                case 1 -> { 
+                    return new String(new char[]{MINUS_SIGN_CHARACTER,
                         OMEGA_LETTER});
-                default:
+                }
+                default -> {
                     int adjustment = (this.denominator == 1) ? 2 : 1;
                     String multiplierStr = Integer.toString(this.surdPartMult 
                             * adjustment);
                     return (multiplierStr + OMEGA_LETTER).replace('-', 
                             MINUS_SIGN_CHARACTER);
+                }
             }
         } else {
             return this.toString();
