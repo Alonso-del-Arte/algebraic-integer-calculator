@@ -98,13 +98,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 };
             } else {
                 int nonOmegaInit = this.regPartMult;
-                int omegaInit = this.surdPartMult;
+                int omegaPart = this.surdPartMult;
                 if (this.denominator == 1) {
                     nonOmegaInit *= 2;
-                    omegaInit *= 2;
+                    omegaPart *= 2;
                 }
-                int nonOmegaPart = (nonOmegaInit + omegaInit) / 2;
-                int omegaPart = omegaInit;
+                int nonOmegaPart = (nonOmegaInit + omegaPart) / 2;
                 String intermediate = nonOmegaPart + PLUS_SIGN_SPACED 
                         + Integer.toString(omegaPart) + OMEGA_LETTER;
                 if (nonOmegaPart < 0) {
