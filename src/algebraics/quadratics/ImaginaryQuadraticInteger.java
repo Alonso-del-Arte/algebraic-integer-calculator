@@ -87,13 +87,33 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                     return Integer.toString(this.regPartMult);
                 }
             }
-            return switch (this.regPartMult) {
-                case -1 -> Character.toString(OMEGA_LETTER);
-                case 1 -> new String(new char[]{MINUS_SIGN_CHARACTER, OMEGA_LETTER});
-                default -> (Integer.toString(this.surdPartMult 
-                        * ((this.denominator == 1) ? 2 : 1)) 
-                        + OMEGA_LETTER).replace('-', MINUS_SIGN_CHARACTER);
-            };
+            if (this.regPartMult == -this.surdPartMult) {
+                return switch (this.regPartMult) {
+                    case -1 -> Character.toString(OMEGA_LETTER);
+                    case 1 -> new String(new char[]{MINUS_SIGN_CHARACTER, 
+                        OMEGA_LETTER});
+                    default -> (Integer.toString(this.surdPartMult 
+                            * ((this.denominator == 1) ? 2 : 1)) + OMEGA_LETTER)
+                            .replace('-', MINUS_SIGN_CHARACTER);
+                };
+            } else {
+                int nonOmegaInit = this.regPartMult;
+                int omegaInit = this.surdPartMult;
+                if (this.denominator == 1) {
+                    nonOmegaInit *= 2;
+                    omegaInit *= 2;
+                }
+                int nonOmegaPart = (nonOmegaInit + omegaInit) / 2;
+                int omegaPart = omegaInit;
+                String intermediate = nonOmegaPart + PLUS_SIGN_SPACED 
+                        + Integer.toString(omegaPart) + OMEGA_LETTER;
+                if (nonOmegaPart < 0) {
+                    intermediate = MINUS_SIGN_STRING 
+                            + intermediate.substring(1);
+                }
+                return intermediate.replace(PLUS_SIGN_THEN_DASH, 
+                        MINUS_SIGN_SPACED);
+            }
         } else {
             return this.toString();
         }
