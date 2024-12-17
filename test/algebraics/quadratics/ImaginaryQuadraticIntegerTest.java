@@ -87,6 +87,8 @@ public class ImaginaryQuadraticIntegerTest {
         return new ImaginaryQuadraticRing(d);
     }
     
+    // TODO: Write chooseRingWithHalfIntsNotEisenstein()
+    
     @Test
     public void testToStringPurelyRealPositive() {
         int a = randomNumber(Short.MAX_VALUE);
@@ -653,6 +655,64 @@ public class ImaginaryQuadraticIntegerTest {
         String expected = MINUS_SIGN + Integer.toString(-a);
         String actual = number.toStringAlt().replace(" ", "");
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPositiveIntPlusPositiveMultipleOfOmega() {
+        int bound = 128;
+        int nonOmegaPart = RANDOM.nextInt(1, bound);
+        int omegaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = nonOmegaPart + "+" + omegaPart + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPositiveIntPlusNegativeMultipleOfOmega() {
+        int bound = 128;
+        int nonOmegaPart = RANDOM.nextInt(1, bound);
+        int omegaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = nonOmegaPart + MINUS_SIGN + (-omegaPart) + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltNegativeIntPlusPositiveMultipleOfOmega() {
+        int bound = 128;
+        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int omegaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = MINUS_SIGN + (-nonOmegaPart) + "+" + omegaPart 
+                + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltNegativeIntPlusNegativeMultipleOfOmega() {
+        int bound = 128;
+        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int omegaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = MINUS_SIGN + (-nonOmegaPart) + MINUS_SIGN 
+                + (-omegaPart) + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
