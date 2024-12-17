@@ -715,6 +715,63 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToStringAltPositiveIntPlusOmega() {
+        int bound = 128;
+        int nonOmegaPart = RANDOM.nextInt(1, bound);
+        int omegaPart = 1;
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = nonOmegaPart + "+" + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPositiveIntPlusNegativeOmega() {
+        int bound = 128;
+        int nonOmegaPart = RANDOM.nextInt(1, bound);
+        int omegaPart = -1;
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = nonOmegaPart + MINUS_SIGN + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltNegativeIntPlusOmega() {
+        int bound = 128;
+        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int omegaPart = 1;
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = MINUS_SIGN + (-nonOmegaPart) + "+" + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltNegativeIntPlusNegativeOmega() {
+        int bound = 128;
+        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int omegaPart = -1;
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = MINUS_SIGN + (-nonOmegaPart) + MINUS_SIGN 
+                + OMEGA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
      */
