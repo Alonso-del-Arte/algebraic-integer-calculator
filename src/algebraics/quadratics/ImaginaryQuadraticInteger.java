@@ -106,6 +106,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 int nonOmegaPart = (nonOmegaInit + omegaPart) / 2;
                 String intermediate = nonOmegaPart + PLUS_SIGN_SPACED 
                         + Integer.toString(omegaPart) + OMEGA_LETTER;
+                if (Math.abs(omegaPart) == 1) {
+                    intermediate = intermediate.replace("1" + OMEGA_LETTER, 
+                            Character.toString(OMEGA_LETTER));
+                }
                 if (nonOmegaPart < 0) {
                     intermediate = MINUS_SIGN_STRING 
                             + intermediate.substring(1);
