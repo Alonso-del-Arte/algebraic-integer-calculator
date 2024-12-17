@@ -627,7 +627,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToStringAltPurelyRealPositive() {
+    public void testToStringAltPurelyRealPositiveEisensteinContext() {
         int a = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_EISENSTEIN);
@@ -637,7 +637,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToStringAltZero() {
+    public void testToStringAltZeroEisensteinContext() {
         QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, 
                 RING_EISENSTEIN);
         String expected = "0";
@@ -646,7 +646,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToStringAltPurelyRealNegative() {
+    public void testToStringAltPurelyRealNegativeEisensteinContext() {
         int a = randomNumber() | Integer.MIN_VALUE;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_EISENSTEIN);
