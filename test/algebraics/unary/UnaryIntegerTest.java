@@ -304,6 +304,17 @@ public class UnaryIntegerTest {
     }
     
     @Test
+    public void testMinPolynomialStringTeX() {
+        System.out.println("minPolynomialStringTeX");
+        int n = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
+        UnaryInteger number = new UnaryInteger(n);
+        String expected = "x-" + n;
+        String actual = number.minPolynomialStringTeX().replace(" ", "");
+        String message = "Reckoning minimal polynomial for " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testGetRing() {
         System.out.println("getRing");
         int n = randomNumber();
