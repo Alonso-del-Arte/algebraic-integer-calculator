@@ -286,7 +286,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public String minPolynomialStringHTML() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "x";
     }
 
     /**
