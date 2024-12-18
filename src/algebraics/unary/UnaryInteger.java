@@ -283,13 +283,16 @@ public final class UnaryInteger implements AlgebraicInteger,
         }
     }
 
-    // TODO: Write tests for this
     @Override
     public String minPolynomialStringHTML() {
         if (this.number == 0) {
             return "x";
         } else {
-            return "x + " + (-this.number);
+            if (this.number < 0) {
+                return "x + " + (-this.number);
+            } else {
+                return "x &minus; " + this.number;
+            }
         }
     }
 
