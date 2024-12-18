@@ -318,7 +318,7 @@ public class UnaryIntegerTest {
     public void testMinPolynomialStringHTMLZero() {
         int n = 0;
         UnaryInteger zero = new UnaryInteger(n);
-        String expected = "x";
+        String expected = "<i>x</i>";
         String actual = zero.minPolynomialStringHTML().replace(" ", "");
         String message = "Reckoning minimal polynomial for " + zero.toString();
         assertEquals(message, expected, actual);
@@ -328,7 +328,7 @@ public class UnaryIntegerTest {
     public void testMinPolynomialStringHTMLNegative() {
         int n = randomNumber() | Integer.MIN_VALUE;
         UnaryInteger number = new UnaryInteger(n);
-        String expected = "x+" + (-n);
+        String expected = "<i>x</i>+" + (-n);
         String actual = number.minPolynomialStringHTML().replace(" ", "");
         String message = "Reckoning minimal polynomial for " + number.toString();
         assertEquals(message, expected, actual);
@@ -339,7 +339,7 @@ public class UnaryIntegerTest {
         System.out.println("minPolynomialStringHTML");
         int n = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
         UnaryInteger number = new UnaryInteger(n);
-        String expected = "x&minus;" + n;
+        String expected = "<i>x</i>&minus;" + n;
         String actual = number.minPolynomialStringHTML().replace(" ", "");
         String message = "Reckoning minimal polynomial for " + number.toString();
         assertEquals(message, expected, actual);
