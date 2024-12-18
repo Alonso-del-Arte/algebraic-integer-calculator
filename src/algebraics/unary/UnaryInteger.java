@@ -274,13 +274,13 @@ public final class UnaryInteger implements AlgebraicInteger,
      */
     @Override
     public String minPolynomialStringTeX() {
-        return switch(Integer.signum(this.number)) {
-            case -1 -> "x + " + (-this.number);
-            case 0 -> "x";
-            case 1 -> "x - " + this.number;
-            default -> throw new RuntimeException("Unexpected signum value for " 
-                    + this.number);
-        };
+        if (this.number == 0) {
+            return "x";
+        } else {
+            String x = "x ";
+            String sign = (this.number < 0) ? "+ " : "- ";
+            return x + sign + Math.abs(this.number);
+        }
     }
 
     // TODO: Write tests for this
