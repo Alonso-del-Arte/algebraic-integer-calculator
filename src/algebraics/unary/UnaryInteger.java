@@ -259,7 +259,7 @@ public final class UnaryInteger implements AlgebraicInteger,
     // TODO: Write tests for this
     @Override
     public String minPolynomialStringTeX() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return "x";
     }
 
     // TODO: Write tests for this
