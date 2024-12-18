@@ -87,7 +87,11 @@ public class ImaginaryQuadraticIntegerTest {
         return new ImaginaryQuadraticRing(d);
     }
     
-    // TODO: Write chooseRingWithHalfIntsNotEisenstein()
+    private static ImaginaryQuadraticRing chooseRingWHalfIntsNotEisenstein() {
+        int propD = -randomSquarefreeNumberMod(3, 4);
+        int d = (propD == -3) ? -7 : propD;
+        return new ImaginaryQuadraticRing(d);
+    }
     
     @Test
     public void testToStringPurelyRealPositive() {
@@ -769,6 +773,18 @@ public class ImaginaryQuadraticIntegerTest {
                 + OMEGA_CHAR;
         String actual = number.toStringAlt().replace(" ", "");
         String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPurelyReald1Mod4ContextNotEisenstein() {
+        int a = randomNumber();
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt();
+        String message = "Purely real number in the context of " 
+                + ring.toString();
         assertEquals(message, expected, actual);
     }
     
