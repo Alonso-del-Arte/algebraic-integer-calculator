@@ -29,6 +29,8 @@ import fractions.Fraction;
 public final class UnaryInteger implements AlgebraicInteger, 
         Arithmeticable<UnaryInteger>, Comparable<UnaryInteger> {
     
+    private static final char MINUS_SIGN = '\u2212';
+    
     private final int number;
     
     /**
@@ -245,17 +247,31 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new long[]{-this.number, 1L};
     }
 
+    /**
+     * Gives the minimal polynomial of this integer as a {@code String} using 
+     * Unicode characters without formatting. For the examples, consider the 
+     * numbers &minus;43, 0 and 1729.
+     * @return The minimal polynomial starting with "x". This will be limited to 
+     * ASCII characters only when this integer is negative or 0. If this integer 
+     * is positive, the minimal polynomial will be given with the proper 
+     * subtraction character instead of the usual dash. In the examples, this 
+     * would be "x + 43" for &minus;43, just "x" for 0 and "x &minus; 1729" for 
+     * 1729.
+     */
     @Override
     public String minPolynomialString() {
-        return switch (Integer.signum(this.number)) {
-            case -1 -> "x + " + (-this.number);
-            case 0 -> "x";
-            case 1 -> "x \u2212 " + this.number;
-            default -> throw new RuntimeException("Unexpected signum value for " 
-                    + this.number);
-        };
+        return this.minPolynomialStringTeX().replace('-', MINUS_SIGN);
     }
 
+    /**
+     * Gives the minimal polynomial of this integer as a {@code String} that can  
+     * be used in a TeX document. For the examples, consider the numbers 
+     * &minus;43, 0 and 1729.
+     * @return The minimal polynomial starting with "x". Guaranteed to only use 
+     * ASCII characters, unlike {@link #minPolynomialString()}. In the examples, 
+     * this would be "x + 43" for &minus;43, just "x" for 0 and "x - 1729" for 
+     * 1729.
+     */
     @Override
     public String minPolynomialStringTeX() {
         return switch(Integer.signum(this.number)) {
