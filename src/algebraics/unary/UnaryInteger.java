@@ -31,6 +31,10 @@ public final class UnaryInteger implements AlgebraicInteger,
     
     private static final char MINUS_SIGN = '\u2212';
     
+    private static final String PLUS_SIGN_THEN_SPACE = "+ ";
+    
+    private static final String HTML_ITALIC_LOWERCASE_X = "<i>x</i>";
+    
     private final int number;
     
     /**
@@ -278,19 +282,28 @@ public final class UnaryInteger implements AlgebraicInteger,
             return "x";
         } else {
             String x = "x ";
-            String sign = (this.number < 0) ? "+ " : "- ";
+            String sign = (this.number < 0) ? PLUS_SIGN_THEN_SPACE : "- ";
             return x + sign + Math.abs(this.number);
         }
     }
 
+    /**
+     * Gives the minimal polynomial of this integer as a {@code String} that can  
+     * be used in an HTML document. For the examples, consider the numbers 
+     * &minus;43, 0 and 1729.
+     * @return The minimal polynomial starting with "&lt;i&gt;x&lt;/i&gt;". In 
+     * the examples, this would be "&lt;i&gt;x&lt;/i&gt; + 43" for &minus;43, 
+     * just "&lt;i&gt;x&lt;/i&gt;" for 0 and "&lt;i&gt;x&lt;/i&gt; &amp;minus; 
+     * 1729" for 1729, which should render in an HTML document as "<i>x</i> 
+     * + 43", "<i>x</i>" and "<i>x</i> &minus; 1729" respectively.
+     */
     @Override
     public String minPolynomialStringHTML() {
         if (this.number == 0) {
-            return "<i>x</i>";
+            return HTML_ITALIC_LOWERCASE_X;
         } else {
-            String x = "<i>x</i> ";
-            String sign = (this.number < 0) ? "+ " : "&minus; ";
-            return x + sign + Math.abs(this.number);
+            String sign = (this.number < 0) ? PLUS_SIGN_THEN_SPACE : "&minus; ";
+            return HTML_ITALIC_LOWERCASE_X + ' ' + sign + Math.abs(this.number);
         }
     }
 
