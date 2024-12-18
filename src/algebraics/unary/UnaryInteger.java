@@ -286,9 +286,9 @@ public final class UnaryInteger implements AlgebraicInteger,
     @Override
     public String minPolynomialStringHTML() {
         if (this.number == 0) {
-            return "x";
+            return "<i>x</i>";
         } else {
-            String x = "x ";
+            String x = "<i>x</i> ";
             String sign = (this.number < 0) ? "+ " : "&minus; ";
             return x + sign + Math.abs(this.number);
         }
