@@ -288,11 +288,9 @@ public final class UnaryInteger implements AlgebraicInteger,
         if (this.number == 0) {
             return "x";
         } else {
-            if (this.number < 0) {
-                return "x + " + (-this.number);
-            } else {
-                return "x &minus; " + this.number;
-            }
+            String x = "x ";
+            String sign = (this.number < 0) ? "+ " : "&minus; ";
+            return x + sign + Math.abs(this.number);
         }
     }
 
