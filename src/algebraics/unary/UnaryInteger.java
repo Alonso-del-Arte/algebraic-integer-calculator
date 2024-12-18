@@ -256,14 +256,15 @@ public final class UnaryInteger implements AlgebraicInteger,
         };
     }
 
-    // TODO: Write tests for this
     @Override
     public String minPolynomialStringTeX() {
-        if (this.number == 0) {
-            return "x";
-        } else {
-            return "x + " + (-this.number);
-        }
+        return switch(Integer.signum(this.number)) {
+            case -1 -> "x + " + (-this.number);
+            case 0 -> "x";
+            case 1 -> "x - " + this.number;
+            default -> throw new RuntimeException("Unexpected signum value for " 
+                    + this.number);
+        };
     }
 
     // TODO: Write tests for this
