@@ -75,19 +75,50 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return super.toString().replace(SQRT_NEG_ONE_SEQ, "i");
     }
     
+    private String toStringAltOmega() {
+        if (this.regPartMult == -this.surdPartMult) {
+            return switch (this.regPartMult) {
+                case -1 -> Character.toString(OMEGA_LETTER);
+                case 1 -> new String(new char[]{MINUS_SIGN_CHARACTER, 
+                    OMEGA_LETTER});
+                default -> (Integer.toString(this.surdPartMult 
+                        * ((this.denominator == 1) ? 2 : 1)) + OMEGA_LETTER)
+                        .replace('-', MINUS_SIGN_CHARACTER);
+            };
+        } else {
+            int nonOmegaInit = this.regPartMult;
+            int omegaPart = this.surdPartMult;
+            if (this.denominator == 1) {
+                nonOmegaInit *= 2;
+                omegaPart *= 2;
+            }
+            int nonOmegaPart = (nonOmegaInit + omegaPart) / 2;
+            String intermediate = nonOmegaPart + PLUS_SIGN_SPACED 
+                    + Integer.toString(omegaPart) + OMEGA_LETTER;
+            if (Math.abs(omegaPart) == 1) {
+                intermediate = intermediate.replace("1" + OMEGA_LETTER, 
+                        Character.toString(OMEGA_LETTER));
+            }
+            if (nonOmegaPart < 0) {
+                intermediate = MINUS_SIGN_STRING + intermediate.substring(1);
+            }
+            return intermediate.replace(PLUS_SIGN_THEN_DASH, MINUS_SIGN_SPACED);
+        }
+    }
+
     @Override
     public String toStringAlt() {
-        int rad = this.quadRing.radicand;
-        if (rad % 4 == -3) {
-            if (this.surdPartMult == 0) {
-                if (this.regPartMult < 0) {
-                    return MINUS_SIGN_STRING 
-                            + Integer.toString(-this.regPartMult);
-                } else {
-                    return Integer.toString(this.regPartMult);
-                }
+        if (this.surdPartMult == 0) {
+            if (this.regPartMult < 0) {
+                return MINUS_SIGN_STRING + Integer.toString(-this.regPartMult);
+            } else {
+                return Integer.toString(this.regPartMult);
             }
-            if (rad != - 3) {
+        }
+        if (this.quadRing.hasHalfIntegers()) {
+            if (this.quadRing.radicand == -3) {
+                return this.toStringAltOmega();
+            } else {
                 if (this.regPartMult == 1 && this.surdPartMult == 1) {
                     return Character.toString(THETA_LETTER);
                 } else {
@@ -110,36 +141,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                                 + PLUS_SIGN_SPACED + thetaPart + THETA_LETTER;
                     }
                 }
-            }
-            if (this.regPartMult == -this.surdPartMult) {
-                return switch (this.regPartMult) {
-                    case -1 -> Character.toString(OMEGA_LETTER);
-                    case 1 -> new String(new char[]{MINUS_SIGN_CHARACTER, 
-                        OMEGA_LETTER});
-                    default -> (Integer.toString(this.surdPartMult 
-                            * ((this.denominator == 1) ? 2 : 1)) + OMEGA_LETTER)
-                            .replace('-', MINUS_SIGN_CHARACTER);
-                };
-            } else {
-                int nonOmegaInit = this.regPartMult;
-                int omegaPart = this.surdPartMult;
-                if (this.denominator == 1) {
-                    nonOmegaInit *= 2;
-                    omegaPart *= 2;
-                }
-                int nonOmegaPart = (nonOmegaInit + omegaPart) / 2;
-                String intermediate = nonOmegaPart + PLUS_SIGN_SPACED 
-                        + Integer.toString(omegaPart) + OMEGA_LETTER;
-                if (Math.abs(omegaPart) == 1) {
-                    intermediate = intermediate.replace("1" + OMEGA_LETTER, 
-                            Character.toString(OMEGA_LETTER));
-                }
-                if (nonOmegaPart < 0) {
-                    intermediate = MINUS_SIGN_STRING 
-                            + intermediate.substring(1);
-                }
-                return intermediate.replace(PLUS_SIGN_THEN_DASH, 
-                        MINUS_SIGN_SPACED);
             }
         } else {
             return this.toString();
