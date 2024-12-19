@@ -119,6 +119,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             if (this.quadRing.radicand == -3) {
                 return this.toStringAltOmega();
             } else {
+                if (this.regPartMult == -1 && this.surdPartMult == -1) {
+                    return new String(new char[]{MINUS_SIGN_CHARACTER, 
+                        THETA_LETTER});
+                }
                 if (this.regPartMult == 1 && this.surdPartMult == 1) {
                     return Character.toString(THETA_LETTER);
                 } else {
