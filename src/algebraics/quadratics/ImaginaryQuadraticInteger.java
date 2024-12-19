@@ -91,7 +91,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 if (this.regPartMult == 1) {
                     return Character.toString(THETA_LETTER);
                 } else {
-                    return Integer.toString(this.regPartMult) + THETA_LETTER;
+                    String sign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
+                            : "";
+                    int num = (this.denominator == 1) ? 2 * this.regPartMult 
+                            : this.regPartMult;
+                    int absNum = Math.abs(num);
+                    return sign + absNum + THETA_LETTER;
                 }
             }
             if (this.regPartMult == -this.surdPartMult) {
