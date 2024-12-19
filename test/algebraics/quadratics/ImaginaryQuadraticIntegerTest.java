@@ -801,6 +801,16 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringAltNegativeTheta() {
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger theta = new ImaginaryQuadraticInteger(-1, -1, ring, 2);
+        String expected = MINUS_SIGN + THETA_CHAR;
+        String actual = theta.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + theta.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testToStringAltPositiveMultipleOfTheta() {
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int a = RANDOM.nextInt(2, 8192);
