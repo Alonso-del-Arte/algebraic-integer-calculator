@@ -19,13 +19,7 @@ Mathematica notebook.
 
 This project started out in Java 8 with JUnit 4. I have since upgraded to Java 
 21, but because I'm using NetBeans rather than IntelliJ or Eclipse, I can't 
-upgrade JUnit to JUnit 5.
-
-Regardless, I'm in no rush to use Java 9 or later features. However, just prior 
-to Hacktoberfest 2024, I started using a few features here and there that 
-require Java 17. So, just to be on the safe side, let's say this is a Java 21 
-project. I don't intend to upgrade Java if it's not a long-term support (LTS) 
-release.
+upgrade JUnit to JUnit 5. But this is now a Java 21 project.
 
 This is still a JUnit 4 project. But rather than be limited by JUnit 4 not 
 having the things from JUnit 5 that I sometimes need, like `assertThrows()`, I 
