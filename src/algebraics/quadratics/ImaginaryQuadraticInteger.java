@@ -87,6 +87,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                     return Integer.toString(this.regPartMult);
                 }
             }
+            if (rad != - 3) {
+                return Character.toString(THETA_LETTER);
+            }
             if (this.regPartMult == -this.surdPartMult) {
                 return switch (this.regPartMult) {
                     case -1 -> Character.toString(OMEGA_LETTER);
