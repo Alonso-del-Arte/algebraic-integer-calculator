@@ -88,15 +88,27 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 }
             }
             if (rad != - 3) {
-                if (this.regPartMult == 1) {
+                if (this.regPartMult == 1 && this.surdPartMult == 1) {
                     return Character.toString(THETA_LETTER);
                 } else {
-                    String sign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
-                            : "";
-                    int num = (this.denominator == 1) ? 2 * this.regPartMult 
-                            : this.regPartMult;
-                    int absNum = Math.abs(num);
-                    return sign + absNum + THETA_LETTER;
+                    if (this.regPartMult == this.surdPartMult) {
+                        String sign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
+                                : "";
+                        int num = (this.denominator == 1) ? 2 * this.regPartMult 
+                                : this.regPartMult;
+                        int absNum = Math.abs(num);
+                        return sign + absNum + THETA_LETTER;
+                    } else {
+                        int nonThetaInit = this.regPartMult;
+                        int thetaPart = this.surdPartMult;
+                        if (this.denominator == 1) {
+                            nonThetaInit *= 2;
+                            thetaPart *= 2;
+                        }
+                        int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+                        return Integer.toString(nonThetaPart) 
+                                + PLUS_SIGN_SPACED + thetaPart + THETA_LETTER;
+                    }
                 }
             }
             if (this.regPartMult == -this.surdPartMult) {
