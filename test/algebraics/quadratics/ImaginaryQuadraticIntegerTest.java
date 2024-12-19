@@ -53,6 +53,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     private static final char OMEGA_CHAR = '\u03C9';
     
+    private static final char THETA_CHAR = '\u03B8';
+    
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>], numbers of the form 
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
@@ -785,6 +787,16 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toStringAlt();
         String message = "Purely real number in the context of " 
                 + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltTheta() {
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger theta = new ImaginaryQuadraticInteger(1, 1, ring, 2);
+        String expected = "" + THETA_CHAR;
+        String actual = theta.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + theta.toString();
         assertEquals(message, expected, actual);
     }
     
