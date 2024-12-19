@@ -779,7 +779,7 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToStringAltPurelyReald1Mod4ContextNotEisenstein() {
+    public void testToStringAltPurelyRealD1Mod4ContextNotEisenstein() {
         int a = randomNumber();
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
@@ -825,97 +825,20 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testToStringAlt() {
         System.out.println("toStringAlt");
-        fail("REWRITE THIS TEST");
-//        String expResult, result;
-//        ImaginaryQuadraticInteger currIQI;
-//        int nonThetaPart;
-//        // Treating the ring of Eisenstein integers as a special case
-//        for (int a = -32; a < 32; a++) {
-//            for (int b = -9; b < 9; b++) {
-//                if ((a % 2) == (b % 2)) {
-//                    nonThetaPart = (a + b)/2;
-//                    if (nonThetaPart == 0) {
-//                        expResult = b + "\u03C9";
-//                    } else {
-//                        expResult = nonThetaPart + "+" + b + "\u03C9";
-//                    }
-//                    expResult = expResult.replace("+-", "-");
-//                    expResult = expResult.replace("+1\u03C9", "+\u03C9");
-//                    expResult = expResult.replace("-1\u03C9", "-\u03C9");
-//                    if (expResult.equals("0\u03C9")) {
-//                        expResult = "0";
-//                    }
-//                    if (expResult.equals("1\u03C9")) {
-//                        expResult = "\u03C9";
-//                    }
-//                    expResult = expResult.replace("+0\u03C9", "");
-//                    expResult = expResult.replace("-", MINUS_SIGN);
-//                    currIQI = new ImaginaryQuadraticInteger(a, b, RING_EISENSTEIN, 2);
-//                    result = currIQI.toStringAlt().replace(" ", "");
-//                    assertEquals(expResult, result);
-//                }
-//            }
-//        }
-//        /* Now to test in O_Q(sqrt(-7)) and some random ring with 
-//           "half-integers" */
-//        for (int m = -32; m < 32; m++) {
-//            for (int n = -9; n < 9; n++) {
-//                if ((m % 2) == (n % 2)) {
-//                    nonThetaPart = (m - n)/2;
-//                    if (nonThetaPart == 0) {
-//                        expResult = n + "\u03B8";
-//                    } else {
-//                        expResult = nonThetaPart + "+" + n + "\u03B8";
-//                    }
-//                    expResult = expResult.replace("+-", "-");
-//                    expResult = expResult.replace("+1\u03B8", "+\u03B8");
-//                    expResult = expResult.replace("-1\u03B8", "-\u03B8");
-//                    if (expResult.equals("0\u03B8")) {
-//                        expResult = "0";
-//                    }
-//                    if (expResult.equals("1\u03B8")) {
-//                        expResult = "\u03B8";
-//                    }
-//                    expResult = expResult.replace("+0\u03B8", "");
-//                    expResult = expResult.replace("-", MINUS_SIGN);
-//                    currIQI = new ImaginaryQuadraticInteger(m, n, RING_OQI7, 2);
-//                    result = currIQI.toStringAlt().replace(" ", "");
-//                    assertEquals(expResult, result);
-//                    // No need to change expResult to test in ringRandomForAltTesting
-//                    currIQI = new ImaginaryQuadraticInteger(m, n, ringRandomForAltTesting, 2);
-//                    result = currIQI.toStringAlt().replace(" ", "");
-//                    assertEquals(expResult, result);
-//                }
-//            }
-//        }
-//        // For integers in rings without "half-integers," we expect toString() and toStringAlt() to give the same result.
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (!testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                assertEquals(testIntegers.get(i).toString(), testIntegers.get(i).toStringAlt());
-//            }
-//        }
-//        // Next, to test on a couple of complex units
-//        expResult = "i";
-//        result = IMAG_UNIT_I.toStringAlt();
-//        assertEquals(expResult, result);
-//        expResult = "\u2212i";
-//        result = IMAG_UNIT_NEG_I.toStringAlt();
-//        assertEquals(expResult, result);
-//        expResult = "\u03C9";
-//        result = COMPLEX_CUBIC_ROOT_OF_UNITY.toStringAlt();
-//        assertEquals(expResult, result);
-//        // And last but not least, 0 and 1
-//        expResult = "0";
-//        zeroIQI = new ImaginaryQuadraticInteger(0, 0, ringRandomForAltTesting);
-//        result = zeroIQI.toStringAlt();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneIQI = new ImaginaryQuadraticInteger(1, 0, ringRandomForAltTesting);
-//        result = oneIQI.toStringAlt();
-//        assertEquals(expResult, result);
+        int bound = 128;
+        int nonThetaPart = RANDOM.nextInt(1, bound);
+        int thetaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, thetaPart, 
+                ring, 2);
+        String expected = nonThetaPart + "+" + thetaPart + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
