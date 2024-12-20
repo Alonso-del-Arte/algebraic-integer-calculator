@@ -23,6 +23,11 @@ package calculators;
 public class TextCalculator {
     
     // TODO: Write tests for this
+    static char randomGreekLetter() {
+        return '?';
+    }
+    
+    // TODO: Write tests for this
     public static String makeBinomialString(int a, int b, char symbol) {
         return "SORRY, NOT IMPLEMENTED YET";
     }
