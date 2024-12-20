@@ -32,9 +32,9 @@ public class TextCalculator {
             = NEXT_BLOCK_BEGIN - GREEK_BLOCK_BEGIN;
     
     /**
-     * Chooses a Greek or Coptic character pseudorandomly. The character may be 
+     * Chooses a Greek or Coptic letter pseudorandomly. The letter may be 
      * archaic.
-     * @return A defined character from the Greek and Coptic block of Unicode's 
+     * @return A defined letter from the Greek and Coptic block of Unicode's 
      * Basic Multilingual Plane. Examples: &#x0370; (Greek capital heta, which 
      * is archaic), &#x03CB; (Greek small letter upsilon with dialytika), &Rho; 
      * (Greek capital letter rho).
@@ -44,7 +44,8 @@ public class TextCalculator {
         do {
             propChar = (char) (GREEK_BLOCK_BEGIN 
                     + randomNumber(GREEK_BLOCK_SIZE));
-        } while (!Character.isDefined(propChar));
+        } while (!Character.isDefined(propChar) 
+                || !Character.isLetter(propChar));
         return propChar;
     }
     
