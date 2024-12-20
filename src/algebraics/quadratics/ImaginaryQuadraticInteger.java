@@ -141,8 +141,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                             thetaPart *= 2;
                         }
                         int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-                        return Integer.toString(nonThetaPart) 
+                        String intermediate = Integer.toString(nonThetaPart) 
                                 + PLUS_SIGN_SPACED + thetaPart + THETA_LETTER;
+                        intermediate = intermediate.replace(" + -", 
+                                MINUS_SIGN_SPACED);
+                        return intermediate.replace('-', MINUS_SIGN_CHARACTER);
                     }
                 }
             }
