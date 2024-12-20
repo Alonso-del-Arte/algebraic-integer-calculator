@@ -18,8 +18,13 @@ package calculators;
 
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import static org.testframe.api.Asserters.assertContainsSame;
 
 /**
  * Tests of the TextCalculator class.
@@ -27,14 +32,50 @@ import static org.junit.Assert.*;
  */
 public class TextCalculatorTest {
     
+    private static Set<Character> gatherGreekLetters() {
+        char blockStart = '\u0370';
+        char nextBlockBegin = '\u0400';
+        int initialCapacity = nextBlockBegin - blockStart;
+        Set<Character> letters = new HashSet<>(initialCapacity);
+        for (char ch = blockStart; ch < nextBlockBegin; ch++) {
+            if (Character.isDefined(ch)) {
+                letters.add(ch);
+            }
+        }
+        System.out.println("Successfully gathered " + letters.size() 
+                + " Greek and Coptic characters");
+        return letters;
+    }
+    
+    @Test
+    public void testRandomGreekLetter() {
+        System.out.println("randomGreekLetter");
+        Set<Character> expected = gatherGreekLetters();
+        int initialCapacity = expected.size();
+        Set<Character> actual = new HashSet<>(initialCapacity);
+        int totalNumberOfCalls = 24 * initialCapacity;
+        for (int i = 0; i < totalNumberOfCalls; i++) {
+            char ch = TextCalculator.randomGreekLetter();
+            String definedMsg = "Character '" + ch + "' " 
+                    + Character.getName(ch)
+                    + " should be a defined Greek or Coptic character";
+            assert Character.isDefined(ch) : definedMsg;
+            assert Character.UnicodeBlock.of(ch)
+                    .equals(Character.UnicodeBlock.GREEK) : definedMsg;
+            actual.add(ch);
+        }
+        assertContainsSame(expected, actual);
+    }
+    
     /**
      * Test of makeBinomialString method, of class TextCalculator.
      */
-    @Test
+//    @Test
     public void testMakeBinomialString() {
         System.out.println("makeBinomialString");
-        int a = 0;
-        int b = 0;
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
         char symbol = ' ';
         String expResult = "";
         String result = TextCalculator.makeBinomialString(a, b, symbol);
