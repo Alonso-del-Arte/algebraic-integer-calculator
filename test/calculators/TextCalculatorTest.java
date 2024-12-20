@@ -38,12 +38,12 @@ public class TextCalculatorTest {
         int initialCapacity = nextBlockBegin - blockStart;
         Set<Character> letters = new HashSet<>(initialCapacity);
         for (char ch = blockStart; ch < nextBlockBegin; ch++) {
-            if (Character.isDefined(ch)) {
+            if (Character.isDefined(ch) && Character.isLetter(ch)) {
                 letters.add(ch);
             }
         }
         System.out.println("Successfully gathered " + letters.size() 
-                + " Greek and Coptic characters");
+                + " Greek and Coptic letters");
         return letters;
     }
     
@@ -56,12 +56,13 @@ public class TextCalculatorTest {
         int totalNumberOfCalls = 24 * initialCapacity;
         for (int i = 0; i < totalNumberOfCalls; i++) {
             char ch = TextCalculator.randomGreekLetter();
-            String definedMsg = "Character '" + ch + "' " 
+            String letterMsg = "Character '" + ch + "' " 
                     + Character.getName(ch)
-                    + " should be a defined Greek or Coptic character";
-            assert Character.isDefined(ch) : definedMsg;
+                    + " should be a defined Greek or Coptic letter";
+            assert Character.isDefined(ch) : letterMsg;
+            assert Character.isLetter(ch) : letterMsg;
             assert Character.UnicodeBlock.of(ch)
-                    .equals(Character.UnicodeBlock.GREEK) : definedMsg;
+                    .equals(Character.UnicodeBlock.GREEK) : letterMsg;
             actual.add(ch);
         }
         assertContainsSame(expected, actual);
