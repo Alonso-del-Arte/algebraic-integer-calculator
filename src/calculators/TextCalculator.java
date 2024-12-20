@@ -16,15 +16,36 @@
  */
 package calculators;
 
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+
 /**
  *
  * @author Alonso del Arte
  */
 public class TextCalculator {
     
-    // TODO: Write tests for this
+    private static final char GREEK_BLOCK_BEGIN = '\u0370';
+    
+    private static final char NEXT_BLOCK_BEGIN = '\u0400';
+    
+    private static final int GREEK_BLOCK_SIZE 
+            = NEXT_BLOCK_BEGIN - GREEK_BLOCK_BEGIN;
+    
+    /**
+     * Chooses a Greek or Coptic character pseudorandomly. The character may be 
+     * archaic.
+     * @return A defined character from the Greek and Coptic block of Unicode's 
+     * Basic Multilingual Plane. Examples: &#x0370; (Greek capital heta, which 
+     * is archaic), &#x03CB; (Greek small letter upsilon with dialytika), &Rho; 
+     * (Greek capital letter rho).
+     */
     static char randomGreekLetter() {
-        return '?';
+        char propChar = '\u03A2';
+        do {
+            propChar = (char) (GREEK_BLOCK_BEGIN 
+                    + randomNumber(GREEK_BLOCK_SIZE));
+        } while (!Character.isDefined(propChar));
+        return propChar;
     }
     
     // TODO: Write tests for this
