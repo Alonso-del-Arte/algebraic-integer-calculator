@@ -19,7 +19,7 @@ package calculators;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 
 /**
- *
+ * Provides some utilities for text management.
  * @author Alonso del Arte
  */
 public class TextCalculator {
@@ -42,9 +42,6 @@ public class TextCalculator {
     private static final String MINUS_SIGN_STRING 
             = Character.toString(MINUS_SIGN);
     
-    private static final String MINUS_SIGN_SPACED = new String(new char[]{' ', 
-        MINUS_SIGN, ' '});
-    
     /**
      * Chooses a Greek or Coptic letter pseudorandomly. The letter may be 
      * archaic.
@@ -64,19 +61,24 @@ public class TextCalculator {
     }
     
     /**
-     * 
-     * @param a
-     * @param b
-     * @param symbol
-     * @return 
+     * Puts together binomial text for a pair of integers, <i>a</i> and 
+     * <i>b</i>, the latter of which is multiplied by a symbol <i>x</i>. 
+     * However, if <i>b</i> = 0, the binomial becomes a monomial with just 
+     * <i>a</i>.
+     * @param a The integer which is not multiplied by <i>x</i>. For example, 4.
+     * @param b The integer which is multiplied by <i>x</i>. For example, 7.
+     * @param symbol The symbol that <i>b</i> is multiplied by. For example, 
+     * '&pi;'. This is for now limited to symbols from Unicode's Basic 
+     * Multilingual Plane.
+     * @return The text. For example, "4 + 7&pi;". If either {@code a} or {@code 
+     * b} is negative, the text will use the proper minus sign '&minus;' rather 
+     * than the dash '-'. For example, "&minus;4 &minus; 7&pi;". Lastly, if 
+     * {@code b == 0}, the text omits " + 0" and {@code symbol}.
      */
     public static String makeBinomialString(int a, int b, char symbol) {
         if (b == 0) {
-            if (a < 0) {
-                return MINUS_SIGN_STRING + Math.abs(a);
-            } else {
-                return Integer.toString(a);
-            }
+            String sign = (a < 0) ? MINUS_SIGN_STRING : "";
+            return sign + Math.abs(a);
         }
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
         String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
