@@ -166,4 +166,32 @@ public class TextCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testBinomialBecomesMonomialWithAPositive() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = Integer.toString(a);
+        String actual = TextCalculator.makeBinomialString(a, 0, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testBinomialBecomesMonomialWithAZero() {
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = "0";
+        String actual = TextCalculator.makeBinomialString(0, 0, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testBinomialBecomesMonomialWithANegative() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = MINUS_SIGN_STRING + a;
+        String actual = TextCalculator.makeBinomialString(-a, 0, symbol);
+        assertEquals(expected, actual);
+    }
+    
 }
