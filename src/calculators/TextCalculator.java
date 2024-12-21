@@ -66,7 +66,10 @@ public class TextCalculator {
     public static String makeBinomialString(int a, int b, char symbol) {
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
         String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
-        return intermediate.replace('-', MINUS_SIGN);
+        String target = " 1" + symbol;
+        String replacement = " " + symbol;
+        String tweaked = intermediate.replace(target, replacement);
+        return tweaked.replace('-', MINUS_SIGN);
     }
     
 }
