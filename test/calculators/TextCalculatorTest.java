@@ -125,4 +125,45 @@ public class TextCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testMakeBinomialStringPositiveAPlusOneOfX() {
+        System.out.println("makeBinomialString");
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = a + " + " + symbol;
+        String actual = TextCalculator.makeBinomialString(a, 1, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringPositiveAMinusOneOfX() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = a + MINUS_SIGN_SPACED + symbol;
+        String actual = TextCalculator.makeBinomialString(a, -1, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringNegativeAPlusOneOfX() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = MINUS_SIGN_STRING + a + " + " + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, 1, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringNegativeAMinusOneOfX() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = MINUS_SIGN_STRING + a + MINUS_SIGN_SPACED + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, -1, symbol);
+        assertEquals(expected, actual);
+    }
+    
 }
