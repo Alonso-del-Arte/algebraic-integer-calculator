@@ -32,6 +32,14 @@ import static org.testframe.api.Asserters.assertContainsSame;
  */
 public class TextCalculatorTest {
     
+    private static final char MINUS_SIGN = '\u2212';
+    
+    private static final String MINUS_SIGN_STRING 
+            = Character.toString(MINUS_SIGN);
+    
+    private static final String MINUS_SIGN_SPACED = new String(new char[]{' ', 
+        MINUS_SIGN, ' '});
+    
     private static Set<Character> gatherGreekLetters() {
         char blockStart = '\u0370';
         char nextBlockBegin = '\u0400';
@@ -80,6 +88,40 @@ public class TextCalculatorTest {
         char symbol = TextCalculator.randomGreekLetter();
         String expected = a + " + " + b + symbol;
         String actual = TextCalculator.makeBinomialString(a, b, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringPositiveAPlusNegativeB() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = a + MINUS_SIGN_SPACED + b + symbol;
+        String actual = TextCalculator.makeBinomialString(a, -b, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringNegativeAPlusPositiveB() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = MINUS_SIGN_STRING + a + " + " + b + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, b, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringNegativeAPlusNegativeB() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = MINUS_SIGN_STRING + a + MINUS_SIGN_SPACED + b 
+                + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, -b, symbol);
         assertEquals(expected, actual);
     }
     
