@@ -31,6 +31,20 @@ public class TextCalculator {
     private static final int GREEK_BLOCK_SIZE 
             = NEXT_BLOCK_BEGIN - GREEK_BLOCK_BEGIN;
     
+    private static final String PLUS_SIGN_SPACED = " + ";
+    
+    private static final String PLUS_THEN_DASH = PLUS_SIGN_SPACED + '-';
+    
+    private static final String DASH_SPACED = " - ";
+    
+    private static final char MINUS_SIGN = '\u2212';
+    
+    private static final String MINUS_SIGN_STRING 
+            = Character.toString(MINUS_SIGN);
+    
+    private static final String MINUS_SIGN_SPACED = new String(new char[]{' ', 
+        MINUS_SIGN, ' '});
+    
     /**
      * Chooses a Greek or Coptic letter pseudorandomly. The letter may be 
      * archaic.
@@ -49,9 +63,10 @@ public class TextCalculator {
         return propChar;
     }
     
-    // TODO: Write tests for this
     public static String makeBinomialString(int a, int b, char symbol) {
-        return a + " + " + b + symbol;
+        String initial = a + PLUS_SIGN_SPACED + b + symbol;
+        String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
+        return intermediate.replace('-', MINUS_SIGN);
     }
     
 }
