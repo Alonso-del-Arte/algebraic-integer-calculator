@@ -69,20 +69,18 @@ public class TextCalculatorTest {
     }
     
     /**
-     * Test of makeBinomialString method, of class TextCalculator.
+     * Test of  the makeBinomialString function, of the TextCalculator class.
      */
-//    @Test
+    @Test
     public void testMakeBinomialString() {
         System.out.println("makeBinomialString");
         int bound = 8192;
         int a = randomNumber(bound) + 1;
         int b = randomNumber(bound) + 2;
-        char symbol = ' ';
-        String expResult = "";
-        String result = TextCalculator.makeBinomialString(a, b, symbol);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = a + " + " + b + symbol;
+        String actual = TextCalculator.makeBinomialString(a, b, symbol);
+        assertEquals(expected, actual);
     }
     
 }
