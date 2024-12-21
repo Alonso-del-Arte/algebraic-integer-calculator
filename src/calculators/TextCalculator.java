@@ -63,7 +63,21 @@ public class TextCalculator {
         return propChar;
     }
     
+    /**
+     * 
+     * @param a
+     * @param b
+     * @param symbol
+     * @return 
+     */
     public static String makeBinomialString(int a, int b, char symbol) {
+        if (b == 0) {
+            if (a < 0) {
+                return MINUS_SIGN_STRING + Math.abs(a);
+            } else {
+                return Integer.toString(a);
+            }
+        }
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
         String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
         String target = " 1" + symbol;
