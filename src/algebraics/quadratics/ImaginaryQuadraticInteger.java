@@ -18,6 +18,7 @@ package algebraics.quadratics;
 
 import algebraics.AlgebraicDegreeOverflowException;
 import arithmetic.NotDivisibleException;
+import static calculators.TextCalculator.makeBinomialString;
 
 import java.text.DecimalFormatSymbols;
 
@@ -76,6 +77,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     }
     
     private String toStringAltOmega() {
+        int omegaInit = this.regPartMult;
+        int b = this.surdPartMult;
         if (this.regPartMult == -this.surdPartMult) {
             return switch (this.regPartMult) {
                 case -1 -> Character.toString(OMEGA_LETTER);
@@ -145,6 +148,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                                 + PLUS_SIGN_SPACED + thetaPart + THETA_LETTER;
                         intermediate = intermediate.replace(" + -", 
                                 MINUS_SIGN_SPACED);
+                        intermediate = intermediate.replace(" 1" + THETA_LETTER, 
+                                " " + THETA_LETTER);
                         return intermediate.replace('-', MINUS_SIGN_CHARACTER);
                     }
                 }
