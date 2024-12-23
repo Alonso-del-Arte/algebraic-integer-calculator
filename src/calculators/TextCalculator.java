@@ -89,7 +89,7 @@ public class TextCalculator {
             return makeMonomialString(a);
         }
         if (a == 0) {
-            return makeMonomialString(b, symbol);
+            return "SORRY, TEMP REWIND TO FAIL";// makeMonomialString(b, symbol);
         }
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
         String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
