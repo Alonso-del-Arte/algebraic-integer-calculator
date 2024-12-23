@@ -80,6 +80,10 @@ public class TextCalculator {
             String sign = (a < 0) ? MINUS_SIGN_STRING : "";
             return sign + Math.abs(a);
         }
+        if (a == 0) {
+            String sign = (b < 0) ? MINUS_SIGN_STRING : "";
+            return sign + Math.abs(b) + symbol;
+        }
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
         String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
         String target = " 1" + symbol;
