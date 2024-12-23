@@ -60,6 +60,15 @@ public class TextCalculator {
         return propChar;
     }
     
+    private static String makeMonomialString(int a) {
+        String sign = (a < 0) ? MINUS_SIGN_STRING : "";
+        return sign + Math.abs(a);
+    }
+    
+    private static String makeMonomialString(int b, char symbol) {
+        return makeMonomialString(b) + symbol;
+    }
+    
     /**
      * Puts together binomial text for a pair of integers, <i>a</i> and 
      * <i>b</i>, the latter of which is multiplied by a symbol <i>x</i>. 
@@ -77,12 +86,10 @@ public class TextCalculator {
      */
     public static String makeBinomialString(int a, int b, char symbol) {
         if (b == 0) {
-            String sign = (a < 0) ? MINUS_SIGN_STRING : "";
-            return sign + Math.abs(a);
+            return makeMonomialString(a);
         }
         if (a == 0) {
-            String sign = (b < 0) ? MINUS_SIGN_STRING : "";
-            return sign + Math.abs(b) + symbol;
+            return makeMonomialString(b, symbol);
         }
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
         String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
