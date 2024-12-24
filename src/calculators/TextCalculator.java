@@ -90,7 +90,9 @@ public class TextCalculator {
         }
         if (a == 0) {
             String sign = (b < 0) ? MINUS_SIGN_STRING : "";
-            return sign + Math.abs(b) + symbol;
+            int absolute = Math.abs(b);
+            String numerand = (absolute > 1) ? Integer.toString(absolute) : "";
+            return sign + numerand + symbol;
 //            return makeMonomialString(b, symbol);
         }
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
