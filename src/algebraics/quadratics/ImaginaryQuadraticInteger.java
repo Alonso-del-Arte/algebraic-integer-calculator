@@ -100,37 +100,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             if (this.quadRing.radicand == -3) {
                 return this.toStringAltOmega();
             } else {
-                if (this.regPartMult == -1 && this.surdPartMult == -1) {
-                    return new String(new char[]{MINUS_SIGN_CHARACTER, 
-                        THETA_LETTER});
+                int nonThetaInit = this.regPartMult;
+                int thetaPart = this.surdPartMult;
+                if (this.denominator == 1) {
+                    nonThetaInit *= 2;
+                    thetaPart *= 2;
                 }
-                if (this.regPartMult == 1 && this.surdPartMult == 1) {
-                    return Character.toString(THETA_LETTER);
-                } else {
-                    if (this.regPartMult == this.surdPartMult) {
-                        String sign = (this.regPartMult < 0) ? MINUS_SIGN_STRING 
-                                : "";
-                        int num = (this.denominator == 1) ? 2 * this.regPartMult 
-                                : this.regPartMult;
-                        int absNum = Math.abs(num);
-                        return sign + absNum + THETA_LETTER;
-                    } else {
-                        int nonThetaInit = this.regPartMult;
-                        int thetaPart = this.surdPartMult;
-                        if (this.denominator == 1) {
-                            nonThetaInit *= 2;
-                            thetaPart *= 2;
-                        }
-                        int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-                        String intermediate = Integer.toString(nonThetaPart) 
-                                + PLUS_SIGN_SPACED + thetaPart + THETA_LETTER;
-                        intermediate = intermediate.replace(" + -", 
-                                MINUS_SIGN_SPACED);
-                        intermediate = intermediate.replace(" 1" + THETA_LETTER, 
-                                " " + THETA_LETTER);
-                        return intermediate.replace('-', MINUS_SIGN_CHARACTER);
-                    }
-                }
+                int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+                return makeBinomialString(nonThetaPart, thetaPart, 
+                        THETA_LETTER);
             }
         } else {
             return this.toString();
