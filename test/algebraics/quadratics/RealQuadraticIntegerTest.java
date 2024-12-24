@@ -1233,6 +1233,17 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToStringAltNegativeMultipleOfPhi() {
+        int a = RANDOM.nextInt(2, 8192);
+        QuadraticInteger number = new RealQuadraticInteger(-a, -a, RING_ZPHI, 2);
+        String expected = MINUS_SIGN + a + PHI_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + PHI_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
