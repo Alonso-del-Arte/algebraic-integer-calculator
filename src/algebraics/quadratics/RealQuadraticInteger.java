@@ -40,10 +40,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public String toStringAlt() {
-        if (this.quadRing.radicand % 4 == 2) {
-            return this.toString();
-        }
-        return "REWIND TO FAILING";
+        return this.toString();
     }
     
     /**
