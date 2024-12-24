@@ -66,6 +66,11 @@ public class TextCalculator {
     }
     
     private static String makeMonomialString(int b, char symbol) {
+        int absolute = Math.abs(b);
+        if (absolute == 1) {
+            String sign = (b == -1) ? MINUS_SIGN_STRING : "";
+            return sign + symbol;
+        }
         return makeMonomialString(b) + symbol;
     }
     
@@ -89,11 +94,7 @@ public class TextCalculator {
             return makeMonomialString(a);
         }
         if (a == 0) {
-            String sign = (b < 0) ? MINUS_SIGN_STRING : "";
-            int absolute = Math.abs(b);
-            String numerand = (absolute > 1) ? Integer.toString(absolute) : "";
-            return sign + numerand + symbol;
-//            return makeMonomialString(b, symbol);
+            return makeMonomialString(b, symbol);
         }
         String initial = a + PLUS_SIGN_SPACED + b + symbol;
         String intermediate = initial.replace(PLUS_THEN_DASH, DASH_SPACED);
