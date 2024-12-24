@@ -1244,6 +1244,15 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToStringAltNegativePhi() {
+        QuadraticInteger phi = new RealQuadraticInteger(-1, -1, RING_ZPHI, 2);
+        String expected = MINUS_SIGN + PHI_CHAR;
+        String actual = phi.toStringAlt().replace(" ", "");
+        String message = "Reckoning phi notation for " + phi.toString();
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
