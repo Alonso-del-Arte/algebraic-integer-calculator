@@ -1155,6 +1155,18 @@ public class RealQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testToStringAltRationalFromRingD2Mod4SameAsToString() {
+        int a = randomNumber();
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Rational number in the context of " + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
