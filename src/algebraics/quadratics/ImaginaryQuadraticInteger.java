@@ -111,7 +111,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                         THETA_LETTER);
             }
         } else {
-            return this.toString() + '?';
+            return this.toString();
         }
     }
     
