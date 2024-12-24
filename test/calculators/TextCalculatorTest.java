@@ -214,4 +214,20 @@ public class TextCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testBinomialBecomesMonomialWithAZeroBPositiveOne() {
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = Character.toString(symbol);
+        String actual = TextCalculator.makeBinomialString(0, 1, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testBinomialBecomesMonomialWithAZeroBNegativeOne() {
+        char symbol = TextCalculator.randomGreekLetter();
+        String expected = MINUS_SIGN_STRING + symbol;
+        String actual = TextCalculator.makeBinomialString(0, -1, symbol);
+        assertEquals(expected, actual);
+    }
+    
 }
