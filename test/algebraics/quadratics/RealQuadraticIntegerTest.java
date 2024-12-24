@@ -1218,7 +1218,18 @@ public class RealQuadraticIntegerTest {
         QuadraticInteger phi = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
         String expected = Character.toString(PHI_CHAR);
         String actual = phi.toStringAlt().replace(" ", "");
-        String message = "Reckoning phi notation for " + phi.toStringAlt();
+        String message = "Reckoning phi notation for " + phi.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltPositiveMultipleOfPhi() {
+        int a = RANDOM.nextInt(2, 8192);
+        QuadraticInteger number = new RealQuadraticInteger(a, a, RING_ZPHI, 2);
+        String expected = Integer.toString(a) + PHI_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + PHI_CHAR;
         assertEquals(message, expected, actual);
     }
 
