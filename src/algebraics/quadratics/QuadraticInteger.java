@@ -371,21 +371,6 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         return processed.replace('-', MINUS_SIGN);
     }
     
-    /**
-     * A text representation of the quadratic integer, using theta notation when 
-     * {@link #getRing()}{@link ImaginaryQuadraticRing#hasHalfIntegers() 
-     * .hasHalfIntegers()} is true. For some of the examples, suppose this 
-     * number is <sup>5</sup>&frasl;<sub>2</sub> + 
-     * <sup>&radic;&minus;11</sup>&frasl;<sub>2</sub> or 
-     * <sup>5</sup>&frasl;<sub>2</sub> + 
-     * <sup>&radic;13</sup>&frasl;<sub>2</sub>.
-     * @return A representation using theta notation. For both of the examples, 
-     * this would be 2 + &theta;. Note that &omega; here is used strictly to 
-     * mean &minus;<sup>1</sup>&frasl;<sub>2</sub> + 
-     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub>. If {@link 
-     * #getRing()}{@link QuadraticRing#hasHalfIntegers() .hasHalfIntegers()} is 
-     * false, this just returns the same as {@link #toString()}.
-     */
     public String toStringAlt() {
         String altQIString;
         if (this.quadRing.d1mod4) {
@@ -397,15 +382,14 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                 thetaPart *= 2;
             }
             switch (this.quadRing.radicand) {
-                case -3:
+                case -3 -> {
                     nonThetaPart = (nonThetaPart + thetaPart)/2;
                     thetaLetter = OMEGA_LETTER;
-                    break;
-                case 5:
-                    thetaLetter = PHI_LETTER;
-                default:
-                    nonThetaPart = (nonThetaPart - thetaPart)/2;
+                }
+                default -> nonThetaPart = (nonThetaPart - thetaPart)/2;
             }
+//                case 5:
+//                    thetaLetter = PHI_LETTER;
             altQIString = Integer.toString(nonThetaPart);
             if (nonThetaPart == 0 && thetaPart != 0) {
                 if (thetaPart < -1 || thetaPart > 1) {
