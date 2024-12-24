@@ -59,6 +59,12 @@ public class RealQuadraticIntegerTest {
     
     private static final char SQRT_SYMBOL = '\u221A';
     
+    private static final char PHI_CHAR = '\u03C6';
+    
+    private static final char THETA_CHAR = '\u03B8';
+    
+    private static final QuadraticRing RING_ZPHI = new RealQuadraticRing(5);
+    
     private static RealQuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(256);
         int d = (propD == 1) ? 5 : propD;
@@ -1204,6 +1210,15 @@ public class RealQuadraticIntegerTest {
         String actual = number.toStringAlt().replace(" ", "");
         String message = "Given " + expected 
                 + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPhi() {
+        QuadraticInteger phi = new RealQuadraticInteger(1, 1, RING_ZPHI, 2);
+        String expected = Character.toString(PHI_CHAR);
+        String actual = phi.toStringAlt().replace(" ", "");
+        String message = "Reckoning phi notation for " + phi.toStringAlt();
         assertEquals(message, expected, actual);
     }
 
