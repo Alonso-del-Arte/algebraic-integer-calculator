@@ -517,7 +517,7 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_GAUSSIAN);
         String expected = number.toString().replace(" ", "");
-        String actual = number.toStringAlt();
+        String actual = number.toStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + RING_GAUSSIAN.toString();
         assertEquals(message, expected, actual);
@@ -530,7 +530,7 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
         String expected = number.toString().replace(" ", "");
-        String actual = number.toStringAlt();
+        String actual = number.toStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + ring.toString();
         assertEquals(message, expected, actual);
@@ -543,7 +543,7 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
         String expected = number.toString().replace(" ", "");
-        String actual = number.toStringAlt();
+        String actual = number.toStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + ring.toString();
         assertEquals(message, expected, actual);
@@ -555,8 +555,8 @@ public class ImaginaryQuadraticIntegerTest {
         int b = randomNumber() | randomPowerOfTwo();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
                 RING_GAUSSIAN);
-        String expected = number.toString();
-        String actual = number.toStringAlt();
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
         String message = "Given " + expected 
                 + ", toStringAlt() should give the same result";
         assertEquals(message, expected, actual);
@@ -569,8 +569,8 @@ public class ImaginaryQuadraticIntegerTest {
         int d = -randomSquarefreeNumberMod(2, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
-        String expected = number.toString();
-        String actual = number.toStringAlt();
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
         String message = "Given " + expected 
                 + ", toStringAlt() should give the same result";
         assertEquals(message, expected, actual);
@@ -583,8 +583,8 @@ public class ImaginaryQuadraticIntegerTest {
         int d = -randomSquarefreeNumberMod(1, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
-        String expected = number.toString();
-        String actual = number.toStringAlt();
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
         String message = "Given " + expected 
                 + ", toStringAlt() should give the same result";
         assertEquals(message, expected, actual);
