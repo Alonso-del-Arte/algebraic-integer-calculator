@@ -40,7 +40,10 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public String toStringAlt() {
-        return this.toString();
+        if (this.surdPartMult == 0) {
+            return this.toString();
+        }
+        return "REWIND TO FAILING";
     }
     
     /**
