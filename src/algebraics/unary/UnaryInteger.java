@@ -22,8 +22,8 @@ import arithmetic.NotDivisibleException;
 import fractions.Fraction;
 
 /**
- * Represents algebraic integers of degree 1. Essentially this is another 
- * wrapper for <code>int</code> primitives.
+ * Represents an algebraic integer of degree 1. Essentially this is another 
+ * wrapper for {@code int} primitives.
  * @author Alonso del Arte
  */
 public final class UnaryInteger implements AlgebraicInteger, 
@@ -153,7 +153,7 @@ public final class UnaryInteger implements AlgebraicInteger,
      * @throws IllegalArgumentException If {@code divisor} is 0.
      * @throws NotDivisibleException If this number is not evenly divisible by 
      * {@code divisor}. In the example, this exception would occur for any 
-     * nonzero number other than &plusmn;1, &plusmn;2, &plusmn;4, &plusmn;41, 
+     * nonzero divisor other than &plusmn;1, &plusmn;2, &plusmn;4, &plusmn;41, 
      * &plusmn;82, &plusmn;164, &plusmn;1681, &plusmn;3362, &plusmn;6724. 
      */
     @Override
@@ -176,11 +176,32 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(n);
     }
 
+    /**
+     * Divides this unary integer by a 32-bit integer primitive, but only if 
+     * this number is evenly divisible by the other. For the example, suppose 
+     * this integer is 6724, which factorizes as 2<sup>2</sup> &times; 
+     * 41<sup>2</sup>.
+     * @param divisor The number to divide by. For example, &minus;3362.
+     * @return The division. In the example, this would be &minus;2.
+     * @throws IllegalArgumentException If {@code divisor} is 0.
+     * @throws NotDivisibleException If this number is not evenly divisible by 
+     * {@code divisor}. In the example, this exception would occur for any 
+     * nonzero divisor other than &plusmn;1, &plusmn;2, &plusmn;4, &plusmn;41, 
+     * &plusmn;82, &plusmn;164, &plusmn;1681, &plusmn;3362, &plusmn;6724. 
+     */
     @Override
     public UnaryInteger divides(int divisor) throws NotDivisibleException {
         return this.divides(new UnaryInteger(divisor));
     }
 
+    /**
+     * Calculates the remainder of this unary integer modulo another. For 
+     * example, 160.
+     * @param divisor The number for which to divide by to get the remainder. 
+     * For example, 72.
+     * @return The remainder. In the example, this would be 16.
+     * @throws IllegalArgumentException If {@code divisor} is 0.
+     */
     @Override
     public UnaryInteger mod(UnaryInteger divisor) {
         if (divisor.number == 0) {
@@ -192,11 +213,29 @@ public final class UnaryInteger implements AlgebraicInteger,
         return new UnaryInteger(remainder);
     }
 
+    /**
+     * Calculates the remainder of this unary integer modulo a 32-bit integer 
+     * primitive. For example, 160.
+     * @param divisor The number for which to divide by to get the remainder. 
+     * For example, 72.
+     * @return The remainder. In the example, this would be 16.
+     * @throws IllegalArgumentException If {@code divisor} is 0.
+     */
     @Override
     public UnaryInteger mod(int divisor) {
         return this.mod(new UnaryInteger(divisor));
     }
     
+    /**
+     * Compares this unary integer to another. For the examples, let's say this 
+     * number is 443.
+     * @param other The other number. Examples: &minus;1728, 443, 80160.
+     * @return A negative integer if this number is less than the other, 0 if 
+     * it's equal, a positive integer if this number is greater than the other. 
+     * In the examples with 443, this would be 1 or any other positive integer 
+     * for &minus;1728, 0 for 443 and &minus;1 or any other negative integer for 
+     * 80160.
+     */
     @Override
     public int compareTo(UnaryInteger other) {
         return Integer.compare(this.number, other.number);
