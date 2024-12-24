@@ -1179,6 +1179,20 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToStringAltD2Mod4SameAsToString() {
+        int a = randomNumber();
+        int b = randomNumber() | randomPowerOfTwo();
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Given " + expected 
+                + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
