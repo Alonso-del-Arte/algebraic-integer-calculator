@@ -41,7 +41,13 @@ public class RealQuadraticInteger extends QuadraticInteger
     @Override
     public String toStringAlt() {
         if (this.quadRing.radicand % 4 == 1) {
-            return Character.toString(PHI_LETTER);
+            if (this.regPartMult == 1) {
+                return Character.toString(PHI_LETTER);
+            } else {
+                int adjust = (this.denominator == 1) ? 2 : 1;
+                int phiPart = this.surdPartMult * adjust;
+                return Integer.toString(phiPart) + PHI_LETTER;
+            }
         }
         return this.toString();
     }
