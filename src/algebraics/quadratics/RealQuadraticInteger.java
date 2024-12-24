@@ -41,6 +41,9 @@ public class RealQuadraticInteger extends QuadraticInteger
     @Override
     public String toStringAlt() {
         if (this.quadRing.radicand % 4 == 1) {
+            if (this.regPartMult == -1) {
+                return MINUS_SIGN + PHI_LETTER;
+            }
             if (this.regPartMult == 1) {
                 return Character.toString(PHI_LETTER);
             } else {
