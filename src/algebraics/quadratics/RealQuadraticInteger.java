@@ -46,7 +46,8 @@ public class RealQuadraticInteger extends QuadraticInteger
             } else {
                 int adjust = (this.denominator == 1) ? 2 : 1;
                 int phiPart = this.surdPartMult * adjust;
-                return Integer.toString(phiPart) + PHI_LETTER;
+                String sign = (phiPart < 0) ? MINUS_SIGN : "";
+                return sign + Math.abs(phiPart) + PHI_LETTER;
             }
         }
         return this.toString();
