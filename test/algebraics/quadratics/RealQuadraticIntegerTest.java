@@ -1412,6 +1412,16 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToStringAltTheta() {
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        QuadraticInteger theta = new RealQuadraticInteger(1, 1, ring, 2);
+        String expected = "" + THETA_CHAR;
+        String actual = theta.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + theta.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
