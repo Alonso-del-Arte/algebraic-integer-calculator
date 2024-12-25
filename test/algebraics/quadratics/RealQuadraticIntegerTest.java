@@ -1160,7 +1160,7 @@ public class RealQuadraticIntegerTest {
         String actual = number.toString().replace(" ", "");
         assertEquals(expected, actual);
     }
-
+    
     @Test
     public void testToStringAltRationalFromRingD2Mod4SameAsToString() {
         int a = randomNumber();
@@ -1251,6 +1251,32 @@ public class RealQuadraticIntegerTest {
         String actual = phi.toStringAlt().replace(" ", "");
         String message = "Reckoning phi notation for " + phi.toString();
         assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPositiveRationalPhiContext() {
+        int a = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, RING_ZPHI);
+        String expected = Integer.toString(a);
+        String actual = number.toStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringAltZeroPhiContext() {
+        QuadraticInteger zero = new RealQuadraticInteger(0, 0, RING_ZPHI);
+        String expected = "0";
+        String actual = zero.toStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToStringAltNegativeRationalPhiContext() {
+        int a = randomNumber() | Integer.MIN_VALUE;
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, RING_ZPHI);
+        String expected = MINUS_SIGN + Integer.toString(-a);
+        String actual = number.toStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
