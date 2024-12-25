@@ -16,6 +16,8 @@
  */
 package algebraics.quadratics;
 
+import static calculators.TextCalculator.makeBinomialString;
+
 /**
  * Defines objects to represent real quadratic integers, for the most part 
  * symbolically rather than numerically. This class is <code>Comparable</code>, 
@@ -48,16 +50,17 @@ public class RealQuadraticInteger extends QuadraticInteger
             }
         }
         if (this.quadRing.radicand % 4 == 1) {
-            if (this.regPartMult == -1) {
+            if (this.regPartMult == -1 && this.surdPartMult == -1) {
                 return MINUS_SIGN + PHI_LETTER;
             }
-            if (this.regPartMult == 1) {
+            if (this.regPartMult == 1 && this.surdPartMult == 1) {
                 return Character.toString(PHI_LETTER);
             } else {
                 int adjust = (this.denominator == 1) ? 2 : 1;
+                int nonPhiInit = this.regPartMult * adjust;
                 int phiPart = this.surdPartMult * adjust;
-                String sign = (phiPart < 0) ? MINUS_SIGN : "";
-                return sign + Math.abs(phiPart) + PHI_LETTER;
+                int nonPhiPart = (nonPhiInit - phiPart) / 2;
+                return makeBinomialString(nonPhiPart, phiPart, PHI_LETTER);
             }
         }
         return this.toString();
