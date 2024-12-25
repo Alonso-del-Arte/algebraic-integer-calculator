@@ -1403,40 +1403,6 @@ public class RealQuadraticIntegerTest {
     public void testToStringAlt() {
         System.out.println("toStringAlt");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-        int nonThetaPart;
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                nonThetaPart = (randomRegForHalfInts - randomSurdForHalfInts)/2;
-//                if (nonThetaPart == 0) {
-//                    expResult = randomSurdForHalfInts + "\u03B8";
-//                } else {
-//                    expResult = nonThetaPart + "+" + randomSurdForHalfInts + "\u03B8";
-//                }
-//                if (testIntegers.get(i).getRing().getRadicand() == 5) {
-//                    expResult = expResult.replace("\u03B8", "\u03C6");
-//                }
-//                expResult = expResult.replace("+-", "-");
-//            } else {
-//                expResult = testIntegers.get(i).toString().replace(" ", "");
-//            }
-//            expResult = expResult.replace("-", "\u2212");
-//            result = testIntegers.get(i).toStringAlt().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // Gotta check on 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toStringAlt();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toStringAlt();
-//        assertEquals(expResult, result);
-//        // Lastly the special case of the golden ratio
-//        expResult = "\u03C6";
-//        result = GOLDEN_RATIO.toStringAlt();
-//        assertEquals(expResult, result);
     }
 
     /**
@@ -1447,32 +1413,6 @@ public class RealQuadraticIntegerTest {
     public void testToASCIIString() {
         System.out.println("toASCIIString");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomRegForHalfInts + "/2+" + randomSurdForHalfInts + "sqrt(" + testIntegers.get(i).getRing().getRadicand() + ")/2";
-//            } else {
-//                if (randomRegPart == 0) {
-//                    expResult = randomSurdPart + "sqrt(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                } else {
-//                    expResult = randomRegPart + "+" + randomSurdPart + "sqrt(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                }
-//            }
-//            expResult = expResult.replace("+-", "-");
-//            expResult = expResult.replace("+1sqrt", "+sqrt");
-//            expResult = expResult.replace("-1sqrt", "-sqrt");
-//            result = testIntegers.get(i).toASCIIString().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // And last but not least, 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toASCIIString();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toASCIIString();
-//        assertEquals(expResult, result);
     }
 
     /**
@@ -1483,39 +1423,6 @@ public class RealQuadraticIntegerTest {
     public void testToASCIIStringAlt() {
         System.out.println("toASCIIStringAlt");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-        int nonThetaPart;
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                nonThetaPart = (randomRegForHalfInts - randomSurdForHalfInts)/2;
-//                if (nonThetaPart == 0) {
-//                    expResult = randomSurdForHalfInts + "theta";
-//                } else {
-//                    expResult = nonThetaPart + "+" + randomSurdForHalfInts + "theta";
-//                }
-//                if (testIntegers.get(i).getRing().getRadicand() == 5) {
-//                    expResult = expResult.replace("theta", "phi");
-//                }
-//                expResult = expResult.replace("+-", "-");
-//            } else {
-//                expResult = testIntegers.get(i).toASCIIString().replace(" ", "");
-//            }
-//            result = testIntegers.get(i).toASCIIStringAlt().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // Gotta check on 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toASCIIStringAlt();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toASCIIStringAlt();
-//        assertEquals(expResult, result);
-//        // Lastly the special case of the golden ratio
-//        expResult = "phi";
-//        result = GOLDEN_RATIO.toASCIIStringAlt();
-//        assertEquals(expResult, result);
     }
 
     /**
@@ -1526,33 +1433,6 @@ public class RealQuadraticIntegerTest {
     public void testToTeXString() {
         System.out.println("toTeXString");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = "\\frac{" + randomRegForHalfInts + "}{2}+\\frac{" + randomSurdForHalfInts + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}}{2}";
-//            } else {
-//                if (randomRegPart == 0) {
-//                    expResult = randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
-//                } else {
-//                    expResult = randomRegPart + "+" + randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
-//                }
-//            }
-//            expResult = expResult.replace("+1\\sqrt", "+\\sqrt");
-//            expResult = expResult.replace("-1\\sqrt", "-\\sqrt");
-//            expResult = expResult.replace("\\frac{-", "-\\frac{");
-//            expResult = expResult.replace("+-", "-");
-//            result = testIntegers.get(i).toTeXString().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // Last but not least, 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toTeXString();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toTeXString();
-//        assertEquals(expResult, result);
     }
 
     /**
@@ -1563,39 +1443,6 @@ public class RealQuadraticIntegerTest {
     public void testToTeXStringSingleDenom() {
         System.out.println("toTeXStringSingleDenom");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = "\\frac{" + randomRegForHalfInts + "+" + randomSurdForHalfInts + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}}{2}";
-//            } else {
-//                if (randomRegPart == 0) {
-//                    expResult = randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
-//                } else {
-//                    expResult = randomRegPart + "+" + randomSurdPart + "\\sqrt{" + testIntegers.get(i).getRing().getRadicand() + "}";
-//                }
-//            }
-//            expResult = expResult.replace("+-", "-");
-//            expResult = expResult.replace("+1\\sqrt", "+\\sqrt");
-//            expResult = expResult.replace("-1\\sqrt", "-\\sqrt");
-//            result = testIntegers.get(i).toTeXStringSingleDenom().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // Gotta check on 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toTeXStringSingleDenom();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toTeXStringSingleDenom();
-//        assertEquals(expResult, result);
-//        /* This last one is to make sure that a least significant digit that is 
-//           1 but is not also the most significant digit does not get erroneously 
-//           chopped off */
-//        RealQuadraticInteger testNum = new RealQuadraticInteger(5, 11, RING_ZPHI, 2);
-//        expResult = "\\frac{5+11\\sqrt{5}}{2}";
-//        result = testNum.toTeXStringSingleDenom().replace(" ", "");
-//        assertEquals(expResult, result);
     }
 
     /**
@@ -1606,39 +1453,6 @@ public class RealQuadraticIntegerTest {
     public void testToTeXStringAlt() {
         System.out.println("toTeXStringAlt");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-        int nonThetaPart;
-//        for (int i = 1; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                nonThetaPart = (randomRegForHalfInts - randomSurdForHalfInts)/2;
-//                if (nonThetaPart == 0) {
-//                    expResult = randomSurdForHalfInts + "\\theta";
-//                } else {
-//                    expResult = nonThetaPart + "+" + randomSurdForHalfInts + "\\theta";
-//                }
-//                if (testIntegers.get(i).getRing().getRadicand() == 5) {
-//                    expResult = expResult.replace("\\theta", "\\phi");
-//                }
-//                expResult = expResult.replace("+-", "-");
-//            } else {
-//                expResult = testIntegers.get(i).toTeXString().replace(" ", "");
-//            }
-//            result = testIntegers.get(i).toTeXStringAlt().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // Gotta check on 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toTeXStringAlt();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toTeXStringAlt();
-//        assertEquals(expResult, result);
-//        // Lastly the special case of the golden ratio
-//        expResult = "\\phi";
-//        result = GOLDEN_RATIO.toTeXStringAlt();
-//        assertEquals(expResult, result);
     }
 
     /**
@@ -1649,33 +1463,6 @@ public class RealQuadraticIntegerTest {
     public void testToHTMLString() {
         System.out.println("toHTMLString");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                expResult = randomRegForHalfInts + "/2+" + randomSurdForHalfInts + "&radic;(" + testIntegers.get(i).getRing().getRadicand() + ")/2";
-//            } else {
-//                if (randomRegPart == 0) {
-//                    expResult = randomSurdPart + "&radic;(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                } else {
-//                    expResult = randomRegPart + "+" + randomSurdPart + "&radic;(" + testIntegers.get(i).getRing().getRadicand() + ")";
-//                }
-//            }
-//            expResult = expResult.replace("+-", "-");
-//            expResult = expResult.replace("+1&radic;", "+&radic;");
-//            expResult = expResult.replace("-1&radic;", "-&radic;");
-//            expResult = expResult.replace("-", "&minus;");
-//            result = testIntegers.get(i).toHTMLString().replace(" ", "");
-//            assertEquals(expResult, result);
-//        }
-//        // And last but not least, 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toHTMLString();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toHTMLString();
-//        assertEquals(expResult, result);
     }
 
     /**
@@ -1686,64 +1473,6 @@ public class RealQuadraticIntegerTest {
     public void testToHTMLStringAlt() {
         System.out.println("toHTMLStringAlt");
         fail("REWRITE THIS TEST");
-        String expResult, result;
-        RealQuadraticInteger currRQI;
-        int nonThetaPart;
-        for (int m = -32; m < 32; m++) {
-            for (int n = -9; n < 9; n++) {
-                if ((m % 2) == (n % 2)) {
-                    nonThetaPart = (m - n)/2;
-                    if (nonThetaPart == 0) {
-                        expResult = n + "&theta;";
-                    } else {
-                        expResult = nonThetaPart + "+" + n + "&theta;";
-                    }
-                    expResult = expResult.replace("+-", "-");
-                    expResult = expResult.replace("+1&theta;", "+&theta;");
-                    expResult = expResult.replace("-1&theta;", "-&theta;");
-                    if (expResult.equals("0&theta;")) {
-                        expResult = "0";
-                    }
-                    if (expResult.equals("1&theta;")) {
-                        expResult = "&theta;";
-                    }
-                    expResult = expResult.replace("+0&theta;", "");
-                    expResult = expResult.replace("-", "&minus;");
-//                    currRQI = new RealQuadraticInteger(m, n, RING_OQ13, 2);
-//                    result = currRQI.toHTMLStringAlt().replace(" ", "");
-//                    assertEquals(expResult, result);
-//                    // No need to change expResult to test in ringRandomForAltTesting
-//                    currRQI = new RealQuadraticInteger(m, n, ringRandomForAltTesting, 2);
-//                    result = currRQI.toHTMLStringAlt().replace(" ", "");
-//                    assertEquals(expResult, result);
-//                    // Do need to change expResult for Z[phi]
-//                    expResult = expResult.replace("&theta;", "&phi;");
-//                    currRQI = new RealQuadraticInteger(m, n, RING_ZPHI, 2);
-//                    result = currRQI.toHTMLStringAlt().replace(" ", "");
-//                    assertEquals(expResult, result);
-                }
-            }
-        }
-        /* For integers in rings without "half-integers," we expect 
-           toHTMLString() and toHTMLStringAlt() to give the same result. */
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            if (!testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                assertEquals(testIntegers.get(i).toHTMLString(), testIntegers.get(i).toHTMLStringAlt());
-//            }
-//        }
-//        // Gotta check on the special case of the golden ratio
-//        expResult = "&phi;";
-//        result = GOLDEN_RATIO.toHTMLStringAlt();
-//        assertEquals(expResult, result);
-//        // And last but not least, 0 and 1
-//        expResult = "0";
-//        zeroRQI = new RealQuadraticInteger(0, 0, ringRandom);
-//        result = zeroRQI.toHTMLStringAlt();
-//        assertEquals(expResult, result);
-//        expResult = "1";
-//        oneRQI = new RealQuadraticInteger(1, 0, ringRandom);
-//        result = oneRQI.toHTMLStringAlt();
-//        assertEquals(expResult, result);
     }
 
     /**
