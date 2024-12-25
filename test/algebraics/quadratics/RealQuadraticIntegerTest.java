@@ -1279,6 +1279,63 @@ public class RealQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testToStringAltPositiveIntPlusPositiveMultipleOfPhi() {
+        int bound = 128;
+        int nonPhiPart = RANDOM.nextInt(1, bound);
+        int phiPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonPhiPart + phiPart;
+        QuadraticInteger number = new RealQuadraticInteger(a, phiPart, 
+                RING_ZPHI, 2);
+        String expected = nonPhiPart + "+" + phiPart + PHI_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning phi notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPositiveIntPlusNegativeMultipleOfPhi() {
+        int bound = 128;
+        int nonPhiPart = RANDOM.nextInt(1, bound);
+        int phiPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonPhiPart + phiPart;
+        QuadraticInteger number = new RealQuadraticInteger(a, phiPart, 
+                RING_ZPHI, 2);
+        String expected = nonPhiPart + MINUS_SIGN + (-phiPart) + PHI_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning phi notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltNegativeIntPlusPositiveMultipleOfPhi() {
+        int bound = 128;
+        int nonPhiPart = -RANDOM.nextInt(1, bound);
+        int phiPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonPhiPart + phiPart;
+        QuadraticInteger number = new RealQuadraticInteger(a, phiPart, 
+                RING_ZPHI, 2);
+        String expected = MINUS_SIGN + (-nonPhiPart) + "+" + phiPart + PHI_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning phi notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltNegativeIntPlusNegativeMultipleOfPhi() {
+        int bound = 128;
+        int nonPhiPart = -RANDOM.nextInt(1, bound);
+        int phiPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonPhiPart + phiPart;
+        QuadraticInteger number = new RealQuadraticInteger(a, phiPart, 
+                RING_ZPHI, 2);
+        String expected = MINUS_SIGN + (-nonPhiPart) + MINUS_SIGN + (-phiPart) 
+                + PHI_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning phi notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
