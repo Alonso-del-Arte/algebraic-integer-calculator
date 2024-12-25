@@ -40,6 +40,14 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
+    private String toStringAltPhi() {
+        int adjust = (this.denominator == 1) ? 2 : 1;
+        int nonPhiInit = this.regPartMult * adjust;
+        int phiPart = this.surdPartMult * adjust;
+        int nonPhiPart = (nonPhiInit - phiPart) / 2;
+        return makeBinomialString(nonPhiPart, phiPart, PHI_LETTER);
+    }
+    
     @Override
     public String toStringAlt() {
         if (this.surdPartMult == 0) {
@@ -49,19 +57,11 @@ public class RealQuadraticInteger extends QuadraticInteger
                 return Integer.toString(this.regPartMult);
             }
         }
+        if (this.quadRing.radicand == 5) {
+            return this.toStringAltPhi();
+        }
         if (this.quadRing.radicand % 4 == 1) {
-            if (this.regPartMult == -1 && this.surdPartMult == -1) {
-                return MINUS_SIGN + PHI_LETTER;
-            }
-            if (this.regPartMult == 1 && this.surdPartMult == 1) {
-                return Character.toString(PHI_LETTER);
-            } else {
-                int adjust = (this.denominator == 1) ? 2 : 1;
-                int nonPhiInit = this.regPartMult * adjust;
-                int phiPart = this.surdPartMult * adjust;
-                int nonPhiPart = (nonPhiInit - phiPart) / 2;
-                return makeBinomialString(nonPhiPart, phiPart, PHI_LETTER);
-            }
+            return Character.toString(THETA_LETTER);
         }
         return this.toString();
     }
