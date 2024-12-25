@@ -87,6 +87,14 @@ public class RealQuadraticIntegerTest {
         return new RealQuadraticRing(d);
     }
     
+    private static RealQuadraticRing chooseRingWithHalfIntsNotPhi() {
+        int d;
+        do {
+            d = 4 * (randomNumber(256) + 3) + 1;
+        } while (!isSquarefree(d));
+        return new RealQuadraticRing(d);
+    }
+    
     /**
      * Test of the algebraicDegree function, of the RealQuadraticInteger class, 
      * inherited from QuadraticInteger.
@@ -1389,6 +1397,18 @@ public class RealQuadraticIntegerTest {
         String expected = MINUS_SIGN + (-nonPhiPart) + MINUS_SIGN + PHI_CHAR;
         String actual = number.toStringAlt().replace(" ", "");
         String message = "Reckoning phi notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltRationalD1Mod4ContextNotPhi() {
+        int a = randomNumber();
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + expected + " in " 
+                + ring.toString();
         assertEquals(message, expected, actual);
     }
     
