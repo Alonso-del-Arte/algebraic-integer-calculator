@@ -42,7 +42,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public String toStringAlt() {
-        if (this.quadRing.radicand == 5 && this.surdPartMult == 0) {
+        if (this.surdPartMult == 0) {
             if (this.regPartMult < 0) {
                 return MINUS_SIGN + Math.abs(this.regPartMult);
             } else {
