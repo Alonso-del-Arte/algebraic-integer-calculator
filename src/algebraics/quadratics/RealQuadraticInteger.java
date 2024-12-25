@@ -60,7 +60,19 @@ public class RealQuadraticInteger extends QuadraticInteger
                 int nonPhiInit = this.regPartMult * adjust;
                 int phiPart = this.surdPartMult * adjust;
                 int nonPhiPart = (nonPhiInit - phiPart) / 2;
-                return makeBinomialString(nonPhiPart, phiPart, PHI_LETTER);
+                String initial = nonPhiPart + " + " + phiPart + PHI_LETTER;
+                String intermediate = initial.replace(" + -", " - ");
+                String tweaked = intermediate.replace("-", MINUS_SIGN);
+                if (tweaked.startsWith("0 +")) {
+                    return tweaked.substring(4);
+                } else {
+                    if (tweaked.startsWith("0 " + MINUS_SIGN)) {
+                        return tweaked.substring(2);
+                    } else {
+                        return tweaked;
+                    }
+                }
+//                return makeBinomialString(nonPhiPart, phiPart, PHI_LETTER);
             }
         }
         return this.toString();
