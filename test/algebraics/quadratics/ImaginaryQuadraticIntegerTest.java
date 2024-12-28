@@ -817,7 +817,8 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, a, ring, 2);
         String expected = Integer.toString(a) + THETA_CHAR;
         String actual = number.toStringAlt().replace(" ", "");
-        String message = "Writing " + number + " in terms of " + THETA_CHAR;
+        String message = "Writing " + number.toString() + " in terms of " 
+                + THETA_CHAR;
         assertEquals(message, expected, actual);
     }
 
@@ -828,7 +829,8 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -a, ring, 2);
         String expected = MINUS_SIGN + a + THETA_CHAR;
         String actual = number.toStringAlt().replace(" ", "");
-        String message = "Writing " + number + " in terms of " + THETA_CHAR;
+        String message = "Writing " + number.toString() + " in terms of " 
+                + THETA_CHAR;
         assertEquals(message, expected, actual);
     }
 
