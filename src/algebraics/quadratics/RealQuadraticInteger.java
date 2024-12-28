@@ -71,16 +71,7 @@ public class RealQuadraticInteger extends QuadraticInteger
             int nonThetaInit = this.regPartMult * adjust;
             int thetaPart = this.surdPartMult * adjust;
             int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-            String initial = Integer.toString(thetaPart) + THETA_LETTER;
-            if (nonThetaPart != 0) {
-                initial = nonThetaPart + " + " + initial;
-            }
-            String intermediate = initial.replace(" + -", " - ");
-            if (Math.abs(thetaPart) == 1) {
-                intermediate = intermediate.replace(" 1" + THETA_LETTER, 
-                        " " + THETA_LETTER);
-            }
-            return intermediate.replace("-", MINUS_SIGN);
+            return makeBinomialString(nonThetaPart, thetaPart, THETA_LETTER);
         }
         return this.toString();
     }
