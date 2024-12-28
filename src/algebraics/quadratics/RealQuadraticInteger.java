@@ -67,10 +67,16 @@ public class RealQuadraticInteger extends QuadraticInteger
             if (this.regPartMult == 1) {
                 return Character.toString(THETA_LETTER);
             }
-            String sign = (this.regPartMult < 0) ? MINUS_SIGN : "";
             int adjust = (this.denominator == 1) ? 2 : 1;
-            int thetaPart = Math.abs(this.regPartMult) * adjust;
-            return sign + thetaPart + THETA_LETTER;
+            int nonThetaInit = this.regPartMult * adjust;
+            int thetaPart = this.surdPartMult * adjust;
+            int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+            String initial = Integer.toString(thetaPart) + THETA_LETTER;
+            if (nonThetaPart != 0) {
+                initial = Integer.toString(nonThetaPart) + " + " + initial;
+            }
+            String intermediate = initial.replace(" + -", "-");
+            return intermediate.replace("-", MINUS_SIGN);
         }
         return this.toString();
     }
