@@ -1457,16 +1457,69 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
-     * QuadraticInteger. For functions that return Strings, spaces are desirable 
-     * but not required. Therefore the tests should strip out spaces before 
-     * asserting equality. If the test of toString fails, the result of this 
-     * test is irrelevant.
-     */@org.junit.Ignore
+     * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
+     */
     @Test
     public void testToStringAlt() {
         System.out.println("toStringAlt");
-        fail("REWRITE THIS TEST");
+        int bound = 128;
+        int nonThetaPart = RANDOM.nextInt(1, bound);
+        int thetaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        QuadraticInteger number = new RealQuadraticInteger(a, thetaPart, ring, 
+                2);
+        String expected = nonThetaPart + "+" + thetaPart + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltPositiveIntPlusNegativeMultipleOfTheta() {
+        int bound = 128;
+        int nonThetaPart = RANDOM.nextInt(1, bound);
+        int thetaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        QuadraticInteger number = new RealQuadraticInteger(a, thetaPart, ring, 
+                2);
+        String expected = nonThetaPart + MINUS_SIGN + (-thetaPart) + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltNegativeIntPlusPositiveMultipleOfTheta() {
+        int bound = 128;
+        int nonThetaPart = -RANDOM.nextInt(1, bound);
+        int thetaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        QuadraticInteger number = new RealQuadraticInteger(a, thetaPart, ring, 
+                2);
+        String expected = MINUS_SIGN + (-nonThetaPart) + "+" + thetaPart 
+                + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltNegativeIntPlusNegativeMultipleOfTheta() {
+        int bound = 128;
+        int nonThetaPart = -RANDOM.nextInt(1, bound);
+        int thetaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        QuadraticInteger number = new RealQuadraticInteger(a, thetaPart, ring, 
+                2);
+        String expected = MINUS_SIGN + (-nonThetaPart) + MINUS_SIGN 
+                + (-thetaPart) + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
