@@ -73,7 +73,7 @@ public class RealQuadraticInteger extends QuadraticInteger
             int nonThetaPart = (nonThetaInit - thetaPart) / 2;
             String initial = Integer.toString(thetaPart) + THETA_LETTER;
             if (nonThetaPart != 0) {
-                initial = Integer.toString(nonThetaPart) + " + " + initial;
+                initial = nonThetaPart + " + " + initial;
             }
             String intermediate = initial.replace(" + -", "-");
             return intermediate.replace("-", MINUS_SIGN);
