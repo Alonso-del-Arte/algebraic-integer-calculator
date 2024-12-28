@@ -61,11 +61,16 @@ public class RealQuadraticInteger extends QuadraticInteger
             return this.toStringAltPhi();
         }
         if (this.quadRing.radicand % 4 == 1) {
-            if (this.regPartMult < 0) {
+            if (this.regPartMult == -1) {
                 return MINUS_SIGN + THETA_LETTER;
-            } else {
+            } 
+            if (this.regPartMult == 1) {
                 return Character.toString(THETA_LETTER);
             }
+            String sign = (this.regPartMult < 0) ? MINUS_SIGN : "";
+            int adjust = (this.denominator == 1) ? 2 : 1;
+            int thetaPart = Math.abs(this.regPartMult) * adjust;
+            return sign + thetaPart + THETA_LETTER;
         }
         return this.toString();
     }
