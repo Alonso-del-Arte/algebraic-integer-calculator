@@ -1432,6 +1432,30 @@ public class RealQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToStringAltPositiveMultipleOfTheta() {
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        int a = RANDOM.nextInt(2, 8192);
+        QuadraticInteger number = new RealQuadraticInteger(a, a, ring, 2);
+        String expected = Integer.toString(a) + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + THETA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltNegativeMultipleOfTheta() {
+        QuadraticRing ring = chooseRingWithHalfIntsNotPhi();
+        int a = RANDOM.nextInt(2, 8192);
+        QuadraticInteger number = new RealQuadraticInteger(-a, -a, ring, 2);
+        String expected = MINUS_SIGN + a + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + THETA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toStringAlt method, of class RealQuadraticInteger, inherited from 
      * QuadraticInteger. For functions that return Strings, spaces are desirable 
