@@ -75,7 +75,11 @@ public class RealQuadraticInteger extends QuadraticInteger
             if (nonThetaPart != 0) {
                 initial = nonThetaPart + " + " + initial;
             }
-            String intermediate = initial.replace(" + -", "-");
+            String intermediate = initial.replace(" + -", " - ");
+            if (Math.abs(thetaPart) == 1) {
+                intermediate = intermediate.replace(" 1" + THETA_LETTER, 
+                        " " + THETA_LETTER);
+            }
             return intermediate.replace("-", MINUS_SIGN);
         }
         return this.toString();
