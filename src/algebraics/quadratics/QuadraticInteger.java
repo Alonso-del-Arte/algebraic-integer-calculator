@@ -376,7 +376,17 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
             if (this.regPartMult == 1) {
                 return Character.toString(THETA_LETTER);
             } else {
-                return new String(new char[]{MINUS_SIGN, THETA_LETTER});
+                if (this.regPartMult == -1) {
+                    return new String(new char[]{MINUS_SIGN, THETA_LETTER});
+                } else {
+                    int thetaPart = Math.abs(this.surdPartMult);
+                    if (this.denominator == 1) {
+                        thetaPart *= 2;
+                    }
+                    String sign = (this.regPartMult < 0) 
+                            ? MINUS_SIGN_STRING : "";
+                    return sign + thetaPart + THETA_LETTER;
+                }
             }
         } else {
             return this.toString();
