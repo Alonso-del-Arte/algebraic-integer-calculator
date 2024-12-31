@@ -31,8 +31,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     private static final long serialVersionUID = 4547847540095073075L;
     
-    private static final String MINUS_SIGN = "\u2212";
-    
     private static final char THETA_LETTER = '\u03B8';
     
     private static final char PHI_LETTER = '\u03C6';
@@ -40,14 +38,24 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
+    /**
+     * A text representation of the quadratic integer, using theta notation when 
+     * {@link #getRing()}{@link QuadraticRing#hasHalfIntegers() 
+     * .hasHalfIntegers()} is true. For the first example, suppose this number 
+     * is <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;13</sup>&frasl;<sub>2</sub>.
+     * @return A representation using theta notation. For the example above, 
+     * would be 2 + &theta;. In the ring <b>Z</b>[&phi;], where &phi; = 
+     * <sup>1</sup>&frasl;<sub>2</sub> + <sup>&radic;5</sup>&frasl;<sub>2</sub>, 
+     * this function uses &phi; instead of &theta;. Thus, for example, 
+     * <sup>5</sup>&frasl;<sub>2</sub> + <sup>&radic;5</sup>&frasl;<sub>2</sub> 
+     * would be 2 + &phi;. If {@code getRing().hasHalfIntegers()} is false, this 
+     * just returns the same as {@link #toString()}.
+     */
     @Override
     public String toStringAlt() {
         if (this.surdPartMult == 0) {
-            if (this.regPartMult < 0) {
-                return MINUS_SIGN + Math.abs(this.regPartMult);
-            } else {
-                return Integer.toString(this.regPartMult);
-            }
+            return this.toString();
         }
         if (this.quadRing.radicand % 4 == 1) {
             int adjust = (this.denominator == 1) ? 2 : 1;
@@ -57,8 +65,9 @@ public class RealQuadraticInteger extends QuadraticInteger
             char symbol = (this.quadRing.radicand == 5) 
                     ? PHI_LETTER : THETA_LETTER;
             return makeBinomialString(nonThetaPart, thetaPart, symbol);
+        } else {
+            return this.toString();
         }
-        return this.toString();
     }
     
     /**
