@@ -472,6 +472,25 @@ public class QuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    /**
+     * Test of the toStringAlt function, of the QuadraticInteger class.
+     */
+    @Test
+    public void testToStringAlt() {
+        System.out.println("toStringAlt");
+        int bound = 128;
+        int nonThetaPart = RANDOM.nextInt(1, bound);
+        int thetaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, thetaPart, ring, 
+                2);
+        String expected = nonThetaPart + "+" + thetaPart + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
     @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
