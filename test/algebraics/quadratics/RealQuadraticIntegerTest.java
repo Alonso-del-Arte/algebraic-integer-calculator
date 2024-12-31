@@ -1457,7 +1457,7 @@ public class RealQuadraticIntegerTest {
     }
 
     /**
-     * Test of the toStringAlt function, of the ImaginaryQuadraticInteger class.
+     * Test of the toStringAlt function, of the RealQuadraticInteger class.
      */
     @Test
     public void testToStringAlt() {
@@ -1845,23 +1845,12 @@ public class RealQuadraticIntegerTest {
         assertContainsSameOrder(expected, actual);
     }
 
-    /**
-     * Test of parseQuadraticInteger, of class RealQuadraticInteger, inherited 
-     * from QuadraticInteger. Whatever is output by toString, toStringAlt, 
-     * toASCIIString, toASCIIStringAlt, toTeXString, toTeXStringSingleDenom, 
-     * toTeXStringAlt, toHTMLString or toHTMLStringAlt should be parseable by 
-     * parseQuadraticInteger. With the following caveats: 
-     * NEED TO REVISE CAVEAT EXAMPLES
-     * &omega; should always be understood to mean -1/2 + sqrt(-3)/2 and &phi; 
-     * should be understood to mean 1/2 + sqrt(5)/2, while &theta; means 1/2 
-     * + sqrt(d)/2 with d = 1 mod 4, but d may be ambiguous.
-     */@org.junit.Ignore
+    // TODO: Revise caveat examples
+@org.junit.Ignore
     @Test
     public void testParseQuadraticInteger() {
         System.out.println("parseQuadraticInteger");
         fail("REWRITE THIS TEST");
-        String numberString;
-        QuadraticInteger numberRQI;
 //        for (int i = 0; i < totalTestIntegers; i++) {
 //            numberString = testIntegers.get(i).toString();
 //            numberRQI = QuadraticInteger.parseQuadraticInteger(numberString);
@@ -1908,18 +1897,10 @@ public class RealQuadraticIntegerTest {
 //        }
     }
     
-    /**
-     * Test of optional behaviors of parseImaginaryQuadraticInteger, of class 
-     * RealQuadraticInteger, inherited from QuadraticInteger. This includes 
-     * recognizing "j" as an alternative notation for &radic;&minus;1. If the 
-     * optional behaviors are required, change the print statements under catch 
-     * {@link NumberFormatException} to fails.
-     */
     @org.junit.Ignore
     @Test
     public void testParseQuadraticIntegerOptions() {
-        System.out.println("parseQuadraticInteger, optional behaviors");
-        fail("Haven't written the test yet.");
+        fail("REWRITE THIS TEST");
 //        String numberString = "j";
 //        QuadraticInteger expResult = new ImaginaryQuadraticInteger(0, 1, RING_GAUSSIAN);
 //        QuadraticInteger result;
@@ -2040,20 +2021,6 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testPlusAdditiveInverses() {
         fail("REWRITE THIS TEST");
-        String failMessage;
-        QuadraticInteger result;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            failMessage = "Adding " + testIntegers.get(i).toASCIIString() + " to " + testAdditiveInverses.get(i).toASCIIString() + " should not have triggered AlgebraicDegreeOverflowException \"";
-//            try {
-//                result = testIntegers.get(i).plus(testAdditiveInverses.get(i));
-//                assertEquals(zeroRQI, result);
-//            } catch (AlgebraicDegreeOverflowException adoe) {
-//                failMessage = failMessage + adoe.getMessage() + "\"";
-//                fail(failMessage);
-//            }
-//            result = testIntegers.get(i).plus(0);
-//            assertEquals(testIntegers.get(i), result);
-//        }
     }
     
     /**
