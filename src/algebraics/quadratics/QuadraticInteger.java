@@ -390,7 +390,10 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                     int nonThetaInit = this.regPartMult * adjust;
                     int thetaPart = this.surdPartMult * adjust;
                     int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-                    return nonThetaPart + " + " + thetaPart + THETA_LETTER;
+                    String initial = nonThetaPart + " + " + thetaPart 
+                            + THETA_LETTER;
+                    String intermediate = initial.replace(" + -", " - ");
+                    return intermediate.replace('-', MINUS_SIGN);
                 }
             }
         } else {
