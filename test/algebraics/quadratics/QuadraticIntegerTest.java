@@ -439,6 +439,16 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringAltNegativeTheta() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger theta = new QuadraticIntegerImpl(-1, -1, ring, 2);
+        String expected = MINUS_SIGN + THETA_CHAR;
+        String actual = theta.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + theta.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
