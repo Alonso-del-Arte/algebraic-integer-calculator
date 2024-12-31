@@ -62,6 +62,8 @@ public class QuadraticIntegerTest {
     
     private static final char SQRT_SYMBOL = '\u221A';
     
+    private static final char THETA_CHAR = '\u03B8';
+    
     private static QuadraticRing chooseRing() {
         int propD = randomSquarefreeNumber(1024);
         if (propD == 1) propD = 2; 
@@ -423,6 +425,16 @@ public class QuadraticIntegerTest {
         String actual = number.toStringAlt().replace(" ", "");
         String message = "Given " + expected 
                 + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltTheta() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger theta = new QuadraticIntegerImpl(1, 1, ring, 2);
+        String expected = Character.toString(THETA_CHAR);
+        String actual = theta.toStringAlt().replace(" ", "");
+        String message = "toStringAlt() for " + theta.toString();
         assertEquals(message, expected, actual);
     }
     
