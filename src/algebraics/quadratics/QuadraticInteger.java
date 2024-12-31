@@ -372,7 +372,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     }
     
     public String toStringAlt() {
-        if (!this.quadRing.d1mod4) {
+        if (this.surdPartMult == 0) {
             return this.toString();
         }
         return "TEMP REWIND TO FAILING";
