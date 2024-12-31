@@ -396,6 +396,37 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringAltD2Mod4SameAsToString() {
+        int a = randomNumber();
+        int b = randomNumber() | randomPowerOfTwo();
+        int sign = (RANDOM.nextBoolean()) ? -1 : 1;
+        int d = sign * randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new QuadraticRingTest.QuadraticRingImpl(d);
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Given " + expected 
+                + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltD3Mod4SameAsToString() {
+        int a = randomNumber();
+        int b = randomNumber() | randomPowerOfTwo();
+        int sign = (RANDOM.nextBoolean()) ? -1 : 1;
+        int n = (sign < 1) ? 1 : 3;
+        int d = sign * randomSquarefreeNumberMod(n, 4);
+        QuadraticRing ring = new QuadraticRingTest.QuadraticRingImpl(d);
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Given " + expected 
+                + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
