@@ -372,6 +372,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     }
     
     public String toStringAlt() {
+        if (this.quadRing.radicand % 2 == 0) {
+            return this.toString();
+        }
         return "TEMP REWIND TO FAILING";
     }
     
