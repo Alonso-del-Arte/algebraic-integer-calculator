@@ -372,7 +372,21 @@ public class QuadraticIntegerTest {
     public void testToStringAltRationalFromRingD2Mod4SameAsToString() {
         int a = randomNumber();
         int sign = (RANDOM.nextBoolean()) ? -1 : 1;
-        int d = randomSquarefreeNumberMod(2, 4) * sign;
+        int d = sign * randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new QuadraticRingTest.QuadraticRingImpl(d);
+        QuadraticInteger number = new QuadraticIntegerImpl(a, 0, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Rational number in the context of " + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltRationalFromRingD3Mod4SameAsToString() {
+        int a = randomNumber();
+        int sign = (RANDOM.nextBoolean()) ? -1 : 1;
+        int n = (sign < 1) ? 1 : 3;
+        int d = sign * randomSquarefreeNumberMod(n, 4);
         QuadraticRing ring = new QuadraticRingTest.QuadraticRingImpl(d);
         QuadraticInteger number = new QuadraticIntegerImpl(a, 0, ring);
         String expected = number.toString().replace(" ", "");
