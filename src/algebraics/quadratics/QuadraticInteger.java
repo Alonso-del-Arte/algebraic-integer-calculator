@@ -372,54 +372,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     }
     
     public String toStringAlt() {
-        String altQIString;
-        if (this.quadRing.d1mod4) {
-            int nonThetaPart = this.regPartMult;
-            int thetaPart = this.surdPartMult;
-            char thetaLetter = THETA_LETTER;
-            if (this.denominator == 1) {
-                nonThetaPart *= 2;
-                thetaPart *= 2;
-            }
-            switch (this.quadRing.radicand) {
-                case -3 -> {
-                    nonThetaPart = (nonThetaPart + thetaPart)/2;
-                    thetaLetter = OMEGA_LETTER;
-                }
-                default -> nonThetaPart = (nonThetaPart - thetaPart)/2;
-            }
-//                case 5:
-//                    thetaLetter = PHI_LETTER;
-            altQIString = Integer.toString(nonThetaPart);
-            if (nonThetaPart == 0 && thetaPart != 0) {
-                if (thetaPart < -1 || thetaPart > 1) {
-                    altQIString = Integer.toString(thetaPart) + thetaLetter;
-                }
-                if (thetaPart == -1) {
-                    altQIString = "-" + thetaLetter;
-                }
-                if (thetaPart == 1) {
-                    altQIString = Character.toString(thetaLetter);
-                }
-            } else {
-                if (thetaPart < -1) {
-                    altQIString += (" - " + ((-1) * thetaPart) + thetaLetter);
-                }
-                if (thetaPart == -1) {
-                    altQIString += (" - " + thetaLetter);
-                }
-                if (thetaPart == 1) {
-                    altQIString += (" + " + thetaLetter);
-                }
-                if (thetaPart > 1) {
-                    altQIString += (" + " + thetaPart + thetaLetter);
-                }
-            }
-        } else {
-            altQIString = this.toString();
-        }
-        altQIString = altQIString.replace("-", "\u2212");
-        return altQIString;
+        return "TEMP REWIND TO FAILING";
     }
     
     /**
