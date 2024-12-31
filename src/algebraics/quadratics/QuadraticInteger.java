@@ -373,19 +373,24 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     
     public String toStringAlt() {
         if (this.quadRing.d1mod4) {
-            if (this.regPartMult == 1) {
+            if (this.regPartMult == 1 && this.surdPartMult == 1) {
                 return Character.toString(THETA_LETTER);
             } else {
-                if (this.regPartMult == -1) {
+                if (this.regPartMult == -1 && this.surdPartMult == -1) {
                     return new String(new char[]{MINUS_SIGN, THETA_LETTER});
                 } else {
-                    int thetaPart = Math.abs(this.surdPartMult);
-                    if (this.denominator == 1) {
-                        thetaPart *= 2;
+                    if (this.regPartMult == this.surdPartMult) {
+                        int adjust = (this.denominator == 1) ? 2 : 1;
+                        int thetaPart = Math.abs(this.regPartMult * adjust);
+                        String sign = (this.regPartMult < 0) 
+                                ? MINUS_SIGN_STRING : "";
+                        return sign + thetaPart + THETA_LETTER;
                     }
-                    String sign = (this.regPartMult < 0) 
-                            ? MINUS_SIGN_STRING : "";
-                    return sign + thetaPart + THETA_LETTER;
+                    int adjust = (this.denominator == 1) ? 2 : 1;
+                    int nonThetaInit = this.regPartMult * adjust;
+                    int thetaPart = this.surdPartMult * adjust;
+                    int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+                    return nonThetaPart + " + " + thetaPart + THETA_LETTER;
                 }
             }
         } else {
