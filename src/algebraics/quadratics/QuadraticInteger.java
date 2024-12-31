@@ -372,7 +372,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     }
     
     public String toStringAlt() {
-        return this.toString();
+        if (this.quadRing.d1mod4) {
+            return Character.toString(THETA_LETTER);
+        } else {
+            return this.toString();
+        }
     }
     
     /**
