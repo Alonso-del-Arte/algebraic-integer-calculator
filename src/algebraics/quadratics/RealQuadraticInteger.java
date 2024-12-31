@@ -54,7 +54,7 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public String toStringAlt() {
-        if (this.surdPartMult == 0 || this.quadRing.radicand % 4 != 1) {
+        if (this.surdPartMult == 0 || !this.quadRing.d1mod4) {
             return this.toString();
         } else {
             int adjust = (this.denominator == 1) ? 2 : 1;
