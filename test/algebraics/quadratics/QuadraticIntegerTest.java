@@ -492,6 +492,53 @@ public class QuadraticIntegerTest {
     }
 
     @Test
+    public void testToStringAltPositiveIntPlusNegativeMultipleOfTheta() {
+        int bound = 128;
+        int nonThetaPart = RANDOM.nextInt(1, bound);
+        int thetaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, thetaPart, ring, 
+                2);
+        String expected = nonThetaPart + MINUS_SIGN + (-thetaPart) + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltNegativeIntPlusPositiveMultipleOfTheta() {
+        int bound = 128;
+        int nonThetaPart = -RANDOM.nextInt(1, bound);
+        int thetaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, thetaPart, ring, 
+                2);
+        String expected = MINUS_SIGN + (-nonThetaPart) + "+" + thetaPart 
+                + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToStringAltNegativeIntPlusNegativeMultipleOfTheta() {
+        int bound = 128;
+        int nonThetaPart = -RANDOM.nextInt(1, bound);
+        int thetaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger number = new QuadraticIntegerImpl(a, thetaPart, ring, 
+                2);
+        String expected = MINUS_SIGN + (-nonThetaPart) + MINUS_SIGN 
+                + (-thetaPart) + THETA_CHAR;
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
