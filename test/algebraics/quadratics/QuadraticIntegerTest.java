@@ -34,6 +34,8 @@ import static calculators.NumberTheoreticFunctionsCalculator.randomPowerOfTwo;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
+import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
 
 import java.util.Arrays;
@@ -366,6 +368,19 @@ public class QuadraticIntegerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testToStringAltRationalFromRingD2Mod4SameAsToString() {
+        int a = randomNumber();
+        int sign = (RANDOM.nextBoolean()) ? -1 : 1;
+        int d = randomSquarefreeNumberMod(2, 4) * sign;
+        QuadraticRing ring = new QuadraticRingTest.QuadraticRingImpl(d);
+        QuadraticInteger number = new QuadraticIntegerImpl(a, 0, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toStringAlt().replace(" ", "");
+        String message = "Rational number in the context of " + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
