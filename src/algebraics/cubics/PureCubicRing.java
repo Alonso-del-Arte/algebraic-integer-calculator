@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -25,6 +25,13 @@ import fractions.Fraction;
  * @author Alonso del Arte
  */
 public class PureCubicRing extends CubicRing {
+    
+    private static final Fraction ONE = new Fraction(1);
+    
+    private static final Fraction[] THREE_ONES = {ONE, ONE, ONE};
+    
+    private static final PowerBasis USUAL_POWER_BASIS 
+            = new PowerBasis(THREE_ONES);
     
     final int radicand;
 
@@ -56,9 +63,7 @@ public class PureCubicRing extends CubicRing {
      */
     @Override
     public PowerBasis getPowerBasis() {
-        Fraction fraction = new Fraction(1);
-        Fraction[] powerMultiplicands = {fraction, fraction, fraction};
-        return new PowerBasis(powerMultiplicands);
+        return USUAL_POWER_BASIS;
     }
     
     @Override
