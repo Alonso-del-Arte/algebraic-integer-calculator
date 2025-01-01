@@ -54,16 +54,10 @@ public class RealQuadraticInteger extends QuadraticInteger
      */
     @Override
     public String toStringAlt() {
-        if (this.surdPartMult == 0 || !this.quadRing.d1mod4) {
-            return this.toString();
+        if (this.quadRing.radicand == 5 && this.surdPartMult != 0) {
+            return super.toStringAlt().replace(THETA_LETTER, PHI_LETTER);
         } else {
-            int adjust = (this.denominator == 1) ? 2 : 1;
-            int nonThetaInit = this.regPartMult * adjust;
-            int thetaPart = this.surdPartMult * adjust;
-            int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-            char symbol = (this.quadRing.radicand == 5) 
-                    ? PHI_LETTER : THETA_LETTER;
-            return makeBinomialString(nonThetaPart, thetaPart, symbol);
+            return super.toStringAlt();
         }
     }
     
