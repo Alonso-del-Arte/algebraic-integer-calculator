@@ -388,15 +388,15 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * is false, this just returns the same as {@link #toString()}.
      */
     public String toStringAlt() {
-        if (this.quadRing.d1mod4) {
-            int adjust = (this.denominator == 1) ? 2 : 1;
-            int nonThetaInit = this.regPartMult * adjust;
-            int thetaPart = this.surdPartMult * adjust;
-            int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-            return makeBinomialString(nonThetaPart, thetaPart, THETA_LETTER);
-        } else {
+//        if (this.quadRing.d1mod4) {
+//            int adjust = (this.denominator == 1) ? 2 : 1;
+//            int nonThetaInit = this.regPartMult * adjust;
+//            int thetaPart = this.surdPartMult * adjust;
+//            int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+//            return makeBinomialString(nonThetaPart, thetaPart, THETA_LETTER);
+//        } else {
             return this.toString();
-        }
+//        }
     }
     
     /**
