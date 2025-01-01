@@ -373,31 +373,25 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     
     public String toStringAlt() {
         if (this.quadRing.d1mod4) {
-            if (this.regPartMult == 1 && this.surdPartMult == 1) {
-                return Character.toString(THETA_LETTER);
-            } else {
-                if (this.regPartMult == -1 && this.surdPartMult == -1) {
-                    return new String(new char[]{MINUS_SIGN, THETA_LETTER});
+            int adjust = (this.denominator == 1) ? 2 : 1;
+            int nonThetaInit = this.regPartMult * adjust;
+            int thetaPart = this.surdPartMult * adjust;
+            int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+            if (nonThetaPart == 0) {
+                String sign = (thetaPart < 0) ? MINUS_SIGN_STRING : "";
+                int absTheta = Math.abs(thetaPart);
+                String intermediate = sign + absTheta + THETA_LETTER;
+                if (absTheta == 1) {
+                    return sign + THETA_LETTER;
                 } else {
-                    if (this.regPartMult == this.surdPartMult) {
-                        int adjust = (this.denominator == 1) ? 2 : 1;
-                        int thetaPart = Math.abs(this.regPartMult * adjust);
-                        String sign = (this.regPartMult < 0) 
-                                ? MINUS_SIGN_STRING : "";
-                        return sign + thetaPart + THETA_LETTER;
-                    }
-                    int adjust = (this.denominator == 1) ? 2 : 1;
-                    int nonThetaInit = this.regPartMult * adjust;
-                    int thetaPart = this.surdPartMult * adjust;
-                    int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-                    String initial = nonThetaPart + " + " + thetaPart 
-                            + THETA_LETTER;
-                    String intermediate = initial.replace(" + -", " - ");
-                    String dashReplaced = intermediate.replace('-', MINUS_SIGN);
-                    return dashReplaced.replace(" 1" + THETA_LETTER, 
-                            " " + THETA_LETTER);
+                    return intermediate;
                 }
             }
+            String initial = nonThetaPart + " + " + thetaPart + THETA_LETTER;
+            String intermediate = initial.replace(" + -", " - ");
+            String dashReplaced = intermediate.replace('-', MINUS_SIGN);
+            return dashReplaced.replace(" 1" + THETA_LETTER, 
+                    " " + THETA_LETTER);
         } else {
             return this.toString();
         }
