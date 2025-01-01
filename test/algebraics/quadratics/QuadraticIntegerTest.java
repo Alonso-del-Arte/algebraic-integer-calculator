@@ -600,6 +600,41 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testToStringAltNegativeRationalThetaContext() {
+        int a = randomNumber() | Integer.MIN_VALUE;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger instance = new QuadraticIntegerImpl(a, 0, ring);
+        String expected = instance.toString();
+        String actual = instance.toStringAlt();
+        String message = "toStringAlt() for " + expected 
+                + " should give the same result as toString()";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltZeroRationalThetaContext() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger instance = new QuadraticIntegerImpl(0, 0, ring);
+        String expected = instance.toString();
+        String actual = instance.toStringAlt();
+        String message = "toStringAlt() for " + expected 
+                + " should give the same result as toString()";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToStringAltPositiveRationalThetaContext() {
+        int a = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger instance = new QuadraticIntegerImpl(a, 0, ring);
+        String expected = instance.toString();
+        String actual = instance.toStringAlt();
+        String message = "toStringAlt() for " + expected 
+                + " should give the same result as toString()";
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testReferentialEquality() {
         QuadraticInteger number = chooseNumber();
         String msg = number.toString() + " should equal itself";
