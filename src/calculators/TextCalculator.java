@@ -106,7 +106,7 @@ public class TextCalculator {
     
     // TODO: Write tests for this
     public static String makeBinomialString(int a, int b, String symbol) {
-        return "SORRY, NOT IMPLEMENTED YET";
+        return a + " + " + b + symbol;
     }
     
 }
