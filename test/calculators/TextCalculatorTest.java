@@ -250,4 +250,15 @@ public class TextCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testMakeBinomialStringPositiveAPlusNegativeBWSymbolParamStr() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        String symbol = randomGreekString();
+        String expected = a + MINUS_SIGN_SPACED + b + symbol;
+        String actual = TextCalculator.makeBinomialString(a, -b, symbol);
+        assertEquals(expected, actual);
+    }
+    
 }
