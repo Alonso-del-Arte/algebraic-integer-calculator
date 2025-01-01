@@ -87,31 +87,30 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         return makeBinomialString(nonOmegaPart, omegaPart, OMEGA_LETTER);
     }
 
+    /**
+     * A text representation of the quadratic integer, using theta or omega 
+     * notation when {@link #getRing()}{@link QuadraticRing#hasHalfIntegers() 
+     * .hasHalfIntegers()} is true. For the first example, suppose this number 
+     * is <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;15</sup>&frasl;<sub>2</sub>, and for the second 
+     * example suppose this number is <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub>.
+     * @return A representation using theta or omega notation. For the first 
+     * example, this would be would be 2 + &theta;, and for the second example 
+     * this would be 3 + &omega;. Note that &theta; is any &theta; = 
+     * <sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;<i>d</i></sup>&frasl;<sub>2</sub> for <i>d</i> &equiv; 1 mod 
+     * 4 but &omega; = &minus;<sup>1</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;3</sup>&frasl;<sub>2</sub> specifically. If {@code 
+     *  getRing().hasHalfIntegers()} is false, this just returns the same as 
+     * {@link #toString()}.
+     */
     @Override
     public String toStringAlt() {
-        if (this.surdPartMult == 0) {
-            if (this.regPartMult < 0) {
-                return MINUS_SIGN_STRING + Integer.toString(-this.regPartMult);
-            } else {
-                return Integer.toString(this.regPartMult);
-            }
-        }
-        if (this.quadRing.hasHalfIntegers()) {
-            if (this.quadRing.radicand == -3) {
-                return this.toStringAltOmega();
-            } else {
-                int nonThetaInit = this.regPartMult;
-                int thetaPart = this.surdPartMult;
-                if (this.denominator == 1) {
-                    nonThetaInit *= 2;
-                    thetaPart *= 2;
-                }
-                int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-                return makeBinomialString(nonThetaPart, thetaPart, 
-                        THETA_LETTER);
-            }
+        if (this.quadRing.radicand == -3 && this.surdPartMult != 0) {
+            return this.toStringAltOmega();
         } else {
-            return this.toString();
+            return super.toStringAlt();
         }
     }
     
