@@ -3590,89 +3590,7 @@ public class ImaginaryQuadraticIntegerTest {
      */
 //    @Test
     public void testSimultTimesAndNormAndAbs() {
-        fail("REWRITE THIS TEST");
-//        QuadraticInteger gauInt = new ImaginaryQuadraticInteger(0, 0, 
-//                RING_GAUSSIAN);
-//        QuadraticInteger eisenInt = new ImaginaryQuadraticInteger(0, 0, 
-//                RING_EISENSTEIN);
-//        long normResult, currSquare;
-//        double absResult;
-//        for (int n = 1; n < 25; n++) {
-//            gauInt = gauInt.plus(1); // Purely real for now
-//            eisenInt = eisenInt.plus(1); // Also purely real for now
-//            currSquare = n * n;
-//            normResult = gauInt.norm(); // Now on the Gaussian integers
-//            assertEquals(currSquare, normResult);
-//            absResult = gauInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), 
-//                    QuadraticRingTest.TEST_DELTA);
-//            gauInt = gauInt.times(IMAG_UNIT_I); // n * i
-//            normResult = gauInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = gauInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), 
-//                    QuadraticRingTest.TEST_DELTA);
-//            normResult = gauInt.norm();
-//            assertEquals(currSquare, normResult);
-//            gauInt = gauInt.times(IMAG_UNIT_I); // -n
-//            absResult = gauInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            assertEquals(absResult, Math.abs(gauInt.getRealPartNumeric()), 
-//                    QuadraticRingTest.TEST_DELTA);
-//            normResult = gauInt.norm();
-//            assertEquals(currSquare, normResult);
-//            gauInt = gauInt.times(IMAG_UNIT_I); // -n * i
-//            absResult = gauInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            assertEquals(absResult, Math.abs(gauInt.getImagPartNumeric()), 
-//                    QuadraticRingTest.TEST_DELTA);
-//            normResult = gauInt.norm();
-//            assertEquals(currSquare, normResult);
-//            gauInt = gauInt.times(IMAG_UNIT_I); // Back to n
-//            normResult = gauInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = gauInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            // And then the Eisenstein integers
-//            normResult = eisenInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = eisenInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // n * omega
-//            normResult = eisenInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = eisenInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // n * omega^2
-//            normResult = eisenInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = eisenInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
-//            eisenInt = eisenInt.times(-1); // -n
-//            normResult = eisenInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = eisenInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // -n * omega
-//            normResult = eisenInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = eisenInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY); // -n * omega^2
-//            normResult = eisenInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = eisenInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//            eisenInt = eisenInt.times(COMPLEX_CUBIC_ROOT_OF_UNITY);
-//            eisenInt = eisenInt.times(-1); // Back to n
-//            normResult = eisenInt.norm();
-//            assertEquals(currSquare, normResult);
-//            absResult = eisenInt.abs();
-//            assertEquals(n, absResult, QuadraticRingTest.TEST_DELTA);
-//        }
+        fail("REWRITE THIS TEST, or maybe delete this test");
     }
     
     /**
@@ -3756,35 +3674,9 @@ public class ImaginaryQuadraticIntegerTest {
      */
 //    @Test
     public void testConstructor() {
-        fail("REWRITE THIS TEST");
-//        System.out.println("ImaginaryQuadraticInteger (constructor)");
-//        ImaginaryQuadraticInteger quadrInt = new ImaginaryQuadraticInteger(1, 3, RING_ZI2, 1); // This should work fine
-//        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
-//        quadrInt = new ImaginaryQuadraticInteger(7, 5, RING_EISENSTEIN, 2); // This should also work fine
-//        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
-//        quadrInt = new ImaginaryQuadraticInteger(6, 4, RING_GAUSSIAN, -2); // This should also work, right?
-//        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
-//        // Test 3-parameter constructor
-//        quadrInt = new ImaginaryQuadraticInteger(5, 3, RING_OQI7);
-//        System.out.println("Created " + quadrInt.toASCIIString() + " without problem.");
-//        ImaginaryQuadraticInteger comparisonInt = new ImaginaryQuadraticInteger(5, 3, RING_OQI7, 1);
-//        assertEquals(quadrInt, comparisonInt); // It should be the case that 5 + 3sqrt(-7) = 5 + 3sqrt(-7)
-//        comparisonInt = new ImaginaryQuadraticInteger(5, 3, RING_OQI7, 2);
-//        assertNotEquals(quadrInt, comparisonInt); // 5 + 3sqrt(-7) = 5/2 + 3sqrt(-7)/2 would be wrong
-//        try {
-//            quadrInt = new ImaginaryQuadraticInteger(3, 1, ringRandom, 4);
-//            System.out.println("Somehow created " + quadrInt.toASCIIString() + " without problem.");
-//            fail("Attempt to create ImaginaryQuadraticInteger with denominator 4 should have caused an IllegalArgumentException.");
-//        } catch (IllegalArgumentException iae) {
-//            System.out.println("Attempt to use denominator 4 correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
-//        }
-//        try {
-//            quadrInt = new ImaginaryQuadraticInteger(3, 2, RING_EISENSTEIN, 2);
-//            System.out.println("Somehow created " + quadrInt.toASCIIString() + " without problem.");
-//            fail("Attempt to create ImaginaryQuadraticInteger with mismatched parities of a and b should have caused an IllegalArgumentException.");
-//        } catch (IllegalArgumentException iae) {
-//            System.out.println("Attempt to use mismatched parities correctly triggered IllegalArgumentException \"" + iae.getMessage() + "\"");
-//        }
+        fail("REWRITE THIS TEST, probably using assertThrows()");
+// Denominator 4
+// Denominator 2 with mismatched parities
     }
     
     @Test
