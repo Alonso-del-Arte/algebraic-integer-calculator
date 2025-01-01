@@ -395,7 +395,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
 //            int nonThetaPart = (nonThetaInit - thetaPart) / 2;
 //            return makeBinomialString(nonThetaPart, thetaPart, THETA_LETTER);
 //        } else {
-            return this.toString();
+            return this.toString() + '?';
 //        }
     }
     
