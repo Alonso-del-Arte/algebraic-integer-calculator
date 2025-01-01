@@ -230,4 +230,24 @@ public class TextCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    private static String randomGreekString() {
+        int len = randomNumber(5) + 1;
+        char[] value = new char[len];
+        for (int i = 0; i < len; i++) {
+            value[i] = TextCalculator.randomGreekLetter();
+        }
+        return new String(value);
+    }
+    
+    @Test
+    public void testMakeBinomialStringWithSymbolParamString() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        String symbol = randomGreekString();
+        String expected = a + " + " + b + symbol;
+        String actual = TextCalculator.makeBinomialString(a, b, symbol);
+        assertEquals(expected, actual);
+    }
+    
 }
