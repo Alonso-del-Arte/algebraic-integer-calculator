@@ -104,9 +104,9 @@ public class TextCalculator {
         return tweaked.replace('-', MINUS_SIGN);
     }
     
-    // TODO: Write tests for this
     public static String makeBinomialString(int a, int b, String symbol) {
-        return a + " + " + b + symbol;
+        String initial = a + " + " + b + symbol;
+        return initial.replace(" + -", " " + MINUS_SIGN_STRING + " ");
     }
     
 }
