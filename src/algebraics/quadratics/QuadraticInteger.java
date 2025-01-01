@@ -23,6 +23,7 @@ import algebraics.unary.UnaryInteger;
 import arithmetic.Arithmeticable;
 import arithmetic.NotDivisibleException;
 import calculators.NumberTheoreticFunctionsCalculator;
+import static calculators.TextCalculator.makeBinomialString;
 import fractions.Fraction;
 
 import java.io.Serializable;
@@ -371,27 +372,28 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         return processed.replace('-', MINUS_SIGN);
     }
     
+    /**
+     * A text representation of the quadratic integer, using theta notation when 
+     * {@link #getRing()}{@link QuadraticRing#hasHalfIntegers() 
+     * .hasHalfIntegers()} is true. For the first example, suppose this number 
+     * is either <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;&minus;15</sup>&frasl;<sub>2</sub> or 
+     * <sup>5</sup>&frasl;<sub>2</sub> + 
+     * <sup>&radic;13</sup>&frasl;<sub>2</sub>. The special cases of 
+     * <b>Z</b>[&omega;] and <b>Z</b>[&phi;] are handled by {@link 
+     * ImaginaryQuadraticInteger#toStringAlt()} and {@link 
+     * RealQuadraticInteger#toStringAlt()} respectively.
+     * @return A representation using theta notation. For both of the examples 
+     * above, this would be 2 + &theta;. If {@code getRing().hasHalfIntegers()} 
+     * is false, this just returns the same as {@link #toString()}.
+     */
     public String toStringAlt() {
         if (this.quadRing.d1mod4) {
             int adjust = (this.denominator == 1) ? 2 : 1;
             int nonThetaInit = this.regPartMult * adjust;
             int thetaPart = this.surdPartMult * adjust;
             int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-            if (nonThetaPart == 0) {
-                String sign = (thetaPart < 0) ? MINUS_SIGN_STRING : "";
-                int absTheta = Math.abs(thetaPart);
-                String intermediate = sign + absTheta + THETA_LETTER;
-                if (absTheta == 1) {
-                    return sign + THETA_LETTER;
-                } else {
-                    return intermediate;
-                }
-            }
-            String initial = nonThetaPart + " + " + thetaPart + THETA_LETTER;
-            String intermediate = initial.replace(" + -", " - ");
-            String dashReplaced = intermediate.replace('-', MINUS_SIGN);
-            return dashReplaced.replace(" 1" + THETA_LETTER, 
-                    " " + THETA_LETTER);
+            return makeBinomialString(nonThetaPart, thetaPart, THETA_LETTER);
         } else {
             return this.toString();
         }
