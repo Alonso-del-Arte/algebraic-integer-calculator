@@ -2207,29 +2207,7 @@ public class RealQuadraticIntegerTest {
      */@org.junit.Ignore
     @Test
     public void testMinusAlgebraicDegreeOverflow() {
-        fail("REWRITE THIS TEST");
-        QuadraticInteger result;
-        String failMessage;
-//        for (int j = 0; j < totalTestIntegers - 1; j++) {
-//            try {
-//                result = testIntegers.get(j).minus(testIntegers.get(j + 1));
-//                failMessage = "Subtracting " + testIntegers.get(j + 1).toASCIIString() + " to " + testIntegers.get(j).toASCIIString() + " should not have resulted in " + result.toASCIIString() + " without triggering AlgebraicDegreeOverflowException.";
-//                fail(failMessage);
-//            } catch (AlgebraicDegreeOverflowException adoe) {
-//                System.out.println("Subtracting " + testIntegers.get(j + 1).toASCIIString() + " from " + testIntegers.get(j).toASCIIString() + " correctly triggered AlgebraicDegreeOverflowException (algebraic degree " + adoe.getNecessaryAlgebraicDegree() + " needed).");
-//            }
-//            failMessage = "Subtracting " + testIntegers.get(j + 1).toASCIIString() + " from " + testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " should not have triggered";
-//            try {
-//                result = testNorms.get(j).minus(testIntegers.get(j + 1));
-//                System.out.println(testNorms.get(j).toASCIIString() + " from " + testNorms.get(j).getRing().toASCIIString() + " minus " + testIntegers.get(j + 1).toASCIIString() + " is " + result.toASCIIString());
-//            } catch (AlgebraicDegreeOverflowException adoe) {
-//                failMessage = failMessage + " AlgebraicDegreeOverflowException \"" + adoe.getMessage() + "\"";
-//                fail(failMessage);
-//            } catch (Exception e) {
-//                failMessage = failMessage + " Exception \"" + e.getMessage() + "\"";
-//                fail(failMessage);
-//            }
-//        }
+        fail("REWRITE THIS TEST, or maybe move this to base class test");
     }
     
     /**
