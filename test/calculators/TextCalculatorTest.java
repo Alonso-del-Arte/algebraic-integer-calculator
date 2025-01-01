@@ -261,4 +261,27 @@ public class TextCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testMakeBinomialStringNegativeAPlusPositiveBWSymbolParamStr() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        String symbol = randomGreekString();
+        String expected = MINUS_SIGN_STRING + a + " + " + b + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, b, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringNegativeAPlusNegativeBWSymbolParamStr() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        String symbol = randomGreekString();
+        String expected = MINUS_SIGN_STRING + a + MINUS_SIGN_SPACED + b 
+                + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, -b, symbol);
+        assertEquals(expected, actual);
+    }
+    
 }
