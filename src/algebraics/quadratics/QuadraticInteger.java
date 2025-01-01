@@ -393,7 +393,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
                     String initial = nonThetaPart + " + " + thetaPart 
                             + THETA_LETTER;
                     String intermediate = initial.replace(" + -", " - ");
-                    return intermediate.replace('-', MINUS_SIGN);
+                    String dashReplaced = intermediate.replace('-', MINUS_SIGN);
+                    return dashReplaced.replace(" 1" + THETA_LETTER, 
+                            " " + THETA_LETTER);
                 }
             }
         } else {
