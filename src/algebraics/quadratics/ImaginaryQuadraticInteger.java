@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -112,6 +112,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         } else {
             return super.toStringAlt();
         }
+    }
+    
+    @Override
+    public String toASCIIString() {
+        return "TEMP REWIND TO FAILING";
     }
     
     @Override
