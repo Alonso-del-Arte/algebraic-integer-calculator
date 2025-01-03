@@ -116,7 +116,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIString() {
-        return Integer.toString(Math.abs(this.regPartMult));
+        return Integer.toString(this.regPartMult);
     }
     
     @Override
