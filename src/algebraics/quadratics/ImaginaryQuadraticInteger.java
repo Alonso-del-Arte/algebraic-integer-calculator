@@ -116,7 +116,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIString() {
-        return "TEMP REWIND TO FAILING";
+        return Integer.toString(Math.abs(this.regPartMult));
     }
     
     @Override
