@@ -1037,6 +1037,28 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringGaussianPurelyImaginaryPositive() {
+        int bound = Short.MAX_VALUE;
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, b, 
+                RING_GAUSSIAN);
+        String expected = b + "i";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringGaussianPurelyImaginaryNegative() {
+        int bound = Short.MAX_VALUE;
+        int b = -RANDOM.nextInt(2, bound);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, b, 
+                RING_GAUSSIAN);
+        String expected = b + "i";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
