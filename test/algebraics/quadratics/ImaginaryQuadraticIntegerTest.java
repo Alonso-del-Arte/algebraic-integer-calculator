@@ -961,6 +961,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringPurelyRealPositive() {
+        int a = randomNumber(Short.MAX_VALUE);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        String expected = Integer.toString(a);
+        String actual = number.toASCIIString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
