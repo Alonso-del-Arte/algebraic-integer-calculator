@@ -118,7 +118,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public String toASCIIString() {
         if (this.surdPartMult != 0) {
             String initial = this.regPartMult + " + " + this.surdPartMult + "i";
-            return initial.replace('-', MINUS_SIGN_CHARACTER);
+            return initial.replace(" + -", " - ");
         }
         return Integer.toString(this.regPartMult);
     }
