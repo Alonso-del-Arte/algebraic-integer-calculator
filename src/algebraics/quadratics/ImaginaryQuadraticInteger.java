@@ -116,6 +116,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIString() {
+        if (this.regPartMult == 0 && this.surdPartMult != 0) {
+            return this.surdPartMult + "i";
+        }
         if (this.surdPartMult != 0) {
             String initial = this.regPartMult + " + " + this.surdPartMult + "i";
             return initial.replace(" + -", " - ");
