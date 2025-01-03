@@ -981,6 +981,20 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringGaussian() {
+        int shift = randomNumber(16);
+        int powerOfTwo = 1 << shift;
+        int bound = Short.MAX_VALUE;
+        int a = randomNumber(bound) | powerOfTwo;
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_GAUSSIAN);
+        String expected = a + "+" + b + "i";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
