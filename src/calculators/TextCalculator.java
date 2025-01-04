@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -108,6 +108,10 @@ public class TextCalculator {
         String initial = a + " + " + b + symbol;
         String intermediate = initial.replace(" + -", " - ");
         return intermediate.replace('-', MINUS_SIGN);
+    }
+    
+    public static String makeBinomialStringASCII(int a, int b, char symbol) {
+        return "STUB, NOT IMPLEMENTED YET";
     }
     
 }
