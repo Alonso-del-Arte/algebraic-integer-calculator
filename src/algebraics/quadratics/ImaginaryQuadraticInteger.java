@@ -125,7 +125,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         }
         if (this.surdPartMult != 0) {
             String initial = this.regPartMult + " + " + this.surdPartMult + "i";
-            return initial.replace(" + -", " - ");
+            String intermediate = initial.replace(" + -", " - ");
+            return intermediate.replace(" 1i", " i");
         }
         return Integer.toString(this.regPartMult);
     }
