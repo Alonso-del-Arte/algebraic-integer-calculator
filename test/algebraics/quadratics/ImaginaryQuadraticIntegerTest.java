@@ -1077,6 +1077,50 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringPositiveRealPlusOneImag() {
+        int shift = randomNumber(8);
+        int powerOfTwo = 1 << shift;
+        int a = randomNumber(256) | powerOfTwo;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 1, 
+                RING_GAUSSIAN);
+        String expected = a + "+i";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringPositiveRealMinusOneImag() {
+        int shift = randomNumber(8);
+        int powerOfTwo = 1 << shift;
+        int a = randomNumber(256) | powerOfTwo;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -1, 
+                RING_GAUSSIAN);
+        String expected = a + "-i";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringNegativeRealPlusOneImag() {
+        int a = randomNumber() | Integer.MIN_VALUE;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 1, 
+                RING_GAUSSIAN);
+        String expected = a + "+i";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringNegativeRealMinusOneImag() {
+        int a = randomNumber() | Integer.MIN_VALUE;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, -1, 
+                RING_GAUSSIAN);
+        String expected = a + "-i";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
