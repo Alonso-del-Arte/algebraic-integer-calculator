@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -87,6 +87,16 @@ public class PureCubicRingTest {
         PowerBasis actual = instance.getPowerBasis();
         String message = "Reckoning power basis of " + instance.toString();
         assertEquals(message, expected, actual);
+    }
+    
+    @org.junit.Ignore
+    @Test
+    public void testGetPowerBasisNegativeDMinusOneMod9() {
+        int d = -randomSquarefreeNumberMod(8, 9);
+        PureCubicRing instance = new PureCubicRing(d);
+        // TODO: Figure out if PowerBasis needs to be adjusted to represent 
+        // power basis of a ring such as this one
+        fail("FINISH WRITING THIS TEST");
     }
     
     @Test
