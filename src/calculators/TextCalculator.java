@@ -107,7 +107,10 @@ public class TextCalculator {
     public static String makeBinomialString(int a, int b, String symbol) {
         String initial = a + " + " + b + symbol;
         String intermediate = initial.replace(" + -", " - ");
-        return intermediate.replace('-', MINUS_SIGN);
+        String target = " 1" + symbol;
+        String replacement = " " + symbol;
+        String tweaked = intermediate.replace(target, replacement);
+        return tweaked.replace('-', MINUS_SIGN);
     }
     
     public static String makeBinomialStringASCII(int a, int b, char symbol) {
