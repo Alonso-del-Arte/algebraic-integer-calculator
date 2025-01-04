@@ -1059,6 +1059,24 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringImaginaryUnit() {
+        QuadraticInteger imagUnit = new ImaginaryQuadraticInteger(0, 1, 
+                RING_GAUSSIAN);
+        String expected = "i";
+        String actual = imagUnit.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringNegativeImaginaryUnit() {
+        QuadraticInteger imagUnit = new ImaginaryQuadraticInteger(0, -1, 
+                RING_GAUSSIAN);
+        String expected = "-i";
+        String actual = imagUnit.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
