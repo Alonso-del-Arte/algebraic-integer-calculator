@@ -284,4 +284,45 @@ public class TextCalculatorTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testMakeBinomialStringPositiveAPlusOneOfXWSymbolParamStr() {
+        System.out.println("makeBinomialString");
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        String symbol = randomGreekString();
+        String expected = a + " + " + symbol;
+        String actual = TextCalculator.makeBinomialString(a, 1, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringPositiveAMinusOneOfXWSymbolParamStr() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        String symbol = randomGreekString();
+        String expected = a + MINUS_SIGN_SPACED + symbol;
+        String actual = TextCalculator.makeBinomialString(a, -1, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringNegativeAPlusOneOfXWSymbolParamStr() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        String symbol = randomGreekString();
+        String expected = MINUS_SIGN_STRING + a + " + " + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, 1, symbol);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testMakeBinomialStringNegativeAMinusOneOfXWSymbolParamStr() {
+        int bound = 8192;
+        int a = randomNumber(bound) + 1;
+        String symbol = randomGreekString();
+        String expected = MINUS_SIGN_STRING + a + MINUS_SIGN_SPACED + symbol;
+        String actual = TextCalculator.makeBinomialString(-a, -1, symbol);
+        assertEquals(expected, actual);
+    }
+    
 }
