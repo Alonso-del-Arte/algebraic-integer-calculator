@@ -100,9 +100,8 @@ we obtain $x^4 = -1$. This suggests that $x^2 = i$ and therefore $x = \sqrt i$.
 
 But then what is $\sqrt i$? As it turns out, it's $$\frac{1}{\sqrt 2} + 
 \frac{i}{\sqrt 2},$$ which is a number with both a nonzero real part and a 
-nonzero imaginary part.
-
-(FINISH WRITING)
+nonzero imaginary part. We don't need a different kind of number for such 
+arithmetic with complex numbers.
 
 ## Divisibility
 
@@ -154,13 +153,18 @@ divisible only by itself, &minus;1, 1 and 47.
 The definition of irreducible might sound familiar, and you might think that 
 it's the same as the definition of prime numbers. And indeed in $\mathbb Z$, all 
 irreducible numbers are also prime numbers. But there are many domains in which 
-not all irreducible numbers are prime.
+not all irreducible numbers are prime, and the set of all prime numbers in the 
+domain form a proper subset of all irreducible numbers.
 
 A non-unit number $p$ in some ring $R$ is said to be **prime** if whenever $p$ 
 divides $ab$ for any combination of $a, b \in R$, then $p$ divides either $a$ or 
 $b$.
 
-(FINISH WRITING)
+For example, &minus;47 divides 2256 = 47 &times; 48. But 48 is clearly not 
+prime, since, for example, if we express 2256 as 16 &times; 141, we find that 48 
+clearly does not divide 16 and it's also clear that 48 does not divide 141 
+either, which is an odd number. And 48 is not irreducible either, since it's 
+divisible by 2 and by 3.
 
 ## Rings of higher degree
 
