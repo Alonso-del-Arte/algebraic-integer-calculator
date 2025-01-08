@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -26,7 +26,7 @@ import algebraics.AlgebraicInteger;
  */
 public abstract class CubicInteger implements AlgebraicInteger {
     
-    protected final CubicRing cubicRing;
+    final CubicRing cubicRing;
     
     /**
      * Retrieves an object representing the ring this cubic integer belongs to.
@@ -37,6 +37,11 @@ public abstract class CubicInteger implements AlgebraicInteger {
         return this.cubicRing;
     }
     
+    /**
+     * Base class constructor.
+     * @param ring The ring this cubic integer belongs to. For example, 
+     * <b>Q</b>(&zeta;<sub>7</sub>)<sup>+</sup>.
+     */
     public CubicInteger(CubicRing ring) {
         this.cubicRing = ring;
     }
