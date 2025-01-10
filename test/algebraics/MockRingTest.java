@@ -173,4 +173,18 @@ public class MockRingTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testConstructorRejectsDegreeZero() {
+        int maxDegree = 0;
+        String msg = "Constructor should reject degree " + maxDegree;
+        Throwable t = assertThrows(() -> {
+            MockRing badRing = new MockRing(maxDegree);
+            System.out.println(msg + ", not given " + badRing.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
 }
