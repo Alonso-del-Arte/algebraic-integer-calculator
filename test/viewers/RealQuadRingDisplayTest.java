@@ -18,7 +18,6 @@ package viewers;
 
 import algebraics.AlgebraicInteger;
 import algebraics.IntegerRing;
-import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.RealQuadraticInteger;
 import algebraics.quadratics.RealQuadraticRing;
 
@@ -120,25 +119,26 @@ public class RealQuadRingDisplayTest {
      */
     @Test
     public void testValidateRingRejectsOnType() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(499);
-        try {
-            this.ringDisplay.validateRing(ring);
-            String msg = "Should not have validated " + ring.toString() 
-                    + ", which is of type " + ring.getClass().getName() 
-                    + ", not " + RealQuadraticRing.class.getName();
-            fail(msg);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Trying to validate " + ring.toASCIIString() 
-                    + ", which is of type " + ring.getClass().getName() 
-                    + " correctly caused IllegalArgumentException");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception for trying to validate " 
-                    + ring.toString() + ", which is of type " 
-                    + ring.getClass().getName();
-            fail(msg);
-        }
+        fail("REWRITE");
+//        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(499);
+//        try {
+//            this.ringDisplay.validateRing(ring);
+//            String msg = "Should not have validated " + ring.toString() 
+//                    + ", which is of type " + ring.getClass().getName() 
+//                    + ", not " + RealQuadraticRing.class.getName();
+//            fail(msg);
+//        } catch (IllegalArgumentException iae) {
+//            System.out.println("Trying to validate " + ring.toASCIIString() 
+//                    + ", which is of type " + ring.getClass().getName() 
+//                    + " correctly caused IllegalArgumentException");
+//            System.out.println("\"" + iae.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String msg = re.getClass().getName() 
+//                    + " is the wrong exception for trying to validate " 
+//                    + ring.toString() + ", which is of type " 
+//                    + ring.getClass().getName();
+//            fail(msg);
+//        }
     }
 
     /**
@@ -198,24 +198,25 @@ public class RealQuadRingDisplayTest {
      */
     @Test
     public void testSwitchToRingRejectsWrongTypeRing() {
-        IllDefinedQuadraticRing badRing = new IllDefinedQuadraticRing(13);
-        try {
-            this.ringDisplay.switchToRing(badRing);
-            String msg = "Trying to switch to ring of type " 
-                    + badRing.getClass().getName() 
-                    + " should have caused an exception";
-            fail(msg);
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Trying to switch to ring of type " 
-                    + badRing.getClass().getName() 
-                    + " correctly caused IllegalArgumentException");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + "is wrong exception to throw to switch to ring of type " 
-                    + badRing.getClass().getName();
-            fail(msg);
-        }
+        fail("REWRITE");
+//        IllDefinedQuadraticRing badRing = new IllDefinedQuadraticRing(13);
+//        try {
+//            this.ringDisplay.switchToRing(badRing);
+//            String msg = "Trying to switch to ring of type " 
+//                    + badRing.getClass().getName() 
+//                    + " should have caused an exception";
+//            fail(msg);
+//        } catch (IllegalArgumentException iae) {
+//            System.out.println("Trying to switch to ring of type " 
+//                    + badRing.getClass().getName() 
+//                    + " correctly caused IllegalArgumentException");
+//            System.out.println("\"" + iae.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String msg = re.getClass().getName() 
+//                    + "is wrong exception to throw to switch to ring of type " 
+//                    + badRing.getClass().getName();
+//            fail(msg);
+//        }
     }
 
     /**

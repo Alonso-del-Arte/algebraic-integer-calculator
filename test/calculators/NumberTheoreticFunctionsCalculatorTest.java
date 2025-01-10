@@ -21,7 +21,6 @@ import algebraics.AlgebraicInteger;
 import algebraics.MockRing;
 import algebraics.IntegerRing;
 import algebraics.UnsupportedNumberDomainException;
-import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
@@ -2007,6 +2006,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testFundamentalUnit() {
         System.out.println("fundamentalUnit");
+        fail("REWRITE");
         QuadraticRing ring = new RealQuadraticRing(2);
         AlgebraicInteger expResult = new RealQuadraticInteger(1, 1, ring);
         AlgebraicInteger result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
@@ -2069,18 +2069,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
             String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
             fail(failMessage);
         }
-        ring = new IllDefinedQuadraticRing(1);
-        try {
-            result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
-            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " should have caused IllegalArgumentException, not given result " + result.toASCIIString() + ".";
-            fail(failMessage);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Trying to get fundamental unit of " + ring.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (Exception e) {
-            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
-            fail(failMessage);
-        }
+//        ring = new IllDefinedQuadraticRing(1);
+//        try {
+//            result = NumberTheoreticFunctionsCalculator.fundamentalUnit(ring);
+//            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " should have caused IllegalArgumentException, not given result " + result.toASCIIString() + ".";
+//            fail(failMessage);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Trying to get fundamental unit of " + ring.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (Exception e) {
+//            String failMessage = "Trying to get fundamental unit of " + ring.toASCIIString() + " triggered wrong exception, " + e.getClass().getName() + ".";
+//            fail(failMessage);
+//        }
     }
     
     /**
@@ -2218,24 +2218,25 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test
     public void testNoFundamentalUnitForUnsupportedRing() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
-        try {
-            AlgebraicInteger result = fundamentalUnit(ring);
-            String msg = "Trying to get fundamental unit of " + ring.toString() 
-                    + " should have caused exception, not given result " 
-                    + result.toString();
-            fail(msg);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Trying to get fundamental unit of " 
-                    + ring.toASCIIString()
-                    + " correctly caused UnsupportedNumberDomainException");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to get fundamental unit of " 
-                    + ring.toString();
-            fail(msg);
-        }
+        fail("REWRITE");
+//        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
+//        try {
+//            AlgebraicInteger result = fundamentalUnit(ring);
+//            String msg = "Trying to get fundamental unit of " + ring.toString() 
+//                    + " should have caused exception, not given result " 
+//                    + result.toString();
+//            fail(msg);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Trying to get fundamental unit of " 
+//                    + ring.toASCIIString()
+//                    + " correctly caused UnsupportedNumberDomainException");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String msg = re.getClass().getName() 
+//                    + " is the wrong exception to throw for trying to get fundamental unit of " 
+//                    + ring.toString();
+//            fail(msg);
+//        }
     }
     
     @Test
@@ -2742,23 +2743,24 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     @Test
     public void testMaybeUFDButNotYetSupported() {
-        QuadraticRing ring = new IllDefinedQuadraticRing(-10);
-        try {
-            boolean result = isUFD(ring);
-            String msg = "Trying to determine if " + ring.toString() 
-                    + " is UFD should have caused an exception, not given result " 
-                    + result;
-            fail(msg);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Trying to determine if " + ring.toString() 
-                    + " is UFD correctly caused UnsupportedNumberDomainException");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to determine if " 
-                    + ring.toString() + " is UFD or not";
-            fail(msg);
-        }
+        fail("REWRITE");
+//        QuadraticRing ring = new IllDefinedQuadraticRing(-10);
+//        try {
+//            boolean result = isUFD(ring);
+//            String msg = "Trying to determine if " + ring.toString() 
+//                    + " is UFD should have caused an exception, not given result " 
+//                    + result;
+//            fail(msg);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Trying to determine if " + ring.toString() 
+//                    + " is UFD correctly caused UnsupportedNumberDomainException");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String msg = re.getClass().getName() 
+//                    + " is the wrong exception to throw for trying to determine if " 
+//                    + ring.toString() + " is UFD or not";
+//            fail(msg);
+//        }
     }
     
     /**
