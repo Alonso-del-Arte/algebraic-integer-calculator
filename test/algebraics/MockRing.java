@@ -134,8 +134,14 @@ public class MockRing implements IntegerRing {
      * @param maxDegree The maximum degree. For example, 5.
      * @param includeImaginary Whether or not the example ring contains 
      * imaginary numbers. For example, true.
+     * @throws IllegalArgumentException If {@code maxDegree} is negative.
      */
     public MockRing(int maxDegree, boolean includeImaginary) {
+        if (maxDegree < 0) {
+            String excMsg = "Degree " + maxDegree 
+                    + " should not have been negative";
+            throw new IllegalArgumentException(excMsg);
+        }
         this.maximumDegree = maxDegree;
         this.onlyReals = !includeImaginary;
     }
