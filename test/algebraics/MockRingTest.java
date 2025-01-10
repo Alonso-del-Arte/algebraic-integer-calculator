@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -26,6 +26,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import static org.testframe.api.Asserters.assertMinimum;
+import static org.testframe.api.Asserters.assertThrows;
 
 /**
  * Tests of the MockRing class.
@@ -156,6 +157,20 @@ public class MockRingTest {
         String msg = ring.toString() 
                 + " constructed w/ incl. imag. true shouldn't be purely real";
         assert !ring.isPurelyReal() : msg;
+    }
+    
+    @Test
+    public void testConstructorRejectsNegativeDegree() {
+        int maxDegree = -randomNumber(4096) - 1;
+        String msg = "Constructor should reject degree " + maxDegree;
+        Throwable t = assertThrows(() -> {
+            MockRing badRing = new MockRing(maxDegree);
+            System.out.println(msg + ", not given " + badRing.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
 }
