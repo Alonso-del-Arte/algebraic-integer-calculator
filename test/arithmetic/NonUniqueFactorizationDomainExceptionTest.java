@@ -18,8 +18,6 @@ package arithmetic;
 
 import algebraics.AlgebraicInteger;
 import algebraics.UnsupportedNumberDomainException;
-import algebraics.quadratics.IllDefinedQuadraticInteger;
-import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
 import algebraics.quadratics.QuadraticInteger;
@@ -603,30 +601,31 @@ public class NonUniqueFactorizationDomainExceptionTest {
     
     @Test
     public void testTryToFactorizeAnywayUnsupportedRing() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(10);
-        IllDefinedQuadraticInteger num = new IllDefinedQuadraticInteger(70, 5, 
-                ring);
-        String excMsg = "This exception is for testing purposes only";
-        NonUniqueFactorizationDomainException nufde 
-                = new NonUniqueFactorizationDomainException(excMsg, num);
-        try {
-            List<AlgebraicInteger> factors = nufde.tryToFactorizeAnyway();
-            String msg = "Trying to factorize " + num.toString() 
-                    + " from ill-defined ring " + ring.toString()
-                    + " should have caused an exception, not given result "
-                    + factors.toString();
-            fail(msg);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Trying to factorize " + num.toASCIIString() 
-                    + " correctly caused UnsupportedNumberDomainException");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to factorize " 
-                    + num.toString() + " from unsupported ill-defined ring " 
-                    + ring.toString();
-            fail(msg);
-        }
+        fail("REWRITE");
+//        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(10);
+//        IllDefinedQuadraticInteger num = new IllDefinedQuadraticInteger(70, 5, 
+//                ring);
+//        String excMsg = "This exception is for testing purposes only";
+//        NonUniqueFactorizationDomainException nufde 
+//                = new NonUniqueFactorizationDomainException(excMsg, num);
+//        try {
+//            List<AlgebraicInteger> factors = nufde.tryToFactorizeAnyway();
+//            String msg = "Trying to factorize " + num.toString() 
+//                    + " from ill-defined ring " + ring.toString()
+//                    + " should have caused an exception, not given result "
+//                    + factors.toString();
+//            fail(msg);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Trying to factorize " + num.toASCIIString() 
+//                    + " correctly caused UnsupportedNumberDomainException");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String msg = re.getClass().getName() 
+//                    + " is the wrong exception to throw for trying to factorize " 
+//                    + num.toString() + " from unsupported ill-defined ring " 
+//                    + ring.toString();
+//            fail(msg);
+//        }
     }
     
 }

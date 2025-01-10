@@ -21,7 +21,6 @@ import algebraics.AlgebraicInteger;
 import algebraics.MockRing;
 import algebraics.IntegerRing;
 import algebraics.UnsupportedNumberDomainException;
-import algebraics.quadratics.IllDefinedQuadraticInteger;
 import algebraics.quadratics.IllDefinedQuadraticRing;
 import algebraics.quadratics.ImaginaryQuadraticInteger;
 import algebraics.quadratics.ImaginaryQuadraticRing;
@@ -476,190 +475,190 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testPrimeFactors_REMOVE_AFTER_ALL_ELEMENTS_ADDRESSED_BY_SMALLER_TESTS() {
         System.out.println("primeFactors(int)");
-        fail("REMOVED THIS WHOLE SECTION");
-        // Now to test primeFactors() on imaginary quadratic integers
-        System.out.println("primeFactors(ImaginaryQuadraticInteger)");
-        QuadraticRing r;
-        QuadraticInteger z = NumberTheoreticFunctionsCalculator
-                .COMPLEX_CUBIC_ROOT_OF_UNITY.times(-1);
-        /* The arbitrary initialization of z with -omega and factorsList with 
-           omega is to avoid "variable might not have been initialized" 
-           errors */
-        List<AlgebraicInteger> factorsList = new ArrayList<>();
-        factorsList.add(NumberTheoreticFunctionsCalculator
-                .COMPLEX_CUBIC_ROOT_OF_UNITY);
-        int facLen;
-        String assertionMessage;
-        for (int d : NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS) {
-            r = new ImaginaryQuadraticRing(d);
-            /* First to test purely real integers that are prime in Z in the 
-               context of a particular ring r, e.g., 5 in Z[sqrt(-2)] */
-            for (Integer p : primesList) {
-                z = new ImaginaryQuadraticInteger(p, 0, r);
-                try {
-                    factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
-                    facLen = factorsList.size();
-                } catch (NonUniqueFactorizationDomainException nufde) {
-                    facLen = 0;
-                    fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
-                }
-                if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
-                    assertionMessage = "Factor list of " + z.toString() + " in " 
-                            + z.getRing().toString() + " should contain just one prime factor.";
-                    assertEquals(assertionMessage, 1, facLen);
-                } else {
-                    assertionMessage = "Factor list of " + z.toString() + " in " 
-                            + z.getRing().toString() + " should contain two or three factors.";
-                    assertTrue(assertionMessage, facLen > 1);
-                }
-            }
-            // Next, to look at some consecutive algebraic integers
-            int expFacLen;
-            for (int a = -4; a < 6; a++) {
-                for (int b = 3; b > -2; b--) {
-                    z = new ImaginaryQuadraticInteger(a, b, r);
-                    try {
-                        factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
-                        facLen = factorsList.size();
-                        expFacLen = 0;
-                        if ((factorsList.get(0).norm() == 1) && (factorsList.size() > 1)) {
-                            expFacLen = 1;
-                        }
-                        if (z.norm() > 1) {
-                            expFacLen++;
-                        }
-                        if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
-                            assertionMessage = z.toString() + " is expected to have " 
-                                    + expFacLen + " factor(s).";
-                            assertEquals(assertionMessage, expFacLen, facLen);
-                        } else {
-                            expFacLen++;
-                            assertionMessage = z.toString() + " is expected to have at least " 
-                                    + expFacLen + " factors.";
-                            assertTrue(assertionMessage, facLen >= expFacLen);
-                        }
-                    } catch (NonUniqueFactorizationDomainException nufde) {
-                        fail("NUFDE shouldn't've happened in this context: " 
-                                + nufde.getMessage());
-                    }
-                }
-            }
-            System.out.print("Last algebraic integer tested in " + r.toASCIIString() 
-                    + " was " + z.toASCIIString() + ", which has this factorization: ");
-            if (factorsList.get(0).getImagPartNumeric() == 0.0) {
-                System.out.print(factorsList.get(0).toASCIIString());
-            } else {
-                System.out.print("(" + factorsList.get(0) + ")");
-            }
-            for (int currFactorIndex = 1; currFactorIndex < factorsList.size(); 
-                    currFactorIndex++) {
-                if (factorsList.get(currFactorIndex).getImagPartNumeric() == 0.0) {
-                    System.out.print(" \u00D7 " + factorsList.get(currFactorIndex)
-                            .toASCIIString());
-                } else {
-                    System.out.print(" \u00D7 (" + factorsList.get(currFactorIndex)
-                            .toASCIIString() + ")");
-                }
-            }
-            System.out.println();
-        }
-        // Now to test primeFactors() on real quadratic integers
-        System.out.println("primeFactors(RealQuadraticInteger)");
-        RealQuadraticInteger ramifier, ramified;
-        List<AlgebraicInteger> expFactorsList;
-        int splitter, splitPrimeNorm;
-        RealQuadraticInteger splitPrime;
-        HashSet<AlgebraicInteger> expFactorsSet, factorsSet;
-        for (int discrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
-            r = new RealQuadraticRing(discrR);
-            ramifier = new RealQuadraticInteger(0, 1, r);
-            ramified = new RealQuadraticInteger(discrR, 0, r);
-            expFactorsList = new ArrayList<>();
-            expFactorsList.add(ramifier);
-            expFactorsList.add(ramifier); // Add the ramifier in there twice (on purpose)
-            try {
-                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(ramified);
-                facLen = factorsList.size();
-                System.out.print(discrR + " = (" + factorsList.get(0).toASCIIString() + ")");
-                for (int j = 1; j < facLen; j++) {
-                    System.out.print(" \u00D7 (" + factorsList.get(j).toASCIIString() + ")");
-                }
-                System.out.println();
-                if (NumberTheoreticFunctionsCalculator.isPrime(discrR)) {
-                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have exactly two factors.";
-                    assertEquals(assertionMessage, 2, facLen);
-                    if (discrR != 5) {
-                        assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should be (" + ramifier.toASCIIString() + ")^2.";
-                        assertEquals(assertionMessage, expFactorsList, factorsList);
-                    }
-                } else {
-                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have at least four factors.";
-                    assertTrue(assertionMessage, facLen > 3);
-                }
-            } catch (NonUniqueFactorizationDomainException nufde) {
-                fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
-            }
-            /* For this next test, we need a prime that splits, not ramifies, in 
-               each of the real quadratic rings that are norm-Euclidean */
-            splitter = -1;
-            if (r.hasHalfIntegers()) {
-                if (discrR == 5) {
-                    splitPrimeNorm = 11;
-                    splitPrime = new RealQuadraticInteger(7, 1, r, 2);
-                    expFactorsSet = new HashSet<>();
-                    expFactorsSet.add(splitPrime.conjugate());
-                    expFactorsSet.add(splitPrime);
-                } else {
-                    do {
-                        splitter += 2;
-                        splitPrimeNorm = (splitter * splitter - discrR)/4;
-                    } while (!NumberTheoreticFunctionsCalculator.isPrime(splitPrimeNorm));
-                    splitPrime = new RealQuadraticInteger(splitter, 1, r, 2);
-                    expFactorsSet = new HashSet<>();
-                    expFactorsSet.add(splitPrime.conjugate());
-                    expFactorsSet.add(splitPrime);
-                }
-            } else {
-                if (discrR % 2 == 1) {
-                    splitter++;
-                }
-                do {
-                    splitter += 2;
-                    splitPrimeNorm = splitter * splitter - discrR;
-                } while (!NumberTheoreticFunctionsCalculator.isPrime(splitPrimeNorm));
-                splitPrime = new RealQuadraticInteger(splitter, 1, r);
-                expFactorsSet = new HashSet<>();
-                expFactorsSet.add(splitPrime.conjugate());
-                expFactorsSet.add(splitPrime);
-            }
-            System.out.println(splitPrimeNorm + " = (" + splitPrime.conjugate().toASCIIString() + ") \u00D7 (" + splitPrime.toASCIIString() + ")");
-            z = new RealQuadraticInteger(splitPrimeNorm, 0, r);
-            try {
-                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
-                assertionMessage = "Factorization of " + splitPrimeNorm + " in " + r.toString() + " should consist of two exactly prime factors";
-                assertEquals(assertionMessage, 2, factorsList.size());
-                factorsSet = new HashSet(factorsList);
-                assertionMessage = "Factorization of " + splitPrimeNorm + " in " + r.toString() + " should be " + splitPrime.toString() + " times its conjugate";
-                assertEquals(assertionMessage, expFactorsSet, factorsSet);
-            } catch (NonUniqueFactorizationDomainException nufde) {
-                fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
-            }
-        }
-        /* And lastly to make sure calling prime factorization on a number from 
-           an unsupported domain triggers UnsupportedNumberDomainException */
-        r = new IllDefinedQuadraticRing(1);
-        z = new IllDefinedQuadraticInteger(7, 8, r);
-        try {
-            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
-            System.out.print("Calling primeFactors(" + z.toASCIIString() + " should have triggered UnsupportedNumberDomainException, ");
-            System.out.println("not given the result in which " + factorsList.get(0).toASCIIString() + " is a factor.");
-            fail("Calling primeFactors(" + z.toString() + ") should have triggered UnsupportedNumberDomainException.");
-        } catch (NonUniqueFactorizationDomainException nufde) {
-            fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Calling primeFactors(" + z.toASCIIString() + ") correctly triggered UnsupportedNumberDomainException.");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        }
+        fail("SERIOUS REWRITE NEEDED");
+//        // Now to test primeFactors() on imaginary quadratic integers
+//        System.out.println("primeFactors(ImaginaryQuadraticInteger)");
+//        QuadraticRing r;
+//        QuadraticInteger z = NumberTheoreticFunctionsCalculator
+//                .COMPLEX_CUBIC_ROOT_OF_UNITY.times(-1);
+//        /* The arbitrary initialization of z with -omega and factorsList with 
+//           omega is to avoid "variable might not have been initialized" 
+//           errors */
+//        List<AlgebraicInteger> factorsList = new ArrayList<>();
+//        factorsList.add(NumberTheoreticFunctionsCalculator
+//                .COMPLEX_CUBIC_ROOT_OF_UNITY);
+//        int facLen;
+//        String assertionMessage;
+//        for (int d : NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS) {
+//            r = new ImaginaryQuadraticRing(d);
+//            /* First to test purely real integers that are prime in Z in the 
+//               context of a particular ring r, e.g., 5 in Z[sqrt(-2)] */
+//            for (Integer p : primesList) {
+//                z = new ImaginaryQuadraticInteger(p, 0, r);
+//                try {
+//                    factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+//                    facLen = factorsList.size();
+//                } catch (NonUniqueFactorizationDomainException nufde) {
+//                    facLen = 0;
+//                    fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+//                }
+//                if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
+//                    assertionMessage = "Factor list of " + z.toString() + " in " 
+//                            + z.getRing().toString() + " should contain just one prime factor.";
+//                    assertEquals(assertionMessage, 1, facLen);
+//                } else {
+//                    assertionMessage = "Factor list of " + z.toString() + " in " 
+//                            + z.getRing().toString() + " should contain two or three factors.";
+//                    assertTrue(assertionMessage, facLen > 1);
+//                }
+//            }
+//            // Next, to look at some consecutive algebraic integers
+//            int expFacLen;
+//            for (int a = -4; a < 6; a++) {
+//                for (int b = 3; b > -2; b--) {
+//                    z = new ImaginaryQuadraticInteger(a, b, r);
+//                    try {
+//                        factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+//                        facLen = factorsList.size();
+//                        expFacLen = 0;
+//                        if ((factorsList.get(0).norm() == 1) && (factorsList.size() > 1)) {
+//                            expFacLen = 1;
+//                        }
+//                        if (z.norm() > 1) {
+//                            expFacLen++;
+//                        }
+//                        if (NumberTheoreticFunctionsCalculator.isPrime(z)) {
+//                            assertionMessage = z.toString() + " is expected to have " 
+//                                    + expFacLen + " factor(s).";
+//                            assertEquals(assertionMessage, expFacLen, facLen);
+//                        } else {
+//                            expFacLen++;
+//                            assertionMessage = z.toString() + " is expected to have at least " 
+//                                    + expFacLen + " factors.";
+//                            assertTrue(assertionMessage, facLen >= expFacLen);
+//                        }
+//                    } catch (NonUniqueFactorizationDomainException nufde) {
+//                        fail("NUFDE shouldn't've happened in this context: " 
+//                                + nufde.getMessage());
+//                    }
+//                }
+//            }
+//            System.out.print("Last algebraic integer tested in " + r.toASCIIString() 
+//                    + " was " + z.toASCIIString() + ", which has this factorization: ");
+//            if (factorsList.get(0).getImagPartNumeric() == 0.0) {
+//                System.out.print(factorsList.get(0).toASCIIString());
+//            } else {
+//                System.out.print("(" + factorsList.get(0) + ")");
+//            }
+//            for (int currFactorIndex = 1; currFactorIndex < factorsList.size(); 
+//                    currFactorIndex++) {
+//                if (factorsList.get(currFactorIndex).getImagPartNumeric() == 0.0) {
+//                    System.out.print(" \u00D7 " + factorsList.get(currFactorIndex)
+//                            .toASCIIString());
+//                } else {
+//                    System.out.print(" \u00D7 (" + factorsList.get(currFactorIndex)
+//                            .toASCIIString() + ")");
+//                }
+//            }
+//            System.out.println();
+//        }
+//        // Now to test primeFactors() on real quadratic integers
+//        System.out.println("primeFactors(RealQuadraticInteger)");
+//        RealQuadraticInteger ramifier, ramified;
+//        List<AlgebraicInteger> expFactorsList;
+//        int splitter, splitPrimeNorm;
+//        RealQuadraticInteger splitPrime;
+//        HashSet<AlgebraicInteger> expFactorsSet, factorsSet;
+//        for (int discrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+//            r = new RealQuadraticRing(discrR);
+//            ramifier = new RealQuadraticInteger(0, 1, r);
+//            ramified = new RealQuadraticInteger(discrR, 0, r);
+//            expFactorsList = new ArrayList<>();
+//            expFactorsList.add(ramifier);
+//            expFactorsList.add(ramifier); // Add the ramifier in there twice (on purpose)
+//            try {
+//                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(ramified);
+//                facLen = factorsList.size();
+//                System.out.print(discrR + " = (" + factorsList.get(0).toASCIIString() + ")");
+//                for (int j = 1; j < facLen; j++) {
+//                    System.out.print(" \u00D7 (" + factorsList.get(j).toASCIIString() + ")");
+//                }
+//                System.out.println();
+//                if (NumberTheoreticFunctionsCalculator.isPrime(discrR)) {
+//                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have exactly two factors.";
+//                    assertEquals(assertionMessage, 2, facLen);
+//                    if (discrR != 5) {
+//                        assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should be (" + ramifier.toASCIIString() + ")^2.";
+//                        assertEquals(assertionMessage, expFactorsList, factorsList);
+//                    }
+//                } else {
+//                    assertionMessage = "Factorization of " + discrR + " in " + r.toASCIIString() + " should have at least four factors.";
+//                    assertTrue(assertionMessage, facLen > 3);
+//                }
+//            } catch (NonUniqueFactorizationDomainException nufde) {
+//                fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+//            }
+//            /* For this next test, we need a prime that splits, not ramifies, in 
+//               each of the real quadratic rings that are norm-Euclidean */
+//            splitter = -1;
+//            if (r.hasHalfIntegers()) {
+//                if (discrR == 5) {
+//                    splitPrimeNorm = 11;
+//                    splitPrime = new RealQuadraticInteger(7, 1, r, 2);
+//                    expFactorsSet = new HashSet<>();
+//                    expFactorsSet.add(splitPrime.conjugate());
+//                    expFactorsSet.add(splitPrime);
+//                } else {
+//                    do {
+//                        splitter += 2;
+//                        splitPrimeNorm = (splitter * splitter - discrR)/4;
+//                    } while (!NumberTheoreticFunctionsCalculator.isPrime(splitPrimeNorm));
+//                    splitPrime = new RealQuadraticInteger(splitter, 1, r, 2);
+//                    expFactorsSet = new HashSet<>();
+//                    expFactorsSet.add(splitPrime.conjugate());
+//                    expFactorsSet.add(splitPrime);
+//                }
+//            } else {
+//                if (discrR % 2 == 1) {
+//                    splitter++;
+//                }
+//                do {
+//                    splitter += 2;
+//                    splitPrimeNorm = splitter * splitter - discrR;
+//                } while (!NumberTheoreticFunctionsCalculator.isPrime(splitPrimeNorm));
+//                splitPrime = new RealQuadraticInteger(splitter, 1, r);
+//                expFactorsSet = new HashSet<>();
+//                expFactorsSet.add(splitPrime.conjugate());
+//                expFactorsSet.add(splitPrime);
+//            }
+//            System.out.println(splitPrimeNorm + " = (" + splitPrime.conjugate().toASCIIString() + ") \u00D7 (" + splitPrime.toASCIIString() + ")");
+//            z = new RealQuadraticInteger(splitPrimeNorm, 0, r);
+//            try {
+//                factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+//                assertionMessage = "Factorization of " + splitPrimeNorm + " in " + r.toString() + " should consist of two exactly prime factors";
+//                assertEquals(assertionMessage, 2, factorsList.size());
+//                factorsSet = new HashSet(factorsList);
+//                assertionMessage = "Factorization of " + splitPrimeNorm + " in " + r.toString() + " should be " + splitPrime.toString() + " times its conjugate";
+//                assertEquals(assertionMessage, expFactorsSet, factorsSet);
+//            } catch (NonUniqueFactorizationDomainException nufde) {
+//                fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+//            }
+//        }
+//        /* And lastly to make sure calling prime factorization on a number from 
+//           an unsupported domain triggers UnsupportedNumberDomainException */
+//        r = new IllDefinedQuadraticRing(1);
+//        z = new IllDefinedQuadraticInteger(7, 8, r);
+//        try {
+//            factorsList = NumberTheoreticFunctionsCalculator.primeFactors(z);
+//            System.out.print("Calling primeFactors(" + z.toASCIIString() + " should have triggered UnsupportedNumberDomainException, ");
+//            System.out.println("not given the result in which " + factorsList.get(0).toASCIIString() + " is a factor.");
+//            fail("Calling primeFactors(" + z.toString() + ") should have triggered UnsupportedNumberDomainException.");
+//        } catch (NonUniqueFactorizationDomainException nufde) {
+//            fail("NonUniqueFactorizationDomainException should not have happened in this context: " + nufde.getMessage());
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Calling primeFactors(" + z.toASCIIString() + ") correctly triggered UnsupportedNumberDomainException.");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        }
     }
     
     @Test
@@ -709,232 +708,233 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testIsPrime() {
         System.out.println("isPrime(int)");
-        // assertFalse(NumberTheoreticFunctionsCalculator.isPrime(0));
-        for (int i = 0; i < primesListLength; i++) {
-            assertTrue(NumberTheoreticFunctionsCalculator.isPrime(primesList.get(i)));
-            assertTrue(NumberTheoreticFunctionsCalculator.isPrime(-primesList.get(i)));
-        }
-        assertFalse(NumberTheoreticFunctionsCalculator.isPrime(1));
-        assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-1));
-        compositesList.stream().map((compositeNum) -> {
-            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(compositeNum));
-            return compositeNum;
-        }).forEachOrdered((compositeNum) -> {
-            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-compositeNum));
-        });
-        /* Now we're going to test odd integers greater than the last prime 
-        in our List but smaller than the square of that prime. */
-        int maxNumForTest = primesList.get(primesListLength - 1) * primesList.get(primesListLength - 1);
-        int primeIndex = 1; // Which of course corresponds to 3, not 2, in a zero-indexed array
-        boolean possiblyPrime = true; // Presume k to be prime until finding otherwise
-        for (int k = primesList.get(primesListLength - 1) + 2; k < maxNumForTest; k += 2) {
-            while (primeIndex < primesListLength && possiblyPrime) {
-                possiblyPrime = (k % primesList.get(primeIndex) != 0);
-                primeIndex++;
-            }
-            if (possiblyPrime) {
-                assertTrue(NumberTheoreticFunctionsCalculator.isPrime(k));
-                assertTrue(NumberTheoreticFunctionsCalculator.isPrime(-k));
-            } else {
-                assertFalse(NumberTheoreticFunctionsCalculator.isPrime(k));
-                assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-k));
-            }
-            primeIndex = 1; // Reset for next k
-            possiblyPrime = true; // Reset for next k
-        }
-        /* Next, we're going to test indices of Fibonacci primes greater than 4, 
-           which corresponds to 3 */
-        for  (int m = 5; m < fibonacciList.size(); m++) {
-            if (NumberTheoreticFunctionsCalculator.isPrime(fibonacciList.get(m))) {
-                assertTrue(NumberTheoreticFunctionsCalculator.isPrime(m));
-            }
-        }
-        /* One more thing before moving on to complex UFDs: testing 
-           isPrime(long) */
-        System.out.println("isPrime(long)");
-        long longNum = Integer.MAX_VALUE;
-        String assertionMessage = "2^31 - 1 should be found to be prime.";
-        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(longNum));
-        longNum++;
-        assertionMessage = "2^31 should not be found to be prime.";
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(longNum));
-        longNum += 11;
-        assertionMessage = "2^31 + 11 should be found to be prime.";
-        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(longNum));
-        int castNum = (int) longNum;
-        assertionMessage = "-(2^31) + 11 should not be found to be prime.";
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(castNum));
-        // That does it for testing isPrime in the context of Z.
-        System.out.println("isPrime(QuadraticInteger)");
-        ImaginaryQuadraticRing ufdRing;
-        ImaginaryQuadraticInteger numberFromUFD;
-        for (int d = 0; d < NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS.length; d++) {
-            ufdRing = new ImaginaryQuadraticRing(NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[d]);
-            // d should not be prime in the ring of Q(sqrt(d))
-            numberFromUFD = new ImaginaryQuadraticInteger(NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[d], 0, ufdRing);
-            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(numberFromUFD));
-            // Nor should d + 4 be prime even if it is prime in Z
-            numberFromUFD = new ImaginaryQuadraticInteger(-NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[d] + 4, 0, ufdRing);
-            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(numberFromUFD));
-            // The "Heegner companion primes" should indeed be prime
-            numberFromUFD = new ImaginaryQuadraticInteger(HEEGNER_COMPANION_PRIMES[d], 0, ufdRing);
-            assertionMessage = numberFromUFD.toString() + " should have been identified as prime in " + ufdRing.toString();
-            assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromUFD));
-        }
-        // There are some special cases to test in the Gaussian integers
-        QuadraticInteger gaussianInteger;
-        ImaginaryQuadraticInteger twoStepImagIncr = new ImaginaryQuadraticInteger(0, 2, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
-        for (int g = 3; g < 256; g += 4) {
-            if (NumberTheoreticFunctionsCalculator.isPrime(g)) {
-                gaussianInteger = new ImaginaryQuadraticInteger(0, g, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
-                assertionMessage = gaussianInteger.toString() + " should have been identified as prime in Z[i]";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(gaussianInteger));
-                gaussianInteger = gaussianInteger.plus(twoStepImagIncr);
-                assertionMessage = gaussianInteger.toString() + " should not have been identified as prime in Z[i]";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(gaussianInteger));
-            }
-        }
-        gaussianInteger = new ImaginaryQuadraticInteger(0, 15, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
-        assertionMessage = gaussianInteger.toString() + " should not have been identified as prime in Z[i]";
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(gaussianInteger));
-        /* There are also special cases in the Eisenstein integers, thanks to 
-           the units. If p is a purely real integer that is prime among the 
-           Eisenstein integers, then omega * p, omega^2 * p, -omega * p and 
-           -omega^2 * p should all be prime also. */
-        QuadraticInteger eisensteinInteger;
-        for (int eisen = -29; eisen < 30; eisen++) {
-            eisensteinInteger = new ImaginaryQuadraticInteger(eisen, 0, NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
-            if (NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger)) {
-                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
-                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
-                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
-                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
-                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
-                eisensteinInteger = eisensteinInteger.times(-1); // This should bring us to -eisen
-                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
-                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
-                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
-                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
-                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
-            }
-        }
-        eisensteinInteger = new ImaginaryQuadraticInteger(-4, 4, NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
-        assertionMessage = eisensteinInteger.toStringAlt() + " should not have been found to be prime.";
-        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
-        /* Now to test some complex numbers in Z[sqrt(-5)] and O_Q(sqrt(-31)), 
-           and also some real numbers in Z[sqrt(10)] and O_Q(sqrt(65)). */
-        ImaginaryQuadraticRing Zi5 = new ImaginaryQuadraticRing(-5);
-        ImaginaryQuadraticRing OQi31 = new ImaginaryQuadraticRing(-31);
-        RealQuadraticRing Z10 = new RealQuadraticRing(10);
-        RealQuadraticRing OQ65 = new RealQuadraticRing(65);
-        QuadraticInteger numberFromNonUFD;
-        int norm;
-        for (int a = -1; a > -10; a--) {
-            for (int b = 1; b < 10; b++) {
-                numberFromNonUFD = new ImaginaryQuadraticInteger(a, b, Zi5);
-                norm = a * a + 5 * b * b;
-                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
-                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + Zi5.toString();
-                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                } else {
-                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + Zi5.toString();
-                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                }
-                numberFromNonUFD = new ImaginaryQuadraticInteger(a, b, OQi31);
-                norm = a * a + 31 * b * b;
-                if ((a % 2) == (b % 2)) {
-                    try {
-                        numberFromNonUFD = numberFromNonUFD.divides(2);
-                        norm /= 4;
-                    } catch (NotDivisibleException nde) {
-                        String msg = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
-                        fail(msg);
-                    }
-                }
-                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
-                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
-                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                } else {
-                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
-                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                }
-                numberFromNonUFD = new RealQuadraticInteger(a, b, Z10);
-                norm = a * a - 10 * b * b;
-                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
-                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
-                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                } else {
-                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
-                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                }
-                numberFromNonUFD = new RealQuadraticInteger(a, b, OQ65);
-                norm = a * a - 65 * b * b;
-                if ((a % 2) == (b % 2)) {
-                    try {
-                        numberFromNonUFD = numberFromNonUFD.divides(2);
-                        norm /= 4;
-                    } catch (NotDivisibleException nde) {
-                        String msg = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
-                        fail(msg);
-                    }
-                }
-                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
-                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
-                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                } else {
-                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
-                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
-                }
-            }
-        }
-        QuadraticRing r;
-        AlgebraicInteger z;
-        /* Now to check some purely real integers in the context of a few 
-           non-UFDs */
-        int re;
-        for (int iterDiscr = -6; iterDiscr > -200; iterDiscr--) {
-            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
-                r = new ImaginaryQuadraticRing(iterDiscr);
-                re = -iterDiscr + 1;
-                z = new ImaginaryQuadraticInteger(re, 0, r);
-                assertionMessage = re + " in " + r.toString() + " should not have been identified as prime.";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(z));
-            }
-        }
-        RealQuadraticInteger ramifier;
-        for (int iterDiscrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
-            r = new RealQuadraticRing(iterDiscrR);
-            ramifier = new RealQuadraticInteger(0, 1, r);
-            if (NumberTheoreticFunctionsCalculator.isPrime(iterDiscrR)) {
-                assertionMessage = ramifier.toASCIIString() + " should have been identified as prime in " + r.toASCIIString() + ".";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(ramifier));
-            } else {
-                assertionMessage = ramifier.toASCIIString() + " should not have been identified as prime in " + r.toASCIIString() + ".";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(ramifier));
-            }
-        }
-        /* The very last thing, to check UnsupportedNumberDomainException is 
-           thrown when needed */
-        r = new IllDefinedQuadraticRing(22);
-        z = new IllDefinedQuadraticInteger(5, 4, r);
-        try {
-            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isPrime(z);
-            String msg = "Somehow determined that " + z.toASCIIString() + " is ";
-            if (compositeFlag) {
-                msg = msg + "not ";
-            }
-            msg = msg + " prime.";
-            System.out.println(msg);
-            fail(msg);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("isPrime on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        }
+        fail("SERIOUS REWRITE NEEDED");
+//        // assertFalse(NumberTheoreticFunctionsCalculator.isPrime(0));
+//        for (int i = 0; i < primesListLength; i++) {
+//            assertTrue(NumberTheoreticFunctionsCalculator.isPrime(primesList.get(i)));
+//            assertTrue(NumberTheoreticFunctionsCalculator.isPrime(-primesList.get(i)));
+//        }
+//        assertFalse(NumberTheoreticFunctionsCalculator.isPrime(1));
+//        assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-1));
+//        compositesList.stream().map((compositeNum) -> {
+//            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(compositeNum));
+//            return compositeNum;
+//        }).forEachOrdered((compositeNum) -> {
+//            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-compositeNum));
+//        });
+//        /* Now we're going to test odd integers greater than the last prime 
+//        in our List but smaller than the square of that prime. */
+//        int maxNumForTest = primesList.get(primesListLength - 1) * primesList.get(primesListLength - 1);
+//        int primeIndex = 1; // Which of course corresponds to 3, not 2, in a zero-indexed array
+//        boolean possiblyPrime = true; // Presume k to be prime until finding otherwise
+//        for (int k = primesList.get(primesListLength - 1) + 2; k < maxNumForTest; k += 2) {
+//            while (primeIndex < primesListLength && possiblyPrime) {
+//                possiblyPrime = (k % primesList.get(primeIndex) != 0);
+//                primeIndex++;
+//            }
+//            if (possiblyPrime) {
+//                assertTrue(NumberTheoreticFunctionsCalculator.isPrime(k));
+//                assertTrue(NumberTheoreticFunctionsCalculator.isPrime(-k));
+//            } else {
+//                assertFalse(NumberTheoreticFunctionsCalculator.isPrime(k));
+//                assertFalse(NumberTheoreticFunctionsCalculator.isPrime(-k));
+//            }
+//            primeIndex = 1; // Reset for next k
+//            possiblyPrime = true; // Reset for next k
+//        }
+//        /* Next, we're going to test indices of Fibonacci primes greater than 4, 
+//           which corresponds to 3 */
+//        for  (int m = 5; m < fibonacciList.size(); m++) {
+//            if (NumberTheoreticFunctionsCalculator.isPrime(fibonacciList.get(m))) {
+//                assertTrue(NumberTheoreticFunctionsCalculator.isPrime(m));
+//            }
+//        }
+//        /* One more thing before moving on to complex UFDs: testing 
+//           isPrime(long) */
+//        System.out.println("isPrime(long)");
+//        long longNum = Integer.MAX_VALUE;
+//        String assertionMessage = "2^31 - 1 should be found to be prime.";
+//        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(longNum));
+//        longNum++;
+//        assertionMessage = "2^31 should not be found to be prime.";
+//        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(longNum));
+//        longNum += 11;
+//        assertionMessage = "2^31 + 11 should be found to be prime.";
+//        assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(longNum));
+//        int castNum = (int) longNum;
+//        assertionMessage = "-(2^31) + 11 should not be found to be prime.";
+//        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(castNum));
+//        // That does it for testing isPrime in the context of Z.
+//        System.out.println("isPrime(QuadraticInteger)");
+//        ImaginaryQuadraticRing ufdRing;
+//        ImaginaryQuadraticInteger numberFromUFD;
+//        for (int d = 0; d < NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS.length; d++) {
+//            ufdRing = new ImaginaryQuadraticRing(NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[d]);
+//            // d should not be prime in the ring of Q(sqrt(d))
+//            numberFromUFD = new ImaginaryQuadraticInteger(NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[d], 0, ufdRing);
+//            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(numberFromUFD));
+//            // Nor should d + 4 be prime even if it is prime in Z
+//            numberFromUFD = new ImaginaryQuadraticInteger(-NumberTheoreticFunctionsCalculator.HEEGNER_NUMBERS[d] + 4, 0, ufdRing);
+//            assertFalse(NumberTheoreticFunctionsCalculator.isPrime(numberFromUFD));
+//            // The "Heegner companion primes" should indeed be prime
+//            numberFromUFD = new ImaginaryQuadraticInteger(HEEGNER_COMPANION_PRIMES[d], 0, ufdRing);
+//            assertionMessage = numberFromUFD.toString() + " should have been identified as prime in " + ufdRing.toString();
+//            assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromUFD));
+//        }
+//        // There are some special cases to test in the Gaussian integers
+//        QuadraticInteger gaussianInteger;
+//        ImaginaryQuadraticInteger twoStepImagIncr = new ImaginaryQuadraticInteger(0, 2, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+//        for (int g = 3; g < 256; g += 4) {
+//            if (NumberTheoreticFunctionsCalculator.isPrime(g)) {
+//                gaussianInteger = new ImaginaryQuadraticInteger(0, g, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+//                assertionMessage = gaussianInteger.toString() + " should have been identified as prime in Z[i]";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(gaussianInteger));
+//                gaussianInteger = gaussianInteger.plus(twoStepImagIncr);
+//                assertionMessage = gaussianInteger.toString() + " should not have been identified as prime in Z[i]";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(gaussianInteger));
+//            }
+//        }
+//        gaussianInteger = new ImaginaryQuadraticInteger(0, 15, NumberTheoreticFunctionsCalculator.RING_GAUSSIAN);
+//        assertionMessage = gaussianInteger.toString() + " should not have been identified as prime in Z[i]";
+//        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(gaussianInteger));
+//        /* There are also special cases in the Eisenstein integers, thanks to 
+//           the units. If p is a purely real integer that is prime among the 
+//           Eisenstein integers, then omega * p, omega^2 * p, -omega * p and 
+//           -omega^2 * p should all be prime also. */
+//        QuadraticInteger eisensteinInteger;
+//        for (int eisen = -29; eisen < 30; eisen++) {
+//            eisensteinInteger = new ImaginaryQuadraticInteger(eisen, 0, NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
+//            if (NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger)) {
+//                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
+//                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
+//                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
+//                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
+//                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
+//                eisensteinInteger = eisensteinInteger.times(-1); // This should bring us to -eisen
+//                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
+//                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
+//                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
+//                eisensteinInteger = eisensteinInteger.times(NumberTheoreticFunctionsCalculator.COMPLEX_CUBIC_ROOT_OF_UNITY);
+//                assertionMessage = eisensteinInteger.toString() + " should be found to be prime.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
+//            }
+//        }
+//        eisensteinInteger = new ImaginaryQuadraticInteger(-4, 4, NumberTheoreticFunctionsCalculator.RING_EISENSTEIN);
+//        assertionMessage = eisensteinInteger.toStringAlt() + " should not have been found to be prime.";
+//        assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(eisensteinInteger));
+//        /* Now to test some complex numbers in Z[sqrt(-5)] and O_Q(sqrt(-31)), 
+//           and also some real numbers in Z[sqrt(10)] and O_Q(sqrt(65)). */
+//        ImaginaryQuadraticRing Zi5 = new ImaginaryQuadraticRing(-5);
+//        ImaginaryQuadraticRing OQi31 = new ImaginaryQuadraticRing(-31);
+//        RealQuadraticRing Z10 = new RealQuadraticRing(10);
+//        RealQuadraticRing OQ65 = new RealQuadraticRing(65);
+//        QuadraticInteger numberFromNonUFD;
+//        int norm;
+//        for (int a = -1; a > -10; a--) {
+//            for (int b = 1; b < 10; b++) {
+//                numberFromNonUFD = new ImaginaryQuadraticInteger(a, b, Zi5);
+//                norm = a * a + 5 * b * b;
+//                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
+//                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + Zi5.toString();
+//                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                } else {
+//                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + Zi5.toString();
+//                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                }
+//                numberFromNonUFD = new ImaginaryQuadraticInteger(a, b, OQi31);
+//                norm = a * a + 31 * b * b;
+//                if ((a % 2) == (b % 2)) {
+//                    try {
+//                        numberFromNonUFD = numberFromNonUFD.divides(2);
+//                        norm /= 4;
+//                    } catch (NotDivisibleException nde) {
+//                        String msg = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
+//                        fail(msg);
+//                    }
+//                }
+//                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
+//                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
+//                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                } else {
+//                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
+//                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                }
+//                numberFromNonUFD = new RealQuadraticInteger(a, b, Z10);
+//                norm = a * a - 10 * b * b;
+//                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
+//                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
+//                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                } else {
+//                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
+//                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                }
+//                numberFromNonUFD = new RealQuadraticInteger(a, b, OQ65);
+//                norm = a * a - 65 * b * b;
+//                if ((a % 2) == (b % 2)) {
+//                    try {
+//                        numberFromNonUFD = numberFromNonUFD.divides(2);
+//                        norm /= 4;
+//                    } catch (NotDivisibleException nde) {
+//                        String msg = "Trying to divide " + numberFromNonUFD.toASCIIString() + " by 2 should not have caused NotDivisibleException: \"" + nde.getMessage() + "\"";
+//                        fail(msg);
+//                    }
+//                }
+//                if (NumberTheoreticFunctionsCalculator.isPrime(norm)) {
+//                    assertionMessage = numberFromNonUFD.toString() + " should have been identified as prime in " + OQi31.toString();
+//                    assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                } else {
+//                    assertionMessage = numberFromNonUFD.toString() + " should not have been identified as prime in " + OQi31.toString();
+//                    assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(numberFromNonUFD));
+//                }
+//            }
+//        }
+//        QuadraticRing r;
+//        AlgebraicInteger z;
+//        /* Now to check some purely real integers in the context of a few 
+//           non-UFDs */
+//        int re;
+//        for (int iterDiscr = -6; iterDiscr > -200; iterDiscr--) {
+//            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
+//                r = new ImaginaryQuadraticRing(iterDiscr);
+//                re = -iterDiscr + 1;
+//                z = new ImaginaryQuadraticInteger(re, 0, r);
+//                assertionMessage = re + " in " + r.toString() + " should not have been identified as prime.";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(z));
+//            }
+//        }
+//        RealQuadraticInteger ramifier;
+//        for (int iterDiscrR : NumberTheoreticFunctionsCalculator.NORM_EUCLIDEAN_QUADRATIC_REAL_RINGS_D) {
+//            r = new RealQuadraticRing(iterDiscrR);
+//            ramifier = new RealQuadraticInteger(0, 1, r);
+//            if (NumberTheoreticFunctionsCalculator.isPrime(iterDiscrR)) {
+//                assertionMessage = ramifier.toASCIIString() + " should have been identified as prime in " + r.toASCIIString() + ".";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(ramifier));
+//            } else {
+//                assertionMessage = ramifier.toASCIIString() + " should not have been identified as prime in " + r.toASCIIString() + ".";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(ramifier));
+//            }
+//        }
+//        /* The very last thing, to check UnsupportedNumberDomainException is 
+//           thrown when needed */
+//        r = new IllDefinedQuadraticRing(22);
+//        z = new IllDefinedQuadraticInteger(5, 4, r);
+//        try {
+//            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isPrime(z);
+//            String msg = "Somehow determined that " + z.toASCIIString() + " is ";
+//            if (compositeFlag) {
+//                msg = msg + "not ";
+//            }
+//            msg = msg + " prime.";
+//            System.out.println(msg);
+//            fail(msg);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("isPrime on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        }
     }
     
     private void checkFactorsAreIrreducible(QuadraticInteger num) {
@@ -978,30 +978,31 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     @Test
     public void testIrreducibleFactorsForUnsupportedRing() {
-        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
-        IllDefinedQuadraticInteger num = new IllDefinedQuadraticInteger(21, 3, 
-                ring);
-        try {
-            List<AlgebraicInteger> factors = irreducibleFactors(num);
-            String msg = "Trying to find irreducible factors of " 
-                    + num.toString() + " from unsupported ill-defined ring " 
-                    + ring.toString() 
-                    + " should have caused exception, not given result " 
-                    + factors.toString();
-            fail(msg);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Trying to find irreducible factors of " 
-                    + num.toString() + " from unsupported ill-defined ring " 
-                    + ring.toString() 
-                    + " correctly caused UnsupportedNumberDomainException");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception for irreducible factors of "
-                    + num.toString() + " from unsupported ill-defined ring " 
-                    + ring.toString();
-            fail(msg);
-        }
+        fail("REWRITE WITHOUT USING IllDefinedQuadraticInteger");
+//        IllDefinedQuadraticRing ring = new IllDefinedQuadraticRing(70);
+//        IllDefinedQuadraticInteger num = new IllDefinedQuadraticInteger(21, 3, 
+//                ring);
+//        try {
+//            List<AlgebraicInteger> factors = irreducibleFactors(num);
+//            String msg = "Trying to find irreducible factors of " 
+//                    + num.toString() + " from unsupported ill-defined ring " 
+//                    + ring.toString() 
+//                    + " should have caused exception, not given result " 
+//                    + factors.toString();
+//            fail(msg);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Trying to find irreducible factors of " 
+//                    + num.toString() + " from unsupported ill-defined ring " 
+//                    + ring.toString() 
+//                    + " correctly caused UnsupportedNumberDomainException");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String msg = re.getClass().getName() 
+//                    + " is the wrong exception for irreducible factors of "
+//                    + num.toString() + " from unsupported ill-defined ring " 
+//                    + ring.toString();
+//            fail(msg);
+//        }
     }
     
     /**
@@ -1012,83 +1013,84 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testIsIrreducible() {
         System.out.println("isIrreducible");
-        QuadraticRing currRing;
-        QuadraticInteger currQuadrInt;
-        String assertionMessage;
-        /* The number 1 + sqrt(d) should be irreducible but not prime in each
-           domain Z[sqrt(d)] for squarefree negative d = 3 mod 4. But (1 + 
-           sqrt(d))^2 should not be, nor the complexConjugate of that number. */
-        for (int iterDiscr = -5; iterDiscr > -200; iterDiscr -= 4) {
-            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
-                currRing = new ImaginaryQuadraticRing(iterDiscr);
-                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing);
-                assertionMessage = currQuadrInt.toString() + " should have been found to not be prime.";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currQuadrInt));
-                assertionMessage = assertionMessage + "\nBut it should have been found to be irreducible.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-                try {
-                    currQuadrInt = currQuadrInt.times(currQuadrInt); // Squaring currQuadrInt
-                } catch (AlgebraicDegreeOverflowException adoe) {
-                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
-                }
-                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-                currQuadrInt = currQuadrInt.conjugate();
-                assertionMessage = currQuadrInt.toASCIIString() + " should not have been found to be irreducible.";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-            }
-        }
-        for (int iterDiscrOQ = -7; iterDiscrOQ > -200; iterDiscrOQ -= 4) {
-            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscrOQ)) {
-                currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
-                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing, 2);
-                assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-                try {
-                    currQuadrInt = currQuadrInt.times(currQuadrInt);
-                } catch (AlgebraicDegreeOverflowException adoe) {
-                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
-                }
-                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-                currQuadrInt = new ImaginaryQuadraticInteger(3, 1, currRing, 2);
-                currQuadrInt = currQuadrInt.times(currQuadrInt);
-                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-            }
-        }
-        for (int discrR = 10; discrR < 200; discrR += 10) {
-            if (NumberTheoreticFunctionsCalculator.isSquarefree(discrR)) {
-                currRing = new RealQuadraticRing(discrR);
-                currQuadrInt = new RealQuadraticInteger(0, 1, currRing);
-                assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
-                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-                try {
-                    currQuadrInt = currQuadrInt.times(currQuadrInt);
-                } catch (AlgebraicDegreeOverflowException adoe) {
-                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
-                }
-                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
-                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
-            }
-        }
-        /* The very last thing, to check UnsupportedNumberDomainException is 
-           thrown when needed */
-        IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(22);
-        IllDefinedQuadraticInteger z = new IllDefinedQuadraticInteger(5, 4, r);
-        try {
-            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isIrreducible(z);
-            String failMessage = "Somehow determined that " + z.toASCIIString() + " is ";
-            if (compositeFlag) {
-                failMessage = failMessage + "not ";
-            }
-            failMessage = failMessage + " irrreducible.";
-            System.out.println(failMessage);
-            fail(failMessage);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("isIrreducible on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        }
+        fail("REWRITE");
+//        QuadraticRing currRing;
+//        QuadraticInteger currQuadrInt;
+//        String assertionMessage;
+//        /* The number 1 + sqrt(d) should be irreducible but not prime in each
+//           domain Z[sqrt(d)] for squarefree negative d = 3 mod 4. But (1 + 
+//           sqrt(d))^2 should not be, nor the complexConjugate of that number. */
+//        for (int iterDiscr = -5; iterDiscr > -200; iterDiscr -= 4) {
+//            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscr)) {
+//                currRing = new ImaginaryQuadraticRing(iterDiscr);
+//                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing);
+//                assertionMessage = currQuadrInt.toString() + " should have been found to not be prime.";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currQuadrInt));
+//                assertionMessage = assertionMessage + "\nBut it should have been found to be irreducible.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//                try {
+//                    currQuadrInt = currQuadrInt.times(currQuadrInt); // Squaring currQuadrInt
+//                } catch (AlgebraicDegreeOverflowException adoe) {
+//                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
+//                }
+//                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//                currQuadrInt = currQuadrInt.conjugate();
+//                assertionMessage = currQuadrInt.toASCIIString() + " should not have been found to be irreducible.";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//            }
+//        }
+//        for (int iterDiscrOQ = -7; iterDiscrOQ > -200; iterDiscrOQ -= 4) {
+//            if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscrOQ)) {
+//                currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
+//                currQuadrInt = new ImaginaryQuadraticInteger(1, 1, currRing, 2);
+//                assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//                try {
+//                    currQuadrInt = currQuadrInt.times(currQuadrInt);
+//                } catch (AlgebraicDegreeOverflowException adoe) {
+//                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
+//                }
+//                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//                currQuadrInt = new ImaginaryQuadraticInteger(3, 1, currRing, 2);
+//                currQuadrInt = currQuadrInt.times(currQuadrInt);
+//                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//            }
+//        }
+//        for (int discrR = 10; discrR < 200; discrR += 10) {
+//            if (NumberTheoreticFunctionsCalculator.isSquarefree(discrR)) {
+//                currRing = new RealQuadraticRing(discrR);
+//                currQuadrInt = new RealQuadraticInteger(0, 1, currRing);
+//                assertionMessage = currQuadrInt.toString() + " should have been found to be irreducible.";
+//                assertTrue(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//                try {
+//                    currQuadrInt = currQuadrInt.times(currQuadrInt);
+//                } catch (AlgebraicDegreeOverflowException adoe) {
+//                    fail("AlgebraicDegreeOverflowException should not have happened when multiplying an algebraic integer by itself: " + adoe.getMessage());
+//                }
+//                assertionMessage = currQuadrInt.toString() + " should not have been found to be irreducible.";
+//                assertFalse(assertionMessage, NumberTheoreticFunctionsCalculator.isIrreducible(currQuadrInt));
+//            }
+//        }
+//        /* The very last thing, to check UnsupportedNumberDomainException is 
+//           thrown when needed */
+//        IllDefinedQuadraticRing r = new IllDefinedQuadraticRing(22);
+//        IllDefinedQuadraticInteger z = new IllDefinedQuadraticInteger(5, 4, r);
+//        try {
+//            boolean compositeFlag = !NumberTheoreticFunctionsCalculator.isIrreducible(z);
+//            String failMessage = "Somehow determined that " + z.toASCIIString() + " is ";
+//            if (compositeFlag) {
+//                failMessage = failMessage + "not ";
+//            }
+//            failMessage = failMessage + " irrreducible.";
+//            System.out.println(failMessage);
+//            fail(failMessage);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("isIrreducible on unsupported number domain correctly triggered UnsupportedNumberDomainException.");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        }
     }
     
     /**
@@ -2383,52 +2385,53 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testPlaceInPrimarySector() {
         System.out.println("placeInPrimarySector");
-        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
-        QuadraticInteger expResult = new ImaginaryQuadraticInteger(10, 3, ring);
-        QuadraticInteger otherSectorNumber = new ImaginaryQuadraticInteger(3, -10, ring);
-        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        otherSectorNumber = new ImaginaryQuadraticInteger(-10, -3, ring);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        otherSectorNumber = new ImaginaryQuadraticInteger(-3, 10, ring);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        ring = new ImaginaryQuadraticRing(-3);
-        expResult = new ImaginaryQuadraticInteger(7, 1, ring, 2);
-        otherSectorNumber = new ImaginaryQuadraticInteger(5, -3, ring, 2);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        otherSectorNumber = new ImaginaryQuadraticInteger(-1, -2, ring);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        otherSectorNumber = new ImaginaryQuadraticInteger(-7, -1, ring, 2);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        otherSectorNumber = new ImaginaryQuadraticInteger(-5, 3, ring, 2);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        otherSectorNumber = new ImaginaryQuadraticInteger(1, 2, ring);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        ring = new RealQuadraticRing(2);
-        expResult = new RealQuadraticInteger(3, 1, ring);
-        otherSectorNumber = new RealQuadraticInteger(-3, -1, ring);
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-        assertEquals(expResult, result);
-        expResult = new RealQuadraticInteger(0, 0, ring); // Zero
-        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(expResult);
-        assertEquals(expResult, result);
-        ring = new IllDefinedQuadraticRing(-55);
-        otherSectorNumber = new IllDefinedQuadraticInteger(-3, -1, ring);
-        try {
-            result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
-            String failMessage = "Attempting to place in primary sector the number " + otherSectorNumber.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
-            fail(failMessage);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Attempting to place in primary sector the number " + otherSectorNumber.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        }
+        fail("REWRITE");
+//        QuadraticRing ring = new ImaginaryQuadraticRing(-1);
+//        QuadraticInteger expResult = new ImaginaryQuadraticInteger(10, 3, ring);
+//        QuadraticInteger otherSectorNumber = new ImaginaryQuadraticInteger(3, -10, ring);
+//        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        otherSectorNumber = new ImaginaryQuadraticInteger(-10, -3, ring);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        otherSectorNumber = new ImaginaryQuadraticInteger(-3, 10, ring);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        ring = new ImaginaryQuadraticRing(-3);
+//        expResult = new ImaginaryQuadraticInteger(7, 1, ring, 2);
+//        otherSectorNumber = new ImaginaryQuadraticInteger(5, -3, ring, 2);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        otherSectorNumber = new ImaginaryQuadraticInteger(-1, -2, ring);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        otherSectorNumber = new ImaginaryQuadraticInteger(-7, -1, ring, 2);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        otherSectorNumber = new ImaginaryQuadraticInteger(-5, 3, ring, 2);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        otherSectorNumber = new ImaginaryQuadraticInteger(1, 2, ring);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        ring = new RealQuadraticRing(2);
+//        expResult = new RealQuadraticInteger(3, 1, ring);
+//        otherSectorNumber = new RealQuadraticInteger(-3, -1, ring);
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//        assertEquals(expResult, result);
+//        expResult = new RealQuadraticInteger(0, 0, ring); // Zero
+//        result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(expResult);
+//        assertEquals(expResult, result);
+//        ring = new IllDefinedQuadraticRing(-55);
+//        otherSectorNumber = new IllDefinedQuadraticInteger(-3, -1, ring);
+//        try {
+//            result = NumberTheoreticFunctionsCalculator.placeInPrimarySector(otherSectorNumber);
+//            String failMessage = "Attempting to place in primary sector the number " + otherSectorNumber.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
+//            fail(failMessage);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Attempting to place in primary sector the number " + otherSectorNumber.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        }
     }
     
     /**
@@ -2438,27 +2441,28 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testDivideOutUnits() {
         System.out.println("divideOutUnits");
-        QuadraticRing ring = new RealQuadraticRing(7);
-        QuadraticInteger expResult = new RealQuadraticInteger(3, 1, ring);
-        QuadraticInteger numWUnitFactors = new RealQuadraticInteger(182115, 68833, ring);
-        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
-        assertEquals(expResult, result);
-        numWUnitFactors = new RealQuadraticInteger(-11427, 4319, ring);
-        result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
-        assertEquals(expResult, result);
-        expResult = new RealQuadraticInteger(0, 0, ring); // Zero
-        result = NumberTheoreticFunctionsCalculator.divideOutUnits(expResult);
-        assertEquals(expResult, result);
-        ring = new IllDefinedQuadraticRing(-55);
-        numWUnitFactors = new IllDefinedQuadraticInteger(-3, -1, ring);
-        try {
-            result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
-            String failMessage = "Attempting to divide units out of " + numWUnitFactors.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
-            fail(failMessage);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("Attempting to divide units out of " + numWUnitFactors.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        }
+        fail("REWRITE");
+//        QuadraticRing ring = new RealQuadraticRing(7);
+//        QuadraticInteger expResult = new RealQuadraticInteger(3, 1, ring);
+//        QuadraticInteger numWUnitFactors = new RealQuadraticInteger(182115, 68833, ring);
+//        AlgebraicInteger result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
+//        assertEquals(expResult, result);
+//        numWUnitFactors = new RealQuadraticInteger(-11427, 4319, ring);
+//        result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
+//        assertEquals(expResult, result);
+//        expResult = new RealQuadraticInteger(0, 0, ring); // Zero
+//        result = NumberTheoreticFunctionsCalculator.divideOutUnits(expResult);
+//        assertEquals(expResult, result);
+//        ring = new IllDefinedQuadraticRing(-55);
+//        numWUnitFactors = new IllDefinedQuadraticInteger(-3, -1, ring);
+//        try {
+//            result = NumberTheoreticFunctionsCalculator.divideOutUnits(numWUnitFactors);
+//            String failMessage = "Attempting to divide units out of " + numWUnitFactors.toString() + " should have caused UnsupportedNumberDomainException, not given result " + result.toString();
+//            fail(failMessage);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("Attempting to divide units out of " + numWUnitFactors.toASCIIString() + " correctly triggered UnsupportedNumberDomainException.");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        }
     }
     
     /**

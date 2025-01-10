@@ -1758,37 +1758,38 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testDividesUnsupportedCausesException() {
-        int a = RANDOM.nextInt(128) + 2;
-        int b = RANDOM.nextInt(128) + 2;
-        int d = randomSquarefreeNumber(a + b);
-        QuadraticRing ring = new IllDefinedQuadraticRing(d);
-        IllDefinedQuadraticInteger unsupDividend 
-                = new IllDefinedQuadraticInteger(a, b, ring);
-        IllDefinedQuadraticInteger unsupDivisor 
-                = new IllDefinedQuadraticInteger(a, b, ring);
-        try {
-            QuadraticInteger division = unsupDividend.divides(unsupDivisor);
-            String message = "Trying to divide " + unsupDividend.toASCIIString() 
-                    + " by " + unsupDivisor.toASCIIString() 
-                    + " somehow resulted in " + division.toASCIIString() 
-                    + " instead of an exception";
-            fail(message);
-        } catch (UnsupportedNumberDomainException unde) {
-            System.out.println("UnsupportedNumberDomainException is correct");
-            System.out.println("\"" + unde.getMessage() + "\"");
-        } catch (NotDivisibleException nde) {
-            System.out.println("\"" + nde.getMessage() + "\"");
-            String message = "NotDivisibleException is not appropriate for " 
-                    + unsupDividend.toString() + " divided by " 
-                    + unsupDivisor.toString();
-            fail(message);
-        } catch (RuntimeException re) {
-            String message = re.getClass().getName() 
-                    + " is the wrong exception for trying to divide "  
-                    + unsupDividend.toString() + " by " 
-                    + unsupDivisor.toString();
-            fail(message);
-        }
+        fail("REWRITE WITHOUT USING IllDefinedQuadraticInteger");
+//        int a = RANDOM.nextInt(128) + 2;
+//        int b = RANDOM.nextInt(128) + 2;
+//        int d = randomSquarefreeNumber(a + b);
+//        QuadraticRing ring = new IllDefinedQuadraticRing(d);
+//        IllDefinedQuadraticInteger unsupDividend 
+//                = new IllDefinedQuadraticInteger(a, b, ring);
+//        IllDefinedQuadraticInteger unsupDivisor 
+//                = new IllDefinedQuadraticInteger(a, b, ring);
+//        try {
+//            QuadraticInteger division = unsupDividend.divides(unsupDivisor);
+//            String message = "Trying to divide " + unsupDividend.toASCIIString() 
+//                    + " by " + unsupDivisor.toASCIIString() 
+//                    + " somehow resulted in " + division.toASCIIString() 
+//                    + " instead of an exception";
+//            fail(message);
+//        } catch (UnsupportedNumberDomainException unde) {
+//            System.out.println("UnsupportedNumberDomainException is correct");
+//            System.out.println("\"" + unde.getMessage() + "\"");
+//        } catch (NotDivisibleException nde) {
+//            System.out.println("\"" + nde.getMessage() + "\"");
+//            String message = "NotDivisibleException is not appropriate for " 
+//                    + unsupDividend.toString() + " divided by " 
+//                    + unsupDivisor.toString();
+//            fail(message);
+//        } catch (RuntimeException re) {
+//            String message = re.getClass().getName() 
+//                    + " is the wrong exception for trying to divide "  
+//                    + unsupDividend.toString() + " by " 
+//                    + unsupDivisor.toString();
+//            fail(message);
+//        }
     }
     
     /**

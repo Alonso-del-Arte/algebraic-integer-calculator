@@ -17,8 +17,6 @@
 package calculators;
 
 import algebraics.IntegerRing;
-import algebraics.quadratics.IllDefinedQuadraticInteger;
-import algebraics.quadratics.IllDefinedQuadraticRing;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,19 +35,17 @@ public class ResultsGroupingTest {
     
     private static final Random RANDOM = new Random();
     
-    private static final IllDefinedQuadraticRing ILL_DEF_QUAD_RING_21 
-            = new IllDefinedQuadraticRing(21);
-    
     /**
      * Test of the getRing function, of the ResultsGrouping class.
      */
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(-35);
-        ResultsGrouping instance = new ResultsGroupingImpl(expected);
-        IntegerRing actual = instance.getRing();
-        assertEquals(expected, actual);
+        fail("REWRITE");
+//        IllDefinedQuadraticRing expected = new IllDefinedQuadraticRing(-35);
+//        ResultsGrouping instance = new ResultsGroupingImpl(expected);
+//        IntegerRing actual = instance.getRing();
+//        assertEquals(expected, actual);
     }
     
     /**
@@ -59,11 +55,12 @@ public class ResultsGroupingTest {
      */
     @Test
     public void testGetPrimePi() {
-        ResultsGrouping instance 
-                = new ResultsGroupingImpl(ILL_DEF_QUAD_RING_21);
-        int expected = ResultsGrouping.DEFAULT_PRIME_PI;
-        int actual = instance.getPrimePi();
-        assertEquals(expected, actual);
+        fail("REWRITE");
+//        ResultsGrouping instance 
+//                = new ResultsGroupingImpl(ILL_DEF_QUAD_RING_21);
+//        int expected = ResultsGrouping.DEFAULT_PRIME_PI;
+//        int actual = instance.getPrimePi();
+//        assertEquals(expected, actual);
     }
     
     /**
@@ -72,13 +69,14 @@ public class ResultsGroupingTest {
     @Test
     public void testRaisePrimePi() {
         System.out.println("raisePrimePi");
-        ResultsGrouping instance 
-                = new ResultsGroupingImpl(ILL_DEF_QUAD_RING_21);
-        int increment = RANDOM.nextInt(720) + 1;
-        instance.raisePrimePi(increment);
-        int expected = ResultsGrouping.DEFAULT_PRIME_PI + increment;
-        int actual = instance.getPrimePi();
-        assertEquals(expected, actual);
+        fail("REWRITE");
+//        ResultsGrouping instance 
+//                = new ResultsGroupingImpl(ILL_DEF_QUAD_RING_21);
+//        int increment = RANDOM.nextInt(720) + 1;
+//        instance.raisePrimePi(increment);
+//        int expected = ResultsGrouping.DEFAULT_PRIME_PI + increment;
+//        int actual = instance.getPrimePi();
+//        assertEquals(expected, actual);
     }
     
     /**
@@ -88,50 +86,25 @@ public class ResultsGroupingTest {
      */
     @Test
     public void testLowerPrimePiDisallowed() {
-        ResultsGrouping instance 
-                = new ResultsGroupingImpl(ILL_DEF_QUAD_RING_21);
-        int decrement = -RANDOM.nextInt(720) - 1;
-        try {
-            instance.raisePrimePi(decrement);
-            String msg = "Should not have been able to raise pi by " + decrement 
-                    + " to " + instance.getPrimePi();
-            assertEquals(msg, ResultsGrouping.DEFAULT_PRIME_PI, 
-                    instance.getPrimePi());
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Trying to raise pi by " + decrement 
-                    + " correctly caused IllegalArgumentException");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is the wrong exception for pi increment " + decrement;
-            fail(msg);
-        }
+        fail("REWRITE");
+//        ResultsGrouping instance 
+//                = new ResultsGroupingImpl(ILL_DEF_QUAD_RING_21);
+//        int decrement = -RANDOM.nextInt(720) - 1;
+//        try {
+//            instance.raisePrimePi(decrement);
+//            String msg = "Should not have been able to raise pi by " + decrement 
+//                    + " to " + instance.getPrimePi();
+//            assertEquals(msg, ResultsGrouping.DEFAULT_PRIME_PI, 
+//                    instance.getPrimePi());
+//        } catch (IllegalArgumentException iae) {
+//            System.out.println("Trying to raise pi by " + decrement 
+//                    + " correctly caused IllegalArgumentException");
+//            System.out.println("\"" + iae.getMessage() + "\"");
+//        } catch (RuntimeException re) {
+//            String msg = re.getClass().getName() 
+//                    + " is the wrong exception for pi increment " + decrement;
+//            fail(msg);
+//        }
     }
 
-    public class ResultsGroupingImpl 
-            extends ResultsGrouping<IllDefinedQuadraticInteger> {
-
-        @Override
-        public HashSet<IllDefinedQuadraticInteger> inerts() {
-            throw new UnsupportedOperationException("Not supported, sorry...");
-        }
-
-        @Override
-        public HashMap<IllDefinedQuadraticInteger, 
-        Optional<IllDefinedQuadraticInteger>> splits() {
-            throw new UnsupportedOperationException("Not supported, sorry...");
-        }
-
-        @Override
-        public HashMap<IllDefinedQuadraticInteger, 
-        Optional<IllDefinedQuadraticInteger>> ramifieds() {
-            throw new UnsupportedOperationException("Not supported, sorry...");
-        }
-        
-        public ResultsGroupingImpl(IllDefinedQuadraticRing ring) {
-            super(ring);
-        }
-
-    }
-    
 }
