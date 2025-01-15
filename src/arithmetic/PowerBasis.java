@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -33,13 +33,15 @@ public class PowerBasis {
     
     private final Fraction[] powMults, powAddAdjMults, addAdjs;
     
+    // TODO: Rewrite tests for this
     @Override
     public String toString() {
-        String intermediate = this.toASCIIString();
-        intermediate = intermediate.replace("^2", "\u00B2");
-        intermediate = intermediate.replace("^3", "\u00B3");
-        intermediate = intermediate.replace("^4", "\u00B4");
-        return intermediate;
+        return "TEMP REWIND TO FAILING";
+//        String intermediate = this.toASCIIString();
+//        intermediate = intermediate.replace("^2", "\u00B2");
+//        intermediate = intermediate.replace("^3", "\u00B3");
+//        intermediate = intermediate.replace("^4", "\u00B4");
+//        return intermediate;
     }
     
     public String toASCIIString() {
