@@ -36,7 +36,10 @@ public class PowerBasis {
     // TODO: Rewrite tests for this
     @Override
     public String toString() {
-        return "1";
+        if (this.powMults.length == 1) {
+            return "1";
+        }
+        return "1, a";
     }
     
     public String toASCIIString() {
