@@ -24,14 +24,27 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests for the PowerBasis class.
+ * Tests for the PowerBasis class. While we're certainly concerned with being 
+ * able to represent the power basis of an actual ring that is known to exist 
+ * and which has been studied in some detail, in this test class we're not as 
+ * concerned with the examples being realistic.
  * @author Alonso del Arte
  */
 public class PowerBasisTest {
     
+    private static final Fraction ONE = new Fraction(1);
+    
+    @Test
+    public void testToStringZPowerBasis() {
+        Fraction[] powerMultiplicand = {ONE};
+        PowerBasis instance = new PowerBasis(powerMultiplicand);
+        String expected = "1";
+        String actual = instance.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
-     * Test of toString method, of class PowerBasis. Spaces are desirable but 
-     * not required, so the test strips them out before making any assertions.
+     * Test of the toString function, of the PowerBasis class.
      */
     @Test
     public void testToString() {
@@ -68,7 +81,8 @@ public class PowerBasisTest {
 //        result = QUARTIC_POWER_BASIS.toASCIIString().replace(" ", "");
 //        assertEquals(expResult, result);
 //        expResult = "1,a,a^2,1/3a^3+1/3a";
-//        result = QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS.toASCIIString().replace(" ", "");
+//        result = QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS
+//.toASCIIString().replace(" ", "");
 //        assertEquals(expResult, result);
     }
 
@@ -99,7 +113,7 @@ public class PowerBasisTest {
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        fail("Haven't written test yet");
+        fail("Haven't written test yet".toUpperCase());
     }
     
     /**
@@ -212,7 +226,8 @@ public class PowerBasisTest {
 //        assertArrayEquals(FOUR_ZEROES, 
 //                QUARTIC_POWER_BASIS.getAdditiveAdjustments());
 //        assertArrayEquals(FOUR_ZEROES, 
-//                QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS.getAdditiveAdjustments());
+//                QUARTIC_POWER_BASIS_WITH_POWER_ADDITIVE_ADJUSTMENTS
+//.getAdditiveAdjustments());
     }
     
     /**
