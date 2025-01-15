@@ -43,6 +43,15 @@ public class PowerBasisTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringQuadraticRingPowerBasis() {
+        Fraction[] powerMultiplicands = {ONE, ONE};
+        PowerBasis instance = new PowerBasis(powerMultiplicands);
+        String expected = "1,a";
+        String actual = instance.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function, of the PowerBasis class.
      */
