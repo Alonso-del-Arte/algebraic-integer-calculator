@@ -36,12 +36,7 @@ public class PowerBasis {
     // TODO: Rewrite tests for this
     @Override
     public String toString() {
-        return "TEMP REWIND TO FAILING";
-//        String intermediate = this.toASCIIString();
-//        intermediate = intermediate.replace("^2", "\u00B2");
-//        intermediate = intermediate.replace("^3", "\u00B3");
-//        intermediate = intermediate.replace("^4", "\u00B4");
-//        return intermediate;
+        return "1";
     }
     
     public String toASCIIString() {
