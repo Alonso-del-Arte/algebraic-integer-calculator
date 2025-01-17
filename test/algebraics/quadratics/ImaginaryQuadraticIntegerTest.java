@@ -1122,14 +1122,20 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     /**
-     * Test of toASCIIString method, of class ImaginaryQuadraticInteger. For 
-     * methods that return Strings, spaces are desirable but not required.
-     * Therefore the tests should strip out spaces before asserting equality.
+     * Test of the toASCIIString function, of the ImaginaryQuadraticInteger 
+     * class.
      */
-//    @Test
+    @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        fail("REWRITE THIS TEST");
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRingDOtherThan(-1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = a + "+" + b + "sqrt(" + ring.getRadicand() + ')';
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
