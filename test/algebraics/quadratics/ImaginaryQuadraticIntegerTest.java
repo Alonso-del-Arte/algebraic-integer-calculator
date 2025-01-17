@@ -1138,6 +1138,44 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testToASCIIStringNegativeRe() {
+        int bound = 8192;
+        int a = -RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRingDOtherThan(-1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = a + "+" + b + "sqrt(" + ring.getRadicand() + ')';
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToASCIIStringNegativeReNegativeIm() {
+        int bound = 8192;
+        int a = -RANDOM.nextInt(1, bound);
+        int b = -RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRingDOtherThan(-1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = Integer.toString(a) + b + "sqrt(" + ring.getRadicand() 
+                + ')';
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToASCIIStringPositiveReNegativeIm() {
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = -RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRingDOtherThan(-1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = Integer.toString(a) + b + "sqrt(" + ring.getRadicand() 
+                + ')';
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
