@@ -116,6 +116,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIString() {
+        if (this.quadRing.radicand != -1 && this.regPartMult > 0 
+                && this.surdPartMult > 0) {
+            return this.regPartMult + " + " + this.surdPartMult + "sqrt(" 
+                    + this.quadRing.radicand + ')';
+        }
         if (this.regPartMult == 0 && this.surdPartMult != 0) {
             return switch (this.surdPartMult) {
                 case -1 -> "-i";
