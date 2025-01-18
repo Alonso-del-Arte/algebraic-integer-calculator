@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
@@ -704,7 +705,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
         int fcRet = fileChooser.showSaveDialog(this);
         String message;
         switch (fcRet) {
-            case JFileChooser.APPROVE_OPTION:
+            case JFileChooser.APPROVE_OPTION -> {
                 diagramFile = fileChooser.getSelectedFile();
                 String filePath = diagramFile.getAbsolutePath();
                 prevSavePathname = filePath.substring(0, 
@@ -717,18 +718,19 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
                             + ioe.getMessage();
                     JOptionPane.showMessageDialog(this.ringFrame, message);
                 }
-                break;
-            case JFileChooser.CANCEL_OPTION:
+            }
+            case JFileChooser.CANCEL_OPTION -> {
                 message = "File save canceled";
                 JOptionPane.showMessageDialog(ringFrame, message);
-                break;
-            case JFileChooser.ERROR_OPTION:
+            }
+            case JFileChooser.ERROR_OPTION -> {
                 message = "Error occurred trying to choose a file to save to";
                 JOptionPane.showMessageDialog(ringFrame, message);
-                break;
-            default:
+            }
+            default -> {
                 message = "Unexpected option " + fcRet + " from file chooser";
                 JOptionPane.showMessageDialog(ringFrame, message);
+            }
         }
     }
     
@@ -1165,7 +1167,7 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
             }
         } else {
             String message = "Sorry, unable to open URL\n<" + urlStr 
-                    + ">\nNo default Web browser is not available";
+                    + ">\nWeb browser is not available";
             JOptionPane.showMessageDialog(this.ringFrame, message);
             System.err.println(message);
         }
@@ -1201,56 +1203,26 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
     public void actionPerformed(ActionEvent ae) {
         String cmd = ae.getActionCommand();
         switch (cmd) {
-            case "saveDiagramAs":
-                this.saveDiagramAs();
-                break;
-            case "close":
+            case "saveDiagramAs" -> this.saveDiagramAs();
+            case "close" -> {
                 RingDisplay.windowCount--;
                 this.ringFrame.dispose();
-                break;
-            case "exit":
-                System.exit(0);
-                break;
-            case "chooseD":
-                this.chooseDiscriminant();
-                break;
-            case "incrD":
-                this.incrementDiscriminant();
-                break;
-            case "decrD":
-                this.decrementDiscriminant();
-                break;
-            case "prevD":
-                this.previousDiscriminant();
-                break;
-            case "nextD":
-                this.nextDiscriminant();
-                break;
-            case "copyReadouts":
-                this.copyReadoutsToClipboard();
-                break;
-            case "copyDiagram":
-                this.copyDiagramToClipboard();
-                break;
-            case "zoomIn":
-                this.zoomIn();
-                break;
-            case "zoomOut":
-                this.zoomOut();
-                break;
-            case "decrZoomStep":
-                this.decreaseZoomStep();
-                break;
-            case "incrZoomStep":
-                this.increaseZoomStep();
-                break;
-            case "decrDotRadius":
-                this.decreaseDotRadius();
-                break;
-            case "incrDotRadius":
-                this.increaseDotRadius();
-                break;
-            case "defaultView":
+            }
+            case "exit" -> System.exit(0);
+            case "chooseD" -> this.chooseDiscriminant();
+            case "incrD" -> this.incrementDiscriminant();
+            case "decrD" -> this.decrementDiscriminant();
+            case "prevD" -> this.previousDiscriminant();
+            case "nextD" -> this.nextDiscriminant();
+            case "copyReadouts" -> this.copyReadoutsToClipboard();
+            case "copyDiagram" -> this.copyDiagramToClipboard();
+            case "zoomIn" -> this.zoomIn();
+            case "zoomOut" -> this.zoomOut();
+            case "decrZoomStep" -> this.decreaseZoomStep();
+            case "incrZoomStep" -> this.increaseZoomStep();
+            case "decrDotRadius" -> this.decreaseDotRadius();
+            case "incrDotRadius" -> this.increaseDotRadius();
+            case "defaultView" -> {
                 String message = "This will reset pixels per unit interval and " 
                         + this.dotRadiusOrLineThicknessText
                         + " only";
@@ -1260,21 +1232,12 @@ public abstract class RingDisplay extends JPanel implements ActionListener,
                 if (reply == JOptionPane.OK_OPTION) {
                     this.resetViewDefaults();
                 }
-                break;
-            case "toggleTheta":
-                this.toggleThetaNotation();
-                break;
-            case "toggleReadOuts":
-                this.toggleReadOutsEnabled();
-                break;
-            case "showUserManual":
-                this.showUserManual();
-                break;
-            case "about":
-                this.showAboutBox();
-                break;
-            default:
-                System.out.println("Command " + cmd + " not recognized");
+            }
+            case "toggleTheta" -> this.toggleThetaNotation();
+            case "toggleReadOuts" -> this.toggleReadOutsEnabled();
+            case "showUserManual" -> this.showUserManual();
+            case "about" -> this.showAboutBox();
+            default -> System.err.println("Command " + cmd + " not recognized");
         }
     }
     
