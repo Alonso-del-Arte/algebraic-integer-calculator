@@ -33,13 +33,13 @@ public class PowerBasis {
     
     private final Fraction[] powMults, powAddAdjMults, addAdjs;
     
-    // TODO: Rewrite tests for this
     @Override
     public String toString() {
-        if (this.powMults.length == 1) {
-            return "1";
-        }
-        return "1, a";
+        return switch (this.powMults.length) {
+            case 1 -> "1";
+            case 2 -> "1, a";
+            default -> "1, a, a\u00B2";
+        };
     }
     
     public String toASCIIString() {
