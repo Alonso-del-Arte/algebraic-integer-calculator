@@ -52,6 +52,15 @@ public class PowerBasisTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringCubicRingPowerBasis() {
+        Fraction[] powerMultiplicands = {ONE, ONE, ONE};
+        PowerBasis instance = new PowerBasis(powerMultiplicands);
+        String expected = "1,a,a\u00B2";
+        String actual = instance.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function, of the PowerBasis class.
      */
@@ -59,12 +68,6 @@ public class PowerBasisTest {
     public void testToString() {
         System.out.println("toString");
         fail("BREAK THIS TEST UP INTO SMALLER TESTS");
-//        String expResult = "1,a";
-//        String result = QUADRATIC_POWER_BASIS.toString().replace(" ", "");
-//        assertEquals(expResult, result);
-//        expResult = "1,a,a\u00B2";
-//        result = CUBIC_POWER_BASIS.toString().replace(" ", "");
-//        assertEquals(expResult, result);
 //        expResult = "1,a,1/7a\u00B2,1/7a\u00B3";
 //        result = QUARTIC_POWER_BASIS.toString().replace(" ", "");
 //        assertEquals(expResult, result);
