@@ -30,8 +30,7 @@ public abstract class CubicRing implements IntegerRing {
      */
     public static final int MAX_ALGEBRAIC_DEGREE = 3;
     
-    // TODO: Write a test for this
-    static final char CUBE_ROOT_SYMBOL = '?';// '\u221B';
+    static final char CUBE_ROOT_SYMBOL = '\u221B';
     
     /**
      * Gives the maximum algebraic degree an algebraic integer in a cubic ring 
