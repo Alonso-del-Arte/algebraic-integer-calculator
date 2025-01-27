@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -39,6 +39,15 @@ public class CubicRingTest {
         int expected = 3;
         int actual = CubicRing.MAX_ALGEBRAIC_DEGREE;
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testCubicRootSymbolConstant() {
+        char expected = '\u221B';
+        char actual = CubicRing.CUBE_ROOT_SYMBOL;
+        String message = "Cubic root symbol '" + actual + "' should match '" 
+                + expected + "'";
+        assertEquals(message, expected, actual);
     }
     
     /**
