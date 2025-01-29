@@ -24,10 +24,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Tests of the PureCubicInteger class.
  * @author Alonso del Arte
  */
 public class PureCubicIntegerTest {
+    
+    private static CubicRing chooseRing() {
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        return new PureCubicRing(d);
+    }
     
     /**
      * Test of getRing method, of class PureCubicInteger.
@@ -35,9 +41,7 @@ public class PureCubicIntegerTest {
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        int n = randomNumber(6) + 2;
-        int d = randomSquarefreeNumberMod(n, 9);
-        CubicRing expected = new PureCubicRing(d);
+        CubicRing expected = chooseRing();
         PureCubicInteger number = new PureCubicInteger(randomNumber(), 
                 randomNumber(), randomNumber(), expected);
         CubicRing actual = number.getRing();
