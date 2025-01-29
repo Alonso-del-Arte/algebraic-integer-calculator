@@ -30,6 +30,9 @@ public abstract class CubicRing implements IntegerRing {
      */
     public static final int MAX_ALGEBRAIC_DEGREE = 3;
     
+    /**
+     * The cubic root symbol &#x221B;, Unicode U+221B.
+     */
     static final char CUBE_ROOT_SYMBOL = '\u221B';
     
     /**
