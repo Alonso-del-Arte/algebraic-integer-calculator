@@ -68,7 +68,7 @@ public class PureCubicRing extends CubicRing {
     
     @Override
     public String toString() {
-        return "Z[\u221B" + this.radicand + "]";
+        return "Z[" + CubicRing.CUBE_ROOT_SYMBOL + this.radicand + "]";
     }
 
     @Override
