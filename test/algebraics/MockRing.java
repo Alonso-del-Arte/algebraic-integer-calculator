@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -18,6 +18,17 @@ package algebraics;
 
 import arithmetic.PowerBasis;
 import fractions.Fraction;
+
+
+
+
+
+
+
+
+
+
+import static calculators.TextCalculator.*;
 
 /**
  * A mock implementation to be used for testing purposes only. This class should 
@@ -125,7 +136,13 @@ public class MockRing implements IntegerRing {
      * @param maxDegree The maximum degree. For example, 3.
      */
     public MockRing(int maxDegree) {
-        this(maxDegree, false);
+//        this(maxDegree, false);
+        if (maxDegree < 1) {
+            String excMsg = "Degree should be positive, not " + maxDegree;
+            throw new IllegalArgumentException(excMsg);
+        }
+        this.maximumDegree = maxDegree;
+        this.onlyReals = false;
     }
     
     /**
@@ -137,12 +154,13 @@ public class MockRing implements IntegerRing {
      * @throws IllegalArgumentException If {@code maxDegree} is negative or 0.
      */
     public MockRing(int maxDegree, boolean includeImaginary) {
-        if (maxDegree < 1) {
-            String excMsg = "Degree should be positive, not " + maxDegree;
-            throw new IllegalArgumentException(excMsg);
-        }
         this.maximumDegree = maxDegree;
         this.onlyReals = !includeImaginary;
     }
     
+    public MockRing(char symbol, int maxDegree, boolean includeImaginary) {
+        this.maximumDegree = maxDegree;
+        this.onlyReals = !includeImaginary;
+    }
+
 }
