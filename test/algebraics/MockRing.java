@@ -19,17 +19,6 @@ package algebraics;
 import arithmetic.PowerBasis;
 import fractions.Fraction;
 
-
-
-
-
-
-
-
-
-
-import static calculators.TextCalculator.*;
-
 /**
  * A mock implementation to be used for testing purposes only. This class should 
  * not be available in any end user context. Use this for example in situations 
