@@ -160,7 +160,7 @@ public class MockRingTest {
     }
     
     @Test
-    public void testConstructorRejectsNegativeDegree() {
+    public void testOneParamAuxConstructorRejectsNegativeDegree() {
         int maxDegree = -randomNumber(4096) - 1;
         String msg = "Constructor should reject degree " + maxDegree;
         Throwable t = assertThrows(() -> {
@@ -174,11 +174,39 @@ public class MockRingTest {
     }
     
     @Test
-    public void testConstructorRejectsDegreeZero() {
+    public void testOneParamAuxConstructorRejectsDegreeZero() {
         int maxDegree = 0;
         String msg = "Constructor should reject degree " + maxDegree;
         Throwable t = assertThrows(() -> {
             MockRing badRing = new MockRing(maxDegree);
+            System.out.println(msg + ", not given " + badRing.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testTwoParamAuxConstructorRejectsNegativeDegree() {
+        int maxDegree = -randomNumber(4096) - 1;
+        String msg = "Constructor should reject degree " + maxDegree;
+        Throwable t = assertThrows(() -> {
+            MockRing badRing = new MockRing(maxDegree, RANDOM.nextBoolean());
+            System.out.println(msg + ", not given " + badRing.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testTwoParamAuxConstructorRejectsDegreeZero() {
+        int maxDegree = 0;
+        String msg = "Constructor should reject degree " + maxDegree;
+        Throwable t = assertThrows(() -> {
+            MockRing badRing = new MockRing(maxDegree, RANDOM.nextBoolean());
             System.out.println(msg + ", not given " + badRing.toString());
         }, IllegalArgumentException.class, msg);
         String excMsg = t.getMessage();
