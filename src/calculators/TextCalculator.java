@@ -50,7 +50,7 @@ public class TextCalculator {
      * is archaic), &#x03CB; (Greek small letter upsilon with dialytika), &Rho; 
      * (Greek capital letter rho).
      */
-    static char randomGreekLetter() {
+    public static char randomGreekLetter() {
         char propChar = '\u03A2';
         do {
             propChar = (char) (GREEK_BLOCK_BEGIN 
