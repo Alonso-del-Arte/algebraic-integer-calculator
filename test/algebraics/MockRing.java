@@ -121,36 +121,34 @@ public class MockRing implements IntegerRing {
     /**
      * Auxiliary constructor. Use this constructor when it's necessary to 
      * specify maximum degree but not whether or not the ring includes imaginary 
-     * numbers.
+     * numbers, nor the symbol.
      * @param maxDegree The maximum degree. For example, 3.
      */
     public MockRing(int maxDegree) {
-//        this(maxDegree, false);
-        if (maxDegree < 1) {
-            String excMsg = "Degree should be positive, not " + maxDegree;
-            throw new IllegalArgumentException(excMsg);
-        }
-        this.maximumDegree = maxDegree;
-        this.onlyReals = false;
+        this(maxDegree, false);
     }
     
     /**
-     * Primary constructor. Use this constructor when it's necessary to specify 
-     * that an example ring is not purely real.
+     * Auxiliary constructor. Use this constructor when it's necessary to 
+     * specify that an example ring is not purely real, nor the symbol.
      * @param maxDegree The maximum degree. For example, 5.
      * @param includeImaginary Whether or not the example ring contains 
      * imaginary numbers. For example, true.
      * @throws IllegalArgumentException If {@code maxDegree} is negative or 0.
      */
     public MockRing(int maxDegree, boolean includeImaginary) {
-        if (maxDegree < 1) {
-            String excMsg = "Degree should be positive, not " + maxDegree;
-            throw new IllegalArgumentException(excMsg);
-        }
-        this.maximumDegree = maxDegree;
-        this.onlyReals = !includeImaginary;
+        this('?', maxDegree, includeImaginary);
     }
     
+    /**
+     * Primary constructor.
+     * @param symbol The symbol for a generator for the ring. For example, 
+     * &theta;.
+     * @param maxDegree The maximum degree. For example, 5.
+     * @param includeImaginary Whether or not the example ring contains 
+     * imaginary numbers. For example, true.
+     * @throws IllegalArgumentException If {@code maxDegree} is negative or 0.
+     */
     public MockRing(char symbol, int maxDegree, boolean includeImaginary) {
         if (maxDegree < 1) {
             String excMsg = "Degree should be positive, not " + maxDegree;
