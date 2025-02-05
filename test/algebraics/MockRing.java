@@ -152,6 +152,10 @@ public class MockRing implements IntegerRing {
     }
     
     public MockRing(char symbol, int maxDegree, boolean includeImaginary) {
+        if (maxDegree < 1) {
+            String excMsg = "Degree should be positive, not " + maxDegree;
+            throw new IllegalArgumentException(excMsg);
+        }
         this.maximumDegree = maxDegree;
         this.onlyReals = !includeImaginary;
     }
