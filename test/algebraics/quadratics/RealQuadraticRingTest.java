@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -199,19 +199,17 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of getAbsNegRadSqrt method, of class RealQuadraticRing.
+     * Test of the getAbsNegRadSqrt function, of the RealQuadraticRing class.
      */
     @Test
     public void testGetAbsNegRadSqrt() {
         System.out.println("getAbsNegRadSqrt");
-        assertEquals(Math.sqrt(2), RING_Z2.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(5), RING_ZPHI.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(13), RING_OQ13.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
-        assertEquals(Math.sqrt(randomDiscr), ringRandom.getAbsNegRadSqrt(), 
-                QuadraticRingTest.TEST_DELTA);
+        int d = choosePositiveRandomSquarefreeNot1();
+        RealQuadraticRing instance = new RealQuadraticRing(d);
+        double expected = Math.sqrt(d);
+        double actual = instance.getAbsNegRadSqrt();
+        String message = "Reckoning square root in " + instance.toString();
+        assertEquals(message, expected, actual, QuadraticRingTest.TEST_DELTA);
     }
     
     /**
