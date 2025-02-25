@@ -54,7 +54,7 @@ public final class RealQuadraticRing extends QuadraticRing {
      */
     @Override
     public double getAbsNegRadSqrt() {
-        return -1.0;// this.realRadSqrt;
+        return this.realRadSqrt;
     }
     
     /**
