@@ -31,7 +31,6 @@ import viewers.ImagQuadRingDisplay;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -48,37 +47,6 @@ public class ImaginaryQuadraticRingTest {
     
     private static final ImaginaryQuadraticRing RING_EISENSTEIN 
             = new ImaginaryQuadraticRing(-3);
-    
-    private static ImaginaryQuadraticRing ringRandom;
-    
-    private static int randomDiscr;
-    
-    /**
-     * Sets up five ImaginaryQuadraticRing objects, corresponding to 
-     * <b>Z</b>[<i>i</i>], <b>Z</b>[&radic;&minus;2], <b>Z</b>[&omega;], 
-     * <i>O</i><sub><b>Q</b>(&radic;&minus;7)</sub> and a randomly chosen ring.
-     * The randomly chosen ring <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> is 
-     * determined by <i>d</i> being at most &minus;5. It is unlikely but not 
-     * impossible that this could turn out to be 
-     * <i>O</i><sub><b>Q</b>(&radic;&minus;7)</sub>, which would be just fine if 
-     * it just made some of the tests redundant. But since it could make {@link 
-     * #testEquals()} fail, it is necessary to guard against this unlikely 
-     * eventuality.
-     */
-    @BeforeClass
-    public static void setUpClass() {
-        randomDiscr = -NumberTheoreticFunctionsCalculator
-                .randomSquarefreeNumber(ImagQuadRingDisplay.MINIMUM_RING_D);
-        if (randomDiscr > -5) {
-            randomDiscr = -5;
-        }
-        if (randomDiscr == -7) {
-            randomDiscr = -11;
-        }
-        ringRandom = new ImaginaryQuadraticRing(randomDiscr);
-        System.out.println(ringRandom.toASCIIString() 
-                + " has been randomly chosen for testing purposes");
-    }
     
     @Test
     public void testToStringZI() {
