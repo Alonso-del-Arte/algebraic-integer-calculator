@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -46,14 +46,8 @@ public class ImaginaryQuadraticRingTest {
     private static final ImaginaryQuadraticRing RING_GAUSSIAN 
             = new ImaginaryQuadraticRing(-1);
     
-    private static final ImaginaryQuadraticRing RING_ZI2 
-            = new ImaginaryQuadraticRing(-2);
-    
     private static final ImaginaryQuadraticRing RING_EISENSTEIN 
             = new ImaginaryQuadraticRing(-3);
-    
-    private static final ImaginaryQuadraticRing RING_OQI7 
-            = new ImaginaryQuadraticRing(-7);
     
     private static ImaginaryQuadraticRing ringRandom;
     
