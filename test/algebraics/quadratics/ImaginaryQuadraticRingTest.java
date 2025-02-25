@@ -26,7 +26,6 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
 import fractions.Fraction;
-import viewers.ImagQuadRingDisplay;
 
 import java.util.HashSet;
 import java.util.Set;
