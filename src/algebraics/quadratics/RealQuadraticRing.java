@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -15,7 +15,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics.quadratics;
-import calculators.NumberTheoreticFunctionsCalculator;
+
 /**
  * Defines objects to represent real quadratic rings.
  * @author Alonso del Arte
@@ -54,7 +54,7 @@ public final class RealQuadraticRing extends QuadraticRing {
      */
     @Override
     public double getAbsNegRadSqrt() {
-        return this.realRadSqrt;
+        return -1.0;// this.realRadSqrt;
     }
     
     /**
