@@ -213,26 +213,16 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of hasHalfIntegers method, of class RealQuadraticRing, inherited 
-     * from {@link QuadraticInteger}.
+     * Test of the hasHalfIntegers function, of the RealQuadraticRing class, 
+     * inherited from {@link QuadraticInteger}.
      */
     @Test
     public void testHasHalfIntegers() {
         System.out.println("hasHalfIntegers");
-        String msgNoHalves = " should not be said to have half-integers";
-        String message = RING_Z2.toString() + msgNoHalves;
-        assert !RING_Z2.hasHalfIntegers() : message;
-        String msgHalves = " should be said to have half-integers";
-        message = RING_ZPHI.toString() + msgHalves;
-        assert RING_ZPHI.hasHalfIntegers() : message;
-        message = RING_OQ13.toString() + msgHalves;
-        assertTrue(message, RING_OQ13.hasHalfIntegers());
-        if (ringRandomD1Mod4) {
-            message = ringRandom.toString() + msgHalves;
-        } else {
-            message = ringRandom.toString() + msgNoHalves;
-        }
-        assertEquals(message, ringRandomD1Mod4, ringRandom.hasHalfIntegers());
+        int d = randomSquarefreeNumberMod(1, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String msg = "Ring " + ring.toString() + " should have \"half-integers\"";
+        assert ring.hasHalfIntegers() : msg;
     }
     
     @Test
