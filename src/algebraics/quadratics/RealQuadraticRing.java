@@ -35,6 +35,11 @@ public final class RealQuadraticRing extends QuadraticRing {
         return true;
     }
     
+    @Override
+    public boolean hasHalfIntegers() {
+        return false;
+    }
+    
     /**
      * Gives the numeric value of the square root of the radicand. Note that 
      * this function is not available in the abstract superclass.
