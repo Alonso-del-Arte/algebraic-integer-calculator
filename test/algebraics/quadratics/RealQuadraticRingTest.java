@@ -234,6 +234,14 @@ public class RealQuadraticRingTest {
     }
     
     @Test
+    public void testRingD3Mod4DoesNotHaveHalfIntegers() {
+        int d = randomSquarefreeNumberMod(3, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String msg = ring.toString() + " should not have \"half-integers\"";
+        assert !ring.hasHalfIntegers() : msg;
+    }
+    
+    @Test
     public void testReferentialEquality() {
         int d = choosePositiveRandomSquarefreeNot1();
         QuadraticRing ring = new RealQuadraticRing(d);
