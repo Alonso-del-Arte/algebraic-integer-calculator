@@ -221,8 +221,16 @@ public class RealQuadraticRingTest {
         System.out.println("hasHalfIntegers");
         int d = randomSquarefreeNumberMod(1, 4);
         QuadraticRing ring = new RealQuadraticRing(d);
-        String msg = "Ring " + ring.toString() + " should have \"half-integers\"";
+        String msg = ring.toString() + " should have \"half-integers\"";
         assert ring.hasHalfIntegers() : msg;
+    }
+    
+    @Test
+    public void testRingD2Mod4DoesNotHaveHalfIntegers() {
+        int d = randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        String msg = ring.toString() + " should not have \"half-integers\"";
+        assert !ring.hasHalfIntegers() : msg;
     }
     
     @Test
