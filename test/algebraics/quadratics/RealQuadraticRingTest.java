@@ -17,7 +17,6 @@
 package algebraics.quadratics;
 
 import arithmetic.PowerBasis;
-import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
@@ -30,7 +29,6 @@ import fractions.Fraction;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -42,37 +40,7 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class RealQuadraticRingTest {
     
-    private static final RealQuadraticRing RING_Z2 = new RealQuadraticRing(2);
-    
     private static final RealQuadraticRing RING_ZPHI = new RealQuadraticRing(5);
-    
-    private static final RealQuadraticRing RING_OQ13 
-            = new RealQuadraticRing(13);
-    
-    private static RealQuadraticRing ringRandom;
-    
-    private static int randomDiscr;
-    private static boolean ringRandomD1Mod4;
-    
-    /**
-     * Sets up four RealQuadraticRing objects, corresponding to 
-     * <b>Z</b>[&radic;2], <b>Z</b>[&phi;], 
-     * <i>O</i><sub><b>Q</b>(&radic;13)</sub> and a randomly chosen ring. The 
-     * randomly chosen ring <i>O</i><sub><b>Q</b>(&radic;<i>d</i>)</sub> is 
-     * determined by <i>d</i> being at least 6.
-     */
-    @BeforeClass
-    public static void setUpClass() {
-        randomDiscr = NumberTheoreticFunctionsCalculator
-                .randomSquarefreeNumber(100);
-        if (randomDiscr < 6) {
-            randomDiscr = 6;
-        }
-        ringRandomD1Mod4 = (randomDiscr % 4 == 1);
-        ringRandom = new RealQuadraticRing(randomDiscr);
-        System.out.println(ringRandom.toASCIIString() 
-                + " has been randomly chosen for testing purposes.");
-    }
     
     private static int choosePositiveRandomSquarefreeNot1() {
         int number;
