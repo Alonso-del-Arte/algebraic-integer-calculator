@@ -37,7 +37,7 @@ public final class RealQuadraticRing extends QuadraticRing {
     
     @Override
     public boolean hasHalfIntegers() {
-        return false;
+        return true;
     }
     
     /**
