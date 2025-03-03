@@ -46,6 +46,11 @@ public class PureCubicRing extends CubicRing {
     public boolean isPurelyReal() {
         return true;
     }
+    
+    // TODO: Write tests for this
+    public int getRadicand() {
+        return 0;
+    }
 
     // TODO: Write tests for this
     @Override
