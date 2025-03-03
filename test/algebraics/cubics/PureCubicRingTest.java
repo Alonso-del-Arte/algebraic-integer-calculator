@@ -223,6 +223,18 @@ public class PureCubicRingTest {
     // cubefree), negative d
     
     @Test
+    public void testGetRadicand() {
+        System.out.println("getRadicand");
+        int expected = randomSquarefreeNumber(128);
+        PureCubicRing ring = new PureCubicRing(expected);
+        int actual = ring.getRadicand();
+        String message = "Getting radicand for " + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    // TODO: Write tests for when radicand is not squarefree (but is cubefree)
+    
+    @Test
     public void testReferentialEquality() {
         int n = randomNumber(6) + 2;
         int d = randomSquarefreeNumberMod(n, 9);
