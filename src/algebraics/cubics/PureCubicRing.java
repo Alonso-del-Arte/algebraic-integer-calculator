@@ -49,7 +49,7 @@ public class PureCubicRing extends CubicRing {
     
     // TODO: Write tests for this
     public int getRadicand() {
-        return 0;
+        return this.radicand;
     }
 
     // TODO: Write tests for this
