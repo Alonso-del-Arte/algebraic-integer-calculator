@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -343,7 +343,7 @@ public class RealQuadraticIntegerTest {
      * inherited from QuadraticInteger. Spaces in the results are desirable but 
      * not required. Therefore the tests should strip out spaces before 
      * asserting equality.
-     */@org.junit.Ignore
+     */
     @Test
     public void testMinPolynomialString() {
         System.out.println("minPolynomialString");
@@ -397,7 +397,7 @@ public class RealQuadraticIntegerTest {
      * inherited from QuadraticInteger. Spaces in the results are desirable but 
      * not required. Therefore the tests should strip out spaces before 
      * asserting equality.
-     */@org.junit.Ignore
+     */
     @Test
     public void testMinPolynomialStringTeX() {
         System.out.println("minPolynomialStringTeX");
@@ -451,7 +451,7 @@ public class RealQuadraticIntegerTest {
      * inherited from QuadraticInteger. Spaces in the results are desirable but 
      * not required. Therefore the tests should strip out spaces before 
      * asserting equality.
-     */@org.junit.Ignore
+     */
     @Test
     public void testMinPolynomialStringHTML() {
         System.out.println("minPolynomialStringHTML");
