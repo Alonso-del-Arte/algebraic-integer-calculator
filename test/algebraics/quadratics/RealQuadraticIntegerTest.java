@@ -339,15 +339,32 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of minPolynomialString method, of class RealQuadraticInteger, 
-     * inherited from QuadraticInteger. Spaces in the results are desirable but 
-     * not required. Therefore the tests should strip out spaces before 
+     * Test of the minPolynomialString function, of the RealQuadraticInteger 
+     * class, inherited from QuadraticInteger. Spaces in the results are 
+     * desirable but not required. Therefore this test strips out spaces before 
      * asserting equality.
      */
     @Test
     public void testMinPolynomialString() {
         System.out.println("minPolynomialString");
-        fail("REWRITE THIS TEST");
+        int bound = 128;
+        int halfBound = bound / 2;
+        int power = randomPowerOfTwo();
+        int adjust = (power < 65536) ? power : (power >> 16);
+        int a = (randomNumber(bound) - halfBound) | adjust;
+        int b = (randomNumber(bound) - halfBound) | adjust;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        int d = ring.getRadicand();
+        int trace = -2 * a;
+        int norm = a * a - d * b * b;
+        String intermediate = "x\u00B2+" + trace + "x+" + norm;
+        String expected = intermediate.replace("+-", MINUS_SIGN);
+        String actual = number.minPolynomialString().replace(" ", "");
+        String message = "Reckoning minimal polynomial of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
 //        String expResult, result;
 //        for (int i = 0; i < totalTestIntegers; i++) {
 //            expResult = "x\u00B2";
@@ -390,7 +407,6 @@ public class RealQuadraticIntegerTest {
 //           sake of completeness than anything else. Feel free to delete if 
 //           inconvenient. */
 //        assertEquals("x", zeroRQI.minPolynomialString());
-    }
 
     /**
      * Test of minPolynomialStringTeX method, of class RealQuadraticInteger, 
