@@ -63,7 +63,8 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public String minPolynomialString() {
-        return "TEMP REWIND TO FAILING";
+        String intermediate = "x\u00B2+" + (-this.trace()) + "x+" + this.norm();
+        return intermediate.replace("+-", "\u2212");
     }
     
     /**
