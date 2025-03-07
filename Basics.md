@@ -83,10 +83,10 @@ Likewise, $x^4 + 7 = 0$ has no solutions in real numbers either. The number $x =
 -\root 4 \of 7 \approx -1.626576561697786$ is not a solution, since then $x^4 = 
 7$, not $-7$.
 
-Mathematicians like Girolamo Cardano resolved the quandary of equations like 
-$x^2 + 7 = 0$ by imagining that there exists a number $i$ such that $i^2 = -1$. 
-Then, to solve an equation of the form $x^2 = d$ where $d$ is negative, it 
-became a simple matter of multiplying $\sqrt{-d}$ by $i$. 
+In the 16<sup>th</sup> Century, mathematicians like Girolamo Cardano resolved 
+these kinds of quandaries by imagining that there exists a number $i$ such that 
+$i^2 = -1$. Then, to solve an equation of the form $x^2 = d$ where $d$ is 
+negative, it became a simple matter of multiplying $\sqrt{-d}$ by $i$. 
 
 So, to solve $x^2 = -7$, we take $\sqrt 7$ and multiply it by $i$. We can notate 
 this example as either $i \sqrt 7$, which might be regarded as more correct, or 
