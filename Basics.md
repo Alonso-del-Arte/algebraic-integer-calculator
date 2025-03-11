@@ -101,7 +101,8 @@ we obtain $x^4 = -1$. This suggests that $x^2 = i$ and therefore $x = \sqrt i$.
 But then what is $\sqrt i$? As it turns out, it's $$\frac{1}{\sqrt 2} + 
 \frac{i}{\sqrt 2},$$ which is a number with both a nonzero real part and a 
 nonzero imaginary part. We don't need a different kind of number for such 
-arithmetic with complex numbers.
+arithmetic with complex numbers. The complex numbers are complete for all 
+arithmetic operations except those involving division by zero.
 
 ## Divisibility
 
