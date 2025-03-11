@@ -167,6 +167,15 @@ clearly does not divide 16 and it's also clear that 48 does not divide 141
 either, which is an odd number. And 48 is not irreducible either, since it's 
 divisible by 2 and by 3.
 
+In $\mathbb Z$, every nonzero, non-unit number is either irreducible and prime 
+or reducible and not prime. There are no irreducible but non-prime numbers in 
+$\mathbb Z$. Disregarding multiplication by units, every nonzero number in 
+$\mathbb Z$ has one unique factorization into primes. A ring with these 
+properties is then called a **unique factorization domain** (UFD).
+
+In my opinion, non-UFDs are far more interesting. And for each degree higher 
+than 1, there are infinitely many rings that are not UFDs.
+
 ## Rings of higher degree
 
 ### Degree 2
