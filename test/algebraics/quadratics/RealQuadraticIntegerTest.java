@@ -1610,6 +1610,15 @@ public class RealQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringZero() {
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(0, 0, ring);
+        String expected = "0";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
