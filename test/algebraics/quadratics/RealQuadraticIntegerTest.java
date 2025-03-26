@@ -347,6 +347,7 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testMinPolynomialString() {
         System.out.println("minPolynomialString");
+        fail("BRITTLE TEST, NEEDS REWRITE");
         int bound = 128;
         int halfBound = bound / 2;
         int power = randomPowerOfTwo();
