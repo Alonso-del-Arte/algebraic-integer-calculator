@@ -1619,6 +1619,17 @@ public class RealQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringNegativeRegZeroSurd() {
+        int bound = 16384;
+        int a = -RANDOM.nextInt(1, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, 0, ring);
+        String expected = Integer.toString(a);
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class RealQuadraticInteger, inherited 
      * from QuadraticInteger.
