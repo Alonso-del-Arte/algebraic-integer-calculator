@@ -1631,13 +1631,20 @@ public class RealQuadraticIntegerTest {
     }
     
     /**
-     * Test of toASCIIString method, of class RealQuadraticInteger, inherited 
-     * from QuadraticInteger.
-     */@org.junit.Ignore
+     * Test of the toASCIIString function, of the RealQuadraticInteger class, 
+     * inherited from QuadraticInteger.
+     */
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-        fail("REWRITE THIS TEST");
+        int bound = 8192;
+        int a = RANDOM.nextInt(1, bound);
+        int b = RANDOM.nextInt(2, bound);
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        String expected = a + "+" + b + "sqrt(" + ring.getRadicand() + ")";
+        String actual = number.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
