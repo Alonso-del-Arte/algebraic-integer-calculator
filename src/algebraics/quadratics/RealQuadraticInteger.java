@@ -61,6 +61,12 @@ public class RealQuadraticInteger extends QuadraticInteger
         }
     }
     
+    // TODO: Rewrite tests
+    @Override
+    public String toASCIIString() {
+        return "REWIND TO FAILING";
+    }
+    
     @Override
     public String minPolynomialString() {
         String intermediate = "x\u00B2+" + (-this.trace()) + "x+" + this.norm();
