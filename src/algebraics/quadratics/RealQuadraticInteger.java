@@ -64,6 +64,9 @@ public class RealQuadraticInteger extends QuadraticInteger
     // TODO: Rewrite tests
     @Override
     public String toASCIIString() {
+        if (this.regPartMult > 0) {
+            return Integer.toString(this.regPartMult);
+        }
         return "REWIND TO FAILING";
     }
     
