@@ -63,9 +63,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     @Override
     public String toASCIIString() {
-        if (this.regPartMult > 0 && this.surdPartMult < 0) {
-            return "TO FAIL THE NEXT TEST";
-        }
         if (this.regPartMult != 0 && this.surdPartMult != 0) {
             String midSign = (this.surdPartMult > -1) ? " + " : " - ";
             return Integer.toString(this.regPartMult) + midSign 
