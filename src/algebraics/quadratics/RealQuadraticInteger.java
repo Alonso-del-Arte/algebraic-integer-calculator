@@ -61,10 +61,9 @@ public class RealQuadraticInteger extends QuadraticInteger
         }
     }
     
-    // TODO: Rewrite tests
     @Override
     public String toASCIIString() {
-        if (this.regPartMult > 0 && this.surdPartMult > 0) {
+        if (this.regPartMult != 0 && this.surdPartMult > 0) {
             return Integer.toString(this.regPartMult) + " + " 
                     + this.surdPartMult + "sqrt(" + this.quadRing.radicand 
                     + ")";
