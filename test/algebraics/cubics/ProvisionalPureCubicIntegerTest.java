@@ -337,6 +337,25 @@ public class ProvisionalPureCubicIntegerTest {
     }
     
     @Test
+    public void testConstructorRejectsNullFractionB() {
+        Fraction a = wrapInteger(randomNumber());
+        Fraction c = wrapInteger(randomNumber());
+        CubicRing ring = chooseRing();
+        String msg = "Null fraction B should have caused NPE";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new ProvisionalPureCubicInteger(a, null,  
+                    c, ring);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.getClass().getName() + "@" 
+                    + Integer.toHexString(badInstance.hashCode()));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
     public void testFractionParamsConstructorRejectsNullRing() {
         Fraction a = wrapInteger(randomNumber());
         Fraction b = wrapInteger(randomNumber());
