@@ -24,6 +24,8 @@ import fractions.Fraction;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the ProvisionalPureCubicInteger class. Normally I would do this sort 
  * of work in a file not checked into version control. But as I expect this work 
@@ -289,6 +291,26 @@ public class ProvisionalPureCubicIntegerTest {
 //        assertEquals(expResult, result, 0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testIntParamsConstructorRejectsNullRing() {
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        String msg = "Null ring should have caused NPE";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new ProvisionalPureCubicInteger(a, b, c, 
+                    null);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.getClass().getName() + "@" 
+                    + Integer.toHexString(badInstance.hashCode()));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
 }
