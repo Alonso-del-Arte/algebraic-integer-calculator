@@ -61,6 +61,48 @@ public class ProvisionalPureCubicIntegerTest {
     }
     
     /**
+     * Test of toASCIIString method, of class ProvisionalPureCubicInteger.
+     */
+    @Test
+    public void testToASCIIString() {
+        System.out.println("toASCIIString");
+//        ProvisionalPureCubicInteger instance = null;
+//        String expResult = "";
+//        String result = instance.toASCIIString();
+//        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of toTeXString method, of class ProvisionalPureCubicInteger.
+     */
+    @Test
+    public void testToTeXString() {
+        System.out.println("toTeXString");
+//        ProvisionalPureCubicInteger instance = null;
+//        String expResult = "";
+//        String result = instance.toTeXString();
+//        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of toHTMLString method, of class ProvisionalPureCubicInteger.
+     */
+    @Test
+    public void testToHTMLString() {
+        System.out.println("toHTMLString");
+//        ProvisionalPureCubicInteger instance = null;
+//        String expResult = "";
+//        String result = instance.toHTMLString();
+//        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
      * Test of algebraicDegree method, of class ProvisionalPureCubicInteger.
      */
     @Test
@@ -153,48 +195,6 @@ public class ProvisionalPureCubicIntegerTest {
 //        ProvisionalPureCubicInteger instance = null;
 //        String expResult = "";
 //        String result = instance.minPolynomialStringHTML();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toASCIIString method, of class ProvisionalPureCubicInteger.
-     */
-    @Test
-    public void testToASCIIString() {
-        System.out.println("toASCIIString");
-//        ProvisionalPureCubicInteger instance = null;
-//        String expResult = "";
-//        String result = instance.toASCIIString();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toTeXString method, of class ProvisionalPureCubicInteger.
-     */
-    @Test
-    public void testToTeXString() {
-        System.out.println("toTeXString");
-//        ProvisionalPureCubicInteger instance = null;
-//        String expResult = "";
-//        String result = instance.toTeXString();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of toHTMLString method, of class ProvisionalPureCubicInteger.
-     */
-    @Test
-    public void testToHTMLString() {
-        System.out.println("toHTMLString");
-//        ProvisionalPureCubicInteger instance = null;
-//        String expResult = "";
-//        String result = instance.toHTMLString();
 //        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
