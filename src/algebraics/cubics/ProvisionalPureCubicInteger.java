@@ -161,6 +161,10 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     public ProvisionalPureCubicInteger(Fraction a, Fraction b, Fraction c, 
             CubicRing ring) {
         super(ring);
+        if (ring == null) {
+            String excMsg = "Ring should not be null";
+            throw new NullPointerException(excMsg);
+        }
         this.partA = 0;
         this.partB = 0;
         this.partC = 0;
