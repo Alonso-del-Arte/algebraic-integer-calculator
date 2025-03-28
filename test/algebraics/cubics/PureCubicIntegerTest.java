@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -29,23 +29,39 @@ import static org.junit.Assert.*;
  */
 public class PureCubicIntegerTest {
     
-    private static CubicRing chooseRing() {
+    private static PureCubicRing chooseRing() {
         int n = randomNumber(6) + 2;
         int d = randomSquarefreeNumberMod(n, 9);
         return new PureCubicRing(d);
     }
     
     /**
-     * Test of getRing method, of class PureCubicInteger.
+     * Test of the getRing function, of the PureCubicInteger class.
      */
     @Test
     public void testGetRing() {
         System.out.println("getRing");
         CubicRing expected = chooseRing();
-        PureCubicInteger number = new PureCubicInteger(randomNumber(), 
+        CubicInteger number = new PureCubicInteger(randomNumber(), 
                 randomNumber(), randomNumber(), expected);
         CubicRing actual = number.getRing();
         assertEquals(expected, actual);
     }
+    
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        PureCubicRing ring = chooseRing();
+        int bound = 128;
+        int a = randomNumber(bound) + 2;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        int d = ring.radicand;
+        CubicInteger number = new PureCubicInteger(a, b, c, ring);
+//        String expected = a + "+" + b + "(" + d + ")+" +
+fail("FINISH WRITING THIS TEST");
+    }
+    
+    // TODO: Write tests for toString() such as for a - b cbrt(d) - c cbrt(d)^2
     
 }
