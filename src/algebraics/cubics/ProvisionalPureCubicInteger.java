@@ -37,10 +37,10 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     
     private final PureCubicRing heldRing;
     
-    // TODO: Write tests for this
+    // TODO: Write more tests for this, namely for degrees 0, 1, ? 2 ?
     @Override
     public int algebraicDegree() {
-        return -1;
+        return 3;
     }
     
     // TODO: Write tests for this
