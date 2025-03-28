@@ -101,19 +101,26 @@ public class ProvisionalPureCubicIntegerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    
+    // TODO: Write tests for algebraic degrees 0, 1, 2
 
     /**
-     * Test of algebraicDegree method, of class ProvisionalPureCubicInteger.
+     * Test of the algebraicDegree function, of the ProvisionalPureCubicInteger 
+     * class.
      */
     @Test
     public void testAlgebraicDegree() {
         System.out.println("algebraicDegree");
-//        ProvisionalPureCubicInteger instance = null;
-//        int expResult = 0;
-//        int result = instance.algebraicDegree();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int expected = 3;
+        int actual = instance.algebraicDegree();
+        String message = "Reckoning degree for " + instance.toString();
+        assertEquals(message, expected, actual);
     }
 
     /**
