@@ -16,10 +16,13 @@
  */
 package algebraics.cubics;
 
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumberMod;
+import fractions.Fraction;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
-
-import fractions.Fraction;
 
 /**
  * Tests of the ProvisionalPureCubicInteger class. Normally I would do this sort 
@@ -29,6 +32,33 @@ import fractions.Fraction;
  * @author Alonso del Arte
  */
 public class ProvisionalPureCubicIntegerTest {
+    
+    private static final char CUBIC_ROOT_SYMBOL = '\u221B';
+    
+    private static final char EXPONENT_TWO_SYMBOL = '\u00B2';
+    
+    private static PureCubicRing chooseRing() {
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        return new PureCubicRing(d);
+    }
+    
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        String expected = a + "+" + b + Character.toString(CUBIC_ROOT_SYMBOL) 
+                + d + "+" + c + ("(" + CUBIC_ROOT_SYMBOL) + d + ")" 
+                + EXPONENT_TWO_SYMBOL;
+        String actual = instance.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
     
     /**
      * Test of algebraicDegree method, of class ProvisionalPureCubicInteger.
