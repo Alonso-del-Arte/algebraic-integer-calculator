@@ -29,6 +29,14 @@ import fractions.Fraction;
 // PureCubicInteger
 public class ProvisionalPureCubicInteger extends CubicInteger {
     
+    private static final char CUBIC_ROOT_SYMBOL = '\u221B';
+    
+    private static final char EXPONENT_TWO_SYMBOL = '\u00B2';
+    
+    private final int partA, partB, partC;
+    
+    private final PureCubicRing heldRing;
+    
     // TODO: Write tests for this
     @Override
     public int algebraicDegree() {
@@ -70,6 +78,15 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     @Override
     public String minPolynomialStringHTML() {
         return "SORRY, NOT IMPLEMENTED YET";
+    }
+    
+    @Override
+    public String toString() {
+        String cubicRootSymbolWithD = Character.toString(CUBIC_ROOT_SYMBOL) 
+                + this.heldRing.radicand;
+        return this.partA + " + " + this.partB + cubicRootSymbolWithD + " + " 
+                + this.partC + "(" + cubicRootSymbolWithD + ")" 
+                + EXPONENT_TWO_SYMBOL;
     }
     
     // TODO: Write tests for this
@@ -129,12 +146,22 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     public ProvisionalPureCubicInteger(int a, int b, int c, CubicRing ring) {
         super(ring);
+        this.partA = a;
+        this.partB = b;
+        this.partC = c;
+// TODO: Write test requiring check ring is actually PureCubicRing instance
+        this.heldRing = (PureCubicRing) ring;
     }
     
     // TODO: Write tests for this
     public ProvisionalPureCubicInteger(Fraction a, Fraction b, Fraction c, 
             CubicRing ring) {
         super(ring);
+        this.partA = 0;
+        this.partB = 0;
+        this.partC = 0;
+// TODO: Write test requiring check ring is actually PureCubicRing instance
+        this.heldRing = (PureCubicRing) ring;
     }
     
 }
