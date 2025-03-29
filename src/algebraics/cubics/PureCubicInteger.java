@@ -100,7 +100,7 @@ public class PureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     @Override
     public double getImagPartNumeric() {
-        return 0.0;
+        return -1.0;
     }
     
     // TODO: Write tests for this
