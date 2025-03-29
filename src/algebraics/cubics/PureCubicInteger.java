@@ -122,12 +122,13 @@ public class PureCubicInteger extends CubicInteger {
     }
         
     // TODO: Write tests for this
-    public PureCubicInteger(int a, int b, int c, CubicRing ring) {
+    public PureCubicInteger(int a, int b, int c, PureCubicRing ring) {
         super(ring);
     }
     
     // TODO: Write tests for this
-    public PureCubicInteger(Fraction a, Fraction b, Fraction c, CubicRing ring) {
+    public PureCubicInteger(Fraction a, Fraction b, Fraction c, 
+            PureCubicRing ring) {
         super(ring);
     }
     
