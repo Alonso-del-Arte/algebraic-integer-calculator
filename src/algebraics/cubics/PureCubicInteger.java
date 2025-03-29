@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -124,6 +124,10 @@ public class PureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     public PureCubicInteger(int a, int b, int c, PureCubicRing ring) {
         super(ring);
+        if (ring == null) {
+            String excMsg = "Ring should not be null";
+            throw new NullPointerException(excMsg);
+        }
     }
     
     // TODO: Write tests for this
