@@ -19,6 +19,7 @@ package algebraics.cubics;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
+import fractions.Fraction;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -35,6 +36,10 @@ public class PureCubicIntegerTest {
         int n = randomNumber(6) + 2;
         int d = randomSquarefreeNumberMod(n, 9);
         return new PureCubicRing(d);
+    }
+    
+    private static Fraction wrapInteger(int n) {
+        return new Fraction(n);
     }
     
     /**
@@ -75,6 +80,25 @@ fail("FINISH WRITING THIS TEST");
         String msg = "Null ring should have caused NPE";
         Throwable t = assertThrows(() -> {
             CubicInteger badInstance = new PureCubicInteger(a, b, c, null);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.getClass().getName() + "@" 
+                    + Integer.toHexString(badInstance.hashCode()));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testConstructorRejectsNullFractionA() {
+        Fraction b = wrapInteger(randomNumber());
+        Fraction c = wrapInteger(randomNumber());
+        PureCubicRing ring = chooseRing();
+        String msg = "Null fraction A should have caused NPE";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new PureCubicInteger(null, b, 
+                    c, ring);
             System.out.println(msg + ", not created instance " 
                     + badInstance.getClass().getName() + "@" 
                     + Integer.toHexString(badInstance.hashCode()));
