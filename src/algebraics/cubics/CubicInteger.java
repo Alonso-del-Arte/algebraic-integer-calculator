@@ -43,6 +43,10 @@ public abstract class CubicInteger implements AlgebraicInteger {
      * <b>Q</b>(&zeta;<sub>7</sub>)<sup>+</sup>.
      */
     public CubicInteger(CubicRing ring) {
+        if (ring == null) {
+            String excMsg = "Ring should not be null";
+            throw new NullPointerException(excMsg);
+        }
         this.cubicRing = ring;
     }
     
