@@ -128,4 +128,23 @@ fail("FINISH WRITING THIS TEST");
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testConstructorRejectsNullFractionC() {
+        Fraction a = wrapInteger(randomNumber());
+        Fraction b = wrapInteger(randomNumber());
+        PureCubicRing ring = chooseRing();
+        String msg = "Null fraction C should have caused NPE";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new PureCubicInteger(a, b, 
+                    null, ring);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.getClass().getName() + "@" 
+                    + Integer.toHexString(badInstance.hashCode()));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
 }
