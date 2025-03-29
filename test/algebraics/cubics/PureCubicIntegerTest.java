@@ -41,7 +41,7 @@ public class PureCubicIntegerTest {
     @Test
     public void testGetRing() {
         System.out.println("getRing");
-        CubicRing expected = chooseRing();
+        PureCubicRing expected = chooseRing();
         CubicInteger number = new PureCubicInteger(randomNumber(), 
                 randomNumber(), randomNumber(), expected);
         CubicRing actual = number.getRing();
