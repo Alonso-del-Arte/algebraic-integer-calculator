@@ -23,6 +23,8 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the PureCubicInteger class.
  * @author Alonso del Arte
@@ -63,5 +65,24 @@ fail("FINISH WRITING THIS TEST");
     }
     
     // TODO: Write tests for toString() such as for a - b cbrt(d) - c cbrt(d)^2
+    
+    @Test
+    public void testIntParamsConstructorRejectsNullRing() {
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        String msg = "Null ring should have caused NPE";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new PureCubicInteger(a, b, c, null);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.getClass().getName() + "@" 
+                    + Integer.toHexString(badInstance.hashCode()));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
     
 }
