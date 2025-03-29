@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -21,6 +21,8 @@ import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the CubicInteger class.
  * @author Alonso del Arte
@@ -37,6 +39,20 @@ public class CubicIntegerTest {
         CubicInteger instance = new CubicIntegerImpl(expected);
         CubicRing actual = instance.getRing();
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testConstructorRejectsNullRing() {
+        String msg = "Null ring should cause constructor to throw NPE";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new CubicIntegerImpl(null);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.getClass() + '@' 
+                    + Integer.toHexString(badInstance.hashCode()));
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
     }
 
     static class CubicIntegerImpl extends CubicInteger {
