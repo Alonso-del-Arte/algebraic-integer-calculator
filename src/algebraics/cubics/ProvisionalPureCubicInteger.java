@@ -146,10 +146,6 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     public ProvisionalPureCubicInteger(int a, int b, int c, CubicRing ring) {
         super(ring);
-        if (ring == null) {
-            String excMsg = "Ring should not be null";
-            throw new NullPointerException(excMsg);
-        }
         this.partA = a;
         this.partB = b;
         this.partC = c;
@@ -161,7 +157,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     public ProvisionalPureCubicInteger(Fraction a, Fraction b, Fraction c, 
             CubicRing ring) {
         super(ring);
-        if (a == null || b == null || c == null || ring == null) {
+        if (a == null || b == null || c == null) {
             String excMsg = "Fractions, ring, should not be null";
             throw new NullPointerException(excMsg);
         }

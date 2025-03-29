@@ -123,17 +123,13 @@ public class PureCubicInteger extends CubicInteger {
         
     public PureCubicInteger(int a, int b, int c, PureCubicRing ring) {
         super(ring);
-        if (ring == null) {
-            String excMsg = "Ring should not be null";
-            throw new NullPointerException(excMsg);
-        }
     }
     
     public PureCubicInteger(Fraction a, Fraction b, Fraction c, 
             PureCubicRing ring) {
         super(ring);
-        if (a == null || b == null || c == null || ring == null) {
-            String excMsg = "Fractions, ring should not be null";
+        if (a == null || b == null || c == null) {
+            String excMsg = "Fractions should not be null";
             throw new NullPointerException(excMsg);
         }
     }
