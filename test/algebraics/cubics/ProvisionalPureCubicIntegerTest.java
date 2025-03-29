@@ -242,17 +242,25 @@ public class ProvisionalPureCubicIntegerTest {
     }
 
     /**
-     * Test of getImagPartNumeric method, of class ProvisionalPureCubicInteger.
+     * Test of the getImagPartNumeric function, of the 
+     * ProvisionalPureCubicInteger class.
      */
     @Test
     public void testGetImagPartNumeric() {
         System.out.println("getImagPartNumeric");
-//        ProvisionalPureCubicInteger instance = null;
-//        double expResult = 0.0;
-//        double result = instance.getImagPartNumeric();
-//        assertEquals(expResult, result, 0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        CubicRing ring = chooseRing();
+        ProvisionalPureCubicInteger instance 
+                = new ProvisionalPureCubicInteger(a, b, c, ring);
+        double expected = 0.0;
+        double actual = instance.getImagPartNumeric();
+        double delta = 0.00000001;
+        String message = "Imaginary part of " + instance.toString() 
+                + " should be zero";
+        assertEquals(message, expected, actual, delta);
     }
 
     /**
