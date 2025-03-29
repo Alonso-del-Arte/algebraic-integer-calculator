@@ -132,8 +132,8 @@ public class PureCubicInteger extends CubicInteger {
     public PureCubicInteger(Fraction a, Fraction b, Fraction c, 
             PureCubicRing ring) {
         super(ring);
-        if (a == null || b == null) {
-            String excMsg = "Fractions A, B should not be null";
+        if (a == null || b == null || c == null) {
+            String excMsg = "Fractions should not be null";
             throw new NullPointerException(excMsg);
         }
     }
