@@ -160,6 +160,11 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
             String excMsg = "Fractions, ring, should not be null";
             throw new NullPointerException(excMsg);
         }
+        if (!(ring instanceof PureCubicRing)) {
+            String excMsg = "Instance of " + PureCubicRing.class.getName() 
+                    + " required";
+            throw new IllegalArgumentException(excMsg);
+        }
         this.partA = 0;
         this.partB = 0;
         this.partC = 0;
