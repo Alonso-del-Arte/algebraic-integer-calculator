@@ -25,8 +25,11 @@ import fractions.Fraction;
 
 /**
  * Represents an integer in <b>Z</b>[&radic;(1 + <i>i</i>)].
+ * @deprecated This is a special case of an instance of a class I haven't 
+ * written yet.
  * @author Alonso del Arte
  */
+@Deprecated
 public class QuarticGaussianInteger extends QuarticInteger 
         implements Arithmeticable<QuarticGaussianInteger> {
     
