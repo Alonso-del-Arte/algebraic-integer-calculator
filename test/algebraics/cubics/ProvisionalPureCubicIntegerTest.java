@@ -402,10 +402,32 @@ public class ProvisionalPureCubicIntegerTest {
     }
     
     @Test
-    public void testConstructorWithFractionsRequiresPureCubicRing() {
+    public void testFractionParamsConstructorRequiresPureCubicRing() {
         Fraction a = wrapInteger(randomNumber());
         Fraction b = wrapInteger(randomNumber());
         Fraction c = wrapInteger(randomNumber());
+        CubicRing ring = new CubicRingTest.CubicRingImpl();
+        String msg = "Ring of class " + ring.getClass().getName() 
+                + " instead of " + PureCubicRing.class.getName() 
+                + " should cause exception";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new ProvisionalPureCubicInteger(a, b, c, 
+                    ring);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.getClass().getName() + "@" 
+                    + Integer.toHexString(badInstance.hashCode()));
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testIntParamsConstructorRequiresPureCubicRing() {
+        int a = randomNumber();
+        int b = randomNumber();
+        int c = randomNumber();
         CubicRing ring = new CubicRingTest.CubicRingImpl();
         String msg = "Ring of class " + ring.getClass().getName() 
                 + " instead of " + PureCubicRing.class.getName() 
