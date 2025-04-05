@@ -148,7 +148,11 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
         this.partA = a;
         this.partB = b;
         this.partC = c;
-// TODO: Write test requiring check ring is actually PureCubicRing instance
+        if (!(ring instanceof PureCubicRing)) {
+            String excMsg = "Instance of " + PureCubicRing.class.getName() 
+                    + " required";
+            throw new IllegalArgumentException(excMsg);
+        }
         this.heldRing = (PureCubicRing) ring;
     }
     
@@ -168,7 +172,6 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
         this.partA = 0;
         this.partB = 0;
         this.partC = 0;
-// TODO: Write test requiring check ring is actually PureCubicRing instance
         this.heldRing = (PureCubicRing) ring;
     }
     
