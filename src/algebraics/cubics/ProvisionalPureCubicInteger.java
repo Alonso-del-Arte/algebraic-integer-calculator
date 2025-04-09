@@ -169,6 +169,19 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
                     + " required";
             throw new IllegalArgumentException(excMsg);
         }
+        if (!a.isInteger() || !b.isInteger() || !c.isInteger()) {
+            Fraction aCubed = a.times(a).times(a);
+            Fraction bCubed = b.times(b).times(b);
+            Fraction cCubed = c.times(c).times(c);
+            int d = ((PureCubicRing) ring).getRadicand();
+            Fraction norm = aCubed.plus(bCubed.times(d)).plus(cCubed
+                    .times(d * d)).minus(a.times(b.times(c.times(3))));
+            String excMsg = "Given parameters a = " + a.toString() + ", b = " 
+                    + b.toString() + ", c = " + c.toString() 
+                    + ", number has norm " + norm.toString() 
+                    + " and is therefore not an integer";
+            throw new IllegalArgumentException(excMsg);
+        }
         this.partA = 0;
         this.partB = 0;
         this.partC = 0;
