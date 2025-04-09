@@ -24,6 +24,7 @@ import fractions.Fraction;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertDoesNotThrow;
 import static org.testframe.api.Asserters.assertThrows;
 
 /**
@@ -443,6 +444,39 @@ public class ProvisionalPureCubicIntegerTest {
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
         System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testFractionParamsConstructorRejectsNonIntegerFractions() {
+        PureCubicRing ring = chooseRing();
+        int denom = randomNumber(128) + 2;
+        Fraction a = new Fraction(randomSquarefreeNumberMod(1, denom), denom);
+        Fraction b = new Fraction(randomSquarefreeNumberMod(1, denom), denom);
+        Fraction c = new Fraction(randomSquarefreeNumberMod(1, denom), denom);
+        Fraction aCubed = a.times(a).times(a);
+        Fraction bCubed = b.times(b).times(b);
+        Fraction cCubed = c.times(c).times(c);
+        int d = ring.getRadicand();
+        Fraction norm = aCubed.plus(bCubed.times(d)).plus(cCubed.times(d * d))
+                .minus(a.times(b.times(c.times(3))));
+        String radicStr = " " + CUBIC_ROOT_SYMBOL + "(" + d + ")";
+        String msg = "Given that " + a.toString() + " + " + b.toString() 
+                + radicStr + " + " + c.toString() + radicStr 
+                + EXPONENT_TWO_SYMBOL + " has norm " + norm.toString() 
+                + ", constructor should have thrown an exception";
+        Throwable t = assertThrows(() -> {
+            CubicInteger badInstance = new ProvisionalPureCubicInteger(a, b, c, 
+                    ring);
+            System.out.println(msg + ", not created instance " 
+                    + badInstance.toString());
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String normStr = norm.toString();
+        String containsMsg = "Exception message should contain norm \"" 
+                + normStr + "\"";
+        assert excMsg.contains(normStr) : containsMsg;
     }
     
 }
