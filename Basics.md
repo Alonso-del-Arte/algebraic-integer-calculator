@@ -211,7 +211,16 @@ conjugates, which is just two numbers in the case of a quadratic integer. The
 norm is useful for comparing numbers that might not all be on the same straight 
 line. The norm of a quadratic integer $a + b \sqrt d$ is $a^2 - db^2$.
 
-Both the trace and the norm figure in the (FINISH WRITING)
+Both the trace and the norm figure in the characteristic polynomial of an 
+algebraic number of degree 2. If the trace and the norm are integers of degree 
+1, then the algebraic number is an algebraic integer.
+
+So, for example, $3 + \sqrt{-7}$ is an algebraic integer, having trace 6 and 
+norm 16. The pertinent polynomial is $x^2 - 6x + 16$. As it turns out, the 
+number $$\frac{3}{2} + \frac{\sqrt{-7}}{2}$$ is also an algebraic integer. The 
+trace is 3 and the norm is 4, so the polynomial for this one is $x^2 - 3x + 4$.
+
+(FINISH WRITING)
 
 ### Degree 3
 
