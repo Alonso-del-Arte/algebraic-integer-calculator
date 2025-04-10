@@ -53,6 +53,11 @@ public class PureCubicRing extends CubicRing {
     }
 
     // TODO: Write tests for this
+    public double getCubeRoot() {
+        return Double.NaN;
+    }
+
+    // TODO: Write tests for this
     @Override
     public int discriminant() {
         return 0;
