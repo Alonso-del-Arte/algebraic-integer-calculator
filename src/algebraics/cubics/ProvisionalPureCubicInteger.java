@@ -169,7 +169,9 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
                     + " required";
             throw new IllegalArgumentException(excMsg);
         }
-        if (!a.isInteger() || !b.isInteger() || !c.isInteger()) {
+        long aDenom = a.getDenominator();
+        if (!((aDenom == 1 || aDenom == 3)) && aDenom == b.getDenominator() 
+                && aDenom == c.getDenominator()) {
             Fraction aCubed = a.times(a).times(a);
             Fraction bCubed = b.times(b).times(b);
             Fraction cCubed = c.times(c).times(c);
