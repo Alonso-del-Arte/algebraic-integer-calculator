@@ -84,8 +84,8 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     public String toString() {
         String cubicRootSymbolWithD = Character.toString(CUBIC_ROOT_SYMBOL) 
                 + this.heldRing.radicand;
-        return this.partA.getNumerator() + " + " + this.partB.getNumerator()
-                + cubicRootSymbolWithD + " + " + this.partC.getNumerator() + "(" 
+        return this.partA.toString() + " + " + this.partB.toString() 
+                + cubicRootSymbolWithD + " + " + this.partC.toString() + "(" 
                 + cubicRootSymbolWithD + ")" + EXPONENT_TWO_SYMBOL;
     }
     
