@@ -77,6 +77,25 @@ public class ProvisionalPureCubicIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringIntegersFromFractions() {
+        int bound = 2048;
+        int numerA = randomNumber(bound) + 1;
+        int numerB = randomNumber(bound) + 2;
+        int numerC = randomNumber(bound) + 2;
+        Fraction a = new Fraction(numerA);
+        Fraction b = new Fraction(numerB);
+        Fraction c = new Fraction(numerC);
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        String expected = numerA + "+" + numerB 
+                + Character.toString(CUBIC_ROOT_SYMBOL) + d + "+" + numerC 
+                + ("(" + CUBIC_ROOT_SYMBOL) + d + ")" + EXPONENT_TWO_SYMBOL;
+        String actual = instance.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ProvisionalPureCubicInteger.
      */
