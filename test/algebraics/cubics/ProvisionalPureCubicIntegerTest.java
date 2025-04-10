@@ -18,6 +18,8 @@ package algebraics.cubics;
 
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
+        .randomSquarefreeNumber;
+import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import fractions.Fraction;
 
@@ -43,6 +45,14 @@ public class ProvisionalPureCubicIntegerTest {
     private static PureCubicRing chooseRing() {
         int n = randomNumber(6) + 2;
         int d = randomSquarefreeNumberMod(n, 9);
+        return new PureCubicRing(d);
+    }
+    
+    private static PureCubicRing chooseRingD1Mod9() {
+        int d;
+        do {
+            d = randomSquarefreeNumber(300);
+        } while (d % 9 != 1);
         return new PureCubicRing(d);
     }
     
@@ -458,7 +468,7 @@ public class ProvisionalPureCubicIntegerTest {
         Fraction cCubed = c.times(c).times(c);
         int d = ring.getRadicand();
         Fraction norm = aCubed.plus(bCubed.times(d)).plus(cCubed.times(d * d))
-                .minus(a.times(b.times(c.times(3))));
+                .minus(a.times(b.times(c.times(3 * d))));
         String radicStr = " " + CUBIC_ROOT_SYMBOL + "(" + d + ")";
         String msg = "Given that " + a.toString() + " + " + b.toString() 
                 + radicStr + " + " + c.toString() + radicStr 
