@@ -232,6 +232,18 @@ public class PureCubicRingTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testGetCubeRoot() {
+        System.out.println("getCubeRoot");
+        int d = randomSquarefreeNumber(128);
+        PureCubicRing ring = new PureCubicRing(d);
+        double expected = Math.cbrt(d);
+        double actual = ring.getCubeRoot();
+        double delta = 0.00000001;
+        String message = "Getting cube root for " + ring.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
     // TODO: Write tests for when radicand is not squarefree (but is cubefree)
     
     @Test
