@@ -33,7 +33,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     
     private static final char EXPONENT_TWO_SYMBOL = '\u00B2';
     
-    private final int partA, partB, partC;
+    private final Fraction partA, partB, partC;
     
     private final PureCubicRing heldRing;
     
@@ -84,9 +84,9 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     public String toString() {
         String cubicRootSymbolWithD = Character.toString(CUBIC_ROOT_SYMBOL) 
                 + this.heldRing.radicand;
-        return this.partA + " + " + this.partB + cubicRootSymbolWithD + " + " 
-                + this.partC + "(" + cubicRootSymbolWithD + ")" 
-                + EXPONENT_TWO_SYMBOL;
+        return this.partA.getNumerator() + " + " + this.partB.getNumerator()
+                + cubicRootSymbolWithD + " + " + this.partC.getNumerator() + "(" 
+                + cubicRootSymbolWithD + ")" + EXPONENT_TWO_SYMBOL;
     }
     
     // TODO: Write tests for this
@@ -145,9 +145,9 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     public ProvisionalPureCubicInteger(int a, int b, int c, CubicRing ring) {
         super(ring);
-        this.partA = a;
-        this.partB = b;
-        this.partC = c;
+        this.partA = new Fraction(a);
+        this.partB = new Fraction(b);
+        this.partC = new Fraction(c);
         if (!(ring instanceof PureCubicRing)) {
             String excMsg = "Instance of " + PureCubicRing.class.getName() 
                     + " required";
@@ -184,9 +184,9 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
                     + " and is therefore not an integer";
             throw new IllegalArgumentException(excMsg);
         }
-        this.partA = 0;
-        this.partB = 0;
-        this.partC = 0;
+        this.partA = a;
+        this.partB = b;
+        this.partC = c;
         this.heldRing = (PureCubicRing) ring;
     }
     
