@@ -489,4 +489,30 @@ public class ProvisionalPureCubicIntegerTest {
         assert excMsg.contains(normStr) : containsMsg;
     }
     
+    @Test
+    public void testFractionParamsConstructorDoesAcceptFractionsForInteger() {
+        PureCubicRing ring = chooseRingD1Mod9();
+        Fraction a = new Fraction(randomSquarefreeNumberMod(1, 3), 3);
+        Fraction b = new Fraction(randomSquarefreeNumberMod(1, 3), 3);
+        Fraction c = new Fraction(randomSquarefreeNumberMod(1, 3), 3);
+        Fraction aCubed = a.times(a).times(a);
+        Fraction bCubed = b.times(b).times(b);
+        Fraction cCubed = c.times(c).times(c);
+        int d = ring.getRadicand();
+        Fraction norm = aCubed.plus(bCubed.times(d)).plus(cCubed.times(d * d))
+                .minus(a.times(b.times(c.times(3 * d))));
+        String radicStr = " " + CUBIC_ROOT_SYMBOL + "(" + d + ")";
+        String msg = "Given that " + a.toString() + " + " + b.toString() 
+                + radicStr + " + " + c.toString() + radicStr 
+                + EXPONENT_TWO_SYMBOL + " has norm " + norm.toString() 
+                + ", constructor should not have thrown an exception";
+        assertDoesNotThrow(() -> {
+            CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, 
+                    ring);
+            System.out.println(msg);
+            System.out.println("Successfully instantiated " 
+                    + instance.toString());
+        }, msg);
+    }
+
 }
