@@ -96,6 +96,22 @@ public class ProvisionalPureCubicIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringIntegersFromThirds() {
+        PureCubicRing ring = chooseRingD1Mod9();
+        Fraction a = new Fraction(randomSquarefreeNumberMod(1, 3), 3);
+        Fraction b = new Fraction(randomSquarefreeNumberMod(1, 3), 3);
+        Fraction c = new Fraction(randomSquarefreeNumberMod(1, 3), 3);
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        String expected = a.toString() + "+" + b.toString()
+                + Character.toString(CUBIC_ROOT_SYMBOL) + d + "+" 
+                + c.toString() + ("(" + CUBIC_ROOT_SYMBOL) + d + ")" 
+                + EXPONENT_TWO_SYMBOL;
+        String actual = instance.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIString method, of class ProvisionalPureCubicInteger.
      */
