@@ -47,14 +47,12 @@ public class PureCubicRing extends CubicRing {
         return true;
     }
     
-    // TODO: Write tests for this
     public int getRadicand() {
         return this.radicand;
     }
 
-    // TODO: Write tests for this
     public double getCubeRoot() {
-        return Double.NaN;
+        return Math.cbrt(this.radicand);
     }
 
     // TODO: Write tests for this
