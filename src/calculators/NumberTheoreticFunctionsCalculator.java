@@ -1179,6 +1179,11 @@ public class NumberTheoreticFunctionsCalculator {
         throw new RuntimeException("Unexpected circumstance occurred");
     }
     
+    // TODO: Write tests for this
+    public static boolean isDivisibleBy(int dividend, int divisor) {
+        return (dividend % divisor) == 0;
+    }
+    
     /**
      * Tests whether one algebraic integer is divisible by another.
      * @param dividend The number to test for divisibility by another. For example, 
