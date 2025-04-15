@@ -52,6 +52,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import static org.testframe.api.Asserters.assertContainsSame;
+import static org.testframe.api.Asserters.assertDoesNotThrow;
 import static org.testframe.api.Asserters.assertThrows;
 
 /**
@@ -1493,13 +1494,28 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assertEquals(1, symbolKronecker(33, 70));
     }
     
+    @Test
+    public void testIsNotDivisibleByZero() {
+        int dividend = RANDOM.nextInt();
+        String msg = "Querying if " + dividend 
+                + " is divisible by 0 should return false, not cause exception";
+        assertDoesNotThrow(() -> {
+            boolean result = isDivisibleBy(dividend, 0);
+            assert !result : msg;
+        }, msg);
+    }
+    
+    public void testIsDivisibleBy() {
+        System.out.println("isDivisibleBy");
+        fail();
+    }
+    
     /**
      * Test of the isDivisibleBy function, of the 
      * NumberTheoreticFunctionsCalculator class.
      */@org.junit.Ignore
     @Test
-    public void testIsDivisibleBy() {
-        System.out.println("isDivisibleBy");
+    public void testIsDivisibleByQuadratic() {
         int d = randomSquarefreeNumber(128);
         if (RANDOM.nextBoolean()) d *= -1;
         if (d == 1) d = -1;
