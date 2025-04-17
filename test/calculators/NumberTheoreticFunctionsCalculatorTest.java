@@ -1505,9 +1505,17 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }, msg);
     }
     
+    @Test
     public void testIsDivisibleBy() {
         System.out.println("isDivisibleBy");
-        fail();
+        int bound = 256;
+        int max = RANDOM.nextInt(bound) + 4;
+        for (int divisor = 1; divisor < max; divisor++) {
+            int dividend = divisor * (RANDOM.nextInt(bound));
+            String msg = dividend + " should be divisible by " + divisor;
+            boolean result = isDivisibleBy(dividend, divisor);
+            assert result : msg;
+        }
     }
     
     /**
