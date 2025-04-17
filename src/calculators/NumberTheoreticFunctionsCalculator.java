@@ -1180,7 +1180,7 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     public static boolean isDivisibleBy(int dividend, int divisor) {
-        return divisor != 0;
+        return divisor == 0;
     }
     
     /**
