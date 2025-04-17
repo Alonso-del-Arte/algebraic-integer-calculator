@@ -1530,6 +1530,30 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @Test
+    public void testPositiveDividendIsDivisibleByNegativeDivisor() {
+        int bound = 256;
+        int min = -RANDOM.nextInt(bound) - 4;
+        for (int divisor = -1; divisor > min; divisor--) {
+            int dividend = divisor * (RANDOM.nextInt(bound));
+            String msg = dividend + " should be divisible by " + divisor;
+            boolean result = isDivisibleBy(dividend, divisor);
+            assert result : msg;
+        }
+    }
+    
+    @Test
+    public void testNegativeDividendIsDivisibleByNegativeDivisor() {
+        int bound = 256;
+        int min = -RANDOM.nextInt(bound) - 4;
+        for (int divisor = -1; divisor > min; divisor--) {
+            int dividend = -divisor * (RANDOM.nextInt(bound));
+            String msg = dividend + " should be divisible by " + divisor;
+            boolean result = isDivisibleBy(dividend, divisor);
+            assert result : msg;
+        }
+    }
+    
     /**
      * Test of the isDivisibleBy function, of the 
      * NumberTheoreticFunctionsCalculator class.
