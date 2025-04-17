@@ -1181,7 +1181,7 @@ public class NumberTheoreticFunctionsCalculator {
     
     // TODO: Write tests for this
     public static boolean isDivisibleBy(int dividend, int divisor) {
-        return false;
+        return dividend > 0 && divisor > 0;
     }
     
     /**
