@@ -1511,7 +1511,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         int bound = 256;
         int max = RANDOM.nextInt(bound) + 4;
         for (int divisor = 1; divisor < max; divisor++) {
-            int dividend = divisor * (RANDOM.nextInt(bound));
+            int dividend = divisor * (RANDOM.nextInt(bound) + 1);
             String msg = dividend + " should be divisible by " + divisor;
             boolean result = isDivisibleBy(dividend, divisor);
             assert result : msg;
@@ -1523,7 +1523,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         int bound = 256;
         int max = RANDOM.nextInt(bound) + 4;
         for (int divisor = 1; divisor < max; divisor++) {
-            int dividend = -divisor * (RANDOM.nextInt(bound));
+            int dividend = -divisor * (RANDOM.nextInt(bound) + 1);
             String msg = dividend + " should be divisible by " + divisor;
             boolean result = isDivisibleBy(dividend, divisor);
             assert result : msg;
