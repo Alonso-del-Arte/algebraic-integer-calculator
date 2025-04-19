@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -1179,8 +1179,22 @@ public class NumberTheoreticFunctionsCalculator {
         throw new RuntimeException("Unexpected circumstance occurred");
     }
     
+    /**
+     * Determines whether or not one integer is divisible by another. No 
+     * exceptions will occur calling this function.
+     * @param dividend The number to divide. For example, 1729 = 7 &times; 13 
+     * &times; 19.
+     * @param divisor The number to divide by. Examples: &minus;133, 0, 92.
+     * @return True if and only if {@code dividend} is divisible by {@code 
+     * divisor}, false in all other cases. In the examples, true for &minus;133 
+     * = &minus;1 &times; 7 &times; 19, false for 0 and false for 92 = 
+     * 2<sup>2</sup> &times; 23.
+     */
     public static boolean isDivisibleBy(int dividend, int divisor) {
-        return divisor != 0;
+        if (divisor == 0) {
+            return false;
+        }
+        return dividend % divisor == 0;
     }
     
     /**
