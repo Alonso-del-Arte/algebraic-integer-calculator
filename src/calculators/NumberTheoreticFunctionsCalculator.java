@@ -467,6 +467,10 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     public static byte symbolLegendre(int a, int p) {
+        if (p == -2 || p == 2) {
+            String excMsg = p + " is not odd prime, use Kronecker symbol";
+            throw new IllegalArgumentException(excMsg);
+        }
         if (!isPrime(p)) {
             String excMsg = p + " is not a prime number, use Jacobi symbol";
             throw new IllegalArgumentException(excMsg);
