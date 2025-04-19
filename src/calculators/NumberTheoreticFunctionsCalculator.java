@@ -467,6 +467,10 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     public static byte symbolLegendre(int a, int p) {
+        if (!isPrime(p)) {
+            String excMsg = p + " is not a prime number, use Jacobi symbol";
+            throw new IllegalArgumentException(excMsg);
+        }
         return -100;
     }
     
