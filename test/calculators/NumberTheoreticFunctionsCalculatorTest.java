@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -1572,6 +1572,70 @@ public class NumberTheoreticFunctionsCalculatorTest {
         for (int divisor = 1; divisor < max; divisor++) {
             String msg = "0 should be divisible by " + divisor;
             boolean result = isDivisibleBy(0, divisor);
+            assert result : msg;
+        }
+    }
+    
+    @Test
+    public void testNegativeWhichIsNotDivisibleByNegative() {
+        int origin = 2;
+        int bound = 512;
+        int divisor = -RANDOM.nextInt(origin, bound);
+        int multiplier = RANDOM.nextInt(1, bound);
+        int min = divisor * multiplier + 1;
+        int max = divisor * (multiplier - 1);
+        String msgPart = " should not be divisible by ";
+        for (int dividend = min; dividend < max; dividend++) {
+            boolean result = !isDivisibleBy(dividend, divisor);
+            String msg = dividend + msgPart + divisor;
+            assert result : msg;
+        }
+    }
+    
+    @Test
+    public void testNegativeWhichIsNotDivisibleByPositive() {
+        int origin = 2;
+        int bound = 512;
+        int divisor = RANDOM.nextInt(origin, bound);
+        int multiplier = -RANDOM.nextInt(1, bound);
+        int min = divisor * multiplier + 1;
+        int max = divisor * (multiplier + 1);
+        String msgPart = " should not be divisible by ";
+        for (int dividend = min; dividend < max; dividend++) {
+            boolean result = !isDivisibleBy(dividend, divisor);
+            String msg = dividend + msgPart + divisor;
+            assert result : msg;
+        }
+    }
+    
+    @Test
+    public void testPositiveWhichIsNotDivisibleByNegative() {
+        int origin = 2;
+        int bound = 512;
+        int divisor = -RANDOM.nextInt(origin, bound);
+        int multiplier = -RANDOM.nextInt(1, bound);
+        int min = divisor * multiplier + 1;
+        int max = divisor * (multiplier - 1);
+        String msgPart = " should not be divisible by ";
+        for (int dividend = min; dividend < max; dividend++) {
+            boolean result = !isDivisibleBy(dividend, divisor);
+            String msg = dividend + msgPart + divisor;
+            assert result : msg;
+        }
+    }
+    
+    @Test
+    public void testPositiveWhichIsNotDivisibleByPositive() {
+        int origin = 2;
+        int bound = 512;
+        int divisor = RANDOM.nextInt(origin, bound);
+        int multiplier = RANDOM.nextInt(1, bound);
+        int min = divisor * multiplier + 1;
+        int max = divisor * (multiplier + 1);
+        String msgPart = " should not be divisible by ";
+        for (int dividend = min; dividend < max; dividend++) {
+            boolean result = !isDivisibleBy(dividend, divisor);
+            String msg = dividend + msgPart + divisor;
             assert result : msg;
         }
     }
