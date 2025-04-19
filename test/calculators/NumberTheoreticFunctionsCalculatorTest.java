@@ -1247,7 +1247,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
                         expResult = 1;
                     }
                 }
-                result = NumberTheoreticFunctionsCalculator.symbolLegendre(fibonacciList.get(i), p);
+                result = symbolLegendre(fibonacciList.get(i), p);
                 assertEquals(expResult, result);
             }
         }
@@ -1255,23 +1255,23 @@ public class NumberTheoreticFunctionsCalculatorTest {
         for (int pindex = 1; pindex < primesListLength; pindex++) {
             p = primesList.get(pindex);
             expResult = 0;
-            result = NumberTheoreticFunctionsCalculator.symbolLegendre(p, p);
+            result = symbolLegendre(p, p);
             assertEquals(expResult, result);
             for (int qindex = pindex + 1; qindex < primesListLength; qindex++) {
                 q = primesList.get(qindex);
-                expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(q, p);
+                expResult = symbolLegendre(q, p);
                 if (p % 4 == 3 && q % 4 == 3) {
                     expResult *= -1;
                 }
-                result = NumberTheoreticFunctionsCalculator.symbolLegendre(p, q);
+                result = symbolLegendre(p, q);
                 assertEquals(expResult, result);
-                result = NumberTheoreticFunctionsCalculator.symbolLegendre(p, -q);
+                result = symbolLegendre(p, -q);
                 assertEquals(expResult, result);
                 /* And lastly, to test that Legendre(2p, q) = Legendre(2, q) 
                    Legendre(p, q). */
-                expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(2, q);
-                expResult *= NumberTheoreticFunctionsCalculator.symbolLegendre(p, q);
-                result = NumberTheoreticFunctionsCalculator.symbolLegendre(2 * p, q);
+                expResult = symbolLegendre(2, q);
+                expResult *= symbolLegendre(p, q);
+                result = symbolLegendre(2 * p, q);
                 assertEquals(expResult, result);
             }
         }
