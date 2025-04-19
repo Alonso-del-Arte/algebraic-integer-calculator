@@ -1279,21 +1279,24 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     @Test
     public void testLegendreSymbolSuggestJacobi() {
-        try {
-            byte attempt = symbolLegendre(13, 21);
-            fail("Calling Legendre(13, 21) should have triggered an exception, not given result " 
-                    + attempt + ".");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Calling Legendre(13, 21) correctly triggered IllegalArgumentException.");
-            String excMsg = iae.getMessage();
-            System.out.println("\"" + excMsg + "\"");
-            String msg = "Exception message should mention Jacobi symbol";
-            assert excMsg.contains("Jacobi") : msg;
-        } catch (RuntimeException re) {
-            String message = re.getClass().getName() 
-                    + " is the wrong exception to throw for calling Legendre(13, 21)";
-            fail(message);
-        }
+        int bound = 500;
+        int a = randomNumber(bound);
+        int somePrime = randomPrime(bound);
+        int someOtherPrime = randomPrimeOtherThan(somePrime);
+        int p = somePrime * someOtherPrime;
+        String msg = "Since " + p + " is not prime, Legendre(" + a + ", " + p 
+                + ") should cause exception";
+        Throwable t = assertThrows(() -> {
+            byte badResult = symbolLegendre(a, p);
+            System.out.println(msg + ", not given result " + badResult);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String name = "Jacobi";
+        String containsMsg = "Exception message should contain \"" + name 
+                + "\"";
+        assert excMsg.contains(name) : containsMsg;
     }
 
     @Test
