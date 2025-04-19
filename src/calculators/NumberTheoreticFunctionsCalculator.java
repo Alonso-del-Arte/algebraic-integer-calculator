@@ -466,64 +466,8 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, num);
     }
     
-    /**
-     * The Legendre symbol, a number theoretic function which tells if a given 
-     * number is a quadratic residue modulo an odd prime. There is no overflow 
-     * checking, but hopefully that's only a problem for numbers that are very 
-     * close to {@link Integer#MIN_VALUE} or {@link Integer#MAX_VALUE}.
-     * @param a The number to test for being a quadratic residue modulo an odd 
-     * prime. For example, 10.
-     * @param p The odd prime to test a for being a quadratic residue modulo of. 
-     * For example, 7. This parameter may be negative; the function will quietly 
-     * change it to a positive number; this behavior is not guaranteed for 
-     * future versions of this program.
-     * @return &minus;1 if a is quadratic residue modulo p, 0 if gcd(a, p) > 1, 1 if a 
-     * is a quadratic residue modulo p. An example of each: Legendre(10, 7) = &minus;1 
-     * since there are no solutions to <i>x</i><sup>2</sup> = 10 mod 7; Legendre(10, 5) = 0 since 
-     * 10 is a multiple of 5; and Legendre(10, 3) = 1 since <i>x</i><sup>2</sup> = 10 mod 3 does 
-     * have solutions, such as <i>x</i> = 4.
-     * @throws IllegalArgumentException If p is not an odd prime. Note that this 
-     * is a runtime exception.
-     * @since Version 0.2
-     */
     public static byte symbolLegendre(int a, int p) {
-        if (!isPrime(p)) {
-            String excMsg = "The number " + p 
-                    + " is not a prime number. Consider using the Jacobi symbol instead.";
-            throw new IllegalArgumentException(excMsg);
-        }
-        if (p == -2 || p == 2) {
-            String excMsg = "The number " + p 
-                    + " is prime but not odd. Consider using the Kronecker symbol instead.";
-            throw new IllegalArgumentException(excMsg);
-        }
-        if (euclideanGCD(a, p) > 1) {
-            return 0;
-        }
-        final int oddPrime = Math.abs(p); // Making sure p is positive
-        final int exponent = (oddPrime - 1)/2;
-        final int modStop = oddPrime - 2;
-        int adjA = a;
-        if (adjA > (oddPrime - 1)) {
-            adjA %= oddPrime;
-        }
-        if (adjA == (oddPrime - 1)) {
-            adjA = -1;
-        }
-        while (adjA < -1) {
-            adjA += oddPrime;
-        }
-        int power = adjA;
-        for (int i = 1; i < exponent; i++) {
-            power *= adjA;
-            while (power > modStop) {
-                power -= oddPrime;
-            }
-            while (power < -1) {
-                power += oddPrime;
-            }
-        }
-        return (byte) power;
+        return -100;
     }
     
     /**
