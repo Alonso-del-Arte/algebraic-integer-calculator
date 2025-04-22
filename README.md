@@ -1,5 +1,8 @@
 # Algebraic Integer Calculator
 
+This is going to be a calculator for algebraic integers of low degrees, 
+operating for the most part symbolically rather than numerically.
+
 NOTE: This project uses JUnit, Hamcrest and one or two assertions from the 
 testing framework from testframe.org. This project has no other external 
 dependencies.
