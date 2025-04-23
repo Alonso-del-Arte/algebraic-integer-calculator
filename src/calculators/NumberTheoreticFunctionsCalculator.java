@@ -843,12 +843,15 @@ public class NumberTheoreticFunctionsCalculator {
      * 2018, this program does not really have support for cubic integers, so 
      * asking if 3 &minus; &#8731;2 is irreducible would probably trigger this 
      * exception.
-     * @throws NullPointerException If <code>num</code> is null. The exception 
+     * @throws NullPointerException If {@code num} is null. The exception 
      * message will be "Null is not an algebraic integer, neither reducible nor 
      * irreducible".
      * @since Version 0.2
      */
     public static boolean isIrreducible(AlgebraicInteger num) {
+        if (num == null) {
+            return false;
+        }
         if (num instanceof ImaginaryQuadraticInteger 
                 || num instanceof RealQuadraticInteger) {
             if (num instanceof ImaginaryQuadraticInteger && num.norm() < 0) {
