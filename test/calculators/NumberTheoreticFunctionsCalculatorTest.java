@@ -1161,31 +1161,20 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     /**
-     * Another test of isIrreducible method, of class 
-     * NumberTheoreticFunctionsCalculator. Passing a null instance of {@link 
-     * algebraics.AlgebraicInteger AlgebraicInteger} to {@link 
-     * NumberTheoreticFunctionsCalculator#isIrreducible(algebraics.AlgebraicInteger) 
-     * isIrreducible()} should cause an exception, not give any particular 
-     * result.
+     * Another test of the isIrreducible function, of the  
+     * NumberTheoreticFunctionsCalculator class.
      */
     @Test
     public void testNullNeitherReducibleNorIrreducible() {
-        try {
-            boolean result = NumberTheoreticFunctionsCalculator.isIrreducible(null);
-            String message = "Trying to see if null is irreducible should have caused an exception, not given result " 
-                    + result;
-            fail(message);
-        } catch (NullPointerException npe) {
-            System.out.println("Trying to see if null is irreducible correctly caused NullPointerException");
-            String excMsg = npe.getMessage();
-            System.out.println("\"" + excMsg + "\"");
-            assertNotNull("Exception message should not be null", excMsg);
-            assert !excMsg.equals("") : "Exception message should not be empty";
-        } catch (RuntimeException re) {
-            String message = re.getClass().getName() 
-                    + " is the wrong exception to throw for trying to see if null is irreducible";
-            fail(message);
-        }
+        String msg = "isIrreducible(null) should cause exception";
+        Throwable t = assertThrows(() -> {
+            boolean result = isIrreducible(null);
+            System.out.println(msg + ", not given result " + result);
+        }, NullPointerException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
