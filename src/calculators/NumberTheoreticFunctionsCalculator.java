@@ -849,9 +849,6 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.2
      */
     public static boolean isIrreducible(AlgebraicInteger num) {
-        if (num == null) {
-            return false;
-        }
         if (num instanceof ImaginaryQuadraticInteger 
                 || num instanceof RealQuadraticInteger) {
             if (num instanceof ImaginaryQuadraticInteger && num.norm() < 0) {
