@@ -298,17 +298,25 @@ public class ProvisionalPureCubicIntegerTest {
     }
 
     /**
-     * Test of abs method, of class ProvisionalPureCubicInteger.
+     * Test of the abs function, of the ProvisionalPureCubicInteger class.
      */
     @Test
     public void testAbs() {
         System.out.println("abs");
-//        ProvisionalPureCubicInteger instance = null;
-//        double expResult = 0.0;
-//        double result = instance.abs();
-//        assertEquals(expResult, result, 0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int bound = 2048;
+        int a = -randomNumber(bound) - 1;
+        int b = -randomNumber(bound) - 2;
+        int c = -randomNumber(bound) - 2;
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        double cubeRootD = Math.cbrt(d);
+        double cubeRootDSquared = cubeRootD * cubeRootD;
+        double expected = -a - b * cubeRootD - c * cubeRootDSquared;
+        double actual = instance.abs();
+        double delta = 0.0001;
+        String message = "Reckoning absolute value of " + instance.toString();
+        assertEquals(message, expected, actual, delta);
     }
 
     /**
