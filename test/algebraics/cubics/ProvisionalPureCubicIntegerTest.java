@@ -319,6 +319,24 @@ public class ProvisionalPureCubicIntegerTest {
         assertEquals(message, expected, actual, delta);
     }
 
+    @Test
+    public void testAbsAlreadyPositive() {
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        double cubeRootD = Math.cbrt(d);
+        double cubeRootDSquared = cubeRootD * cubeRootD;
+        double expected = a + b * cubeRootD + c * cubeRootDSquared;
+        double actual = instance.abs();
+        double delta = 0.0001;
+        String message = "Reckoning absolute value of " + instance.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+
     /**
      * Test of getRealPartNumeric method, of class ProvisionalPureCubicInteger.
      */
