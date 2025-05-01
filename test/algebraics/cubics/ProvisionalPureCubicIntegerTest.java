@@ -113,17 +113,23 @@ public class ProvisionalPureCubicIntegerTest {
     }
     
     /**
-     * Test of toASCIIString method, of class ProvisionalPureCubicInteger.
+     * Test of the toASCIIString function, of the ProvisionalPureCubicInteger 
+     * class.
      */
     @Test
     public void testToASCIIString() {
         System.out.println("toASCIIString");
-//        ProvisionalPureCubicInteger instance = null;
-//        String expResult = "";
-//        String result = instance.toASCIIString();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        String expected = a + "+" + b + "cbrt(" + d + ")+" + c + "cbrt(" + d 
+                + ")^2";
+        String actual = instance.toASCIIString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
