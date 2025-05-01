@@ -91,8 +91,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     
     @Override
     public String toASCIIString() {
-        String cubicRootSymbolWithD = " TEMP REWIND TO FAILINGcbrt(" 
-                + this.heldRing.radicand + ")";
+        String cubicRootSymbolWithD = "cbrt(" + this.heldRing.radicand + ")";
         return this.partA.toString() + " + " + this.partB.toString() 
                 + cubicRootSymbolWithD + " + " + this.partC.toString() 
                 + cubicRootSymbolWithD + "^2";
