@@ -112,7 +112,10 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     @Override
     public double abs() {
-        return 0.0;
+        double cubeRootD = Math.cbrt(((PureCubicRing) this.cubicRing).radicand);
+        double cubeRootDSquared = cubeRootD * cubeRootD;
+        return -this.partA.getNumerator() - this.partB.getNumerator() 
+                * cubeRootD - this.partC.getNumerator() * cubeRootDSquared;
     }
     
     // TODO: Write tests for this
