@@ -94,7 +94,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
         String cubicRootSymbolWithD = "cbrt(" + this.heldRing.radicand + ")";
         return this.partA.toString() + " + " + this.partB.toString() 
                 + cubicRootSymbolWithD + " + " + this.partC.toString() 
-                + cubicRootSymbolWithD + "^2 TEMP REWIND TO FAIL";
+                + cubicRootSymbolWithD + "^2";
     }
     
     // TODO: Write tests for this
