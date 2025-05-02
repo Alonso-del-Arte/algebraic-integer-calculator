@@ -64,17 +64,27 @@ public interface AlgebraicInteger {
      * Gives the norm of the algebraic integer, useful for comparing integers in 
      * the Euclidean GCD algorithm. In the original version, this was a 32-bit 
      * integer, but due to many overflow problems, I changed it to a 64-bit 
-     * integer. Overflow problems can still occur, but they're hopefully less 
-     * frequent now.
+     * integer. Overflow problems still occur, and are likelier as the degree of 
+     * the algebraic integer gets higher. In cases where it's absolutely 
+     * necessary to have the correct value of the norm without "clipping" to the 
+     * range of 64-bit integers, use the {@link #fullNorm()} function.
      * @return The norm. For example, given <sup>5</sup>&frasl;<sub>2</sub> + 
      * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub>, the norm 
      * would be 8.
      */
     long norm();
     
-    // TODO: Write tests for this
+    /**
+     * Gives the norm of the algebraic integer in a format that can represent 
+     * numbers outside the range of 64-bit integers. A default implementation is 
+     * provided which simply wraps the result of {@link #norm()} in a {@code 
+     * BigInteger} instance.
+     * @return The norm in a {@code BigInteger} instance.
+     * @throws ArithmeticException If there is any arithmetic problem 
+     * constructing the {@code BigInteger} instance.
+     */
     default BigInteger fullNorm() {
-        return BigInteger.ZERO;
+        return BigInteger.valueOf(this.norm());
     }
     
     /**
