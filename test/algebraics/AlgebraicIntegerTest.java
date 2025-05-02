@@ -27,4 +27,110 @@ import org.junit.Test;
  */
 public class AlgebraicIntegerTest {
     
+    private static class AlgebraicIntegerImpl implements AlgebraicInteger {
+        
+        private final int number;
+        
+        @Override
+        public int algebraicDegree() {
+            return 1;
+        }
+
+        @Override
+        public long trace() {
+            return this.number;
+        }
+
+        @Override
+        public long norm() {
+            return this.number;
+        }
+
+        @Override
+        public long[] minPolynomialCoeffs() {
+            return new long[]{-this.number, 1L};
+        }
+
+        @Override
+        public String minPolynomialString() {
+            return this.minPolynomialStringTeX();
+        }
+
+        @Override
+        public String minPolynomialStringTeX() {
+            String x = "x ";
+            String sign = (this.number < 0) ? "+ " : "- ";
+            return x + sign + Math.abs(this.number);
+        }
+
+        @Override
+        public String minPolynomialStringHTML() {
+            return this.minPolynomialString();
+        }
+
+        @Override
+        public IntegerRing getRing() {
+            return new MockRing();
+        }
+
+        @Override
+        public String toString() {
+            return this.toASCIIString();
+        }
+    
+        @Override
+        public String toASCIIString() {
+            return Integer.toString(this.number);
+        }
+
+        @Override
+        public String toTeXString() {
+            return this.toASCIIString();
+        }
+
+        @Override
+        public String toHTMLString() {
+            return this.toASCIIString();
+        }
+    
+        @Override
+        public double abs() {
+            return Math.abs(this.number);
+        }
+
+        @Override
+        public double getRealPartNumeric() {
+            return this.number;
+        }
+
+        @Override
+        public double getImagPartNumeric() {
+            return 0.0;
+        }
+
+        @Override
+        public boolean isReApprox() {
+            return false;
+        }
+
+        @Override
+        public boolean isImApprox() {
+            return false;
+        }
+
+        @Override
+        public double angle() {
+            if (this.number < 0) {
+                return Math.PI;
+            } else {
+                return 0.0;
+            }
+        }
+        
+        private AlgebraicIntegerImpl(int n) {
+            this.number = n;
+        }    
+        
+    }
+    
 }
