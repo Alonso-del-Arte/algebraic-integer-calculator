@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -15,6 +15,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics;
+
+import java.math.BigInteger;
 
 /**
  * This interface sets the basic requirements for objects representing algebraic 
@@ -69,6 +71,11 @@ public interface AlgebraicInteger {
      * would be 8.
      */
     long norm();
+    
+    // TODO: Write tests for this
+    default BigInteger fullNorm() {
+        return BigInteger.ZERO;
+    }
     
     /**
      * Gives the coefficients for the minimal polynomial of the algebraic 
