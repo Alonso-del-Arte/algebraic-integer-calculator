@@ -18,6 +18,8 @@ package algebraics.cubics;
 
 import fractions.Fraction;
 
+import java.math.BigInteger;
+
 /**
  * Draft class for PureCubicInteger. Normally I would do this sort of work in a 
  * file not checked into version control. But as I expect this work to take me a 
@@ -53,6 +55,12 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     @Override
     public long norm() {
         return 0;
+    }
+    
+    // TODO: Write tests for this
+    @Override
+    public BigInteger fullNorm() {
+        return BigInteger.ZERO;
     }
     
     // TODO: Write tests for this
