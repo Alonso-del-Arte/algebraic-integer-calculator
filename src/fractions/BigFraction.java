@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -46,7 +46,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * function will return &minus;1, not 1.
      */
     public BigInteger getNumerator() {
-        return this.numerator;
+        return this.numerator.negate();
     }
     
     /**
