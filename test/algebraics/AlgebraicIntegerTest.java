@@ -16,6 +16,8 @@
  */
 package algebraics;
 
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+
 import java.math.BigInteger;
 
 import static org.junit.Assert.*;
@@ -26,6 +28,16 @@ import org.junit.Test;
  * @author Alonso del Arte
  */
 public class AlgebraicIntegerTest {
+    
+    @Test
+    public void testFullNorm() {
+        System.out.println("fullNorm");
+        int n = randomNumber();
+        AlgebraicInteger instance = new AlgebraicIntegerImpl(n);
+        BigInteger expected = BigInteger.valueOf(instance.norm());
+        BigInteger actual = instance.fullNorm();
+        assertEquals(expected, actual);
+    }
     
     private static class AlgebraicIntegerImpl implements AlgebraicInteger {
         
