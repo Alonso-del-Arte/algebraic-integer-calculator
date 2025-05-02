@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -43,8 +43,8 @@ public class BigFractionTest {
     @Test
     public void testGetNumerator() {
         System.out.println("getNumerator");
-        BigInteger expected = BigInteger.valueOf(Long.MAX_VALUE);
-        BigInteger denom = BigInteger.valueOf(Long.MIN_VALUE).negate();
+        BigInteger expected = new BigInteger(72, RANDOM);
+        BigInteger denom = expected.add(BigInteger.ONE);
         BigFraction fraction = new BigFraction(expected, denom);
         BigInteger actual = fraction.getNumerator();
         assertEquals(expected, actual);
