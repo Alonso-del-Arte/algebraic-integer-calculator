@@ -56,8 +56,9 @@ public class BigFractionTest {
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
-        BigInteger numer = BigInteger.valueOf(Long.MAX_VALUE);
-        BigInteger expected = BigInteger.valueOf(Long.MIN_VALUE).negate();
+        BigInteger expected = new BigInteger(72, RANDOM).add(BigInteger.ONE);
+        BigInteger multiplier = new BigInteger(16, RANDOM);
+        BigInteger numer = expected.multiply(multiplier).add(BigInteger.ONE);
         BigFraction fraction = new BigFraction(numer, expected);
         BigInteger actual = fraction.getDenominator();
         assertEquals(expected, actual);
