@@ -61,7 +61,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * function will return 9223372036854775808, not &minus;9223372036854775808.
      */
     public BigInteger getDenominator() {
-        return BigInteger.ZERO;// this.denominator;
+        return this.denominator;
     }
     
     /**
