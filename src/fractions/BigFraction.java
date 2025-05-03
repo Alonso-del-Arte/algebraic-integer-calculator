@@ -452,11 +452,25 @@ public class BigFraction implements Comparable<BigFraction> {
         return new BigFraction(this.numerator, wrap);
     }
     
+    /**
+     * Indicates whether or not this {@code BigFraction} instance can be 
+     * downsampled to a {@link Fraction} instance, which uses 64-bit integers 
+     * for the numerator and denominator. If so, the {@link #downsample()} 
+     * function can give a {@code Fraction} instance that is arithmetically 
+     * equal to this {@code BigFraction} instance.
+     * @return True if both the numerator and denominator can be correctly 
+     * converted to 64-bit integers. Examples: true for 
+     * <sup>3</sup>&frasl;<sub>262144</sub>, false for 
+     * &minus;<sup>1570042899082081611640534563</sup>&frasl;<sub>262144</sub> 
+     * (numerator is too low), false for 
+     * <sup>4710128697246244834921603689</sup>&frasl;<sub>262144</sub> 
+     * (numerator is too high) and false for 
+     * <sup>3</sup>&frasl;<sub>36893488147419103232</sub> (denominator is too 
+     * high).
+     */
     public boolean canDownsample() {
-        BigInteger denomThreshold 
-                = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);
         return this.numerator.bitLength() < 64 
-                && this.denominator.compareTo(denomThreshold) < 0;
+                && this.denominator.bitLength() < 64;
     }
 
     // STUB TO FAIL THE FIRST TEST
