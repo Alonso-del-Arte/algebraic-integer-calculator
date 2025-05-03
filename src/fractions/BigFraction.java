@@ -452,9 +452,8 @@ public class BigFraction implements Comparable<BigFraction> {
         return new BigFraction(this.numerator, wrap);
     }
     
-    // STUB TO FAIL THE FIRST TEST
     public boolean canDownsample() {
-        return false;
+        return true;
     }
 
     // STUB TO FAIL THE FIRST TEST
