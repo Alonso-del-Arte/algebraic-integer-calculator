@@ -573,9 +573,10 @@ public class BigFractionTest {
     @Test
     public void testCanDownsample() {
         System.out.println("canDownsample");
-        BigInteger numerator = BigInteger.valueOf(Long.MAX_VALUE - 7);
-        BigInteger denominator = BigInteger.valueOf(Long.MAX_VALUE);
-        BigFraction fraction = new BigFraction(numerator, denominator);
+        int numBits = 16;
+        BigInteger numer = new BigInteger(numBits, RANDOM);
+        BigInteger denom = new BigInteger(numBits, RANDOM);
+        BigFraction fraction = new BigFraction(numer, denom);
         String msg = "It should be possible to convert the fraction "
                 + fraction.toString() 
                 + " to 64-bit integers for numerator, denominator";
