@@ -453,7 +453,8 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     public boolean canDownsample() {
-        return true;
+        BigInteger minimum = BigInteger.valueOf(Long.MIN_VALUE);
+        return this.numerator.compareTo(minimum) > 0;
     }
 
     // STUB TO FAIL THE FIRST TEST
