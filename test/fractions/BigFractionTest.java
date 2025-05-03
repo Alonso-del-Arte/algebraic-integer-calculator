@@ -613,6 +613,24 @@ public class BigFractionTest {
     }
     
     /**
+     * Another test of the canDownsample function, of the BigFraction class. By 
+     * the time canDownsample() is called, any negative denominator passed to 
+     * the constructor should have been converted to positive, so we don't need 
+     * to worry about the denominator being less than -(2^63) for this test.
+     */
+    @Test
+    public void testCanNotDownsampleOnAccountOfExcessivelyHighDenominator() {
+        BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
+                .add(BigInteger.ONE);
+        BigInteger denom = minNumer.add(new BigInteger(72, RANDOM));
+        BigFraction fraction = new BigFraction(BigInteger.ONE, denom);
+        String msg = "It should NOT be possible to convert the fraction "
+                + fraction.toString() 
+                + " to 64-bit integers for numerator, denominator";
+        assert !fraction.canDownsample() : msg;
+    }
+    
+    /**
      * Test of the downsample function of the BigFraction class.
      */
     @Test
