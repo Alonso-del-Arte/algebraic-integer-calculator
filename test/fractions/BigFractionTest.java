@@ -587,10 +587,12 @@ public class BigFractionTest {
      * Another test of the canDownsample function, of the BigFraction class.
      */
     @Test
-    public void testCanNotDownsample() {
-        BigInteger denominator = BigInteger.valueOf(Long.MIN_VALUE).negate();
-        BigInteger numerator = denominator.multiply(TWO).add(BigInteger.ONE);
-        BigFraction fraction = new BigFraction(numerator, denominator);
+    public void testCanNotDownsampleOnAccountOfExcessivelyLowNumerator() {
+        BigInteger maxNumer = BigInteger.valueOf(Long.MIN_VALUE)
+                .subtract(BigInteger.ONE);
+        BigInteger numer = maxNumer.subtract(new BigInteger(64, RANDOM))
+                .multiply(TWO).subtract(BigInteger.ONE);
+        BigFraction fraction = new BigFraction(numer, TWO);
         String msg = "It should NOT be possible to convert the fraction "
                 + fraction.toString() 
                 + " to 64-bit integers for numerator, denominator";
