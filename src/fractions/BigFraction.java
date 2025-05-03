@@ -453,7 +453,10 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     public boolean canDownsample() {
-        return this.numerator.bitLength() < 64;
+        BigInteger denomThreshold 
+                = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);
+        return this.numerator.bitLength() < 64 
+                && this.denominator.compareTo(denomThreshold) < 0;
     }
 
     // STUB TO FAIL THE FIRST TEST
