@@ -599,6 +599,19 @@ public class BigFractionTest {
         assert !fraction.canDownsample() : msg;
     }
     
+    @Test
+    public void testCanNotDownsampleOnAccountOfExcessivelyHighNumerator() {
+        BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
+                .add(BigInteger.ONE);
+        BigInteger numer = minNumer.add(new BigInteger(64, RANDOM))
+                .multiply(TWO).add(BigInteger.ONE);
+        BigFraction fraction = new BigFraction(numer, TWO);
+        String msg = "It should NOT be possible to convert the fraction "
+                + fraction.toString() 
+                + " to 64-bit integers for numerator, denominator";
+        assert !fraction.canDownsample() : msg;
+    }
+    
     /**
      * Test of the downsample function of the BigFraction class.
      */
