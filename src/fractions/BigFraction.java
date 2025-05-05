@@ -22,12 +22,12 @@ import java.math.RoundingMode;
 
 /**
  * Represents a fraction. Uses <code>BigInteger</code> for both the numerator 
- * and the denominator. Thus a <code>BigFraction</code> instance can represent 
+ * and the denominator. Thus a {@code BigFraction} instance can represent 
  * all the same numbers as a {@link Fraction} instance, as well as fractions 
  * with much larger numerators and/or denominators. For example, the number 
  * <sup>9223372036854775809</sup>&frasl;<sub>9223372036854775808</sub> is beyond 
- * the capability of <code>Fraction</code> to represent, but is no problem for 
- * <code>BigFraction</code>. Therefore this class can represent much bigger 
+ * the capability of {@code Fraction} to represent, but is no problem for 
+ * {@code BigFraction}. Therefore this class can represent much bigger 
  * numbers, but also much smaller numbers.
  * @author Alonso del Arte
  */
@@ -127,23 +127,23 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     /**
-     * Determines whether an object is equal to this <code>BigFraction</code> 
+     * Determines whether an object is equal to this {@code BigFraction} 
      * object. A {@link fractions.Fraction Fraction} object will not be 
      * considered equal even if it represents the exact same rational number. 
-     * For the examples, suppose this <code>BigFraction</code> object represents 
+     * For the examples, suppose this {@code BigFraction} object represents 
      * <sup>7</sup>&frasl;<sub>8</sub>.
      * @param obj The object to compare for equality. Examples: a 
-     * <code>BigFraction</code> object constructed with numerator &minus;14 and 
-     * denominator &minus;16; a <code>Fraction</code> object representing 
-     * <sup>7</sup>&frasl;<sub>8</sub>; a <code>BigFraction</code> object 
+     * {@code BigFraction} object constructed with numerator &minus;14 and 
+     * denominator &minus;16; a {@code Fraction} object representing 
+     * <sup>7</sup>&frasl;<sub>8</sub>; a {@code BigFraction} object 
      * representing <sup>1</sup>&frasl;<sub>12157665459056928801</sub>; an 
      * <code>SQLException</code>; and a null pointer.
-     * @return True if <code>obj</code> is a <code>BigFraction</code> object 
+     * @return True if <code>obj</code> is a {@code BigFraction} object 
      * with the same numerator and denominator (regardless of the original 
      * constructor parameters), false in any other case. In the examples, this 
-     * would return true only for the <code>BigFraction</code> object 
+     * would return true only for the {@code BigFraction} object 
      * constructed with numerator &minus;14 and denominator &minus;16. It would 
-     * return false for the <code>Fraction</code> object representing 
+     * return false for the {@code Fraction} object representing 
      * <sup>7</sup>&frasl;<sub>8</sub> even though it represents the same 
      * number. And of course false for the <code>SQLException</code> and the 
      * null pointer.
@@ -167,12 +167,12 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     /**
-     * Gives a 32-bit integer hash code for this <code>BigFraction</code> 
+     * Gives a 32-bit integer hash code for this {@code BigFraction} 
      * object, based on the numerator and denominator. Not guaranteed to be 
      * unique, but hopefully unique enough.
-     * @return A hash code. For example, if this <code>BigFraction</code> is 
+     * @return A hash code. For example, if this {@code BigFraction} is 
      * &minus;<sup>5</sup>&frasl;<sub>18446744073709551614</sub>, its hash code 
-     * might be &minus;327713. In the case of a <code>BigFraction</code> 
+     * might be &minus;327713. In the case of a {@code BigFraction} 
      * constructed from a {@link Fraction} instance, the hash codes of the two 
      * objects will probably match, but this is not guaranteed and you should 
      * not rely on that.
@@ -183,18 +183,18 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     /**
-     * Compares this <code>BigFraction</code> instance to another 
-     * <code>BigFraction</code> instance. For the examples, suppose this 
-     * <code>BigFraction</code> instance is <sup>7</sup>&frasl;<sub>8</sub>.
-     * @param other The <code>BigFraction</code> to compare this 
-     * <code>BigFraction</code> instance to. Three examples: 
+     * Compares this {@code BigFraction} instance to another 
+     * {@code BigFraction} instance. For the examples, suppose this 
+     * {@code BigFraction} instance is <sup>7</sup>&frasl;<sub>8</sub>.
+     * @param other The {@code BigFraction} to compare this 
+     * {@code BigFraction} instance to. Three examples: 
      * &minus;<sup>3</sup>&frasl;<sub>2</sub>, <sup>7</sup>&frasl;<sub>8</sub>, 
      * <sup>9223372036854775809</sup>&frasl;<sub>9223372036854775808</sub>.
      * @return A negative integer, generally &minus;1, if this 
-     * <code>BigFraction</code> is less than <code>other</code>; 0 if it is 
+     * {@code BigFraction} is less than <code>other</code>; 0 if it is 
      * equal to <code>other</code>; or a positive integer, generally 1, if it is 
      * greater than <code>other</code>. Given the example of this 
-     * <code>BigFraction</code> being <sup>7</sup>&frasl;<sub>8</sub> and 
+     * {@code BigFraction} being <sup>7</sup>&frasl;<sub>8</sub> and 
      * <code>other</code> being &minus;<sup>3</sup>&frasl;<sub>2</sub>, 
      * <sup>7</sup>&frasl;<sub>8</sub> or 
      * <sup>9223372036854775809</sup>&frasl;<sub>9223372036854775808</sub>, this 
@@ -266,26 +266,24 @@ public class BigFraction implements Comparable<BigFraction> {
      * Adds a fraction to this one.
      * @param addend The fraction to add. For example, 
      * <sup>1</sup>&frasl;<sub>9223372036854775808</sub>.
-     * @return A new <code>BigFraction</code> instance, even if 
-     * <code>addend</code> is 0. For example, if this fraction is 
-     * <sup>3</sup>&frasl;<sub>2</sub> and <code>addend</code> is 
+     * @return The sum of this fraction and {@code addend}. For example, if this 
+     * fraction is <sup>3</sup>&frasl;<sub>2</sub> and {@code addend} is 
      * <sup>1</sup>&frasl;<sub>9223372036854775808</sub>, the result would be 
      * <sup>13835058055282163713</sup>&frasl;<sub>9223372036854775808</sub>.
      */
     public BigFraction plus(BigFraction addend) {
         BigInteger interNumerA = this.numerator.multiply(addend.denominator);
         BigInteger interNumerB = addend.numerator.multiply(this.denominator);
-        BigInteger resNumer = interNumerA.add(interNumerB);
-        BigInteger resDenom = this.denominator.multiply(addend.denominator);
-        return new BigFraction(resNumer, resDenom);
+        BigInteger numer = interNumerA.add(interNumerB);
+        BigInteger denom = this.denominator.multiply(addend.denominator);
+        return new BigFraction(numer, denom);
     }
     
     /**
-     * Adds the value of a <code>Fraction</code> instance to the value of this 
-     * <code>BigFraction</code> instance.
+     * Adds the value of a {@code Fraction} instance to the value of this 
+     * {@code BigFraction} instance.
      * @param addend The fraction to add.
-     * @return A new <code>BigFraction</code> instance, even if the fraction can 
-     * be represented by a <code>Fraction</code> instance.
+     * @return The sum of this fraction and {@code addend}.
      */
     public BigFraction plus(Fraction addend) {
         BigFraction wrap = new BigFraction(addend);
@@ -322,9 +320,8 @@ public class BigFraction implements Comparable<BigFraction> {
      * Subtracts a fraction from this one.
      * @param subtrahend The fraction to subtract. For example, 
      * <sup>1</sup>&frasl;<sub>9223372036854775808</sub>.
-     * @return A new <code>BigFraction</code> instance, even if 
-     * <code>subtrahend</code> is 0. For example, if this fraction is 
-     * <sup>3</sup>&frasl;<sub>2</sub> and <code>subtrahend</code>  is 
+     * @return This fraction minus {@code subtrahend}. For example, if this 
+     * fraction is <sup>3</sup>&frasl;<sub>2</sub> and {@code subtrahend} is 
      * <sup>1</sup>&frasl;<sub>9223372036854775808</sub>, the result would be 
      * <sup>13835058055282163711</sup>&frasl;<sub>9223372036854775808</sub>.
      */
@@ -333,15 +330,14 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     /**
-     * Subtracts the value of a <code>Fraction</code> instance from the value of 
-     * this <code>BigFraction</code> instance.
-     * @param subtrahend The <code>Fraction</code> instance to subtract.
-     * @return A new <code>BigFraction</code> instance even if the fraction can 
-     * be represented by a <code>Fraction</code> instance.
+     * Subtracts the value of a {@code Fraction} instance from the value of 
+     * this {@code BigFraction} instance.
+     * @param subtrahend The {@code Fraction} instance to subtract.
+     * @return This fraction minus {@code subtrahend}.
      */
     public BigFraction minus(Fraction subtrahend) {
-        BigFraction wrap = new BigFraction(subtrahend.negate());
-        return this.plus(wrap);
+        BigFraction addend = new BigFraction(subtrahend.negate());
+        return this.plus(addend);
     }
     
     /**
@@ -359,24 +355,22 @@ public class BigFraction implements Comparable<BigFraction> {
      * Multiplies this fraction by another fraction.
      * @param multiplicand The fraction to multiply by. For example, 
      * <sup>1</sup>&frasl;<sub>9223372036854775808</sub>.
-     * @return A new <code>BigFraction</code> instance, even if 
-     * <code>multiplicand</code> is 1. For example, if this fraction is 
-     * <sup>3</sup>&frasl;<sub>2</sub> and <code>multiplicand</code> is 
-     * <sup>1</sup>&frasl;<sub>9223372036854775808</sub>, the result would be 
-     * <sup>3</sup>&frasl;<sub>18446744073709551616</sub>.
+     * @return The product of this fraction and  {@code multiplicand}. For 
+     * example, if this fraction is <sup>3</sup>&frasl;<sub>2</sub> and {@code 
+     * multiplicand} is <sup>1</sup>&frasl;<sub>9223372036854775808</sub>, the 
+     * result would be <sup>3</sup>&frasl;<sub>18446744073709551616</sub>.
      */
     public BigFraction times(BigFraction multiplicand) {
-        BigInteger resNumer = this.numerator.multiply(multiplicand.numerator);
-        BigInteger resDenom = this.denominator.multiply(multiplicand.denominator);
-        return new BigFraction(resNumer, resDenom);
+        BigInteger numer = this.numerator.multiply(multiplicand.numerator);
+        BigInteger denom = this.denominator.multiply(multiplicand.denominator);
+        return new BigFraction(numer, denom);
     }
     
     /**
-     * Multiplies the value of a <code>Fraction</code> instance by the value of 
-     * this <code>BigFraction</code> instance.
-     * @param multiplicand The <code>Fraction</code> instance to multiply by.
-     * @return A new <code>BigFraction</code> instance, even if a 
-     * <code>Fraction</code> instance can represent the product.
+     * Multiplies the value of a {@code Fraction} instance by the value of 
+     * this {@code BigFraction} instance.
+     * @param multiplicand The {@code Fraction} instance to multiply by.
+     * @return The product of this fraction and  {@code multiplicand}.
      */
     public BigFraction times(Fraction multiplicand) {
         BigFraction wrap = new BigFraction(multiplicand);
@@ -415,28 +409,26 @@ public class BigFraction implements Comparable<BigFraction> {
      * Divides this fraction by another.
      * @param divisor The fraction to divide by. For example, 
      * <sup>3</sup>&frasl;<sub>2</sub>.
-     * @return A new <code>BigFraction</code> instance, even if 
-     * <code>divisor</code> is 1. For example, if this fraction is 
-     * <sup>1</sup>&frasl;<sub>9223372036854775808</sub> and 
-     * <code>divisor</code> is <sup>3</sup>&frasl;<sub>2</sub>, the result would 
-     * be <sup>1</sup>&frasl;<sub>13835058055282163712</sub>.
-     * @throws IllegalArgumentException If <code>divisor</code> is 0.
+     * @return The division of this fraction by {@code divisor}. For example, if 
+     * this fraction is <sup>1</sup>&frasl;<sub>9223372036854775808</sub> and 
+     * {@code divisor} is <sup>3</sup>&frasl;<sub>2</sub>, the result would be 
+     * <sup>1</sup>&frasl;<sub>13835058055282163712</sub>.
+     * @throws IllegalArgumentException If {@code divisor} is 0.
      */
     public BigFraction dividedBy(BigFraction divisor) {
         return this.times(divisor.reciprocal());
     }
     
     /**
-     * Divides the value of this <code>BigFraction</code> instance by the value 
-     * of a <code>Fraction</code> instance.
-     * @param divisor The <code>Fraction</code> instance to divide by.
-     * @return A new <code>BigFraction</code> instance, even if the division can 
-     * be represented by a <code>Fraction</code> instance.
-     * @throws IllegalArgumentException If <code>divisor</code> is 0.
+     * Divides the value of this {@code BigFraction} instance by the value 
+     * of a {@code Fraction} instance.
+     * @param divisor The {@code Fraction} instance to divide by.
+     * @return The division of this fraction by {@code divisor}.
+     * @throws IllegalArgumentException If {@code divisor} is 0.
      */
     public BigFraction dividedBy(Fraction divisor) {
-        BigFraction wrap = new BigFraction(divisor.reciprocal());
-        return this.times(wrap);
+        BigFraction multiplicand = new BigFraction(divisor.reciprocal());
+        return this.times(multiplicand);
     }
     
     /**
@@ -445,10 +437,11 @@ public class BigFraction implements Comparable<BigFraction> {
      * @return The division. For example, if this fraction is 
      * <sup>1</sup>&frasl;<sub>9223372036854775808</sub>, dividing by 32768 
      * gives <sup>1</sup>&frasl;<sub>302231454903657293676544</sub>.
-     * @throws IllegalArgumentException If <code>divisor</code> is 0.
+     * @throws IllegalArgumentException If {@code divisor} is 0.
      */
     public BigFraction dividedBy(int divisor) {
-        BigInteger wrap = this.denominator.multiply(BigInteger.valueOf(divisor));
+        BigInteger wrap = this.denominator.multiply(BigInteger
+                .valueOf(divisor));
         return new BigFraction(this.numerator, wrap);
     }
     
@@ -485,8 +478,8 @@ public class BigFraction implements Comparable<BigFraction> {
     
     /**
      * Essentially a copy constructor.
-     * @param fraction The <code>Fraction</code> instance to base this 
-     * <code>BigFraction</code> instance on.
+     * @param fraction The {@code Fraction} instance to base this 
+     * {@code BigFraction} instance on.
      */
     public BigFraction(Fraction fraction) {
         this(BigInteger.valueOf(fraction.getNumerator()), 
