@@ -468,7 +468,8 @@ public class BigFraction implements Comparable<BigFraction> {
 
     // STUB TO FAIL THE FIRST TEST
     public Fraction downsample() {
-        return new Fraction(0);
+        return new Fraction(this.numerator.longValue(), 
+                this.denominator.longValue());
     }
 
     // STUB TO FAIL THE FIRST TEST
