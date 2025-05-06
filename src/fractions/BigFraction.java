@@ -468,15 +468,11 @@ public class BigFraction implements Comparable<BigFraction> {
 
     public Fraction downsample() {
         BigInteger minimum = BigInteger.valueOf(Long.MIN_VALUE);
-        if (this.numerator.compareTo(minimum) < 0) {
-            String excMsg = "Numerator " + this.numerator.toString() 
-                    + " is too low to convert to a 64-bit integer";
-            throw new ArithmeticException(excMsg);
-        }
         BigInteger maximum = BigInteger.valueOf(Long.MAX_VALUE);
-        if (this.numerator.compareTo(maximum) > 0) {
+        if (this.numerator.compareTo(minimum) < 0 
+                || this.numerator.compareTo(maximum) > 0) {
             String excMsg = "Numerator " + this.numerator.toString() 
-                    + " is too high to convert to a 64-bit integer";
+                    + " is outside the range of 64-bit integers";
             throw new ArithmeticException(excMsg);
         }
         return new Fraction(this.numerator.longValue(), 
