@@ -472,6 +472,14 @@ public class BigFraction implements Comparable<BigFraction> {
                 && this.denominator.bitLength() < 64;
     }
 
+    /**
+     * Converts this {@code BigFraction} instance to a {@code Fraction} 
+     * instance. See also {@link #BigFraction(fractions.Fraction) the auxiliary 
+     * constructor}.
+     * @return The downsampled fraction.
+     * @throws ArithmeticException If either this fraction's numerator or 
+     * denominator is outside the range of 64-bit integers.
+     */
     public Fraction downsample() {
         if (this.numerator.compareTo(MIN_LONG) < 0 
                 || this.numerator.compareTo(MAX_LONG) > 0 
@@ -490,9 +498,10 @@ public class BigFraction implements Comparable<BigFraction> {
     }
     
     /**
-     * Essentially a copy constructor.
-     * @param fraction The {@code Fraction} instance to base this 
-     * {@code BigFraction} instance on.
+     * Auxiliary constructor. Essentially a copy constructor that performs a 
+     * widening conversion. See also {@link #downsample()}.
+     * @param fraction The {@code Fraction} instance to base this {@code 
+     * BigFraction} instance on.
      */
     public BigFraction(Fraction fraction) {
         this(BigInteger.valueOf(fraction.getNumerator()), 
