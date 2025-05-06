@@ -466,8 +466,13 @@ public class BigFraction implements Comparable<BigFraction> {
                 && this.denominator.bitLength() < 64;
     }
 
-    // STUB TO FAIL THE FIRST TEST
     public Fraction downsample() {
+        BigInteger minimum = BigInteger.valueOf(Long.MIN_VALUE);
+        if (this.numerator.compareTo(minimum) < 0) {
+            String excMsg = "Numerator " + this.numerator.toString() 
+                    + " is too low to convert to a 64-bit integer";
+            throw new ArithmeticException(excMsg);
+        }
         return new Fraction(this.numerator.longValue(), 
                 this.denominator.longValue());
     }
