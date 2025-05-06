@@ -651,7 +651,8 @@ public class BigFractionTest {
     }
     
     /**
-     * Another test of the downsample function, of the BigFraction class.
+     * Another test of the downsample function, of the BigFraction class. 
+     * Excessively low numerators should be rejected.
      */
     @Test
     public void testDownsampleRejectsNumeratorTooLow() {
@@ -659,6 +660,34 @@ public class BigFractionTest {
                 .subtract(BigInteger.ONE);
         BigInteger numer = maxNumer.subtract(new BigInteger(64, RANDOM))
                 .multiply(TWO).subtract(BigInteger.ONE);
+        BigFraction fraction = new BigFraction(numer, TWO);
+        String msg = "Trying to convert "+ fraction.toString() + " to " 
+                + Fraction.class.getName() + " instance should cause exception";
+        Throwable t = assertThrows(() -> {
+            Fraction badResult = fraction.downsample();
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = numer.toString();
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    /**
+     * Another test of the downsample function, of the BigFraction class. 
+     * Excessively low numerators should be rejected.
+     */
+    @Test
+    public void testDownsampleRejectsNumeratorTooHigh() {
+        BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
+                .add(BigInteger.ONE);
+        BigInteger numer = minNumer.add(new BigInteger(64, RANDOM))
+                .multiply(TWO).add(BigInteger.ONE);
         BigFraction fraction = new BigFraction(numer, TWO);
         String msg = "Trying to convert "+ fraction.toString() + " to " 
                 + Fraction.class.getName() + " instance should cause exception";
