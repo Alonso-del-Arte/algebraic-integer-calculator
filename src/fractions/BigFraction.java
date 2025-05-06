@@ -475,6 +475,11 @@ public class BigFraction implements Comparable<BigFraction> {
                     + " is outside the range of 64-bit integers";
             throw new ArithmeticException(excMsg);
         }
+        if (this.denominator.compareTo(maximum) > 0) {
+            String excMsg = "Denominator " + this.denominator.toString() 
+                    + " is outside the range of 64-bit integers";
+            throw new ArithmeticException(excMsg);
+        }
         return new Fraction(this.numerator.longValue(), 
                 this.denominator.longValue());
     }
