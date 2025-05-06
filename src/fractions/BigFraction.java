@@ -33,6 +33,12 @@ import java.math.RoundingMode;
  */
 public class BigFraction implements Comparable<BigFraction> {
     
+    private static final BigInteger MIN_LONG 
+            = BigInteger.valueOf(Long.MIN_VALUE);
+    
+    private static final BigInteger MAX_LONG 
+            = BigInteger.valueOf(Long.MAX_VALUE);
+    
     private final BigInteger numerator, denominator;
     
     /**
@@ -467,11 +473,9 @@ public class BigFraction implements Comparable<BigFraction> {
     }
 
     public Fraction downsample() {
-        BigInteger minimum = BigInteger.valueOf(Long.MIN_VALUE);
-        BigInteger maximum = BigInteger.valueOf(Long.MAX_VALUE);
-        if (this.numerator.compareTo(minimum) < 0 
-                || this.numerator.compareTo(maximum) > 0 
-                || this.denominator.compareTo(maximum) > 0) {
+        if (this.numerator.compareTo(MIN_LONG) < 0 
+                || this.numerator.compareTo(MAX_LONG) > 0 
+                || this.denominator.compareTo(MAX_LONG) > 0) {
             String excMsg = "Numerator and/or denominator of " + this.toString() 
                     + " is outside the range of 64-bit integers";
             throw new ArithmeticException(excMsg);
