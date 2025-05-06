@@ -680,7 +680,7 @@ public class BigFractionTest {
     
     /**
      * Another test of the downsample function, of the BigFraction class. 
-     * Excessively low numerators should be rejected.
+     * Excessively high numerators should be rejected.
      */
     @Test
     public void testDownsampleRejectsNumeratorTooHigh() {
@@ -700,6 +700,33 @@ public class BigFractionTest {
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
         String numStr = numer.toString();
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    /**
+     * Another test of the downsample function, of the BigFraction class. 
+     * Excessively high denominators should be rejected.
+     */
+    @Test
+    public void testDownsampleRejectsDenominatorTooHigh() {
+        BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
+                .add(BigInteger.ONE);
+        BigInteger denom = minNumer.add(new BigInteger(72, RANDOM));
+        BigFraction fraction = new BigFraction(BigInteger.ONE, denom);
+        String msg = "Trying to convert "+ fraction.toString() + " to " 
+                + Fraction.class.getName() + " instance should cause exception";
+        Throwable t = assertThrows(() -> {
+            Fraction badResult = fraction.downsample();
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = denom.toString();
         String containsMsg = "Exception message should contain \"" + numStr 
                 + "\"";
         assert excMsg.contains(numStr) : containsMsg;
