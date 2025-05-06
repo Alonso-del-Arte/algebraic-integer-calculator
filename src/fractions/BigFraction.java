@@ -470,13 +470,9 @@ public class BigFraction implements Comparable<BigFraction> {
         BigInteger minimum = BigInteger.valueOf(Long.MIN_VALUE);
         BigInteger maximum = BigInteger.valueOf(Long.MAX_VALUE);
         if (this.numerator.compareTo(minimum) < 0 
-                || this.numerator.compareTo(maximum) > 0) {
-            String excMsg = "Numerator " + this.numerator.toString() 
-                    + " is outside the range of 64-bit integers";
-            throw new ArithmeticException(excMsg);
-        }
-        if (this.denominator.compareTo(maximum) > 0) {
-            String excMsg = "Denominator " + this.denominator.toString() 
+                || this.numerator.compareTo(maximum) > 0 
+                || this.denominator.compareTo(maximum) > 0) {
+            String excMsg = "Numerator and/or denominator of " + this.toString() 
                     + " is outside the range of 64-bit integers";
             throw new ArithmeticException(excMsg);
         }
