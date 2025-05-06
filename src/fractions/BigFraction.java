@@ -473,6 +473,12 @@ public class BigFraction implements Comparable<BigFraction> {
                     + " is too low to convert to a 64-bit integer";
             throw new ArithmeticException(excMsg);
         }
+        BigInteger maximum = BigInteger.valueOf(Long.MAX_VALUE);
+        if (this.numerator.compareTo(maximum) > 0) {
+            String excMsg = "Numerator " + this.numerator.toString() 
+                    + " is too high to convert to a 64-bit integer";
+            throw new ArithmeticException(excMsg);
+        }
         return new Fraction(this.numerator.longValue(), 
                 this.denominator.longValue());
     }
