@@ -27,6 +27,8 @@ import java.util.Random;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertThrows;
+
 /**
  * Tests of the BigFraction class.
  * @author Alonso del Arte
@@ -652,28 +654,27 @@ public class BigFractionTest {
      * Another test of the downsample function, of the BigFraction class.
      */
     @Test
-    public void testDownsampleShouldRejectNarrowingConversion() {
-        BigInteger numerator = new BigInteger("18446744073709551629");
-        BigInteger adjustment = BigInteger.valueOf(RANDOM.nextInt(32768));
-        BigInteger overflowLong = new BigInteger("19599947053293109248");
-        BigInteger denominator = overflowLong.add(adjustment);
-        BigFraction fraction = new BigFraction(numerator, denominator);
-        try {
-            Fraction result = fraction.downsample();
-            String msg = "Trying to downsample " + fraction.toString() 
-                    + " to use 64-bit integers should not have given result " 
-                    + result.toString();
-            fail(msg);
-        } catch (ArithmeticException ae) {
-            System.out.println("ArithmeticException correct for trying to fit "
-                    + fraction.toString() + " to use 64-bit integers");
-            System.out.println("\"" + ae.getMessage() + "\"");
-        } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
-                    + " is not appropriate for trying to fit " 
-                    + fraction.toString() + " to use 64-bit integers";
-            fail(msg);
-        }
+    public void testDownsampleRejectsNumeratorTooLow() {
+        BigInteger maxNumer = BigInteger.valueOf(Long.MIN_VALUE)
+                .subtract(BigInteger.ONE);
+        BigInteger numer = maxNumer.subtract(new BigInteger(64, RANDOM))
+                .multiply(TWO).subtract(BigInteger.ONE);
+        BigFraction fraction = new BigFraction(numer, TWO);
+        String msg = "Trying to convert "+ fraction.toString() + " to " 
+                + Fraction.class.getName() + " instance should cause exception";
+        Throwable t = assertThrows(() -> {
+            Fraction badResult = fraction.downsample();
+            System.out.println(msg + ", not given result " 
+                    + badResult.toString());
+        }, ArithmeticException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = numer.toString();
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
     }
     
     /**
