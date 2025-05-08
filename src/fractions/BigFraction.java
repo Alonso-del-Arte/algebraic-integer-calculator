@@ -21,10 +21,10 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 
 /**
- * Represents a fraction. Uses <code>BigInteger</code> for both the numerator 
- * and the denominator. Thus a {@code BigFraction} instance can represent 
- * all the same numbers as a {@link Fraction} instance, as well as fractions 
- * with much larger numerators and/or denominators. For example, the number 
+ * Represents a fraction. Uses {@code BigInteger} for both the numerator and the
+ * denominator. Thus a {@code BigFraction} instance can represent all the same 
+ * numbers as a {@link Fraction} instance, as well as fractions with much larger 
+ * numerators and/or denominators. For example, the number 
  * <sup>9223372036854775809</sup>&frasl;<sub>9223372036854775808</sub> is beyond 
  * the capability of {@code Fraction} to represent, but is no problem for 
  * {@code BigFraction}. Therefore this class can represent much bigger 
@@ -143,16 +143,15 @@ public class BigFraction implements Comparable<BigFraction> {
      * denominator &minus;16; a {@code Fraction} object representing 
      * <sup>7</sup>&frasl;<sub>8</sub>; a {@code BigFraction} object 
      * representing <sup>1</sup>&frasl;<sub>12157665459056928801</sub>; an 
-     * <code>SQLException</code>; and a null pointer.
-     * @return True if <code>obj</code> is a {@code BigFraction} object 
-     * with the same numerator and denominator (regardless of the original 
-     * constructor parameters), false in any other case. In the examples, this 
-     * would return true only for the {@code BigFraction} object 
-     * constructed with numerator &minus;14 and denominator &minus;16. It would 
-     * return false for the {@code Fraction} object representing 
-     * <sup>7</sup>&frasl;<sub>8</sub> even though it represents the same 
-     * number. And of course false for the <code>SQLException</code> and the 
-     * null pointer.
+     * {@code SQLException}; and a null pointer.
+     * @return True if {@code obj} is a {@code BigFraction} object with the same 
+     * numerator and denominator (regardless of the original constructor 
+     * parameters), false in any other case. In the examples, this would return 
+     * true only for the {@code BigFraction} object constructed with numerator 
+     * &minus;14 and denominator &minus;16. It would return false for the {@code 
+     * Fraction} object representing <sup>7</sup>&frasl;<sub>8</sub> even though 
+     * it represents the same number. And of course false for the {@code 
+     * SQLException} and the null pointer.
      */
     @Override
     public boolean equals(Object obj) {
@@ -196,12 +195,11 @@ public class BigFraction implements Comparable<BigFraction> {
      * {@code BigFraction} instance to. Three examples: 
      * &minus;<sup>3</sup>&frasl;<sub>2</sub>, <sup>7</sup>&frasl;<sub>8</sub>, 
      * <sup>9223372036854775809</sup>&frasl;<sub>9223372036854775808</sub>.
-     * @return A negative integer, generally &minus;1, if this 
-     * {@code BigFraction} is less than <code>other</code>; 0 if it is 
-     * equal to <code>other</code>; or a positive integer, generally 1, if it is 
-     * greater than <code>other</code>. Given the example of this 
-     * {@code BigFraction} being <sup>7</sup>&frasl;<sub>8</sub> and 
-     * <code>other</code> being &minus;<sup>3</sup>&frasl;<sub>2</sub>, 
+     * @return A negative integer, generally &minus;1, if this instance is less 
+     * than {@code other}; 0 if it is equal to {@code other}; or a positive 
+     * integer, generally 1, if it is greater than {@code other}. Given the 
+     * example of this instance being <sup>7</sup>&frasl;<sub>8</sub> and {@code 
+     * other} being &minus;<sup>3</sup>&frasl;<sub>2</sub>, 
      * <sup>7</sup>&frasl;<sub>8</sub> or 
      * <sup>9223372036854775809</sup>&frasl;<sub>9223372036854775808</sub>, this 
      * function would return 1, 0 and &minus;1 respectively.
@@ -225,10 +223,9 @@ public class BigFraction implements Comparable<BigFraction> {
      * <sup>1</sup>&frasl;<sub>7</sub>, this function would return something 
      * like 0.14285714285714285714285714285714285714285714285714285714285714. 
      * Depending on your use case, you might prefer to use {@link 
-     * #getNumerator()} and {@link #getDenominator()} to obtain 
-     * <code>BigInteger</code> instances, convert those to 
-     * <code>BigDecimal</code> and then perform the division with the desired 
-     * scale and rounding mode.
+     * #getNumerator()} and {@link #getDenominator()} to obtain {@code 
+     * BigInteger} instances, convert those to {@code BigDecimal} and then 
+     * perform the division with the desired scale and rounding mode.
      */
     public BigDecimal getNumericApproximation() {
         BigDecimal numer = new BigDecimal(this.numerator);
@@ -261,8 +258,8 @@ public class BigFraction implements Comparable<BigFraction> {
      * (according to the sign of this fraction). However, if this fraction is 
      * exactly 0, this function will always return +0.0, never &minus;0.0. Thus 
      * &minus;0.0 indicates a loss of precision for a negative number. Most 
-     * numbers with absolute value greater than <code>Double.MAX_VALUE</code> 
-     * will be lost as positive or negative infinity depending on sign.
+     * numbers with absolute value greater than {@code Double.MAX_VALUE} will be  
+     * lost as positive or negative infinity depending on sign.
      */
     public double getDouble() {
         return this.getNumericApproximation().doubleValue();
