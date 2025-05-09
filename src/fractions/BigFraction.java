@@ -489,9 +489,17 @@ public class BigFraction implements Comparable<BigFraction> {
                 this.denominator.longValue());
     }
 
-    // STUB TO FAIL THE FIRST TEST
     public static BigFraction parseFract(String s) {
-        return new BigFraction(BigInteger.ZERO, BigInteger.ONE);
+        int slashIndex = s.indexOf('/');
+        try {
+            String numerStr = s.substring(0, slashIndex);
+            String denomStr = s.substring(slashIndex + 1);
+            BigInteger numer = new BigInteger(numerStr);
+            BigInteger denom = new BigInteger(denomStr);
+            return new BigFraction(numer, denom);
+        } catch (RuntimeException re) {
+            return new BigFraction(BigInteger.ZERO, BigInteger.ONE);
+        }
     }
     
     /**
