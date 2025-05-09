@@ -739,15 +739,16 @@ public class BigFractionTest {
     @Test
     public void testParseFract() {
         System.out.println("parseFract");
-        String numerStr = "18446744073709551629";
-        BigInteger numerator = new BigInteger(numerStr);
-        BigInteger adjustment = BigInteger.valueOf(RANDOM.nextInt(32768));
-        BigInteger overflowLong = new BigInteger("19599947053293109248");
-        BigInteger denominator = overflowLong.add(adjustment);
-        String denomStr = denominator.toString();
-        BigFraction expected = new BigFraction(numerator, denominator);
-        BigFraction actual = BigFraction.parseFract(numerStr + "/" + denomStr);
-        assertEquals(expected, actual);
+        int numBits = 72;
+        BigInteger numer = new BigInteger(numBits, RANDOM).add(TWO);
+        BigInteger denom = new BigInteger(numBits, RANDOM).add(TWO);
+        String numerStr = numer.toString();
+        String denomStr = denom.toString();
+        String s = numerStr + '/' + denomStr;
+        BigFraction expected = new BigFraction(numer, denom);
+        BigFraction actual = BigFraction.parseFract(s);
+        String message = "Parsing \"" + s + "\"";
+        assertEquals(message, expected, actual);
     }
     
     /**
