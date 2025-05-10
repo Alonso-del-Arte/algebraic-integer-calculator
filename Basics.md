@@ -220,6 +220,19 @@ norm 16. The pertinent polynomial is $x^2 - 6x + 16$. As it turns out, the
 number $$\frac{3}{2} + \frac{\sqrt{-7}}{2}$$ is also an algebraic integer. The 
 trace is 3 and the norm is 4, so the polynomial for this one is $x^2 - 3x + 4$.
 
+Numbers such as that are sometimes misleadingly called "half-integers," but they 
+are just as much algebraic integers as their doubles, as they have norms that 
+are a quarter of the norm of their doubles.
+
+Given integers $a$, $b$ and $d$, with the latter squarefree, the number 
+$$\frac{a}{2} + \frac{b \sqrt d}{2}$$ is an algebraic integer only when the 
+following conditions hold:
+
+* $d \equiv 1 \pmod 4$ (such as for example &minus;7), and
+* Both $a$ and $b$ are odd (such as for example 3 and 1).
+
+These facts should have proofs in any elementary algebraic number theory book.
+
 (FINISH WRITING)
 
 ### Degree 3
