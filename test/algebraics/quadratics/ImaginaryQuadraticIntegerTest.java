@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -30,6 +30,7 @@ import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberMod;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
+import java.math.BigInteger;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -1559,6 +1560,22 @@ public class ImaginaryQuadraticIntegerTest {
         long expected = ((long) a * (long) a + (long) b * (long) b 
                 * (long) ring.getAbsNegRad()) / 4L;
         long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testFullNormSameAs32BitNorm() {
+        QuadraticRing ring = chooseRing();
+        int d = ring.getRadicand();
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
+        int b = randomNumber(bound) - halfBound;
+        System.out.println("For d = " + d + ", choosing b = " + b);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        BigInteger expected = BigInteger.valueOf(number.norm());
+        BigInteger actual = number.fullNorm();
         String message = "Reckoning norm of " + number.toString();
         assertEquals(message, expected, actual);
     }
