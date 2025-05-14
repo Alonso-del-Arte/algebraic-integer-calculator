@@ -20,6 +20,7 @@ import algebraics.AlgebraicDegreeOverflowException;
 import arithmetic.NotDivisibleException;
 import static calculators.TextCalculator.makeBinomialString;
 
+import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 
 /**
@@ -70,6 +71,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private final double numValRe;
     private final double numValIm;
+
+    // TODO: Write tests for this    
+    @Override
+    public BigInteger fullNorm() {
+        return BigInteger.ONE.negate();
+    }
     
     @Override
     public String toString() {
