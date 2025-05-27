@@ -253,9 +253,14 @@ in a pure cubic ring is $a^3 + b^3 d + c^3 d^2 - 3abcd$. Clearly $a, b, c \in
 9x^2 - 87x - 198$.
 
 But we might suspect that rational numbers with a denominator of 3 or 9 might 
-also be algebraic integers in a pure cubic ring. And indeed we see that 
-$$\frac{1}{3} + \frac{\root 3 \of{19}}{3} + \frac{(\root 3 \of{19})^2}{3}$$ is 
-an algebraic integer with norm 12 and minimal polynomial $x^3 - x^2 - 6x - 12$.
+also be algebraic integers in a pure cubic ring. And indeed we see for example 
+that $$\frac{1}{3} + \frac{\root 3 \of{19}}{3} + \frac{(\root 3 \of{19})^2}{3}$$ 
+is an algebraic integer with norm 12 and minimal polynomial $x^3 - x^2 - 6x - 
+12$.
+
+I haven't yet figured out the requirements on such fractions. From what I gather 
+so far, the non-integral fractions must have denominators congruent to $\pm 1 
+\bmod 9$, which suggests that 
 
 (FINISH WRITING)
 
