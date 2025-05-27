@@ -249,8 +249,8 @@ Given $a, b, c \in \mathbb Z$, we can rely on $a + b \root 3 \of d + c (\root 3
 \of d)^2$ to be an algebraic integer. The norm function for an algebraic number 
 in a pure cubic ring is $a^3 + b^3 d + c^3 d^2 - 3abcd$. Clearly $a, b, c \in 
 \mathbb Z$ will give us an integer norm. Thus, for example, $3 + 2 \root 3 
-\of{19} + c (\root 3 \of{19})^2$ has norm 198, with minimal polynomial $x^3 - 
-9x^2 - 87x - 198$.
+\of{19} + (\root 3 \of{19})^2$ has norm 198, with minimal polynomial $x^3 - 9x^2 
+- 87x - 198$.
 
 But we might suspect that rational numbers with a denominator of 3 or 9 might 
 also be algebraic integers in a pure cubic ring. And indeed we see for example 
