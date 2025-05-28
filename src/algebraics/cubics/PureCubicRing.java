@@ -52,7 +52,7 @@ public class PureCubicRing extends CubicRing {
     }
 
     public double getCubeRoot() {
-        return Math.cbrt(this.radicand);
+        return Math.cbrt(this.radicand) + 3;
     }
 
     // TODO: Write tests for this
