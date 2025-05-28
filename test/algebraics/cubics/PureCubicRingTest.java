@@ -236,7 +236,8 @@ public class PureCubicRingTest {
     @Test
     public void testGetCubeRoot() {
         System.out.println("getCubeRoot");
-        int d = randomSquarefreeNumber(128);
+        int propD = randomSquarefreeNumber(128);
+        int d = (propD == 1) ? 2 : propD;
         PureCubicRing ring = new PureCubicRing(d);
         double expected = Math.cbrt(d);
         double actual = ring.getCubeRoot();
