@@ -225,7 +225,8 @@ public class PureCubicRingTest {
     @Test
     public void testGetRadicand() {
         System.out.println("getRadicand");
-        int expected = randomSquarefreeNumber(128);
+        int propD = randomSquarefreeNumber(128);
+        int expected = (propD == 1) ? 2 : propD;
         PureCubicRing ring = new PureCubicRing(expected);
         int actual = ring.getRadicand();
         String message = "Getting radicand for " + ring.toString();
