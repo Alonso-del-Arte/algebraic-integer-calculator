@@ -314,6 +314,16 @@ public class PureCubicRingTest {
                 + " distinct rings, there should be as many hash codes";
         assertEquals(message, expected, actual);
     }
+    
+    @Test
+    public void testConstructorTurnsNegativeRadicandPositive() {
+        int n = randomNumber(6) + 2;
+        int expected = randomSquarefreeNumberMod(n, 9);
+        int d = -expected;
+        PureCubicRing instance = new PureCubicRing(d);
+        int actual = instance.getRadicand();
+        assertEquals(expected, actual);
+    }
 
     @Test
     public void testConstructorRejectsCubefullNumber() {
