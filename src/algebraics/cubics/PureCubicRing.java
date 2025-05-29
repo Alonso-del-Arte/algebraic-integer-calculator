@@ -151,6 +151,10 @@ public class PureCubicRing extends CubicRing {
             String excMsg = "Number d = -1 does not generate a cubic extension";
             throw new IllegalArgumentException(excMsg);
         }
+        if (d == 1) {
+            String excMsg = "Number d = 1 does not generate a cubic extension";
+            throw new IllegalArgumentException(excMsg);
+        }
         if (!isCubefree(d)) {
             String excMsg = "Number " + d + " is not cubefree";
             throw new IllegalArgumentException(excMsg);
