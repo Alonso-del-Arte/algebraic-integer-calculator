@@ -31,9 +31,18 @@ package algebraics;
  */
 public interface SingleIntRootAdjoinedRing extends IntegerRing {
     
-    // TODO: Write test for this
+    /**
+     * Retrieves the exponent for the one root that is adjoined to <b>Z</b> to 
+     * form this ring. For the radicand, call {@link #getRadicand()}. A default 
+     * implementation is provided which simply calls {@link 
+     * #getMaxAlgebraicDegree()}. I can't imagine when it would ever be 
+     * necessary to override this. The worst case scenario is that this is 
+     * simply a redundant synonym.
+     * @return The integer <i>n</i> for the expression 
+     * <sup><i>n</i></sup>&radic;<i>d</i>.
+     */
     default int getExponentForRadicand() {
-        return 0;
+        return this.getMaxAlgebraicDegree();
     }
     
     /**
