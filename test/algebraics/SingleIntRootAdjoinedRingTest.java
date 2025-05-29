@@ -16,6 +16,8 @@
  */
 package algebraics;
 
+import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -24,6 +26,17 @@ import org.junit.Test;
  * @author Alonso del Arte
  */
 public class SingleIntRootAdjoinedRingTest {
+    
+    @Test
+    public void testGetExponentForRadicand() {
+        System.out.println("getExponentForRadicand");
+        int maxDegree = randomNumber(128) + 2;
+        SingleIntRootAdjoinedRing instance = new MockSingleRootRing(maxDegree);
+        int expected = instance.getMaxAlgebraicDegree();
+        int actual = instance.getExponentForRadicand();
+        String message = "Default exponent should equal max algebraic degree";
+        assertEquals(message, expected, actual);
+    }
     
     private static class MockSingleRootRing extends MockRing 
             implements SingleIntRootAdjoinedRing {
