@@ -346,6 +346,24 @@ public class PureCubicRingTest {
     }
 
     @Test
+    public void testConstructorRejectsDPositiveOne() {
+        int d = 1;
+        String msg = "Constructor should reject d = " + d;
+        Throwable t = assertThrows(() -> {
+            CubicRing badRing = new PureCubicRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with parameter d = "+ d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = Integer.toString(d);
+        String containsMsg = "Exception message should include number " + d;
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+
+    @Test
     public void testConstructorRejectsCubefullNumber() {
         int p = randomPrime(Byte.MAX_VALUE);
         int q = randomPrimeOtherThan(p);
