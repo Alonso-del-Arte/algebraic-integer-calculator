@@ -472,6 +472,18 @@ public class ImaginaryQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testGetExponentForRadicand() {
+        System.out.println("getExponentForRadicand");
+        int d = -randomSquarefreeNumber(1024);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        int expected = 2;
+        int actual = ring.getExponentForRadicand();
+        String message = "Getting exponent for radicand for ring " 
+                + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of getRadicand method, of class ImaginaryQuadraticRing, inherited 
      * from {@link QuadraticRing}.
