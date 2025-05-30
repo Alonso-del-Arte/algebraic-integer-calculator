@@ -16,7 +16,7 @@
  */
 package algebraics.quadratics;
 
-import algebraics.IntegerRing;
+import algebraics.SingleIntRootAdjoinedRing;
 import arithmetic.PowerBasis;
 import fractions.Fraction;
 import calculators.NumberTheoreticFunctionsCalculator;
@@ -30,7 +30,8 @@ import java.io.Serializable;
  * <code>String</code>.
  * @author Alonso del Arte
  */
-public abstract class QuadraticRing implements IntegerRing, Serializable {
+public abstract class QuadraticRing implements SingleIntRootAdjoinedRing, 
+        Serializable {
     
     /**
      * The maximum possible algebraic degree of an algebraic integer in a 
@@ -93,6 +94,12 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
         return this.d1mod4;
     }
     
+    // TODO: Review tests
+    @Override
+    public int getExponentForRadicand() {
+        return 0;
+    }
+    
     /**
      * Gives the radicand, <i>d</i> for &radic;<i>d</i>, which depends on the 
      * parameter <code>d</code> at construction time.
@@ -100,8 +107,10 @@ public abstract class QuadraticRing implements IntegerRing, Serializable {
      * For example, for <b>Z</b>[&radic;&minus;2], this would be &minus;2, for 
      * <b>Z</b>[&radic;2] this would be 2.
      */
+    // TODO: Review tests
+    @Override
     public int getRadicand() {
-        return this.radicand;
+        return -this.radicand;
     }
     
     /**
