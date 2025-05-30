@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -15,7 +15,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package algebraics.quadratics;
+
 import calculators.NumberTheoreticFunctionsCalculator;
+
 /**
  * Defines objects to represent imaginary quadratic rings.
  * @author Alonso del Arte
@@ -33,6 +35,11 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
     @Override
     public final boolean isPurelyReal() {
         return false;
+    }
+    
+    @Override
+    public int getExponentForRadicand() {
+        return 2;
     }
     
     // TODO: Refactor by deleting after rewriting corresponding test for RQI
