@@ -485,13 +485,13 @@ public class ImaginaryQuadraticRingTest {
     }
     
     /**
-     * Test of getRadicand method, of class ImaginaryQuadraticRing, inherited 
-     * from {@link QuadraticRing}.
+     * Test of the getRadicand function, of the ImaginaryQuadraticRing class, 
+     * inherited from {@link QuadraticRing}.
      */
     @Test
     public void testGetRadicand() {
         System.out.println("getRadicand");
-        int expected = -randomSquarefreeNumber(1024);
+        int expected = -randomSquarefreeNumber(2048);
         QuadraticRing ring = new ImaginaryQuadraticRing(expected);
         int actual = ring.getRadicand();
         String message = "Inquiring for radicand of " + ring.toString();
