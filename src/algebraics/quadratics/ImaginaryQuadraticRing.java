@@ -45,7 +45,7 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
     // TODO: Refactor by deleting after rewriting corresponding test for RQI
     @Override
     public int getRadicand() {
-        return -this.radicand;
+        return this.radicand;
     }
     
     /**
