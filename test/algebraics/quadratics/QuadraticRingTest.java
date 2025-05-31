@@ -45,6 +45,19 @@ public class QuadraticRingTest {
      */
     static final double TEST_DELTA = 0.00000001;
     
+    @Test
+    public void testGetExponentForRadicand() {
+        System.out.println("getExponentForRadicand");
+        int sign = RANDOM.nextBoolean() ? -1 : 1;
+        int d = sign * randomSquarefreeNumber(1024);
+        QuadraticRing ring = new QuadraticRingImpl(d);
+        int expected = 2;
+        int actual = ring.getExponentForRadicand();
+        String message = "Getting exponent for radicand for ring " 
+                + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the getRadicand function, of the QuadraticRing class.
      */
