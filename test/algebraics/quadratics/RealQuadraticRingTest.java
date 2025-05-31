@@ -124,6 +124,18 @@ public class RealQuadraticRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testGetExponentForRadicand() {
+        System.out.println("getExponentForRadicand");
+        int d = choosePositiveRandomSquarefreeNot1();
+        QuadraticRing ring = new RealQuadraticRing(d);
+        int expected = 2;
+        int actual = ring.getExponentForRadicand();
+        String message = "Getting exponent for radicand for ring " 
+                + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the getRadicand function, of the RealQuadraticRing class, 
      * inherited from {@link QuadraticRing}.
