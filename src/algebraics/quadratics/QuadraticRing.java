@@ -94,17 +94,11 @@ public abstract class QuadraticRing implements SingleIntRootAdjoinedRing,
         return this.d1mod4;
     }
     
-    // TODO: Review tests
-    @Override
-    public int getExponentForRadicand() {
-        return 2;
-    }
-    
     /**
      * Gives the radicand, <i>d</i> for &radic;<i>d</i>, which depends on the 
-     * parameter <code>d</code> at construction time.
-     * @return The parameter <code>d</code> that was passed to the constructor. 
-     * For example, for <b>Z</b>[&radic;&minus;2], this would be &minus;2, for 
+     * parameter {@code d} at construction time.
+     * @return The parameter {@code d} that was passed to the constructor. For 
+     * example, for <b>Z</b>[&radic;&minus;2], this would be &minus;2, for 
      * <b>Z</b>[&radic;2] this would be 2.
      */
     @Override
