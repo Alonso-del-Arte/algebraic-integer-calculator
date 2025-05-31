@@ -57,6 +57,11 @@ public final class RealQuadraticRing extends QuadraticRing {
         return this.realRadSqrt;
     }
     
+    @Override
+    public int getExponentForRadicand() {
+        return 2;
+    }
+    
     /**
      * Constructs a new object representing a real quadratic ring.
      * @param d A squarefree, positive integer greater than 1. Examples: 5, 21, 
