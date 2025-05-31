@@ -37,17 +37,6 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
         return false;
     }
     
-    @Override
-    public int getExponentForRadicand() {
-        return 2;
-    }
-    
-    // TODO: Refactor by deleting after rewriting corresponding test for RQI
-    @Override
-    public int getRadicand() {
-        return this.radicand;
-    }
-    
     /**
      * Gives the absolute value of the radicand. With imaginary quadratic rings, 
      * this function gives a different result from {@link #getRadicand()}, while 
