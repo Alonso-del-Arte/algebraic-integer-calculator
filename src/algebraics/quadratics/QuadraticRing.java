@@ -97,7 +97,7 @@ public abstract class QuadraticRing implements SingleIntRootAdjoinedRing,
     // TODO: Review tests
     @Override
     public int getExponentForRadicand() {
-        return 0;
+        return 2;
     }
     
     /**
