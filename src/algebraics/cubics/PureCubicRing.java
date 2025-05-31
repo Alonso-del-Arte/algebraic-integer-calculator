@@ -16,6 +16,7 @@
  */
 package algebraics.cubics;
 
+import algebraics.SingleIntRootAdjoinedRing;
 import arithmetic.PowerBasis;
 import static calculators.NumberTheoreticFunctionsCalculator.isCubefree;
 import fractions.Fraction;
@@ -24,7 +25,8 @@ import fractions.Fraction;
  * Represents the ring of integers of a pure cubic ring.
  * @author Alonso del Arte
  */
-public class PureCubicRing extends CubicRing {
+public class PureCubicRing extends CubicRing 
+        implements SingleIntRootAdjoinedRing {
     
     private static final Fraction ONE = new Fraction(1);
     
@@ -141,9 +143,10 @@ public class PureCubicRing extends CubicRing {
      * @return A hash code based on the constructor parameter {@code d} in some 
      * way, such as being multiplied by &minus;1.
      */
+    // TODO: Rewrite test for this to not use d = +/-1
     @Override
     public int hashCode() {
-        return -this.radicand;
+        return this.radicand % 4;
     }
     
     public PureCubicRing(int d) {
