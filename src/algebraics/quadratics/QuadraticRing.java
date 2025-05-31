@@ -107,10 +107,9 @@ public abstract class QuadraticRing implements SingleIntRootAdjoinedRing,
      * For example, for <b>Z</b>[&radic;&minus;2], this would be &minus;2, for 
      * <b>Z</b>[&radic;2] this would be 2.
      */
-    // TODO: Review tests
     @Override
     public int getRadicand() {
-        return -this.radicand;
+        return this.radicand;
     }
     
     /**
