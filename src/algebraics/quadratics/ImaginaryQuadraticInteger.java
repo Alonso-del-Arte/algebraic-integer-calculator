@@ -72,11 +72,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
 
-    // TODO: Write tests for this    
     @Override
     public BigInteger fullNorm() {
-        long prelim = ((long) this.regPartMult * this.regPartMult 
-                - ((long) this.surdPartMult * this.surdPartMult 
+        long prelim = (((long) this.regPartMult) * this.regPartMult 
+                - (((long) this.surdPartMult) * this.surdPartMult 
                 * this.quadRing.radicand));
         return BigInteger.valueOf(prelim);
     }
