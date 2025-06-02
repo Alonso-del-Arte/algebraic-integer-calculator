@@ -1587,7 +1587,7 @@ public class ImaginaryQuadraticIntegerTest {
         int d = ring.getRadicand();
         int powerOfTwo = 1 << 30;
         int a = randomNumber() | powerOfTwo;
-        int b = -Integer.MAX_VALUE / d * 16 + randomNumber(-d) + 1;
+        int b = randomNumber() | powerOfTwo;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
         BigInteger wrappedA = BigInteger.valueOf(a);
         BigInteger wrappedB = BigInteger.valueOf(b);
