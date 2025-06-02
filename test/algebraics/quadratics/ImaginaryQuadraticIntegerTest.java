@@ -1581,6 +1581,27 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     @Test
+    public void testFullNorm() {
+        System.out.println("fullNorm");
+        QuadraticRing ring = chooseRing();
+        int d = ring.getRadicand();
+        int powerOfTwo = 1 << 30;
+        int a = randomNumber() | powerOfTwo;
+        int b = -Integer.MAX_VALUE / d * 16 + randomNumber(-d) + 1;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        BigInteger wrappedA = BigInteger.valueOf(a);
+        BigInteger wrappedB = BigInteger.valueOf(b);
+        BigInteger wrappedD = BigInteger.valueOf(d);
+        BigInteger aSquared = wrappedA.multiply(wrappedA);
+        BigInteger bSquared = wrappedB.multiply(wrappedB);
+        BigInteger bSquaredTimesD = bSquared.multiply(wrappedD.abs());
+        BigInteger expected = aSquared.add(bSquaredTimesD);
+        BigInteger actual = number.fullNorm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
     public void testMinPolynomialCoeffsForZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger zero = new ImaginaryQuadraticInteger(0, 0, ring);
