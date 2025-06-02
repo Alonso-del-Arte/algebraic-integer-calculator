@@ -6,17 +6,17 @@ this project as simply as I can. I'm not aiming for mathematical rigor.
 ## The concept of algebraic integers
 
 When we just refer to **integers**, we're referring to the numbers that are 
-obtained by the repeated addition or subtraction of $1$. Adding $1$ repeatedly 
-gives the **counting numbers** $1, 2, 3, \ldots$, sometimes notated $\mathbb 
-Z^+$ (the notation $\mathbb N$ is also used sometimes). 
+obtained by the repeated addition or subtraction of 1. Adding 1 repeatedly gives 
+the **counting numbers** $1, 2, 3, \ldots$, sometimes notated $\mathbb Z^+$ (the 
+notation $\mathbb N$ is also used sometimes). 
 
-Subtracting $1$ from itself once gives $0$, and subtracting $1$ again and again 
+Subtracting 1 from itself once gives 0, and subtracting 1 again and again 
 gives us the additive inverses of the counting numbers, $-1, -2, -3, \ldots$, 
 sometimes notated $\mathbb Z^-$.
 
-Joining $\mathbb Z^-$ and $\mathbb Z^+$ with $0$ gives us $\mathbb Z$. Each $n 
-\in \mathbb Z$ is a solution to $x$ to the rather unremarkable equation $x - n = 
-0$, in which of course $x = n$.
+Joining $\mathbb Z^-$ and $\mathbb Z^+$ with 0 gives us $\mathbb Z$. Each $n \in 
+\mathbb Z$ is a solution to $x$ to the rather unremarkable equation $x - n = 0$, 
+in which of course $x = n$.
 
 This infinite collection of integers that is $\mathbb Z$ forms a ring that is 
 "closed under" addition and "closed under" multiplication. This means that if 
