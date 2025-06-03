@@ -76,10 +76,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public BigInteger fullNorm() {
         BigInteger wrappedA = BigInteger.valueOf(this.regPartMult);
         BigInteger wrappedB = BigInteger.valueOf(this.surdPartMult);
-        BigInteger wrappedD = BigInteger.valueOf(this.quadRing.radicand);
+        BigInteger wrappedD = BigInteger.valueOf(this.quadRing.absRadicand);
         BigInteger aSquared = wrappedA.multiply(wrappedA);
         BigInteger bSquared = wrappedB.multiply(wrappedB);
-        BigInteger bSquaredTimesD = bSquared.multiply(wrappedD.abs());
+        BigInteger bSquaredTimesD = bSquared.multiply(wrappedD);
         return aSquared.add(bSquaredTimesD);
     }
     
