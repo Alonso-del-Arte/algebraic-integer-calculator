@@ -144,10 +144,9 @@ public class PureCubicRing extends CubicRing
      * @return A hash code based on the constructor parameter {@code d} in some 
      * way, such as being multiplied by &minus;1.
      */
-    // TODO: Rewrite test for this to not use d = +/-1
     @Override
     public int hashCode() {
-        return this.radicand % 4;
+        return -this.radicand;
     }
     
     public PureCubicRing(int d) {
