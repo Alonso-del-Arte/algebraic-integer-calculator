@@ -305,7 +305,8 @@ public class PureCubicRingTest {
         Set<PureCubicRing> rings = new HashSet<>(initialCapacity);
         Set<Integer> hashes = new HashSet<>(initialCapacity);
         for (int i = 0; i < initialCapacity; i++) {
-            int d = randomSquarefreeNumber(i + 64);
+            int propD = randomSquarefreeNumber(i + 64);
+            int d = (propD == 1) ? 2 : propD;
             PureCubicRing ring = new PureCubicRing(d);
             rings.add(ring);
             hashes.add(ring.hashCode());
