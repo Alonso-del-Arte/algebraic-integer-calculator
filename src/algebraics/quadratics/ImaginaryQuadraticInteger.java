@@ -74,10 +74,13 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
 
     @Override
     public BigInteger fullNorm() {
-        long prelim = (((long) this.regPartMult) * this.regPartMult 
-                - (((long) this.surdPartMult) * this.surdPartMult 
-                * this.quadRing.radicand));
-        return BigInteger.valueOf(prelim);
+        BigInteger wrappedA = BigInteger.valueOf(this.regPartMult);
+        BigInteger wrappedB = BigInteger.valueOf(this.surdPartMult);
+        BigInteger wrappedD = BigInteger.valueOf(this.quadRing.radicand);
+        BigInteger aSquared = wrappedA.multiply(wrappedA);
+        BigInteger bSquared = wrappedB.multiply(wrappedB);
+        BigInteger bSquaredTimesD = bSquared.multiply(wrappedD.abs());
+        return aSquared.add(bSquaredTimesD);
     }
     
     @Override
