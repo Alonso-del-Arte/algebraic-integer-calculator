@@ -32,34 +32,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final long serialVersionUID = 4547649335944297267L;
     
-    private static final String PLUS_SIGN_SPACED = " + ";
-    
     private static final char MINUS_SIGN_CHARACTER = '\u2212';
-    
-    private static final char[] MINUS_SIGN_CHARACTER_ARRAY 
-            = {MINUS_SIGN_CHARACTER};
-    
-    private static final String MINUS_SIGN_STRING 
-            = new String(MINUS_SIGN_CHARACTER_ARRAY);
-    
-    private static final String MINUS_SIGN_SPACED = " " + MINUS_SIGN_CHARACTER 
-            + ' ';
-    
-    private static final String MINUS_SIGN_THEN_SPACE = MINUS_SIGN_STRING + ' ';
-    
-    private static final String PLUS_SIGN_THEN_MINUS = PLUS_SIGN_SPACED 
-            + MINUS_SIGN_CHARACTER;
-    
-    private static final String PLUS_SIGN_THEN_DASH = PLUS_SIGN_SPACED + '-';
-    
-    private static final char THETA_LETTER = '\u03B8';
     
     private static final char OMEGA_LETTER = '\u03C9';
     
     private static final char SQRT_SYMBOL = '\u221A';
-    
-    private static final char[] RADICAND_CHARS = {SQRT_SYMBOL, '(', 
-        MINUS_SIGN_CHARACTER, 'd', ')'};
     
     private static final char[] SQRT_NEG_ONE_CHARS = {SQRT_SYMBOL, '(', 
         MINUS_SIGN_CHARACTER, '1', ')'};
@@ -67,11 +44,23 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private static final String SQRT_NEG_ONE_SEQ 
             = new String(SQRT_NEG_ONE_CHARS);
     
-    private static final String RADICAND_CHAR_SEQ = new String(RADICAND_CHARS);
-    
     private final double numValRe;
     private final double numValIm;
 
+    /**
+     * Gives the norm of the algebraic integer in a format that can represent 
+     * numbers outside the range of 64-bit integers. This computation involves 
+     * the creation of multiple intermediate {@code BigInteger} objects. Thus it 
+     * may be slower than {@link #norm()}, but is likelier to be correct. As a 
+     * rule of thumb, if the real and imaginary parts of the number fit in the 
+     * range of {@code short}, this function and {@code norm()} should give the 
+     * same result. For the example, suppose this algebraic integer is 
+     * 1265089225 + 1723621595&radic;(&minus;35).
+     * @return The norm, even if it's outside the range of {@code long} to 
+     * represent. In the example, this would be 105580949843473141500, whereas 
+     * {@code norm()} would give the obviously incorrect value 
+     * &minus;5099514598784168196.
+     */
     @Override
     public BigInteger fullNorm() {
         BigInteger wrappedA = BigInteger.valueOf(this.regPartMult);
