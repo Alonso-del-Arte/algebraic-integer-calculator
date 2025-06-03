@@ -49,6 +49,7 @@ public class PureCubicRing extends CubicRing
         return true;
     }
     
+    @Override
     public int getRadicand() {
         return Math.abs(this.radicand);
     }
