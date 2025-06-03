@@ -69,6 +69,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         BigInteger aSquared = wrappedA.multiply(wrappedA);
         BigInteger bSquared = wrappedB.multiply(wrappedB);
         BigInteger bSquaredTimesD = bSquared.multiply(wrappedD);
+        if (this.quadRing.d1mod4 && this.denominator == 2) {
+            BigInteger four = BigInteger.TWO.multiply(BigInteger.TWO);
+            return aSquared.add(bSquaredTimesD).divide(four);
+        }
         return aSquared.add(bSquaredTimesD);
     }
     
