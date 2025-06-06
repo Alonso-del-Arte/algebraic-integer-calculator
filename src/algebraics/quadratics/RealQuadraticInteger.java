@@ -16,8 +16,6 @@
  */
 package algebraics.quadratics;
 
-import static calculators.TextCalculator.makeBinomialString;
-
 /**
  * Defines objects to represent real quadratic integers, for the most part 
  * symbolically rather than numerically. This class is <code>Comparable</code>, 
