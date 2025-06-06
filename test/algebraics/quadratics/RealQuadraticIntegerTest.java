@@ -34,6 +34,7 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -238,6 +239,28 @@ public class RealQuadraticIntegerTest {
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring, 2);
         long expected = (a * a - ring.getRadicand() * b * b) / 4;
         long actual = number.norm();
+        String message = "Reckoning norm of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testFullNorm() {
+        System.out.println("fullNorm");
+        int bound = 1024;
+        int decrement = randomNumber(bound);
+        int d = nextHighestSquarefree(Integer.MAX_VALUE - decrement);
+        QuadraticRing ring = new RealQuadraticRing(d);
+        int a = randomNumber(bound);
+        int b = Integer.MAX_VALUE - randomNumber(bound);
+        QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
+        BigInteger wrappedA = BigInteger.valueOf(a);
+        BigInteger wrappedB = BigInteger.valueOf(b);
+        BigInteger wrappedD = BigInteger.valueOf(d);
+        BigInteger aSquared = wrappedA.multiply(wrappedA);
+        BigInteger bSquared = wrappedB.multiply(wrappedB);
+        BigInteger bSquaredTimesD = bSquared.multiply(wrappedD);
+        BigInteger expected = aSquared.subtract(bSquaredTimesD);
+        BigInteger actual = number.fullNorm();
         String message = "Reckoning norm of " + number.toString();
         assertEquals(message, expected, actual);
     }
