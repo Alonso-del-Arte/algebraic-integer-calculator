@@ -80,6 +80,10 @@ public class RealQuadraticInteger extends QuadraticInteger
         BigInteger aSquared = wrappedA.multiply(wrappedA);
         BigInteger bSquared = wrappedB.multiply(wrappedB);
         BigInteger bSquaredTimesD = bSquared.multiply(wrappedD);
+        if (this.quadRing.d1mod4 && this.denominator == 2) {
+            BigInteger four = BigInteger.TWO.multiply(BigInteger.TWO);
+            return aSquared.subtract(bSquaredTimesD).divide(four);
+        }
         return aSquared.subtract(bSquaredTimesD);
     }
     
