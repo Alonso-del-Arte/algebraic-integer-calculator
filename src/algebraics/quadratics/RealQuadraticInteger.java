@@ -16,6 +16,8 @@
  */
 package algebraics.quadratics;
 
+import java.math.BigInteger;
+
 /**
  * Defines objects to represent real quadratic integers, for the most part 
  * symbolically rather than numerically. This class is <code>Comparable</code>, 
@@ -68,6 +70,17 @@ public class RealQuadraticInteger extends QuadraticInteger
                     + this.quadRing.radicand + ")";
         }
         return Integer.toString(this.regPartMult);
+    }
+    
+    @Override
+    public BigInteger fullNorm() {
+        BigInteger wrappedA = BigInteger.valueOf(this.regPartMult);
+        BigInteger wrappedB = BigInteger.valueOf(this.surdPartMult);
+        BigInteger wrappedD = BigInteger.valueOf(this.quadRing.absRadicand);
+        BigInteger aSquared = wrappedA.multiply(wrappedA);
+        BigInteger bSquared = wrappedB.multiply(wrappedB);
+        BigInteger bSquaredTimesD = bSquared.multiply(wrappedD);
+        return aSquared.subtract(bSquaredTimesD);
     }
     
     @Override
