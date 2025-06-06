@@ -44,8 +44,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private static final String SQRT_NEG_ONE_SEQ 
             = new String(SQRT_NEG_ONE_CHARS);
     
-    private static final BigInteger FOUR = BigInteger.valueOf(4);
-    
     private final double numValRe;
     private final double numValIm;
 
@@ -72,7 +70,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         BigInteger bSquared = wrappedB.multiply(wrappedB);
         BigInteger bSquaredTimesD = bSquared.multiply(wrappedD);
         if (this.quadRing.d1mod4 && this.denominator == 2) {
-            return aSquared.add(bSquaredTimesD).divide(FOUR);
+            return aSquared.add(bSquaredTimesD).divide(QuadraticInteger.FOUR);
         }
         return aSquared.add(bSquaredTimesD);
     }

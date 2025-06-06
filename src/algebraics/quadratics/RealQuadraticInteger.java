@@ -35,8 +35,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     
     private static final char PHI_LETTER = '\u03C6';
     
-    private static final BigInteger FOUR = BigInteger.valueOf(4);
-    
     private final double numVal;
     private final double absNumVal;
     
@@ -83,7 +81,8 @@ public class RealQuadraticInteger extends QuadraticInteger
         BigInteger bSquared = wrappedB.multiply(wrappedB);
         BigInteger bSquaredTimesD = bSquared.multiply(wrappedD);
         if (this.quadRing.d1mod4 && this.denominator == 2) {
-            return aSquared.subtract(bSquaredTimesD).divide(FOUR);
+            return aSquared.subtract(bSquaredTimesD)
+                    .divide(QuadraticInteger.FOUR);
         }
         return aSquared.subtract(bSquaredTimesD);
     }

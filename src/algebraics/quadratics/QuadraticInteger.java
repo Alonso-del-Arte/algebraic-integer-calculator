@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -27,6 +27,7 @@ import static calculators.TextCalculator.makeBinomialString;
 import fractions.Fraction;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * Provides a template for defining objects to represent real or imaginary 
@@ -71,6 +72,8 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     private static final char OMEGA_LETTER = '\u03C9';
     
     private static final Fraction ONE_HALF = new Fraction(1, 2);
+    
+    static final BigInteger FOUR = BigInteger.valueOf(4);
 
     final int regPartMult;
     final int surdPartMult;
