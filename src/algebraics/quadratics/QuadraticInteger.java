@@ -179,6 +179,11 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         }
     }
     
+    // TODO: Write tests for this
+    public BigInteger fullTrace() {
+        return BigInteger.ONE;
+    }
+    
     /**
      * Calculates the norm of the quadratic integer. 64-bit integers are used 
      * for the computation, but there is no overflow checking.

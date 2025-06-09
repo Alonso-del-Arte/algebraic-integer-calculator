@@ -72,6 +72,12 @@ public class RealQuadraticInteger extends QuadraticInteger
         return Integer.toString(this.regPartMult);
     }
     
+    // TODO: Write tests for this
+    @Override
+    public BigInteger fullTrace() {
+        return BigInteger.ZERO;
+    }
+    
     @Override
     public BigInteger fullNorm() {
         BigInteger wrappedA = BigInteger.valueOf(this.regPartMult);
