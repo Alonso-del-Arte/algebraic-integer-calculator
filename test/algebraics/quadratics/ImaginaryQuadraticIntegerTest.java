@@ -1510,7 +1510,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
-    // TODO: Write fullTrace() test for "half-integers"
+    @Test
+    public void testFullTraceHalfInts() {
+        int a = randomNumber() | 1;
+        int b = randomNumber() | 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger instance = new ImaginaryQuadraticInteger(a, b, ring, 
+                2);
+        BigInteger expected = BigInteger.valueOf(a);
+        BigInteger actual = instance.fullTrace();
+        String message = "Reckoning trace of " + instance.toString();
+        assertEquals(message, expected, actual);
+    }
     
     @Test
     public void testNormOfZero() {
