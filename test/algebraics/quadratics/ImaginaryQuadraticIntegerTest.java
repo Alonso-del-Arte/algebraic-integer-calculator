@@ -1497,6 +1497,22 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
+    public void testFullTrace() {
+        System.out.println("fullTrace");
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new ImaginaryQuadraticInteger(a, b, ring);
+        long toBeWrapped = 2L * a;
+        BigInteger expected = BigInteger.valueOf(toBeWrapped);
+        BigInteger actual = instance.fullTrace();
+        String message = "Reckoning trace of " + instance.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    // TODO: Write fullTrace() test for "half-integers"
+    
+    @Test
     public void testNormOfZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, ring);
