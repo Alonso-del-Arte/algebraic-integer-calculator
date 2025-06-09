@@ -50,7 +50,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     // TODO: Write tests for this
     @Override
     public BigInteger fullTrace() {
-        return BigInteger.valueOf(Long.MIN_VALUE);
+        return BigInteger.valueOf(2L * this.regPartMult);
     }
     
     /**
