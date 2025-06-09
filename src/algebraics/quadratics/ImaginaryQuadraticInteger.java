@@ -47,9 +47,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
 
-    // TODO: Write tests for this
     @Override
     public BigInteger fullTrace() {
+        if (this.quadRing.d1mod4 && this.denominator == 2) {
+            return BigInteger.valueOf(this.regPartMult);
+        }
         return BigInteger.valueOf(2L * this.regPartMult);
     }
     
