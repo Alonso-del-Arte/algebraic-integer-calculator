@@ -72,10 +72,9 @@ public class RealQuadraticInteger extends QuadraticInteger
         return Integer.toString(this.regPartMult);
     }
     
-    // TODO: Write tests for this
     @Override
     public BigInteger fullTrace() {
-        return BigInteger.valueOf(2L * this.regPartMult);
+        return BigInteger.valueOf(2L * this.regPartMult / this.denominator);
     }
     
     @Override
