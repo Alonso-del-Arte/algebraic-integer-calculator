@@ -1503,8 +1503,7 @@ public class ImaginaryQuadraticIntegerTest {
         int b = randomNumber();
         QuadraticRing ring = chooseRing();
         QuadraticInteger instance = new ImaginaryQuadraticInteger(a, b, ring);
-        long toBeWrapped = 2L * a;
-        BigInteger expected = BigInteger.valueOf(toBeWrapped);
+        BigInteger expected = BigInteger.valueOf(2L * a);
         BigInteger actual = instance.fullTrace();
         String message = "Reckoning trace of " + instance.toString();
         assertEquals(message, expected, actual);
