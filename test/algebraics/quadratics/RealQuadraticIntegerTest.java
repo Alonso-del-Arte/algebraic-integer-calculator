@@ -176,6 +176,19 @@ public class RealQuadraticIntegerTest {
     }
 
     @Test
+    public void testFullTrace() {
+        System.out.println("fullTrace");
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new RealQuadraticInteger(a, b, ring);
+        BigInteger expected = BigInteger.valueOf(2L * a);
+        BigInteger actual = instance.fullTrace();
+        String message = "Reckoning trace of " + instance.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testNormOfZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new RealQuadraticInteger(0, 0, ring);
