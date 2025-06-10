@@ -60,6 +60,11 @@ public interface AlgebraicInteger {
      */
     long trace();
     
+    // TODO: Write tests for this
+    default BigInteger fullTrace() {
+        return BigInteger.valueOf(Long.MAX_VALUE);
+    }
+    
     /**
      * Gives the norm of the algebraic integer, useful for comparing integers in 
      * the Euclidean GCD algorithm. In the original version, this was a 32-bit 
