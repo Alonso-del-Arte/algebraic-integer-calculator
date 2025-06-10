@@ -75,7 +75,7 @@ public class RealQuadraticInteger extends QuadraticInteger
     // TODO: Write tests for this
     @Override
     public BigInteger fullTrace() {
-        return BigInteger.ZERO;
+        return BigInteger.valueOf(2L * this.regPartMult);
     }
     
     @Override
