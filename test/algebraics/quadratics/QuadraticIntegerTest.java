@@ -38,6 +38,7 @@ import static calculators.NumberTheoreticFunctionsCalculator
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumberOtherThan;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -836,6 +837,19 @@ public class QuadraticIntegerTest {
         num = QuadraticInteger.apply(Integer.MAX_VALUE, 3, ring);
         actual = num.trace();
         assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void testFullTrace() {
+        System.out.println("fullTrace");
+        int a = randomNumber();
+        int b = randomNumber();
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger instance = new QuadraticIntegerImpl(a, b, ring);
+        BigInteger expected = BigInteger.valueOf(2L * a);
+        BigInteger actual = instance.fullTrace();
+        String message = "Reckoning trace of " + instance.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
