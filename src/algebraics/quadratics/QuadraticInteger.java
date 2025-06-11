@@ -180,8 +180,9 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     }
     
     // TODO: Write tests for this
+    @Override
     public BigInteger fullTrace() {
-        return BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.TEN);
+        return BigInteger.valueOf(2L * this.regPartMult);
     }
     
     /**
