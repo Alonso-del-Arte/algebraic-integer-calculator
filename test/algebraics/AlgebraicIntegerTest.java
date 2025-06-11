@@ -30,6 +30,16 @@ import org.junit.Test;
 public class AlgebraicIntegerTest {
     
     @Test
+    public void testFullTrace() {
+        System.out.println("fullTrace");
+        int n = randomNumber();
+        AlgebraicInteger instance = new AlgebraicIntegerImpl(n);
+        BigInteger expected = BigInteger.valueOf(instance.trace());
+        BigInteger actual = instance.fullTrace();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testFullNorm() {
         System.out.println("fullNorm");
         int n = randomNumber();
