@@ -60,9 +60,17 @@ public interface AlgebraicInteger {
      */
     long trace();
     
-    // TODO: Write tests for this
+    /**
+     * Gives the trace of the algebraic integer in a format that can represent 
+     * numbers outside the range of 64-bit integers. A default implementation is 
+     * provided which simply wraps the result of {@link #trace()} in a {@code 
+     * BigInteger} instance.
+     * @return The trace in a {@code BigInteger} instance.
+     * @throws ArithmeticException If there is any arithmetic problem 
+     * constructing the {@code BigInteger} instance.
+     */
     default BigInteger fullTrace() {
-        return BigInteger.valueOf(Long.MAX_VALUE);
+        return BigInteger.valueOf(this.trace());
     }
     
     /**
