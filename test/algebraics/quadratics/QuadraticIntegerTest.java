@@ -853,6 +853,18 @@ public class QuadraticIntegerTest {
     }
     
     @Test
+    public void testFullTraceHalfInts() {
+        int a = randomNumber() | 1;
+        int b = randomNumber() | 1;
+        QuadraticRing ring = chooseRingWithHalfInts();
+        QuadraticInteger instance = new QuadraticIntegerImpl(a, b, ring, 2);
+        BigInteger expected = BigInteger.valueOf(a);
+        BigInteger actual = instance.fullTrace();
+        String message = "Reckoning trace of " + instance.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testNormOfZero() {
         QuadraticRing ring = chooseRing();
         QuadraticInteger number = new QuadraticIntegerImpl(0, 0, ring);
