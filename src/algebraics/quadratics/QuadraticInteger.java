@@ -181,7 +181,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     
     // TODO: Write tests for this
     public BigInteger fullTrace() {
-        return BigInteger.ONE;
+        return BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.TEN);
     }
     
     /**
