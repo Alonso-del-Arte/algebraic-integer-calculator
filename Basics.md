@@ -204,7 +204,7 @@ The **trace** of an algebraic integer is the sum of all the roots of the
 characteristic polynomial, the **characteristic polynomial** being the equation, 
 without the "= 0" part, of lowest degree for which the algebraic integer is a 
 solution. In the case of quadratic integers of the form $a + b \sqrt d$, the 
-trace $T = 2a$.
+trace $T = 2a$, since $(a - b \sqrt d) + (a + b \sqrt d) = 2a$.
 
 The **norm** of an algebraic integer is the product of itself times its 
 conjugates, which is just two numbers in the case of a quadratic integer. The 
