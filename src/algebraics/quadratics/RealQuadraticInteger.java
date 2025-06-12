@@ -73,11 +73,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     }
     
     @Override
-    public BigInteger fullTrace() {
-        return BigInteger.valueOf(2L * this.regPartMult / this.denominator);
-    }
-    
-    @Override
     public BigInteger fullNorm() {
         BigInteger wrappedA = BigInteger.valueOf(this.regPartMult);
         BigInteger wrappedB = BigInteger.valueOf(this.surdPartMult);
