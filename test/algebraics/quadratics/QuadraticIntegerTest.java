@@ -802,17 +802,16 @@ public class QuadraticIntegerTest {
      * problem that needs correcting.
      */
     @Test
-    public void testTraceEdgeCasesLow() {
-        QuadraticRing ring = new ImaginaryQuadraticRing(-43);
-        QuadraticInteger num = QuadraticInteger.apply(Integer.MIN_VALUE, 1, 
-                ring);
-        final long expected = 2L * Integer.MIN_VALUE;
+    public void testTraceEdgeCaseLow() {
+        int bound = 65536;
+        int a = Integer.MIN_VALUE | randomNumber(bound);
+        int b = randomNumber() | 8;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger num = new QuadraticIntegerImpl(a, b, ring);
+        long expected = 2L * a;
         long actual = num.trace();
-        assertEquals(expected, actual);
-        ring = new RealQuadraticRing(70);
-        num = QuadraticInteger.apply(Integer.MIN_VALUE, -1, ring);
-        actual = num.trace();
-        assertEquals(expected, actual);
+        String message = "Reckoning trace of " + num.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
@@ -827,16 +826,15 @@ public class QuadraticIntegerTest {
      */
     @Test
     public void testTraceEdgeCasesHigh() {
-        QuadraticRing ring = new ImaginaryQuadraticRing(-89);
-        QuadraticInteger num = QuadraticInteger.apply(Integer.MAX_VALUE, -3, 
-                ring);
-        final long expected = 2L * Integer.MAX_VALUE;
+        int bound = 65536;
+        int a = Integer.MAX_VALUE | randomNumber(bound);
+        int b = randomNumber() | 8;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger num = new QuadraticIntegerImpl(a, b, ring);
+        long expected = 2L * a;
         long actual = num.trace();
-        assertEquals(expected, actual);
-        ring = new RealQuadraticRing(70);
-        num = QuadraticInteger.apply(Integer.MAX_VALUE, 3, ring);
-        actual = num.trace();
-        assertEquals(expected, actual);
+        String message = "Reckoning trace of " + num.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
