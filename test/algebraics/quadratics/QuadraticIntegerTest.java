@@ -795,8 +795,8 @@ public class QuadraticIntegerTest {
     public void testTrace() {
         System.out.println("trace");
         QuadraticRing ring = chooseRing();
-        int mask = -1 ^ (1 << 30);
-        int a = randomNumber() & mask;
+        int bound = Integer.MIN_VALUE / -8;
+        int a = randomNumber(bound);
         int b = randomNumber() | (randomNumber(16) + 1);
         QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
         long expected = 2L * a;
