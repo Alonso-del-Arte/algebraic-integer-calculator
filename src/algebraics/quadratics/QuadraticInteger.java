@@ -175,7 +175,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
         if (this.denominator == 2) {
             return this.regPartMult - 1;
         } else {
-            return 2 * this.regPartMult;
+            return -2 * this.regPartMult;
         }
     }
     
