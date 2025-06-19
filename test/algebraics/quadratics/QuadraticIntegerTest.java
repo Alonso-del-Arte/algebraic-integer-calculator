@@ -790,6 +790,19 @@ public class QuadraticIntegerTest {
                 + " in ring " + ring.toString();
         assertEquals(message, expected, actual);
     }
+    
+    @Test
+    public void testTrace() {
+        System.out.println("trace");
+        QuadraticRing ring = chooseRing();
+        int a = randomNumber();
+        int b = randomNumber() | (randomNumber(16) + 1);
+        QuadraticInteger number = new QuadraticIntegerImpl(a, b, ring);
+        long expected = 2L * a;
+        long actual = number.trace();
+        String message = "Reckoning trace of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
 
     /**
      * Another test of the trace function of class QuadraticInteger. Although 
