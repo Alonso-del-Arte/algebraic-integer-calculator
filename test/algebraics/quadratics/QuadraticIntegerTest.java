@@ -804,6 +804,18 @@ public class QuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testTraceHalfInteger() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int expected = 2 * randomNumber() + 1;
+        int b = 2 * randomNumber() + 1;
+        QuadraticInteger number = new QuadraticIntegerImpl(expected, b, ring, 
+                2);
+        long actual = number.trace();
+        String message = "Reckoning trace of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Another test of the trace function of class QuadraticInteger. Although 
      * (&minus;2)<sup>31</sup> is the lowest value an <code>int</code> can have, 
