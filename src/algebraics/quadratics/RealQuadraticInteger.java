@@ -38,13 +38,9 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
-    // TODO: Write tests for edge cases
     @Override
     public long trace() {
-        if (this.denominator == 2) {
-            return this.regPartMult;
-        }
-        return 2L * this.regPartMult;
+        return 2L * this.regPartMult / this.denominator;
     }
     
     /**
