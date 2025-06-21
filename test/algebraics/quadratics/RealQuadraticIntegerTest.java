@@ -153,7 +153,9 @@ public class RealQuadraticIntegerTest {
     public void testTrace() {
         System.out.println("trace");
         QuadraticRing ring = chooseRing();
-        int a = randomNumber();
+        int bound = Integer.MIN_VALUE / -8;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
         int b = randomNumber() | (randomNumber(16) + 1);
         QuadraticInteger number = new RealQuadraticInteger(a, b, ring);
         long expected = 2L * a;
