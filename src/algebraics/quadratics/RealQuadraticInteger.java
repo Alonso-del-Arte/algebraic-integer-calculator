@@ -38,6 +38,12 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
     
+    // TODO: Write tests for edge cases
+    @Override
+    public long trace() {
+        return Long.MIN_VALUE;
+    }
+    
     /**
      * A text representation of the quadratic integer, using theta notation when 
      * {@link #getRing()}{@link QuadraticRing#hasHalfIntegers() 
