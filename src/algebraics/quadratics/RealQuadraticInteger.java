@@ -44,7 +44,7 @@ public class RealQuadraticInteger extends QuadraticInteger
         if (this.denominator == 2) {
             return this.regPartMult;
         }
-        return 2 * this.regPartMult / this.denominator;
+        return 2L * this.regPartMult / this.denominator;
     }
     
     /**
