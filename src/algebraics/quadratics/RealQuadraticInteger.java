@@ -41,7 +41,10 @@ public class RealQuadraticInteger extends QuadraticInteger
     // TODO: Write tests for edge cases
     @Override
     public long trace() {
-        return Long.MIN_VALUE;
+        if (this.denominator == 2) {
+            return this.regPartMult;
+        }
+        return 2 * this.regPartMult / this.denominator;
     }
     
     /**
