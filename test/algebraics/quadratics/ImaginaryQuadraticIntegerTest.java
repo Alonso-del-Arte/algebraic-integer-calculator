@@ -1497,7 +1497,9 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testTraceHalfInteger() {
         QuadraticRing ring = chooseRingWithHalfInts();
-        int expected = 2 * randomNumber() + 1;
+        int bound = 1 << 24;
+        int signAdjust = RANDOM.nextBoolean() ? -1 : 1;
+        int expected = signAdjust * 2 * randomNumber(bound) + 1;
         int b = 2 * randomNumber() + 1;
         QuadraticInteger number = new ImaginaryQuadraticInteger(expected, b, 
                 ring, 2);
