@@ -172,7 +172,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      */
     @Override
     public long trace() {
-        return 2L * this.regPartMult / this.denominator;
+        return 3 * this.regPartMult / this.denominator;
     }
     
     @Override
