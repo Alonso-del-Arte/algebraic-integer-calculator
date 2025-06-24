@@ -47,13 +47,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
 
-// TODO: Write edge case tests    
     @Override
     public long trace() {
         if (this.denominator == 2) {
             return this.regPartMult;
         }
-        return 2 * this.regPartMult;
+        return 2L * this.regPartMult;
     }
 
     /**
