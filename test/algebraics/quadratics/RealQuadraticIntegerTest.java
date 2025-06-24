@@ -168,7 +168,9 @@ public class RealQuadraticIntegerTest {
     public void testTraceHalfInteger() {
         int d = randomSquarefreeNumberMod(1, 4);
         QuadraticRing ring = new RealQuadraticRing(d);
-        int expected = 2 * randomNumber() + 1;
+        int bound = 1 << 24;
+        int signAdjust = RANDOM.nextBoolean() ? -1 : 1;
+        int expected = signAdjust * 2 * randomNumber(bound) + 1;
         int b = 2 * randomNumber() + 1;
         QuadraticInteger number = new RealQuadraticInteger(expected, b, ring, 
                 2);
@@ -193,7 +195,7 @@ public class RealQuadraticIntegerTest {
     @Test
     public void testTraceEdgeCasesHigh() {
         int bound = 65536;
-        int a = Integer.MAX_VALUE | randomNumber(bound);
+        int a = Integer.MAX_VALUE ^ randomNumber(bound);
         int b = randomNumber() | 8;
         QuadraticRing ring = chooseRing();
         QuadraticInteger num = new RealQuadraticInteger(a, b, ring);
