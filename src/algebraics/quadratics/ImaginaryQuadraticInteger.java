@@ -50,7 +50,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
 // TODO: Write edge case tests    
     @Override
     public long trace() {
-        if (this.quadRing.d1mod4 && this.denominator == 2) {
+        if (this.denominator == 2) {
             return this.regPartMult;
         }
         return 2 * this.regPartMult;
