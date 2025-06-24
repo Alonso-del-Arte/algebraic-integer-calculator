@@ -1495,6 +1495,18 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
+    public void testTraceHalfInteger() {
+        QuadraticRing ring = chooseRingWithHalfInts();
+        int expected = 2 * randomNumber() + 1;
+        int b = 2 * randomNumber() + 1;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(expected, b, 
+                ring, 2);
+        long actual = number.trace();
+        String message = "Reckoning trace of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
     public void testFullTrace() {
         System.out.println("fullTrace");
         int a = randomNumber();
