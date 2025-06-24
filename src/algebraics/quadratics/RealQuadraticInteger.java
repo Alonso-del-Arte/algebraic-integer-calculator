@@ -38,11 +38,6 @@ public class RealQuadraticInteger extends QuadraticInteger
     private final double numVal;
     private final double absNumVal;
 
-    @Override
-    public long trace() {
-        return 2L * this.regPartMult / this.denominator;
-    }
-    
     /**
      * A text representation of the quadratic integer, using theta notation when 
      * {@link #getRing()}{@link QuadraticRing#hasHalfIntegers() 
