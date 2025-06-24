@@ -49,10 +49,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
 
     @Override
     public long trace() {
-        if (this.denominator == 2) {
-            return this.regPartMult;
-        }
-        return 2L * this.regPartMult;
+        return 2L * this.regPartMult / this.denominator;
     }
 
     /**
