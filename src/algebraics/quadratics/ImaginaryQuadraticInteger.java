@@ -47,11 +47,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
 
-    @Override
-    public long trace() {
-        return 2L * this.regPartMult / this.denominator;
-    }
-
     /**
      * Gives the norm of the algebraic integer in a format that can represent 
      * numbers outside the range of 64-bit integers. This computation involves 
