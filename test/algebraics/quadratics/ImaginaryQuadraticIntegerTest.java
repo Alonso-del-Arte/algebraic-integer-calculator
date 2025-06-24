@@ -1507,6 +1507,32 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     @Test
+    public void testTraceEdgeCaseLow() {
+        int bound = 65536;
+        int a = Integer.MIN_VALUE | randomNumber(bound);
+        int b = randomNumber() | 8;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger num = new ImaginaryQuadraticInteger(a, b, ring);
+        long expected = 2L * a;
+        long actual = num.trace();
+        String message = "Reckoning trace of " + num.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testTraceEdgeCasesHigh() {
+        int bound = 65536;
+        int a = Integer.MAX_VALUE ^ randomNumber(bound);
+        int b = randomNumber() | 8;
+        QuadraticRing ring = chooseRing();
+        QuadraticInteger num = new ImaginaryQuadraticInteger(a, b, ring);
+        long expected = 2L * a;
+        long actual = num.trace();
+        String message = "Reckoning trace of " + num.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
     public void testFullTrace() {
         System.out.println("fullTrace");
         int a = randomNumber();
