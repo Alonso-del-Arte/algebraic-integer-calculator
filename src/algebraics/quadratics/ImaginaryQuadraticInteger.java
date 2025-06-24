@@ -47,6 +47,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private final double numValRe;
     private final double numValIm;
 
+// TODO: Write edge case tests    
+    @Override
+    public long trace() {
+        return Long.MIN_VALUE;
+    }
+
     /**
      * Gives the norm of the algebraic integer in a format that can represent 
      * numbers outside the range of 64-bit integers. This computation involves 
