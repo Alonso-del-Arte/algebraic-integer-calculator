@@ -808,7 +808,9 @@ public class QuadraticIntegerTest {
     @Test
     public void testTraceHalfInteger() {
         QuadraticRing ring = chooseRingWithHalfInts();
-        int expected = 2 * randomNumber() + 1;
+        int bound = 1 << 24;
+        int signAdjust = RANDOM.nextBoolean() ? -1 : 1;
+        int expected = signAdjust * 2 * randomNumber(bound) + 1;
         int b = 2 * randomNumber() + 1;
         QuadraticInteger number = new QuadraticIntegerImpl(expected, b, ring, 
                 2);
@@ -853,7 +855,7 @@ public class QuadraticIntegerTest {
     @Test
     public void testTraceEdgeCasesHigh() {
         int bound = 65536;
-        int a = Integer.MAX_VALUE | randomNumber(bound);
+        int a = Integer.MAX_VALUE ^ randomNumber(bound);
         int b = randomNumber() | 8;
         QuadraticRing ring = chooseRing();
         QuadraticInteger num = new QuadraticIntegerImpl(a, b, ring);
