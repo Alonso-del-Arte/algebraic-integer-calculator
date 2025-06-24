@@ -1480,20 +1480,18 @@ public class ImaginaryQuadraticIntegerTest {
     /**
      * Test of the trace function, of the ImaginaryQuadraticInteger class.
      */
-//    @Test
+    @Test
     public void testTrace() {
         System.out.println("trace");
-        fail("REWRITE THIS TEST");
-//        long expected = 2L * randomRealPart;
-//        long actual;
-//        for (int i = 0; i < totalTestIntegers; i++) {
-//            actual = testIntegers.get(i).trace();
-//            if (testIntegers.get(i).getRing().hasHalfIntegers()) {
-//                assertEquals(randomRealForHalfInts, actual);
-//            } else {
-//                assertEquals(expected, actual);
-//            }
-//        }
+        QuadraticRing ring = chooseRing();
+        int bound = Integer.MIN_VALUE / -8;
+        int a = randomNumber(bound);
+        int b = randomNumber() | (randomNumber(16) + 1);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        long expected = 2L * a;
+        long actual = number.trace();
+        String message = "Reckoning trace of " + number.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
