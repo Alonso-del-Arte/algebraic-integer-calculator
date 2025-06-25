@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -47,6 +47,7 @@ import java.util.Set;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import static org.testframe.api.Asserters.assertDoesNotThrow;
 import static org.testframe.api.Asserters.assertThrows;
 
 /**
@@ -1864,6 +1865,7 @@ public class QuadraticIntegerTest {
         QuadraticInteger expected = new ImaginaryQuadraticInteger(0, 1, 
                 expectedRing);
         QuadraticInteger actual;
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
             actual = dividend.divides(divisor);
             System.out.println(dividend.toASCIIString() + " divided by " 
@@ -1913,6 +1915,7 @@ public class QuadraticIntegerTest {
         QuadraticRing expectedRing = new ImaginaryQuadraticRing(2 * p * q);
         QuadraticInteger expected = new ImaginaryQuadraticInteger(0, -1, 
                 expectedRing);
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
             QuadraticInteger actual = dividend.divides(divisor);
             System.out.println(dividend.toASCIIString() + " divided by " 
@@ -1969,6 +1972,7 @@ public class QuadraticIntegerTest {
         RealQuadraticRing expectedRing = new RealQuadraticRing(2 * p * q);
         RealQuadraticInteger expected = new RealQuadraticInteger(0, 1, 
                 expectedRing);
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
             QuadraticInteger actual = dividend.divides(divisor);
             System.out.println(dividend.toASCIIString() + " divided by " 
@@ -2025,6 +2029,7 @@ public class QuadraticIntegerTest {
         RealQuadraticRing expectedRing = new RealQuadraticRing(p * q * r);
         RealQuadraticInteger expected = new RealQuadraticInteger(0, 2, 
                 expectedRing);
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
             QuadraticInteger actual = dividend.divides(divisor);
             System.out.println(dividend.toASCIIString() + " divided by " 
@@ -2065,7 +2070,7 @@ public class QuadraticIntegerTest {
      * the correct quadratic integer. For example, 
      * <sup>3&radic;10</sup>&frasl;<sub>&radic;&minus;3</sub> =  
      * &minus;&radic;&minus;30.
-     */@org.junit.Ignore
+     */
     @Test
     public void testDividesCrossDomainRamificationRealToImaginary() {
         List<Integer> primes = listPrimes(50);
@@ -2083,6 +2088,7 @@ public class QuadraticIntegerTest {
         QuadraticInteger expected = new ImaginaryQuadraticInteger(0, -2, 
                 expectedRing);
         QuadraticInteger actual;
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
             actual = dividend.divides(divisor);
             System.out.println(dividend.toASCIIString() + " divided by " 
@@ -2132,41 +2138,65 @@ public class QuadraticIntegerTest {
         RealQuadraticRing expectedRing = new RealQuadraticRing(2);
         RealQuadraticInteger expected = new RealQuadraticInteger(0, 1, 
                 expectedRing);
-        QuadraticInteger result;
+        QuadraticInteger actual;
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
-            result = dividend.divides(divisor);
-            System.out.println(dividend.toASCIIString() + " divided by " + divisor.toASCIIString() + " is " + result.toASCIIString() + ".");
-            assertEquals(expected, result);
+            actual = dividend.divides(divisor);
+            System.out.println(dividend.toASCIIString() + " divided by " 
+                    + divisor.toASCIIString() + " is " + actual.toASCIIString());
+            assertEquals(expected, actual);
         } catch (UnsupportedNumberDomainException unde) {
-            String failMessage = "Dividing " + dividend.toString() + " by " + divisor.toString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
-            fail(failMessage);
+            String message = "Dividing " + dividend.toString() + " by " 
+                    + divisor.toString() 
+                    + " shouldn't've caused UnsupportedNumberDomainException.\n" 
+                    + unde.getMessage();
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "Dividing " + dividend.toString() + " by " + divisor.toString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
-            fail(failMessage);
+            String message = "Dividing " + dividend.toString() + " by " 
+                    + divisor.toString() 
+                    + " shouldn't've caused AlgebraicDegreeOverflowException.\n" 
+                    + adoe.getMessage();
+            fail(message);
         } catch (NotDivisibleException nde) {
-            String failMessage = "Dividing " + dividend.toString() + " by " + divisor.toString() + " should not have caused NotDivisibleException.\n" + nde.getMessage();
-            fail(failMessage);
+            String message = "Dividing " + dividend.toString() + " by " 
+                    + divisor.toString() 
+                    + " shouldn't've caused NotDivisibleException.\n" 
+                    + nde.getMessage();
+            fail(message);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String message = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(message);
         }
         // Now to check dividend divided by expResult is divisor
         try {
-            result = dividend.divides(expected);
-            System.out.println(dividend.toASCIIString() + " divided by " + expected.toASCIIString() + " is " + result.toASCIIString() + ".");
-            assertEquals(divisor, result);
+            actual = dividend.divides(expected);
+            System.out.println(dividend.toASCIIString() + " divided by " 
+                    + expected.toASCIIString() + " is " + actual.toASCIIString() 
+                    + ".");
+            assertEquals(divisor, actual);
         } catch (UnsupportedNumberDomainException unde) {
-            String failMessage = "Dividing " + dividend.toString() + " by " + expected.toString() + " should not have caused UnsupportedNumberDomainException.\n" + unde.getMessage();
-            fail(failMessage);
+            String message = "Dividing " + dividend.toString() + " by " 
+                    + expected.toString() 
+                    + " shouldn't've caused UnsupportedNumberDomainException.\n" 
+                    + unde.getMessage();
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
-            String failMessage = "Dividing " + dividend.toString() + " by " + expected.toString() + " should not have caused AlgebraicDegreeOverflowException.\n" + adoe.getMessage();
-            fail(failMessage);
+            String message = "Dividing " + dividend.toString() + " by " 
+                    + expected.toString() 
+                    + " shouldn't've caused AlgebraicDegreeOverflowException.\n" 
+                    + adoe.getMessage();
+            fail(message);
         } catch (NotDivisibleException nde) {
-            String failMessage = "Dividing " + dividend.toString() + " by " + expected.toString() + " should not have caused NotDivisibleException.\n" + nde.getMessage();
-            fail(failMessage);
+            String message = "Dividing " + dividend.toString() + " by " 
+                    + expected.toString()
+                    + " shouldn't've caused NotDivisibleException.\n" 
+                    + nde.getMessage();
+            fail(message);
         } catch (Exception e) {
-            String failMessage = e.getClass().getName() + " triggered: " + e.getMessage();
-            fail(failMessage);
+            String message = e.getClass().getName() + " triggered: " 
+                    + e.getMessage();
+            fail(message);
         }
     }
     
@@ -2183,6 +2213,7 @@ public class QuadraticIntegerTest {
         RealQuadraticInteger dividend = new RealQuadraticInteger(0, 27, dividendRing);
         QuadraticRing divisorRing = new RealQuadraticRing(7);
         QuadraticInteger divisor = new RealQuadraticInteger(0, 2, divisorRing);
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
             QuadraticInteger result = dividend.divides(divisor);
             String failMessage = "Trying to divide " + dividend.toASCIIString() + " by " + divisor.toASCIIString() + " should have caused an exception, not given result " + result.toASCIIString();
@@ -2241,6 +2272,7 @@ public class QuadraticIntegerTest {
         QuadraticInteger quadraticDivisor = new RealQuadraticInteger(9, 1, ring);
         QuadraticInteger expected = new RealQuadraticInteger(9, -1, ring);
         QuadraticInteger actual;
+        fail("REWRITE WITH assertDoesNotThrow()");
         try {
             actual = unaryDividend.divides(quadraticDivisor);
             assertEquals(expected, actual);
@@ -2322,7 +2354,6 @@ public class QuadraticIntegerTest {
      * dividend and the divisor are from different rings, an {@link 
      * AlgebraicDegreeOverflowException} should occur.
      */
-    @org.junit.Ignore
     @Test // TODO: Rework into two separate tests, to address one case in which 
     // there is an algebraic degree overflow and one case in which there isn't
     public void testModCrossDomainImagDivisor() {
@@ -2336,19 +2367,19 @@ public class QuadraticIntegerTest {
                 imagRing);
         try {
             QuadraticInteger result = dividend.mod(divisor);
-            String msg = dividend.toString() + " mod " + divisor.toString() 
+            String message = dividend.toString() + " mod " + divisor.toString() 
                     + " should not have given result " + result.toString();
-            fail(msg);
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.out.println(dividend.toASCIIString() + " mod " 
                     + divisor.toASCIIString()
                     + " correctly caused AlgebraicDegreeOverflowException");
             System.out.println("\"" + adoe.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for " 
                     + dividend.toString() + " mod " + divisor.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -2357,7 +2388,6 @@ public class QuadraticIntegerTest {
      * dividend and the divisor are from different rings, an {@link 
      * AlgebraicDegreeOverflowException} should occur.
      */
-    @org.junit.Ignore
     @Test // TODO: Rework into two separate tests, to address one case in which 
     public void testModCrossDomainRealDivisor() {
         int a = RANDOM.nextInt(2048) + 1;
@@ -2370,19 +2400,19 @@ public class QuadraticIntegerTest {
         RealQuadraticInteger divisor = new RealQuadraticInteger(a, b, realRing);
         try {
             QuadraticInteger result = dividend.mod(divisor);
-            String msg = dividend.toString() + " mod " + divisor.toString() 
+            String message = dividend.toString() + " mod " + divisor.toString() 
                     + " should not have given result " + result.toString();
-            fail(msg);
+            fail(message);
         } catch (AlgebraicDegreeOverflowException adoe) {
             System.out.println(dividend.toASCIIString() + " mod " 
                     + divisor.toASCIIString()
                     + " correctly caused AlgebraicDegreeOverflowException");
             System.out.println("\"" + adoe.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for " 
                     + dividend.toString() + " mod " + divisor.toString();
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -2400,7 +2430,7 @@ public class QuadraticIntegerTest {
                 + " should be 0";
         assertEquals(message, expected, actual);
     }
-    @org.junit.Ignore
+    
     @Test
     public void testMod() {
         System.out.println("mod");
