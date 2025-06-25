@@ -1052,35 +1052,36 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
     @Override
     public QuadraticInteger divides(QuadraticInteger divisor) 
             throws NotDivisibleException {
-        if (this.quadRing.equals(divisor.quadRing)) {
-            long divDenom = (long) (divisor.norm() * (long) this.denominator 
-                    * (long) divisor.denominator);
-            Fraction divRegFract = new Fraction((long) this.regPartMult 
-                    * (long) divisor.regPartMult - (long) this.surdPartMult 
-                            * (long) divisor.surdPartMult 
-                            * (long) this.quadRing.radicand, divDenom);
-            Fraction divSurdFract = new Fraction((long) this.surdPartMult 
-                    * (long) divisor.regPartMult - (long) this.regPartMult 
-                            * (long) divisor.surdPartMult, divDenom);
-            boolean divisibleFlag = divRegFract.getDenominator() 
-                    == divSurdFract.getDenominator();
-            int minDisallowedDenom = 2;
-            if (this.quadRing.d1mod4) {
-                minDisallowedDenom = 3;
-            }
-            divisibleFlag = divisibleFlag 
-                    && (divRegFract.getDenominator() < minDisallowedDenom);
-            if (!divisibleFlag) {
-                Fraction[] fracts = {divRegFract, divSurdFract};
-                throw new NotDivisibleException(this, divisor, fracts);
-            }
-//            checkRange(divRegFract, divSurdFract, this.quadRing);
-            return apply((int) divRegFract.getNumerator(), 
-                    (int) divSurdFract.getNumerator(), this.quadRing, 
-                    (int) divRegFract.getDenominator());
-        } else {
-            return this.dividesFromOtherRing(divisor);
-        }
+        return this;
+//        if (this.quadRing.equals(divisor.quadRing)) {
+//            long divDenom = (long) (divisor.norm() * (long) this.denominator 
+//                    * (long) divisor.denominator);
+//            Fraction divRegFract = new Fraction((long) this.regPartMult 
+//                    * (long) divisor.regPartMult - (long) this.surdPartMult 
+//                            * (long) divisor.surdPartMult 
+//                            * (long) this.quadRing.radicand, divDenom);
+//            Fraction divSurdFract = new Fraction((long) this.surdPartMult 
+//                    * (long) divisor.regPartMult - (long) this.regPartMult 
+//                            * (long) divisor.surdPartMult, divDenom);
+//            boolean divisibleFlag = divRegFract.getDenominator() 
+//                    == divSurdFract.getDenominator();
+//            int minDisallowedDenom = 2;
+//            if (this.quadRing.d1mod4) {
+//                minDisallowedDenom = 3;
+//            }
+//            divisibleFlag = divisibleFlag 
+//                    && (divRegFract.getDenominator() < minDisallowedDenom);
+//            if (!divisibleFlag) {
+//                Fraction[] fracts = {divRegFract, divSurdFract};
+//                throw new NotDivisibleException(this, divisor, fracts);
+//            }
+////            checkRange(divRegFract, divSurdFract, this.quadRing);
+//            return apply((int) divRegFract.getNumerator(), 
+//                    (int) divSurdFract.getNumerator(), this.quadRing, 
+//                    (int) divRegFract.getDenominator());
+//        } else {
+//            return this.dividesFromOtherRing(divisor);
+//        }
     }
     
     /**
