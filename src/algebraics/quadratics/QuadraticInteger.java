@@ -171,7 +171,7 @@ public abstract class QuadraticInteger implements AlgebraicInteger,
      * 2; and for 2 + &radic;14, it would be 4.
      */
     @Override
-    public long trace() {
+    public final long trace() {
         return 2L * this.regPartMult / this.denominator;
     }
     
