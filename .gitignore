@@ -161,7 +161,8 @@ nb-configuration.xml
 # Vim specific
 *.swp
 
-# General
+# Miscellaneous
+localdevicenotes.txt
 scratchpad.txt
 src/draft/
 test/draft/
