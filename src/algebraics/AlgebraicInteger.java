@@ -53,8 +53,9 @@ public interface AlgebraicInteger {
     /**
      * Gives the trace of the algebraic integer. In the original version, this 
      * was a 32-bit integer, but due to many overflow problems, I changed it to 
-     * a 64-bit integer. Overflow problems can still occur, but they're 
-     * hopefully less frequent now.
+     * a 64-bit integer. Overflow problems can still occur. Use {@link 
+     * #fullTrace()} in cases where overflow is likely, as in, for example, 
+     * cubic integers and algebraic integers of higher degree.
      * @return The trace. For example, given <sup>5</sup>&frasl;<sub>2</sub> + 
      * <sup>&radic;&minus;7</sup>&frasl;<sub>2</sub>, the trace would be 5.
      */
@@ -173,9 +174,8 @@ public interface AlgebraicInteger {
      * come from the same ring of algebraic integers. Implementing classes can 
      * and probably should narrow down the return type.
      * @return An object subclassed from {@link IntegerRing}. To check degree, 
-     * one may use {@link IntegerRing#getMaxAlgebraicDegree()} or one may check 
-     * if it's an instance of {@link algebraics.quadratics.QuadraticRing}, 
-     * {@link algebraics.cubics.CubicRing}, etc.
+     * one may use the instance's {@link IntegerRing#getMaxAlgebraicDegree() 
+     * getMaxAlgebraicDegree()} function.
      */
     IntegerRing getRing();
         
@@ -245,7 +245,7 @@ public interface AlgebraicInteger {
      * or &minus;<i>i</i> as needed. It is strongly recommended that the author 
      * of an implementation write documentation clarifying this and other 
      * points. However, in the case of algebraic integers from purely real 
-     * rings, this issue is moot, since the result should always be 0.0.
+     * rings, this issue is moot, since the result should always be &plusmn;0.0.
      * @return The imaginary part, divided by <i>i</i> or &minus;<i>i</i>. In 
      * some cases may be 0.0, in others it may be a rational approximation. For 
      * example, for 1 + &#8731;2, this should be exactly 0.0. For 
