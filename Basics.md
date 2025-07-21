@@ -176,6 +176,15 @@ properties is then called a **unique factorization domain** (UFD).
 In my opinion, non-UFDs are far more interesting. And for each degree higher 
 than 1, there are infinitely many rings that are not UFDs.
 
+### Ideals
+
+The concept of ideals is considered to be very advanced. But, if explained 
+properly, ideals really are quite simple. Given a ring $R$ such as $\mathbb Z$ 
+and a number $a \in R$, the **principal ideal $\langle a \rangle$ is simply the 
+set of all numbers of the form $ax$, where $x \in R$ also.
+
+FINISH WRITING
+
 ## Rings of higher degree
 
 ### Degree 2
