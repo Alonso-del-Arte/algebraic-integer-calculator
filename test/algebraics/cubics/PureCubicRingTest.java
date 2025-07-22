@@ -110,6 +110,16 @@ public class PureCubicRingTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringNegativeParamD() {
+        int n = randomNumber(6) + 2;
+        int d = randomSquarefreeNumberMod(n, 9);
+        PureCubicRing instance = new PureCubicRing(-d);
+        String expected = "Z[\u221B" + d + "]";
+        String actual = instance.toString();
+        assertEquals(expected, actual);
+    }
+    
     // TODO: Write toString() tests for d not squarefree (though still 
     // cubefree), negative d
 
