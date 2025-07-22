@@ -149,6 +149,14 @@ public class PureCubicRing extends CubicRing
         return -this.radicand;
     }
     
+    /**
+     * Constructor.
+     * @param d The radicand. It should be cubefree but not necessarily 
+     * squarefree. Should not be &plusmn;1. May be negative, in which case it 
+     * will be quietly turned positive.
+     * @throws IllegalArgumentException If {@code d} is &plusmn;1 or divisible 
+     * by a perfect cube other than &plusmn;1.
+     */
     public PureCubicRing(int d) {
         if (d == -1 || d == 1) {
             String excMsg = "Number d = " + d 
