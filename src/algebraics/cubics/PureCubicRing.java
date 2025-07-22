@@ -51,7 +51,7 @@ public class PureCubicRing extends CubicRing
     
     @Override
     public int getRadicand() {
-        return Math.abs(this.radicand);
+        return this.radicand;
     }
 
     public double getCubeRoot() {
@@ -79,8 +79,7 @@ public class PureCubicRing extends CubicRing
     
     @Override
     public String toString() {
-        return "Z[" + CubicRing.CUBE_ROOT_SYMBOL + Math.abs(this.radicand) 
-                + "]";
+        return "Z[" + CubicRing.CUBE_ROOT_SYMBOL + this.radicand + "]";
     }
 
     @Override
@@ -137,8 +136,7 @@ public class PureCubicRing extends CubicRing
         if (!this.getClass().equals(obj.getClass())) {
             return false;
         }
-        return Math.abs(this.radicand) 
-                == Math.abs(((PureCubicRing) obj).radicand);
+        return this.radicand == ((PureCubicRing) obj).radicand;
     }
 
     /**
@@ -155,7 +153,8 @@ public class PureCubicRing extends CubicRing
      * Constructor.
      * @param d The radicand. It should be cubefree but not necessarily 
      * squarefree. Should not be &plusmn;1. May be negative, in which case it 
-     * will be quietly turned positive.
+     * will be quietly turned positive. Examples: 10 and &minus;10. The latter 
+     * will be quietly changed to the former.
      * @throws IllegalArgumentException If {@code d} is &plusmn;1 or divisible 
      * by a perfect cube other than &plusmn;1.
      */
@@ -169,7 +168,7 @@ public class PureCubicRing extends CubicRing
             String excMsg = "Number " + d + " is not cubefree";
             throw new IllegalArgumentException(excMsg);
         }
-        this.radicand = d;
+        this.radicand = Math.abs(d);
     }
     
 }
