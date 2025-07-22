@@ -137,7 +137,8 @@ public class PureCubicRing extends CubicRing
         if (!this.getClass().equals(obj.getClass())) {
             return false;
         }
-        return this.radicand == ((PureCubicRing) obj).radicand;
+        return Math.abs(this.radicand) 
+                == Math.abs(((PureCubicRing) obj).radicand);
     }
 
     /**
