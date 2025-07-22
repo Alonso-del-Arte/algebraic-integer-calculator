@@ -297,14 +297,15 @@ is an algebraic integer with norm 12 and minimal polynomial $x^3 - x^2 - 6x -
 
 I haven't yet figured out the requirements on such fractions. From what I gather 
 so far, the non-integral fractions must have denominators congruent to $\pm 1 
-\bmod 9$, which suggests that 
+\bmod 9$, which suggests that (FINISH WRITING)
 
 (FINISH WRITING)
 
-(FINISH WRITING)
-
-The norm function is 
-$N(a + b \root 3 \of d + c (\root 3 \of d)^2) = a^3 + b^3 d + c^3 d^2 - 3abcd$.
+The number $d$ may be negative, but the rings of $\mathbb Q(\root 3 \of d)$ and 
+$\mathbb Q(\root 3 \of {-d})$ are exactly the same. Given $a + b \root 3 \of d + 
+c (\root 3 \of d)^2$, that number can be expressed as number in $\mathbb Q(\root 
+3 \of {-d})$ with the simple conversion $a - b \root 3 \of {-d} + c (\root 3 \of 
+{-d})^2$. The signs of $a$ and $c$ remain the same.
 
 (FINISH WRITING)
 
