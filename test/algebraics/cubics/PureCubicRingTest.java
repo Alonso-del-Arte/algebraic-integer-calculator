@@ -309,6 +309,15 @@ public class PureCubicRingTest {
     }
     
     @Test
+    public void testDoesEqualSameAbsParamD() {
+        int bound = 1024;
+        int d = randomSquarefreeNumber(bound);
+        PureCubicRing someRing = new PureCubicRing(-d);
+        PureCubicRing sameRing = new PureCubicRing(d);
+        assertEquals(someRing, sameRing);
+    }
+    
+    @Test
     public void testHashCode() {
         System.out.println("hashCode");
         int initialCapacity = randomNumber(128) + 2;
