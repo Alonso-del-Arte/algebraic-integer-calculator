@@ -183,7 +183,35 @@ properly, ideals really are quite simple. Given a ring $R$ such as $\mathbb Z$
 and a number $a \in R$, the **principal ideal $\langle a \rangle$ is simply the 
 set of all numbers of the form $ax$, where $x \in R$ also.
 
-FINISH WRITING
+For example, in $\mathbb Z$, the principal ideal $\langle 3 \rangle$ simply 
+consists of 0 and all negative and positive multiples of 3.
+
+Whatever the ring, the principal ideal $\langle 1 \rangle$ consists of the 
+entire ring. This is also true if we replace 1 with any other unit, such as 
+$-1$.
+
+There's another kind of ideal, which I'm calling "secondary ideals" unless 
+someone comes up with a better name. The **secondary ideal** $\langle a, b 
+\rangle$ consists of all numbers of the form $ax + by$, where $a$, $b$, $x$ and 
+$y$ are all in $R$.
+
+For example, in $\mathbb Z$, the secondary ideal $\langle 7, 3 \rangle$ consists 
+of all numbers of the form $7x + 3y$ with $\{x, y\} \in \mathbb Z$. But, as it 
+turns out, that's all of $\mathbb Z$, since very number in $\mathbb Z$ can be 
+expressed as $7x + 3y$.
+
+Likewise, $\langle 16, 24 \rangle$ consists of all numbers of the form $16x 
++ 24y$ with $\{x, y\} \in \mathbb Z$, but that boils down to the principal idea 
+$\langle 8 \rangle$.
+
+No matter how we express an ideal in $\mathbb Z$, it always turns out to be a 
+principal ideal. In fact, $\langle a, b \rangle = \langle \textrm{gcd}(a, b) 
+\rangle$. $\mathbb Z$ is in fact a principal ideal domain. In a **principal 
+ideal domain**, all ideals are principal ideals.
+
+In the kinds of rings I'm looking at in this project, a principal ideal domain 
+is also a unique factorization domain. Secondary ideals are much more useful in 
+rings which are not unique factorization domains.
 
 ## Rings of higher degree
 
