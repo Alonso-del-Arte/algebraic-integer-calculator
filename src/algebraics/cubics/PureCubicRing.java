@@ -119,11 +119,12 @@ public class PureCubicRing extends CubicRing
      * <b>Z</b>[&#x221B;13], <i>O</i><sub><b>Q</b>(&#x221B;19)</sub>, 
      * <b>Z</b>[<i>i</i>], null.
      * @return True only if {@code obj} is a {@code PureCubicRing} instance 
-     * initialized with the same parameter <i>d</i>, false in all other cases. 
-     * In the examples, true for <b>Z</b>[&#x221B;13], false for 
-     * <i>O</i><sub><b>Q</b>(&#x221B;19)</sub> (different parameter <i>d</i>), 
-     * false for <b>Z</b>[<i>i</i>] (instance of {@code ImaginaryQuadraticRing}, 
-     * not {@code PureCubicRing}) and obviously false for null.
+     * initialized with the same parameter <i>d</i> (or with &minus;<i>d</i>), 
+     * false in all other cases. In the examples, true for <b>Z</b>[&#x221B;13], 
+     * false for <i>O</i><sub><b>Q</b>(&#x221B;19)</sub> (different parameter 
+     * <i>d</i>), false for <b>Z</b>[<i>i</i>] (instance of {@code 
+     * ImaginaryQuadraticRing}, not {@code PureCubicRing}) and obviously false 
+     * for null.
      */
     @Override
     public boolean equals(Object obj) {
