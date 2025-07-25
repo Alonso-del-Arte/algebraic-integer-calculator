@@ -33,3 +33,6 @@ that hopefully now only appear in the commits prior to that date.
 
 I've split off information on the basics of algebraic number theory to 
 [a new page](Basics.md).
+
+Very recently I started doing this project in Python as well (see my repository 
+algebraics-python).
