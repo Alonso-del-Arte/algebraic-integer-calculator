@@ -317,9 +317,14 @@ c (\root 3 \of d)^2$, that number can be expressed as number in $\mathbb Q(\root
 
 ### Degree 4
 
-(FINISH WRITING)
+As with degree 3, we will first consider the "pure" rings. For degree 4, this 
+means the rings obtained by adjoining $\mathbb Q$ to $\root 4 \of d$, where $d$ 
+is not divisible by any perfect fourth powers other than $1$ but may be 
+divisible by cubes or squares.
 
 (FINISH WRITING)
+
+(FINISH WRITING) intermediate quadratic rings
 
 (FINISH WRITING)
 
