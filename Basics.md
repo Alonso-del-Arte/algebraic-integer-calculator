@@ -262,11 +262,8 @@ are just as much algebraic integers as their doubles, as they have norms that
 are a quarter of the norm of their doubles.
 
 Given integers $a$, $b$ and $d$, with the latter squarefree, the number 
-$$\frac{a}{2} + \frac{b \sqrt d}{2}$$ is an algebraic integer only when the 
-following conditions hold:
-
-* $d \equiv 1 \pmod 4$ (such as for example &minus;7), and
-* Both $a$ and $b$ are odd (such as for example 3 and 1).
+$$\frac{a}{2} + \frac{b \sqrt d}{2}$$, with $a$ and $b$ both odd, is an 
+algebraic integer only when $d \equiv 1 \pmod 4$ (such as for example &minus;7).
 
 These facts should have proofs in any elementary algebraic number theory book.
 
