@@ -16,6 +16,8 @@
  */
 package algebraics.quadratics;
 
+import algebraics.unary.UnaryInteger;
+
 /**
  * Defines objects to represent real quadratic rings.
  * @author Alonso del Arte
@@ -55,6 +57,11 @@ public final class RealQuadraticRing extends QuadraticRing {
     @Override
     public double getAbsNegRadSqrt() {
         return this.realRadSqrt;
+    }
+    
+    // TODO: Write tests for this
+    public RealQuadraticRing(UnaryInteger d) {
+        this(Integer.MAX_VALUE);
     }
     
     /**

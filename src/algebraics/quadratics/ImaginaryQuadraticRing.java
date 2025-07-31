@@ -16,6 +16,7 @@
  */
 package algebraics.quadratics;
 
+import algebraics.unary.UnaryInteger;
 import calculators.NumberTheoreticFunctionsCalculator;
 
 /**
@@ -137,6 +138,11 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
                     return "&#x2124;[&radic;&minus;" + this.absRadicand + "]";
                 }
         }
+    }
+    
+    // TODO: Write tests for this
+    public ImaginaryQuadraticRing(UnaryInteger d) {
+        this(Integer.MIN_VALUE);
     }
     
     /**
