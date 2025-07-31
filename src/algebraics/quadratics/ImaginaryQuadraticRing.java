@@ -17,7 +17,6 @@
 package algebraics.quadratics;
 
 import algebraics.unary.UnaryInteger;
-import calculators.NumberTheoreticFunctionsCalculator;
 
 /**
  * Defines objects to represent imaginary quadratic rings.
