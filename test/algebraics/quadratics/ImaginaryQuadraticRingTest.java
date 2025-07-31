@@ -16,6 +16,7 @@
  */
 package algebraics.quadratics;
 
+import algebraics.unary.UnaryInteger;
 import arithmetic.PowerBasis;
 import calculators.NumberTheoreticFunctionsCalculator;
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
@@ -661,6 +662,27 @@ public class ImaginaryQuadraticRingTest {
         assert excMsg != null : "Exception message should not be null";
         assert !excMsg.isBlank() : "Exception message should not be blank";
         String numStr = Integer.toString(d);
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testAuxConstructorRejectsPositiveD() {
+        int n = randomSquarefreeNumber(Short.MAX_VALUE);
+        UnaryInteger d = new UnaryInteger(n);
+        String msg = "Parameter d = " + d 
+                + " should be rejected for imaginary quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new ImaginaryQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String numStr = d.toString();
         String containsMsg = "Exception message should contain \"" + numStr 
                 + "\"";
         assert excMsg.contains(numStr) : containsMsg;
