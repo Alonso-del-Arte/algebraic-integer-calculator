@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.unary.UnaryInteger;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 
 /**
  * Defines objects to represent imaginary quadratic rings.
@@ -139,12 +140,17 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
         }
     }
     
-    // TODO: Write tests for this
+    // TODO: Refactor as a chained constructor
     public ImaginaryQuadraticRing(UnaryInteger d) {
         super(-Integer.MAX_VALUE);
         if (d.getNumber() > -1) {
             String excMsg = "Negative integer required for parameter d, not " 
                     + d.getNumber();
+            throw new IllegalArgumentException(excMsg);
+        }
+        if (!isSquarefree(d.getNumber())) {
+            String excMsg = "Squarefree integer required for parameter d, " 
+                    + d.getNumber() + " is not squarefree";
             throw new IllegalArgumentException(excMsg);
         }
         this.d1mod4 = true;
