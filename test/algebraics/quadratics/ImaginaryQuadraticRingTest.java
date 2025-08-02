@@ -751,4 +751,26 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testAuxConstructorRejectsNonSquarefreeNegativeD() {
+        int n = randomSquarefreeNumber(Byte.MAX_VALUE);
+        int propD = -n * n * randomSquarefreeNumber(Short.MAX_VALUE);
+        UnaryInteger d = new UnaryInteger(propD);
+        String numStr = d.toString();
+        String msg = "Parameter d = " + numStr 
+                + " should be rejected for imaginary quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new ImaginaryQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
 }
