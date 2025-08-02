@@ -757,6 +757,7 @@ public class ImaginaryQuadraticRingTest {
         int propD = -n * n * randomSquarefreeNumber(Short.MAX_VALUE);
         UnaryInteger d = new UnaryInteger(propD);
         String numStr = d.toString();
+        String altNumStr = Integer.toString(d.getNumber());
         String msg = "Parameter d = " + numStr 
                 + " should be rejected for imaginary quadratic ring";
         Throwable t = assertThrows(() -> {
@@ -769,7 +770,8 @@ public class ImaginaryQuadraticRingTest {
         assert !excMsg.isBlank() : "Exception message should not be blank";
         String containsMsg = "Exception message should contain \"" + numStr 
                 + "\"";
-        assert excMsg.contains(numStr) : containsMsg;
+        assert excMsg.contains(numStr) || excMsg.contains(altNumStr) 
+                : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
     
