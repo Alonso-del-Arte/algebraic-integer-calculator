@@ -142,7 +142,7 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
     // TODO: Write tests for this
     public ImaginaryQuadraticRing(UnaryInteger d) {
         super(-Integer.MAX_VALUE);
-        if (d.getNumber() > 0) {
+        if (d.getNumber() > -1) {
             String excMsg = "Negative integer required for parameter d, not " 
                     + d.getNumber();
             throw new IllegalArgumentException(excMsg);
