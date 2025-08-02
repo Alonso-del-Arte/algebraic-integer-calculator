@@ -441,10 +441,10 @@ public abstract class QuadraticRing implements SingleIntRootAdjoinedRing,
      * have no intention of sealing it.
      * @param d A squarefree integer. Subclasses can and should place further 
      * restrictions.
-     * @throws IllegalArgumentException If <code>d</code> is a multiple of a 
-     * square other than 1.
+     * @throws IllegalArgumentException If {@code d} is a multiple of a square 
+     * other than 1.
      */
-    public QuadraticRing(int d) {
+    QuadraticRing(int d) {
         if (!NumberTheoreticFunctionsCalculator.isSquarefree(d)) {
             String excMsg = "Squarefree integer required for parameter d, " + d 
                     + " is not squarefree";
