@@ -153,7 +153,7 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
                     + d.getNumber() + " is not squarefree";
             throw new IllegalArgumentException(excMsg);
         }
-        this.d1mod4 = true;
+        this.d1mod4 = false;
     }
     
     /**
