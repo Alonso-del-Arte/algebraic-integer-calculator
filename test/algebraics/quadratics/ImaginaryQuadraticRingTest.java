@@ -785,6 +785,16 @@ public class ImaginaryQuadraticRingTest {
     }
     
     @Test
+    public void testAuxConstructorSetsHalfIntFlagForD1Mod4() {
+        int n = -randomSquarefreeNumberMod(3, 4);
+        UnaryInteger d = new UnaryInteger(n);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        String msg = "Ring " + ring.toString() 
+                + " should be said to have \"half-integers\"";
+        assert ring.hasHalfIntegers() : msg;
+    }
+    
+    @Test
     public void testAuxConstructorDoesNotSetHalfIntFlagForD2Mod4() {
         int n = -randomSquarefreeNumberMod(2, 4);
         UnaryInteger d = new UnaryInteger(n);
