@@ -140,20 +140,8 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
         }
     }
     
-    // TODO: Refactor as a chained constructor
     public ImaginaryQuadraticRing(UnaryInteger d) {
-        super(d.getNumber());
-        if (d.getNumber() > -1) {
-            String excMsg = "Negative integer required for parameter d, not " 
-                    + d.getNumber();
-            throw new IllegalArgumentException(excMsg);
-        }
-        if (!isSquarefree(d.getNumber())) {
-            String excMsg = "Squarefree integer required for parameter d, " 
-                    + d.getNumber() + " is not squarefree";
-            throw new IllegalArgumentException(excMsg);
-        }
-        this.d1mod4 = d.getNumber() % 4 == -3;
+        this(d.getNumber());
     }
     
     /**
