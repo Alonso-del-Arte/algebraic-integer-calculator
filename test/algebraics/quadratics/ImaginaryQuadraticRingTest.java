@@ -775,4 +775,13 @@ public class ImaginaryQuadraticRingTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testAuxConstructorRelaysParamD() {
+        int expected = -randomSquarefreeNumber(Byte.MAX_VALUE);
+        UnaryInteger d = new UnaryInteger(expected);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        int actual = ring.radicand;
+        assertEquals(expected, actual);
+    }
+    
 }
