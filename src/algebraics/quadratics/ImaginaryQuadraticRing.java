@@ -142,7 +142,7 @@ public final class ImaginaryQuadraticRing extends QuadraticRing {
     
     // TODO: Refactor as a chained constructor
     public ImaginaryQuadraticRing(UnaryInteger d) {
-        super(-Integer.MAX_VALUE);
+        super(d.getNumber());
         if (d.getNumber() > -1) {
             String excMsg = "Negative integer required for parameter d, not " 
                     + d.getNumber();
