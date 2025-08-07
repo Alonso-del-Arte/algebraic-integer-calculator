@@ -638,7 +638,7 @@ public class RealQuadraticRingTest {
      * rejected.
      */
     @Test
-    public void testConstructorRejectsD0() {
+    public void testConstructorRejectsDZero() {
         int d = 0;
         String msg = "Parameter d = " + d 
                 + " should be rejected for real quadratic ring";
