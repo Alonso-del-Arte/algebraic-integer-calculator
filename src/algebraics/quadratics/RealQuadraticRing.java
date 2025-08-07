@@ -17,6 +17,7 @@
 package algebraics.quadratics;
 
 import algebraics.unary.UnaryInteger;
+import static calculators.NumberTheoreticFunctionsCalculator.isSquarefree;
 
 /**
  * Defines objects to represent real quadratic rings.
@@ -64,6 +65,10 @@ public final class RealQuadraticRing extends QuadraticRing {
         if (d.getNumber() < 2) {
             String excMsg = "Number " + d.toString() 
                     + " is not valid for this constructor";
+            throw new IllegalArgumentException(excMsg);
+        }
+        if (!isSquarefree(d.getNumber())) {
+            String excMsg = "The number " + d.toString() + " is not squarefree";
             throw new IllegalArgumentException(excMsg);
         }
     }
