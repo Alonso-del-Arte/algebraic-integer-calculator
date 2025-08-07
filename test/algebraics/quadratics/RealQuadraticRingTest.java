@@ -460,7 +460,7 @@ public class RealQuadraticRingTest {
     }
     
     /**
-     * Test of the toHTMLString function, of the ImaginaryQuadraticRing class.
+     * Test of the toHTMLString function, of the RealQuadraticRing class.
      */
     @Test
     public void testToHTMLString() {
@@ -606,6 +606,30 @@ public class RealQuadraticRingTest {
         String containsMsg = "Exception message should contain \"" + numStr 
                 + "\"";
         assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
+    @Test
+    public void testAuxConstructorRejectsNonSquarefreePositiveD() {
+        int n = randomSquarefreeNumber(Byte.MAX_VALUE);
+        int propD = n * n * randomSquarefreeNumber(Short.MAX_VALUE);
+        UnaryInteger d = new UnaryInteger(propD);
+        String numStr = d.toString();
+        String altNumStr = Integer.toString(d.getNumber());
+        String msg = "Parameter d = " + numStr 
+                + " should be rejected for real quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new RealQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) || excMsg.contains(altNumStr) 
+                : containsMsg;
         System.out.println("\"" + excMsg + "\"");
     }
     
