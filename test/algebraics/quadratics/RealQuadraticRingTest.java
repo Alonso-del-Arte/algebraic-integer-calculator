@@ -633,6 +633,27 @@ public class RealQuadraticRingTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testAuxConstructorRejectsDOne() {
+        int n = 1;
+        UnaryInteger d = new UnaryInteger(n);
+        String numStr = d.toString();
+        String msg = "Parameter d = " + numStr
+                + " should be rejected for real quadratic ring";
+        Throwable t = assertThrows(() -> {
+            QuadraticRing badRing = new RealQuadraticRing(d);
+            System.out.println("Should not have been able to create " 
+                    + badRing.toString() + " with d = " + d);
+        }, IllegalArgumentException.class, msg);
+        String excMsg = t.getMessage();
+        assert excMsg != null : "Exception message should not be null";
+        assert !excMsg.isBlank() : "Exception message should not be blank";
+        String containsMsg = "Exception message should contain \"" + numStr 
+                + "\"";
+        assert excMsg.contains(numStr) : containsMsg;
+        System.out.println("\"" + excMsg + "\"");
+    }
+    
     /**
      * Test of the RealQuadraticRing constructor. The parameter d = 0 should be 
      * rejected.
