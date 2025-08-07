@@ -61,7 +61,12 @@ public final class RealQuadraticRing extends QuadraticRing {
     
     // TODO: Write tests for this
     public RealQuadraticRing(UnaryInteger d) {
-        this(Integer.MAX_VALUE);
+        super(Integer.MAX_VALUE);
+        if (d.getNumber() < 0) {
+            String excMsg = "Number " + d.toString() 
+                    + " is not valid for this constructor";
+            throw new IllegalArgumentException(excMsg);
+        }
     }
     
     /**
