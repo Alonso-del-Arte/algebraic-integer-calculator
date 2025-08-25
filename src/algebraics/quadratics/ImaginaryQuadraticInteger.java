@@ -44,6 +44,21 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     private static final String SQRT_NEG_ONE_SEQ 
             = new String(SQRT_NEG_ONE_CHARS);
     
+    private static final QuadraticRing RING_GAUSSIAN 
+            = new ImaginaryQuadraticRing(-1);
+    
+    private static final QuadraticInteger QUATER_BASE 
+            = new ImaginaryQuadraticInteger(0, 2, RING_GAUSSIAN);
+    
+    private static final QuadraticInteger ZERO_IN_GAUSSIAN 
+            = new ImaginaryQuadraticInteger(0, 0, RING_GAUSSIAN);
+    
+    private static final QuadraticInteger ONE_IN_GAUSSIAN 
+            = new ImaginaryQuadraticInteger(1, 0, RING_GAUSSIAN);
+    
+    private static final QuadraticInteger NEG_IMAG_UNIT 
+            = new ImaginaryQuadraticInteger(0, -1, RING_GAUSSIAN);
+    
     private final double numValRe;
     private final double numValIm;
 
@@ -382,16 +397,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * may or may not be the only parsing obstacle.
      */
     public static QuadraticInteger parseQuaterImaginary(String str) {
-        ImaginaryQuadraticRing ringGaussian = new ImaginaryQuadraticRing(-1);
-        ImaginaryQuadraticInteger base = new ImaginaryQuadraticInteger(0, 2, 
-                ringGaussian);
-        QuadraticInteger currPower = new ImaginaryQuadraticInteger(1, 0, 
-                ringGaussian);
+        QuadraticInteger currPower = ONE_IN_GAUSSIAN;
         QuadraticInteger currPowerMult;
-        QuadraticInteger parsedSoFar = new ImaginaryQuadraticInteger(0, 0, 
-                ringGaussian);
-        ImaginaryQuadraticInteger gaussianZero = new ImaginaryQuadraticInteger(0, 
-                0, ringGaussian);
+        QuadraticInteger parsedSoFar = ZERO_IN_GAUSSIAN;
         str = str.replace(" ", "");
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         int dotPlace = str.indexOf(dfs.getDecimalSeparator());
@@ -418,14 +426,14 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         }
         String dotTwoEnding = dfs.getDecimalSeparator() + "2";
         if (str.endsWith(dotTwoEnding)) {
-            parsedSoFar = new ImaginaryQuadraticInteger(0, -1, ringGaussian);
+            parsedSoFar = NEG_IMAG_UNIT;
             str = str.substring(0, str.length() - 2);
         }
         char currDigit;
         for (int i = str.length() - 1; i > -1; i--) {
             currDigit = str.charAt(i);
             switch (currDigit) {
-                case '0' -> currPowerMult = gaussianZero;
+                case '0' -> currPowerMult = ZERO_IN_GAUSSIAN;
                 case '1' -> currPowerMult = currPower;
                 case '2' -> currPowerMult = currPower.times(2);
                 case '3' -> currPowerMult = currPower.times(3);
@@ -436,7 +444,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 }
             }
             parsedSoFar = parsedSoFar.plus(currPowerMult);
-            currPower = currPower.times(base);
+            currPower = currPower.times(QUATER_BASE);
         }
         return parsedSoFar;
     }
