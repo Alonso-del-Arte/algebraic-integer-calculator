@@ -425,22 +425,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         for (int i = str.length() - 1; i > -1; i--) {
             currDigit = str.charAt(i);
             switch (currDigit) {
-                case '0':
-                    currPowerMult = gaussianZero;
-                    break;
-                case '1':
-                    currPowerMult = currPower;
-                    break;
-                case '2':
-                    currPowerMult = currPower.times(2);
-                    break;
-                case '3':
-                    currPowerMult = currPower.times(3);
-                    break;
-                default:
+                case '0' -> currPowerMult = gaussianZero;
+                case '1' -> currPowerMult = currPower;
+                case '2' -> currPowerMult = currPower.times(2);
+                case '3' -> currPowerMult = currPower.times(3);
+                default -> {
                     String excMsg = "'" + currDigit 
                             + "' is not a valid quater-imaginary digit";
                     throw new NumberFormatException(excMsg);
+                }
             }
             parsedSoFar = parsedSoFar.plus(currPowerMult);
             currPower = currPower.times(base);
