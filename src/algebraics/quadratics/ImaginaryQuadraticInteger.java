@@ -159,6 +159,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     }
     
     @Override
+    public String toASCIIStringAlt() {
+        return "REWIND TO FAILING";
+    }
+    
+    @Override
     public String minPolynomialString() {
         return "x";
     }
