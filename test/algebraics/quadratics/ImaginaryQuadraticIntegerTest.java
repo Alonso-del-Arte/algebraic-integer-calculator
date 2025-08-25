@@ -1202,12 +1202,21 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltPurelyRealFromRingD3Mod4SameAsToString() {
+        int a = randomNumber();
+        int d = -randomSquarefreeNumberMod(1, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Purely real number in the context of " 
+                + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
-     * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger. For 
-     * methods that return Strings, spaces are desirable but not required.
-     * Therefore the tests should strip out spaces before asserting equality.
-     * If the test of the toASCIIString method fails, the result of this test is 
-     * irrelevant.
+     * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
 //    @Test
     public void testToASCIIStringAlt() {
