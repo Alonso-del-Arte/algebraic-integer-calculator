@@ -160,7 +160,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
-        if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2) {
+        if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
+                || this.quadRing.radicand % 4 == -1) {
             return Integer.toString(this.regPartMult)
                     .replace('-', MINUS_SIGN_CHARACTER);
         }
