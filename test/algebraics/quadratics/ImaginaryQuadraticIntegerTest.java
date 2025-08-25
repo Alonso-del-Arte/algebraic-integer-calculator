@@ -1177,7 +1177,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
-    /**
+    @Test
+    public void testToASCIIStringAltPurelyRealGaussian() {
+        int a = randomNumber();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
+                RING_GAUSSIAN);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Purely real number in the context of " 
+                + RING_GAUSSIAN.toString();
+        assertEquals(message, expected, actual);
+    }
+        /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger. For 
      * methods that return Strings, spaces are desirable but not required.
      * Therefore the tests should strip out spaces before asserting equality.
