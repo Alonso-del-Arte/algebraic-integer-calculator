@@ -36,4 +36,4 @@ I've split off information on the basics of algebraic number theory to
 
 Very recently I started doing this project in Python as well (see my repository 
 algebraics-python). And I had completely forgotten about my version of this 
-project in Scala (see alg-int-calc-scala).
+project in Scala (see alg-int-calc-scala), which I've recently resumed work on.
