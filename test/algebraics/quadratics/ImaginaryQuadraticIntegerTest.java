@@ -1182,7 +1182,8 @@ public class ImaginaryQuadraticIntegerTest {
         int a = randomNumber();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_GAUSSIAN);
-        String expected = number.toString().replace(" ", "");
+        String expected = number.toString().replace(" ", "")
+                .replace(MINUS_SIGN, "-");
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + RING_GAUSSIAN.toString();
@@ -1195,7 +1196,8 @@ public class ImaginaryQuadraticIntegerTest {
         int d = -randomSquarefreeNumberMod(2, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
-        String expected = number.toString().replace(" ", "");
+        String expected = number.toString().replace(" ", "")
+                .replace(MINUS_SIGN, "-");
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + ring.toString();
@@ -1208,7 +1210,8 @@ public class ImaginaryQuadraticIntegerTest {
         int d = -randomSquarefreeNumberMod(1, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
-        String expected = number.toString().replace(" ", "");
+        String expected = number.toString().replace(" ", "")
+                .replace(MINUS_SIGN, "-");
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + ring.toString();
@@ -1221,7 +1224,8 @@ public class ImaginaryQuadraticIntegerTest {
         int b = randomNumber() | randomPowerOfTwo();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
                 RING_GAUSSIAN);
-        String expected = number.toString().replace(" ", "");
+        String expected = number.toString().replace(" ", "")
+                .replace(MINUS_SIGN, "-");
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Given " + expected 
                 + ", toStringAlt() should give the same result";
