@@ -1215,6 +1215,19 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltGaussianSameAsToString() {
+        int a = randomNumber();
+        int b = randomNumber() | randomPowerOfTwo();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_GAUSSIAN);
+        String expected = number.toString().replace(" ", "");
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Given " + expected 
+                + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
