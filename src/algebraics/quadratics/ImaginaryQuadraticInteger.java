@@ -163,12 +163,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
-            return this.toASCIIString();
+            return this.toASCIIString() + " TEMP REWIND";
         }
         if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
                 || this.quadRing.radicand % 4 == -1) {
             return Integer.toString(this.regPartMult)
-                    .replace(MINUS_SIGN_CHARACTER, '-');
+                    .replace(MINUS_SIGN_CHARACTER, '-') + " TEMP REWIND";
         }
         return "REWIND TO FAILING";
     }
