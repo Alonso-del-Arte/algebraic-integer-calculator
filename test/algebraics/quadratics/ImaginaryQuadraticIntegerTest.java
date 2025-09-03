@@ -1232,6 +1232,20 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToASCIIStringAltD2Mod4SameAsToString() {
+        int a = randomNumber();
+        int b = randomNumber() | randomPowerOfTwo();
+        int d = -randomSquarefreeNumberMod(2, 4);
+        QuadraticRing ring = new ImaginaryQuadraticRing(d);
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, ring);
+        String expected = number.toASCIIString().replace(" ", "");
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Given " + expected 
+                + ", toStringAlt() should give the same result";
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
