@@ -1228,7 +1228,7 @@ public class ImaginaryQuadraticIntegerTest {
                 .replace(MINUS_SIGN, "-");
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Given " + expected 
-                + ", toStringAlt() should give the same result";
+                + ", toASCIIStringAlt() should give the same result";
         assertEquals(message, expected, actual);
     }
 
@@ -1242,12 +1242,12 @@ public class ImaginaryQuadraticIntegerTest {
         String expected = number.toASCIIString().replace(" ", "");
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Given " + expected 
-                + ", toStringAlt() should give the same result";
+                + ", toASCIIStringAlt() should give the same result";
         assertEquals(message, expected, actual);
     }
 
     @Test
-    public void testToASCIIStringAltD3Mod4SameAsToString() {
+    public void testToASCIIStringAltD3Mod4SameAsToASCIIString() {
         int a = randomNumber();
         int b = randomNumber() | randomPowerOfTwo();
         int d = -randomSquarefreeNumberMod(1, 4);
