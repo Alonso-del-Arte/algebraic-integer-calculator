@@ -1270,6 +1270,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToASCIIStringAltPositiveMultipleOfOmega() {
+        int b = RANDOM.nextInt(2, 8192);
+        int a = -b;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_EISENSTEIN, 2);
+        String expected = Integer.toString(b) + "omega";
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Writing " + number + " in terms of " + OMEGA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
