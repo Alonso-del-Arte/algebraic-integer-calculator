@@ -176,8 +176,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
         }
         if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
                 || this.quadRing.radicand % 4 == -1) {
-            return Integer.toString(this.regPartMult)
-                    .replace(MINUS_SIGN_CHARACTER, '-');
+            return Integer.toString(this.regPartMult);
         }
         return "REWIND TO FAILING";
     }
