@@ -162,10 +162,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     public String toASCIIStringAlt() {
         if (this.quadRing.d1mod4) {
             if (this.regPartMult == -this.surdPartMult 
-                    && this.regPartMult != -1) {
+                    && Math.abs(this.regPartMult) != 1) {
                 int adjust = (this.denominator == 1) ? 2 : 1;
                 return (this.surdPartMult * adjust) + "omega";
             }
+            if (this.regPartMult == 1) return "-omega";
             return "omega";
         }
         if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
