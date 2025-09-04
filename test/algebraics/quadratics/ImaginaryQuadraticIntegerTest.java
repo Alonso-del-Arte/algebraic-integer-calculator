@@ -56,6 +56,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     private static final char THETA_CHAR = '\u03B8';
     
+    private static final String OMEGA_WORD = "omega";
+    
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>], numbers of the form 
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
@@ -1264,7 +1266,7 @@ public class ImaginaryQuadraticIntegerTest {
     public void testToASCIIStringAltOmega() {
         QuadraticInteger omega = new ImaginaryQuadraticInteger(-1, 1, 
                 RING_EISENSTEIN, 2);
-        String expected = "omega";
+        String expected = OMEGA_WORD;
         String actual = omega.toASCIIStringAlt().replace(" ", "");
         String message = "toASCIIStringAlt() for " + omega.toString();
         assertEquals(message, expected, actual);
@@ -1276,7 +1278,7 @@ public class ImaginaryQuadraticIntegerTest {
         int a = -b;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
                 RING_EISENSTEIN, 2);
-        String expected = Integer.toString(b) + "omega";
+        String expected = Integer.toString(b) + OMEGA_WORD;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Writing " + number + " in terms of " + OMEGA_CHAR;
         assertEquals(message, expected, actual);
@@ -1288,7 +1290,7 @@ public class ImaginaryQuadraticIntegerTest {
         int b = -a;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
                 RING_EISENSTEIN, 2);
-        String expected = "-" + Integer.toString(a) + "omega";
+        String expected = "-" + Integer.toString(a) + OMEGA_WORD;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Writing " + number.toString() + " in terms of " 
                 + OMEGA_CHAR;
