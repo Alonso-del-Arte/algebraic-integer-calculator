@@ -160,6 +160,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
+        if (this.quadRing.d1mod4) {
+            return "omega";
+        }
         if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
