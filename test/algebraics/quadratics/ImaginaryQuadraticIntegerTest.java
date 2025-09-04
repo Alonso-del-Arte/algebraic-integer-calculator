@@ -1260,6 +1260,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltOmega() {
+        QuadraticInteger omega = new ImaginaryQuadraticInteger(-1, 1, 
+                RING_EISENSTEIN, 2);
+        String expected = "omega";
+        String actual = omega.toASCIIStringAlt().replace(" ", "");
+        String message = "toASCIIStringAlt() for " + omega.toString();
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
