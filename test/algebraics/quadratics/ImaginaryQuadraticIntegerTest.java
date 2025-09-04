@@ -1297,6 +1297,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToASCIIStringAltNegativeOmega() {
+        QuadraticInteger negOmega = new ImaginaryQuadraticInteger(1, -1, 
+                RING_EISENSTEIN, 2);
+        String expected = "-omega";
+        String actual = negOmega.toASCIIStringAlt().replace(" ", "");
+        String message = "toASCIIStringAlt() for " + negOmega.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
