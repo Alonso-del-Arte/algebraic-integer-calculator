@@ -169,6 +169,10 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 int adjust = (this.denominator == 1) ? 2 : 1;
                 return (this.surdPartMult * adjust) + "omega";
             }
+            if (this.regPartMult > 1 && this.surdPartMult > 1) {
+                return this.toStringAltOmega()
+                        .replace(Character.toString(OMEGA_LETTER), "omega");
+            }
             if (this.regPartMult == 1) return "-omega";
             return "omega";
         }
