@@ -1307,6 +1307,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltPurelyRealPositiveEisensteinContext() {
+        int a = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
+                RING_EISENSTEIN);
+        String expected = Integer.toString(a);
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
