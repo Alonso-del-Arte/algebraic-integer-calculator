@@ -1317,6 +1317,15 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltZeroEisensteinContext() {
+        QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, 
+                RING_EISENSTEIN);
+        String expected = "0";
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
      */
