@@ -36,6 +36,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final char OMEGA_LETTER = '\u03C9';
     
+    private static final String OMEGA_WORD_ASCII = "omega";
+    
     private static final char SQRT_SYMBOL = '\u221A';
     
     private static final char[] SQRT_NEG_ONE_CHARS = {SQRT_SYMBOL, '(', 
@@ -167,14 +169,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             if (this.regPartMult == -this.surdPartMult 
                     && Math.abs(this.regPartMult) != 1) {
                 int adjust = (this.denominator == 1) ? 2 : 1;
-                return (this.surdPartMult * adjust) + "omega";
+                return (this.surdPartMult * adjust) + OMEGA_WORD_ASCII;
             }
             if (this.regPartMult > 1 && this.surdPartMult > 1) {
                 return this.toStringAltOmega()
-                        .replace(Character.toString(OMEGA_LETTER), "omega");
+                        .replace(Character.toString(OMEGA_LETTER), 
+                                OMEGA_WORD_ASCII);
             }
             if (this.regPartMult == 1) return "-omega";
-            return "omega";
+            return OMEGA_WORD_ASCII;
         }
         if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
