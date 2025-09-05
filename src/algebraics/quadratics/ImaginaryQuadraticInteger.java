@@ -161,7 +161,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public String toASCIIStringAlt() {
         if (this.quadRing.d1mod4) {
-            if (this.regPartMult > 0 && this.surdPartMult == 0 
+            if (this.regPartMult > -1 && this.surdPartMult == 0 
                     && this.quadRing.radicand == -3) {
                 return Integer.toString(this.regPartMult);
             }
