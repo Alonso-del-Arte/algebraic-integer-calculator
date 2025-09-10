@@ -1454,7 +1454,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealD1Mod4ContextNotEisenstein() {
-        int a = randomNumber();
+        int a = randomNumber(32768) - 16384;
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
         String expected = Integer.toString(a);
