@@ -1452,6 +1452,18 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltPurelyRealD1Mod4ContextNotEisenstein() {
+        int a = randomNumber();
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        String expected = Integer.toString(a);
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Purely real number in the context of " 
+                + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the toASCIIStringAlt function, of the ImaginaryQuadraticInteger 
      * class.
