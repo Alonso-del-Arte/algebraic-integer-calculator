@@ -168,9 +168,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             }
             if (this.regPartMult == 1) return "-omega";
             if (this.regPartMult == -1) return OMEGA_WORD_ASCII;
-            if (this.surdPartMult == -1 || this.surdPartMult == 1) {
-                return "REWIND TO FAILING";
-            }
             return this.toStringAltOmega().replace(Character
                     .toString(OMEGA_LETTER), OMEGA_WORD_ASCII)
                     .replace(MINUS_SIGN_CHARACTER, '-');
