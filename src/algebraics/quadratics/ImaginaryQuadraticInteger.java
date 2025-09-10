@@ -162,23 +162,23 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
-        if (this.quadRing.d1mod4) {
-            if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
-                return Integer.toString(this.regPartMult);
-            }
-            if (this.regPartMult == -this.surdPartMult 
-                    && Math.abs(this.regPartMult) != 1) {
-                int adjust = (this.denominator == 1) ? 2 : 1;
-                return (this.surdPartMult * adjust) + OMEGA_WORD_ASCII;
-            }
-            if (this.regPartMult > 1 && this.surdPartMult > 1) {
-                return this.toStringAltOmega()
-                        .replace(Character.toString(OMEGA_LETTER), 
-                                OMEGA_WORD_ASCII);
-            }
-            if (this.regPartMult == 1) return "-omega";
-            return OMEGA_WORD_ASCII;
-        }
+//        if (this.quadRing.d1mod4) {
+//            if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
+//                return Integer.toString(this.regPartMult);
+//            }
+//            if (this.regPartMult == -this.surdPartMult 
+//                    && Math.abs(this.regPartMult) != 1) {
+//                int adjust = (this.denominator == 1) ? 2 : 1;
+//                return (this.surdPartMult * adjust) + OMEGA_WORD_ASCII;
+//            }
+//            if (this.regPartMult > 1 && this.surdPartMult > 1) {
+//                return this.toStringAltOmega()
+//                        .replace(Character.toString(OMEGA_LETTER), 
+//                                OMEGA_WORD_ASCII);
+//            }
+//            if (this.regPartMult == 1) return "-omega";
+//            return OMEGA_WORD_ASCII;
+//        }
         if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
