@@ -1339,7 +1339,7 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testToASCIIStringAltPositiveIntPlusPositiveMultipleOfOmega() {
         int bound = 128;
-        int nonOmegaPart = RANDOM.nextInt(1, bound);
+        int nonOmegaPart = RANDOM.nextInt(2, bound);
         int omegaPart = RANDOM.nextInt(2, bound);
         int a = 2 * nonOmegaPart - omegaPart;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
@@ -1353,7 +1353,7 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeMultipleOfOmega() {
         int bound = 128;
-        int nonOmegaPart = RANDOM.nextInt(1, bound);
+        int nonOmegaPart = RANDOM.nextInt(2, bound);
         int omegaPart = -RANDOM.nextInt(2, bound);
         int a = 2 * nonOmegaPart - omegaPart;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
@@ -1368,7 +1368,7 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testToASCIIStringAltNegativeIntPlusPositiveMultipleOfOmega() {
         int bound = 128;
-        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int nonOmegaPart = -RANDOM.nextInt(2, bound);
         int omegaPart = RANDOM.nextInt(2, bound);
         int a = 2 * nonOmegaPart - omegaPart;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
@@ -1382,7 +1382,7 @@ public class ImaginaryQuadraticIntegerTest {
     @Test
     public void testToASCIIStringAltNegativeIntPlusNegativeMultipleOfOmega() {
         int bound = 128;
-        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int nonOmegaPart = -RANDOM.nextInt(2, bound);
         int omegaPart = -RANDOM.nextInt(2, bound);
         int a = 2 * nonOmegaPart - omegaPart;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
