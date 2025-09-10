@@ -1350,8 +1350,53 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltPositiveIntPlusNegativeMultipleOfOmega() {
+        int bound = 128;
+        int nonOmegaPart = RANDOM.nextInt(1, bound);
+        int omegaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = Integer.toString(nonOmegaPart) + omegaPart 
+                + OMEGA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringAltNegativeIntPlusPositiveMultipleOfOmega() {
+        int bound = 128;
+        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int omegaPart = RANDOM.nextInt(2, bound);
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = nonOmegaPart + "+" + omegaPart + OMEGA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringAltNegativeIntPlusNegativeMultipleOfOmega() {
+        int bound = 128;
+        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int omegaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = Integer.toString(nonOmegaPart) + omegaPart 
+                + OMEGA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
-     * Test of toASCIIStringAlt method, of class ImaginaryQuadraticInteger.
+     * Test of the toASCIIStringAlt function, of the ImaginaryQuadraticInteger 
+     * class.
      */
 //    @Test
     public void testToASCIIStringAlt() {
