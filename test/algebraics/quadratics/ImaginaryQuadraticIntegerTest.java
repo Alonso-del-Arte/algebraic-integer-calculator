@@ -58,6 +58,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     private static final String OMEGA_WORD = "omega";
     
+    private static final String NEGATIVE_OMEGA_WORD_ASCII = "-omega";
+    
     /**
      * The ring of Gaussian integers, <b>Z</b>[<i>i</i>], numbers of the form 
      * <i>a</i> + <i>bi</i>. This is one of the rings in which 
@@ -1301,7 +1303,7 @@ public class ImaginaryQuadraticIntegerTest {
     public void testToASCIIStringAltNegativeOmega() {
         QuadraticInteger negOmega = new ImaginaryQuadraticInteger(1, -1, 
                 RING_EISENSTEIN, 2);
-        String expected = "-omega";
+        String expected = NEGATIVE_OMEGA_WORD_ASCII;
         String actual = negOmega.toASCIIStringAlt().replace(" ", "");
         String message = "toASCIIStringAlt() for " + negOmega.toString();
         assertEquals(message, expected, actual);
@@ -1416,7 +1418,7 @@ public class ImaginaryQuadraticIntegerTest {
         int a = 2 * nonOmegaPart - omegaPart;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
                 RING_EISENSTEIN, 2);
-        String expected = nonOmegaPart + "-omega";
+        String expected = nonOmegaPart + NEGATIVE_OMEGA_WORD_ASCII;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning omega notation of " + number.toString();
         assertEquals(message, expected, actual);
@@ -1444,7 +1446,7 @@ public class ImaginaryQuadraticIntegerTest {
         int a = 2 * nonOmegaPart - omegaPart;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
                 RING_EISENSTEIN, 2);
-        String expected = nonOmegaPart + "-omega";
+        String expected = nonOmegaPart + NEGATIVE_OMEGA_WORD_ASCII;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning omega notation of " + number.toString();
         assertEquals(message, expected, actual);
