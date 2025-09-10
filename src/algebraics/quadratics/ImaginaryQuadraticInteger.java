@@ -163,9 +163,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public String toASCIIStringAlt() {
         if (this.quadRing.d1mod4) {
-            if (this.surdPartMult == 0 && this.quadRing.radicand < -3) {
-                return "REWIND TO FAILING";
-            }
             if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
                 return Integer.toString(this.regPartMult);
             }
