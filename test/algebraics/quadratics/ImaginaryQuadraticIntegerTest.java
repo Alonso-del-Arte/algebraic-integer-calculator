@@ -58,6 +58,8 @@ public class ImaginaryQuadraticIntegerTest {
     
     private static final String OMEGA_WORD = "omega";
     
+    private static final String THETA_WORD = "theta";
+    
     private static final String NEGATIVE_OMEGA_WORD_ASCII = "-omega";
     
     /**
@@ -1461,6 +1463,16 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringAltTheta() {
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger theta = new ImaginaryQuadraticInteger(1, 1, ring, 2);
+        String expected = THETA_WORD;
+        String actual = theta.toASCIIStringAlt().replace(" ", "");
+        String message = "toASCIIStringAlt() for " + theta.toString();
         assertEquals(message, expected, actual);
     }
     
