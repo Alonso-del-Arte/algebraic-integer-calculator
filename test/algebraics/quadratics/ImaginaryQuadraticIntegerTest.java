@@ -1476,6 +1476,16 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testToASCIIStringAltNegativeTheta() {
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger theta = new ImaginaryQuadraticInteger(-1, -1, ring, 2);
+        String expected = "-theta";
+        String actual = theta.toASCIIStringAlt().replace(" ", "");
+        String message = "toASCIIStringAlt() for " + theta.toString();
+        assertEquals(message, expected, actual);
+    }
+    
     /**
      * Test of the toASCIIStringAlt function, of the ImaginaryQuadraticInteger 
      * class.
