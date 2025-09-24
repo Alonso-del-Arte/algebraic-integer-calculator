@@ -130,11 +130,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public String toStringAlt() {
-        if (this.quadRing.radicand == -3 && this.surdPartMult != 0) {
-            return this.toStringAltOmega();
-        } else {
-            return super.toStringAlt();
-        }
+        return "REWIND TO FAILING";
+//        if (this.quadRing.radicand == -3 && this.surdPartMult != 0) {
+//            return this.toStringAltOmega();
+//        } else {
+//            return super.toStringAlt();
+//        }
     }
     
     @Override
@@ -162,34 +163,34 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
-        if (this.quadRing.d1mod4) {
-            if (this.quadRing.radicand < -3 && this.surdPartMult == -1) {
-                return "-theta";
-            }
-            if (this.quadRing.radicand < -3 && this.surdPartMult != 0) {
-                if (this.regPartMult == 1) {
-                    return "theta";
-                }
-                return (this.regPartMult * 2) + "theta";
-            }
-            if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
-                return Integer.toString(this.regPartMult);
-            }
-            if (this.regPartMult == 1) return "-omega";
-            if (this.regPartMult == -1) return OMEGA_WORD_ASCII;
-            return this.toStringAltOmega().replace(Character
-                    .toString(OMEGA_LETTER), OMEGA_WORD_ASCII)
-                    .replace(MINUS_SIGN_CHARACTER, '-');
-        }
-        if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
-                || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
-                || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
-            return this.toASCIIString();
-        }
-        if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
-                || this.quadRing.radicand % 4 == -1) {
-            return Integer.toString(this.regPartMult);
-        }
+//        if (this.quadRing.d1mod4) {
+//            if (this.quadRing.radicand < -3 && this.surdPartMult == -1) {
+//                return "-theta";
+//            }
+//            if (this.quadRing.radicand < -3 && this.surdPartMult != 0) {
+//                if (this.regPartMult == 1) {
+//                    return "theta";
+//                }
+//                return this.regPartMult + "theta";
+//            }
+//            if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
+//                return Integer.toString(this.regPartMult);
+//            }
+//            if (this.regPartMult == 1) return "-omega";
+//            if (this.regPartMult == -1) return OMEGA_WORD_ASCII;
+//            return this.toStringAltOmega().replace(Character
+//                    .toString(OMEGA_LETTER), OMEGA_WORD_ASCII)
+//                    .replace(MINUS_SIGN_CHARACTER, '-');
+//        }
+//        if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
+//                || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
+//                || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
+//            return this.toASCIIString();
+//        }
+//        if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
+//                || this.quadRing.radicand % 4 == -1) {
+//            return Integer.toString(this.regPartMult);
+//        }
         return "REWIND TO FAILING";
     }
     
