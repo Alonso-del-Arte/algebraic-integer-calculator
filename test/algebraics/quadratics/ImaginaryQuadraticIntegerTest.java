@@ -1400,6 +1400,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusOmega() {
+        fail("REASSESS THIS TEST GIVEN exp 1 + omega but was -omega");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(1, bound);
         int omegaPart = 1;
