@@ -166,8 +166,11 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             if (this.quadRing.radicand < -3 && this.surdPartMult == -1) {
                 return "-theta";
             }
-            if (this.quadRing.radicand < -3 && this.surdPartMult == 1) {
-                return "theta";
+            if (this.quadRing.radicand < -3 && this.surdPartMult != 0) {
+                if (this.regPartMult == 1) {
+                    return "theta";
+                }
+                return (this.regPartMult * 2) + "theta";
             }
             if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
                 return Integer.toString(this.regPartMult);
