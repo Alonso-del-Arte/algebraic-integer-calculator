@@ -1491,7 +1491,7 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int a = RANDOM.nextInt(2, 8192);
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, a, ring, 2);
-        String expected = Integer.toString(a) + THETA_CHAR;
+        String expected = Integer.toString(a) + THETA_WORD;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Writing " + number.toString() + " in terms of " 
                 + THETA_CHAR;
