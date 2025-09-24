@@ -181,15 +181,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
 //                    .toString(OMEGA_LETTER), OMEGA_WORD_ASCII)
 //                    .replace(MINUS_SIGN_CHARACTER, '-');
 //        }
-//        if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
-//                || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
-//                || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
-//            return this.toASCIIString();
-//        }
-//        if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
-//                || this.quadRing.radicand % 4 == -1) {
-//            return Integer.toString(this.regPartMult);
-//        }
+        if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
+                || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
+                || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
+            return this.toASCIIString();
+        }
+        if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
+                || this.quadRing.radicand % 4 == -1) {
+            return Integer.toString(this.regPartMult);
+        }
         return "REWIND TO FAILING";
     }
     
