@@ -162,7 +162,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
-//        if (this.quadRing.d1mod4) {
+        if (this.quadRing.d1mod4) {
 //            if (this.quadRing.radicand < -3 && this.surdPartMult == -1) {
 //                return "-theta";
 //            }
@@ -172,15 +172,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
 //                }
 //                return this.regPartMult + "theta";
 //            }
-//            if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
-//                return Integer.toString(this.regPartMult);
-//            }
-//            if (this.regPartMult == 1) return "-omega";
-//            if (this.regPartMult == -1) return OMEGA_WORD_ASCII;
-//            return this.toStringAltOmega().replace(Character
-//                    .toString(OMEGA_LETTER), OMEGA_WORD_ASCII)
-//                    .replace(MINUS_SIGN_CHARACTER, '-');
-//        }
+            if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
+                return Integer.toString(this.regPartMult);
+            }
+            if (this.regPartMult == 1) return "-omega";
+            if (this.regPartMult == -1) return OMEGA_WORD_ASCII;
+            return this.toStringAltOmega().replace(Character
+                    .toString(OMEGA_LETTER), OMEGA_WORD_ASCII)
+                    .replace(MINUS_SIGN_CHARACTER, '-');
+        }
         if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
                 || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
