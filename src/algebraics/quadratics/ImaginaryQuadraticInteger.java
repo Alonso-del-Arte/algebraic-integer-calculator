@@ -130,12 +130,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public String toStringAlt() {
-        return "REWIND TO FAILING";
-//        if (this.quadRing.radicand == -3 && this.surdPartMult != 0) {
-//            return this.toStringAltOmega();
-//        } else {
-//            return super.toStringAlt();
-//        }
+        if (this.quadRing.d1mod4 && this.regPartMult == this.surdPartMult 
+                && this.denominator == 1) {
+            return "PARTIAL REWIND TO FAILING";
+        }
+        if (this.quadRing.radicand == -3 && this.surdPartMult != 0) {
+            return this.toStringAltOmega();
+        } else {
+            return super.toStringAlt();
+        }
     }
     
     @Override
