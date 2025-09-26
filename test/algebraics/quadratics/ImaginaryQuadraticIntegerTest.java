@@ -1571,7 +1571,7 @@ public class ImaginaryQuadraticIntegerTest {
         System.out.println("toASCIIStringAlt");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
-        int thetaPart = RANDOM.nextInt(2, bound);
+        int thetaPart = RANDOM.nextInt(2, bound) | 1;
         int a = 2 * nonThetaPart + thetaPart;
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, thetaPart, 
@@ -1581,6 +1581,8 @@ public class ImaginaryQuadraticIntegerTest {
         String message = "Reckoning theta notation of " + number.toString();
         assertEquals(message, expected, actual);
     }
+    
+    // TODO: Write toASCIIStringAlt() test for not "half-integer"
     
     /**
      * Test of toTeXString method, of class ImaginaryQuadraticInteger. For 
