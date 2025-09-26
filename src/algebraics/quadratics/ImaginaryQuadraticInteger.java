@@ -163,15 +163,15 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     @Override
     public String toASCIIStringAlt() {
         if (this.quadRing.d1mod4) {
-//            if (this.quadRing.radicand < -3 && this.surdPartMult == -1) {
-//                return "-theta";
-//            }
-//            if (this.quadRing.radicand < -3 && this.surdPartMult != 0) {
-//                if (this.regPartMult == 1) {
-//                    return "theta";
-//                }
-//                return this.regPartMult + "theta";
-//            }
+            if (this.quadRing.radicand < -3 && this.surdPartMult == -1) {
+                return "-theta";
+            }
+            if (this.quadRing.radicand < -3 && this.surdPartMult != 0) {
+                if (this.regPartMult == 1) {
+                    return "theta";
+                }
+                return this.regPartMult + "theta";
+            }
             if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
                 return Integer.toString(this.regPartMult);
             }
