@@ -38,6 +38,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final String OMEGA_WORD_ASCII = "omega";
     
+    private static final String THETA_WORD_ASCII = "theta";
+    
     private static final char SQRT_SYMBOL = '\u221A';
     
     private static final char[] SQRT_NEG_ONE_CHARS = {SQRT_SYMBOL, '(', 
@@ -168,9 +170,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
             }
             if (this.quadRing.radicand < -3 && this.surdPartMult != 0) {
                 if (this.regPartMult == 1) {
-                    return "theta";
+                    return THETA_WORD_ASCII;
                 }
-                return this.regPartMult + "theta";
+                return this.regPartMult + THETA_WORD_ASCII;
             }
             if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
                 return Integer.toString(this.regPartMult);
