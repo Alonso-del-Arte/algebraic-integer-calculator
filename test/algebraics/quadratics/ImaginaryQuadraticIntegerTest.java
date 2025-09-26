@@ -1542,7 +1542,7 @@ public class ImaginaryQuadraticIntegerTest {
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int a = RANDOM.nextInt(2, 8192) | 1;
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -a, ring, 2);
-        String expected = Integer.toString(a) + THETA_WORD;
+        String expected = Integer.toString(-a) + THETA_WORD;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Writing " + number.toString() + " in terms of " 
                 + THETA_CHAR;
@@ -1555,7 +1555,7 @@ public class ImaginaryQuadraticIntegerTest {
         int i = RANDOM.nextInt(2, 8192) & (-2);
         int a = i / 2;
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -a, ring, 2);
-        String expected = Integer.toString(a) + THETA_WORD;
+        String expected = Integer.toString(-a) + THETA_WORD;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Writing " + number.toString() + " in terms of " 
                 + THETA_CHAR;
