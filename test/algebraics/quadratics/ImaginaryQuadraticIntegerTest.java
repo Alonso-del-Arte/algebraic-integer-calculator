@@ -1513,10 +1513,48 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToASCIIStringAltPositiveMultipleOfTheta() {
+    public void testToASCIIStringAltPositiveOddMultipleOfTheta() {
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
-        int a = RANDOM.nextInt(2, 8192);
+        int a = RANDOM.nextInt(2, 8192) | 1;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, a, ring, 2);
+        String expected = Integer.toString(a) + THETA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + THETA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToASCIIStringAltPositiveEvenMultipleOfTheta() {
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        int i = RANDOM.nextInt(2, 8192) & (-2);
+        int a = i / 2;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, a, ring, 2);
+        String expected = Integer.toString(a) + THETA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + THETA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToASCIIStringAltNegativeOddMultipleOfTheta() {
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        int a = RANDOM.nextInt(2, 8192) | 1;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -a, ring, 2);
+        String expected = Integer.toString(a) + THETA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + THETA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToASCIIStringAltNegativeEvenMultipleOfTheta() {
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        int i = RANDOM.nextInt(2, 8192) & (-2);
+        int a = i / 2;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -a, ring, 2);
         String expected = Integer.toString(a) + THETA_WORD;
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Writing " + number.toString() + " in terms of " 
