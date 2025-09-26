@@ -172,6 +172,12 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                 if (this.regPartMult == 1) {
                     return THETA_WORD_ASCII;
                 }
+                if (this.regPartMult != this.surdPartMult) {
+                    int nonThetaPart = (this.regPartMult - this.surdPartMult) 
+                            / 2;
+                    return nonThetaPart + " + " + this.surdPartMult 
+                            + THETA_WORD_ASCII;
+                }
                 return this.regPartMult + THETA_WORD_ASCII;
             }
             if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
