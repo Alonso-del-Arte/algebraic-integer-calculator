@@ -150,6 +150,13 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
         return false;
     }
     
+    /**
+     * Tells whether or not the imaginary part of this pure cubic integer, as 
+     * given by {@link #getImagPartNumeric()}, is an approximation.
+     * @return Always false, since {@code getImagPartNumeric()} always gives 
+     * 0.0, and that is always exact, since all pure cubic integers are purely 
+     * real numbers.
+     */
     @Override
     public boolean isImApprox() {
         return false;
