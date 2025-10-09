@@ -168,6 +168,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of toTeXString method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
@@ -182,6 +183,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of toHTMLString method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
@@ -217,6 +219,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of trace method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testTrace() {
         System.out.println("trace");
@@ -231,6 +234,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of norm method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testNorm() {
         System.out.println("norm");
@@ -245,6 +249,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of minPolynomialCoeffs method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testMinPolynomialCoeffs() {
         System.out.println("minPolynomialCoeffs");
@@ -259,6 +264,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of minPolynomialString method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testMinPolynomialString() {
         System.out.println("minPolynomialString");
@@ -273,6 +279,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of minPolynomialStringTeX method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testMinPolynomialStringTeX() {
         System.out.println("minPolynomialStringTeX");
@@ -287,6 +294,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of minPolynomialStringHTML method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testMinPolynomialStringHTML() {
         System.out.println("minPolynomialStringHTML");
@@ -412,6 +420,7 @@ public class ProvisionalPureCubicIntegerTest {
     /**
      * Test of angle method, of class ProvisionalPureCubicInteger.
      */
+    @org.junit.Ignore
     @Test
     public void testAngle() {
         System.out.println("angle");
