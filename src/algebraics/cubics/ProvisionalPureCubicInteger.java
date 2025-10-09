@@ -133,6 +133,12 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
         return 0.0;
     }
     
+    /**
+     * Gives the imaginary part of this pure cubic integer as a floating point 
+     * approximation.
+     * @return Always exactly 0.0, since all pure cubic integers are purely real 
+     * numbers.
+     */
     @Override
     public double getImagPartNumeric() {
         return 0.0;
