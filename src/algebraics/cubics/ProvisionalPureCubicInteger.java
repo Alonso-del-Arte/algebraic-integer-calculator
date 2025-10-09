@@ -147,7 +147,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     @Override
     public boolean isImApprox() {
-        return false;
+        return true;
     }
     
     // TODO: Write tests for this
