@@ -396,12 +396,16 @@ public class ProvisionalPureCubicIntegerTest {
     @Test
     public void testIsImApprox() {
         System.out.println("isImApprox");
-//        ProvisionalPureCubicInteger instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.isImApprox();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        CubicRing ring = chooseRing();
+        ProvisionalPureCubicInteger instance 
+                = new ProvisionalPureCubicInteger(a, b, c, ring);
+        String message = "Imaginary part of " + instance.toString() 
+                + " should be exactly zero, not an approximation";
+        assert !instance.isImApprox() : message;
     }
 
     /**
