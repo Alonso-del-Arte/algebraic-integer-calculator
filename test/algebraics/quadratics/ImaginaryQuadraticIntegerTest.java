@@ -1562,6 +1562,21 @@ public class ImaginaryQuadraticIntegerTest {
         assertEquals(message, expected, actual);
     }
 
+    @Test
+    public void testToASCIIStringAltPositiveIntPlusNegativeMultipleOfTheta() {
+        int bound = 128;
+        int nonThetaPart = RANDOM.nextInt(1, bound);
+        int thetaPart = -RANDOM.nextInt(2, bound);
+        int a = 2 * nonThetaPart + thetaPart;
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, thetaPart, 
+                ring, 2);
+        String expected = nonThetaPart + "-" + (-thetaPart) + THETA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Reckoning theta notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+
     /**
      * Test of the toASCIIStringAlt function, of the ImaginaryQuadraticInteger 
      * class.
