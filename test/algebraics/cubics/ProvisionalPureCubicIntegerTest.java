@@ -345,6 +345,19 @@ public class ProvisionalPureCubicIntegerTest {
         String message = "Reckoning absolute value of " + instance.toString();
         assertEquals(message, expected, actual, delta);
     }
+    
+    @Test
+    public void testGetRealPartNumericOrdinaryInteger() {
+        int a = randomNumber();
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, 0, 0, ring);
+        double expected = a;
+        double actual = instance.getRealPartNumeric();
+        double delta = 0.00000001;
+        String message = "Real part of " + instance.toString() + " should be " 
+                + expected;
+        assertEquals(message, expected, actual, delta);
+    }
 
     /**
      * Test of getRealPartNumeric method, of class ProvisionalPureCubicInteger.
