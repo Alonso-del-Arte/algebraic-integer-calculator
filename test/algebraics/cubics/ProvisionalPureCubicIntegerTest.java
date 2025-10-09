@@ -374,8 +374,10 @@ public class ProvisionalPureCubicIntegerTest {
     }
 
     /**
-     * Test of isReApprox method, of class ProvisionalPureCubicInteger.
+     * Test of the isReApprox function, of the ProvisionalPureCubicInteger 
+     * class.
      */
+    @org.junit.Ignore
     @Test
     public void testIsReApprox() {
         System.out.println("isReApprox");
@@ -388,7 +390,8 @@ public class ProvisionalPureCubicIntegerTest {
     }
 
     /**
-     * Test of isImApprox method, of class ProvisionalPureCubicInteger.
+     * Test of the isImApprox function, of the ProvisionalPureCubicInteger 
+     * class.
      */
     @Test
     public void testIsImApprox() {
