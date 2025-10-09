@@ -1211,6 +1211,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealGaussian() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_GAUSSIAN);
@@ -1224,6 +1225,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealFromRingD2Mod4SameAsToString() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int d = -randomSquarefreeNumberMod(2, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
@@ -1238,6 +1240,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealFromRingD3Mod4SameAsToString() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int d = -randomSquarefreeNumberMod(1, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
@@ -1252,6 +1255,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltGaussianSameAsToString() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int b = randomNumber() | randomPowerOfTwo();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
@@ -1266,6 +1270,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltD2Mod4SameAsToString() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int b = randomNumber() | randomPowerOfTwo();
         int d = -randomSquarefreeNumberMod(2, 4);
@@ -1280,6 +1285,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltD3Mod4SameAsToASCIIString() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int b = randomNumber() | randomPowerOfTwo();
         int d = -randomSquarefreeNumberMod(1, 4);
@@ -1294,6 +1300,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticInteger omega = new ImaginaryQuadraticInteger(-1, 1, 
                 RING_EISENSTEIN, 2);
         String expected = OMEGA_WORD;
@@ -1304,6 +1311,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveMultipleOfOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int b = RANDOM.nextInt(2, 8192);
         int a = -b;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
@@ -1316,6 +1324,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeMultipleOfOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = RANDOM.nextInt(2, 8192);
         int b = -a;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
@@ -1329,6 +1338,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticInteger negOmega = new ImaginaryQuadraticInteger(1, -1, 
                 RING_EISENSTEIN, 2);
         String expected = NEGATIVE_OMEGA_WORD_ASCII;
@@ -1339,6 +1349,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealPositiveEisensteinContext() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = (randomNumber() & Integer.MAX_VALUE) | randomPowerOfTwo();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_EISENSTEIN);
@@ -1349,6 +1360,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltZeroEisensteinContext() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, 
                 RING_EISENSTEIN);
         String expected = "0";
@@ -1358,6 +1370,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealNegativeEisensteinContext() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber() | Integer.MIN_VALUE;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_EISENSTEIN);
@@ -1368,6 +1381,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusPositiveMultipleOfOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(2, bound);
         int omegaPart = RANDOM.nextInt(2, bound);
@@ -1382,6 +1396,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeMultipleOfOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(2, bound);
         int omegaPart = -RANDOM.nextInt(2, bound);
@@ -1397,6 +1412,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusPositiveMultipleOfOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = -RANDOM.nextInt(2, bound);
         int omegaPart = RANDOM.nextInt(2, bound);
@@ -1411,6 +1427,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusNegativeMultipleOfOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = -RANDOM.nextInt(2, bound);
         int omegaPart = -RANDOM.nextInt(2, bound);
@@ -1426,6 +1443,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(1, bound);
         int omegaPart = 1;
@@ -1440,6 +1458,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(1, bound);
         int omegaPart = -1;
@@ -1454,6 +1473,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = -RANDOM.nextInt(1, bound);
         int omegaPart = 1;
@@ -1468,6 +1488,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusNegativeOmega() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = -RANDOM.nextInt(1, bound);
         int omegaPart = -1;
@@ -1482,6 +1503,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealD1Mod4ContextNotEisenstein() {
+        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber(32768) - 16384;
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
@@ -1494,6 +1516,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger theta = new ImaginaryQuadraticInteger(1, 1, ring, 2);
         String expected = THETA_WORD;
@@ -1504,6 +1527,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger theta = new ImaginaryQuadraticInteger(-1, -1, ring, 2);
         String expected = "-theta";
@@ -1514,6 +1538,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveOddMultipleOfTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int a = RANDOM.nextInt(2, 8192) | 1;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, a, ring, 2);
@@ -1526,6 +1551,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveEvenMultipleOfTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int i = RANDOM.nextInt(2, 8192) & (-2);
         int a = i / 2;
@@ -1539,6 +1565,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeOddMultipleOfTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int a = RANDOM.nextInt(2, 8192) | 1;
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -a, ring, 2);
@@ -1551,6 +1578,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeEvenMultipleOfTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int i = RANDOM.nextInt(2, 8192) & (-2);
         int a = i / 2;
@@ -1564,6 +1592,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeMultipleOfTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
         int thetaPart = -RANDOM.nextInt(2, bound);
@@ -1579,6 +1608,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeIntPlusPositiveMultipleOfTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = -RANDOM.nextInt(1, bound);
         int thetaPart = RANDOM.nextInt(2, bound);
@@ -1594,6 +1624,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeIntPlusNegativeMultipleOfTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = -RANDOM.nextInt(1, bound);
         int thetaPart = -RANDOM.nextInt(2, bound);
@@ -1609,6 +1640,7 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveIntPlusTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
         int thetaPart = 1;
@@ -1624,6 +1656,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
         int thetaPart = -1;
@@ -1639,6 +1672,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = -RANDOM.nextInt(1, bound);
         int thetaPart = 1;
@@ -1654,6 +1688,7 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusNegativeTheta() {
+        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = -RANDOM.nextInt(1, bound);
         int thetaPart = -1;
@@ -1673,6 +1708,7 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testToASCIIStringAlt() {
+        fail("ASSESS FOR BRITTLENESS");
         System.out.println("toASCIIStringAlt");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
@@ -1686,8 +1722,6 @@ public class ImaginaryQuadraticIntegerTest {
         String message = "Reckoning theta notation of " + number.toString();
         assertEquals(message, expected, actual);
     }
-    
-    // TODO: Write toASCIIStringAlt() test for not "half-integer"
     
     /**
      * Test of toTeXString method, of class ImaginaryQuadraticInteger. For 
