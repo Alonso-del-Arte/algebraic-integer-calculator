@@ -130,7 +130,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     @Override
     public double getRealPartNumeric() {
-        return 0.0;
+        return this.partA.getNumericApproximation();
     }
     
     /**
