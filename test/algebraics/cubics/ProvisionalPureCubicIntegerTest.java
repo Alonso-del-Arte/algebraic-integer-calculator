@@ -51,7 +51,8 @@ public class ProvisionalPureCubicIntegerTest {
     private static PureCubicRing chooseRingD1Mod9() {
         int d;
         do {
-            d = randomSquarefreeNumber(300);
+            int propD = randomSquarefreeNumber(300);
+            d = (propD == 1) ? 10 : propD;
         } while (d % 9 != 1);
         return new PureCubicRing(d);
     }
