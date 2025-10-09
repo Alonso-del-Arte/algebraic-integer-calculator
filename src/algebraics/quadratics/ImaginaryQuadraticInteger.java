@@ -173,10 +173,14 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                     return THETA_WORD_ASCII;
                 }
                 if (this.regPartMult != this.surdPartMult) {
-                    int nonThetaPart = (this.regPartMult - this.surdPartMult) 
-                            / 2;
-                    return nonThetaPart + " + " + this.surdPartMult 
-                            + THETA_WORD_ASCII;
+                    int adjust = (this.denominator == 1) ? 2 : 1;
+                    int nonThetaInit = this.regPartMult * adjust;
+                    int thetaPart = this.surdPartMult * adjust;
+                    int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+                    String intermediate = nonThetaPart + " + " 
+                            + this.surdPartMult + THETA_WORD_ASCII;
+                    intermediate = intermediate.replace(" 1theta", " theta");
+                    return intermediate.replace("+ -", "- ");
                 }
                 return this.regPartMult + THETA_WORD_ASCII;
             }
