@@ -36,10 +36,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final char OMEGA_LETTER = '\u03C9';
     
-    private static final String OMEGA_WORD_ASCII = "omega";
-    
-    private static final String THETA_WORD_ASCII = "theta";
-    
     private static final char SQRT_SYMBOL = '\u221A';
     
     private static final char[] SQRT_NEG_ONE_CHARS = {SQRT_SYMBOL, '(', 
