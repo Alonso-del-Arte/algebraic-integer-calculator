@@ -1211,7 +1211,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealGaussian() {
-        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_GAUSSIAN);
