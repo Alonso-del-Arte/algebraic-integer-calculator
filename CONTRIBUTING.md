@@ -1,4 +1,5 @@
-This project is now open to Hacktoberfest 2025.
+This project is now closed to Hacktoberfest 2025. It might be open to 
+Hacktoberfest 2026 contributors.
 
 # Guidelines for Hacktoberfest 2025 contributors
 
