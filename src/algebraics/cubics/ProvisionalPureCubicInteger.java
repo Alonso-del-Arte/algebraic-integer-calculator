@@ -130,8 +130,9 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     @Override
     public double getRealPartNumeric() {
         double root = Math.cbrt(this.heldRing.radicand);
-        return root * root * this.partC.getNumerator() 
-                + root * this.partB.getNumerator() + this.partA.getNumerator();
+        return root * root * this.partC.getNumericApproximation()
+                + root * this.partB.getNumericApproximation() 
+                + this.partA.getNumericApproximation();
     }
     
     /**
