@@ -373,11 +373,32 @@ public class ProvisionalPureCubicIntegerTest {
         int c = randomNumber(bound) - halfBound;
         ProvisionalPureCubicInteger instance 
                 = new ProvisionalPureCubicInteger(a, b, c, ring);
-        int d = ring.getRadicand();
-        double root = Math.cbrt(d);
+        double root = Math.cbrt(ring.getRadicand());
         double expected = a + b * root + c * root * root;
         double actual = instance.getRealPartNumeric();
         double delta = 0.00000001;
+        String message = "Reckoning real part of " + instance.toString();
+        assertEquals(message, expected, actual, delta);
+    }
+    
+    @Test
+    public void testGetRealPartNumericThirds() {
+        PureCubicRing ring = chooseRingD1Mod9();
+        int bound = 128;
+        int numerA = 3 * randomNumber(bound) + 1;
+        int numerB = 3 * randomNumber(bound) + 1;
+        int numerC = 3 * randomNumber(bound) + 1;
+        Fraction a = new Fraction(numerA, 3);
+        Fraction b = new Fraction(numerB, 3);
+        Fraction c = new Fraction(numerC, 3);
+        ProvisionalPureCubicInteger instance 
+                = new ProvisionalPureCubicInteger(a, b, c, ring);
+        double root = Math.cbrt(ring.getRadicand());
+        double expected = a.getNumericApproximation() 
+                + b.getNumericApproximation() * root 
+                + c.getNumericApproximation() * root * root;
+        double actual = instance.getRealPartNumeric();
+        double delta = 0.0001;
         String message = "Reckoning real part of " + instance.toString();
         assertEquals(message, expected, actual, delta);
     }
