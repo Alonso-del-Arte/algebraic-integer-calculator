@@ -365,12 +365,21 @@ public class ProvisionalPureCubicIntegerTest {
     @Test
     public void testGetRealPartNumeric() {
         System.out.println("getRealPartNumeric");
-//        ProvisionalPureCubicInteger instance = null;
-//        double expResult = 0.0;
-//        double result = instance.getRealPartNumeric();
-//        assertEquals(expResult, result, 0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        PureCubicRing ring = chooseRing();
+        int bound = 2048;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
+        int b = randomNumber(bound) - halfBound;
+        int c = randomNumber(bound) - halfBound;
+        ProvisionalPureCubicInteger instance 
+                = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        double root = Math.cbrt(d);
+        double expected = a + b * root + c * root * root;
+        double actual = instance.getRealPartNumeric();
+        double delta = 0.00000001;
+        String message = "Reckoning real part of " + instance.toString();
+        assertEquals(message, expected, actual, delta);
     }
 
     /**
