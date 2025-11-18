@@ -330,4 +330,9 @@ divisible by cubes or squares.
 
 (FINISH WRITING)
 
+Next, we will consider biquadratic rings. Given $a$ and $b$ both squarefree 
+integers, and distinct, the number $\sqrt a + \sqrt b$ is an algebraic integer 
+of degree 4. For example, the polynomial for $\sqrt 2 + \sqrt 3$ is $x^4 + 10x^2 
++ 1$.
+
 (FINISH WRITING)
