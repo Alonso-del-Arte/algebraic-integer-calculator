@@ -567,7 +567,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      * earlier version of this class).
      * @throws NullPointerException If <code>ring</code> is null.
      */
-    public ImaginaryQuadraticInteger(int a, int b, QuadraticRing ring, int denom) {
+    public ImaginaryQuadraticInteger(int a, int b, QuadraticRing ring, 
+            int denom) {
         super(a, b, ring, denom);
         if (!(ring instanceof ImaginaryQuadraticRing)) {
             String excMsg = "Ring is not imaginary as needed";
