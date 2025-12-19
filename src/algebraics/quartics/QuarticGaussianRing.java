@@ -31,10 +31,11 @@ import fractions.Fraction;
  * <i>a</i>, <i>a</i><sup>2</sup>, <i>a</i><sup>3</sup>.</p>
  * <p>The fundamental unit is, according to Wolfram Alpha, &minus;<i>i</i> + 
  * &radic;(&minus;1 &minus; <i>i</i>).</p>
- * @deprecated This is a special case of {@link ComplexBiquadraticRing}.
+ * @deprecated This is a special case of {@link ComplexBiquadraticRing}. It will 
+ * be removed in 2026.
  * @author Alonso del Arte
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class QuarticGaussianRing extends QuarticRing {
 
     private static final Fraction ONE_AS_FRACTION = new Fraction(1);

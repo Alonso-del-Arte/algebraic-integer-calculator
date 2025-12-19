@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Alonso del Arte
+ * Copyright (C) 2025 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -26,10 +26,10 @@ import fractions.Fraction;
 /**
  * Represents an integer in <b>Z</b>[&radic;(1 + <i>i</i>)].
  * @deprecated This is a special case of an instance of a class I haven't 
- * written yet.
+ * written yet. It will be removed in 2026.
  * @author Alonso del Arte
  */
-@Deprecated
+@Deprecated(forRemoval = true)
 public class QuarticGaussianInteger extends QuarticInteger 
         implements Arithmeticable<QuarticGaussianInteger> {
     
