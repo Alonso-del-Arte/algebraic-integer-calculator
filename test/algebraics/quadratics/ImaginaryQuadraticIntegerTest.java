@@ -1423,7 +1423,7 @@ public class ImaginaryQuadraticIntegerTest {
                 RING_EISENSTEIN, 2);
         String expected = NEGATIVE_OMEGA_WORD_ASCII;
         String actual = negOmega.toASCIIStringAlt().replace(" ", "");
-        String message = "toASCIIStringAlt() for " + negOmega.toString();
+        String message = "Reckoning omega notation for " + negOmega.toString();
         assertEquals(message, expected, actual);
     }
     
