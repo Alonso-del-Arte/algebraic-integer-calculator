@@ -1351,7 +1351,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltD2Mod4SameAsToString() {
-        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int b = randomNumber() | randomPowerOfTwo();
         int d = -randomSquarefreeNumberMod(2, 4);
