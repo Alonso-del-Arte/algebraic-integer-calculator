@@ -27,7 +27,9 @@ import static org.junit.Assert.*;
 /**
  * Tests of the QuarticGaussianRing class.
  * @author Alonso del Arte
+ * @deprecated This will be removed before QuarticGaussianRing is removed.
  */
+@Deprecated(forRemoval = true)
 public class QuarticGaussianRingTest {
     
     private final QuarticGaussianRing ring = new QuarticGaussianRing();

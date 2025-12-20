@@ -28,7 +28,9 @@ import static org.junit.Assert.*;
 /**
  * Tests of the QuarticGaussianInteger class.
  * @author Alonso del Arte
+ * @deprecated This will be removed before QuarticGaussianInteger is removed.
  */
+@Deprecated(forRemoval = true)
 public class QuarticGaussianIntegerTest {
     
     private static final QuarticGaussianInteger ONE 
