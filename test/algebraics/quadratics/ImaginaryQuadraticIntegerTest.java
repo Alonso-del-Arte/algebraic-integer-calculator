@@ -1607,12 +1607,11 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltNegativeTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger theta = new ImaginaryQuadraticInteger(-1, -1, ring, 2);
         String expected = "-theta";
         String actual = theta.toASCIIStringAlt().replace(" ", "");
-        String message = "toASCIIStringAlt() for " + theta.toString();
+        String message = "Reckoning theta notation for " + theta.toString();
         assertEquals(message, expected, actual);
     }
     
