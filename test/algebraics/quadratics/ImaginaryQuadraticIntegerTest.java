@@ -1566,10 +1566,23 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToASCIIStringAltNegativeIntPlusNegativeOmega() {
-        fail("ASSESS FOR BRITTLENESS");
+    public void testToASCIIStringAltNegativeOddIntPlusNegativeOmega() {
         int bound = 128;
-        int nonOmegaPart = -RANDOM.nextInt(1, bound);
+        int nonOmegaPart = -RANDOM.nextInt(1, bound) | 1;
+        int omegaPart = -1;
+        int a = 2 * nonOmegaPart - omegaPart;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
+                RING_EISENSTEIN, 2);
+        String expected = nonOmegaPart + NEGATIVE_OMEGA_WORD_ASCII;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Reckoning omega notation of " + number.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringAltNegativeEvenIntPlusNegativeOmega() {
+        int bound = 128;
+        int nonOmegaPart = -RANDOM.nextInt(1, bound) & -2;
         int omegaPart = -1;
         int a = 2 * nonOmegaPart - omegaPart;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, omegaPart, 
