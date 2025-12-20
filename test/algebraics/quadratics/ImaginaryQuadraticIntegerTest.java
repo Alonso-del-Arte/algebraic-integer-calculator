@@ -1419,7 +1419,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         QuadraticInteger negOmega = new ImaginaryQuadraticInteger(1, -1, 
                 RING_EISENSTEIN, 2);
         String expected = NEGATIVE_OMEGA_WORD_ASCII;
