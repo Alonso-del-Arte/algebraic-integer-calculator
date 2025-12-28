@@ -169,5 +169,6 @@ nb-configuration.xml
 # Miscellaneous
 localdevicenotes.txt
 scratchpad.txt
+tempnotes.md
 src/draft/
 test/draft/
