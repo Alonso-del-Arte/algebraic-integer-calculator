@@ -85,8 +85,8 @@ public final class TestImagePanel extends JPanel {
      */
     public TestImagePanel() {
         this.setBackground(BACKGROUND_COLOR);
-        Dimension prefDim = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
-        this.setPreferredSize(prefDim);
+        Dimension preferredSize = new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
+        this.setPreferredSize(preferredSize);
         this.showPanel();
     }
     
