@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Alonso del Arte
+ * Copyright (C) 2026 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -32,15 +32,9 @@ import javax.swing.WindowConstants;
  */
 public final class TestImagePanel extends JPanel {
     
-    /**
-     * The background color, blue. RGB: 0000FF.
-     */
-    public static final Color BACKGROUND_COLOR = new Color(255);
+    private static final Color BACKGROUND_COLOR = new Color(255);
     
-    /**
-     * A blue green or green blue. RGB: 008080.
-     */
-    public static final Color MEDIUM_GREEN = new Color(32896);
+    private static final Color MEDIUM_GREEN = new Color(32896);
     
     /**
      * The height of this panel's paintable area. Does not include title bar, 
