@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Alonso del Arte
+ * Copyright (C) 2026 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -171,6 +171,9 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
+        if (this.quadRing.radicand % 4 == -2) {
+            return "BRITTLENESS REVIEW";
+        }
         if (this.quadRing.radicand == -3) {
             return this.toStringAltOmega()
                     .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
