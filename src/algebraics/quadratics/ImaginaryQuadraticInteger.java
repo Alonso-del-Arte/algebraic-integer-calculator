@@ -34,6 +34,8 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     private static final char MINUS_SIGN_CHARACTER = '\u2212';
     
+    private static final char THETA_LETTER = '\u03B8';
+    
     private static final char OMEGA_LETTER = '\u03C9';
     
     private static final char SQRT_SYMBOL = '\u221A';
@@ -128,12 +130,20 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
      */
     @Override
     public String toStringAlt() {
-//        if (this.quadRing.radicand == -3 && this.surdPartMult != 0) {
-//            return this.toStringAltOmega();
+        if (this.quadRing.radicand == -3 && this.surdPartMult != 0) {
+            return this.toStringAltOmega();
 //        } else {
 //            return super.toStringAlt();
-//        }
-        return "REWIND TO FAILING";
+        }
+        if (this.quadRing.d1mod4 && this.surdPartMult != 0) {
+            int adjust = (this.denominator == 1) ? 2 : 1;
+            int nonThetaInit = this.regPartMult * adjust;
+            int thetaPart = this.surdPartMult * adjust;
+            int nonThetaPart = (nonThetaInit - thetaPart) / 2;
+            return makeBinomialString(nonThetaPart, thetaPart, THETA_LETTER);
+        } else {
+            return this.toString();
+        }
     }
     
     @Override
