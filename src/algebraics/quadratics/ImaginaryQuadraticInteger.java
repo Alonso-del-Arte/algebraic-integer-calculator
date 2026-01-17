@@ -171,9 +171,6 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
-        if (this.quadRing.radicand % 4 == -2) {
-            return "BRITTLENESS REVIEW";
-        }
         if (this.quadRing.radicand == -3) {
             return this.toStringAltOmega()
                     .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
