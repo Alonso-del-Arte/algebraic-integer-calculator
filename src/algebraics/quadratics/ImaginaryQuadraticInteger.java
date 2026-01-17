@@ -171,47 +171,16 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
-//        if (this.quadRing.d1mod4) {
-//            if (this.quadRing.radicand < -3 && this.regPartMult == -1 
-//                    && this.surdPartMult == -1) {
-//                return "-theta";
-//            }
-//            if (this.quadRing.radicand < -3 && this.surdPartMult != 0) {
-//                if (this.regPartMult == 1) {
-//                    return THETA_WORD_ASCII;
-//                }
-//                if (this.regPartMult != this.surdPartMult) {
-//                    int adjust = (this.denominator == 1) ? 2 : 1;
-//                    int nonThetaInit = this.regPartMult * adjust;
-//                    int thetaPart = this.surdPartMult * adjust;
-//                    int nonThetaPart = (nonThetaInit - thetaPart) / 2;
-//                    String intermediate = nonThetaPart + " + " 
-//                            + this.surdPartMult + THETA_WORD_ASCII;
-//                    intermediate = intermediate.replace(" 1theta", " theta");
-//                    intermediate = intermediate.replace(" -1theta", " -theta");
-//                    return intermediate.replace("+ -", "- ");
-//                }
-//                return this.regPartMult + THETA_WORD_ASCII;
-//            }
-//            if (this.surdPartMult == 0 && this.quadRing.radicand == -3) {
-//                return Integer.toString(this.regPartMult);
-//            }
-//            if (this.regPartMult == 1) return "-omega";
-//            if (this.regPartMult == -1) return OMEGA_WORD_ASCII;
-//            return this.toStringAltOmega().replace(Character
-//                    .toString(OMEGA_LETTER), OMEGA_WORD_ASCII)
-//                    .replace(MINUS_SIGN_CHARACTER, '-');
-//        }
-//        if ((this.quadRing.radicand == -1 && this.surdPartMult != 0) 
-//                || (this.quadRing.radicand % 4 == -2 && this.surdPartMult != 0) 
-//                || (this.quadRing.radicand % 4 == -1 && this.surdPartMult != 0)) {
-//            return this.toASCIIString();
-//        }
-//        if (this.quadRing.radicand == -1 || this.quadRing.radicand % 4 == -2 
-//                || this.quadRing.radicand % 4 == -1) {
-//            return Integer.toString(this.regPartMult);
-//        }
-        return "REWIND TO FAILING";
+        if (this.quadRing.radicand == -3) {
+            return this.toStringAltOmega()
+                    .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
+                    .replace(Character.toString(OMEGA_LETTER), "omega");
+        }
+        if (this.quadRing.d1mod4) {
+            return this.toStringAlt()
+                    .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
+                    .replace(Character.toString(THETA_LETTER), "theta");
+        } else return this.toASCIIString();
     }
     
     @Override
