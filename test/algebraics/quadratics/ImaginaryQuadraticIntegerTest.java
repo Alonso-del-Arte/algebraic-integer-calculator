@@ -48,7 +48,10 @@ import static org.testframe.api.Asserters.assertThrows;
  */
 public class ImaginaryQuadraticIntegerTest {
     
-    private static final String MINUS_SIGN = "\u2212";
+    private static final char MINUS_SIGN_CHAR = '\u2212';
+    
+    private static final String MINUS_SIGN 
+            = Character.toString(MINUS_SIGN_CHAR);
     
     private static final char SQRT_SYMBOL = '\u221A';
     
@@ -1320,7 +1323,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealFromRingD3Mod4SameAsToString() {
-        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int d = -randomSquarefreeNumberMod(1, 4);
         QuadraticRing ring = new ImaginaryQuadraticRing(d);
@@ -1335,7 +1337,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltGaussianSameAsToString() {
-        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int b = randomNumber() | randomPowerOfTwo();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
@@ -1364,7 +1365,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltD3Mod4SameAsToASCIIString() {
-        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber();
         int b = randomNumber() | randomPowerOfTwo();
         int d = -randomSquarefreeNumberMod(1, 4);
@@ -1402,9 +1402,21 @@ public class ImaginaryQuadraticIntegerTest {
     }
 
     @Test
-    public void testToASCIIStringAltNegativeMultipleOfOmega() {
-        fail("ASSESS FOR BRITTLENESS");
-        int a = RANDOM.nextInt(2, 8192);
+    public void testToASCIIStringAltNegativeOddMultipleOfOmega() {
+        int a = 2 * RANDOM.nextInt(2, 8192) + 1;
+        int b = -a;
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
+                RING_EISENSTEIN, 2);
+        String expected = "-" + Integer.toString(a) + OMEGA_WORD;
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Writing " + number.toString() + " in terms of " 
+                + OMEGA_CHAR;
+        assertEquals(message, expected, actual);
+    }
+
+    @Test
+    public void testToASCIIStringAltNegativeEvenMultipleOfOmega() {
+        int a = RANDOM.nextInt(2, 8192) << 1;
         int b = -a;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
                 RING_EISENSTEIN, 2);
@@ -1438,7 +1450,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltZeroEisensteinContext() {
-        fail("ASSESS FOR BRITTLENESS");
         QuadraticInteger number = new ImaginaryQuadraticInteger(0, 0, 
                 RING_EISENSTEIN);
         String expected = "0";
@@ -1448,7 +1459,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealNegativeEisensteinContext() {
-        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber() | Integer.MIN_VALUE;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, 
                 RING_EISENSTEIN);
@@ -1521,7 +1531,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(1, bound);
         int omegaPart = 1;
@@ -1536,7 +1545,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(1, bound);
         int omegaPart = -1;
@@ -1594,11 +1602,10 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPurelyRealD1Mod4ContextNotEisenstein() {
-        fail("ASSESS FOR BRITTLENESS");
         int a = randomNumber(32768) - 16384;
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
-        String expected = Integer.toString(a);
+        String expected = Integer.toString(a).replace('-', MINUS_SIGN_CHAR);
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + ring.toString();
@@ -1641,7 +1648,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveEvenMultipleOfTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int i = RANDOM.nextInt(2, 8192) & (-2);
         int a = i / 2;
@@ -1655,7 +1661,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltNegativeOddMultipleOfTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         int a = RANDOM.nextInt(2, 8192) | 1;
         QuadraticInteger number = new ImaginaryQuadraticInteger(-a, -a, ring, 2);
@@ -1730,7 +1735,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveIntPlusTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
         int thetaPart = 1;
@@ -1746,7 +1750,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
         int thetaPart = -1;
