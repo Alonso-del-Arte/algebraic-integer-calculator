@@ -177,6 +177,7 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
                     .replace(Character.toString(OMEGA_LETTER), "omega");
         }
         if (this.quadRing.d1mod4) {
+            if (this.surdPartMult == 0) return "SORRY, TEMP DE-IMPLEMENT";
             return this.toStringAlt()
                     .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
                     .replace(Character.toString(THETA_LETTER), "theta");
