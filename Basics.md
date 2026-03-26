@@ -267,8 +267,6 @@ algebraic integer only when $d \equiv 1 \pmod 4$ (such as for example &minus;7).
 
 These facts should have proofs in any elementary algebraic number theory book.
 
-(FINISH WRITING)
-
 ### Degree 3
 
 There are considerably many more kinds of cubic rings than there are quadratic 
