@@ -1598,11 +1598,23 @@ public class ImaginaryQuadraticIntegerTest {
     }
     
     @Test
-    public void testToASCIIStringAltPurelyRealD1Mod4ContextNotEisenstein() {
-        int a = randomNumber(32768) - 16384;
+    public void testToASCIIStringAltPurelyRealNegD1Mod4ContextNotEisenstein() {
+        int a = -randomNumber(32768) - 1;
         QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
-        String expected = Integer.toString(a).replace('-', MINUS_SIGN_CHAR);
+        String expected = Integer.toString(a);
+        String actual = number.toASCIIStringAlt().replace(" ", "");
+        String message = "Purely real number in the context of " 
+                + ring.toString();
+        assertEquals(message, expected, actual);
+    }
+    
+    @Test
+    public void testToASCIIStringAltPurelyRealPosD1Mod4ContextNotEisenstein() {
+        int a = randomNumber(32768);
+        QuadraticRing ring = chooseRingWHalfIntsNotEisenstein();
+        QuadraticInteger number = new ImaginaryQuadraticInteger(a, 0, ring);
+        String expected = Integer.toString(a);
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Purely real number in the context of " 
                 + ring.toString();
