@@ -1,7 +1,7 @@
 This project is now closed to Hacktoberfest 2025. It might be open to 
 Hacktoberfest 2026 contributors.
 
-# Guidelines for Hacktoberfest 2025 contributors
+# Guidelines for Hacktoberfest 2026 contributors
 
 The most important requirement for Hacktoberfest contributors wanting to 
 contribute to this project is to have some understanding of algebraic number 
@@ -20,11 +20,9 @@ I will definitely consider pull requests associated with an issue and maybe
 consider pull requests associated with a TODO (considered an Action Item in 
 NetBeans).
 
-Issues about build tools will be closed as spam or not helpful. Just use the 
-build tool your IDE provides by default, and do not do anything to impose that 
-choice on anyone else. If you notice Git picking up anything build tool-specific 
-besides build.xml, nbbuild.xml and manifest.mf files, then it might be a good 
-idea to add some things to the Git Ignore &mdash; I welcome such a commit.
+Issues about build tools will be closed as spam or not helpful. I have decided 
+that this is now specifically an Apache NetBeans project, using the default 
+build tool in that integrated development environment (IDE).
 
 Contributors should have a proper Java IDE (most are available for free) and 
 JUnit. This project started out on Java 8 and JUnit 4 as well as TestFrame from 
