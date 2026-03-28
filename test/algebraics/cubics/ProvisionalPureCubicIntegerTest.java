@@ -17,6 +17,7 @@
 package algebraics.cubics;
 
 import static calculators.NumberTheoreticFunctionsCalculator.randomNumber;
+import static calculators.NumberTheoreticFunctionsCalculator.randomPowerOfTwo;
 import static calculators.NumberTheoreticFunctionsCalculator
         .randomSquarefreeNumber;
 import static calculators.NumberTheoreticFunctionsCalculator
@@ -429,17 +430,21 @@ public class ProvisionalPureCubicIntegerTest {
      * Test of the isReApprox function, of the ProvisionalPureCubicInteger 
      * class.
      */
-    @org.junit.Ignore
     @Test
     public void testIsReApprox() {
         System.out.println("isReApprox");
-//        ProvisionalPureCubicInteger instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.isReApprox();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int bound = 256;
+        int a = randomNumber(bound);
+        int b = randomNumber(bound) | randomPowerOfTwo();
+        int c = randomNumber(bound) | randomPowerOfTwo();
+        CubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        String msg = "Number " + instance.toString() 
+                + " should be approximate when not expressed symbolically";
+        assert instance.isReApprox() : msg;
     }
+
+    // TODO: test isImApprox( ) through Fraction constructor
 
     /**
      * Test of the isImApprox function, of the ProvisionalPureCubicInteger 
@@ -459,6 +464,8 @@ public class ProvisionalPureCubicIntegerTest {
                 + " should be exactly zero, not an approximation";
         assert !instance.isImApprox() : message;
     }
+    
+    // TODO: test isImApprox( ) through Fraction constructor
 
     /**
      * Test of angle method, of class ProvisionalPureCubicInteger.
