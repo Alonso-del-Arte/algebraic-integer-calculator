@@ -151,7 +151,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     // TODO: Write tests for this
     @Override
     public boolean isReApprox() {
-        return true;
+        return this.approxRe;
     }
     
     /**
@@ -184,7 +184,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
             throw new IllegalArgumentException(excMsg);
         }
         this.heldRing = (PureCubicRing) ring;
-        this.approxRe = false;
+        this.approxRe = (b | c) != 0;
         this.approxIm = true;
     }
     
