@@ -443,6 +443,18 @@ public class ProvisionalPureCubicIntegerTest {
                 + " should be approximate when not expressed symbolically";
         assert instance.isReApprox() : msg;
     }
+    
+    @Test
+    public void testIsNotReApprox() {
+        int bound = 256;
+        int halfBound = bound / 2;
+        int a = randomNumber(bound) - halfBound;
+        CubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, 0, 0, ring);
+        String msg = "Number " + instance.toString() 
+                + " should not be approximate when not expressed symbolically";
+        assert !instance.isReApprox() : msg;
+    }
 
     // TODO: test isImApprox( ) through Fraction constructor
 
