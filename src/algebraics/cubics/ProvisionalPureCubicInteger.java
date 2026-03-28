@@ -39,6 +39,9 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
     
     private final PureCubicRing heldRing;
     
+    // TODO: Refactor these out once both constructor paths are tested
+    private final boolean approxRe, approxIm;
+    
     // TODO: Write more tests for this, namely for degrees 0, 1, ? 2 ?
     @Override
     public int algebraicDegree() {
@@ -181,6 +184,8 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
             throw new IllegalArgumentException(excMsg);
         }
         this.heldRing = (PureCubicRing) ring;
+        this.approxRe = false;
+        this.approxIm = true;
     }
     
     // TODO: Write tests for this
@@ -215,6 +220,8 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
         this.partB = b;
         this.partC = c;
         this.heldRing = (PureCubicRing) ring;
+        this.approxRe = false;
+        this.approxIm = true;
     }
     
 }
