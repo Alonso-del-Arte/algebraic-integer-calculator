@@ -100,6 +100,7 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
                 + cubicRootSymbolWithD + ")" + EXPONENT_TWO_SYMBOL;
     }
     
+    // TODO: Write more tests for this
     @Override
     public String toASCIIString() {
         String cubicRootSymbolWithD = "cbrt(" + this.heldRing.radicand + ")";
@@ -108,10 +109,14 @@ public class ProvisionalPureCubicInteger extends CubicInteger {
                 + cubicRootSymbolWithD + "^2";
     }
     
-    // TODO: Write tests for this
+    // TODO: Write more tests for this
     @Override
     public String toTeXString() {
-        return "SORRY, NOT IMPLEMENTED YET";
+        String cubicRootSymbolWithD = "\\root 3 \\of {" + this.heldRing.radicand 
+                + "}";
+        return this.partA.toString() + " + " + this.partB.toString() 
+                + cubicRootSymbolWithD + " + " + this.partC.toString() 
+                + cubicRootSymbolWithD + "^2";
     }
     
     // TODO: Write tests for this
