@@ -167,18 +167,22 @@ public class ProvisionalPureCubicIntegerTest {
     }
     
     /**
-     * Test of toTeXString method, of class ProvisionalPureCubicInteger.
+     * Test of the toTeXString action, of the ProvisionalPureCubicInteger class.
      */
-    @org.junit.Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-//        ProvisionalPureCubicInteger instance = null;
-//        String expResult = "";
-//        String result = instance.toTeXString();
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int bound = 2048;
+        int a = randomNumber(bound) + 1;
+        int b = randomNumber(bound) + 2;
+        int c = randomNumber(bound) + 2;
+        PureCubicRing ring = chooseRing();
+        CubicInteger instance = new ProvisionalPureCubicInteger(a, b, c, ring);
+        int d = ring.getRadicand();
+        String expected = a + "+" + b + "\\root3\\of{" + d + "}+" + c 
+                + "\\root3\\of{" + d + "}^2";
+        String actual = instance.toTeXString().replace(" ", "");
+        assertEquals(expected, actual);
     }
 
     /**
