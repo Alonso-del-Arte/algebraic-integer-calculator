@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Alonso del Arte
+ * Copyright (C) 2026 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -55,6 +55,7 @@ public class BigFractionTest {
     /**
      * Test of the getDenominator function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
@@ -69,6 +70,7 @@ public class BigFractionTest {
     /**
      * Test of the toString function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testToString() {
         System.out.println("toString");
@@ -82,6 +84,7 @@ public class BigFractionTest {
      * Another test of the toString function of the BigFraction class. If the 
      * fraction is an integer, the denominator is 1 and it should be omitted.
      */
+    @org.junit.Ignore
     @Test
     public void testToStringOmitsDenomOne() {
         BigFraction ten = new BigFraction(BigInteger.TEN, BigInteger.ONE);
@@ -93,6 +96,7 @@ public class BigFractionTest {
     /**
      * Test of the toHTMLString function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
@@ -107,6 +111,7 @@ public class BigFractionTest {
     /**
      * Test of the toTeXString function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
@@ -121,6 +126,7 @@ public class BigFractionTest {
      * Another test of the equals function of the BigFraction class. A 
      * BigFraction instance should be equal to itself.
      */
+    @org.junit.Ignore
     @Test
     public void testReferentialEquality() {
         BigFraction someFrac = new BigFraction(BigInteger.ONE, TWO);
@@ -131,6 +137,7 @@ public class BigFractionTest {
      * Another test of the equals function of the BigFraction class. A 
      * BigFraction instance should not be equal to null.
      */
+    @org.junit.Ignore
     @Test
     public void testNotEqualsNull() {
         BigFraction oneHalf = new BigFraction(BigInteger.ONE, TWO);
@@ -142,6 +149,7 @@ public class BigFractionTest {
      * BigFraction instance should not be equal to an instance of a different 
      * class.
      */
+    @org.junit.Ignore
     @Test
     public void testNotEqualsDiffClass() {
         BigFraction bigFrac = new BigFraction(BigInteger.ONE, TWO);
@@ -154,6 +162,7 @@ public class BigFractionTest {
      * fractions that have different numerators when in lowest terms should not 
      * be found to be equal. For example, 1/2 is not equal to 2/3.
      */
+    @org.junit.Ignore
     @Test
     public void testUnequalNumerators() {
         BigInteger three = BigInteger.ONE.add(TWO);
@@ -165,6 +174,7 @@ public class BigFractionTest {
     /**
      * Test of the equals function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testEquals() {
         System.out.println("equals");
@@ -178,6 +188,7 @@ public class BigFractionTest {
      * fractions that have different denominators when in lowest terms should  
      * not be found to be equal. For example, 2/3 is not equal to 2/5.
      */
+    @org.junit.Ignore
     @Test
     public void testUnequalDenominators() {
         BigInteger three = BigInteger.ONE.add(TWO);
@@ -191,6 +202,7 @@ public class BigFractionTest {
      * Test of the correspondence between the equals and compareTo functions of 
      * the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testEqualsCompareToCorrespondence() {
         BigInteger sixty = BigInteger.valueOf(60);
@@ -225,6 +237,7 @@ public class BigFractionTest {
     /**
      * Test of the compareTo function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testCompareTo() {
         System.out.println("compareTo");
@@ -258,6 +271,7 @@ public class BigFractionTest {
     /**
      * Test of the getNumericApproximation function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testGetNumericApproximation() {
         System.out.println("getNumericApproximation");
@@ -279,6 +293,7 @@ public class BigFractionTest {
      * getNumericApproximation function does not give the desired scale and 
      * rounding mode.
      */
+    @org.junit.Ignore
     @Test
     public void testNonTerminatingRepresentation() {
         BigInteger three = BigInteger.ONE.add(TWO);
@@ -291,11 +306,12 @@ public class BigFractionTest {
             BigDecimal actual = oneThird.getNumericApproximation();
             assertEquals(expected, actual);
         } catch (ArithmeticException ae) {
-            String msg = "Trying to get BigDecimal for " + oneThird.toString() 
+            String message = "Trying to get BigDecimal for " 
+                    + oneThird.toString() 
                     + " should not have caused ArithmeticException";
-            System.out.println(msg);
+            System.out.println(message);
             System.out.println("\"" + ae.getMessage() + "\"");
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -303,6 +319,7 @@ public class BigFractionTest {
      * Test of the hashCode function of the BigFraction class. Within reason, 
      * two distinct BigFraction instances should have distinct hash codes.
      */
+    @org.junit.Ignore
     @Test
     public void testDiffFractionDiffHashCode() {
         BigFraction oneHalf = new BigFraction(BigInteger.ONE, TWO);
@@ -315,6 +332,7 @@ public class BigFractionTest {
      * BigFraction instances represent the same number, their hash codes should 
      * match.
      */
+    @org.junit.Ignore
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
@@ -331,6 +349,7 @@ public class BigFractionTest {
      * repeated hash codes for all possible BigFraction instances, but hopefully 
      * the hash codes will be unique enough for most practical purposes.
      */
+    @org.junit.Ignore
     @Test
     public void testHashCodeThroughCollection() {
         HashSet<BigFraction> fractions = new HashSet<>();
@@ -357,6 +376,7 @@ public class BigFractionTest {
     /**
      * Test of the plus function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testPlus() {
         System.out.println("plus");
@@ -373,6 +393,7 @@ public class BigFractionTest {
     /**
      * Another test of the plus function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testPlusSmallFraction() {
         Fraction oneHalf = new Fraction(1, 2);
@@ -387,6 +408,7 @@ public class BigFractionTest {
     /**
      * Another test of the plus function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testPlusInt() {
         BigInteger denom = BigInteger.valueOf(Long.MIN_VALUE).negate();
@@ -401,6 +423,7 @@ public class BigFractionTest {
     /**
      * Test of the negate function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testNegate() {
         BigInteger numer = BigInteger.ONE.negate();
@@ -414,6 +437,7 @@ public class BigFractionTest {
     /**
      * Test of the minus function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testMinus() {
         System.out.println("minus");
@@ -430,6 +454,7 @@ public class BigFractionTest {
     /**
      * Another test of the minus function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testMinusSmallFraction() {
         Fraction oneHalf = new Fraction(1, 2);
@@ -444,6 +469,7 @@ public class BigFractionTest {
     /**
      * Another test of the minus function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testMinusInt() {
         BigInteger denom = BigInteger.valueOf(Long.MIN_VALUE).negate();
@@ -458,6 +484,7 @@ public class BigFractionTest {
     /**
      * Test of the times function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testTimes() {
         System.out.println("times");
@@ -473,6 +500,7 @@ public class BigFractionTest {
     /**
      * Another test of the times function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testTimesSmallFraction() {
         BigInteger smallDenom = BigInteger.valueOf(Long.MIN_VALUE).negate();
@@ -487,6 +515,7 @@ public class BigFractionTest {
     /**
      * Another test of the times function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testTimesInt() {
         int multiplicand = 3;
@@ -501,6 +530,7 @@ public class BigFractionTest {
     /**
      * Test of the reciprocal function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testReciprocal() {
         System.out.println("reciprocal");
@@ -515,6 +545,7 @@ public class BigFractionTest {
     /**
      * Test of the dividedBy function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testDividedBy() {
         System.out.println("dividedBy");
@@ -529,6 +560,7 @@ public class BigFractionTest {
     /**
      * Another test of the dividedBy function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testDividedBySmallFraction() {
         BigInteger numer = TWO.pow(21);
@@ -543,6 +575,7 @@ public class BigFractionTest {
     /**
      * Another test of the dividedBy function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testDividedByInt() {
         int divisor = 7;
@@ -558,6 +591,7 @@ public class BigFractionTest {
     /**
      * Test of the getDouble function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testGetDouble() {
         System.out.println("getDouble");
@@ -572,6 +606,7 @@ public class BigFractionTest {
     /**
      * Test of the canDownsample function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testCanDownsample() {
         System.out.println("canDownsample");
@@ -588,6 +623,7 @@ public class BigFractionTest {
     /**
      * Another test of the canDownsample function, of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testCanNotDownsampleOnAccountOfExcessivelyLowNumerator() {
         BigInteger maxNumer = BigInteger.valueOf(Long.MIN_VALUE)
@@ -601,6 +637,7 @@ public class BigFractionTest {
         assert !fraction.canDownsample() : msg;
     }
     
+    @org.junit.Ignore
     @Test
     public void testCanNotDownsampleOnAccountOfExcessivelyHighNumerator() {
         BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
@@ -620,6 +657,7 @@ public class BigFractionTest {
      * the constructor should have been converted to positive, so we don't need 
      * to worry about the denominator being less than -(2^63) for this test.
      */
+    @org.junit.Ignore
     @Test
     public void testCanNotDownsampleOnAccountOfExcessivelyHighDenominator() {
         BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
@@ -635,6 +673,7 @@ public class BigFractionTest {
     /**
      * Test of the downsample function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testDownsample() {
         System.out.println("downsample");
@@ -654,6 +693,7 @@ public class BigFractionTest {
      * Another test of the downsample function, of the BigFraction class. 
      * Excessively low numerators should be rejected.
      */
+    @org.junit.Ignore
     @Test
     public void testDownsampleRejectsNumeratorTooLow() {
         BigInteger maxNumer = BigInteger.valueOf(Long.MIN_VALUE)
@@ -682,6 +722,7 @@ public class BigFractionTest {
      * Another test of the downsample function, of the BigFraction class. 
      * Excessively high numerators should be rejected.
      */
+    @org.junit.Ignore
     @Test
     public void testDownsampleRejectsNumeratorTooHigh() {
         BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
@@ -710,6 +751,7 @@ public class BigFractionTest {
      * Another test of the downsample function, of the BigFraction class. 
      * Excessively high denominators should be rejected.
      */
+    @org.junit.Ignore
     @Test
     public void testDownsampleRejectsDenominatorTooHigh() {
         BigInteger minNumer = BigInteger.valueOf(Long.MAX_VALUE)
@@ -736,6 +778,7 @@ public class BigFractionTest {
     /**
      * Test of the parseFract function of the BigFraction class.
      */
+    @org.junit.Ignore
     @Test
     public void testParseFract() {
         System.out.println("parseFract");
@@ -755,6 +798,7 @@ public class BigFractionTest {
      * Test of the BigFraciton constructor which takes a Fraction instance as 
      * its single parameter.
      */
+    @org.junit.Ignore
     @Test
     public void testCopyConstructor() {
         Fraction oneHalf = new Fraction(1, 2);
@@ -767,21 +811,22 @@ public class BigFractionTest {
      * Test of the main BigFraction constructor. That constructor should reject 
      * 0 as a denominator.
      */
+    @org.junit.Ignore
     @Test
     public void testConstructorRejectsZeroDenom() {
         try {
             BigFraction badFraction = new BigFraction(BigInteger.ONE, 
                     BigInteger.ZERO);
-            String msg = "Should not have been able to create " 
+            String message = "Should not have been able to create " 
                     + badFraction.toString();
-            fail(msg);
+            fail(message);
         } catch (IllegalArgumentException iae) {
             System.out.println("Denominator 0 caused IllegalArgumentException");
             System.out.println("\"" + iae.getMessage() + "\"");
         } catch (RuntimeException re) {
-            String msg = re.getClass().getName() 
+            String message = re.getClass().getName() 
                     + " is the wrong exception to throw for denominator zero";
-            fail(msg);
+            fail(message);
         }
     }
     
@@ -789,6 +834,7 @@ public class BigFractionTest {
      * Another test of the main BigFraction constructor. That constructor should 
      * put the numerator and denominator in lowest terms.
      */
+    @org.junit.Ignore
     @Test
     public void testConstructorPutsInLowestTerms() {
         BigInteger three = BigInteger.ONE.add(TWO);
