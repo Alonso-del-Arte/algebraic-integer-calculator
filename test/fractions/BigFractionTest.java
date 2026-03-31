@@ -55,7 +55,6 @@ public class BigFractionTest {
     /**
      * Test of the getDenominator function of the BigFraction class.
      */
-    @org.junit.Ignore
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
