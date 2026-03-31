@@ -52,7 +52,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * function will return &minus;1, not 1.
      */
     public BigInteger getNumerator() {
-        return this.numerator.add(MAX_LONG);
+        return this.numerator;
     }
     
     /**
