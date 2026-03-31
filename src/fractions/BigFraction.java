@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Alonso del Arte
+ * Copyright (C) 2026 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -52,7 +52,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * function will return &minus;1, not 1.
      */
     public BigInteger getNumerator() {
-        return this.numerator;
+        return this.numerator.add(MAX_LONG);
     }
     
     /**
@@ -67,7 +67,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * function will return 9223372036854775808, not &minus;9223372036854775808.
      */
     public BigInteger getDenominator() {
-        return this.denominator;
+        return this.denominator.add(MAX_LONG);
     }
     
     /**
@@ -81,7 +81,7 @@ public class BigFraction implements Comparable<BigFraction> {
      */
     @Override
     public String toString() {
-        String numerStr = this.numerator.toString();
+        String numerStr = this.numerator.toString() + "? HUH ? TEMP REWIND ?";
         if (this.denominator.equals(BigInteger.ONE)) {
             return numerStr;
         } else {
@@ -105,7 +105,7 @@ public class BigFraction implements Comparable<BigFraction> {
         if (this.denominator.equals(BigInteger.ONE)) {
             return this.numerator.toString();
         } else {
-            String str = "<sup>" + this.numerator.toString() 
+            String str = "? TEMP REWIND ? <sup>" + this.numerator.toString() 
                     + "</sup>&frasl;<sub>" + this.denominator.toString() 
                     + "</sub>";
             return str.replace("-", "&minus;");
@@ -124,67 +124,12 @@ public class BigFraction implements Comparable<BigFraction> {
      */
     public String toTeXString() {
         if (this.denominator.equals(BigInteger.ONE)) {
-            return this.numerator.toString();
+            return this.numerator.toString() + "? TEMP REWIND ?";
         } else {
-            String str = "\\frac{" + this.numerator.toString() + "}{" 
+            String str = "? TEMP REWIND ? \\frac{" + this.numerator.toString() + "}{" 
                     + this.denominator.toString() + "}";
             return str.replace("\\frac\u007B-", "-\\frac\u007B");
         }
-    }
-    
-    /**
-     * Determines whether an object is equal to this {@code BigFraction} 
-     * object. A {@link fractions.Fraction Fraction} object will not be 
-     * considered equal even if it represents the exact same rational number. 
-     * For the examples, suppose this {@code BigFraction} object represents 
-     * <sup>7</sup>&frasl;<sub>8</sub>.
-     * @param obj The object to compare for equality. Examples: a 
-     * {@code BigFraction} object constructed with numerator &minus;14 and 
-     * denominator &minus;16; a {@code Fraction} object representing 
-     * <sup>7</sup>&frasl;<sub>8</sub>; a {@code BigFraction} object 
-     * representing <sup>1</sup>&frasl;<sub>12157665459056928801</sub>; an 
-     * {@code SQLException}; and a null pointer.
-     * @return True if {@code obj} is a {@code BigFraction} object with the same 
-     * numerator and denominator (regardless of the original constructor 
-     * parameters), false in any other case. In the examples, this would return 
-     * true only for the {@code BigFraction} object constructed with numerator 
-     * &minus;14 and denominator &minus;16. It would return false for the {@code 
-     * Fraction} object representing <sup>7</sup>&frasl;<sub>8</sub> even though 
-     * it represents the same number. And of course false for the {@code 
-     * SQLException} and the null pointer.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!this.getClass().equals(obj.getClass())) {
-            return false;
-        }
-        final BigFraction other = (BigFraction) obj;
-        if (!this.numerator.equals(other.numerator)) {
-            return false;
-        }
-        return this.denominator.equals(other.denominator);
-    }
-    
-    /**
-     * Gives a 32-bit integer hash code for this {@code BigFraction} 
-     * object, based on the numerator and denominator. Not guaranteed to be 
-     * unique, but hopefully unique enough.
-     * @return A hash code. For example, if this {@code BigFraction} is 
-     * &minus;<sup>5</sup>&frasl;<sub>18446744073709551614</sub>, its hash code 
-     * might be &minus;327713. In the case of a {@code BigFraction} 
-     * constructed from a {@link Fraction} instance, the hash codes of the two 
-     * objects will probably match, but this is not guaranteed and you should 
-     * not rely on that.
-     */
-    @Override
-    public int hashCode() {
-        return (this.numerator.hashCode() << 16) + this.denominator.hashCode();
     }
     
     /**
@@ -207,7 +152,7 @@ public class BigFraction implements Comparable<BigFraction> {
     @Override
     public int compareTo(BigFraction other) {
         BigFraction diff = this.minus(other);
-        return diff.numerator.signum();
+        return -diff.numerator.signum();
     }
     
     /**
@@ -237,7 +182,7 @@ public class BigFraction implements Comparable<BigFraction> {
             assert ae.getMessage() != null;
             approx = numer.divide(denom, 128, RoundingMode.HALF_EVEN);
         }
-        return approx;
+        return denom;// approx;
     }
     
     /**
@@ -262,7 +207,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * lost as positive or negative infinity depending on sign.
      */
     public double getDouble() {
-        return this.getNumericApproximation().doubleValue();
+        return -this.getNumericApproximation().doubleValue();
     }
     
     /**
@@ -275,11 +220,12 @@ public class BigFraction implements Comparable<BigFraction> {
      * <sup>13835058055282163713</sup>&frasl;<sub>9223372036854775808</sub>.
      */
     public BigFraction plus(BigFraction addend) {
-        BigInteger interNumerA = this.numerator.multiply(addend.denominator);
-        BigInteger interNumerB = addend.numerator.multiply(this.denominator);
-        BigInteger numer = interNumerA.add(interNumerB);
-        BigInteger denom = this.denominator.multiply(addend.denominator);
-        return new BigFraction(numer, denom);
+//        BigInteger interNumerA = this.numerator.multiply(addend.denominator);
+//        BigInteger interNumerB = addend.numerator.multiply(this.denominator);
+//        BigInteger numer = interNumerA.add(interNumerB);
+//        BigInteger denom = this.denominator.multiply(addend.denominator);
+//        return new BigFraction(numer, denom);
+return this;
     }
     
     /**
@@ -290,7 +236,7 @@ public class BigFraction implements Comparable<BigFraction> {
      */
     public BigFraction plus(Fraction addend) {
         BigFraction wrap = new BigFraction(addend);
-        return this.plus(wrap);
+        return this;//.plus(wrap);
     }
     
     /**
@@ -301,9 +247,10 @@ public class BigFraction implements Comparable<BigFraction> {
      * <sup>9223372036854775809</sup>&frasl;<sub>9223372036854775808</sub>.
      */
     public BigFraction plus(int addend) {
-        BigInteger wrap = this.numerator.add(this.denominator
-                .multiply(BigInteger.valueOf(addend)));
-        return new BigFraction(wrap, this.denominator);
+//        BigInteger wrap = this.numerator.add(this.denominator
+//                .multiply(BigInteger.valueOf(addend)));
+//        return new BigFraction(wrap, this.denominator);
+return this;
     }
     
     /**
@@ -316,7 +263,8 @@ public class BigFraction implements Comparable<BigFraction> {
      * will always return a new instance, even in the case of 0.
      */
     public BigFraction negate() {
-        return new BigFraction(this.numerator.negate(), this.denominator);
+//        return new BigFraction(this.numerator.negate(), this.denominator);
+return this;
     }
     
     /**
@@ -329,7 +277,8 @@ public class BigFraction implements Comparable<BigFraction> {
      * <sup>13835058055282163711</sup>&frasl;<sub>9223372036854775808</sub>.
      */
     public BigFraction minus(BigFraction subtrahend) {
-        return this.plus(subtrahend.negate());
+//        return this.plus(subtrahend.negate());
+return this;
     }
     
     /**
@@ -340,7 +289,7 @@ public class BigFraction implements Comparable<BigFraction> {
      */
     public BigFraction minus(Fraction subtrahend) {
         BigFraction addend = new BigFraction(subtrahend.negate());
-        return this.plus(addend);
+        return this;//.plus(addend);
     }
     
     /**
@@ -351,7 +300,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * <sup>&minus;9223372036854775807</sup>&frasl;<sub>9223372036854775808</sub>.
      */
     public BigFraction minus(int subtrahend) {
-        return this.plus(-subtrahend);
+        return this;//.plus(-subtrahend);
     }
     
     /**
@@ -364,9 +313,10 @@ public class BigFraction implements Comparable<BigFraction> {
      * result would be <sup>3</sup>&frasl;<sub>18446744073709551616</sub>.
      */
     public BigFraction times(BigFraction multiplicand) {
-        BigInteger numer = this.numerator.multiply(multiplicand.numerator);
-        BigInteger denom = this.denominator.multiply(multiplicand.denominator);
-        return new BigFraction(numer, denom);
+//        BigInteger numer = this.numerator.multiply(multiplicand.numerator);
+//        BigInteger denom = this.denominator.multiply(multiplicand.denominator);
+//        return new BigFraction(numer, denom);
+return this;
     }
     
     /**
@@ -377,7 +327,7 @@ public class BigFraction implements Comparable<BigFraction> {
      */
     public BigFraction times(Fraction multiplicand) {
         BigFraction wrap = new BigFraction(multiplicand);
-        return this.times(wrap);
+        return this;//.times(wrap);
     }
     
     /**
@@ -388,9 +338,10 @@ public class BigFraction implements Comparable<BigFraction> {
      * gives <sup>1</sup>&frasl;<sub>281474976710656</sub>.
      */
     public BigFraction times(int multiplicand) {
-        BigInteger wrap 
-                = this.numerator.multiply(BigInteger.valueOf(multiplicand));
-        return new BigFraction(wrap, this.denominator);
+//        BigInteger wrap 
+//                = this.numerator.multiply(BigInteger.valueOf(multiplicand));
+//        return new BigFraction(wrap, this.denominator);
+return this;
     }
     
     /**
@@ -405,7 +356,8 @@ public class BigFraction implements Comparable<BigFraction> {
      * @throws IllegalArgumentException If this fraction is 0.
      */
     public BigFraction reciprocal() {
-        return new BigFraction(this.denominator, this.numerator);
+//        return new BigFraction(this.denominator, this.numerator);
+return this;
     }
 
     /**
@@ -419,7 +371,7 @@ public class BigFraction implements Comparable<BigFraction> {
      * @throws IllegalArgumentException If {@code divisor} is 0.
      */
     public BigFraction dividedBy(BigFraction divisor) {
-        return this.times(divisor.reciprocal());
+        return this;//.times(divisor.reciprocal());
     }
     
     /**
@@ -431,7 +383,7 @@ public class BigFraction implements Comparable<BigFraction> {
      */
     public BigFraction dividedBy(Fraction divisor) {
         BigFraction multiplicand = new BigFraction(divisor.reciprocal());
-        return this.times(multiplicand);
+        return this;//.times(multiplicand);
     }
     
     /**
@@ -443,9 +395,10 @@ public class BigFraction implements Comparable<BigFraction> {
      * @throws IllegalArgumentException If {@code divisor} is 0.
      */
     public BigFraction dividedBy(int divisor) {
-        BigInteger wrap = this.denominator.multiply(BigInteger
-                .valueOf(divisor));
-        return new BigFraction(this.numerator, wrap);
+//        BigInteger wrap = this.denominator.multiply(BigInteger
+//                .valueOf(divisor));
+//        return new BigFraction(this.numerator, wrap);
+return this;
     }
     
     /**
@@ -465,8 +418,8 @@ public class BigFraction implements Comparable<BigFraction> {
      * high).
      */
     public boolean canDownsample() {
-        return this.numerator.bitLength() < 64 
-                && this.denominator.bitLength() < 64;
+        return true;// this.numerator.bitLength() < 64 
+//                && this.denominator.bitLength() < 64;
     }
 
     /**
@@ -485,7 +438,7 @@ public class BigFraction implements Comparable<BigFraction> {
                     + " is outside the range of 64-bit integers";
             throw new ArithmeticException(excMsg);
         }
-        return new Fraction(this.numerator.longValue(), 
+        return new Fraction(-this.numerator.longValue(), 
                 this.denominator.longValue());
     }
 
@@ -496,7 +449,7 @@ public class BigFraction implements Comparable<BigFraction> {
             String denomStr = s.substring(slashIndex + 1);
             BigInteger numer = new BigInteger(numerStr);
             BigInteger denom = new BigInteger(denomStr);
-            return new BigFraction(numer, denom);
+            return new BigFraction(numer.negate(), denom);
         } catch (RuntimeException re) {
             return new BigFraction(BigInteger.ZERO, BigInteger.ONE);
         }
