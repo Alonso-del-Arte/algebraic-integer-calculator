@@ -148,6 +148,17 @@ public class BigFractionTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringAlreadyInLowestTerms() {
+        BigInteger numer = choosePositiveInteger();
+        BigInteger denom = nextCoprime(numer);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = "<sup>" + numer.toString() + "</sup>&frasl;<sub>" 
+                + denom.toString() + "</sub>";
+        String actual = instance.toHTMLString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toHTMLString function of the BigFraction class.
      */
