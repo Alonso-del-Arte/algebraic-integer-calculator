@@ -253,42 +253,6 @@ public class BigFractionTest {
     }
     
     /**
-     * Test of the correspondence between the equals and compareTo functions of 
-     * the BigFraction class.
-     */
-    @org.junit.Ignore
-    @Test
-    public void testEqualsCompareToCorrespondence() {
-        BigInteger sixty = BigInteger.valueOf(60);
-        BigFraction fractionA, fractionB;
-        int comparisonAToB, comparisonBToA, signProd;
-        String msg;
-        for (BigInteger numer = BigInteger.ONE; numer.compareTo(sixty) < 0;
-                numer = numer.add(BigInteger.ONE)) {
-            for (BigInteger denom = BigInteger.ONE; denom.compareTo(sixty) < 0; 
-                    denom = denom.add(BigInteger.ONE)) {
-                fractionA = new BigFraction(numer, denom);
-                fractionB = new BigFraction(numer.add(TWO), denom.add(TWO));
-                comparisonAToB = fractionA.compareTo(fractionB);
-                comparisonBToA = fractionB.compareTo(fractionA);
-                msg = fractionA.toString() + " compareTo " + fractionB.toString();
-                if (fractionA.equals(fractionB)) {
-                    msg = msg + " should be 0, and vice-versa";
-                    assert comparisonAToB == 0 : msg;
-                    assert comparisonBToA == 0 : msg;
-                } else {
-                    msg = msg + " should have sign opposite " 
-                            + fractionB.toString() + " compareTo " 
-                            + fractionA.toString();
-                    signProd = Integer.signum(comparisonAToB) 
-                            * Integer.signum(comparisonBToA);
-                    assert signProd == -1 : msg;
-                }
-            }
-        }
-    }
-    
-    /**
      * Test of the compareTo function of the BigFraction class.
      */
     @org.junit.Ignore
