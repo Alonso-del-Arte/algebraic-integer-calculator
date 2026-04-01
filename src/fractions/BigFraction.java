@@ -130,7 +130,7 @@ public class BigFraction implements Comparable<BigFraction> {
             String str = "<sup>" + this.numerator.toString() 
                     + "</sup>&frasl;<sub>" + this.denominator.toString() 
                     + "</sub>";
-            return str.replace("-", "&minus;");
+            return str.replace("<sup>-", "&minus;<sup>");
         }
     }
     
