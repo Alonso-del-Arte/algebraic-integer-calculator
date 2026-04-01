@@ -226,14 +226,18 @@ public class BigFractionTest {
     /**
      * Test of the toTeXString function of the BigFraction class.
      */
-    @org.junit.Ignore
     @Test
     public void testToTeXString() {
         System.out.println("toTeXString");
-        BigFraction fraction = new BigFraction(TWO.negate(), 
-                BigInteger.valueOf(Long.MAX_VALUE));
-        String expected = "-\\frac{2}{" + Long.MAX_VALUE + "}";
-        String actual = fraction.toTeXString();
+        BigInteger expNumer = choosePositiveInteger();
+        BigInteger expDenom = nextCoprime(expNumer);
+        BigInteger multiplier = new BigInteger(8, RANDOM).add(BigInteger.TWO);
+        BigInteger numer = expNumer.multiply(multiplier);
+        BigInteger denom = expDenom.multiply(multiplier);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = "\\frac{" + expNumer.toString() + "}{" 
+                + expDenom.toString() + "}";
+        String actual = instance.toTeXString();
         assertEquals(expected, actual);
     }
     
