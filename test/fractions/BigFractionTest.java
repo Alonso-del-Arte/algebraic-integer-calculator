@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -340,8 +341,8 @@ public class BigFractionTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        HashSet<BigFraction> fractions = new HashSet<>();
-        HashSet<Integer> hashes = new HashSet<>();
+        Set<BigFraction> fractions = new HashSet<>();
+        Set<Integer> hashes = new HashSet<>();
         BigInteger numer, denom;
         BigFraction fraction;
         int hash;
