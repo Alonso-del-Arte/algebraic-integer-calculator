@@ -119,7 +119,7 @@ public class BigFraction implements Comparable<BigFraction> {
         if (this.denominator.equals(BigInteger.ONE)) {
             return this.numerator.toString();
         } else {
-            String str = "? TEMP REWIND ? <sup>" + this.numerator.toString() 
+            String str = "<sup>" + this.numerator.toString() 
                     + "</sup>&frasl;<sub>" + this.denominator.toString() 
                     + "</sub>";
             return str.replace("-", "&minus;");
