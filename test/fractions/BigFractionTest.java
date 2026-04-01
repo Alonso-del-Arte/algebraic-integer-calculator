@@ -78,6 +78,16 @@ public class BigFractionTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToStringAlreadyInLowestTerms() {
+        BigInteger numer = choosePositiveInteger();
+        BigInteger denom = nextCoprime(numer);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = numer.toString() + "/" + denom.toString();
+        String actual = instance.toString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toString function of the BigFraction class.
      */
