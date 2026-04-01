@@ -66,7 +66,16 @@ public class BigFractionTest {
     @Test
     public void testGetNumerator() {
         System.out.println("getNumerator");
-        fail("REWRITE AS FRACTION NOT GIVEN IN LOWEST TERMS");
+        BigInteger expected = choosePositiveInteger();
+        BigInteger expDenom = nextCoprime(expected);
+        BigInteger multiplier = new BigInteger(8, RANDOM).add(BigInteger.TWO);
+        BigInteger numer = expected.multiply(multiplier);
+        BigInteger denom = expDenom.multiply(multiplier);
+        BigFraction instance = new BigFraction(numer, denom);
+        BigInteger actual = instance.getNumerator();
+        String message = "Getting numerator of " + numer.toString() + "/" 
+                + denom.toString();
+        assertEquals(message, expected, actual);
     }
     
     /**
