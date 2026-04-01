@@ -39,7 +39,7 @@ public class BigFractionTest {
     
     private static final Random RANDOM = new Random();
     
-    private static BigInteger getPositiveInteger() {
+    private static BigInteger choosePositiveInteger() {
         return new BigInteger(72, RANDOM).add(BigInteger.ONE);
     }
 
