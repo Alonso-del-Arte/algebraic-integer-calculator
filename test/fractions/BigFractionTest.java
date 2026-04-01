@@ -39,6 +39,18 @@ public class BigFractionTest {
     
     private static final Random RANDOM = new Random();
     
+    private static BigInteger getPositiveInteger() {
+        return new BigInteger(72, RANDOM).add(BigInteger.ONE);
+    }
+
+    private static BigInteger nextCoprime(BigInteger number) {
+        BigInteger propNum = number.add(BigInteger.TWO);
+        while (number.gcd(propNum).compareTo(BigInteger.ONE) > 0) {
+            propNum = propNum.add(BigInteger.ONE);
+        }
+        return propNum;
+    }
+
     /**
      * Test of the getNumerator function of the BigFraction class.
      */
