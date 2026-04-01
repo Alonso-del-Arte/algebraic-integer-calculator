@@ -212,6 +212,17 @@ public class BigFractionTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringAlreadyInLowestTerms() {
+        BigInteger numer = choosePositiveInteger();
+        BigInteger denom = nextCoprime(numer);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = "\\frac{" + numer.toString() + "}{" + denom.toString() 
+                + "}";
+        String actual = instance.toTeXString().replace(" ", "");
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toTeXString function of the BigFraction class.
      */
