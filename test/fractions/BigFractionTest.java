@@ -159,6 +159,20 @@ public class BigFractionTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringPositiveNotInLowestTerms() {
+        BigInteger expNumer = choosePositiveInteger();
+        BigInteger expDenom = nextCoprime(expNumer);
+        BigInteger multiplier = new BigInteger(8, RANDOM).add(BigInteger.TWO);
+        BigInteger numer = expNumer.multiply(multiplier);
+        BigInteger denom = expDenom.multiply(multiplier);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = "<sup>" + expNumer.toString() + "</sup>&frasl;<sub>" 
+                + expDenom.toString() + "</sub>";
+        String actual = instance.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toHTMLString function of the BigFraction class.
      */
