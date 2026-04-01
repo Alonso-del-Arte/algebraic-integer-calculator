@@ -52,6 +52,10 @@ public class BigFraction implements Comparable<BigFraction> {
      * function will return &minus;1, not 1.
      */
     public BigInteger getNumerator() {
+        BigInteger gcd = this.numerator.gcd(this.denominator);
+        if (!gcd.equals(BigInteger.ONE)) {
+            return this.numerator.divide(gcd);
+        }
         return this.numerator;
     }
     
