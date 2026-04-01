@@ -176,15 +176,18 @@ public class BigFractionTest {
     /**
      * Test of the toHTMLString function of the BigFraction class.
      */
-    @org.junit.Ignore
     @Test
     public void testToHTMLString() {
         System.out.println("toHTMLString");
-        BigFraction fraction = new BigFraction(TWO.negate(), 
-                BigInteger.valueOf(Long.MAX_VALUE));
-        String expected = "<sup>&minus;2</sup>&frasl;<sub>" + Long.MAX_VALUE 
-                + "</sub>";
-        String actual = fraction.toHTMLString();
+        BigInteger expNumer = choosePositiveInteger();
+        BigInteger expDenom = nextCoprime(expNumer);
+        BigInteger multiplier = new BigInteger(8, RANDOM).add(BigInteger.TWO);
+        BigInteger numer = expNumer.multiply(multiplier).negate();
+        BigInteger denom = expDenom.multiply(multiplier);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = "&minus;<sup>" + expNumer.toString() 
+                + "</sup>&frasl;<sub>" + expDenom.toString() + "</sub>";
+        String actual = instance.toHTMLString();
         assertEquals(expected, actual);
     }
     
