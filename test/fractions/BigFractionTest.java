@@ -50,6 +50,15 @@ public class BigFractionTest {
         }
         return propNum;
     }
+    
+    @Test
+    public void testGetNumeratorAlreadyInLowestTerms() {
+        BigInteger expected = new BigInteger(72, RANDOM);
+        BigInteger denom = expected.add(BigInteger.ONE);
+        BigFraction fraction = new BigFraction(expected, denom);
+        BigInteger actual = fraction.getNumerator();
+        assertEquals(expected, actual);
+    }
 
     /**
      * Test of the getNumerator function of the BigFraction class.
@@ -57,11 +66,7 @@ public class BigFractionTest {
     @Test
     public void testGetNumerator() {
         System.out.println("getNumerator");
-        BigInteger expected = new BigInteger(72, RANDOM);
-        BigInteger denom = expected.add(BigInteger.ONE);
-        BigFraction fraction = new BigFraction(expected, denom);
-        BigInteger actual = fraction.getNumerator();
-        assertEquals(expected, actual);
+        fail("REWRITE AS FRACTION NOT GIVEN IN LOWEST TERMS");
     }
     
     /**
