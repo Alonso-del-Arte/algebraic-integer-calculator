@@ -241,6 +241,20 @@ public class BigFractionTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringNegativeNumerNotAlreadyInLowestTerms() {
+        BigInteger expNumer = choosePositiveInteger();
+        BigInteger expDenom = nextCoprime(expNumer);
+        BigInteger multiplier = new BigInteger(8, RANDOM).add(BigInteger.TWO);
+        BigInteger numer = expNumer.multiply(multiplier).negate();
+        BigInteger denom = expDenom.multiply(multiplier);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = "-\\frac{" + expNumer.toString() + "}{" 
+                + expDenom.toString() + "}";
+        String actual = instance.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Another test of the equals function of the BigFraction class. A 
      * BigFraction instance should be equal to itself.
