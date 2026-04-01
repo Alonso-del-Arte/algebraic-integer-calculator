@@ -154,7 +154,7 @@ public class BigFraction implements Comparable<BigFraction> {
                 BigInteger denom = this.denominator.divide(gcd);
                 String str = "\\frac{" + numer.toString() + "}{" 
                         + denom.toString() + "}";
-                return str;//.replace("<sup>-", "&minus;<sup>");
+                return str.replace("\\frac\u007B-", "-\\frac\u007B");
             }
             String str = "\\frac{" + this.numerator.toString() + "}{" 
                     + this.denominator.toString() + "}";
