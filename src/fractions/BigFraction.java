@@ -476,14 +476,14 @@ return this;
      * @throws IllegalArgumentException If the denominator is 0.
      */
     public BigFraction(BigInteger numer, BigInteger denom) {
-        if (denom.equals(BigInteger.ZERO)) {
-            String excMsg = "Denominator zero is not allowed";
-            throw new IllegalArgumentException(excMsg);
-        }
-        BigInteger sign = BigInteger.valueOf(denom.signum());
-        BigInteger adjustment = numer.gcd(denom).multiply(sign);
-        this.numerator = numer.divide(adjustment);
-        this.denominator = denom.divide(adjustment);
+//        if (denom.equals(BigInteger.ZERO)) {
+//            String excMsg = "Denominator zero is not allowed";
+//            throw new IllegalArgumentException(excMsg);
+//        }
+//        BigInteger sign = BigInteger.valueOf(denom.signum());
+//        BigInteger adjustment = numer.gcd(denom).multiply(sign);
+        this.numerator = numer;//.divide(adjustment);
+        this.denominator = denom;//.divide(adjustment);
     }
     
 }
