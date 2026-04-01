@@ -203,6 +203,15 @@ public class BigFractionTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToHTMLStringOmitsDenomOne() {
+        BigInteger numer = choosePositiveInteger();
+        BigFraction instance = new BigFraction(numer, BigInteger.ONE);
+        String expected = numer.toString();
+        String actual = instance.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the toTeXString function of the BigFraction class.
      */
