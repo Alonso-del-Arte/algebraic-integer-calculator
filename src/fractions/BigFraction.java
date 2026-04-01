@@ -81,12 +81,12 @@ public class BigFraction implements Comparable<BigFraction> {
      */
     @Override
     public String toString() {
-        String numerStr = this.numerator.toString() + "? HUH ? TEMP REWIND ?";
-        if (this.denominator.equals(BigInteger.ONE)) {
-            return numerStr;
-        } else {
+        String numerStr = this.numerator.toString();
+//        if (this.denominator.equals(BigInteger.ONE)) {
+//            return numerStr;
+//        } else {
             return numerStr + "/" + this.denominator.toString();
-        }
+//        }
     }
     
     /**
