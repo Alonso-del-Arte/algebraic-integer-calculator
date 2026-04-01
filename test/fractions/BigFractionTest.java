@@ -105,12 +105,12 @@ public class BigFractionTest {
      * Another test of the toString function of the BigFraction class. If the 
      * fraction is an integer, the denominator is 1 and it should be omitted.
      */
-    @org.junit.Ignore
     @Test
     public void testToStringOmitsDenomOne() {
-        BigFraction ten = new BigFraction(BigInteger.TEN, BigInteger.ONE);
-        String expected = "10";
-        String actual = ten.toString();
+        BigInteger numer = choosePositiveInteger();
+        BigFraction instance = new BigFraction(numer, BigInteger.ONE);
+        String expected = numer.toString();
+        String actual = instance.toString();
         assertEquals(expected, actual);
     }
     
