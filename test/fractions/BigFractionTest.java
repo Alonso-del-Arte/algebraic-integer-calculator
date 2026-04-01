@@ -117,15 +117,20 @@ public class BigFractionTest {
     }
     
     /**
-     * Test of the toString function of the BigFraction class.
+     * Test of the toString function of the BigFraction class. The fractions are 
+     * deliberately not given in lowest terms.
      */
-    @org.junit.Ignore
     @Test
     public void testToString() {
         System.out.println("toString");
-        BigFraction oneHalf = new BigFraction(BigInteger.ONE, TWO);
-        String expected = "1/2";
-        String actual = oneHalf.toString().replace(" ", "");
+        BigInteger expNumer = choosePositiveInteger();
+        BigInteger expDenom = nextCoprime(expNumer);
+        BigInteger multiplier = new BigInteger(8, RANDOM).add(BigInteger.TWO);
+        BigInteger numer = expNumer.multiply(multiplier);
+        BigInteger denom = expDenom.multiply(multiplier);
+        BigFraction instance = new BigFraction(numer, denom);
+        String expected = expNumer.toString() + "/" + expDenom.toString();
+        String actual = instance.toString();
         assertEquals(expected, actual);
     }
     
