@@ -94,7 +94,16 @@ public class BigFractionTest {
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
-        fail("REWRITE THIS TEST FOR FRACTION NOT ALREADY IN LOWEST TERMS");
+        BigInteger expNumer = choosePositiveInteger();
+        BigInteger expected = nextCoprime(expNumer);
+        BigInteger multiplier = new BigInteger(8, RANDOM).add(BigInteger.TWO);
+        BigInteger numer = expNumer.multiply(multiplier);
+        BigInteger denom = expected.multiply(multiplier);
+        BigFraction instance = new BigFraction(numer, denom);
+        BigInteger actual = instance.getDenominator();
+        String message = "Getting denominator of " + numer.toString() + "/" 
+                + denom.toString();
+        assertEquals(message, expected, actual);
     }
     
     @Test
