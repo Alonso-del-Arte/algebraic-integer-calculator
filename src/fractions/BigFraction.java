@@ -145,13 +145,13 @@ public class BigFraction implements Comparable<BigFraction> {
      * will simply return "7".
      */
     public String toTeXString() {
-        if (this.denominator.equals(BigInteger.ONE)) {
-            return this.numerator.toString() + "? TEMP REWIND ?";
-        } else {
-            String str = "? TEMP REWIND ? \\frac{" + this.numerator.toString() + "}{" 
+//        if (this.denominator.equals(BigInteger.ONE)) {
+//            return this.numerator.toString() + "? TEMP REWIND ?";
+//        } else {
+            String str = "\\frac{" + this.numerator.toString() + "}{" 
                     + this.denominator.toString() + "}";
-            return str.replace("\\frac\u007B-", "-\\frac\u007B");
-        }
+            return str;//.replace("\\frac\u007B-", "-\\frac\u007B");
+//        }
     }
     
     /**
