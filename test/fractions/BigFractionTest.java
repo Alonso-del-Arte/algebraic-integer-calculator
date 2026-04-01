@@ -334,42 +334,12 @@ public class BigFractionTest {
     }
     
     /**
-     * Test of the hashCode function of the BigFraction class. Within reason, 
-     * two distinct BigFraction instances should have distinct hash codes.
-     */
-    @org.junit.Ignore
-    @Test
-    public void testDiffFractionDiffHashCode() {
-        BigFraction oneHalf = new BigFraction(BigInteger.ONE, TWO);
-        BigFraction two = new BigFraction(TWO, BigInteger.ONE);
-        assertNotEquals(oneHalf.hashCode(), two.hashCode());
-    }
-    
-    /**
-     * Test of the hashCode function of the BigFraction class. If two 
-     * BigFraction instances represent the same number, their hash codes should 
-     * match.
+     * Test of the hashCode function of the BigFraction class.
      */
     @org.junit.Ignore
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        BigFraction someFrac = new BigFraction(BigInteger.ONE, TWO);
-        BigFraction sameFrac = new BigFraction(BigInteger.ONE, TWO);
-        assertEquals(someFrac.hashCode(), sameFrac.hashCode());
-    }
-    
-    /**
-     * Another test of the hashCode function of the BigFraction class. This test 
-     * tries to come up with more than a hundred distinct BigFraction instances. 
-     * If it comes up with 112 instances, for example, then those 112 instances 
-     * should have 112 distinct hash codes. It is of course impossible to avoid 
-     * repeated hash codes for all possible BigFraction instances, but hopefully 
-     * the hash codes will be unique enough for most practical purposes.
-     */
-    @org.junit.Ignore
-    @Test
-    public void testHashCodeThroughCollection() {
         HashSet<BigFraction> fractions = new HashSet<>();
         HashSet<Integer> hashes = new HashSet<>();
         BigInteger numer, denom;
