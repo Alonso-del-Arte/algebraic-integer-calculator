@@ -148,6 +148,14 @@ public class BigFraction implements Comparable<BigFraction> {
 //        if (this.denominator.equals(BigInteger.ONE)) {
 //            return this.numerator.toString() + "? TEMP REWIND ?";
 //        } else {
+            BigInteger gcd = this.numerator.gcd(this.denominator);
+            if (!gcd.equals(BigInteger.ONE)) {
+                BigInteger numer = this.numerator.divide(gcd);
+                BigInteger denom = this.denominator.divide(gcd);
+                String str = "\\frac{" + numer.toString() + "}{" 
+                        + denom.toString() + "}";
+                return str;//.replace("<sup>-", "&minus;<sup>");
+            }
             String str = "\\frac{" + this.numerator.toString() + "}{" 
                     + this.denominator.toString() + "}";
             return str;//.replace("\\frac\u007B-", "-\\frac\u007B");
