@@ -197,7 +197,7 @@ public class BigFractionTest {
         BigInteger numer = posNumer.negate();
         BigInteger denom = nextCoprime(posNumer);
         BigFraction instance = new BigFraction(numer, denom);
-        String expected = "&minus;<sup>" + numer.toString() 
+        String expected = "&minus;<sup>" + posNumer.toString() 
                 + "</sup>&frasl;<sub>" + denom.toString() + "</sub>";
         String actual = instance.toHTMLString().replace(" ", "");
         assertEquals(expected, actual);
