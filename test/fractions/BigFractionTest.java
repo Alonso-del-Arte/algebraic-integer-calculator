@@ -78,18 +78,23 @@ public class BigFractionTest {
         assertEquals(message, expected, actual);
     }
     
+    @Test
+    public void testGetDenominatorAlreadyInLowestTerms() {
+        BigInteger expected = new BigInteger(72, RANDOM).add(BigInteger.TWO);
+        BigInteger multiplier = new BigInteger(16, RANDOM);
+        BigInteger numer = expected.multiply(multiplier).add(BigInteger.ONE);
+        BigFraction fraction = new BigFraction(numer, expected);
+        BigInteger actual = fraction.getDenominator();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Test of the getDenominator function of the BigFraction class.
      */
     @Test
     public void testGetDenominator() {
         System.out.println("getDenominator");
-        BigInteger expected = new BigInteger(72, RANDOM).add(BigInteger.ONE);
-        BigInteger multiplier = new BigInteger(16, RANDOM);
-        BigInteger numer = expected.multiply(multiplier).add(BigInteger.ONE);
-        BigFraction fraction = new BigFraction(numer, expected);
-        BigInteger actual = fraction.getDenominator();
-        assertEquals(expected, actual);
+        fail("REWRITE THIS TEST FOR FRACTION NOT ALREADY IN LOWEST TERMS");
     }
     
     @Test
