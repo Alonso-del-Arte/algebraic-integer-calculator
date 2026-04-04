@@ -116,12 +116,9 @@ public class BigFraction implements Comparable<BigFraction> {
      * this function will simply return "7".
      */
     public String toHTMLString() {
+        String numerStr = this.numerator.toString();
         if (this.denominator.equals(BigInteger.ONE)) {
-            if (this.numerator.compareTo(BigInteger.ZERO) > 0) {
-                return this.numerator.toString();
-            } else {
-                return "&minus;" + this.numerator.negate().toString();
-            }
+            return numerStr.replace("-", "&minus;");
         } else {
             BigInteger gcd = this.numerator.gcd(this.denominator);
             if (!gcd.equals(BigInteger.ONE)) {
