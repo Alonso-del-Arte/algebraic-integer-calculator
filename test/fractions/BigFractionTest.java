@@ -309,11 +309,12 @@ public class BigFractionTest {
      * Another test of the equals function of the BigFraction class. A 
      * BigFraction instance should not be equal to null.
      */
-    @org.junit.Ignore
     @Test
     public void testNotEqualsNull() {
-        BigFraction oneHalf = new BigFraction(BigInteger.ONE, TWO);
-        assertNotEquals(oneHalf, null);
+        BigInteger numer = choosePositiveInteger();
+        BigInteger denom = choosePositiveInteger();
+        BigFraction instance = new BigFraction(numer, denom);
+        assertNotEquals(instance, null);
     }
     
     /**
