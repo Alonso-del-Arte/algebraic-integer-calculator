@@ -322,12 +322,12 @@ public class BigFractionTest {
      * BigFraction instance should not be equal to an instance of a different 
      * class.
      */
-    @org.junit.Ignore
     @Test
     public void testNotEqualsDiffClass() {
-        BigFraction bigFrac = new BigFraction(BigInteger.ONE, TWO);
-        Fraction regFrac = new Fraction(1, 2);
-        assertNotEquals(bigFrac, regFrac);
+        BigInteger numer = choosePositiveInteger();
+        BigInteger denom = choosePositiveInteger();
+        BigFraction instance = new BigFraction(numer, denom);
+        assertNotEquals(instance, this);
     }
     
     /**
