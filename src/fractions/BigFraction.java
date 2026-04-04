@@ -158,7 +158,7 @@ public class BigFraction implements Comparable<BigFraction> {
             }
             String str = "\\frac{" + this.numerator.toString() + "}{" 
                     + this.denominator.toString() + "}";
-            return str;//.replace("\\frac\u007B-", "-\\frac\u007B");
+            return str.replace("\\frac\u007B-", "-\\frac\u007B");
         }
     }
     
