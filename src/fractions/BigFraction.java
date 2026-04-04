@@ -162,10 +162,9 @@ public class BigFraction implements Comparable<BigFraction> {
         }
     }
     
-    // TODO: Write tests for this
     @Override
     public boolean equals(Object obj) {
-        return obj != null;
+        return obj instanceof BigFraction;
     }
     
     // TODO: Write tests for this
