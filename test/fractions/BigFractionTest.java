@@ -297,10 +297,11 @@ public class BigFractionTest {
      * Another test of the equals function of the BigFraction class. A 
      * BigFraction instance should be equal to itself.
      */
-    @org.junit.Ignore
     @Test
     public void testReferentialEquality() {
-        BigFraction someFrac = new BigFraction(BigInteger.ONE, TWO);
+        BigInteger numer = choosePositiveInteger();
+        BigInteger denom = choosePositiveInteger();
+        BigFraction someFrac = new BigFraction(numer, denom);
         assertEquals(someFrac, someFrac);
     }
     
