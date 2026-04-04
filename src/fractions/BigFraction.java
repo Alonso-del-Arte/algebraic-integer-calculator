@@ -162,6 +162,18 @@ public class BigFraction implements Comparable<BigFraction> {
         }
     }
     
+    // TODO: Write tests for this
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+    
+    // TODO: Write tests for this
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+    
     /**
      * Compares this {@code BigFraction} instance to another 
      * {@code BigFraction} instance. For the examples, suppose this 
