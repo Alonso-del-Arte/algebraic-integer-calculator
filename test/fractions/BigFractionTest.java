@@ -264,6 +264,15 @@ public class BigFractionTest {
         assertEquals(expected, actual);
     }
     
+    @Test
+    public void testToTeXStringOmitsDenomOne() {
+        BigInteger numer = choosePositiveInteger();
+        BigFraction instance = new BigFraction(numer, BigInteger.ONE);
+        String expected = numer.toString();
+        String actual = instance.toTeXString();
+        assertEquals(expected, actual);
+    }
+    
     /**
      * Another test of the equals function of the BigFraction class. A 
      * BigFraction instance should be equal to itself.
