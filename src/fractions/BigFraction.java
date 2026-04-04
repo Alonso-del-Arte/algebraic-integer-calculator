@@ -128,9 +128,8 @@ public class BigFraction implements Comparable<BigFraction> {
                         + denom.toString() + "</sub>";
                 return str.replace("<sup>-", "&minus;<sup>");
             }
-            String str = "<sup>" + this.numerator.toString() 
-                    + "</sup>&frasl;<sub>" + this.denominator.toString() 
-                    + "</sub>";
+            String str = "<sup>" + numerStr + "</sup>&frasl;<sub>" 
+                    + this.denominator.toString() + "</sub>";
             return str.replace("<sup>-", "&minus;<sup>");
         }
     }
