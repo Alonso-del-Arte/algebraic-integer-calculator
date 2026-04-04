@@ -213,6 +213,15 @@ public class BigFractionTest {
     }
     
     @Test
+    public void testToHTMLStringNegativeOmitsDenomOne() {
+        BigInteger numer = choosePositiveInteger();
+        BigFraction instance = new BigFraction(numer.negate(), BigInteger.ONE);
+        String expected = "&minus;" + numer.toString();
+        String actual = instance.toHTMLString();
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void testToTeXStringAlreadyInLowestTerms() {
         BigInteger numer = choosePositiveInteger();
         BigInteger denom = nextCoprime(numer);
