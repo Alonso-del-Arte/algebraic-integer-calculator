@@ -290,9 +290,7 @@ that $$\frac{1}{3} + \frac{\root 3 \of{19}}{3} + \frac{(\root 3 \of{19})^2}{3}$$
 is an algebraic integer with norm 12 and minimal polynomial $x^3 - x^2 - 6x - 
 12$.
 
-I haven't yet figured out the requirements on such fractions. From what I gather 
-so far, the non-integral fractions must have denominators congruent to $\pm 1 
-\bmod 9$, which suggests that (FINISH WRITING)
+I haven't yet figured out the requirements on such fractions. (FINISH WRITING)
 
 Denominators $2$ and $6$ are also possible, these may occur when $d$ is cubefree 
 but not squarefree.
