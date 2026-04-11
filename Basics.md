@@ -293,7 +293,9 @@ is an algebraic integer with norm 12 and minimal polynomial $x^3 - x^2 - 6x -
 I haven't yet figured out the requirements on such fractions. (FINISH WRITING)
 
 Denominators $2$ and $6$ are also possible, these may occur when $d$ is cubefree 
-but not squarefree.
+but not squarefree. For example, 
+$\frac{1}{3} + \frac{4 \root 3 \of{116}}{3} + \frac{5 (\root 3 \of{116})^2}{6}$ 
+is an algebraic integer.
 
 (FINISH WRITING)
 
