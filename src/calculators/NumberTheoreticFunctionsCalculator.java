@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Alonso del Arte
+ * Copyright (C) 2026 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -262,17 +262,16 @@ public class NumberTheoreticFunctionsCalculator {
      * division with only basic optimization.
      * @param num The integer for which to determine prime factors of.
      * @return A list of the prime factors, with some factors repeated as 
-     * needed. For example, given num = 44100, the resulting list should be 2, 
-     * 2, 3, 3, 5, 5, 7, 7. The factorization of 0 is given as just 0. For a 
-     * negative number, the factorization starts with -1 followed by the 
-     * factorization of its positive counterpart. For example, given num = 
-     * -44100, the resulting list should be -1, 2, 2, 3, 3, 5, 5, 7, 7.
+     * needed. For example, if {@code num} is 44100, the resulting list should 
+     * be 2, 2, 3, 3, 5, 5, 7, 7. For a negative number, the factorization 
+     * starts with &minus;1 followed by the factorization of its positive 
+     * counterpart. For example, for &minus;44100, the resulting list should be 
+     * &minus;1, 2, 2, 3, 3, 5, 5, 7, 7.
      * <p>Special cases:</p>
      * <ul>
-     * <li></li>
-     * <li>For 0, this function returns a list of one or more zeroes. This 
-     * behavior might change in a later version.</li>
-     * <li></li>
+     * <li>Even though neither &minus;1 nor 1 have prime factors, this function 
+     * returns &minus;1 or 1 respectively.</li>
+     * <li>For 0, this function returns a list of one or more zeroes.</li>
      * </ul>
      * @since Version 0.1
      */
