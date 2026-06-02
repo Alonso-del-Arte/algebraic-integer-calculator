@@ -89,6 +89,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
     private static List<Integer> primesList;
     
     /**
+     * A list of the first few prime numbers, to be used in some of the tests. 
+     * It will be populated during {@link #setUpClass() setUpClass()}.
+     */
+    private static List<Integer> oddPrimesList;
+    
+    /**
      * A list of the first few squarefree numbers, to be used in some of the 
      * tests. It will be populated during {@link #setUpClass() setUpClass()}.
      */
@@ -173,6 +179,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
             } while (currIndex < (halfThreshold - 1) && !primeFlags[currIndex]);
         }
         primesListLength = primesList.size();
+        oddPrimesList = new ArrayList<>(primesList);
+        oddPrimesList.remove(0);
         compositesList = new ArrayList<>(PRIME_LIST_THRESHOLD 
                 - primesListLength);
         for (int c = 4; c < PRIME_LIST_THRESHOLD; c += 2) {
