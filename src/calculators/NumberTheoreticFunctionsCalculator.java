@@ -467,6 +467,9 @@ public class NumberTheoreticFunctionsCalculator {
     
     // TODO: Rewrite tests for this
     public static byte symbolLegendre(int a, int p) {
+        if (a % p == 0) {
+            return 0;
+        }
         return 1;
     }
     
