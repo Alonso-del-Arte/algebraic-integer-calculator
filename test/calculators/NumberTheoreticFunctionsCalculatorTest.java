@@ -1183,6 +1183,24 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @Test
+    public void testLegendreSymbolCommonFactor() {
+        final int expected = 0;
+        final int stop = 65;
+        for (int p : ODD_PRIMES_LIST) {
+            for (int root = 1; root < stop; root++) {
+                if (root % p == 0) {
+                    int square = root * root;
+                    int a = square + p;
+                    int actual = NumberTheoreticFunctionsCalculator
+                            .symbolLegendre(a, p);
+                    String message = "Reckoning Legendre(" + a + "/" + p + ")";
+                    assertEquals(message, expected, actual);
+                }
+            }
+        }
+    }
+    
     /**
      * Test of symbolLegendre method, of class 
      * NumberTheoreticFunctionsCalculator. Per quadratic reciprocity, 
