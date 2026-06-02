@@ -158,7 +158,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     private static void setUpPrimeList() {
-        ODD_PRIMES_LIST.remove(0);
         compositesList = new ArrayList<>(PRIME_LIST_THRESHOLD 
                 - PRIMES_LIST_STOP);
         for (int c = 4; c < PRIME_LIST_THRESHOLD; c++) {
@@ -1169,14 +1168,17 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public void testLegendreSymbol() {
         System.out.println("symbolLegendre");
         final int expected = 1;
+        final int stop = 65;
         for (int p : ODD_PRIMES_LIST) {
-            for (int root = 1; root < 64; root++) {
-                int square = root * root;
-                int a = square + p;
-                int actual = NumberTheoreticFunctionsCalculator
-                        .symbolLegendre(a, p);
-                String message = "Reckoning Legendre(" + a + "/" + p + ")";
-                assertEquals(message, expected, actual);
+            for (int root = 1; root < stop; root++) {
+                if (root % p != 0) {
+                    int square = root * root;
+                    int a = square + p;
+                    int actual = NumberTheoreticFunctionsCalculator
+                            .symbolLegendre(a, p);
+                    String message = "Reckoning Legendre(" + a + "/" + p + ")";
+                    assertEquals(message, expected, actual);
+                }
             }
         }
     }
