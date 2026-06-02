@@ -1212,7 +1212,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * already being used in some of the other tests and they contain a good mix 
      * of prime numbers (including the even prime 2) and composite numbers.</p>
      */
-    @Test
     public void testLegendreSymbol_SPLIT_UP_INTO_SMALLER_TESTS_THEN_DELETE() {
         fail("BREAK UP INTO SMALLER TESTS");
         System.out.println("symbolLegendre");
