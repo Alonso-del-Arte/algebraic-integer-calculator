@@ -467,7 +467,7 @@ public class NumberTheoreticFunctionsCalculator {
     
     // TODO: Rewrite tests for this
     public static byte symbolLegendre(int a, int p) {
-        return 1;
+        return 10;
     }
     
     // TODO: Rewrite tests for this
