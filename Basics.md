@@ -267,6 +267,36 @@ algebraic integer only when $d \equiv 1 \pmod 4$ (such as for example &minus;7).
 
 These facts should have proofs in any elementary algebraic number theory book.
 
+(FINISH WRITING)
+
+#### The Legendre symbol
+
+To determine if
+
+(FINISH WRITING)
+
+TODO: Rewrite the following
+----
+     Per quadratic reciprocity, 
+     Legendre(<i>p</i>, <i>q</i>) = Legendre(<i>q</i>, <i>p</i>) if <i>p</i> 
+     and <i>q</i> are both primes and either one or both of them are congruent 
+     to 1 mod 4. But if both are congruent to 3 mod 4, then Legendre(<i>p</i>, 
+     q) = &minus;Legendre(<i>q</i>, <i>p</i>). And of course 
+     Legendre(<i>p</i>, <i>p</i>) = 0. Some of this assumes that both <i>p</i> 
+     and <i>q</i> are positive. In the case of Legendre(<i>p</i>, 
+     &minus;<i>q</i>) with <i>q</i> being positive, reckon the congruence of 
+     <i>q</i> mod 4 rather than &minus;<i>q</i> mod 4.
+     <p>Another property to test for is that Legendre(<i>ab</i>, <i>p</i>) = 
+     Legendre(<i>a</i>, <i>p</i>) Legendre(<i>b</i>, <i>p</i>). That is to say 
+     that this is a multiplicative function. So here this is tested with 
+     Legendre(2<i>p</i>, <i>q</i>) = Legendre(2, <i>q</i>) Legendre(<i>p</i>, 
+     <i>q</i>).</p>
+----
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
 ### Degree 3
 
 There are considerably many more kinds of cubic rings than there are quadratic 

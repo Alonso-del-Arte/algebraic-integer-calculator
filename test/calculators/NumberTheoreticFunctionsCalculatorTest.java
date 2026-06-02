@@ -1201,35 +1201,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
-    /**
-     * Test of symbolLegendre method, of class 
-     * NumberTheoreticFunctionsCalculator. Per quadratic reciprocity, 
-     * Legendre(<i>p</i>, <i>q</i>) = Legendre(<i>q</i>, <i>p</i>) if <i>p</i> 
-     * and <i>q</i> are both primes and either one or both of them are congruent 
-     * to 1 mod 4. But if both are congruent to 3 mod 4, then Legendre(<i>p</i>, 
-     * q) = &minus;Legendre(<i>q</i>, <i>p</i>). And of course 
-     * Legendre(<i>p</i>, <i>p</i>) = 0. Some of this assumes that both <i>p</i> 
-     * and <i>q</i> are positive. In the case of Legendre(<i>p</i>, 
-     * &minus;<i>q</i>) with <i>q</i> being positive, reckon the congruence of 
-     * <i>q</i> mod 4 rather than &minus;<i>q</i> mod 4.
-     * <p>Another property to test for is that Legendre(<i>ab</i>, <i>p</i>) = 
-     * Legendre(<i>a</i>, <i>p</i>) Legendre(<i>b</i>, <i>p</i>). That is to say 
-     * that this is a multiplicative function. So here this is tested with 
-     * Legendre(2<i>p</i>, <i>q</i>) = Legendre(2, <i>q</i>) Legendre(<i>p</i>, 
-     * <i>q</i>).</p>
-     * <p>Of course it's entirely possible that in implementing symbolLegendre 
-     * the programmer could get dyslexic and produce an implementation that 
-     * always gives the wrong result when gcd(<i>a</i>, <i>p</i>) = 1, meaning 
-     * that it always returns &minus;1 when it should return 1, and vice-versa, 
-     * and yet it passes the tests.</p>
-     * <p>For that reason one should not rely only on the identities pertaining 
-     * to multiplicativity and quadratic reciprocity. Therefore these tests also 
-     * include some computations of actual squares modulo <i>p</i> to check some 
-     * of the answers.</p>
-     * <p>I chose to use the Fibonacci numbers for this purpose, since they are 
-     * already being used in some of the other tests and they contain a good mix 
-     * of prime numbers (including the even prime 2) and composite numbers.</p>
-     */
     public void testLegendreSymbol_SPLIT_UP_INTO_SMALLER_TESTS_THEN_DELETE() {
         fail("BREAK UP INTO SMALLER TESTS");
         System.out.println("symbolLegendre");
