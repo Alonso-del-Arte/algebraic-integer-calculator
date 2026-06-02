@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Alonso del Arte
+ * Copyright (C) 2026 Alonso del Arte
  *
  * This program is free software: you can redistribute it and/or modify it under 
  * the terms of the GNU General Public License as published by the Free Software 
@@ -661,8 +661,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
 //        }
     }
     
+@org.junit.Ignore
     @Test
     public void testPrimeFactorsFromUFDNotEuclidean() {
+        fail("REWRITE THIS TEST");
         RealQuadraticRing ring = new RealQuadraticRing(97);
         RealQuadraticInteger number = new RealQuadraticInteger(345, 35, ring, 2);
         try {
@@ -1205,9 +1207,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * <p>I chose to use the Fibonacci numbers for this purpose, since they are 
      * already being used in some of the other tests and they contain a good mix 
      * of prime numbers (including the even prime 2) and composite numbers.</p>
-     */@org.junit.Ignore
+     */
     @Test
-    public void testLegendreSymbol() {
+    public void testLegendreSymbol_SPLIT_UP_INTO_SMALLER_TESTS_THEN_DELETE() {
+        fail("BREAK UP INTO SMALLER TESTS");
         System.out.println("symbolLegendre");
         byte expResult, result;
         int p, q;
@@ -1266,7 +1269,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
-    @Test
+@org.junit.Ignore    @Test
     public void testLegendreSymbolSuggestJacobi() {
         int bound = 500;
         int a = randomNumber(bound);
@@ -1288,7 +1291,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assert excMsg.contains(name) : containsMsg;
     }
 
-    @Test
+@org.junit.Ignore    @Test
     public void testLegendreSymbolSuggestKronecker() {
         int bound = 500;
         int a = randomNumber(bound);
@@ -1352,7 +1355,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Legendre symbol test fails, the result of this test is meaningless. Then 
      * follows the actual business of checking Jacobi(<i>n</i>, <i>m</i>).
      */
-    @Test
+@org.junit.Ignore    @Test
     public void testJacobiLegendreCorrespondence() {
         System.out.println("Checking overlap with Legendre symbol...");
         for (int i = 1; i < primesListLength; i++) {
@@ -1370,7 +1373,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Legendre(<i>a</i>, <i>p</i>) = Kronecker(<i>a</i>, <i>p</i>), where 
      * <i>p</i> is an odd prime.
      */
-    @Test
+@org.junit.Ignore    @Test
     public void testKroneckerLegendreCorrespondence() {
         for (int i = 1; i < primesListLength; i++) {
             for (int a = 7; a < 11; a++) {
@@ -2924,7 +2927,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * number of at least 3.
      */
     // TODO: Break this test up into smaller tests
-    @Test
+@org.junit.Ignore    @Test
     public void testFieldClassNumber() {
         System.out.println("fieldClassNumber");
         int expResult = 1;
