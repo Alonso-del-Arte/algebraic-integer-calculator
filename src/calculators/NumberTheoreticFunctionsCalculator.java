@@ -465,18 +465,12 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, num);
     }
     
+    // TODO: Rewrite tests for this
     public static byte symbolLegendre(int a, int p) {
-        if (p == -2 || p == 2) {
-            String excMsg = p + " is not odd prime, use Kronecker symbol";
-            throw new IllegalArgumentException(excMsg);
-        }
-        if (!isPrime(p)) {
-            String excMsg = p + " is not a prime number, use Jacobi symbol";
-            throw new IllegalArgumentException(excMsg);
-        }
         return -100;
     }
     
+    // TODO: Rewrite tests for this
     /**
      * The Jacobi symbol, a number theoretic function. This implementation is 
      * almost entirely dependent on the Legendre symbol.
@@ -541,6 +535,7 @@ public class NumberTheoreticFunctionsCalculator {
         }
     }
     
+    // TODO: Rewrite tests for this
     /**
      * The Kronecker symbol, a number theoretic function. This implementation 
      * relies in great part on the Legendre symbol, but not at all on the Jacobi 
