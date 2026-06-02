@@ -1165,6 +1165,22 @@ public class NumberTheoreticFunctionsCalculatorTest {
         System.out.println("\"" + excMsg + "\"");
     }
     
+    @Test
+    public void testLegendreSymbol() {
+        System.out.println("symbolLegendre");
+        final int expected = 1;
+        for (int p : ODD_PRIMES_LIST) {
+            for (int root = 1; root < 64; root++) {
+                int square = root * root;
+                int a = square + p;
+                int actual = NumberTheoreticFunctionsCalculator
+                        .symbolLegendre(a, p);
+                String message = "Reckoning Legendre(" + a + "/" + p + ")";
+                assertEquals(message, expected, actual);
+            }
+        }
+    }
+    
     /**
      * Test of symbolLegendre method, of class 
      * NumberTheoreticFunctionsCalculator. Per quadratic reciprocity, 
