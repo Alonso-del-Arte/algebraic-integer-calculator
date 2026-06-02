@@ -83,16 +83,17 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public static final int PRIME_LIST_THRESHOLD = 1000;
     
     /**
-     * A list of the first few prime numbers, to be used in some of the tests. 
-     * It will be populated during {@link #setUpClass() setUpClass()}.
+     * A list of the first few prime numbers, to be used in some of the tests.
      */
-    private static List<Integer> primesList;
+    private static final List<Integer> PRIMES_LIST 
+            = EratosthenesSieve.listPrimes(PRIME_LIST_THRESHOLD);
     
     /**
      * A list of the first few prime numbers, to be used in some of the tests. 
      * It will be populated during {@link #setUpClass() setUpClass()}.
      */
-    private static List<Integer> oddPrimesList;
+    private static final List<Integer> ODD_PRIMES_LIST 
+            = PRIMES_LIST.subList(1, PRIMES_LIST.size());
     
     /**
      * A list of the first few squarefree numbers, to be used in some of the 
@@ -105,7 +106,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * setUpClass()}. This value will be reported on the console before the 
      * tests begin.
      */
-    private static int primesListLength;
+    // TODO: Refactor to make this constant unnecessary
+    private static final int PRIMES_LIST_STOP = PRIMES_LIST.size() - 1;
     
     /**
      * A list of composite numbers, which may or may not include 
@@ -133,7 +135,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     private static final Random RANDOM = new Random();
     
     private static void assertSquarefreeLimited(int n) {
-        for (int p : primesList) {
+        for (int p : PRIMES_LIST) {
             int squaredPrime = p * p;
             int remainder = n % squaredPrime;
             String message = "Number " + n  
@@ -156,37 +158,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     private static void setUpPrimeList() {
-        int halfThreshold = PRIME_LIST_THRESHOLD / 2;
-        primesList = new ArrayList<>(PRIME_LIST_THRESHOLD / 5);
-        primesList.add(2);
-        boolean[] primeFlags = new boolean[halfThreshold];
-        for (int i = 0; i < halfThreshold; i++) {
-            primeFlags[i] = true;
-        }
-        int currPrime = 3;
-        int twiceCurrPrime, currIndex;
-        while (currPrime < PRIME_LIST_THRESHOLD) {
-            primesList.add(currPrime);
-            twiceCurrPrime = 2 * currPrime;
-            for (int j = currPrime * currPrime; j < PRIME_LIST_THRESHOLD; 
-                    j += twiceCurrPrime) {
-                currIndex = (j - 3) / 2;
-                primeFlags[currIndex] = false;
-            }
-            do {
-                currPrime += 2;
-                currIndex = (currPrime - 3) / 2;
-            } while (currIndex < (halfThreshold - 1) && !primeFlags[currIndex]);
-        }
-        primesListLength = primesList.size();
-        oddPrimesList = new ArrayList<>(primesList);
-        oddPrimesList.remove(0);
+        ODD_PRIMES_LIST.remove(0);
         compositesList = new ArrayList<>(PRIME_LIST_THRESHOLD 
-                - primesListLength);
-        for (int c = 4; c < PRIME_LIST_THRESHOLD; c += 2) {
+                - PRIMES_LIST_STOP);
+        for (int c = 4; c < PRIME_LIST_THRESHOLD; c++) {
             compositesList.add(c);
-            if (!primeFlags[c / 2 - 1]) {
-                compositesList.add(c + 1);
+            if (!PRIMES_LIST.contains(c)) {
+                compositesList.add(c);
             }
         }
     }
@@ -232,7 +210,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             absD = (-1) * HEEGNER_NUMBERS[d];
             int currIndex = 0;
             do {
-                currPrime = primesList.get(currIndex);
+                currPrime = PRIMES_LIST.get(currIndex);
                 currIndex++;
             } while (currPrime <= absD);
             numNotFoundYet = true;
@@ -253,7 +231,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     numNotFoundYet = false;
                 } else {
                     currIndex++;
-                    currPrime = primesList.get(currIndex);
+                    currPrime = PRIMES_LIST.get(currIndex);
                 }
             }
             HEEGNER_COMPANION_PRIMES[d] = currPrime;
@@ -392,7 +370,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         long check = 1;
         int primeOmega = RANDOM.nextInt(8) + 2;
         for (int i = 0; i < primeOmega; i++) {
-            int factor = primesList.get(RANDOM.nextInt(primesListLength - i));
+            int factor = PRIMES_LIST.get(RANDOM.nextInt(PRIMES_LIST_STOP - i));
             check *= factor;
             if (check > Integer.MAX_VALUE) {
                 check /= factor;
@@ -405,8 +383,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
     private static List<Integer> factorizeByStaticList(int num) {
         List<Integer> list = new ArrayList<>();
         int index = 0;
-        while (num > 1 && index < primesListLength) {
-            int p = primesList.get(index);
+        while (num > 1 && index < PRIMES_LIST_STOP) {
+            int p = PRIMES_LIST.get(index);
             if (num % p == 0) {
                 num /= p;
                 list.add(p);
@@ -434,7 +412,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     @Test
     public void testPrimeFactorsOfNegativePrime() {
-        int prime = -primesList.get(RANDOM.nextInt(primesListLength));
+        int prime = -PRIMES_LIST.get(RANDOM.nextInt(PRIMES_LIST_STOP));
         List<Integer> expected = List.of(-1, -prime);
         List<Integer> actual = primeFactors(prime);
         String msg = "Reckoning prime factors of \u2212" + (-prime);
@@ -1224,8 +1202,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
         int p, q;
         // First to test Legendre(Fibonacci(n), p)
         for (int i = 3; i < fibonacciList.size(); i++) {
-            for (int j = 1; j < primesListLength; j++) {
-                p = primesList.get(j);
+            for (int j = 1; j < PRIMES_LIST_STOP; j++) {
+                p = PRIMES_LIST.get(j);
                 int fiboM = fibonacciList.get(i) % p;
                 if (fiboM == 0) {
                     expResult = 0;
@@ -1252,13 +1230,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
         }
         // Now to test with both p and q being odd primes
-        for (int pindex = 1; pindex < primesListLength; pindex++) {
-            p = primesList.get(pindex);
+        for (int pindex = 1; pindex < PRIMES_LIST_STOP; pindex++) {
+            p = PRIMES_LIST.get(pindex);
             expResult = 0;
             result = symbolLegendre(p, p);
             assertEquals(expResult, result);
-            for (int qindex = pindex + 1; qindex < primesListLength; qindex++) {
-                q = primesList.get(qindex);
+            for (int qindex = pindex + 1; qindex < PRIMES_LIST_STOP; qindex++) {
+                q = PRIMES_LIST.get(qindex);
                 expResult = symbolLegendre(q, p);
                 if (p % 4 == 3 && q % 4 == 3) {
                     expResult *= -1;
@@ -1331,10 +1309,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
         System.out.println("symbolJacobi");
         int p, q, m;
         byte expResult, result;
-        for (int pindex = 1; pindex < primesListLength; pindex++) {
-            p = primesList.get(pindex);
-            for (int qindex = pindex + 1; qindex < primesListLength; qindex++) {
-                q = primesList.get(qindex);
+        for (int pindex = 1; pindex < PRIMES_LIST_STOP; pindex++) {
+            p = PRIMES_LIST.get(pindex);
+            for (int qindex = pindex + 1; qindex < PRIMES_LIST_STOP; qindex++) {
+                q = PRIMES_LIST.get(qindex);
                 m = p * q;
                 for (int n = 15; n < 20; n++) {
                     expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(n, p);
@@ -1366,10 +1344,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
 @org.junit.Ignore    @Test
     public void testJacobiLegendreCorrespondence() {
         System.out.println("Checking overlap with Legendre symbol...");
-        for (int i = 1; i < primesListLength; i++) {
+        for (int i = 1; i < PRIMES_LIST_STOP; i++) {
             for (int a = 5; a < 13; a++) {
-                byte expected = NumberTheoreticFunctionsCalculator.symbolLegendre(a, primesList.get(i));
-                byte actual = NumberTheoreticFunctionsCalculator.symbolJacobi(a, primesList.get(i));
+                byte expected = NumberTheoreticFunctionsCalculator.symbolLegendre(a, PRIMES_LIST.get(i));
+                byte actual = NumberTheoreticFunctionsCalculator.symbolJacobi(a, PRIMES_LIST.get(i));
                 assertEquals(expected, actual);
             }
         }
@@ -1383,10 +1361,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
 @org.junit.Ignore    @Test
     public void testKroneckerLegendreCorrespondence() {
-        for (int i = 1; i < primesListLength; i++) {
+        for (int i = 1; i < PRIMES_LIST_STOP; i++) {
             for (int a = 7; a < 11; a++) {
-                byte expected = NumberTheoreticFunctionsCalculator.symbolLegendre(a, primesList.get(i));
-                byte actual = NumberTheoreticFunctionsCalculator.symbolKronecker(a, primesList.get(i));
+                byte expected = NumberTheoreticFunctionsCalculator.symbolLegendre(a, PRIMES_LIST.get(i));
+                byte actual = NumberTheoreticFunctionsCalculator.symbolKronecker(a, PRIMES_LIST.get(i));
                 assertEquals(expected, actual);
             }
         }
@@ -1735,14 +1713,14 @@ public class NumberTheoreticFunctionsCalculatorTest {
         String shouldBeMsg = " should have been found to be squarefree";
         String shouldNotBeMsg = " should NOT have been found to be squarefree";
         int number;
-        for (int i = 0; i < primesListLength - 1; i++) {
-            number = primesList.get(i) * primesList.get(i + 1); // pq
+        for (int i = 0; i < PRIMES_LIST_STOP - 1; i++) {
+            number = PRIMES_LIST.get(i) * PRIMES_LIST.get(i + 1); // pq
             msg = number + shouldBeMsg;
             assert isSquarefree(number) : msg;
-            number *= primesList.get(i); // (p^2)q
+            number *= PRIMES_LIST.get(i); // (p^2)q
             msg = number + shouldNotBeMsg;
             assert !isSquarefree(number) : msg;
-            number /= primesList.get(i + 1); // p^2
+            number /= PRIMES_LIST.get(i + 1); // p^2
             msg = number + shouldNotBeMsg;
             assert !isSquarefree(number) : msg;
         }
@@ -1761,7 +1739,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testIsCubefree() {
         System.out.println("isCubefree");
-        for (int p : primesList) {
+        for (int p : PRIMES_LIST) {
             int signAdjust = RANDOM.nextBoolean() ? -1 : 1;
             int q = randomPrimeOtherThan(p);
             int num = signAdjust * p * p * q;
@@ -1886,7 +1864,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         String assertionMessage;
         int currIndex = 1;
         do {
-            currPrime = primesList.get(currIndex); // Get p
+            currPrime = PRIMES_LIST.get(currIndex); // Get p
             currNum = currPrime;
             expResult = currPrime;
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
@@ -1896,7 +1874,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
             assertionMessage = "Kernel of " + currNum + " should be found to be " + currPrime + ".";
             assertEquals(assertionMessage, expResult, result);
-            currPrime = -primesList.get(currIndex - 1); // Get q, a negative prime
+            currPrime = -PRIMES_LIST.get(currIndex - 1); // Get q, a negative prime
             currNum *= currPrime; // p^2 q, which is negative
             expResult *= currPrime; // pq, which is also negative
             result = NumberTheoreticFunctionsCalculator.kernel(currNum);
@@ -1913,7 +1891,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assertionMessage = "Kernel of " + currNum + " should be found to be " + expResult + ".";
             assertEquals(assertionMessage, expResult, result);
             currIndex++;
-        } while (currIndex < primesListLength && currPrime > -71);
+        } while (currIndex < PRIMES_LIST_STOP && currPrime > -71);
     }
     
     /**
@@ -1928,10 +1906,10 @@ public class NumberTheoreticFunctionsCalculatorTest {
         byte expResult = -1;
         byte result;
         // The primes p should all have mu(p) = -1
-        for (int i = 0; i < primesListLength; i++) {
-            result = NumberTheoreticFunctionsCalculator.moebiusMu(primesList.get(i));
+        for (int i = 0; i < PRIMES_LIST_STOP; i++) {
+            result = NumberTheoreticFunctionsCalculator.moebiusMu(PRIMES_LIST.get(i));
             assertEquals(expResult, result);
-            assertEquals(result, NumberTheoreticFunctionsCalculator.moebiusMu(-primesList.get(i)));
+            assertEquals(result, NumberTheoreticFunctionsCalculator.moebiusMu(-PRIMES_LIST.get(i)));
         }
         // Now to test mu(n) = 0 with n being a multiple of 4
         expResult = 0;
@@ -1943,8 +1921,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
         // And lastly, the products of two distinct primes p and q should give mu(pq) = 1
         expResult = 1;
         int num;
-        for (int k = 0; k < primesListLength - 1; k++) {
-            num = primesList.get(k) * primesList.get(k + 1);
+        for (int k = 0; k < PRIMES_LIST_STOP - 1; k++) {
+            num = PRIMES_LIST.get(k) * PRIMES_LIST.get(k + 1);
             result = NumberTheoreticFunctionsCalculator.moebiusMu(num);
             assertEquals(expResult, result);
             assertEquals(result, NumberTheoreticFunctionsCalculator.moebiusMu(-num));
@@ -3117,8 +3095,8 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testRandomSquarefreeNumber() {
         System.out.println("randomSquarefreeNumber");
-        int bound = primesList.get(primesListLength - 1) 
-                * primesList.get(primesListLength - 1);
+        int bound = PRIMES_LIST.get(PRIMES_LIST_STOP - 1) 
+                * PRIMES_LIST.get(PRIMES_LIST_STOP - 1);
         boolean keepGoing;
         do {
             int potentialSquarefreeNumber = randomSquarefreeNumber(bound);
@@ -3178,7 +3156,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         System.out.println("randomSquarefreeNumberMod");
         int expected = 12;
         int numberOfCalls = 3 * expected / 2;
-        int p = primesList.get(RANDOM.nextInt(primesListLength));
+        int p = PRIMES_LIST.get(RANDOM.nextInt(PRIMES_LIST_STOP));
         for (int n = 0; n < p; n++) {
             Set<Integer> numbers = new HashSet<>(expected);
             for (int i = 0; i < numberOfCalls; i++) {
@@ -3207,7 +3185,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */
     @Test(timeout = 10000)
     public void testRandomSquarefreeNumberSquareModuloCube() {
-        int prime = primesList.get(RANDOM.nextInt(primesListLength));
+        int prime = PRIMES_LIST.get(RANDOM.nextInt(PRIMES_LIST_STOP));
         int square = prime * prime;
         int cube = prime * square;
         System.out.println("Asking for number x = " + square + " mod " + cube);
@@ -3238,7 +3216,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     @Test
     public void testRandomSquarefreeNumberOtherThan() {
         System.out.println("randomSquarefreeNumberOtherThan");
-        int bound = primesList.get(primesListLength - 1);
+        int bound = PRIMES_LIST.get(PRIMES_LIST_STOP - 1);
         Set<Integer> numbers = new HashSet<>(bound);
         for (int n = 0; n < bound; n++) {
             int potentialSquarefreeNumber 
