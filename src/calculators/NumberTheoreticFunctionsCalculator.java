@@ -519,20 +519,11 @@ public class NumberTheoreticFunctionsCalculator {
     
     private static byte symbolKroneckerTwo(int n) {
         int nMod8 = n % 8;
-        switch (nMod8) {
-            case -7:
-            case -1:
-            case 1:
-            case 7:
-                return 1;
-            case -5:
-            case -3:
-            case 3:
-            case 5:
-                return -1;
-            default:
-                return 0;
-        }
+        return switch (nMod8) {
+            case -7, -1, 1, 7 -> 1;
+            case -5, -3, 3, 5 -> -1;
+            default -> 0;
+        };
     }
     
     // TODO: Rewrite tests for this
