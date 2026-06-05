@@ -284,7 +284,7 @@ To determine if
 Per quadratic reciprocity, $$\left(\frac{p}{q}\right) = 
 \left(\frac{q}{p}\right)$$ if $p$ and $q$ are both primes and either one or both 
 of them are congruent to 1 modulo 4. But if both are congruent to 3 modulo 4, 
-then $$\left(\frac{p}{q}\right) = \left(\frac{q}{p}\right).$$ And of course 
+then $$\left(\frac{p}{q}\right) = -\left(\frac{q}{p}\right).$$ And of course 
 $$\left(\frac{p}{p}\right) = 0.$$ Some of this assumes that both $p$ and $q$ are 
 positive.
 
