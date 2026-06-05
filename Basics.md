@@ -267,6 +267,12 @@ algebraic integer only when $d \equiv 1 \pmod 4$ (such as for example &minus;7).
 
 These facts should have proofs in any elementary algebraic number theory book.
 
+Some numbers that are prime in $\mathbb Z$ are not prime in a given quadratic 
+ring. Obviously $d$ is not prime in the ring of integers of $\mathbb 
+Q(\sqrt d)$, since it can be factored as $(\sqrt d)^2$. Note that $\sqrt d$ has 
+norm $-d$. For example, 7 is not prime in $\mathbb Z[\sqrt 7]$ since obviously 
+$7 = (\sqrt 7)^2$.
+
 (FINISH WRITING)
 
 #### The Legendre symbol
@@ -275,23 +281,16 @@ To determine if
 
 (FINISH WRITING)
 
-TODO: Rewrite the following
-----
-     Per quadratic reciprocity, 
-     Legendre(<i>p</i>, <i>q</i>) = Legendre(<i>q</i>, <i>p</i>) if <i>p</i> 
-     and <i>q</i> are both primes and either one or both of them are congruent 
-     to 1 mod 4. But if both are congruent to 3 mod 4, then Legendre(<i>p</i>, 
-     q) = &minus;Legendre(<i>q</i>, <i>p</i>). And of course 
-     Legendre(<i>p</i>, <i>p</i>) = 0. Some of this assumes that both <i>p</i> 
-     and <i>q</i> are positive. In the case of Legendre(<i>p</i>, 
-     &minus;<i>q</i>) with <i>q</i> being positive, reckon the congruence of 
-     <i>q</i> mod 4 rather than &minus;<i>q</i> mod 4.
-     <p>Another property to test for is that Legendre(<i>ab</i>, <i>p</i>) = 
-     Legendre(<i>a</i>, <i>p</i>) Legendre(<i>b</i>, <i>p</i>). That is to say 
-     that this is a multiplicative function. So here this is tested with 
-     Legendre(2<i>p</i>, <i>q</i>) = Legendre(2, <i>q</i>) Legendre(<i>p</i>, 
-     <i>q</i>).</p>
-----
+Per quadratic reciprocity, $$\left(\frac{p}{q}\right) = 
+\left(\frac{q}{p}\right)$$ if $p$ and $q$ are both primes and either one or both 
+of them are congruent to 1 modulo 4. But if both are congruent to 3 modulo 4, 
+then $$\left(\frac{p}{q}\right) = \left(\frac{q}{p}\right).$$ And of course 
+$$\left(\frac{p}{p}\right) = 0.$$ Some of this assumes that both $p$ and $q$ are 
+positive.
+
+The Legendre symbol is a multiplicative function, meaning that 
+$$\left(\frac{ab}{p}\right) = 
+\left(\frac{a}{p}\right)\left(\frac{b}{p}\right).$$
 
 (FINISH WRITING)
 
