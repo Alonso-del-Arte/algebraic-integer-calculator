@@ -268,10 +268,22 @@ algebraic integer only when $d \equiv 1 \pmod 4$ (such as for example &minus;7).
 These facts should have proofs in any elementary algebraic number theory book.
 
 Some numbers that are prime in $\mathbb Z$ are not prime in a given quadratic 
-ring. Obviously $d$ is not prime in the ring of integers of $\mathbb 
-Q(\sqrt d)$, since it can be factored as $(\sqrt d)^2$. Note that $\sqrt d$ has 
-norm $-d$. For example, 7 is not prime in $\mathbb Z[\sqrt 7]$ since obviously 
-$7 = (\sqrt 7)^2$.
+ring. Obviously $d$ is never prime in the ring of integers of $\mathbb 
+Q(\sqrt d)$, even if it is prime in $\mathbb Z$, since it can be factored as 
+$(\sqrt d)^2$. Note that $\sqrt d$ has norm $-d$. For example, 7 is not prime in 
+$\mathbb Z[\sqrt 7]$ since obviously $7 = (\sqrt 7)^2$. When a prime number $p$ 
+is a divisor of $d$ in the ring of integers of $\mathbb Q(\sqrt d)$, $p$ is said 
+to **ramify**.
+
+It is usually more interesting when a number $p$ that is prime in $\mathbb Z$
+
+(FINISH WRITING)
+
+is said to **split**.
+
+(FINISH WRITING)
+
+is said to be **inert**.
 
 (FINISH WRITING)
 
