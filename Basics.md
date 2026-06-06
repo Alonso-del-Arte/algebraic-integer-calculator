@@ -275,11 +275,12 @@ $\mathbb Z[\sqrt 7]$ since obviously $7 = (\sqrt 7)^2$. When a prime number $p$
 is a divisor of $d$ in the ring of integers of $\mathbb Q(\sqrt d)$, $p$ is said 
 to **ramify**.
 
-It is usually more interesting when a number $p$ that is prime in $\mathbb Z$
-
-(FINISH WRITING)
-
-is said to **split**.
+It is usually more interesting when a number $p$ that is prime in $\mathbb Z$ is 
+not prime in the ring of integers of $\mathbb Q(\sqrt d)$ on account of being 
+divisible by $a - b \sqrt d$ and $a + b \sqrt d$, where $a$ and $b$ are both 
+nonzero integers. In such a case, $p$ is said to **split**. For example, 3 is 
+prime in $\mathbb Z$ but not in $\mathbb Z[\sqrt 7]$, since in the latter it can 
+be factorized as $(-1)(2 - \sqrt 7)(2 + \sqrt 7)$.
 
 (FINISH WRITING)
 
