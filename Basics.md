@@ -180,8 +180,8 @@ than 1, there are infinitely many rings that are not UFDs.
 
 The concept of ideals is considered to be very advanced. But, if explained 
 properly, ideals really are quite simple. Given a ring $R$ such as $\mathbb Z$ 
-and a number $a \in R$, the **principal ideal $\langle a \rangle$ is simply the 
-set of all numbers of the form $ax$, where $x \in R$ also.
+and a number $a \in R$, the **principal ideal** $\langle a \rangle$ is simply 
+the set of all numbers of the form $ax$, where $x \in R$ also.
 
 For example, in $\mathbb Z$, the principal ideal $\langle 3 \rangle$ simply 
 consists of 0 and all negative and positive multiples of 3.
@@ -200,9 +200,9 @@ of all numbers of the form $7x + 3y$ with $\{x, y\} \in \mathbb Z$. But, as it
 turns out, that's all of $\mathbb Z$, since very number in $\mathbb Z$ can be 
 expressed as $7x + 3y$.
 
-Likewise, $\langle 16, 24 \rangle$ consists of all numbers of the form $16x 
-+ 24y$ with $\{x, y\} \in \mathbb Z$, but that boils down to the principal idea 
-$\langle 8 \rangle$.
+Likewise, $\langle 16, 24 \rangle$ consists of all numbers of the form 
+$16x + 24y$ with $\{x, y\} \in \mathbb Z$, but that boils down to the principal 
+ideal $\langle 8 \rangle$.
 
 No matter how we express an ideal in $\mathbb Z$, it always turns out to be a 
 principal ideal. In fact, $\langle a, b \rangle = \langle \textrm{gcd}(a, b) 
