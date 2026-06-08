@@ -523,7 +523,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.3
      */
     public static byte symbolKronecker(int n, int m) {
-        return 100;
+        return symbolLegendre(n, m);
     }
     
     private static boolean isImQuadUFD(ImaginaryQuadraticRing ring) {
