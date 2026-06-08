@@ -466,9 +466,6 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     public static byte symbolLegendre(int a, int p) {
-        if (a % p == 0) {
-            return 0;
-        }
         int phi = p - 1;
         int exponent = phi / 2;
         int power = a % p;
