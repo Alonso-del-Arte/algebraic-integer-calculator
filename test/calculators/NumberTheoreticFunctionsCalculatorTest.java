@@ -1237,65 +1237,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
-    public void testLegendreSymbol_SPLIT_UP_INTO_SMALLER_TESTS_THEN_DELETE() {
-        fail("BREAK UP INTO SMALLER TESTS");
-        System.out.println("symbolLegendre");
-        byte expResult, result;
-        int p, q;
-        // First to test Legendre(Fibonacci(n), p)
-        for (int i = 3; i < fibonacciList.size(); i++) {
-            for (int j = 1; j < PRIMES_LIST_STOP; j++) {
-                p = PRIMES_LIST.get(j);
-                int fiboM = fibonacciList.get(i) % p;
-                if (fiboM == 0) {
-                    expResult = 0;
-                } else {
-                    int halfPmark = (p + 1)/2;
-                    int[] modSquares = new int[halfPmark];
-                    boolean noSolutionFound = true;
-                    int currModSqIndex = 0;
-                    for (int n = 0; n < halfPmark; n++) {
-                        modSquares[n] = (n * n) % p;
-                    }
-                    while (noSolutionFound && (currModSqIndex < halfPmark)) {
-                        noSolutionFound = !(fiboM == modSquares[currModSqIndex]);
-                        currModSqIndex++;
-                    }
-                    if (noSolutionFound) {
-                        expResult = -1;
-                    } else {
-                        expResult = 1;
-                    }
-                }
-                result = symbolLegendre(fibonacciList.get(i), p);
-                assertEquals(expResult, result);
-            }
-        }
-        // Now to test with both p and q being odd primes
-        for (int pindex = 1; pindex < PRIMES_LIST_STOP; pindex++) {
-            p = PRIMES_LIST.get(pindex);
-            expResult = 0;
-            result = symbolLegendre(p, p);
-            assertEquals(expResult, result);
-            for (int qindex = pindex + 1; qindex < PRIMES_LIST_STOP; qindex++) {
-                q = PRIMES_LIST.get(qindex);
-                expResult = symbolLegendre(q, p);
-                if (p % 4 == 3 && q % 4 == 3) {
-                    expResult *= -1;
-                }
-                result = symbolLegendre(p, q);
-                assertEquals(expResult, result);
-                result = symbolLegendre(p, -q);
-                assertEquals(expResult, result);
-                /* And lastly, to test that Legendre(2p, q) = Legendre(2, q) 
-                   Legendre(p, q). */
-                expResult = symbolLegendre(2, q);
-                expResult *= symbolLegendre(p, q);
-                result = symbolLegendre(2 * p, q);
-                assertEquals(expResult, result);
-            }
-        }
-    }
+    // TODO: Write Legendre symbol test for cases such as (1073741846/536870923)
     
 @org.junit.Ignore    @Test
     public void testLegendreSymbolSuggestJacobi() {
