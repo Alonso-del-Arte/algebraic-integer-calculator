@@ -1201,6 +1201,42 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    private static byte provisionalLegendreSymbol(int a, int p) {
+        int phi = p - 1;
+        int exponent = phi / 2;
+        int power = a % p;
+        for (int i = 1; i < exponent; i++) {
+            power *= a;
+            power %= p;
+        }
+        if (power == phi) {
+            return -1;
+        } else {
+            return (byte) power;
+        }
+    }
+    
+    private static int chooseNonQuadraticResidue(int p) {
+        int bound = 100 * p;
+        int a = RANDOM.nextInt(2, bound);
+        while (provisionalLegendreSymbol(a, p) != -1) {
+            a++;
+        }
+        return a;
+    }
+    
+    @Test
+    public void testLegendreSymbolNonQuadraticResidue() {
+        int expected = -1;
+        for (int p : ODD_PRIMES_LIST) {
+            int a = chooseNonQuadraticResidue(p);
+            int actual = NumberTheoreticFunctionsCalculator
+                    .symbolLegendre(a, p);
+            String message = "Reckoning Legendre(" + a + "/" + p + ")";
+            assertEquals(message, expected, actual);
+        }
+    }
+    
     public void testLegendreSymbol_SPLIT_UP_INTO_SMALLER_TESTS_THEN_DELETE() {
         fail("BREAK UP INTO SMALLER TESTS");
         System.out.println("symbolLegendre");
