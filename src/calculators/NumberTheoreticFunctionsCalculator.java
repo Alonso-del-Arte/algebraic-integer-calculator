@@ -492,31 +492,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.2
      */
     public static byte symbolJacobi(int n, int m) {
-        if (m % 2 == 0) {
-            String excMsg = "The number " + m 
-                    + " is not an odd number. Consider using the Kronecker symbol instead.";
-            throw new IllegalArgumentException(excMsg);
-        }
-        if (m < 0) {
-            String excMsg = "The number " + m 
-                    + " is not a positive number. Consider using the Kronecker symbol instead.";
-            throw new IllegalArgumentException(excMsg);
-        }
-        if (m == 1) {
-            return 1;
-        }
-        if (euclideanGCD(n, m) > 1) {
-            return 0;
-        }
-        List<Integer> mFactors = primeFactors(m);
-        List<Integer> symbols = new ArrayList<>();
-        int curr;
-        for (Integer mFactor : mFactors) {
-            curr = symbolLegendre(n, mFactor);
-            symbols.add(curr);
-        }
-        int symbol = symbols.stream().reduce(1, (a, b) -> a * b);
-        return (byte) symbol;
+        return -100;
     }
     
     private static byte symbolKroneckerNegOne(int n) {
