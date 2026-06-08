@@ -1239,26 +1239,19 @@ public class NumberTheoreticFunctionsCalculatorTest {
     
     // TODO: Write Legendre symbol test for cases such as (1073741846/536870923)
     
-@org.junit.Ignore    @Test
-    public void testLegendreSymbolSuggestJacobi() {
-        int bound = 500;
-        int a = randomNumber(bound);
-        int somePrime = randomPrime(bound);
-        int someOtherPrime = randomPrimeOtherThan(somePrime);
-        int p = somePrime * someOtherPrime;
-        String msg = "Since " + p + " is not prime, Legendre(" + a + ", " + p 
-                + ") should cause exception";
-        Throwable t = assertThrows(() -> {
-            byte badResult = symbolLegendre(a, p);
-            System.out.println(msg + ", not given result " + badResult);
-        }, IllegalArgumentException.class, msg);
-        String excMsg = t.getMessage();
-        assert excMsg != null : "Exception message should not be null";
-        assert !excMsg.isBlank() : "Exception message should not be blank";
-        String name = "Jacobi";
-        String containsMsg = "Exception message should contain \"" + name 
-                + "\"";
-        assert excMsg.contains(name) : containsMsg;
+    @Test
+    public void testLegendreSymbolJacobiCorrespondence() {
+        for (int a : ODD_PRIMES_LIST) {
+            for (int p : ODD_PRIMES_LIST) {
+                byte expected = NumberTheoreticFunctionsCalculator
+                        .symbolLegendre(a, p);
+                byte actual = NumberTheoreticFunctionsCalculator
+                        .symbolJacobi(a, p);
+                String message = "Legendre(" + a + ", " + p 
+                        + ") should match Jacobi(" + a + ", " + p + ")";
+                assertEquals(message, expected, actual);
+            }
+        }
     }
 
 @org.junit.Ignore    @Test
