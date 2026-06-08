@@ -1088,19 +1088,19 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * be said to be irreducible, and vice-versa, with the exception of 0 and 
      * units.
      */
-    @Test
-    public void testIsPrimeIsIrreducibleSimult() {
+    public void testIsPrimeIsIrreducibleSimult_BREAK_UP_TO_SMALLER_AND_DELETE() {
         System.out.println("isPrime, isIrreducible");
         QuadraticRing currRing;
         QuadraticInteger currInt;
-        String assertionMessage;
         for (int discrUFDIm : NORM_EUCLIDEAN_QUADRATIC_IMAGINARY_RINGS_D) {
             currRing = new ImaginaryQuadraticRing(discrUFDIm);
             for (int v = -3; v < 8; v++) {
                 for (int w = 9; w < 12; w++) {
                     currInt = new ImaginaryQuadraticInteger(v, w, currRing);
-                    assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
-                    assertEquals(assertionMessage, NumberTheoreticFunctionsCalculator.isPrime(currInt), isIrreducible(currInt));
+                    String message = currInt.toString() 
+                            + " should be found to be prime and irreducible, or neither.";
+                    assertEquals(message, NumberTheoreticFunctionsCalculator
+                            .isPrime(currInt), isIrreducible(currInt));
                 }
             }
         }
@@ -1110,10 +1110,13 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 for (int y = 1; y < 5; y++) {
                     currInt = new RealQuadraticInteger(x, y, currRing);
                     if (Math.abs(currInt.norm()) == 1) {
-                        System.out.println("Skipping " + currInt.toASCIIString() + " for this test.");
+                        System.out.println("Skipping " + currInt.toASCIIString() 
+                                + " for this test.");
                     } else {
-                        assertionMessage = currInt.toString() + " should be found to be both prime and irreducible, or neither.";
-                        assertEquals(assertionMessage, isPrime(currInt), isIrreducible(currInt));
+                        String message = currInt.toString() 
+                                + " should be found to be prime and irreducible, or neither.";
+                        assertEquals(message, isPrime(currInt), 
+                                isIrreducible(currInt));
                     }
                 }
             }
@@ -1122,10 +1125,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
             if (isSquarefree(discrNonUFDIm)) {
                 currRing = new ImaginaryQuadraticRing(discrNonUFDIm);
                 currInt = new ImaginaryQuadraticInteger(2, 0, currRing);
-                assertionMessage = "2 in " + currRing.toString() + " should be found to be irreducible";
-                assertTrue(assertionMessage, isIrreducible(currInt));
-                assertionMessage = assertionMessage + " but not prime";
-                assertFalse(assertionMessage, isPrime(currInt));
+                String msg = "2 in " + currRing.toString() 
+                        + " should be found to be irreducible";
+                assert isIrreducible(currInt) : msg;
+                msg = msg + " but not prime";
+                assert !isPrime(currInt) : msg;
             }
         }
         for (int discrNonUFDRe = 10; discrNonUFDRe < 200; discrNonUFDRe += 5) {
@@ -1135,11 +1139,11 @@ public class NumberTheoreticFunctionsCalculatorTest {
                     if (isPrime(p)) {
                         currInt = new RealQuadraticInteger(p, 0, currRing);
                         if (isPrime(currInt)) {
-                            assertionMessage = "Since " + p 
+                            String msg = "Since " + p 
                                     + " is said to be prime in " 
                                     + currRing.toString() 
                                     + ", it should also be said to be irreducible.";
-                            assertTrue(assertionMessage, isIrreducible(currInt));
+                            assert isIrreducible(currInt) : msg;
                         }
                     }
                 }
