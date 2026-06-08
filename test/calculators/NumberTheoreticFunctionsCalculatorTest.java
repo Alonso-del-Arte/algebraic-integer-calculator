@@ -1240,7 +1240,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     // TODO: Write Legendre symbol test for cases such as (1073741846/536870923)
     
     @Test
-    public void testLegendreSymbolJacobiCorrespondence() {
+    public void testLegendreJacobiCorrespondence() {
         for (int a : ODD_PRIMES_LIST) {
             for (int p : ODD_PRIMES_LIST) {
                 byte expected = NumberTheoreticFunctionsCalculator
@@ -1255,7 +1255,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
 
 @org.junit.Ignore    @Test
-    public void testLegendreSymbolSuggestKronecker() {
+    public void testLegendreKroneckerCorrespondence() {
         int bound = 500;
         int a = randomNumber(bound);
         int signum = RANDOM.nextBoolean() ? -1 : 1;
