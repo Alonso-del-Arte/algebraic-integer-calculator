@@ -465,12 +465,22 @@ public class NumberTheoreticFunctionsCalculator {
         throw new UnsupportedNumberDomainException(excMsg, num);
     }
     
-    // TODO: Rewrite tests for this
     public static byte symbolLegendre(int a, int p) {
         if (a % p == 0) {
             return 0;
         }
-        return 1;
+        int phi = p - 1;
+        int exponent = phi / 2;
+        int power = a % p;
+        for (int i = 1; i < exponent; i++) {
+            power *= a;
+            power %= p;
+        }
+        if (power == phi) {
+            return -1;
+        } else {
+            return (byte) power;
+        }
     }
     
     // TODO: Rewrite tests for this
