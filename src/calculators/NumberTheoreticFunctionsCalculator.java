@@ -523,43 +523,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.3
      */
     public static byte symbolKronecker(int n, int m) {
-        if (euclideanGCD(n, m) > 1) {
-            return 0;
-        }
-        if (m == 1) {
-            return 1;
-        }
-        if (m == 0) {
-            if (n == -1 || n == 1) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-        List<Integer> mFactors = primeFactors(m);
-        int currMFactorIndex = 0;
-        int kindaOmega = mFactors.size();
-        byte symbol = 1;
-        if (mFactors.get(currMFactorIndex) == -1) {
-            symbol *= symbolKroneckerNegOne(n);
-            currMFactorIndex++;
-        }
-        int currFactor;
-        boolean keepGoing = true; // Keep going with Kronecker(n, 2)?
-        while (currMFactorIndex < kindaOmega && keepGoing) {
-            currFactor = mFactors.get(currMFactorIndex);
-            keepGoing = (currFactor == 2);
-            if (keepGoing) {
-                symbol *= symbolKroneckerTwo(n);
-                currMFactorIndex++;
-            }
-        }
-        while (currMFactorIndex < kindaOmega) {
-            currFactor = mFactors.get(currMFactorIndex);
-            symbol *= symbolLegendre(n, currFactor);
-            currMFactorIndex++;
-        }
-        return symbol;
+        return 100;
     }
     
     private static boolean isImQuadUFD(ImaginaryQuadraticRing ring) {
