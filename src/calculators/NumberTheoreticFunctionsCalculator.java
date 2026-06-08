@@ -492,7 +492,7 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.2
      */
     public static byte symbolJacobi(int n, int m) {
-        return -100;
+        return symbolLegendre(n, m);
     }
     
     private static byte symbolKroneckerNegOne(int n) {
