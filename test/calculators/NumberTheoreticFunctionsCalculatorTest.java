@@ -1254,25 +1254,19 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
 
-@org.junit.Ignore    @Test
+    @Test
     public void testLegendreKroneckerCorrespondence() {
-        int bound = 500;
-        int a = randomNumber(bound);
-        int signum = RANDOM.nextBoolean() ? -1 : 1;
-        int p = 2 * signum;
-        String msg = "Since " + p + " is not an odd prime, Legendre(" + a + ", " 
-                + p + ") should cause exception";
-        Throwable t = assertThrows(() -> {
-            byte badResult = symbolLegendre(a, p);
-            System.out.println(msg + ", not given result " + badResult);
-        }, IllegalArgumentException.class, msg);
-        String excMsg = t.getMessage();
-        assert excMsg != null : "Exception message should not be null";
-        assert !excMsg.isBlank() : "Exception message should not be blank";
-        String name = "Kronecker";
-        String containsMsg = "Exception message should contain \"" + name 
-                + "\"";
-        assert excMsg.contains(name) : containsMsg;
+        for (int a : ODD_PRIMES_LIST) {
+            for (int p : ODD_PRIMES_LIST) {
+                byte expected = NumberTheoreticFunctionsCalculator
+                        .symbolLegendre(a, p);
+                byte actual = NumberTheoreticFunctionsCalculator
+                        .symbolKronecker(a, p);
+                String message = "Legendre(" + a + ", " + p 
+                        + ") should match Kronecker(" + a + ", " + p + ")";
+                assertEquals(message, expected, actual);
+            }
+        }
     }
 
     /**
