@@ -290,7 +290,15 @@ is said to be **inert**.
 
 #### The Legendre symbol
 
-To determine if
+To determine if a number $p$ that is prime in $\mathbb Z$ is also prime or not 
+in a given ring of integers of $\mathbb Q(\sqrt d)$, we can readily derive the 
+equations $a^2 - db^2 = \pm p$ and $a^2 - db^2 = \pm 4p$ from the norm function 
+(the latter equation is relevant only when $d \equiv 1 \pmod 4$). For a 
+factorization we need to find nonzero integer solutions to those equations.
+
+But before we even try to solve those equations, it would be good to know if 
+solutions even exist to be found. If there are integer solutions to the 
+congruence $x^2 \equiv a \pmod p$
 
 (FINISH WRITING)
 
