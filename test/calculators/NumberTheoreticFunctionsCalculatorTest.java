@@ -1258,21 +1258,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
 
-    @Test
-    public void testLegendreKroneckerCorrespondence() {
-        for (int a : ODD_PRIMES_LIST) {
-            for (int p : ODD_PRIMES_LIST) {
-                byte expected = NumberTheoreticFunctionsCalculator
-                        .symbolLegendre(a, p);
-                byte actual = NumberTheoreticFunctionsCalculator
-                        .symbolKronecker(a, p);
-                String message = "Legendre(" + a + ", " + p 
-                        + ") should match Kronecker(" + a + ", " + p + ")";
-                assertEquals(message, expected, actual);
-            }
-        }
-    }
-
     /**
      * Test of symbolJacobi method, of class NumberTheoreticFunctionsCalculator. 
      * This test checks Jacobi(<i>n</i>, <i>pq</i>), where <i>n</i> is an 
@@ -1328,6 +1313,21 @@ public class NumberTheoreticFunctionsCalculatorTest {
         }
     }
     
+    @Test
+    public void testLegendreKroneckerCorrespondence() {
+        for (int a : ODD_PRIMES_LIST) {
+            for (int p : ODD_PRIMES_LIST) {
+                byte expected = NumberTheoreticFunctionsCalculator
+                        .symbolLegendre(a, p);
+                byte actual = NumberTheoreticFunctionsCalculator
+                        .symbolKronecker(a, p);
+                String message = "Legendre(" + a + ", " + p 
+                        + ") should match Kronecker(" + a + ", " + p + ")";
+                assertEquals(message, expected, actual);
+            }
+        }
+    }
+
     /**
      * Test of symbolKronecker method, of class 
      * NumberTheoreticFunctionsCalculator. This test checks that 
