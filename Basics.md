@@ -205,10 +205,11 @@ form $ax + by$, where $a$, $b$, $x$ and $y$ are all in $R$, provided that
 $\langle a, b \rangle$ is not equal to either $\langle a \rangle$ or $\langle b 
 \rangle$.
 
-For example, in $\mathbb Z$, the secondary ideal $\langle 7, 3 \rangle$ consists 
-of all numbers of the form $7x + 3y$ with $\{x, y\} \in \mathbb Z$. But, as it 
-turns out, that's all of $\mathbb Z$, since very number in $\mathbb Z$ can be 
-expressed as $7x + 3y$.
+For example, in $\mathbb Z$, the ideal $\langle 7, 3 \rangle$ looks like a 
+secondary ideal, but it's in fact a principal ideal equal to the whole ring. It 
+consists of all numbers of the form $7x + 3y$ with $\{x, y\} \in \mathbb Z$. 
+But, as it turns out, that's all of $\mathbb Z$, since very number in $\mathbb 
+Z$ can be expressed as $7x + 3y$.
 
 Likewise, $\langle 16, 24 \rangle$ consists of all numbers of the form 
 $16x + 24y$ with $\{x, y\} \in \mathbb Z$, but that boils down to the principal 
