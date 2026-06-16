@@ -1259,25 +1259,21 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
 
     /**
-     * Test of symbolJacobi method, of class NumberTheoreticFunctionsCalculator. 
-     * This test checks Jacobi(<i>n</i>, <i>pq</i>), where <i>n</i> is an 
-     * integer from 15 to 19, <i>p</i> is an odd prime and <i>q</i> is the next 
-     * higher prime.
-     */@org.junit.Ignore
+     * Test of the symbolJacobi function, of the 
+     * NumberTheoreticFunctionsCalculator class.
+     */
     @Test
     public void testJacobiSymbol() {
         System.out.println("symbolJacobi");
-        int p, q, m;
-        byte expResult, result;
         for (int pindex = 1; pindex < PRIMES_LIST_STOP; pindex++) {
-            p = PRIMES_LIST.get(pindex);
+            int p = PRIMES_LIST.get(pindex);
             for (int qindex = pindex + 1; qindex < PRIMES_LIST_STOP; qindex++) {
-                q = PRIMES_LIST.get(qindex);
-                m = p * q;
+                int q = PRIMES_LIST.get(qindex);
+                int m = p * q;
                 for (int n = 15; n < 20; n++) {
-                    expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(n, p);
+                    int expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(n, p);
                     expResult *= NumberTheoreticFunctionsCalculator.symbolLegendre(n, q);
-                    result = NumberTheoreticFunctionsCalculator.symbolJacobi(n, m);
+                    int result = NumberTheoreticFunctionsCalculator.symbolJacobi(n, m);
                     assertEquals(expResult, result);
                 }
             }
