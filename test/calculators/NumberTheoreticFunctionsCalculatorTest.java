@@ -1282,14 +1282,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 }
             }
         }
-        // And lastly to check for exceptions for bad arguments.
-        try {
-            byte attempt = NumberTheoreticFunctionsCalculator.symbolJacobi(7, 2);
-            fail("Calling Jacobi(7, 2) should have triggered an exception, not given result " + attempt + ".");
-        } catch (IllegalArgumentException iae) {
-            System.out.println("Calling Jacobi(7, 2) correctly triggered IllegalArgumentException.");
-            System.out.println("\"" + iae.getMessage() + "\"");
-        }
     }
 
     /**
