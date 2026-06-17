@@ -1272,8 +1272,9 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 int m = p * q;
                 int nMult = RANDOM.nextInt(2, 5);
                 int n = m * nMult + RANDOM.nextInt(1, p);
-                int expected = symbolLegendre(n, p) * symbolLegendre(n, q);
-                int actual = symbolJacobi(n, m);
+                byte expected = (byte) (symbolLegendre(n, p) 
+                        * symbolLegendre(n, q));
+                byte actual = symbolJacobi(n, m);
                 String message = "Reckoning Jacobi(" + n + ", " + m + ")";
                 assertEquals(message, expected, actual);
             }
