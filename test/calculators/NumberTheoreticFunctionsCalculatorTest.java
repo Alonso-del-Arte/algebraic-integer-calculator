@@ -1270,12 +1270,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
             for (int qindex = pindex + 1; qindex < PRIMES_LIST_STOP; qindex++) {
                 int q = PRIMES_LIST.get(qindex);
                 int m = p * q;
-                for (int n = 15; n < 20; n++) {
-                    int expResult = NumberTheoreticFunctionsCalculator.symbolLegendre(n, p);
-                    expResult *= NumberTheoreticFunctionsCalculator.symbolLegendre(n, q);
-                    int result = NumberTheoreticFunctionsCalculator.symbolJacobi(n, m);
-                    assertEquals(expResult, result);
-                }
+                int nMult = RANDOM.nextInt(2, 5);
+                int n = m * nMult + RANDOM.nextInt(1, p);
+                int expected = symbolLegendre(n, p) * symbolLegendre(n, q);
+                int actual = symbolJacobi(n, m);
+                String message = "Reckoning Jacobi(" + n + ", " + m + ")";
+                assertEquals(message, expected, actual);
             }
         }
     }
