@@ -219,6 +219,17 @@ Likewise, $\langle 16, 24 \rangle$ consists of all numbers of the form
 $16x + 24y$ with $\{x, y\} \in \mathbb Z$, but that boils down to the principal 
 ideal $\langle 8 \rangle$.
 
+We can perform arithmetic on ideals, such as multiplication. Which means that 
+ideals can be factorized into prime ideals. A **prime ideal** is an ideal that 
+can't contain any more numbers without being the whole ring. Also called a 
+**maximal ideal**. In other words, an ideal is prime or maximal if the only 
+ideal that it is properly contained in is the whole ring.
+
+For example, in $\mathbb Z$, $\langle 19 \rangle$ is a prime or maximal ideal 
+since the only way for it to contain more numbers is by being all of $\mathbb 
+Z$. But $\langle 38 \rangle$ is properly contained in $\langle 19 \rangle$, thus 
+$\langle 38 \rangle$ is not a prime ideal.
+
 No matter how we express an ideal in $\mathbb Z$, it always turns out to be a 
 principal ideal. In fact, $\langle a, b \rangle = \langle \textrm{gcd}(a, b) 
 \rangle$. $\mathbb Z$ is in fact a principal ideal domain. In a **principal 
@@ -226,7 +237,9 @@ ideal domain**, all ideals are principal ideals.
 
 In the kinds of rings I'm looking at in this project, a principal ideal domain 
 is also a unique factorization domain. Secondary ideals are much more useful in 
-rings which are not unique factorization domains.
+rings which are not unique factorization domains. That's because ideals always 
+have unique factorization, even if the numbers they consist of don't have unique 
+factorization.
 
 ## Rings of higher degree
 
