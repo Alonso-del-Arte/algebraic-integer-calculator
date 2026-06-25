@@ -372,14 +372,14 @@ For example, in $\mathbb Z$, the ideals $\langle 2 \rangle$ and $\langle 2
 \rangle$ are prime ideals, but in $\mathbb Z[\sqrt{-5}]$, those two ideals are 
 products of secondary ideals. We see that $\langle 2 \rangle = \langle 2, 1 + 
 \sqrt{-5} \rangle^2$ and $\langle 3 \rangle = \langle 3, 1 - \sqrt{-5} \rangle 
-\langle 3, 1 + \sqrt{-5}$.
+\langle 3, 1 + \sqrt{-5} \rangle$.
 
 The factorization of $\langle 2 \rangle$ requires a little more explanation than 
 is normally given. The prime ideal $\langle 2, 1 + \sqrt{-5} \rangle$ consists 
 of all numbers in this ring of the form $2x + (1 + \sqrt{-5})y$. If we set $x = 
 -\sqrt{-5}$ and $y = 1$, then we have $2 \sqrt{-5} + 1 + \sqrt{-5} = 1 - 
 \sqrt{-5}$. Therefore $\langle 2, 1 - \sqrt{-5} \rangle = \langle 2, 1 + 
-\sqrt{-5}$.
+\sqrt{-5} \rangle$.
 
 (FINISH WRITING)
 
