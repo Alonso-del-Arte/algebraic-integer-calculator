@@ -176,6 +176,18 @@ properties is then called a **unique factorization domain** (UFD).
 In my opinion, non-UFDs are far more interesting. And for each degree higher 
 than 1, there are infinitely many rings that are not UFDs.
 
+### The Euclidean algorithm for GCD
+
+Euclid was an ancient Greek mathematician who wrote down many important facts of 
+basic mathematics. Among those is what might be the simplest algorithm for 
+determining the greatest common divisor of two integers in $\mathbb Z^+$. That 
+algorithm is easily adapted for all of $\mathbb Z$, and with a little more 
+effort for other rings
+
+(FINISH WRITING)
+
+(FINISH WRITING)
+
 ### Ideals
 
 In a sense, ideals ideals impose unique factorization on domains that are not 
