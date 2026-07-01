@@ -492,13 +492,12 @@ public class NumberTheoreticFunctionsCalculator {
      * @since Version 0.2
      */
     public static byte symbolJacobi(int n, int m) {
-        return Byte.MAX_VALUE;
-//        List<Integer> factors = primeFactors(m);
-//        int value = 1;
-//        for (int p : factors) {
-//            value *= symbolLegendre(n, p);
-//        }
-//        return (byte) value;
+        List<Integer> factors = primeFactors(m);
+        int value = 1;
+        for (int p : factors) {
+            value *= symbolLegendre(n, p);
+        }
+        return (byte) value;
     }
     
     private static byte symbolKroneckerNegOne(int n) {
