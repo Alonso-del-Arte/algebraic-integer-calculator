@@ -129,7 +129,9 @@ is the additive identity. Given any number $x$, we see that $x + 0 = x$.
 
 And then there are the units, which are numbers that every number in the ring is 
 divisible by. In $\mathbb Z$, the units are &minus;1 and 1, which correspond to 
-the equations $x + 1 = 0$ and $x - 1 = 0$.
+the equations $x + 1 = 0$ and $x - 1 = 0$. In many rings, &minus;1 and 1 are the 
+only units. Some rings have those two units and a few more units, and some rings 
+have infinitely many more units besides those two.
 
 The number 1 is the multiplicative identity. Given any number $x$, we see that 
 $x \times 1 = x$.
