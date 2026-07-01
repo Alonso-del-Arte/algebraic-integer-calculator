@@ -1257,6 +1257,40 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
         }
     }
+    
+    @Test
+    public void testJacobiSymbolNotCoprimeP() {
+        byte expected = 0;
+        for (int pindex = 1; pindex < PRIMES_LIST_STOP; pindex++) {
+            int p = PRIMES_LIST.get(pindex);
+            for (int qindex = pindex + 1; qindex < PRIMES_LIST_STOP; qindex++) {
+                int q = PRIMES_LIST.get(qindex);
+                int m = p * q;
+                int nMult = RANDOM.nextInt(2, 5);
+                int n = p * nMult;
+                byte actual = symbolJacobi(n, m);
+                String message = "Reckoning Jacobi(" + n + ", " + m + ")";
+                assertEquals(message, expected, actual);
+            }
+        }
+    }
+
+    @Test
+    public void testJacobiSymbolNotCoprimeQ() {
+        byte expected = 0;
+        for (int pindex = 1; pindex < PRIMES_LIST_STOP; pindex++) {
+            int p = PRIMES_LIST.get(pindex);
+            for (int qindex = pindex + 1; qindex < PRIMES_LIST_STOP; qindex++) {
+                int q = PRIMES_LIST.get(qindex);
+                int m = p * q;
+                int nMult = RANDOM.nextInt(2, 5);
+                int n = q * nMult;
+                byte actual = symbolJacobi(n, m);
+                String message = "Reckoning Jacobi(" + n + ", " + m + ")";
+                assertEquals(message, expected, actual);
+            }
+        }
+    }
 
     /**
      * Test of the symbolJacobi function, of the 
