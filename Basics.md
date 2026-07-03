@@ -348,20 +348,35 @@ $$\left(\frac{a}{p}\right) = a^{\frac{p - 1}{2}} \mod p,$$ where $p$ is an odd
 positive prime. This formula gives 1 if $p$ splits, 0 if $p$ ramifies and $-1$ 
 if $p$ is inert.
 
-(FINISH WRITING)
+To state this more precisely, the ideal $\langle p \rangle$ in the ring of 
+integers of $\mathbb Q(\sqrt a)$ splits, ramifies or is inert according to the 
+Legendre symbol $$\left(\frac{a}{p}\right)$$ being 1, 0 or $-1$. This is a 
+distinction that is not all that important in a principal ideal domain.
 
-Per quadratic reciprocity, $$\left(\frac{p}{q}\right) = 
-\left(\frac{q}{p}\right)$$ if $p$ and $q$ are both primes and either one or both 
-of them are congruent to 1 modulo 4. But if both are congruent to 3 modulo 4, 
-then $$\left(\frac{p}{q}\right) = -\left(\frac{q}{p}\right).$$ And of course 
+There are at least a couple of properties of the Legendre symbol that make it 
+easier to calculate the function without the aid of a computer: the law of 
+quadratic reciprocity and the fact that the function is multiplicative.
+
+The **law of quadratic reciprocity** is really a theorem that states that 
+$$\left(\frac{p}{q}\right) = \left(\frac{q}{p}\right)$$ if $p$ and $q$ are both 
+primes and either one or both of them are congruent to 1 modulo 4. But if both 
+are congruent to 3 modulo 4, then 
+$$\left(\frac{p}{q}\right) = -\left(\frac{q}{p}\right).$$ And of course 
 $$\left(\frac{p}{p}\right) = 0.$$ Some of this assumes that both $p$ and $q$ are 
 positive.
 
+This simplifies computation because we can "flip" the symbol to make $p$ smaller
+when that is convenient for us. For example, to calculate 
+$$\left(\frac{3}{19687}\right)$$, we *could* painstakingly reckon $3^{9843} 
+\pmod{19687}$. Or we could instead calculate $19687 \pmod 3$ and multiply by 
+$-1$ (since both 3 and 19687 are congruent to 3 modulo 4).
+
 The Legendre symbol is a multiplicative function, meaning that 
 $$\left(\frac{ab}{p}\right) = 
-\left(\frac{a}{p}\right)\left(\frac{b}{p}\right).$$
+\left(\frac{a}{p}\right)\left(\frac{b}{p}\right)$$ when $a$ and $b$ are coprime 
+to each other.
 
-(FINISH WRITING)
+(FINISH WRITING) EXAMPLE OF EASIER CALCULATION BY MULTIPLICATIVE
 
 (FINISH WRITING)
 
