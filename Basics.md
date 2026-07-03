@@ -325,11 +325,9 @@ nonzero integers. In such a case, $p$ is said to **split**. For example, 3 is
 prime in $\mathbb Z$ but not in $\mathbb Z[\sqrt 7]$, since in the latter it can 
 be factorized as $(-1)(2 - \sqrt 7)(2 + \sqrt 7)$.
 
-(FINISH WRITING)
-
-is said to be **inert**.
-
-(FINISH WRITING)
+If a number $p$ is prime in $\mathbb Z$ is also prime in the ring of integers of 
+$\mathbb Q(\sqrt d)$, then it is said to be **inert**. In other words, it 
+neither splits nor ramifies.
 
 #### The Legendre symbol
 
