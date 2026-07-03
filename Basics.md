@@ -339,7 +339,14 @@ factorization we need to find nonzero integer solutions to those equations.
 
 But before we even try to solve those equations, it would be good to know if 
 solutions even exist to be found. If there are integer solutions to the 
-congruence $x^2 \equiv a \pmod p$
+congruence $x^2 \equiv a \pmod p$, that suggests that $p$ splits in the ring of 
+integers of $\mathbb Q(\sqrt a)$, we would like a somewhat simple function that 
+gives us an answer, even if it's not a complete answer.
+
+That function is the Legendre symbol, and its formula is 
+$$\left(\frac{a}{p}\right) = a^{\frac{p - 1}{2}} \mod p,$$ where $p$ is an odd 
+positive prime. This formula gives 1 if $p$ splits, 0 if $p$ ramifies and $-1$ 
+if $p$ is inert.
 
 (FINISH WRITING)
 
