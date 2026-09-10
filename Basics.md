@@ -385,7 +385,13 @@ to each other.
 The most famous example of multiple distinct factorizations has got to be that 
 of 6 in $\mathbb Z[\sqrt{-5}]$. It can be factorized as $2 \times 3$, just like 
 in $\mathbb Z$. But in $\mathbb Z[\sqrt{-5}]$, the number 6 can also be 
-factorized as $(1 - \sqrt{-5})(1 + \sqrt{-5})$.
+factorized as $(1 - \sqrt{-5})(1 + \sqrt{-5})$. Those are two distinct 
+factorizations into irreducibles. Neither 2 nor 3 is divisible by either of $1 
+\pm \sqrt{-5}$, nor the other way around. For example, $$\frac{1 + 
+\sqrt{-5}}{2}$$ has minimal polynomial $2x^2 - 2x + 3$, so it's not an algebraic 
+integer. Likewise, we see that $$\frac{2}{1 + \sqrt{-5}}$$ has minimal 
+polynomial $3x^2 - 2x + 2$, so that's not an algebraic integer either. The 
+reader may verify the other divisions don't produce algebraic integers either.
 
 (FINISH WRITING)
 
