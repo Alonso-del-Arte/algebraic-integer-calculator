@@ -416,6 +416,11 @@ rings, and we can readily verify the smallest possible norms in this domain are
 0, 1, 4, 5, 6, 9, 14, 16, etc. Therefore 2, 3, $1 \pm \sqrt{-5}$ are all 
 irreducible but not prime.
 
+These domains still have prime numbers. Often we find the prime numbers have 
+prime norms. For example, the numbers $6 \pm \sqrt{-5}$ both have norm 41. 
+Whatever number in this domain has a norm divisible by 41, we can verify that it 
+is divisible by either $6 - \sqrt{-5}$ or its conjugate.
+
 (FINISH WRITING)
 
 (FINISH WRITING)
