@@ -287,7 +287,7 @@ solution. In the case of quadratic integers of the form $a + b \sqrt d$, the
 trace $T = 2a$, since $(a - b \sqrt d) + (a + b \sqrt d) = 2a$.
 
 The **norm** of an algebraic integer is the product of itself times its 
-conjugates, which is just two numbers in the case of a quadratic integer. The 
+conjugates, which are just two numbers in the case of a quadratic integer. The 
 norm is useful for comparing numbers that might not all be on the same straight 
 line. The norm of a quadratic integer $a + b \sqrt d$ is $a^2 - db^2$.
 
@@ -307,6 +307,18 @@ are a quarter of the norm of their doubles.
 Given integers $a$, $b$ and $d$, with the latter squarefree, the number 
 $$\frac{a}{2} + \frac{b \sqrt d}{2}$$, with $a$ and $b$ both odd, is an 
 algebraic integer only when $d \equiv 1 \pmod 4$ (such as for example &minus;7).
+
+We may notate the norm of a number $x$ as $N(x)$. The norm is a multiplicative 
+function. This means that $N(ab) = N(a) N(b)$. For example, if we multiply 
+$$\frac{5}{2} + \frac{\sqrt{-7}}{2}$$ (which has norm 8) by 12 (which has norm 
+144), we get $30 + 6 \sqrt{-7}$, which has norm $1152 = 8 \times 144$.
+
+It follows as an obvious corollary that if $a$ is divisible by $b$, then $N(a)$ 
+is divisible by $N(b)$. But we must not assume that $N(a) \mid N(b)$ necessarily 
+means $a \mid b$. For example, $$\frac{5}{2} - \frac{\sqrt{-7}}{2}$$ has norm 8 
+just like its conjugate, but it's not a divisor of $30 + 6 \sqrt{-7}$ like its 
+conjugate. Still, this corollary turns out to be very useful in rings of higher 
+degree.
 
 These facts should have proofs in any elementary algebraic number theory book.
 
@@ -394,6 +406,15 @@ an algebraic integer. Likewise, we see that $$\frac{2}{1 + \sqrt{-5}}$$ has
 minimal polynomial $3x^2 - 2x + 2$, so that's not an algebraic integer either. 
 The reader may verify the other divisions don't produce algebraic integers 
 either.
+
+The norms of these numbers make it obvious these numbers are not divisible by 
+each other. The integers 2 and 3 have norms 4 and 9, respectively, while the 
+numbers $1 \pm \sqrt{-5}$ both have norm 6. In order for any of these numbers to 
+be reducible, there would have to exist in this domain at least one number with 
+norm $\pm 2$ or $\pm 3$. Negative norms are not possible in imaginary quadratic 
+rings, and we can readily verify the smallest possible norms in this domain are 
+0, 1, 4, 5, 6, 9, 14, 16, etc. Therefore 2, 3, $1 \pm \sqrt{-5}$ are all 
+irreducible but not prime.
 
 (FINISH WRITING)
 
