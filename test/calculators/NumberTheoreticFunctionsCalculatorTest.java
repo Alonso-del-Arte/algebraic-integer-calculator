@@ -1357,7 +1357,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      * Legendre(<i>a</i>, <i>p</i>) = Kronecker(<i>a</i>, <i>p</i>), where 
      * <i>p</i> is an odd prime.
      */
-@org.junit.Ignore    @Test
+    @Test
     public void testKroneckerLegendreCorrespondence() {
         for (int i = 1; i < PRIMES_LIST_STOP; i++) {
             for (int a = 7; a < 11; a++) {
@@ -1366,7 +1366,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
                 assertEquals(expected, actual);
             }
         }
-        System.out.println("Kronecker-Legendre correspondence checks out...");
     }
     
     /**
