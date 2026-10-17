@@ -461,9 +461,6 @@ public class NumberTheoreticFunctionsCalculatorTest {
     public void testPrimeFactors_REMOVE_AFTER_ALL_ELEMENTS_ADDRESSED_BY_SMALLER_TESTS() {
         fail("SERIOUS REWRITE NEEDED");
 //        // Now to test primeFactors() on imaginary quadratic integers
-//        /* The arbitrary initialization of z with -omega and factorsList with 
-//           omega is to avoid "variable might not have been initialized" 
-//           errors */
 //            // Next, to look at some consecutive algebraic integers
 //        // Now to test primeFactors() on real quadratic integers
 //            /* For this next test, we need a prime that splits, not ramifies, in 
