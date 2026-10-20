@@ -299,71 +299,9 @@ public class NumberTheoreticFunctionsCalculator {
         return factors;
     }
     
-    /**
-     * Determines whether a given purely real number is prime or not. The 
-     * numbers 0, &minus;1, 1, &minus;2, 2 are treated as special cases (the 
-     * first three are not prime, the last two are). For all others, the 
-     * function searches only for the least positive prime factor. If the least 
-     * positive prime factor is found to be unequal to the absolute value of the 
-     * number, the function returns false. This function is open to 
-     * optimization.
-     * @param num The number to be tested for primality. Examples: &minus;29, 
-     * 30, &minus;42, 43.
-     * @return True if the number is prime (even if negative), false otherwise.
-     * For example, &minus;2 and 47 should both return true, &minus;25, 0 and 91 
-     * should all return false.
-     * @since Version 0.1
-     */
-    public static boolean isPrime(int num) {
-        switch (num) {
-            case -1, 0, 1 -> {
-                return false;
-            }
-            case -2, 2 -> {
-                return true;
-            }
-            default -> {
-                if (num % 2 == 0) {
-                    return false;
-                } else {
-                    boolean primeFlag = true;
-                    int potentialFactor = 3;
-                    double numSqrt = Math.sqrt(Math.abs(num));
-                    while (primeFlag && potentialFactor <= numSqrt) {
-                        primeFlag = (num % potentialFactor != 0);
-                        potentialFactor += 2;
-                    }
-                    return primeFlag;
-                }
-            }
-        }
-    }
-    
-    /**
-     * Determines whether a given purely real number is prime or not.
-     * @param num The number to be tested for primality.
-     * @return True if the number is prime, false otherwise.
-     * @since Version 0.1
-     */
+    // TODO: Write tests for this
     public static boolean isPrime(long num) {
-        if (num == -1 || num == 0 || num == 1) {
-            return false;
-        }
-        if (num == -2 || num == 2) {
-            return true;
-        }
-        if (num % 2 == 0) {
-            return false;
-        } else {
-            boolean primeFlag = true;
-            long potentialFactor = 3;
-            double numSqrt = Math.sqrt(Math.abs(num));
-            while (primeFlag && potentialFactor <= numSqrt) {
-                primeFlag = (num % potentialFactor != 0);
-                potentialFactor += 2;
-            }
-            return primeFlag;
-        }
+        return true;
     }
     
     /**
