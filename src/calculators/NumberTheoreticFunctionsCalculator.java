@@ -301,6 +301,9 @@ public class NumberTheoreticFunctionsCalculator {
     
     // TODO: Write tests for this
     public static boolean isPrime(long num) {
+        if (num < -1) {
+            return true;
+        }
         return Math.abs(num) > 1;
     }
     
