@@ -45,6 +45,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -528,6 +529,17 @@ public class NumberTheoreticFunctionsCalculatorTest {
         System.out.println("isPrime");
         String msgPart = " should be prime";
         for (int p : PRIMES_LIST) {
+            String msg = p + msgPart;
+            assert NumberTheoreticFunctionsCalculator.isPrime(p) : msg;
+        }
+    }
+    
+    @Test
+    public void testNegativePrimesArePrime() {
+        String msgPart = " should be prime";
+        List<Integer> negativePrimes = PRIMES_LIST.stream().map(p -> -1 * p)
+                .collect(Collectors.toList());
+        for (int p : negativePrimes) {
             String msg = p + msgPart;
             assert NumberTheoreticFunctionsCalculator.isPrime(p) : msg;
         }
