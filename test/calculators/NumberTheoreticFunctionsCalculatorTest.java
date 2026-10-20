@@ -506,9 +506,21 @@ public class NumberTheoreticFunctionsCalculatorTest {
     }
     
     @Test
+    public void testNegativeOneIsNotPrime() {
+        String msg = "-1 should not be prime";
+        assert !NumberTheoreticFunctionsCalculator.isPrime(-1L) : msg;
+    }
+
+    @Test
     public void testZeroIsNotPrime() {
         String msg = "0 should not be prime";
         assert !NumberTheoreticFunctionsCalculator.isPrime(0L) : msg;
+    }
+
+    @Test
+    public void testPositiveOneIsNotPrime() {
+        String msg = "+1 should not be prime";
+        assert !NumberTheoreticFunctionsCalculator.isPrime(1L) : msg;
     }
 
     /**
