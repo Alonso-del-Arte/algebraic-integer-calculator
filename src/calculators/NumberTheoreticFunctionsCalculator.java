@@ -316,7 +316,7 @@ public class NumberTheoreticFunctionsCalculator {
         double root = Math.sqrt(num);
         long p = 3;
         boolean noSmallerFactorFound = true;
-        while (p < root && noSmallerFactorFound) {
+        while (root >= p && noSmallerFactorFound) {
             noSmallerFactorFound = (num % p) != 0;
             p += 2;
         }
