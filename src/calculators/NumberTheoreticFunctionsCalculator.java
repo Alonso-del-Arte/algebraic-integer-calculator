@@ -316,14 +316,13 @@ public class NumberTheoreticFunctionsCalculator {
      */
     public static boolean isPrime(int num) {
         switch (num) {
-            case -1:
-            case 0:
-            case 1:
+            case -1, 0, 1 -> {
                 return false;
-            case -2:
-            case 2:
+            }
+            case -2, 2 -> {
                 return true;
-            default:
+            }
+            default -> {
                 if (num % 2 == 0) {
                     return false;
                 } else {
@@ -336,6 +335,7 @@ public class NumberTheoreticFunctionsCalculator {
                     }
                     return primeFlag;
                 }
+            }
         }
     }
     
