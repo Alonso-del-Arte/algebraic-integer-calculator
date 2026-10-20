@@ -504,6 +504,12 @@ public class NumberTheoreticFunctionsCalculatorTest {
             fail(message);
         }
     }
+    
+    @Test
+    public void testZeroIsNotPrime() {
+        String msg = "0 should not be prime";
+        assert !NumberTheoreticFunctionsCalculator.isPrime(0L) : msg;
+    }
 
     /**
      * Test of isPrime method, of class NumberTheoreticFunctionsCalculator. The 
