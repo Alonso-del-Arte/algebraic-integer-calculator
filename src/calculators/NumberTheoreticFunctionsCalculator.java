@@ -304,7 +304,23 @@ public class NumberTheoreticFunctionsCalculator {
         if (num < -1) {
             return true;
         }
-        return Math.abs(num) > 1;
+        if (num == -1 || num == 0 || num == 1) {
+            return false;
+        }
+        if (num == 2) {
+            return true;
+        }
+        if (num % 2 == 0) {
+            return false;
+        }
+        double root = Math.sqrt(num);
+        long p = 3;
+        boolean noSmallerFactorFound = true;
+        while (p < root && noSmallerFactorFound) {
+            noSmallerFactorFound = (num % p) != 0;
+            p += 2;
+        }
+        return noSmallerFactorFound;
     }
     
     /**
