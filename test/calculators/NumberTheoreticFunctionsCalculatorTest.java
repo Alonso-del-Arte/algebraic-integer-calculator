@@ -544,6 +544,18 @@ public class NumberTheoreticFunctionsCalculatorTest {
             assert NumberTheoreticFunctionsCalculator.isPrime(p) : msg;
         }
     }
+    
+    @Test
+    public void testCompositeIsNotPrime() {
+        int max = PRIMES_LIST.getLast();
+        String msgPart = " should not be prime";
+        for (int num = 4; num < max; num++) {
+            if (!PRIMES_LIST.contains(num)) {
+                String msg = num + msgPart;
+                assert !NumberTheoreticFunctionsCalculator.isPrime(num) : msg;
+            }
+        }
+    }
 
     /**
      * Test of isPrime method, of class NumberTheoreticFunctionsCalculator. The 
