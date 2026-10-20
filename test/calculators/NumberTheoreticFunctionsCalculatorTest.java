@@ -556,6 +556,28 @@ public class NumberTheoreticFunctionsCalculatorTest {
             }
         }
     }
+    
+    @Test
+    public void testLargerOddCompositeIsNotPrime() {
+        int origin = 128;
+        int bound = 256;
+        int maybeP = 2 * RANDOM.nextInt(origin, bound) + 1;
+        int maybeQ = 2 * RANDOM.nextInt(origin, bound) + 1;
+        int num = maybeP * maybeQ;
+        String msg = num + " should not be prime";
+        assert !NumberTheoreticFunctionsCalculator.isPrime(num) : msg;
+    }
+
+    @Test
+    public void testLargerEvenCompositeIsNotPrime() {
+        int origin = 128;
+        int bound = 256;
+        int maybeP = RANDOM.nextInt(origin, bound) << 1;
+        int maybeQ = RANDOM.nextInt(2 * origin, 2 * bound);
+        int num = maybeP * maybeQ;
+        String msg = num + " should not be prime";
+        assert !NumberTheoreticFunctionsCalculator.isPrime(num) : msg;
+    }
 
     /**
      * Test of isPrime method, of class NumberTheoreticFunctionsCalculator. The 
