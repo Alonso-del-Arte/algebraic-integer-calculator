@@ -522,6 +522,16 @@ public class NumberTheoreticFunctionsCalculatorTest {
         String msg = "+1 should not be prime";
         assert !NumberTheoreticFunctionsCalculator.isPrime(1L) : msg;
     }
+    
+    @Test
+    public void testIsPrime() {
+        System.out.println("isPrime");
+        String msgPart = " should be prime";
+        for (int p : PRIMES_LIST) {
+            String msg = p + msgPart;
+            assert NumberTheoreticFunctionsCalculator.isPrime(p) : msg;
+        }
+    }
 
     /**
      * Test of isPrime method, of class NumberTheoreticFunctionsCalculator. The 
@@ -534,7 +544,7 @@ public class NumberTheoreticFunctionsCalculatorTest {
      */@org.junit.Ignore
     // TODO: Break this test up into smaller tests
     @Test
-    public void testIsPrime() {
+    public void testIsPrime_WORKING_ON_REWRITE() {
         System.out.println("isPrime(int)");
         fail("SERIOUS REWRITE NEEDED");
 //        // assertFalse(NumberTheoreticFunctionsCalculator.isPrime(0));
