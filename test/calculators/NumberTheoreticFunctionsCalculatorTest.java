@@ -579,6 +579,40 @@ public class NumberTheoreticFunctionsCalculatorTest {
         assert !NumberTheoreticFunctionsCalculator.isPrime(num) : msg;
     }
 
+    @Test
+    public void testNegativeCompositeIsNotPrime() {
+        int max = PRIMES_LIST.getLast();
+        String msgPart = " should not be prime";
+        for (int num = 4; num < max; num++) {
+            if (!PRIMES_LIST.contains(num)) {
+                String msg = "\u2212" + num + msgPart;
+                assert !NumberTheoreticFunctionsCalculator.isPrime(-num) : msg;
+            }
+        }
+    }
+    
+    @Test
+    public void testNegativeLargerOddCompositeIsNotPrime() {
+        int origin = 128;
+        int bound = 256;
+        int maybeP = 2 * RANDOM.nextInt(origin, bound) + 1;
+        int maybeQ = 2 * RANDOM.nextInt(origin, bound) + 1;
+        int num = maybeP * maybeQ;
+        String msg = "\u2212" + num + " should not be prime";
+        assert !NumberTheoreticFunctionsCalculator.isPrime(-num) : msg;
+    }
+
+    @Test
+    public void testNegativeLargerEvenCompositeIsNotPrime() {
+        int origin = 128;
+        int bound = 256;
+        int maybeP = RANDOM.nextInt(origin, bound) << 1;
+        int maybeQ = RANDOM.nextInt(2 * origin, 2 * bound);
+        int num = maybeP * maybeQ;
+        String msg = "\u2212" + num + " should not be prime";
+        assert !NumberTheoreticFunctionsCalculator.isPrime(-num) : msg;
+    }
+
     /**
      * Test of isPrime method, of class NumberTheoreticFunctionsCalculator. The 
      * numbers listed in Sloane's A000040, as well as those same numbers 
