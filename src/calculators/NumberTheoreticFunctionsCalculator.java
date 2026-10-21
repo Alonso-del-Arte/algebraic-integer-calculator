@@ -299,10 +299,22 @@ public class NumberTheoreticFunctionsCalculator {
         return factors;
     }
     
-    // TODO: Write tests for this
     public static boolean isPrime(long num) {
         if (num < -1) {
-            return true;
+            if (num == -2) {
+                return true;
+            }
+            if (num % 2 == 0) {
+                return false;
+            }
+            double root = -Math.sqrt(Math.abs(num));
+            long p = -3;
+            boolean noSmallerFactorFound = true;
+            while (p >= root && noSmallerFactorFound) {
+                noSmallerFactorFound = (num % p) != 0;
+                p -= 2;
+            }
+            return noSmallerFactorFound;
         }
         if (num == -1 || num == 0 || num == 1) {
             return false;
