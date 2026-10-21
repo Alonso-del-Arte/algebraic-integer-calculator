@@ -300,36 +300,21 @@ public class NumberTheoreticFunctionsCalculator {
     }
     
     public static boolean isPrime(long num) {
-        if (num < -1) {
-            if (num == -2) {
-                return true;
-            }
-            if (num % 2 == 0) {
-                return false;
-            }
-            double root = -Math.sqrt(Math.abs(num));
-            long p = -3;
-            boolean noSmallerFactorFound = true;
-            while (p >= root && noSmallerFactorFound) {
-                noSmallerFactorFound = (num % p) != 0;
-                p -= 2;
-            }
-            return noSmallerFactorFound;
-        }
-        if (num == -1 || num == 0 || num == 1) {
+        long abs = Math.abs(num);
+        if (abs < 2) {
             return false;
         }
-        if (num == 2) {
+        if (abs == 2) {
             return true;
         }
-        if (num % 2 == 0) {
+        if (abs % 2 == 0) {
             return false;
         }
-        double root = Math.sqrt(num);
+        double root = Math.sqrt(abs);
         long p = 3;
         boolean noSmallerFactorFound = true;
         while (root >= p && noSmallerFactorFound) {
-            noSmallerFactorFound = (num % p) != 0;
+            noSmallerFactorFound = (abs % p) != 0;
             p += 2;
         }
         return noSmallerFactorFound;
