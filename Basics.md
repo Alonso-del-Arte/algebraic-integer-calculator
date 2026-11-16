@@ -449,7 +449,25 @@ of all numbers in this ring of the form $2x + (1 + \sqrt{-5})y$. If we set $x =
 \sqrt{-5}$. Therefore $\langle 2, 1 - \sqrt{-5} \rangle = \langle 2, 1 + 
 \sqrt{-5} \rangle$.
 
-(FINISH WRITING)
+And so the factorization of $\langle 2 \rangle$ in $\mathbb Z[\sqrt{-5}]$ is 
+$\langle 2, 1 + \sqrt{-5} \rangle^2$. More generally, the factorization of 
+$\langle 2 \rangle$ in the ring of integers of $\mathbb Q(\sqrt d)$ is
+
+* $$\left\langle 2, \frac{1}{2} \pm \frac{\sqrt d}{2} \right\rangle$$ if $d 
+\equiv 1 \pmod 8$
+* $\langle 2, \sqrt d \rangle$ if $d \equiv 2 \pmod 4$
+* $\langle 2, 1 + \sqrt d \rangle^2$ if $d \equiv 3 \pmod 4$
+* Prime if $d \equiv 5 \pmod 8$
+
+Of course if the ring of integers of $\mathbb Q(\sqrt d)$ is a unique 
+factorization domain, any ideal that looks like a secondary ideal works out to a 
+principal ideal. For example, the table above gives the factorization of 
+$\langle 2 \rangle$ in $\mathbb Z[\sqrt{14}]$ as $\langle 2, \sqrt{14} 
+\rangle^2$. But the greatest common divisor of 2 and $\sqrt{14}$ is $4 + 
+\sqrt{14}$, so the factorization of $\langle 2 \rangle$ in $\mathbb 
+Z[\sqrt{14}]$ is actually $\langle 4 + \sqrt{14} \rangle^2$.
+
+(FINISH WRITING: FACTORIZATION OF ODD PRIME p)
 
 (FINISH WRITING)
 
