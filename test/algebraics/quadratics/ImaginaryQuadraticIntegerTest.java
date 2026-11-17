@@ -1389,7 +1389,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveMultipleOfOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         int b = RANDOM.nextInt(2, 8192);
         int a = -b;
         QuadraticInteger number = new ImaginaryQuadraticInteger(a, b, 
@@ -1398,6 +1397,7 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Writing " + number + " in terms of " + OMEGA_CHAR;
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
 
     @Test
@@ -1467,7 +1467,6 @@ public class ImaginaryQuadraticIntegerTest {
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusPositiveMultipleOfOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(2, bound);
         int omegaPart = RANDOM.nextInt(2, bound);
@@ -1478,11 +1477,11 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning omega notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
     
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeMultipleOfOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = RANDOM.nextInt(2, bound);
         int omegaPart = -RANDOM.nextInt(2, bound);
@@ -1494,11 +1493,11 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning omega notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusPositiveMultipleOfOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = -RANDOM.nextInt(2, bound);
         int omegaPart = RANDOM.nextInt(2, bound);
@@ -1509,11 +1508,11 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning omega notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
     
     @Test
     public void testToASCIIStringAltNegativeIntPlusNegativeMultipleOfOmega() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonOmegaPart = -RANDOM.nextInt(2, bound);
         int omegaPart = -RANDOM.nextInt(2, bound);
@@ -1525,6 +1524,7 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning omega notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
     
     @Test
@@ -1693,7 +1693,6 @@ public class ImaginaryQuadraticIntegerTest {
 
     @Test
     public void testToASCIIStringAltPositiveIntPlusNegativeMultipleOfTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
         int thetaPart = -RANDOM.nextInt(2, bound);
@@ -1705,11 +1704,11 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning theta notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
 
     @Test
     public void testToASCIIStringAltNegativeIntPlusPositiveMultipleOfTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = -RANDOM.nextInt(1, bound);
         int thetaPart = RANDOM.nextInt(2, bound);
@@ -1721,11 +1720,11 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning theta notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
 
     @Test
     public void testToASCIIStringAltNegativeIntPlusNegativeMultipleOfTheta() {
-        fail("ASSESS FOR BRITTLENESS");
         int bound = 128;
         int nonThetaPart = -RANDOM.nextInt(1, bound);
         int thetaPart = -RANDOM.nextInt(2, bound);
@@ -1737,6 +1736,7 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning theta notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
 
     @Test
@@ -1805,7 +1805,6 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testToASCIIStringAlt() {
-        fail("ASSESS FOR BRITTLENESS");
         System.out.println("toASCIIStringAlt");
         int bound = 128;
         int nonThetaPart = RANDOM.nextInt(1, bound);
@@ -1818,6 +1817,7 @@ public class ImaginaryQuadraticIntegerTest {
         String actual = number.toASCIIStringAlt().replace(" ", "");
         String message = "Reckoning theta notation of " + number.toString();
         assertEquals(message, expected, actual);
+        System.out.println(message + " as " + actual);
     }
     
     /**
