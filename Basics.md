@@ -455,7 +455,7 @@ $\langle 2 \rangle$ in the ring of integers of $\mathbb Q(\sqrt d)$ is
 
 * $$\left\langle 2, \frac{1}{2} \pm \frac{\sqrt d}{2} \right\rangle$$ if $d 
 \equiv 1 \pmod 8$
-* $\langle 2, \sqrt d \rangle$ if $d \equiv 2 \pmod 4$
+* $\langle 2, \sqrt d \rangle^2$ if $d \equiv 2 \pmod 4$
 * $\langle 2, 1 + \sqrt d \rangle^2$ if $d \equiv 3 \pmod 4$
 * Prime if $d \equiv 5 \pmod 8$
 
