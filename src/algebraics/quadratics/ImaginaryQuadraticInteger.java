@@ -171,19 +171,20 @@ public class ImaginaryQuadraticInteger extends QuadraticInteger {
     
     @Override
     public String toASCIIStringAlt() {
-        if (this.quadRing.radicand == -3) {
-            return this.toStringAltOmega()
-                    .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
-                    .replace(Character.toString(OMEGA_LETTER), "omega");
-        }
-        if (this.quadRing.d1mod4) {
-            if (this.surdPartMult == 0) {
-                return Integer.toString(this.regPartMult);
-            }
-            return this.toStringAlt()
-                    .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
-                    .replace(Character.toString(THETA_LETTER), "theta");
-        } else return this.toASCIIString();
+//        if (this.quadRing.radicand == -3) {
+//            return this.toStringAltOmega()
+//                    .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
+//                    .replace(Character.toString(OMEGA_LETTER), "omega");
+//        }
+//        if (this.quadRing.d1mod4) {
+//            if (this.surdPartMult == 0) {
+//                return Integer.toString(this.regPartMult);
+//            }
+//            return this.toStringAlt()
+//                    .replace(Character.toString(MINUS_SIGN_CHARACTER), "-")
+//                    .replace(Character.toString(THETA_LETTER), "theta");
+//        } else return this.toASCIIString();
+return "TEMP REWIND TO FAILING";
     }
     
     @Override
