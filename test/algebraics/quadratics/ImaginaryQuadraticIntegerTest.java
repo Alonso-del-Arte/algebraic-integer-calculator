@@ -4179,12 +4179,12 @@ public class ImaginaryQuadraticIntegerTest {
      */
     @Test
     public void testDividesInt() {
-        System.out.println("divides(int)");
+        fail("REWRITE THIS TEST");
         ImaginaryQuadraticRing currRing;
         ImaginaryQuadraticInteger testDividend;
         QuadraticInteger result;
         int testDivRealPartMult;
-        String failMessage;
+        String message;
         for (int iterDiscrOQ = -11; iterDiscrOQ > -84; iterDiscrOQ -= 8) {
             if (NumberTheoreticFunctionsCalculator.isSquarefree(iterDiscrOQ)) {
                 currRing = new ImaginaryQuadraticRing(iterDiscrOQ);
@@ -4192,15 +4192,15 @@ public class ImaginaryQuadraticIntegerTest {
                 testDividend = new ImaginaryQuadraticInteger(testDivRealPartMult, 0, currRing);
                 try {
                     result = testDividend.divides(2);
-                    failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " should have triggered NotDivisibleException, not given result " + result.toString();
-                    fail(failMessage);
+                    message = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " should have triggered NotDivisibleException, not given result " + result.toString();
+                    fail(message);
                 } catch (NotDivisibleException nde) {
                     System.out.println("Trying to divide " + testDividend.toASCIIString() + " by 2 in " + currRing.toASCIIString() + " correctly triggered NotDivisibleException");
                     System.out.println("\"" + nde.getMessage() + "\"");
                 } catch (Exception e) {
                     System.out.println("Encountered this exception: " + e.getClass().getName() + " \"" + e.getMessage() + "\"");
-                    failMessage = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " triggered the wrong exception.";
-                    fail(failMessage);
+                    message = "Trying to divide " + testDividend.toString() + " by 2 in " + currRing.toString() + " triggered the wrong exception.";
+                    fail(message);
                 }
             }
         }
