@@ -467,6 +467,16 @@ $\langle 2 \rangle$ in $\mathbb Z[\sqrt{14}]$ as $\langle 2, \sqrt{14}
 \sqrt{14}$, so the factorization of $\langle 2 \rangle$ in $\mathbb 
 Z[\sqrt{14}]$ is actually $\langle 4 + \sqrt{14} \rangle^2$.
 
+Given an odd prime $p$ in $\mathbb Z$, the factorization of $\langle p \rangle$ 
+in the ring of integers of $\mathbb Q(\sqrt d)$ depends on whether $p$ is a 
+divisor of $d$, and if not, does the congruence $x^2 \equiv d \pmod p$ have 
+solutions in integers or not. These three scenarios correspond to the Legendre 
+symbol $\left(\frac{d}{p}\right)$ being 0, 1 or $-1$. Then $\langle p \rangle$
+
+* is prime if the Legendre symbol is $-1$
+* factorizes as $\langle p, \sqrt d \rangle$ if the Legendre symbol is 0
+* factorizes as $\langle p, x \pm \sqrt d \rangle$ if the Legendre symbol is 1
+
 (FINISH WRITING: FACTORIZATION OF ODD PRIME p)
 
 (FINISH WRITING)
